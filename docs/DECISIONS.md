@@ -198,6 +198,73 @@ Format per row (PRD §Audit Trail And KG Specification > Decision Log):
 
 ---
 
+## D-026 — QAIRT 2.41 ONNX frontend version-mismatch with onnx 1.21 (`AttributeProto` is None)
+
+- **timestamp:** 2026-05-01T18:36:00Z
+- **agent_role:** Linux x86_64 agent (Runpod CPU pod, post-D-024 attempted ONNX path)
+- **context:** After D-025 surfaced the EMBEDDING_LOOKUP block on QAIRT TFLite frontend, attempted the alternative PyTorch -> ONNX -> QAIRT path. ONNX export from torch 2.11 succeeded (`onnxscript 0.7.0`, opset 18 with auto-fallback to 17). `qairt-converter --input_network *.onnx` then failed at module init:
+  ```
+  File ".../qti/aisw/converters/onnx/util.py", line 319
+  "i": onnx.AttributeProto.INT,
+  AttributeError: 'NoneType' object has no attribute 'AttributeProto'
+  ```
+  `onnx 1.21.0` (Dec 2025) has restructured its proto namespace; QAIRT 2.41's converter was built against an earlier `onnx` version that exposed `AttributeProto` as a top-level attribute. Pinning `onnx<1.20` would likely fix this but creates a downgrade chain across `onnxscript`, `tensorflow`, etc.
+- **decision:** Phase 0G stays blocked under QAIRT 2.41 + open-source toolchain. Either (a) pin a coherent older toolset (onnx 1.18, onnxscript 0.6, tensorflow 2.18, ml_dtypes 0.4, etc.) OR (b) get a newer QAIRT (post-Dec 2025) that targets onnx >= 1.21 OR (c) skip the high-level converter and go through the lower-level `qnn-onnx-converter` direct binary if it has fewer Python deps.
+- **affected configs/artifacts:** none yet (no new tflite/dlc artifact produced).
+- **follow-up owner:** Operator (decide between newer QAIRT, pinned-deps recompile lane, or pivot to Gate B).
+
+---
+
+## D-025 — QAIRT 2.41 TFLite frontend rejects `EMBEDDING_LOOKUP`
+
+- **timestamp:** 2026-05-01T18:30:00Z
+- **agent_role:** Linux x86_64 agent
+- **context:** After resolving D-024's QnnSystem version mismatch by switching to QAIRT's own `qairt-converter` (the direct AOT path that doesn't need ai-edge-litert), the converter ran on the pre-existing `tiny_block.tflite` (143 KB). The QAIRT TFLite frontend uses Apache TVM internally (`qti.tvm.relay.frontend.tflite`) and raised:
+  ```
+  qti.tvm.error.OpNotImplemented: The following operators are not
+  supported in frontend TFLite: 'EMBEDDING_LOOKUP'
+  ```
+  The tflites were built by the silicon runner's `_build_tiny_block / _build_qwen_block / _build_qwen_frozen_subgraph / _build_smollm3_*` which include token embedding tables (`nn.Embedding`). litert-torch 0.9.0 lowers `nn.Embedding` to `EMBEDDING_LOOKUP` in the TFLite IR. QAIRT's TVM frontend doesn't lower that op.
+- **decision:** Phase 0G models must be re-exported with EMBEDDINGS EXCLUDED from the QNN compile graph. The PRD §Heterogeneous Compute Architecture already wants embeddings on Adreno/Oryon (not Hexagon NPU); excluding them is also architecturally correct — the embedding table is small and cheap, the heavy work is the transformer blocks themselves. Path: rebuild the per-scope models with input dtype = `float32 hidden_states (batch, seq, hidden)` instead of `int64 token_ids (batch, seq)`, skipping the embedding lookup. Will be implemented in `scripts/silicon/run_phase0g_aot.py` next attempt.
+- **strongest disconfirming observation:** if the no-embedding rebuild still hits other unsupported ops downstream (RMSNorm, RoPE, GQA), each gets its own D-row. Operator might decide the cumulative op-coverage gap makes Vulkan a cleaner pivot.
+- **affected configs/artifacts:** future runner update (ELO model lane), `polymath_ai/dispatch/export_probe.py:PROBE_SCOPES` may grow new entries like `qwen_block_no_embed`.
+- **follow-up owner:** Export lane.
+
+---
+
+## D-024 — QAIRT 2.41.0.251128 host environment fully resolved; SDK-side version drift confirmed
+
+- **timestamp:** 2026-05-01T18:30:00Z
+- **agent_role:** Linux x86_64 agent (continuation of D-022/D-023 on pod 429xv4r3wm66q9)
+- **context:** Operator manually downloaded QAIRT 2.41.0.251128 (Dec 2025 build) and uploaded the 1.5 GB zip. Extracted to `/workspace/qairt/qairt/2.41.0.251128/` on the pod. SDK contents include both Linux x86_64 binaries (for AOT compile) and Android aarch64 binaries (`qnn-net-run`, `qnn-context-binary-generator`, etc., for on-phone runtime). `libQnnSystem.so`, `libQnnHtpV81Skel.so` (Hexagon v81 = Snapdragon 8 Elite Gen 4), `libQnnTFLiteDelegate.so` all present.
+
+- **environment friction discovered (resolved):**
+  1. **`unzip` not installed on pod** — fixed via `apt-get install unzip`.
+  2. **Python 3.10 required** by QAIRT's bundled `libDlModelToolsPy` (the SDK was built against `libpython3.10.so.1.0`) — fixed via `apt-get install python3.10` and a separate `.venv-qairt` Python 3.10 environment alongside the existing `.venv-linux` (Python 3.11).
+  3. **`libc++.so.1` not installed** — fixed via `apt-get install libc++1 libc++abi1 libc++-dev`.
+  4. **`libLLVM-14.so.1` not installed** (QAIRT's TVM build links against LLVM 14) — fixed via `apt-get install llvm-14`.
+  5. **Python deps**: `numpy<2`, `onnx`, `onnxruntime`, `tensorflow`, `pyyaml`, `decorator`, `scipy`, `pandas`, `xlsxwriter`, `colorlog`, `tflite`, `lazy_imports`, `dataclasses-json`, `typing_inspect`, `synr`, `cloudpickle`, `attrs`, `tornado`, `psutil`, `onnxscript` — all installed.
+
+- **SDK-side version drift (real blocker):**
+  - **D-024-A** `libQnnSystem.so` from QAIRT 2.41 reports version **1.6.0**; `ai-edge-litert==2.1.4` requires **>= 1.8.0**. Confirmed via direct exception:
+    ```
+    ERROR: [qnn_manager.cc:284] Qnn System library version 1.6.0 is mismatched.
+    The minimum supported version is 1.8.0. Please make sure you have the
+    correct library version.
+    ```
+    This means the **ai-edge-litert wrapper path** (the path the silicon agent's runner uses) is **incompatible with QAIRT 2.41**. Two upgrade paths: (a) downgrade ai-edge-litert to a 2.0.x release that accepts QnnSystem 1.6.0, OR (b) get a newer QAIRT (operator step; QAIRT 2.42+ likely ships QnnSystem >=1.8.0).
+  - **D-024-B** Bypassing ai-edge-litert via QAIRT's own `qairt-converter` (Python 3.10 venv) reaches D-025 + D-026 (downstream blockers in the converter itself).
+
+- **decision:** QAIRT 2.41 IS valid for direct on-phone runtime (`qnn-net-run`, `libQnnTFLiteDelegate.so` for Android) — the on-phone half of the pipeline is unblocked once we have a compiled binary. The host-side AOT compile is blocked by the version drifts above. Honest verdict: **QAIRT 2.41 + open-source 2025-end toolchain has compounding version friction**; a newer QAIRT (one operator-step away) is the cleanest unblock. Next-best alternative: Gate B (Vulkan compute on Adreno 830 directly), as the operator already authorised.
+
+- **strongest disconfirming observation:** if QAIRT 2.42 ships and resolves both D-024-A (QnnSystem 1.8) and D-026 (onnx 1.21 compat), Phase 0G unblocks fully and we revisit. Worth checking quarterly.
+
+- **affected configs/artifacts:** `docs/PHASE-0G-PLAN.md` (will append the QAIRT-version-aware version), no scheduler changes (registry stays locked), no test changes.
+
+- **follow-up owner:** Operator (newer QAIRT OR Gate B authorisation) → Linux x86_64 agent (re-run with new env).
+
+---
+
 ## D-022 — Phase 0G Linux x86_64 host environment captured
 
 - **timestamp:** 2026-05-01T16:48:00Z
