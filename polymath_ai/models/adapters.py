@@ -36,18 +36,46 @@ def _resolve_layer_index(num_layers: int, idx: int) -> int:
     return idx
 
 
+def untie_lm_head_if_tied(model) -> bool:
+    """If ``lm_head.weight`` shares storage with ``embed_tokens.weight``,
+    clone ``lm_head.weight`` so the two parameters become independent.
+
+    Returns True when an untie was performed.
+
+    Why this exists: the ELO freeze plan trains ``lm_head`` while keeping
+    embeddings frozen. With tied weights this is impossible. Untying
+    creates an independent tensor of ~150 MiB for Qwen2.5-1.5B in BF16 -
+    well within the 24 GB budget. The decision is recorded in
+    docs/DECISIONS.md (D-001).
+    """
+    import torch.nn as nn
+
+    embed = _embed_module(model)
+    lm_head = _lm_head_module(model)
+    if embed is None or lm_head is None or not hasattr(lm_head, "weight"):
+        return False
+    if lm_head.weight is embed.weight:
+        new_w = nn.Parameter(lm_head.weight.detach().clone())
+        lm_head.weight = new_w
+        return True
+    return False
+
+
 def apply_freeze_plan(model, plan: FreezePlan) -> None:
     """Walk a model that follows the HF Qwen-style ``model.layers`` /
     ``model.embed_tokens`` / ``lm_head`` layout and set ``requires_grad``
     according to ``plan``.
 
-    Tying notice: when ``lm_head.weight is model.embed_tokens.weight`` (tied
-    embeddings) and ``train_lm_head`` is True, the same tensor is unfrozen.
-    Callers checking the gradient set must dedupe by ``id(p)`` or by name.
+    Untying step: when ``freeze_embeddings`` is True AND ``train_lm_head``
+    is True AND the model uses tied weights, ``lm_head`` is untied first.
+    The freeze flags then apply to two independent tensors as expected.
     """
     layers = _layers_module(model)
     n = len(layers)
     target_indices = {_resolve_layer_index(n, i) for i in plan.trainable_layer_indices}
+
+    if plan.freeze_embeddings and plan.train_lm_head:
+        untie_lm_head_if_tied(model)
 
     for name, param in model.named_parameters():
         param.requires_grad = False

@@ -69,6 +69,15 @@ def _deterministic_sample_param_names(model, k: int = 6, seed: int = 0) -> List[
     return rng.sample(frozen, k=min(k, len(frozen)))
 
 
+def _tensor_bytes(t) -> bytes:
+    """Return the raw byte buffer of ``t`` without going through numpy.
+
+    NumPy does not support BF16; ``untyped_storage().tobytes()`` works for
+    every dtype torch supports.
+    """
+    return bytes(t.detach().contiguous().cpu().untyped_storage())
+
+
 def frozen_param_hash_sample(model, names: Optional[Sequence[str]] = None, k: int = 6, seed: int = 0) -> Dict[str, str]:
     """Hash a sample of frozen parameters.
 
@@ -79,10 +88,10 @@ def frozen_param_hash_sample(model, names: Optional[Sequence[str]] = None, k: in
     if names is None:
         names = _deterministic_sample_param_names(model, k=k, seed=seed)
     out: Dict[str, str] = {}
+    names_set = set(names)
     for n, p in model.named_parameters():
-        if n in names:
-            buf = p.detach().contiguous().cpu().to(dtype=p.dtype).numpy().tobytes()
-            out[n] = "sha256:" + hashlib.sha256(buf).hexdigest()
+        if n in names_set:
+            out[n] = "sha256:" + hashlib.sha256(_tensor_bytes(p)).hexdigest()
     return out
 
 
@@ -163,7 +172,16 @@ class ELOTrainer:
         before = frozen_param_hash_sample(stage1.model, sample_names)
         stage1.optimizer.zero_grad(set_to_none=True)
         out = stage1.model(batch_input_ids, labels=batch_labels)
-        loss = out[1] if isinstance(out, tuple) else out  # tiny model returns (logits, loss)
+        # Three possible shapes:
+        #   * tiny model: ``(logits, loss)`` tuple
+        #   * HF AutoModelForCausalLM: namespace with ``.loss``
+        #   * Custom: bare loss tensor
+        if hasattr(out, "loss") and out.loss is not None:
+            loss = out.loss
+        elif isinstance(out, tuple):
+            loss = out[1]
+        else:
+            loss = out
         loss.backward()
         # gradient clipping on trainable params only
         torch.nn.utils.clip_grad_norm_(stage1.trainable_params, max_norm=stage1.cfg.grad_clip)
@@ -219,13 +237,18 @@ class ELOTrainer:
         frozen_sample_names = _deterministic_sample_param_names(stage1.model, k=6, seed=0)
         frozen_sample = frozen_param_hash_sample(stage1.model, frozen_sample_names)
 
-        # Compute checkpoint sha as the sha of the canonical-json of the
-        # state-dict-of-trainables (deterministic shape) plus the optimizer
-        # state hash.
-        trainable_serialised = canonical_json(
-            {n: t.numpy().tobytes().hex() for n, t in trainable_state.items()}
-        )
-        ckpt_sha = sha256_text(trainable_serialised)
+        # Streaming SHA-256 over (sorted name) | b":" | tensor bytes for
+        # each trainable. This avoids materialising a multi-GB hex string
+        # for production-scale trainables (Qwen2.5-1.5B's lm_head alone is
+        # 466 MB BF16); a JSON-of-hex round-trip blew up to >1 GB and hung
+        # the save. Streaming form is dtype-agnostic and replay-stable.
+        h = hashlib.sha256()
+        for n in sorted(trainable_state.keys()):
+            h.update(n.encode("utf-8"))
+            h.update(b":")
+            h.update(_tensor_bytes(trainable_state[n]))
+            h.update(b"\n")
+        ckpt_sha = "sha256:" + h.hexdigest()
 
         manifest = {
             "schema_version": SCHEMA_VERSION,

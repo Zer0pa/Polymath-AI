@@ -1,0 +1,22 @@
+# Termux on-device pins.
+#
+# Notes:
+# * Termux runs Python 3.12 / 3.13 on aarch64 Android. Wheel availability
+#   varies; the bootstrap script attempts torch and records the verdict
+#   rather than failing if torch is unavailable (Decision D-010).
+# * Control-plane deps (huggingface_hub, tokenizers, safetensors, numpy,
+#   sentencepiece) are reliable in Termux.
+# * `transformers` is reachable on the tokenizers-only path even without
+#   torch.
+
+huggingface_hub>=0.30
+safetensors>=0.4.5
+numpy<2
+tokenizers>=0.20
+sentencepiece>=0.2.0
+pyyaml>=6.0
+requests>=2.31
+
+# Optional: torch + transformers attempted by bootstrap.sh.
+# torch (no pin - pip resolves the best wheel for Android arm64-v8a)
+# transformers<5
