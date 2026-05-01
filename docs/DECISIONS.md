@@ -160,6 +160,29 @@ Format per row (PRD §Audit Trail And KG Specification > Decision Log):
 
 ---
 
+## D-019 — ai-edge-litert has NO aarch64-android wheel; LiteRT-on-Termux-Python path is dead. SSH replaces RUN_COMMAND for agent-driven Termux.
+
+- **timestamp:** 2026-05-01T13:46:00Z
+- **agent_role:** overnight-executor
+- **context:** Three discoveries on the attached REDMAGIC 10 Pro:
+  1. The full Termux bootstrap actually succeeded for everything except torch (D-018 was overconfident in calling it failed): `transformers 4.57.6`, `tokenizers 0.22.2`, `huggingface_hub 0.36.2`, `safetensors 0.7.0`, `numpy 2.4.4` all installed on Python 3.13.13.
+  2. `pip install ai-edge-litert` returns "Could not find a version that satisfies the requirement ai-edge-litert (from versions: none)" on Termux. PyPI does NOT ship an aarch64-android wheel for ai-edge-litert. **The LiteRT-via-Termux-Python path is closed.**
+  3. The `RunCommandService` Termux exposes for external `am startservice` is NOT present in this F-Droid Termux build (recent versions deprecated it). My `am startservice -n com.termux/.app.RunCommandService` returns "Not found". `allow-external-apps=true` does not unlock it because the service itself is gone.
+
+- **decisions:**
+  - **Phone-side compute path for Phase 0G / Phase 1A is now ai-edge-litert via a NATIVE binary route**, not via Termux Python. Options: AOT-compile `.tflite` on a Linux x86_64 host (ai-edge-litert + ai-edge-torch wheels are present there), then push the binary to the phone and load it via a small native wrapper (libtensorflowlite.so is part of Android system / GPU drivers). **Out of scope for tonight; documented as Phase 0G TODO.**
+  - **For all agent-driven Termux work**: SSH server in Termux is the answer. Generated `~/.ssh/polymath_host` ed25519 keypair on the host; pushed pubkey to phone; ran `pkg install openssh + sshd` via the auto-typed bootstrap. Phone IP `192.168.0.103:8022`, user `u0_a536`. Verified end-to-end: `ssh -p 8022 -i ~/.ssh/polymath_host u0_a536@192.168.0.103 'cmd'` works for arbitrary commands.
+  - **Phone Python is fully usable for non-torch work**: tokenizer audits, corpus manifests, HF push/pull, file management, transformers-tokenizer-only paths. Phase 0F can run on-device for real device-side measurements.
+  - **D-018's "torch_install_result: failed" stays accurate**, but the rest of D-018 is partially wrong: tokenizers + transformers DID install (the rust source-build did succeed, just very slowly). Adjusting D-018's affected-artifacts list accordingly.
+
+- **strongest disconfirming observation:** if a future Termux release ships ai-edge-litert wheels (would require the upstream maintainer to publish aarch64-android), the LiteRT-on-Termux path reopens. We watch PyPI for that.
+
+- **affected configs/artifacts:** `~/.ssh/polymath_host*` (host keypair), `/sdcard/Download/polymath/sshd_setup.sh`, `/sdcard/Download/polymath/ssh-info.json`, `docs/PHONE-ATTACH-RUNBOOK.md` (will note SSH path), `polymath_ai/experiments/phase0e.py` (host-mediated stays primary; on-device tokenizer audits possible via SSH).
+
+- **follow-up owner:** Device + Export lanes.
+
+---
+
 ## D-018 — Termux torch+tokenizers bootstrap fails on Rust source-build; pivot to host-mediated + LiteRT for phone-side compute
 
 - **timestamp:** 2026-05-01T13:30:00Z

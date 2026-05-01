@@ -1,0 +1,51 @@
+phase: phase0e_experiment0
+phone_attached: true
+step_id: E0.1_host_quick
+run_kind: smoke
+
+model:
+  model_id: Qwen/Qwen2.5-1.5B
+  revision: main
+  dtype: bf16
+  freeze_policy: elo_first_last
+
+corpus:
+  slice_id: corpus_slice:seed-v0:smoke-001
+  tokens_target: 320
+  source: synthetic_random
+  language: en
+  domain: general_replay
+
+train:
+  steps: 5
+  seq_length: 32
+  batch_size: 1
+  accumulation_steps: 1
+  learning_rate: 1.0e-4
+  weight_decay: 0.1
+  betas: [0.9, 0.95]
+  grad_clip: 1.0
+  seed: 1234
+
+device:
+  expected_soc_target: SM8750
+  performance_mode: stable
+  fan_required: false  # this is host-mediated, not on-device
+  charge_separation_required: false
+  ambient_max_c: 30
+  battery_temp_warn_c: 35
+  battery_temp_fail_c: 42
+
+falsifier_thresholds:
+  oom_peak_ram_warn_gb: 14
+  oom_peak_ram_fail_gb: 18
+  throughput_floor_warn_tph: 0  # host CPU is slow; not a thermal claim
+  throughput_floor_fail_tph: 0
+  thermal_throttle_window_min: 5
+  thermal_throttle_below_mhz: 600
+  thermal_throttle_pct_fail: 0.10
+
+acceptance:
+  required_falsifiers_pass:
+    - checkpoint_hash_mismatch
+    - boundary_violation
