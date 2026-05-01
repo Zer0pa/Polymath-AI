@@ -35,9 +35,34 @@ def test_boundary_missing_failure():
 
 
 def test_boundary_drift_detected():
+    """A boundary-shaped paragraph that is missing key prohibitions is
+    DRIFT (substantive scope change, blocking).
+    """
     drifted = "Research infrastructure for in silico on-device LLM training but with extra fluff.\n"
     rows = scan_text(drifted, path="x.md", require_boundary=True)
     assert any(r.status == "DRIFT" for r in rows)
+    fail_rows = [r for r in rows if r.is_failure()]
+    assert fail_rows, "DRIFT must remain a failure"
+
+
+def test_boundary_drift_warn_for_equivalent_paraphrase():
+    """A semantically equivalent paraphrase that lists every prohibition
+    is DRIFT_WARN (non-blocking)."""
+    paraphrased = (
+        "Research infrastructure for in silico on-device LLM training and multilingual / "
+        "multi-domain knowledge model construction. Outputs are research artifacts "
+        "(model checkpoints, training telemetry, evaluation reports, throughput "
+        "measurements). No regulatory certification claims. No clinical or "
+        "human-subject use. No surveillance, biometric profiling, or identity "
+        "inference. No model weights distributed without explicit license "
+        "attestation. No training on copyrighted material without explicit "
+        "corpus-license decomposition. No deployment to production without a "
+        "falsifier-traced acceptance gate."
+    )
+    rows = scan_text(paraphrased, path="x.md", require_boundary=True)
+    statuses = [r.status for r in rows]
+    assert "DRIFT_WARN" in statuses
+    assert all(not r.is_failure() for r in rows)
 
 
 def test_forbidden_framing_when_unsuppressed():
