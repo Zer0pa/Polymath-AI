@@ -2,24 +2,24 @@
 
 **Boundary:** Research infrastructure for in silico on-device LLM training and multilingual / multi-domain knowledge model construction. Outputs are research artifacts - model checkpoints, training telemetry, evaluation reports, throughput measurements. No regulatory certification claims. No clinical or human-subject use. No surveillance, biometric profiling, or identity inference. No model weights distributed without explicit license attestation. No training on copyrighted material without explicit corpus-license decomposition. No deployment to production without a falsifier-traced acceptance gate.
 
-**Run window:** 2026-05-01 (overnight, host machine, no phone attached).
-**Agent:** Claude Opus 4.7 (1M context), overnight executor role.
+**Run window:** 2026-05-01 (overnight on Intel Mac + 1 hour Apple Silicon agent).
+**Agents:** Claude Opus 4.7 (1M context). Two hosts: Intel Mac (orchestrator), Apple Silicon M1 (Phase 0G AOT compile attempt).
 **Repo:** `Zer0pa/Polymath-AI` (private, branch `main`).
-**Latest commit:** see `git log -1`.
+**Latest commit:** `0502eec` (post-merge of `silicon/phase0g-aot`).
 
 ## Headline
 
-The repo is in a state where a fresh executor on a different machine can clone, install host requirements, run `pytest` (115 tests pass), connect the REDMAGIC 10 Pro+, and continue at Phase 0D as a config-flag change. ELO Stage 1 correctness is proven on real Qwen2.5-1.5B (host CPU BF16); ELO Stage 1 → Stage 2 round-trip is proven on the tiny model. Tokenizer fertility audit passes for both Qwen and SmolLM3 on multilingual fixtures. Phase 0C export truth-table skeleton exists with stub rows; real LiteRT/QNN compile rows are deferred to phone (Decisions D-012, D-013).
+REDMAGIC 10 Pro attached, probed, Termux fully bootstrapped (transformers 4.57.6 + tokenizers 0.22.2 + huggingface_hub + safetensors), Termux:API + tmux + SSH server live. **Real Qwen2.5-1.5B ELO Stage 1 host-mediated smoke completed end-to-end**: 5 train_steps, loss 14.515 → 4.449 monotone decreasing on same-batch overfit, **frozen invariant held across all 5 steps**, checkpoint sha-stable, audit chain clean. **Phase 0F real-corpus FLORES-200 audit caught Zulu (2.68×) and Greek (4.38×) above the 2.5× English fertility threshold**; D-017 dropped them from Phase 1A on Qwen and revised the language mix. **Phase 0G blocked at SDK level on macOS arm64** (D-021: `apply_plugin_main` native binary absent in `ai-edge-litert==2.1.4` macOS arm64 wheel); Linux x86_64 handoff at `docs/HANDOFF-TO-LINUX-X86_64.md`. Scheduler `litert_qnn_sm8750.confirmed_for_socs` correctly remains `()` — Phase 1A QNN routing stays locked until a real `ok` CompileRecord lands. 126/126 tests passing.
 
 ## Acceptance gate snapshot
 
 | Gate | Result | Evidence |
 |---|---|---|
-| Scientific gate (boundary clean, source-grounded, no out-of-scope framing) | **pass** | Boundary scanner clean across the repo; 19 falsifiers wired with positive + negative fixtures; every artifact carries the boundary block. |
-| Engineering gate (Mac sim end-to-end, plug-replaceability, audit invariants, sync recovery, ELO frozen-layer invariants) | **pass** | 115/115 tests; audit chain validates clean across smoke runs; ELO frozen-hash invariant holds on tiny + real Qwen2.5-1.5B. |
-| Device-readiness gate | **blocked: phone absent** | Phase 0D-0G defer to phone. Runbook + scripts ready. |
-| Brain-functionality gate (fresh agent reconstructs from repo + HF + audit/KG without conversation context) | **pass** | All canonical docs in repo; 4 private HF repos seeded with boundary-bearing READMEs; all decisions in `docs/DECISIONS.md`; audit chain replayable. |
-| Research-publishability gate (Phase 1A report) | **deferred** | Pending Phase 1A run on actual phone. |
+| Scientific gate (boundary clean, source-grounded, no out-of-scope framing) | **pass** | Boundary scanner clean across the repo; 19 PRD falsifiers + 4 fridge-mode falsifiers wired with positive + negative fixtures; every artifact carries the boundary block. |
+| Engineering gate (Mac sim end-to-end, plug-replaceability, audit invariants, sync recovery, ELO frozen-layer invariants) | **pass** | 126/126 tests; audit chain validates clean across smoke + E0.1 runs; ELO frozen-hash invariant holds on tiny + real Qwen2.5-1.5B (E0.1 confirmed 5 steps with frozen_changed=[]). |
+| Device-readiness gate | **partial pass** | Phone attached, SoC=SM8750 confidence 1.0 (D-015), Termux + SSH live, Charge Separation active, battery 31°C. **Phase 0G blocked at SDK** (D-021: macOS arm64 wheel missing AOT plugin); Linux x86_64 handoff written. Phase 0E E0.1 host-mediated complete. |
+| Brain-functionality gate (fresh agent reconstructs from repo + HF + audit/KG without conversation context) | **pass** | All canonical docs in repo; 4 private HF repos seeded; all 21 decisions in `docs/DECISIONS.md`; audit chain replayable; PR-and-merge handoff between Intel Mac + Apple Silicon agents demonstrated. |
+| Research-publishability gate (Phase 1A report) | **deferred** | Pending Phase 0G unblock on Linux x86_64, then Phase 1A run on phone. |
 
 ## What was implemented
 

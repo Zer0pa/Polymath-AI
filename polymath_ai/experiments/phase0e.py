@@ -252,11 +252,19 @@ def run(*, config: Mapping[str, Any], run_id: str, run_dir: Path, audit: AuditWr
             "battery_heat_risk",
             {"battery_temp_samples_c": battery_temp_samples},
         ),
-        "throughput_floor_fail": evaluate(
+    }
+    # Throughput is only a meaningful gate when compute happens on the
+    # device. Under host-mediated mode (compute on host CPU, phone is a
+    # telemetry beacon), the host-CPU tph is not representative of the
+    # phone's Adreno + Hexagon throughput - applying the 500K/100K
+    # tokens/hour floor here generates a false positive. Skip the
+    # throughput gate unless the run config explicitly says compute
+    # ran on the phone.
+    if config.get("compute_on_phone"):
+        eval_payload["throughput_floor_fail"] = evaluate(
             "throughput_floor_fail",
             {"tokens_per_hour": tph},
-        ),
-    }
+        )
     summary = summary_report(list(eval_payload.values()))
 
     for r in summary["results"]:
