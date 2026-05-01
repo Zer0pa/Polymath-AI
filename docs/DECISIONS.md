@@ -160,6 +160,31 @@ Format per row (PRD §Audit Trail And KG Specification > Decision Log):
 
 ---
 
+## D-018 — Termux torch+tokenizers bootstrap fails on Rust source-build; pivot to host-mediated + LiteRT for phone-side compute
+
+- **timestamp:** 2026-05-01T13:30:00Z
+- **agent_role:** overnight-executor
+- **context:** First-pass `scripts/termux/bootstrap.sh` ran on the attached REDMAGIC 10 Pro under Termux Python 3.13.13. The control-plane install hit `tokenizers` (HuggingFace's Rust-backed tokenizer library) which has no aarch64-android pre-built wheel on PyPI. pip fell back to a Cargo source-build, which fired `rustc` at 700% CPU for 2+ minutes per crate, then exited with a partial install. Bootstrap then attempted `transformers` install which depends on the same `tokenizers` and would fail the same way. PRD §Deep-Research Lookup Verdicts already flagged Termux as fragile ("Termux training stack maturity audit"); this is the manifestation.
+
+- **options considered:**
+  1. Persist with the rust source-build. Estimated total: 30-60 min on phone CPU; might still fail on memory pressure (Termux + dm3_runner + rustc together; phone had 113 MB free at one point).
+  2. Pre-build tokenizers wheel on a Linux x86_64 + cross-compile to aarch64-android. Requires a manylinux-android cross-compile toolchain we don't have.
+  3. Drop tokenizers + transformers from the Termux side entirely. Use Termux as control plane only. Run the actual ELO training on the host (host-mediated) until the phone-side LiteRT path is proven via Phase 0G.
+  4. Use ai-edge-litert (pre-built binary wheel) for phone-side compute. This is a different runtime than torch but is exactly what PRD §Hard SoC identity gate + §LiteRT QNN path want anyway.
+
+- **decision:** **Option 3 + Option 4 in series.**
+  - Phase 0E E0.1 / E0.2 / Phase 0F use **host-mediated**: ELO training runs on host CPU, phone provides live telemetry via ADB (battery temp, thermal zones, mem). Real `phone_attached: true` envelopes; falsifier evaluation against real device state. PRD §Decision D-005 (config-flag-shaped continuation) + D-010 (Termux as control plane) explicitly allow this.
+  - Phase 0G + Phase 1A use **LiteRT path** on the phone: install `ai-edge-litert` (pre-built binary wheel; no rust source-build) on Termux, AOT-compile Qwen2.5-1.5B frozen-middle subgraph for SM8750, run on Hexagon NPU. This is the natural path the blueprint always wanted; bypassing torch on Termux is actually cleaner.
+  - `scripts/termux/bootstrap_lean.sh` is the new bootstrap: pure-Python + binary-wheel only, no rust. Includes `ai-edge-litert` install attempt and writes verdict.json to /sdcard.
+
+- **strongest disconfirming observation:** if `ai-edge-litert` also lacks an aarch64-android wheel OR if the AOT compile fails on SM8750 in Phase 0G, we fall back to **all compute on host** with the phone reduced to telemetry beacon. That collapses the original "on-device training" thesis but the boundary still holds (research infrastructure for in-silico training on the phone hardware target). At that point the operator would decide whether to swap targets.
+
+- **affected configs/artifacts:** `scripts/termux/bootstrap_lean.sh` (new); `polymath_ai/experiments/phase0e.py` (host-mediated path); `docs/PHONE-ATTACH-RUNBOOK.md` (note the lean bootstrap as primary); `docs/GAME-SPACE-FRIDGE-RUNBOOK.md` (fridge becomes a Phase 1A concern, not Phase 0E).
+
+- **follow-up owner:** Device + Export lanes.
+
+---
+
 ## D-017 — Phase 0F (FLORES-200) flags zu + el on Qwen, zu only on SmolLM3 - revise Phase 1A language mix
 
 - **timestamp:** 2026-05-01T13:00:00Z
