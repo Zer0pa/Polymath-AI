@@ -69,33 +69,45 @@ _DOMAIN_MIX_PHASE1A: Mapping[str, float] = {
     "general_replay": 0.07,
 }
 
-# PRD §Seed Corpus > Language Mix gives group-level targets; this is the
-# concrete per-language allocation that sums to 1.0 by construction.
-# Anchor (en) 30% + High-resource European 25% + CJK 15% +
-# Arabic/Russian/Hindi 15% + African/low-resource 10% + Classical 5% = 100%.
+# Phase 1A concrete language mix (Decision D-002, revised by D-017).
+#
+# Phase 0F audit on FLORES-200 flagged Zulu (zu, 2.68x) and Greek (el,
+# 4.38x) above the 2.5x English fertility ceiling under Qwen's tokenizer.
+# zu also fails under SmolLM3 (2.71x); el passes under SmolLM3 (under 2.5x).
+#
+# Decision D-017: drop zu + el from the FIRST Qwen Phase 1A run.
+# Redistribute the 5.5pp:
+#   en       +3.0   (more anchor / replay)
+#   fr       +0.5
+#   de       +0.5
+#   es       +0.5
+#   ar       +0.5
+#   ja       +0.5
+# Sum still 1.0 by construction.
+#
+# The zu/el slots return in Phase 1B with vocabulary-extension or in a
+# SmolLM3-led run for Greek (passes there).
 _LANGUAGE_MIX_PHASE1A: Mapping[str, float] = {
-    "en": 0.30,                     # 30%  anchor + replay + domain depth
-    # High-resource European languages (25% group)
-    "fr": 0.07,
-    "es": 0.06,
-    "de": 0.06,
+    "en": 0.33,                     # 33%  anchor + replay + domain depth
+    # High-resource European languages
+    "fr": 0.075,
+    "es": 0.065,
+    "de": 0.065,
     "it": 0.03,
     "pt": 0.03,
-    # CJK (15% group)
+    # CJK
     "zh": 0.07,
-    "ja": 0.05,
+    "ja": 0.055,
     "ko": 0.03,
-    # Arabic, Russian, Hindi (15% group)
-    "ar": 0.05,
+    # Arabic, Russian, Hindi
+    "ar": 0.055,
     "ru": 0.05,
     "hi": 0.05,
-    # African + low-resource (10% group)
+    # African + low-resource (zu dropped)
     "sw": 0.04,
-    "zu": 0.03,
     "af": 0.03,
-    # Classical (5% group)
+    # Classical (el dropped; Latin remains)
     "la": 0.025,
-    "el": 0.025,                    # Classical or Modern Greek slice
 }
 
 

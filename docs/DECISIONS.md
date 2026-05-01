@@ -160,6 +160,48 @@ Format per row (PRD §Audit Trail And KG Specification > Decision Log):
 
 ---
 
+## D-017 — Phase 0F (FLORES-200) flags zu + el on Qwen, zu only on SmolLM3 - revise Phase 1A language mix
+
+- **timestamp:** 2026-05-01T13:00:00Z
+- **agent_role:** overnight-executor
+- **context:** Phase 0F real-corpus tokenizer fertility audit on FLORES-200 dev split (100 sentences/language; 16 target languages; CC-BY-SA-4.0 measurement-only per D-014). Reports at `runtime/reports/fertility/Qwen_Qwen2.5-1.5B/2026-05-01T125835Z/` and `runtime/reports/fertility/HuggingFaceTB_SmolLM3-3B/2026-05-01T125835Z/`.
+
+  | Language | Qwen2.5-1.5B (151k vocab) | SmolLM3-3B (128k vocab) |
+  |---|---:|---:|
+  | en | 1.00x (baseline) | 1.00x (baseline) |
+  | zh | 0.70x | (similar) |
+  | ja | 0.60x | (similar) |
+  | ko | 0.83x | (similar) |
+  | de / es / fr / pt / it | 1.27 - 1.49x | (similar) |
+  | af | 1.55x | (similar) |
+  | ar | 1.75x | (similar) |
+  | sw | 1.92x | (similar) |
+  | hi | 1.98x | (similar) |
+  | ru | 1.93x | (similar) |
+  | **zu** | **2.68x FAIL** | **2.71x FAIL** |
+  | **el (Greek)** | **4.38x FAIL** | passes (under 2.5x) |
+
+  Greek under Qwen's BPE blows up to 5.58 tokens/word — its character set is split into byte-level fragments. SmolLM3's tokenizer handles Greek inside its trained budget. Zulu is a hard problem for both: the agglutinative morphology produces long compounds that neither vocab covers well.
+
+- **options considered:**
+  1. Drop zu + el from Phase 1A entirely. Redistribute their 5.5pp share back to the other groups. Cleanest, smallest risk, but loses two languages from the first run.
+  2. Keep zu + el but pre-train a vocabulary extension (add ~5k-10k Zulu tokens, ~3k Greek tokens). Adds ~6-10 days of pre-CPT vocab-warmup work; not in scope for the first 100M run.
+  3. Keep zu + el and oversample them by their fertility ratio. Increases compute budget linearly with the ratio - doable but pushes Phase 1A wall-clock from ~40 h to ~50 h on the same corpus.
+  4. Switch Phase 1A primary to SmolLM3-3B for Greek-clean run, keep Qwen as Phase 1A "baseline-without-Greek". Forks the run in two.
+
+- **decision:** **Option 1 for the FIRST run; Option 3 as the planned ablation.**
+  - Phase 1A on Qwen2.5-1.5B excludes zu and el. The 5.5pp share goes back to en (anchor) +3, fr/de/es +0.5 each, ar +0.5, ja +0.5, sw +0.5.
+  - When SmolLM3-3B is brought up as Candidate B (gated on Phase 0G QNN export verdict), its Phase 1A includes el (it passes) but still excludes zu (still > 2.5x).
+  - Vocabulary extension for zu/el is deferred to Phase 1B at earliest.
+
+- **strongest disconfirming observation:** if a downstream eval shows that the EXCLUSION of zu/el degrades cross-lingual transfer to OTHER African / classical languages, the operator may demand the oversample option (3) on a follow-up run.
+
+- **affected configs/artifacts:** `polymath_ai/corpus/manifest.py:_LANGUAGE_MIX_PHASE1A` (revise), Phase 1A corpus manifest, Phase 1B planning.
+
+- **follow-up owner:** Corpus + Eval lanes.
+
+---
+
 ## D-016 — REDMAGIC fan, GPU driver, Game Space, profiler observed in pre-bootstrap probe
 
 - **timestamp:** 2026-05-01T12:11:00Z
