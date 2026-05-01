@@ -502,7 +502,50 @@ def _attempt_aot_compile(scope: str, model_id: str, *, out_dir: Path) -> Tuple[C
             if hasattr(result, attr):
                 compiled_artifacts.append(f"{attr}={getattr(result, attr)!r}")
         log.write(f"  result fields: {compiled_artifacts}\n")
-        # If we get here without exception, AOT compile claims success.
+
+        # Inspect result.models_with_backend directly. ai_edge_litert's
+        # CompilationResult exposes models_with_backend at the top level;
+        # an empty list means the plugin (apply_plugin) was invoked but
+        # produced zero compiled models. The most common cause is the
+        # Qualcomm runtime libraries being absent: libQnnSystem.so from
+        # the QAIRT SDK is not shipped with ai-edge-litert and must be
+        # installed separately (Decision D-013, D-023).
+        models_with_backend = getattr(result, "models_with_backend", None)
+        n_with_backend = len(models_with_backend) if models_with_backend is not None else -1
+        log.write(f"  models_with_backend len: {n_with_backend}\n")
+
+        # 0-byte output binary on disk is the corroborating signal.
+        empty_binary = False
+        for f in aot_dir.rglob("*"):
+            if f.is_file() and f.stat().st_size == 0:
+                empty_binary = True
+                log.write(f"    0-byte output binary: {f.relative_to(out_dir)}\n")
+
+        if (n_with_backend == 0) or empty_binary:
+            log.write("  AOT VERDICT: unsupported - models_with_backend=[] AND/OR 0-byte output\n")
+            log.write("    Named root cause: libQnnSystem.so from QAIRT SDK absent (D-013, D-023)\n")
+            return (
+                CompileRecord(
+                    backend_name=TARGET_QNN,
+                    graph_scope=scope,
+                    target=TARGET_SOC,
+                    result="unsupported",
+                    delegate_pct=0.0,
+                    unsupported_ops=[],
+                    log_path=None,
+                ),
+                log.getvalue(),
+                {
+                    **meta_extra,
+                    "aot_dir": str(aot_dir.relative_to(out_dir)),
+                    "aot_seconds": dt,
+                    "stage_failed": "aot_compile_qnn_runtime_libs_missing",
+                    "blocker": "libQnnSystem.so from QAIRT SDK absent; aot_compile returned CompilationResult with models_with_backend=[]; no QNN binary produced. Manual QAIRT SDK download from Qualcomm Developer Network required (D-013, D-023).",
+                    
+                },
+            )
+
+        # Otherwise compile actually produced models with backend
         return (
             CompileRecord(
                 backend_name=TARGET_QNN,

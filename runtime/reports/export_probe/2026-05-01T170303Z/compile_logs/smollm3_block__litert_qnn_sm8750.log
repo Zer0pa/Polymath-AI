@@ -1,0 +1,66 @@
+=== Phase 0G AOT compile: model=HuggingFaceTB/SmolLM3-3B scope=smollm3_block target=litert_qnn_sm8750 ===
+=== started: 2026-05-01T17:08:50Z ===
+
+[1/3] Building scope graph (random init weights)...
+  ok in 19.55s
+  meta: {"model_id": "HuggingFaceTB/SmolLM3-3B", "model_type": "smollm3", "seq_len": 16, "hidden_size": 2048, "num_heads": 16, "num_kv_heads": 4, "head_dim": 128, "intermediate_size": 11008, "rope_theta": 5000000.0, "layer_index": 0, "weights": "random_init"}
+
+[2/3] litert_torch.convert(...)...
+(00:00) [START] LiteRT-Torch Convert
+(00:00) [START] LiteRT-Torch Convert > Torch Export: serving_default
+(00:01) [START] LiteRT-Torch Convert > Torch Export: serving_default > 
+ExportedProgram Run Decompositions
+/usr/lib/python3.11/copyreg.py:105: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
+(00:01) [ DONE] LiteRT-Torch Convert > Torch Export: serving_default > 
+ExportedProgram Run Decompositions (+00:00)
+(00:01) [ DONE] LiteRT-Torch Convert > Torch Export: serving_default (+00:01)
+(00:01) [START] LiteRT-Torch Convert > Run FX Passes
+(00:01) [START] LiteRT-Torch Convert > Run FX Passes > ExportedProgram Run 
+Decompositions
+(00:01) [ DONE] LiteRT-Torch Convert > Run FX Passes > ExportedProgram Run 
+Decompositions (+00:00)
+(00:01) [ DONE] LiteRT-Torch Convert > Run FX Passes (+00:00)
+(00:01) [START] LiteRT-Torch Convert > Lower to MLIR: serving_default
+(00:01) [START] LiteRT-Torch Convert > Lower to MLIR: serving_default > 
+ExportedProgram Run Decompositions
+/usr/lib/python3.11/copyreg.py:105: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
+(00:02) [ DONE] LiteRT-Torch Convert > Lower to MLIR: serving_default > 
+ExportedProgram Run Decompositions (+00:00)
+(00:02) [START] LiteRT-Torch Convert > Lower to MLIR: serving_default > 
+ExportedProgram Run Decompositions
+(00:02) [ DONE] LiteRT-Torch Convert > Lower to MLIR: serving_default > 
+ExportedProgram Run Decompositions (+00:00)
+(00:02) [START] LiteRT-Torch Convert > Lower to MLIR: serving_default > Create 
+MLIR Module
+WARNING:jax._src.xla_bridge:An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.
+(00:03) [ DONE] LiteRT-Torch Convert > Lower to MLIR: serving_default > Create 
+MLIR Module (+00:00)
+(00:03) [ DONE] LiteRT-Torch Convert > Lower to MLIR: serving_default (+00:01)
+/workspace/Polymath-AI/.venv-linux/lib/python3.11/site-packages/litert_torch/_convert/signature.py:52: FutureWarning: `treespec.children_specs` is deprecated. Use `treespec.child(index)` to access a single child, or `treespec.children()` to get all children.
+  args_spec, kwargs_spec = spec.children_specs
+/workspace/Polymath-AI/.venv-linux/lib/python3.11/site-packages/litert_torch/_convert/signature.py:58: FutureWarning: `treespec.children_specs` is deprecated. Use `treespec.child(index)` to access a single child, or `treespec.children()` to get all children.
+  kwargs_spec.children_specs, kwargs_spec.context
+(00:03) [START] LiteRT-Torch Convert > Merge MLIR Modules
+(00:03) [ DONE] LiteRT-Torch Convert > Merge MLIR Modules (+00:00)
+(00:03) [START] LiteRT-Torch Convert > Run LiteRT Converter Passes
+(00:07) [ DONE] LiteRT-Torch Convert > Run LiteRT Converter Passes (+00:04)
+(00:07) [ DONE] LiteRT-Torch Convert (+00:07)
+  convert ok in 7.33s
+(00:00) [START] Write Model to 
+runtime/reports/export_probe/2026-05-01T170303Z/tflite/smollm3_block.tflite
+(00:01) [ DONE] Write Model to 
+runtime/reports/export_probe/2026-05-01T170303Z/tflite/smollm3_block.tflite 
+(+00:01)
+  saved runtime/reports/export_probe/2026-05-01T170303Z/tflite/smollm3_block.tflite (312524900 bytes)
+
+[3/3] ai_edge_litert.aot.aot_compile(target=Qualcomm_SM8750)...
+Backend:   0%|          | 0/1 [00:00<?, ?it/s]Compiling Qualcomm_SM8750:   0%|          | 0/1 [00:00<?, ?it/s]Compiling Qualcomm_SM8750: mlir_transforms:   0%|          | 0/1 [00:00<?, ?it/s]Compiling Qualcomm_SM8750: apply_plugin:   0%|          | 0/1 [00:00<?, ?it/s]   Skipping failed compilation for Qualcomm_SM8750. Error: apply_plugin failed to apply plugin. See /tmp/tmp3zw5j0o0.error for details.
+Compiling Qualcomm_SM8750: apply_plugin: 100%|##########| 1/1 [00:00<00:00,  1.32it/s]Compiling Qualcomm_SM8750: apply_plugin: 100%|##########| 1/1 [00:00<00:00,  1.32it/s]
+  aot_compile returned in 0.77s; type=CompilationResult
+  result fields: ['models_with_backend=[]']
+  models_with_backend len: 0
+    0-byte output binary: qnn_aot/smollm3_block/smollm3_block_Qualcomm_SM8750_apply_plugin.tflite
+  AOT VERDICT: unsupported - models_with_backend=[] AND/OR 0-byte output
+    Named root cause: libQnnSystem.so from QAIRT SDK absent (D-013, D-023)
