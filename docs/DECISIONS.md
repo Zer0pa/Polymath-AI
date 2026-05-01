@@ -232,6 +232,64 @@ Format per row (PRD §Audit Trail And KG Specification > Decision Log):
 
 ---
 
+## D-028 — Long-horizon autonomous-run logistics (heartbeat + watchdog + zero-coder monitoring)
+
+- **timestamp:** 2026-05-01T19:00:00Z
+- **agent_role:** overnight-executor (Intel Mac)
+- **context:** Operator (zero-coder) asked: how does the phone run autonomously for days, what about check-ins, what about pod logistics? Phase 1A is multi-day; the agent isn't always connected; the operator needs to confirm the run is alive without using a terminal.
+
+- **decision:** Three-layer architecture, each layer running independently:
+  1. **Compute layer (phone, when active):** training loop in tmux session. `termux-wake-lock` keeps screen-off from pausing. Watchdog auto-restarts on crash up to 20 retries with exponential backoff.
+  2. **Heartbeat layer (phone, every 5 min):** `scripts/termux/heartbeat.py` reads the latest train_step from the audit log + queries `termux-battery-status` + reads `/sys/class/thermal/thermal_zone*/temp` + computes disk free, then PUSHES the heartbeat envelope to a private HF dataset (`Architect-Prime/polymath-telemetry`) under `heartbeats/<run_id>.jsonl`. **Operator opens the HF web URL and sees the latest commit timestamp + freshest row** — no coding, no terminal.
+  3. **Audit/sync layer (phone, every N tokens):** ELO checkpoint shards push to `Architect-Prime/polymath-models-qwen2-5-1p5b-elo` with the boundary-bearing manifest. Pending-upload queue absorbs HF failures.
+
+- **operator monitoring (zero-coder):**
+  - **Heartbeat alive:** open https://huggingface.co/datasets/Architect-Prime/polymath-telemetry/tree/main/heartbeats — the most-recent JSONL file's modified timestamp tells you the run is alive (should be < 10 min stale during a healthy run).
+  - **Training progress:** open the same JSONL file; the latest row has `audit.last_train_step`, `audit.last_train_loss`, `audit.frozen_drift_observed` (must stay false), `battery.temperature` (must stay < 42 °C), `thermal_c` (must stay < 80 °C across CPU clusters).
+  - **Checkpoint progress:** open https://huggingface.co/Architect-Prime/polymath-models-qwen2-5-1p5b-elo/tree/main/checkpoints — file mtimes + filenames tell you how far the run got.
+  - **Stale heartbeat (>= 1 hour):** something's wrong. Operator can: (a) re-attach via SSH if the phone's still on the same WiFi (the tmux session is still alive even though host disconnected), (b) ask an agent to re-attach next session, (c) physically check the phone.
+
+- **pod/host logistics:**
+  - The Runpod is needed only for: AOT compile (one-off, minutes), distillation teacher generation (Phase 1A optional), or any other compute the phone can't run. The autonomous training loop runs on the phone with NO pod connection. Pod stays OFF during the run; spin up only when needed.
+  - The Intel Mac host is needed only for: dev work, agent re-connection, ad-hoc inspection. Phone runs without it. ADB-over-WiFi or SSH-over-WiFi keeps the door open if the phone stays on the same network.
+
+- **strongest disconfirming observation:** if HF push fails for > 30 min and the pending-upload queue grows unbounded, the watchdog SHOULD escalate (e.g. switch to GitHub fallback for critical state). Right now the heartbeat will silently retry every 5 min — operator notices stale HF, host re-attaches, decides what to do. Acceptable for the first runs.
+
+- **affected configs/artifacts:** `scripts/termux/heartbeat.py` (new), `scripts/termux/long_horizon_runner.sh` (existing, watchdog already wired), `polymath_ai/sync/pending.py` (existing).
+
+- **follow-up owner:** Sync lane.
+
+---
+
+## D-027 — DM3 Vulkan/wgpu harness on phone is fork-and-own foundation for Gate B
+
+- **timestamp:** 2026-05-01T18:50:00Z
+- **agent_role:** overnight-executor (Intel Mac)
+- **context:** After Phase 0G QAIRT 2.41 attempt hit three named version-drift blockers (D-024/025/026) on the pod, probed the phone for prior Vulkan/Adreno work the operator had hinted at. Found it: `/data/local/tmp/SoC_Harness/` contains the DM3 substrate-reconstruction workstream's wgpu harness:
+  - `bin/snic_rust` (2.2 MB Rust binary) — loads .wgsl, builds wgpu compute pipelines, dispatches workgroups, writes receipts
+  - `/data/local/tmp/shaders.wgsl` (7.6 KB) — six `@compute @workgroup_size(64)` kernels including `k_relax`, `k_ecc`, `k_holography`, `k_spectral`, **`k_transformer`**
+  - `phase_01_2_3_4_1_1_quarantine_20260405T202459Z/root_surface/dm3_probe_vulkan.jsonl` — receipt of a successful compute dispatch (`verdict: PASS`, t1_contraction)
+  - The DM3 probe ran before the Polymath workstream existed.
+  Per MODUS-OPERANDI.md fork-and-own: Polymath may copy patterns / code shape / receipt format but NOT establish runtime co-dependency on `snic_rust`.
+
+- **decision:** Gate B path is REAL and VIABLE. Estimated engineering scope (`docs/dm3-vulkan-prior-art/README.md`):
+  - 9 transformer-shape compute kernels (matmul, RMSNorm, SwiGLU, softmax, RoPE, etc.)
+  - A `polymath_rust` binary forking the snic_rust pattern
+  - Backward-pass kernels for ELO trainable layers only
+  - Integration with `polymath_ai.elo.trainer` via SSH
+  - End-to-end smoke + checkpoint + sync
+  - Total ~3 weeks engineering time for first-cut Gate B
+
+- **artefacts captured for reference:** `docs/dm3-vulkan-prior-art/{shaders.wgsl, dm3_probe_vulkan.jsonl, dm3_probe_vulkan_stdout.txt, README.md}`. The `snic_rust` binary itself is NOT pulled — pattern only.
+
+- **strongest disconfirming observation:** if the Adreno 830 driver on REDMAGIC OS doesn't accept wgpu compute dispatches at the required workgroup size / subgroup width for transformer matmuls (DM3's kernels were workgroup_size=64; LLM matmuls typically want 128-256 to saturate Adreno's 32-wide warps), the per-kernel tiling has to be re-done. That's still much smaller scope than the QAIRT version-mismatch swamp.
+
+- **affected configs/artifacts:** `docs/dm3-vulkan-prior-art/` (new), `docs/PHASE-0G-PLAN.md` (will note Gate B as the working path forward); future `polymath_ai/dispatch/vulkan_adapter.py` and `scripts/host/build_polymath_rust.sh` when Gate B is launched.
+
+- **follow-up owner:** Operator (Gate B authorisation + scope confirmation) → Export + Scheduler lanes.
+
+---
+
 ## D-024 — QAIRT 2.41.0.251128 host environment fully resolved; SDK-side version drift confirmed
 
 - **timestamp:** 2026-05-01T18:30:00Z
