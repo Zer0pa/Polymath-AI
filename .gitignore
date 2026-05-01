@@ -33,14 +33,16 @@ data/raw/
 data/bulk/
 
 # Model checkpoints — go to Hugging Face under Architect-Prime user
+# (path-anchored to top level; polymath_ai/models/ is source code, not weights)
 *.safetensors
 *.bin
 *.pt
 *.pth
 *.onnx
 *.tflite
-checkpoints/
-models/
+/checkpoints/
+/models/
+/runtime/checkpoints/
 
 # Profiling traces
 *.gputrace
