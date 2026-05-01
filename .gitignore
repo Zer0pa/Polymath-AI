@@ -1,0 +1,61 @@
+# macOS
+.DS_Store
+._*
+
+# Python virtual envs and caches
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# Local runtime artifacts (will be added by overnight executor)
+audit_log/
+audit/runtime/
+kg_store/
+runtime/cache/
+*.sqlite
+*.duckdb
+*.lock
+
+# Bulk data — must not be vendored (per MODUS-OPERANDI.md Constraints)
+*.parquet
+*.h5
+*.hdf5
+*.feather
+data/raw/
+data/bulk/
+
+# Model checkpoints — go to Hugging Face under Architect-Prime user
+*.safetensors
+*.bin
+*.pt
+*.pth
+*.onnx
+*.tflite
+checkpoints/
+models/
+
+# Profiling traces
+*.gputrace
+*.snapdragon
+profiling/
+
+# Android build artifacts
+*.apk
+*.aab
+android/build/
+
+# IDE
+.idea/
+.vscode/
+
+# Editor swap files
+*.swp
+*.swo
