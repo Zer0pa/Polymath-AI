@@ -1,0 +1,93 @@
+=== Phase 0G AOT compile: model=Qwen/Qwen2.5-1.5B scope=qwen_block target=litert_qnn_sm8750 ===
+=== started: 2026-05-01T15:00:32Z ===
+
+[1/3] Building scope graph (random init weights)...
+  ok in 1.68s
+  meta: {"model_id": "Qwen/Qwen2.5-1.5B", "model_type": "qwen2", "seq_len": 16, "hidden_size": 1536, "num_heads": 12, "num_kv_heads": 2, "head_dim": 128, "intermediate_size": 8960, "rope_theta": 1000000.0, "layer_index": 0, "weights": "random_init"}
+
+[2/3] litert_torch.convert(...)...
+(00:00) [START] LiteRT-Torch Convert
+(00:00) [START] LiteRT-Torch Convert > Torch Export: serving_default
+(00:00) [START] LiteRT-Torch Convert > Torch Export: serving_default > 
+ExportedProgram Run Decompositions
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/copyreg.py:105: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
+(00:00) [ DONE] LiteRT-Torch Convert > Torch Export: serving_default > 
+ExportedProgram Run Decompositions (+00:00)
+(00:00) [ DONE] LiteRT-Torch Convert > Torch Export: serving_default (+00:00)
+(00:00) [START] LiteRT-Torch Convert > Run FX Passes
+(00:00) [START] LiteRT-Torch Convert > Run FX Passes > ExportedProgram Run 
+Decompositions
+(00:00) [ DONE] LiteRT-Torch Convert > Run FX Passes > ExportedProgram Run 
+Decompositions (+00:00)
+(00:00) [ DONE] LiteRT-Torch Convert > Run FX Passes (+00:00)
+(00:00) [START] LiteRT-Torch Convert > Lower to MLIR: serving_default
+(00:00) [START] LiteRT-Torch Convert > Lower to MLIR: serving_default > 
+ExportedProgram Run Decompositions
+/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/copyreg.py:105: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
+(00:00) [ DONE] LiteRT-Torch Convert > Lower to MLIR: serving_default > 
+ExportedProgram Run Decompositions (+00:00)
+(00:00) [START] LiteRT-Torch Convert > Lower to MLIR: serving_default > 
+ExportedProgram Run Decompositions
+(00:00) [ DONE] LiteRT-Torch Convert > Lower to MLIR: serving_default > 
+ExportedProgram Run Decompositions (+00:00)
+(00:00) [START] LiteRT-Torch Convert > Lower to MLIR: serving_default > Create 
+MLIR Module
+(00:01) [ DONE] LiteRT-Torch Convert > Lower to MLIR: serving_default > Create 
+MLIR Module (+00:00)
+(00:01) [ DONE] LiteRT-Torch Convert > Lower to MLIR: serving_default (+00:00)
+/Users/Zer0pa/Polymath AI Portfolio/Polymath-AI/.venv-silicon/lib/python3.11/site-packages/litert_torch/_convert/signature.py:52: FutureWarning: `treespec.children_specs` is deprecated. Use `treespec.child(index)` to access a single child, or `treespec.children()` to get all children.
+  args_spec, kwargs_spec = spec.children_specs
+/Users/Zer0pa/Polymath AI Portfolio/Polymath-AI/.venv-silicon/lib/python3.11/site-packages/litert_torch/_convert/signature.py:58: FutureWarning: `treespec.children_specs` is deprecated. Use `treespec.child(index)` to access a single child, or `treespec.children()` to get all children.
+  kwargs_spec.children_specs, kwargs_spec.context
+(00:01) [START] LiteRT-Torch Convert > Merge MLIR Modules
+(00:01) [ DONE] LiteRT-Torch Convert > Merge MLIR Modules (+00:00)
+(00:01) [START] LiteRT-Torch Convert > Run LiteRT Converter Passes
+(00:02) [ DONE] LiteRT-Torch Convert > Run LiteRT Converter Passes (+00:01)
+(00:02) [ DONE] LiteRT-Torch Convert (+00:02)
+  convert ok in 2.54s
+(00:00) [START] Write Model to 
+runtime/reports/export_probe/2026-05-01T150027Z/tflite/qwen_block.tflite
+(00:00) [ DONE] Write Model to 
+runtime/reports/export_probe/2026-05-01T150027Z/tflite/qwen_block.tflite 
+(+00:00)
+  saved runtime/reports/export_probe/2026-05-01T150027Z/tflite/qwen_block.tflite (187225460 bytes)
+
+[3/3] ai_edge_litert.aot.aot_compile(target=Qualcomm_SM8750)...
+  AOT FAILED (SDK-level): FileNotFoundError: Failed to find apply plugin binary. AOT might not be available on your platform.
+Traceback (most recent call last):
+  File "/Users/Zer0pa/Polymath AI Portfolio/Polymath-AI/.venv-silicon/lib/python3.11/site-packages/ai_edge_litert/aot/core/apply_plugin.py", line 89, in __call__
+    binary = common.get_resource(_BINARY)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/Zer0pa/Polymath AI Portfolio/Polymath-AI/.venv-silicon/lib/python3.11/site-packages/ai_edge_litert/aot/core/common.py", line 75, in get_resource
+    raise FileNotFoundError(f"Resource {litert_resource!r} does not exist.")
+FileNotFoundError: Resource PosixPath('/Users/Zer0pa/Polymath AI Portfolio/Polymath-AI/.venv-silicon/lib/python3.11/site-packages/ai_edge_litert/tools/apply_plugin_main') does not exist.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/Zer0pa/Polymath AI Portfolio/Polymath-AI/scripts/silicon/run_phase0g_aot.py", line 467, in _attempt_aot_compile
+    result = aot_compile(
+             ^^^^^^^^^^^^
+  File "/Users/Zer0pa/Polymath AI Portfolio/Polymath-AI/.venv-silicon/lib/python3.11/site-packages/ai_edge_litert/aot/aot_compile.py", line 111, in aot_compile
+    results = core.prepare_for_npu(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/Zer0pa/Polymath AI Portfolio/Polymath-AI/.venv-silicon/lib/python3.11/site-packages/ai_edge_litert/aot/prepare_for_npu.py", line 104, in prepare_for_npu
+    return compile_model(flatbuffer, output_dir, backends, pipeline, keep_going)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/Zer0pa/Polymath AI Portfolio/Polymath-AI/.venv-silicon/lib/python3.11/site-packages/ai_edge_litert/aot/prepare_for_npu.py", line 136, in compile_model
+    backend.call_component(component_input, component_output, component)
+  File "/Users/Zer0pa/Polymath AI Portfolio/Polymath-AI/.venv-silicon/lib/python3.11/site-packages/ai_edge_litert/aot/vendors/qualcomm/qualcomm_backend.py", line 89, in call_component
+    return _call_component(component, self, input_model, output_model)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.14_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/functools.py", line 909, in wrapper
+    return dispatch(args[0].__class__)(*args, **kw)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/Zer0pa/Polymath AI Portfolio/Polymath-AI/.venv-silicon/lib/python3.11/site-packages/ai_edge_litert/aot/vendors/qualcomm/qualcomm_backend.py", line 131, in _apply_plugin
+    return component(
+           ^^^^^^^^^^
+  File "/Users/Zer0pa/Polymath AI Portfolio/Polymath-AI/.venv-silicon/lib/python3.11/site-packages/ai_edge_litert/aot/core/apply_plugin.py", line 91, in __call__
+    raise FileNotFoundError(
+FileNotFoundError: Failed to find apply plugin binary. AOT might not be available on your platform.
+
