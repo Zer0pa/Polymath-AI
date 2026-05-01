@@ -148,6 +148,23 @@ Format per row (PRD §Audit Trail And KG Specification > Decision Log):
 
 ---
 
+## D-014 — FLORES-200 used for Phase 0F fertility measurement only
+
+- **timestamp:** 2026-05-01T05:45:00Z
+- **agent_role:** overnight-executor
+- **context:** Phase 0F (Experiment 1) tokenizer fertility audit needs license-clean parallel multilingual text. FLORES-200 (`facebook/flores`, `openlanguagedata/flores_plus`) is the canonical multilingual benchmark — 1012 parallel sentences across 200+ languages, identical content per language, perfect for like-for-like fertility comparison. License: CC-BY-SA-4.0.
+- **options considered:**
+  1. OSCAR-2301 (CC0) — class A, but content is unfiltered web crawl; per-language quality varies wildly and content is NOT parallel.
+  2. C4 / mC4 (ODC-BY) — class B, large but unstructured for parallel comparison.
+  3. FLORES-200 (CC-BY-SA-4.0) — class C; parallel content, ideal for fertility, but share-alike-contagious for derivative work.
+  4. Universal Declaration of Human Rights (the existing fixture path) — public domain, parallel, but only one ~250-word document per language.
+- **decision:** FLORES-200 for *fertility measurement*. Fertility is a tokenizer evaluation, not a derivative-text product; attribution is preserved in the fertility report; no FLORES text enters Phase 1A training. PRD §License Classes lets class C through with a decision row, scoped to measurement. The fixture-path UDHR audit remains as the offline / no-network baseline. **FLORES-200 cannot enter Phase 1A default training** — it stays in the "measurement-only" bucket.
+- **strongest disconfirming observation:** if a downstream artifact (e.g. a fine-tuned model card) cites a FLORES-derived signal in a way that constitutes a derivative work under share-alike, then FLORES must be removed from that artifact pipeline.
+- **affected configs/artifacts:** `polymath_ai/experiments/phase0f.py`, `scripts/host/run_fertility_audit.py` (extended with `--source flores200`), Phase 0F report.
+- **follow-up owner:** Corpus + Eval lanes.
+
+---
+
 ## D-012 — LiteRT QNN AOT path absent on Intel Mac wheels; verdict deferred to phone
 
 - **timestamp:** 2026-05-01T04:14:00Z

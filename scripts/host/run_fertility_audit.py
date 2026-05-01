@@ -1,15 +1,18 @@
 #!/usr/bin/env python3
 """Phase 0F (Experiment 1) host-side fertility audit.
 
-Runs the Qwen2.5-1.5B and SmolLM3-3B tokenizers over the fixture corpus at
-``data/fixtures/fertility/`` and produces:
+Runs Qwen2.5-1.5B / SmolLM3-3B tokenizers over either:
 
+  * the local UDHR fixture set under ``data/fixtures/fertility/``
+    (public domain, offline-safe, single document per language).
+  * the FLORES-200 dev split (CC-BY-SA-4.0 — class C, **fertility
+    measurement only** per Decision D-014). 1012 parallel sentences
+    per language so results are like-for-like.
+
+Outputs:
   * per-language tokens/word, tokens/char, ratio_vs_english
-  * a falsifier evidence dict shaped for ``tokenizer_fertility_high``
-  * a markdown report
-
-This is a *fixture-level* audit. The full Phase 0F audit runs against the
-HF Seed Corpus v0 dataset slices once they exist; the gates are the same.
+  * falsifier evidence dict for ``tokenizer_fertility_high``
+  * markdown report
 """
 from __future__ import annotations
 
@@ -37,22 +40,77 @@ def _load_fixtures(fixture_dir: Path) -> dict:
     return samples
 
 
+# FLORES-200 ISO-639-3 + script codes for the Phase 1A target languages
+# (Decision D-002). Map to short codes used elsewhere in the report.
+_FLORES_LANG_MAP = {
+    "en": "eng_Latn",
+    "fr": "fra_Latn",
+    "es": "spa_Latn",
+    "de": "deu_Latn",
+    "it": "ita_Latn",
+    "pt": "por_Latn",
+    "ar": "arb_Arab",
+    "zh": "zho_Hans",
+    "ja": "jpn_Jpan",
+    "ko": "kor_Hang",
+    "ru": "rus_Cyrl",
+    "hi": "hin_Deva",
+    "sw": "swh_Latn",
+    "zu": "zul_Latn",
+    "af": "afr_Latn",
+    "el": "ell_Grek",
+}
+
+
+def _load_flores(short_codes, sentences_per_lang=200):
+    """Load FLORES-200 dev split (CC-BY-SA-4.0; Decision D-014 -
+    measurement-only). Returns ``{short_code: text}``."""
+    from datasets import load_dataset
+
+    samples = {}
+    print(f"[fertility] loading FLORES-200 dev split for {len(short_codes)} languages")
+    for short in short_codes:
+        flores_code = _FLORES_LANG_MAP.get(short)
+        if flores_code is None:
+            print(f"[fertility] WARN no FLORES code for {short!r}")
+            continue
+        try:
+            ds = load_dataset("openlanguagedata/flores_plus", flores_code, split="dev")
+            sentences = [r["text"] for r in ds][:sentences_per_lang]
+            samples[short] = " ".join(sentences)
+        except Exception as e:
+            print(f"[fertility] WARN flores_plus failed for {short} ({flores_code}): {e!r}")
+            try:
+                ds = load_dataset("facebook/flores", flores_code, split="dev")
+                sentences = [r["sentence"] for r in ds][:sentences_per_lang]
+                samples[short] = " ".join(sentences)
+            except Exception as e2:
+                print(f"[fertility] FAIL both flores variants for {short}: {e2!r}")
+    return samples
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--tokenizer", default="Qwen/Qwen2.5-1.5B")
     parser.add_argument("--fixture-dir", default=str(ROOT / "data" / "fixtures" / "fertility"))
+    parser.add_argument("--source", choices=("fixtures", "flores200"), default="fixtures",
+                        help="fixtures = local UDHR (PD); flores200 = FLORES-200 dev (CC-BY-SA-4.0, Decision D-014, measurement-only)")
+    parser.add_argument("--flores-sentences", type=int, default=200,
+                        help="how many FLORES sentences per language (200 ~ 5kB / lang)")
     parser.add_argument("--out", default=str(ROOT / "runtime" / "reports" / "fertility"))
     parser.add_argument("--threshold", type=float, default=2.5)
     args = parser.parse_args()
 
-    print(f"[fertility] tokenizer={args.tokenizer}")
-    print(f"[fertility] fixture_dir={args.fixture_dir}")
+    print(f"[fertility] tokenizer={args.tokenizer}  source={args.source}")
 
     from transformers import AutoTokenizer
     tok = AutoTokenizer.from_pretrained(args.tokenizer)
     print(f"[fertility] vocab={tok.vocab_size}")
 
-    samples = _load_fixtures(Path(args.fixture_dir))
+    if args.source == "fixtures":
+        samples = _load_fixtures(Path(args.fixture_dir))
+    else:
+        samples = _load_flores(list(_FLORES_LANG_MAP.keys()), sentences_per_lang=args.flores_sentences)
     if "en" not in samples:
         print("[fertility] FAIL: no en.txt fixture; cannot compute ratios")
         sys.exit(2)
