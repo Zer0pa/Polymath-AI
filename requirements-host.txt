@@ -1,0 +1,20 @@
+# Host-machine pins for the Polymath dev-machine venv (Intel Mac path).
+#
+# Notes:
+# * Intel Mac (x86_64) PyTorch wheels stop at 2.2.x, so the rest of the stack
+#   pins to versions that still support torch 2.2.
+# * On Apple Silicon or Linux, raise the torch pin to 2.5+ and the
+#   transformers pin to 4.50+ in lockstep.
+# * Termux pins live in scripts/termux/requirements-termux.txt.
+
+torch==2.2.2
+numpy<2
+transformers==4.46.3
+tokenizers==0.20.3
+safetensors>=0.4.5
+huggingface_hub==0.36.2
+datasets==3.6.0
+accelerate==1.4.0
+sentencepiece>=0.2.0
+pytest>=8.0
+pyyaml>=6.0
