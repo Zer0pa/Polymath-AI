@@ -64,28 +64,49 @@ _FLORES_LANG_MAP = {
 
 def _load_flores(short_codes, sentences_per_lang=200):
     """Load FLORES-200 dev split (CC-BY-SA-4.0; Decision D-014 -
-    measurement-only). Returns ``{short_code: text}``."""
+    measurement-only). Returns ``{short_code: text}``.
+
+    ``facebook/flores`` requires ``trust_remote_code=True`` (the dataset
+    builder is custom Python). We accept that for measurement-only use
+    on this audit.
+    """
     from datasets import load_dataset
 
     samples = {}
     print(f"[fertility] loading FLORES-200 dev split for {len(short_codes)} languages")
+    # Try the upstream Muennighoff mirror first (no remote code needed),
+    # then fall back to facebook/flores with trust_remote_code=True.
+    try:
+        ds_full = load_dataset("Muennighoff/flores200", split="dev", trust_remote_code=False)
+        # ds_full is a single dataset where each row carries the language;
+        # group rows by the language column.
+        per_lang: dict = {}
+        for row in ds_full:
+            for short, flores_code in _FLORES_LANG_MAP.items():
+                if row.get("iso_639_3") == flores_code.split("_")[0] or row.get("language") == flores_code:
+                    per_lang.setdefault(short, []).append(row.get("text") or row.get("sentence") or "")
+        if per_lang:
+            for s, sents in per_lang.items():
+                samples[s] = " ".join(sents[:sentences_per_lang])
+            return samples
+    except Exception as e:
+        print(f"[fertility] Muennighoff/flores200 unavailable: {e!r}")
+
     for short in short_codes:
         flores_code = _FLORES_LANG_MAP.get(short)
         if flores_code is None:
             print(f"[fertility] WARN no FLORES code for {short!r}")
             continue
+        # facebook/flores needs trust_remote_code; we accept that for
+        # measurement-only use (Decision D-014).
         try:
-            ds = load_dataset("openlanguagedata/flores_plus", flores_code, split="dev")
-            sentences = [r["text"] for r in ds][:sentences_per_lang]
+            ds = load_dataset(
+                "facebook/flores", flores_code, split="dev", trust_remote_code=True
+            )
+            sentences = [r["sentence"] for r in ds][:sentences_per_lang]
             samples[short] = " ".join(sentences)
-        except Exception as e:
-            print(f"[fertility] WARN flores_plus failed for {short} ({flores_code}): {e!r}")
-            try:
-                ds = load_dataset("facebook/flores", flores_code, split="dev")
-                sentences = [r["sentence"] for r in ds][:sentences_per_lang]
-                samples[short] = " ".join(sentences)
-            except Exception as e2:
-                print(f"[fertility] FAIL both flores variants for {short}: {e2!r}")
+        except Exception as e2:
+            print(f"[fertility] FAIL facebook/flores for {short} ({flores_code}): {e2!r}")
     return samples
 
 

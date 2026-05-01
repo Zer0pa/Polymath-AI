@@ -248,6 +248,76 @@ def _check_overclaim(ev: Mapping[str, Any]) -> Tuple[str, str]:
     return _ok("no unsupported claims")
 
 
+# ---------- fridge-mode falsifiers ----------
+
+
+def _check_condensation_risk(ev: Mapping[str, Any]) -> Tuple[str, str]:
+    """Trigger when the device is at risk of condensation - typically when
+    the surface temperature is close to the dewpoint and the recent
+    temperature trajectory is rising fast (fridge door opened, run ending).
+
+    Evidence: ``{"surface_temp_c": float, "ambient_dewpoint_c": float,
+              "rate_of_change_c_per_min": float}``.
+    """
+    surface = ev.get("surface_temp_c")
+    dew = ev.get("ambient_dewpoint_c")
+    rate = ev.get("rate_of_change_c_per_min")
+    if surface is None or dew is None:
+        return _skipped("surface_temp_c / ambient_dewpoint_c missing")
+    margin = surface - dew
+    if margin <= 0:
+        return _fail(f"surface_temp_c {surface} <= dewpoint {dew} - condensation forming")
+    if margin <= 2 and (rate is None or rate > 0.5):
+        return _warn(f"margin {margin:.1f}C above dewpoint and rising at {rate} C/min")
+    return _ok(f"margin {margin:.1f}C above dewpoint")
+
+
+def _check_wifi_silent(ev: Mapping[str, Any]) -> Tuple[str, str]:
+    """No successful HF / GitHub push in the last N minutes.
+
+    Evidence: ``{"minutes_since_last_push": float, "threshold_minutes": float}``.
+    """
+    mins = ev.get("minutes_since_last_push")
+    threshold = ev.get("threshold_minutes", 30)
+    if mins is None:
+        return _skipped("minutes_since_last_push missing")
+    if mins > threshold:
+        return _warn(f"no successful push in {mins:.1f} min (threshold {threshold} min)")
+    return _ok(f"last push {mins:.1f} min ago")
+
+
+def _check_fan_silent(ev: Mapping[str, Any]) -> Tuple[str, str]:
+    """Active fan should be running for sustained training. Game Space mode
+    keeps it on; if the user accidentally exited Game Space, the fan goes
+    silent and thermal margin collapses.
+
+    Evidence: ``{"fan_rpm": int|null, "fan_state": "running"|"silent"|"unknown"}``.
+    """
+    state = ev.get("fan_state")
+    rpm = ev.get("fan_rpm")
+    if state == "running":
+        return _ok(f"fan running (rpm={rpm})")
+    if state == "silent" or (rpm is not None and rpm == 0):
+        return _fail("fan silent during sustained training - Game Space may have exited")
+    return _skipped("fan_state / fan_rpm not reported")
+
+
+def _check_screen_off_violation(ev: Mapping[str, Any]) -> Tuple[str, str]:
+    """The wakelock should keep the runner alive even when the screen is
+    off, but a screen-on transition mid-run usually means the operator
+    interacted with the phone (door opened, etc.). Worth flagging as a
+    warn so we know the run was disturbed.
+
+    Evidence: ``{"screen_on_count": int, "since_minutes": float}``.
+    """
+    count = ev.get("screen_on_count")
+    if count is None:
+        return _skipped("screen_on_count missing")
+    if count > 0:
+        return _warn(f"screen_on observed {count} time(s) during run window")
+    return _ok("screen stayed off for the run window")
+
+
 # ---------- registry ----------
 
 

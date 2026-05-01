@@ -79,12 +79,16 @@ def parse_getprop(output: str) -> Dict[str, str]:
 # ``(target, confidence)`` and confidence < 1 means "do not enable QNN".
 _SOC_NAME_TO_TARGET: Tuple[Tuple[str, str, float], ...] = (
     # (substring, AOT target, confidence)
-    ("sm8650", "SM8650", 1.0),  # Snapdragon 8 Gen 3 - older SoC
-    ("snapdragon 8 gen 3", "SM8650", 1.0),
-    ("sm8750", "SM8750", 0.9),
-    ("snapdragon 8 elite", "SM8750", 0.7),  # blueprint cites SM8650 but newer
+    # Exact getprop-reported SM8xxx codes are confidence 1.0 (the field is
+    # canonical). Marketing names drop confidence because the same name
+    # has shipped against multiple SoCs.
+    ("sm8650", "SM8650", 1.0),  # Snapdragon 8 Gen 3 (2023-2024)
+    ("sm8750", "SM8750", 1.0),  # Snapdragon 8 Elite Gen 4 (REDMAGIC 10 Pro+ confirmed 2026-05-01)
+    ("sm8850", "SM8850", 1.0),  # Snapdragon 8 Elite Gen 5
+    ("snapdragon 8 gen 3", "SM8650", 0.9),
+    ("snapdragon 8 elite", "SM8750", 0.6),  # ambiguous: also used for Gen 5
+    ("snapdragon 8 elite gen 4", "SM8750", 0.9),
     ("snapdragon 8 elite gen 5", "SM8850", 0.9),
-    ("sm8850", "SM8850", 1.0),
 )
 
 

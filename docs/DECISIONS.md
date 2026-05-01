@@ -148,6 +148,40 @@ Format per row (PRD §Audit Trail And KG Specification > Decision Log):
 
 ---
 
+## D-015 — REDMAGIC 10 Pro SoC resolved: SM8750 (confidence 1.0)
+
+- **timestamp:** 2026-05-01T12:10:00Z
+- **agent_role:** overnight-executor
+- **context:** Phone attached and probed. `getprop ro.soc.model` returns `SM8750`; `ro.soc.manufacturer` returns `QTI`. Phone serial FY25013101C8, model NX789J-EEA (REDMAGIC 10 Pro), Android 15.
+- **decision:** Phase 0G / Phase 1A QNN target is `SocModel.SM8750` (Snapdragon 8 Elite Gen 4). The blueprint cited `SM8650` (Snapdragon 8 Gen 3, Oct 2024) in error; the actual hardware is the Gen 4 part. Confidence is 1.0 because `ro.soc.model` is the canonical Qualcomm field. `polymath_ai.device.probe._SOC_NAME_TO_TARGET` updated to reflect this. `device_soc_mismatch` falsifier blocks any QNN compile that targets anything other than SM8750.
+- **strongest disconfirming observation:** if a future kernel update changes the reported model name, the falsifier will catch it — confidence stays 1.0 only while `ro.soc.model == "SM8750"` exactly.
+- **affected configs/artifacts:** `polymath_ai/device/probe.py`, all Phase 0G / Phase 1A QNN compile commands.
+- **follow-up owner:** Device + Export lanes.
+
+---
+
+## D-016 — REDMAGIC fan, GPU driver, Game Space, profiler observed in pre-bootstrap probe
+
+- **timestamp:** 2026-05-01T12:11:00Z
+- **agent_role:** overnight-executor
+- **context:** Pre-bootstrap probe of the connected phone surfaced concrete capabilities the blueprint and PRD assumed but had not verified.
+- **observed:**
+  - `com.google.android.gapid.arm64v8a` installed → Android GPU Inspector available (PRD §Audit Trail And KG Specification wanted this for profiler attach).
+  - `com.qualcomm.qti.gpudrivers.sun.api35` installed → official Qualcomm Adreno driver for Android 15.
+  - `com.termux` installed (Termux available; need to confirm Termux:API).
+  - `ro.vendor.feature.zte_feature_fan_*` properties present (active fan and fan-light controls).
+  - `ro.vendor.feature.zte_feature_game_center_*` present (Game Space platform features).
+  - `ro.vendor.feature.zte_feature_ccc_temp_threshold = skin,54,battery,45` (skin temp limit 54 °C, battery temp limit 45 °C — these become the operational ceiling for our Phase 0E/1A thermal falsifiers; the existing 42 °C / 60 s `battery_heat_risk` rule keeps a 3 °C safety margin under the OEM cap).
+  - 27 thermal zones readable without root via `/sys/class/thermal/thermal_zone*/temp`. Idle readings 27-30 °C across CPU clusters.
+  - GPU sysfs (`/sys/class/devfreq/`, `/sys/class/kgsl/kgsl-3d0/`) not readable without root - GPU clock probe will route through the GPU Inspector or `gfxinfo` instead.
+  - Battery temperature 23 °C, level 88%, AC powered, `Charging state: 0` — strong signal that Charge Separation / bypass charging is already active by default on this device + charger combo. Will confirm explicitly via the OEM Settings app at the next probe pass.
+- **decision:** No code changes needed. Falsifier register and runbooks already accommodate this state. The OEM caps (skin 54 °C, battery 45 °C) are documented as the upper operational ceiling; our falsifier thresholds (battery 42 °C / 60 s, GPU clock < 600 MHz / >10% window) already sit below them.
+- **strongest disconfirming observation:** if `Charging state: 0` is a battery-near-full artifact rather than Charge Separation, plugging in at lower SoC will show actual charging current. The next probe should run at battery < 70 % to disambiguate.
+- **affected configs/artifacts:** `docs/PHONE-ATTACH-RUNBOOK.md` (already covers OEM thresholds), `runtime/probes/phone/2026-05-01T121005Z/`.
+- **follow-up owner:** Device lane.
+
+---
+
 ## D-014 — FLORES-200 used for Phase 0F fertility measurement only
 
 - **timestamp:** 2026-05-01T05:45:00Z
