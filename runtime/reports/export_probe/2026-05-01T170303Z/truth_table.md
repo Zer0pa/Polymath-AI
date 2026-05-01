@@ -1,0 +1,47 @@
+# Export truth table
+
+Boundary: see polymath_ai.boundary.text.
+
+Stage column distinguishes a *dry-run stub* (host MacSim adapter, no real compile happened) from a *measured* row (real LiteRT / QNN / Vulkan compile log). Stub rows do NOT satisfy qnn_exact_path_unproven; they only show the matrix shape.
+
+| Model | Scope | Target | Backend | Stage | Result | Delegate % | Unsupported ops |
+|---|---|---|---|---|---|---:|---|
+| Qwen/Qwen2.5-1.5B | tiny_block | litert_qnn_sm8750 | litert_qnn_sm8750 | measured | unsupported | 0% | - |
+| Qwen/Qwen2.5-1.5B | qwen_block | litert_qnn_sm8750 | litert_qnn_sm8750 | measured | unsupported | 0% | - |
+| Qwen/Qwen2.5-1.5B | qwen_frozen_subgraph | litert_qnn_sm8750 | litert_qnn_sm8750 | measured | unsupported | 0% | - |
+| HuggingFaceTB/SmolLM3-3B | smollm3_block | litert_qnn_sm8750 | litert_qnn_sm8750 | measured | unsupported | 0% | - |
+| HuggingFaceTB/SmolLM3-3B | smollm3_frozen_subgraph | litert_qnn_sm8750 | litert_qnn_sm8750 | measured | unsupported | 0% | - |
+| Qwen/Qwen2.5-1.5B | tiny_block | cpu | mac_sim | stub | ok | 100% | - |
+| Qwen/Qwen2.5-1.5B | tiny_block | vulkan_gpu | mac_sim | stub | ok | 100% | - |
+| Qwen/Qwen2.5-1.5B | qwen_block | cpu | mac_sim | stub | ok | 100% | - |
+| Qwen/Qwen2.5-1.5B | qwen_block | vulkan_gpu | mac_sim | stub | ok | 100% | - |
+| Qwen/Qwen2.5-1.5B | qwen_frozen_subgraph | cpu | mac_sim | stub | ok | 100% | - |
+| Qwen/Qwen2.5-1.5B | qwen_frozen_subgraph | vulkan_gpu | mac_sim | stub | ok | 100% | - |
+| HuggingFaceTB/SmolLM3-3B | smollm3_block | cpu | mac_sim | stub | ok | 100% | - |
+| HuggingFaceTB/SmolLM3-3B | smollm3_block | vulkan_gpu | mac_sim | stub | ok | 100% | - |
+| HuggingFaceTB/SmolLM3-3B | smollm3_frozen_subgraph | cpu | mac_sim | stub | ok | 100% | - |
+| HuggingFaceTB/SmolLM3-3B | smollm3_frozen_subgraph | vulkan_gpu | mac_sim | stub | ok | 100% | - |
+
+## Host
+
+* platform: `Linux-6.17.0-1008-nvidia-x86_64-with-glibc2.35`
+* machine: `x86_64`
+* python: `3.11.10`
+
+## Versions
+
+* `litert_torch` = `0.9.0`
+* `ai_edge_torch` = `0.7.2`
+* `torch` = `2.11.0+cu130`
+* `ai_edge_litert` = `2.1.4`
+* `transformers` = `4.57.6`
+* `tokenizers` = `0.22.2`
+* `numpy` = `1.26.4`
+
+## QNN failure signatures
+
+* `tiny_block` (Qwen/Qwen2.5-1.5B) — stage `aot_compile_qnn_runtime_libs_missing` — None
+* `qwen_block` (Qwen/Qwen2.5-1.5B) — stage `aot_compile_qnn_runtime_libs_missing` — None
+* `qwen_frozen_subgraph` (Qwen/Qwen2.5-1.5B) — stage `aot_compile_qnn_runtime_libs_missing` — None
+* `smollm3_block` (HuggingFaceTB/SmolLM3-3B) — stage `aot_compile_qnn_runtime_libs_missing` — None
+* `smollm3_frozen_subgraph` (HuggingFaceTB/SmolLM3-3B) — stage `aot_compile_qnn_runtime_libs_missing` — None

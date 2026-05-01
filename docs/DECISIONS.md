@@ -160,6 +160,54 @@ Format per row (PRD §Audit Trail And KG Specification > Decision Log):
 
 ---
 
+## D-023 — Phase 0G Linux x86_64 AOT compile blocked at QNN runtime libs (libQnnSystem.so absent)
+
+- **timestamp:** 2026-05-01T17:00:00Z
+- **agent_role:** Linux x86_64 agent (Runpod CPU pod, Ubuntu 22.04, Intel Xeon Platinum 8462Y+, 128 cores, 2 TB RAM, no GPU usage)
+- **context:** Phase 0G AOT compile sweep ran on Linux x86_64 to bypass the macOS arm64 wheel limitation D-021 caught. SDK sanity check passed: `apply_plugin_main` binary present in the Linux x86_64 wheel; `SocModel.SM8750` enum present; `aot_compile` importable. The five graph scopes converted to `.tflite` cleanly. **The AOT compile step itself fires apply_plugin_main**, which loads `libLiteRtCompilerPlugin_Qualcomm.so`, attempts to dlopen **`libQnnSystem.so`** (the actual Qualcomm QNN runtime), and fails:
+
+  ```
+  ERROR: [qnn_manager.cc:140] Could not load shared library libQnnSystem.so:
+    libQnnSystem.so: cannot open shared object file: No such file or directory.
+  ERROR: [qnn_compiler_plugin.cc:265] Failed to set up QNN manager
+  ERROR: [apply_plugin.cc:455] ERROR: [litert/compiler/plugin/compiler_plugin.cc:444]
+  ```
+
+  `aot_compile` does **not** raise — it returns a `CompilationResult` with `models_with_backend=[]` (zero models compiled) and emits a 0-byte placeholder binary at `qnn_aot/<scope>/<scope>_Qualcomm_SM8750_apply_plugin.tflite`. The original silicon runner classified this as `ok` (its only failure detection was `FileNotFoundError` raised by `apply_plugin_main` itself); on Linux the binary IS found so no exception fires, and the false "ok" reaches the truth table.
+
+- **runner patch:** `scripts/silicon/run_phase0g_aot.py` updated to inspect `result.models_with_backend` (top-level attribute on `CompilationResult`). When that list is empty AND/OR a 0-byte output binary is found in `qnn_aot/<scope>/`, the record is classified `unsupported` with `stage_failed = aot_compile_qnn_runtime_libs_missing` and `meta.blocker` naming the QAIRT SDK requirement.
+
+- **probed for QAIRT availability and confirmed absent:**
+  - No `libQnn*` shared libraries anywhere on `/` of the pod.
+  - No `qnn`, `qairt`, `qualcomm` apt or dpkg packages installed.
+  - `pip install qti-aisw qnn-sdk qairt-sdk qnn-runtime libqnn-system` — all return "Could not find a version that satisfies".
+  - `libLiteRtCompilerPlugin_Qualcomm.so` itself only links to `libLiteRt.so` + standard libc; it dlopens `libQnnSystem.so` at runtime which is missing.
+  - QAIRT SDK is at `https://www.qualcomm.com/developer/software/qualcomm-ai-runtime-sdk` and requires Qualcomm Developer Network login + EULA acceptance — operator-only step (matches D-013 from 2026-05-01T04:15:00Z).
+
+- **decision:** Phase 0G remains **blocked** for now. Two paths forward:
+  1. Operator manually downloads QAIRT SDK, accepts EULA, ships the SDK to a Linux x86_64 host (this pod or another), and the agent re-runs the matrix with `LD_LIBRARY_PATH=$QAIRT/lib/x86_64-linux-clang`. Estimated 30 min for a re-run after SDK is staged.
+  2. Pivot to alternative phone-side compute: native Vulkan compute kernels for the Adreno 830 (much higher engineering cost; bypasses the QNN/Hexagon NPU entirely; loses the INT4/INT8 NPU speedup but does not need any Qualcomm SDK). Phase 0G becomes a Vulkan-only export with the QNN row marked `deferred_pending_qairt_sdk`.
+
+  Until either path produces at least one `ok` CompileRecord with a non-empty `models_with_backend`, the scheduler `litert_qnn_sm8750.confirmed_for_socs` stays empty and Phase 1A QNN routing remains gated. **Promotion deliberately not performed.**
+
+- **strongest disconfirming observation:** if the operator downloads QAIRT and the same compile still fails (different error), that's a new SDK-side bug to chase. If the Vulkan path is chosen instead, the QNN bench numbers from the blueprint (5-100x NPU speedup) become unreachable — Phase 1A throughput projections need to be revised down.
+
+- **affected configs/artifacts:** `scripts/silicon/run_phase0g_aot.py` (patched), `runtime/reports/export_probe/<utc>/` (new artifacts), `polymath_ai/scheduler/registry.py` (UNCHANGED — locked stays locked), `tests/test_scheduler.py::test_qnn_backend_is_locked_until_proof` (unchanged), `docs/PHASE-0G-PLAN.md` (will note QAIRT requirement explicitly), `docs/HANDOFF-TO-LINUX-X86_64.md` (will note the new finding).
+
+- **follow-up owner:** Operator (QAIRT SDK download, license click-through) → Device + Export lanes for the re-run.
+
+---
+
+## D-022 — Phase 0G Linux x86_64 host environment captured
+
+- **timestamp:** 2026-05-01T16:48:00Z
+- **agent_role:** Linux x86_64 agent
+- **context:** Bootstrap on Runpod CPU pod (POD ID 429xv4r3wm66q9, ssh root@38.80.152.148 -p 31031). Host: Ubuntu 22.04.5 LTS, kernel 6.17.0-1008-nvidia, x86_64. CPU: Intel Xeon Platinum 8462Y+ (128 cores). RAM: 2.0 TiB total, 1.9 TiB available. Disk: `/` 18 GB free, `/workspace` 321 TB available (Runpod network FS). GPU: H100 80GB present but NOT used by Phase 0G (other AI workload at 55% utilisation; phase0g is CPU-only AOT compile).
+- **decision:** Recorded for reproducibility. Pinned versions: `torch==2.11.0+cu130`, `ai_edge_torch==0.7.2` (note: deprecated, renamed to `litert-torch`), `ai_edge_litert==2.1.4`, `transformers==4.46.3`, `tokenizers==0.20.3`, `huggingface_hub==0.36.2`, `safetensors==0.7.0`, `numpy==1.26.4`, `litert-torch==0.9.0`. SDK sanity check passed: `apply_plugin_main` present at `.venv-linux/lib/python3.11/site-packages/ai_edge_litert/tools/apply_plugin_main`, `SocModel.SM8750` in enum.
+- **strongest disconfirming observation:** if a future Phase 0G re-run uses a different ai-edge-litert version that HAS `libQnnSystem.so` bundled, this D-row is stale — re-record on next run.
+- **affected configs/artifacts:** `runtime/reports/export_probe/<utc>/summary.json` (host + version block).
+- **follow-up owner:** Linux x86_64 agent (this run); operator (next QAIRT-equipped run).
+
 ## D-019 — ai-edge-litert has NO aarch64-android wheel; LiteRT-on-Termux-Python path is dead. SSH replaces RUN_COMMAND for agent-driven Termux.
 
 - **timestamp:** 2026-05-01T13:46:00Z
