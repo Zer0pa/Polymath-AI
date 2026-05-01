@@ -1,0 +1,69 @@
+# Phase 0E - Experiment 0 - Step 1
+# 10K tokens, seq 128, batch 1.
+# End-to-end smoke + checkpoint sync.
+# Conservative: room temp, plug-in, fan ON via Game Space, no Extreme mode.
+phase: phase0e_experiment0
+phone_attached: true
+step_id: E0.1
+run_kind: smoke
+
+model:
+  model_id: Qwen/Qwen2.5-1.5B
+  revision: main
+  dtype: bf16
+  freeze_policy: elo_first_last
+
+corpus:
+  slice_id: corpus_slice:seed-v0:smoke-001
+  tokens_target: 10000
+  source: synthetic_random  # for E0.1 we don't need real text - we want to exercise the loop
+  language: en
+  domain: general_replay
+
+train:
+  steps: 78          # 78 * (128 * 1) = 9984 tokens
+  seq_length: 128
+  batch_size: 1
+  accumulation_steps: 1
+  learning_rate: 1.0e-4
+  weight_decay: 0.1
+  betas: [0.9, 0.95]
+  grad_clip: 1.0
+  seed: 1234
+
+device:
+  expected_soc_target: SM8750
+  performance_mode: stable      # NOT extreme on first run
+  fan_required: true
+  charge_separation_required: true
+  ambient_max_c: 30
+  battery_temp_warn_c: 35
+  battery_temp_fail_c: 42
+
+falsifier_thresholds:
+  oom_peak_ram_warn_gb: 18
+  oom_peak_ram_fail_gb: 22
+  throughput_floor_warn_tph: 100000
+  throughput_floor_fail_tph: 50000  # E0.1 is too short for the 500K tph gate; that's E0.4
+  thermal_throttle_window_min: 5
+  thermal_throttle_below_mhz: 600
+  thermal_throttle_pct_fail: 0.10
+
+sync:
+  audit_jsonl: runtime/runs/{run_id}/audit.jsonl
+  checkpoint_dir: runtime/runs/{run_id}/ckpt-0
+  hf_telemetry_repo: Architect-Prime/polymath-telemetry
+  push_cadence_steps: 39           # halfway through
+
+acceptance:
+  required_falsifiers_pass:
+    - oom_or_memory_pressure
+    - checkpoint_hash_mismatch
+    - boundary_violation
+  required_emit:
+    - genesis
+    - phase_gate
+    - train_step
+    - checkpoint
+    - falsifier
+    - phase_gate
