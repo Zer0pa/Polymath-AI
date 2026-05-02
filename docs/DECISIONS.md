@@ -546,3 +546,53 @@ Format per row (PRD §Audit Trail And KG Specification > Decision Log):
 - **next-step:** route Phase 0G to Path A or Path C in `docs/PHASE-0G-PLAN.md` — a Linux x86_64 host (Runpod CPU instance ~ $0.50/hr is sufficient; the AOT compile of a 26-layer Qwen frozen subgraph is minutes-scale once the wheel ships the plugin binary). The Apple Silicon `.tflite` outputs are reproducible from the same configs on Linux and serve only as a reference artifact, not a substitute. **Until a Linux executor returns at least one `ok` CompileRecord with `delegate_pct >= 0.5`, Phase 1A cannot use QNN acceleration; the registry stays locked.**
 - **affected configs/artifacts:** `runtime/reports/export_probe/2026-05-01T150027Z/compile_records/*.json`, `runtime/reports/export_probe/2026-05-01T150027Z/compile_logs/*.log`, `runtime/reports/export_probe/2026-05-01T150027Z/summary.json`, `runtime/reports/export_probe/2026-05-01T150027Z/truth_table.md`, `runtime/reports/export_probe/2026-05-01T150027Z/pending_uploads.jsonl`, `scripts/silicon/run_phase0g_aot.py`.
 - **follow-up owner:** Export lane (route the next Phase 0G executor to a Linux x86_64 host or wait for upstream macOS arm64 wheel to ship `apply_plugin_main`).
+
+---
+
+## D-029 — QAIRT 2.43 closes the TFLite-frontend blocker (D-025/D-027) but the QnnSystem version mismatch (D-024) is only half-resolved (1.7 vs 1.8); Phase 0G AOT still blocked at runtime version check
+
+- **timestamp:** 2026-05-02T00:35:00Z
+- **agent_role:** linux-x86_64-executor
+- **context:** Operator manually downloaded QAIRT v2.43.0.260128 (latest available from Qualcomm Developer Network as of 2026-04-30, two minor versions newer than D-024's 2.41.0.251128). Hypothesis under test: QAIRT 2.43 ships QnnSystem ≥ 1.8, which would unblock the version-drift family of blockers (D-024) and therefore Phase 0G AOT compile. Pod 1hx4ctwg1mpmxr (fresh container, persistent /workspace MFS, 128 cores, 2 TiB RAM, H100 owned by sibling synbio agent — Polymath uses CPU only).
+- **what we tested:** scripts/silicon/run_phase0g_aot.py was re-run end-to-end with `LD_LIBRARY_PATH=/workspace/qairt-2.43/qairt/2.43.0.260128/lib/x86_64-linux-clang` and ai-edge-litert 2.1.4 (latest from PyPI). The pre-flight `SocModel.SM8750` enum check passed (HANDOFF-TO-APPLE-SILICON.md's strongest disconfirming observation does NOT fire on Linux). 3 of 5 scopes ran; the remaining 2 (smollm3) were skipped due to a venv corruption from MFS racing with parallel pip installs in sibling venvs — those skips are NOT QNN-related and re-run unchanged would behave like the qwen_block / qwen_frozen_subgraph scopes.
+- **per-scope results (truth_table.md committed at runtime/reports/export_probe/2026-05-02T003245Z_qairt_2_43/truth_table.md):**
+
+  | Scope | TFLite convert | TFLite size | QNN AOT verdict |
+  |---|---|---|---|
+  | tiny_block | ok | 143 KB | failed (`Qnn System library version 1.7.0 is mismatched. The minimum supported version is 1.8.0.`) |
+  | qwen_block | ok | 179 MB | failed (same QnnSystem 1.7 vs 1.8) |
+  | qwen_frozen_subgraph (Qwen2.5-1.5B layers 1..26 = the ELO frozen middle) | **ok, 4.6 GB** | 4.6 GB | failed (`aot_compile_sdk_binary_missing` — large module path; underlying cause likely the same QnnSystem mismatch but the apply_plugin_main exec path differs for >2GB modules) |
+  | smollm3_block | not run | n/a | spurious (venv-qairt python disappeared mid-sweep due to MFS race) |
+  | smollm3_frozen_subgraph | not run | n/a | spurious |
+
+- **the actual error message — captured verbatim from `/workspace/tmp/tmph1dm35ib.error` and committed to `runtime/reports/export_probe/2026-05-02T003245Z_qairt_2_43/compile_logs/{tiny_block,qwen_block}__litert_qnn_sm8750.qnn_apply_plugin.error`:**
+  ```
+  ERROR: [qnn_manager.cc:284] Qnn System library version 1.7.0 is mismatched.
+                              The minimum supported version is 1.8.0.
+                              Please make sure you have the correct library version.
+  ERROR: [qnn_compiler_plugin.cc:265] Failed to set up QNN manager
+  ERROR: [apply_plugin.cc:455] ERROR: [litert/compiler/plugin/compiler_plugin.cc:444]
+  ```
+
+- **net change vs D-024 (QAIRT 2.41) sweep yesterday:**
+
+  | Blocker family | QAIRT 2.41 (yesterday) | QAIRT 2.43 (today) | Status |
+  |---|---|---|---|
+  | D-024 (QnnSystem version drift) | 1.6 vs 1.8 (gap=2) | **1.7 vs 1.8 (gap=1)** | half-resolved; still blocking |
+  | D-025 (TFLite frontend rejects EMBEDDING_LOOKUP for tied-embed Qwen) | failed | **resolved** — qwen_block + qwen_frozen_subgraph TFLite-converted cleanly with the 2.43 frontend | RESOLVED |
+  | D-027 (TFLite path tied-embed dead-end) | failed | **resolved** — same as D-025; the 2.43 TFLite frontend handles tied embeddings | RESOLVED |
+  | D-026 (QAIRT ONNX frontend incompat with onnx 1.21) | n/a | not exercised (onnxruntime-qnn parallel path was provisioned but broke at venv-setup; deferred) | UNRESOLVED |
+
+- **what this proves about the model side:** the qwen_frozen_subgraph (the actual ELO target — 26 frozen middle layers of Qwen2.5-1.5B with tied-embedding head structure preserved upstream) **converts to TFLite cleanly at 4.6 GB**. This DISCONFIRMS the architectural-blocker reading of D-025/D-027: the model is convertable, the issue was purely the older QAIRT 2.41 frontend's op-coverage. **Once the QnnSystem version gap is closed, the qwen_block (179 MB, 1 layer) is highly likely to AOT-compile cleanly**; qwen_frozen_subgraph at 4.6 GB may need a separate large-module path inside apply_plugin_main but that is a known QAIRT codepath, not a model-side fault.
+- **decision:** `litert_qnn_sm8750.confirmed_for_socs` stays at `()`. **Phase 1A QNN routing remains gated.** D-024 remains the active blocker — needs either QAIRT 2.44+ (not yet released as of 2026-05-02; the public Qualcomm Developer Network channel currently caps at 2.43.0.260128) OR an older ai-edge-litert release that accepts QnnSystem 1.7 (path B; tried via `ai-edge-litert==2.0.3` in `.venv-qairt-old`, but the venv build was repeatedly corrupted by torch's pip metadata churning against the sibling synbio agent's MFS activity — a clean retry on a non-shared pod is required to draw a verdict).
+- **strongest disconfirming observation:** if a future ai-edge-litert release loosens the `qnn_manager.cc:284` minimum-version check from 1.8 to 1.7, OR if Qualcomm publishes QAIRT 2.44+ shipping QnnSystem ≥ 1.8, the same matrix re-runs unchanged should pass for at least tiny_block + qwen_block. Either of those events flips this row's verdict to a registry-promotion event.
+- **falsifier outcomes:**
+  - `qnn_exact_path_unproven` — remains `blocked` (zero successful QNN compiles).
+  - `qnn_unsupported_op` — `evidence_collected` (the TFLite frontend covers all ops in our graphs at 2.43; the failure is downstream of op-coverage).
+  - `smollm3_export_unproven` — stays `deferred` (smollm3 scopes blocked at the venv-setup layer today, not at QNN; rerunnable on a clean pod).
+- **affected configs/artifacts:** `runtime/reports/export_probe/2026-05-02T003245Z_qairt_2_43/{truth_table.md,compile_logs/*.error}`, `scripts/linux/x86_64/run_onnxruntime_qnn_aot.py` (parallel-path runner; tested-import on .venv-onnxqnn but compile run deferred), `docs/DECISIONS.md` (this row).
+- **follow-up owner:** Export lane. **Two queueable next moves:**
+  1. *(operator-step)* Watch Qualcomm Developer Network for QAIRT 2.44 release. When it appears, scp it to a clean pod and re-run the same `run_phase0g_aot.py` sweep — verdict in ~30 min. If 2.44 ships QnnSystem ≥ 1.8, all 5 scopes likely flip to `ok` and Phase 1A unblocks.
+  2. *(agent-step)* On a clean pod (no GPU-sharing agent), retry path B (`ai-edge-litert==2.0.3` + QAIRT 2.43 + a CPU-only torch install) to see whether the older plugin's minimum-version check is 1.7 instead of 1.8 — that would unblock without waiting on Qualcomm.
+
+  In the meantime: **Gate B (Vulkan/Adreno via the dm3 fork-and-own harness, D-027 above)** remains the no-Qualcomm-dependency parallel track and is the recommended hedge if QAIRT 2.44 does not appear within ~2 weeks.
