@@ -168,11 +168,15 @@ def default_registry() -> BackendRegistry:
                 BackendCapability.inference_only,
             ),
             requires_phone=True,
-            requires_soc_confirmation=True,  # NPU AOT - locked until proof
-            confirmed_for_socs=(),
-            notes="Hexagon NPU via LiteRT QNN, target SM8750. Confirmed_for_socs is "
-            "EMPTY by design - Phase 0G must add (SM8750, 1.0) before scheduler "
-            "can route here. Decisions D-006/D-012 enforce this.",
+            requires_soc_confirmation=True,
+            confirmed_for_socs=(("SM8750", 1.0),),
+            notes="Hexagon NPU via LiteRT QNN, target SM8750. Phase 0G AOT-compile "
+            "proof established 2026-05-02 with ai-edge-litert 2.1.4 + QAIRT 2.44.0.260225 "
+            "(matching pair) on Linux x86_64: tiny_block + qwen_block + qwen_frozen_subgraph "
+            "(Qwen2.5-1.5B layers 1..26 = the ELO frozen middle, 4.6 GB tflite -> 2.3 GB "
+            "Qualcomm SM8750 .bin context binary) all returned models_with_backend=[Qualcomm "
+            "...]. See D-029 + runtime/reports/export_probe/2026-05-02T014031Z_litert214_qairt244_FULL/. "
+            "Phase 1A QNN routing UNLOCKED.",
         )
     )
 

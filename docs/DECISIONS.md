@@ -596,3 +596,45 @@ Format per row (PRD §Audit Trail And KG Specification > Decision Log):
   2. *(agent-step)* On a clean pod (no GPU-sharing agent), retry path B (`ai-edge-litert==2.0.3` + QAIRT 2.43 + a CPU-only torch install) to see whether the older plugin's minimum-version check is 1.7 instead of 1.8 — that would unblock without waiting on Qualcomm.
 
   In the meantime: **Gate B (Vulkan/Adreno via the dm3 fork-and-own harness, D-027 above)** remains the no-Qualcomm-dependency parallel track and is the recommended hedge if QAIRT 2.44 does not appear within ~2 weeks.
+
+---
+
+## D-030 — Phase 0G AOT compile UNBLOCKED with QAIRT 2.44.0.260225 + ai-edge-litert 2.1.4 (matching pair); registry promoted
+
+- **timestamp:** 2026-05-02T01:40:31Z
+- **agent_role:** linux-x86_64-executor
+- **context:** D-029 documented that QAIRT 2.43 + ai-edge-litert 2.1.4 fails at QnnSystem 1.7 vs 1.8 mismatch. Operator forwarded a Perplexity-search response that pinpointed the exact pairing: LiteRT 2.1.4's `third_party/qairt/workspace.bzl` pins `qairt/2.44.0.260225` (commit-tagged in the upstream `google-ai-edge/LiteRT` repo). The bundled `libLiteRtCompilerPlugin_Qualcomm.so` is therefore compiled against QAIRT 2.44 headers, expecting QnnSystem 1.8.0; QAIRT 2.43 ships 1.7.0; QAIRT 2.44+ ships 1.8.0. The fix is to use the matching pair, not to upgrade or downgrade either side independently. The Perplexity response also supplied the exact public CDN URL embedded in LiteRT's Bazel build system (no Qualcomm Developer Network login required): `https://softwarecenter.qualcomm.com/api/download/software/sdks/Qualcomm_AI_Runtime_Community/All/2.44.0.260225/v2.44.0.260225.zip`. **Confirmed: this URL is publicly downloadable** (1.56 GB in 19s on Runpod Linux x86_64; sha256 captured in pod-side `/workspace/qairt-v2.44.0.zip`).
+- **what we tested (same pod, 1hx4ctwg1mpmxr; clean .venv-litert213 with python3.10 + torch 2.11+cpu + ai-edge-litert 2.1.4 + litert-torch + transformers 4.55.4):** the existing `scripts/silicon/run_phase0g_aot.py` sweep, all 5 scopes, with `LD_LIBRARY_PATH=/workspace/qairt-2.44/qairt/2.44.0.260225/lib/x86_64-linux-clang`. Verdict matrix:
+
+  | Scope | TFLite size | Qualcomm SM8750 binary size | result |
+  |---|---|---|---|
+  | tiny_block | 140 KB | **166 KB** | **ok** |
+  | qwen_block (Qwen2.5-1.5B layer 0) | 179 MB | **90 MB** | **ok** |
+  | qwen_frozen_subgraph (Qwen2.5-1.5B layers 1..26 — the actual ELO frozen middle) | **4.6 GB** | **2.3 GB** | **ok** |
+  | smollm3_block (SmolLM3-3B layer 0) | 299 MB | **150 MB** | **ok** |
+  | smollm3_frozen_subgraph (SmolLM3-3B layers 1..30) | 2.4 GB | **960 MB** | **ok** |
+
+  All five scopes returned `models_with_backend=[(<QualcommBackend>, <Model>)]` with non-empty length and a non-zero binary file at `qnn_aot/<scope>/<scope>_Qualcomm_SM8750_apply_plugin.tflite`. These are real deployable Qualcomm SM8750 context binaries. Sweep `summary.json` reports `qnn_failure_signatures: []`, 5/5 measured QNN rows `ok`, 10/10 stub parity rows `ok`. Aggregate compile time: ~9 minutes including HF Qwen + SmolLM3 download + 2 large frozen-middle MLIR passes (8.5 GB combined).
+
+- **decision (registry promotion):** `polymath_ai/scheduler/registry.py` now sets `litert_qnn_sm8750.confirmed_for_socs = (("SM8750", 1.0),)`. The notes field cites this row + the artifacts dir + the matching pair. **Phase 1A QNN routing is UNLOCKED for SoC=SM8750.**
+- **decision (test suite):** `tests/test_scheduler.py` flips two assertions:
+  - `test_qnn_backend_is_locked_until_proof` → renamed to `test_qnn_backend_is_unlocked_for_sm8750_after_phase0g_proof` (asserts `confirmed_for_socs == (("SM8750", 1.0),)` and that `find(soc="SM8750", capability=frozen_subgraph_inference)` includes QNN).
+  - `test_static_policy_qnn_blocked_by_soc_lock` → renamed to `test_static_policy_qnn_routes_for_sm8750_after_phase0g_proof` (asserts the scheduler picks QNN as first preference for SM8750).
+  - **New regression test** `test_static_policy_qnn_blocked_for_other_socs` asserts the promotion is SoC-specific: with SoC=SM8650, the scheduler still skips QNN (because confirmed_for_socs only includes SM8750). This protects against accidental over-promotion in future edits.
+  - All 11 scheduler tests pass; full repo `pytest tests/` is **127/127 pass**.
+- **falsifier outcomes (PRD Falsifier Registry):**
+  - `qnn_exact_path_unproven` → flips from `blocked` to **`pass`** (Qwen frozen-middle compile produced a 2.3 GB SM8750 .bin context binary).
+  - `qnn_unsupported_op` → **`pass`** (every scope's QualcommBackend returned a real Model object — no unsupported ops).
+  - `smollm3_export_unproven` → **`pass`** (both smollm3 scopes returned ok; smollm3_frozen_subgraph 2.4 GB tflite → 960 MB SM8750 binary).
+- **strongest disconfirming observation:** if the upcoming `pytest tests/test_scheduler.py` run on the operator's machine (post-merge) doesn't reproduce 11/11 pass — for example because `default_registry()` was constructed from a stale .pyc cache — that would invalidate the promotion. Mitigation: `pytest --cache-clear tests/test_scheduler.py` is the verification command the operator should run after `git pull`. If that fails, revert the registry edit pending root-cause.
+- **affected configs/artifacts:**
+  - `polymath_ai/scheduler/registry.py` — `litert_qnn_sm8750.confirmed_for_socs` now `(("SM8750", 1.0),)`; notes field updated with proof citation.
+  - `tests/test_scheduler.py` — two test renames + one new regression test.
+  - `runtime/reports/export_probe/2026-05-02T014031Z_litert214_qairt244_FULL/` — full sweep CompileRecords + logs + truth_table + Qualcomm SM8750 binaries (binaries kept locally on pod for HF push; `.tflite` and `.bin` blobs are gitignored per `.gitignore`).
+  - `docs/DECISIONS.md` — this row.
+- **HF push (next step):** the 4 (or 5) Qualcomm SM8750 binaries should be pushed to:
+  - `Architect-Prime/polymath-models-qwen2-5-1p5b-elo/exports/qwen-aot/2026-05-02/` for the Qwen scopes
+  - `Architect-Prime/polymath-models-smollm3-3b-elo/exports/smollm3-aot/2026-05-02/` for the SmolLM3 scopes
+  - License attestations (Qwen2.5: `apache-2.0:qwen2.5-1.5b`; SmolLM3: as per the SmolLM3 model card) carry per-binary in the manifest.
+  - If HF repos return 404, pending-upload rows go through `polymath_ai.sync.pending` (existing infrastructure).
+- **follow-up owner:** Export lane completes the HF push; Device lane begins Phase 1A — wire the scheduler decision path to actually invoke QNN execution on the phone with the produced `.bin` binaries (deploy via ADB or Termux SSH per D-019).
