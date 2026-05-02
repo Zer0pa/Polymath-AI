@@ -1,6 +1,125 @@
 # Polymath AI
 
-Polymath AI ahead-of-time-compiles the 26-layer frozen middle of Qwen2.5-1.5B to a 2.3 GB Snapdragon SM8750 NPU context binary and runs it sustained on a consumer phone. **Phase 0G AOT compile** is closed (5/5 scopes ok with the QAIRT 2.44.0.260225 ↔ ai-edge-litert 2.1.4 matching pair). **Phase 1A on-device inference** is closed (proven end-to-end on a REDMAGIC 10 Pro+ Hexagon NPU via `qnn-net-run --retrieve_context` after extracting the embedded QNN context binary from the LiteRT `apply_plugin` wrapper). **Phase 1A.B sustained-load characterisation** is closed (22,850 inferences across 6 h 15 m at 100% rc=0 reliability, room ambient, no thermal throttling, battery net-flat under AC at the proven 60-s-sleep duty cycle). **Phase 1A.A — the actual real-data ELO Stage-1 training experiment** is the next step, ETA ~1 week of focused engineering.
+Polymath AI ahead-of-time-compiles the 26-layer frozen middle of Qwen2.5-1.5B to a 2.3 GB Snapdragon SM8750 NPU context binary and runs it sustained on a consumer phone. **Phase 0G AOT compile** is closed (5/5 scopes ok with the QAIRT 2.44.0.260225 ↔ ai-edge-litert 2.1.4 matching pair). **Phase 1A on-device inference** is closed (proven end-to-end on a REDMAGIC 10 Pro+ Hexagon NPU via `qnn-net-run --retrieve_context` after extracting the embedded QNN context binary from the LiteRT `apply_plugin` wrapper). **Phase 1A.B sustained-load characterisation** is closed (22,850 inferences across 6 h 15 m at 100% rc=0, room ambient, no thermal throttling). **Phase 1A.A real-data ELO Stage-1 training** is next, ETA ~1 week of focused engineering.
+
+## What This Is
+
+Polymath AI is on-device-LLM continuous-pretraining infrastructure: a pipeline that trains the input/output edges of a 1.5-billion-parameter transformer on a host machine while delegating its frozen 26-layer middle to a consumer phone's neural-processing unit (NPU). The phone participates in shaping the model's weights, not just running them.
+
+The training method is **ELO** (Efficient Layer-specific Optimization): train layer 0 + the language-modelling head; freeze layers 1..26 (the "frozen middle"); run that frozen middle on Hexagon NPU. ~16% of trainable parameters, ~7% of gradient FLOPs of full continual pretraining.
+
+The target model is `Qwen/Qwen2.5-1.5B` (Apache 2.0). The reference handset is the **REDMAGIC 10 Pro+** (model NX789J, Snapdragon 8 Elite Gen 4 / SM8750, Hexagon V79 NPU, 16 GB LPDDR5X, active cooling fan, charge bypass). Architecture cross-check uses `HuggingFaceTB/SmolLM3-3B`.
+
+This is research infrastructure. Per the project boundary (see "Boundary" support section after Repo Shape, and `polymath_ai/boundary/text.py:BOUNDARY_SHA256`): no regulatory certification claims; no clinical or human-subject use; no surveillance, biometric profiling, or identity inference; no model weights distributed without an explicit license attestation; no training on copyrighted material without an explicit corpus-license decomposition; no production deployment without a falsifier-traced acceptance gate.
+
+## Pipeline Mechanics
+
+End-to-end on-device-LLM-training pipeline as a falsifier-traced workflow:
+
+| Stage | Where it runs | What it produces |
+|---|---|---|
+| Stage 0 — substrate | host (any platform) | hash-chained audit log, falsifier registry, boundary scanner, scheduler with per-SoC backend-confirmation locks, dispatch history, knowledge-graph-backed corpus-license store |
+| Stage 1 — model preparation | host | ELO freeze plan applied to `Qwen/Qwen2.5-1.5B`: train layer 0 + LM head, freeze layers 1..26, auto-untie tied embeddings if present |
+| Stage 2 — AOT compile to Snapdragon SM8750 | Linux x86_64 host | per scope: PyTorch → `litert_torch.convert(...)` → MLIR → TFLite → `ai_edge_litert.aot.aot_compile(target=Qualcomm_SM8750)` → 2.3 GB QNN context binary embedded in an `apply_plugin`-format `.tflite` |
+| Stage 3 — on-device deployment | host → phone (ADB) | `scripts/host/extract_qnn_context.py` extracts the QNN binary; `adb push` lands it on `/data/local/tmp/phase1a/`; QAIRT 2.44 aarch64-android subset under `/data/local/tmp/qairt-2.44/` |
+| Stage 4 — on-device inference | phone (Hexagon NPU) | `qnn-net-run --retrieve_context <scope>.qnn.bin --backend libQnnHtp.so` loads via `libadsprpc.so` / `libcdsprpc.so`, executes on Hexagon V79, writes FP32 output |
+| Stage 5 — sustained-load characterisation | phone (autonomous) | `scripts/phone/overnight_inference_v2.sh` runs detached (`nohup setsid`, PPID=1), writes hash-chained JSONL, auto-halts on temperature / battery / STOP-file |
+| Stage 6 — ELO Stage-1 training | host + phone (round-trip per step) | **Phase 1A.A — next**: real tokenized input → host-side embedding lookup → frozen-middle forward on Hexagon → host-side backward + AdamW on layer 0 + LM head → measure tokens/hour |
+
+Plug-replaceable at every stage. Per-SoC backend-confirmation locks gate routing decisions; named falsifiers gate phase closure.
+
+## Key Metrics
+
+| Metric | Value | Baseline |
+|---|---|---|
+| ON_DEVICE_INFERENCE_SUCCESS_RATE | 22,850 / 22,850 = 100% | 6 h 15 m sustained on REDMAGIC SM8750, FP32, room ambient |
+| ELO_FROZEN_MIDDLE_P50_LATENCY_HEXAGON | 576 ms | Qwen2.5-1.5B layers 1..26 (2.3 GB QNN context binary), seq 1×16, FP32 |
+| AOT_COMPILE_SCOPES_PASSING | 5 / 5 | QAIRT 2.44.0.260225 + ai-edge-litert 2.1.4 (matching pair) |
+| SUSTAINED_LOAD_BATTERY_TEMP_PEAK | 32.0 °C | room ambient, AC connected, 60-s-sleep duty cycle, no fridge cooling |
+
+> Source: live-PR-#4 artefacts under `runtime/reports/export_probe/2026-05-02T014031Z_litert214_qairt244_FULL/` and `runtime/reports/phase1a/2026-05-02T1802Z-overnight-v2/`; cited in `docs/DECISIONS.md` rows D-030, D-031, D-032 (D-022..D-032 land on `main` when PR #4 merges).
+
+## Repo Identity
+
+| Field | Value |
+|---|---|
+| Architecture | ON_DEVICE_TRAINING_PIPELINE |
+| Encoding | POLYMATH_ELO_CONTINUAL_PRETRAINING_V1 |
+
+## Readiness
+
+| Field | Value |
+|---|---|
+| Verdict | RESEARCH_SUBSTRATE_COMPLETE_PHASE_1A_PROVEN |
+| Commit SHA | see current `main` HEAD |
+| Confidence | scoped by per-row `strongest disconfirming observation` clauses in `docs/DECISIONS.md` |
+| Source | `docs/DECISIONS.md` (canonical truth); `docs/EXECUTION-REPORT.md`; `PRD.md`; live PR #4 |
+
+Open blockers (all engineering-time, not science-blocked): Phase 1A.A real-data ELO Stage-1 training experiment not yet run; corpus + tokenization + backward-path scaffolding pending. Visibility: PRIVATE — operator-controlled.
+
+## What We Prove
+
+- The 26-layer ELO frozen middle of `Qwen/Qwen2.5-1.5B` AOT-compiles to a 2.3 GB Qualcomm SM8750 context binary and executes on the Hexagon V79 NPU of the operator's REDMAGIC 10 Pro+. Wall-clock per-inference latency on the actual phone, after a warm mmap, is 576 ms (p50) / 811 ms (p95) / 817 ms (max).
+- The same pipeline produces a 960 MB binary for `HuggingFaceTB/SmolLM3-3B`'s 30-layer frozen middle, demonstrating architecture portability across model families. AOT-compile-only at this stage; on-device deployment for SmolLM3 is queued for Phase 2B.
+- Sustained-load reliability over 22,850 inferences across 6 h 15 m at 100% rc=0 and 100% out_size=98304 (correct 1×16×1536 FP32 output every time). Zero silent corruption events; no thermal throttling; no battery temperature above 32 °C.
+- Output FP32 statistics from a zero-input forward pass through random-init weights match transformer hidden-state distribution theory: standard deviation grows from 1.14 over a single layer to 6.15 over 26 layers, mean stays near zero, all 24,576 outputs finite.
+- A reusable "matching-pair" SDK pinning insight: ai-edge-litert 2.1.4 ↔ QAIRT 2.44.0.260225, with the QAIRT zip publicly downloadable from the URL embedded in LiteRT's Bazel build system. No Qualcomm Developer Network login required.
+- A reusable "extract embedded QNN context binary" deployment path that bypasses the absent aarch64-android LiteRT runtime (D-019). The `apply_plugin` TFLite wrapper holds a single `DISPATCH_OP` whose `custom_options` flexbuffer carries `{bytecode_offset, bytecode_size, name="qnn_partition_0"}`; the QNN binary is appended verbatim. Tooling in `scripts/host/extract_qnn_context.py` (~80 lines).
+- The reflex scheduler's per-SoC backend-confirmation lock was promoted only after on-device proof: `litert_qnn_sm8750.confirmed_for_socs = (("SM8750", 1.0),)`. The lock REMAINS for SM8650 / SM8550 / SM8450 / SM8350 / SA8295 / SA8255 — those SoCs continue to refuse routing until they are independently proven by their own decision rows.
+
+## What We Don't Claim
+
+- **No production model.** Polymath AI is research infrastructure. Phase 1A inference is proven; Phase 1A.A real-data ELO Stage-1 training is the next experiment. The 6 h 15 m run was inference-only on synthetic FP32-zeros input — a system-level reliability proof, not language modelling.
+- **No clinical or human-subject use, no surveillance / biometric profiling / identity-inference application.** Per the boundary block. Off-limits regardless of how good the on-device numbers get.
+- **No undisclosed weight distribution.** Every model weight redistributed by this project carries an explicit license-attestation row in the Phase 0C knowledge-graph store. Qwen2.5-1.5B is Apache 2.0; SmolLM3-3B is Apache 2.0; both attestations live with the artefact.
+- **No unlicensed corpus use.** Phase 1B / 1C training corpora must pass the corpus-license decomposition gate (see `docs/CORPUS-SPEC.md`) before training proceeds. Defence / weapons / dual-use applications are excluded under operator policy.
+- **The 576 ms p50 latency is steady-state inference, not steady-state training.** End-to-end ELO Stage-1 has additional host-side cost (tokenization, embedding lookup, layer-0 forward + backward, LM-head forward + backward, AdamW step) which is unmeasured at this point.
+- **"100% success rate" applies to operational reliability** (rc=0, out_size=98304) over 22,850 inferences. It does NOT mean numerical bit-exact parity vs a host PyTorch reference; that comparison is an explicit Phase 1A.A falsifier (cosine similarity ≥ 0.99 on real tokens between host CPU and phone NPU).
+- **The 25-hour unplugged battery-life extrapolation** is from a 2.5-hour observed segment at ~3.2 %/hour drain. A full 100% → 15% halt run has not been performed.
+- **The "matching-pair" pattern is verified for SM8750 only.** Cross-SoC verification (SM8650 / SM8550) is Phase 2C.
+- **The smollm3 compile artefacts have AOT-compile evidence only**, not on-device proof.
+- **No production deployment without a falsifier-traced acceptance gate.** Per the boundary block. Productisation requires a separate programme not on the current roadmap.
+
+## Verification Status
+
+| Code | Check | Verdict |
+|---|---|---|
+| V_01 | First-ten README spine present in correct order: What This Is / Pipeline Mechanics / Key Metrics / Repo Identity / Readiness / What We Prove / What We Don't Claim / Verification Status / Proof Anchors / Repo Shape | PASS |
+| V_02 | Lead sentence ≤ 30 words (currently 26) | PASS |
+| V_03 | Key Metrics table has exactly 4 rows | PASS |
+| V_04 | Proof Anchors ≤ 6 and every path resolves on GitHub `main` | PASS |
+| V_05 | Boundary block sha256-anchored at `polymath_ai/boundary/text.py:BOUNDARY_SHA256`; boundary scanner CI-enabled | PASS |
+| V_06 | `pytest tests/` returns 127 / 127 on Mac and Linux x86_64 pod | PASS |
+| V_07 | Phase 0G AOT compile sweep: 5 / 5 scopes ok with QAIRT 2.44 + LiteRT 2.1.4 matching pair (D-030; PR #4) | PASS |
+| V_08 | Phase 1A on-device inference proven on REDMAGIC SM8750 / Hexagon NPU (D-031; PR #4) | PASS |
+| V_09 | Phase 1A.0 + 1A.B sustained-load: 22,850 inferences / 100% rc=0 / 100% out_size=98304 (D-032; PR #4) | PASS |
+| V_10 | Decision-log monotone-append discipline preserved (D-001 → D-021 on `main`; D-022 → D-032 land on `main` when PR #4 merges) | PASS |
+
+## Proof Anchors
+
+Each path below is verified to resolve on GitHub `main` at the time this README was last updated.
+
+| Path | State |
+|---|---|
+| `PRD.md` | VERIFIED |
+| `RESISTANCE.md` | VERIFIED |
+| `docs/DECISIONS.md` | VERIFIED |
+| `docs/AUDIT-SPEC.md` | VERIFIED |
+| `docs/EXECUTION-REPORT.md` | VERIFIED |
+| `docs/FALSIFIERS.md` | VERIFIED |
+
+## Repo Shape
+
+| Field | Value |
+|---|---|
+| Proof Anchors | 6 |
+| Modality Lanes | 1 (on-device-training) |
+| Authority Source | `docs/DECISIONS.md` (canonical truth) |
+| Canonical References | `polymath_ai/boundary/text.py` (BOUNDARY_TEXT, BOUNDARY_SHA256); `LICENSE`; `PRD.md` |
+| Python Package | `polymath_ai` |
+| Engineering Lane | `scripts/{host,phone,silicon,linux,termux}/` + `runtime/reports/` |
+
+---
 
 ## Boundary
 
@@ -16,119 +135,13 @@ explicit corpus-license decomposition. No deployment to production
 without a falsifier-traced acceptance gate.
 ```
 
-The block is verbatim, sha256-anchored at `polymath_ai/boundary/text.py:BOUNDARY_SHA256`, and a boundary scanner with explicit forbidden-framing patterns runs in CI on every audit row, summary, and report. Drift between this string and any artifact carrying the boundary is a `boundary_violation` falsifier hit.
-
-## Pipeline Mechanics
-
-Polymath AI is an end-to-end on-device-LLM-training pipeline expressed as a falsifier-traced workflow:
-
-| Stage | Where it runs | What it produces |
-|---|---|---|
-| Stage 0 — substrate | host (any platform) | hash-chained audit log, falsifier registry, boundary scanner, scheduler with per-SoC backend-confirmation locks, dispatch history, knowledge-graph-backed corpus-license store |
-| Stage 1 — model preparation | host | ELO freeze plan applied to `Qwen/Qwen2.5-1.5B`: train layer 0 + LM head, freeze layers 1..26 (the "frozen middle"), auto-untie tied embeddings if present |
-| Stage 2 — AOT compile to Snapdragon SM8750 | Linux x86_64 host | for each scope: PyTorch → `litert_torch.convert(...)` → MLIR → TFLite → `ai_edge_litert.aot.aot_compile(target=Qualcomm_SM8750)` → 2.3 GB QNN context binary embedded in an `apply_plugin`-format `.tflite` |
-| Stage 3 — on-device deployment | host → phone (ADB) | `scripts/host/extract_qnn_context.py` strips the QNN binary out of the AOT wrapper; `adb push` lands it on `/data/local/tmp/phase1a/`; QAIRT 2.44 aarch64-android subset (`bin/`, `lib/`, Hexagon v75/v79/v81 unsigned skel) under `/data/local/tmp/qairt-2.44/` |
-| Stage 4 — on-device inference | phone (Hexagon NPU) | `qnn-net-run --retrieve_context <scope>.qnn.bin --backend libQnnHtp.so` loads the binary via `libadsprpc.so` / `libcdsprpc.so`, executes on Hexagon V79, writes FP32 output to `output/Result_*/` |
-| Stage 5 — sustained-load characterisation | phone (autonomous) | `scripts/phone/overnight_inference_v2.sh` runs detached (`nohup setsid`, PPID=1), round-robins between qwen_block (100×) and qwen_frozen_subgraph (10×), writes hash-chained JSONL to `/sdcard/Polymath/phase1a/audit.jsonl`, auto-halts on temperature/battery/STOP-file |
-| Stage 6 — ELO Stage-1 training | host + phone (round-trip per step) | **Phase 1A.A — next**: real tokenized input → host-side embedding lookup → push hidden states to phone → frozen-middle forward on Hexagon → recompute backward host-side or AOT-compile a backward subgraph → AdamW on layer 0 + LM head → measure tokens/hour |
-
-The pipeline is plug-replaceable at every stage — see `polymath_ai/scheduler/registry.py` for the per-SoC backend-confirmation locks that gate routing decisions, and `polymath_ai/falsifiers/registry.py` for the 23 named falsifiers that gate phase closure.
-
-| Field | Value |
-|-------|-------|
-| Architecture | ON_DEVICE_TRAINING_PIPELINE |
-| Encoding | POLYMATH_ELO_CONTINUAL_PRETRAINING_V1 |
-
-## Key Metrics
-
-| Metric | Value | Baseline |
-|---|---|---|
-| ON_DEVICE_INFERENCE_SUCCESS_RATE | 22,850 / 22,850 = 100% | 6 h 15 m sustained on REDMAGIC SM8750, FP32, room ambient |
-| ELO_FROZEN_MIDDLE_P50_LATENCY_HEXAGON | 576 ms | Qwen2.5-1.5B layers 1..26 (2.3 GB QNN context binary), seq 1×16, FP32 |
-| AOT_COMPILE_SCOPES_PASSING | 5 / 5 | QAIRT 2.44.0.260225 + ai-edge-litert 2.1.4 (matching pair) |
-| SUSTAINED_LOAD_BATTERY_TEMP_PEAK | 32.0 °C | room ambient, AC connected, v2 60-s-sleep duty cycle, no fridge cooling |
-
-> Source: `runtime/reports/phase1a/2026-05-02T1802Z-overnight-v2/summary.json`,
-> `runtime/reports/export_probe/2026-05-02T014031Z_litert214_qairt244_FULL/summary.json`,
-> `docs/DECISIONS.md` rows D-030, D-031, D-032.
-
-## What We Prove
-
-- The 26-layer ELO frozen middle of `Qwen/Qwen2.5-1.5B` AOT-compiles to a 2.3 GB Qualcomm SM8750 context binary and executes on the Hexagon V79 NPU of the operator's REDMAGIC 10 Pro+. Wall-clock per-inference latency on the actual phone, after a warm mmap, is 576 ms (p50) / 811 ms (p95) / 817 ms (max).
-- The same pipeline produces a 960 MB binary for `HuggingFaceTB/SmolLM3-3B`'s 30-layer frozen middle, demonstrating architecture portability across model families. AOT-compile-only at this point; on-device deployment for SmolLM3 is queued for Phase 2B.
-- Sustained-load reliability over 22,850 inferences across 6 h 15 m at 100% rc=0 and 100% out_size=98304 (correct 1×16×1536 FP32 output every time). No silent corruption events; no thermal throttling; no battery temperature above 32 °C.
-- Output FP32 statistics from a zero-input forward pass through random-init weights match transformer hidden-state distribution theory: standard deviation grows from 1.14 over a single layer to 6.15 over 26 layers, mean stays near zero, all 24,576 outputs finite. A CPU-fallback path or a corrupted load would not produce these distributions.
-- A reusable "matching-pair" SDK pinning insight: ai-edge-litert 2.1.4 ↔ QAIRT 2.44.0.260225, with the QAIRT zip publicly downloadable from the URL embedded in LiteRT's Bazel build system. No Qualcomm Developer Network login required.
-- A reusable "extract embedded QNN context binary" deployment path that bypasses the absent aarch64-android LiteRT runtime (D-019). The `apply_plugin` TFLite wrapper holds a single `DISPATCH_OP` whose `custom_options` flexbuffer carries `{bytecode_offset, bytecode_size, name="qnn_partition_0"}`; the QNN binary is appended verbatim. Tooling in `scripts/host/extract_qnn_context.py` (~80 lines).
-- The reflex scheduler's per-SoC backend-confirmation lock was promoted only after on-device proof: `litert_qnn_sm8750.confirmed_for_socs = (("SM8750", 1.0),)`. The lock REMAINS for SM8650 / SM8550 / SM8450 / SM8350 / SA8295 / SA8255 — those SoCs continue to refuse routing until they are independently proven by their own decision rows.
-
-## What We Don't Claim
-
-- We have NOT trained on this hardware yet. Phase 1A inference is proven; Phase 1A.A real-data ELO Stage-1 training is the next experiment. The 6 h 15 m run was inference-only on synthetic FP32 zeros input — a system-level reliability proof, not language modelling.
-- The 576 ms p50 latency is steady-state inference on Hexagon, not steady-state training. End-to-end ELO Stage-1 has additional host-side cost (tokenization, embedding lookup, layer-0 forward + backward, LM-head forward + backward, AdamW step) which is unmeasured in this report.
-- "100% success rate" applies to operational reliability (rc=0, out_size=98304) over 22,850 inferences. It does NOT mean numerical bit-exact parity vs a host PyTorch reference; that comparison is an explicit Phase 1A.A falsifier (cosine similarity ≥ 0.99 on real tokens between host CPU and phone NPU).
-- The 25-hour unplugged battery-life extrapolation is from a 2.5-hour observed segment at ~3.2 %/hour drain. A full 100% → 15% halt run has not been performed.
-- The smollm3 compile artefacts have AOT-compile evidence only, not on-device proof.
-- The "matching-pair" pattern is verified for SM8750 only; cross-SoC verification (SM8650 / SM8550) is Phase 2C.
-- Polymath AI is research infrastructure. Per the Boundary block above: no production deployment, no clinical or human-subject use, no surveillance / biometric / identity-inference application. No model weights are redistributed without an explicit license attestation row in the Phase 0C knowledge-graph store.
+The block is verbatim, sha256-anchored at `polymath_ai/boundary/text.py:BOUNDARY_SHA256`. A boundary scanner with explicit forbidden-framing patterns runs in CI on every audit row, summary, and report. Drift between this string and any artifact carrying the boundary is a `boundary_violation` falsifier hit.
 
 ## Sibling Research Artefact — DM3
 
 `Zer0pa/DM3` is a structural diagnostic on a closed Android aarch64 Rust binary running on the same operator handset (REDMAGIC 10 Pro / SM8750 / Adreno 830 / Hexagon V79). DM3 exercises the device's deterministic-runtime envelope and reports cross-platform ARM64 determinism (Claim τ); Polymath AI exercises the device's NPU-AOT-compile envelope and reports cross-handset Hexagon-binary execution (D-031, D-032). The two repos share the same boundary-block discipline, the same RESISTANCE.md anti-corruption doctrine (`fp-shapematchRE`, `fp-rushtoend`, `fp-NULLasout`, `fp-approvalseek`, `fp-flatteryasfreedom`), and the same "explicitly named falsifiers + decision-row append-only log" pattern. They are independent at runtime; no shared state, no shared dependencies. Cross-repository pointer: `Zer0pa/DM3` (visibility operator-controlled).
 
-## Publication Readiness
-
-| Field | Value |
-|---|---|
-| Verdict | RESEARCH_PUBLICATION_STAGED |
-| Commit SHA | see current `main` HEAD |
-| Confidence | scoped by per-row `strongest disconfirming observation` clauses in `docs/DECISIONS.md` |
-| Source | `docs/REPORT-2026-05-02-comprehensive.md`; `docs/DECISIONS.md`; `runtime/reports/` |
-
-This table is repo-shape metadata, not valuation or product-launch framing.
-
-## Tests and Verification
-
-| Code | Check | Verdict |
-|---|---|---|
-| V_01 | First-ten README spine present; lead ≤ 30 words; Zone 02 = `Pipeline Mechanics` | PASS |
-| V_02 | Boundary block sha256-anchored at `polymath_ai/boundary/text.py:BOUNDARY_SHA256`; boundary scanner CI-enabled | PASS |
-| V_03 | `pytest tests/` returns 127 / 127 on Mac and Linux x86_64 pod | PASS |
-| V_04 | Phase 0G AOT compile sweep: 5 / 5 scopes ok with QAIRT 2.44 + LiteRT 2.1.4 matching pair (D-030) | PASS |
-| V_05 | Phase 1A on-device inference proven on REDMAGIC SM8750 / Hexagon NPU (D-031) | PASS |
-| V_06 | Phase 1A.0 + 1A.B sustained-load characterisation: 22,850 inferences / 100% rc=0 / 100% out_size=98304 (D-032) | PASS |
-| V_07 | `polymath_ai.scheduler.default_registry().get('litert_qnn_sm8750').confirmed_for_socs == (('SM8750', 1.0),)` | PASS |
-| V_08 | Decision log monotone-append discipline preserved (D-001 through D-032; no rewrites of prior rows) | PASS |
-| V_09 | Phase 1A.A scoping documented in `docs/ROADMAP-ETA-2026-05-02.md` with engineering ETAs in working-day units | PASS |
-| V_10 | Boundary block does not appear within forbidden-framing patterns anywhere in the tree (boundary scanner) | PASS |
-
-## Proof Anchors
-
-| Path | State |
-|---|---|
-| `docs/REPORT-2026-05-02-comprehensive.md` (8.6k-word zero-context-friendly technical report) | VERIFIED |
-| `docs/DECISIONS.md` (32 rows: D-001 through D-032; canonical truth) | VERIFIED |
-| `runtime/reports/export_probe/2026-05-02T014031Z_litert214_qairt244_FULL/` (Phase 0G full sweep, 5/5 scopes ok) | VERIFIED |
-| `runtime/reports/phase1a/2026-05-02T1802Z-overnight-v2/` (6 h 15 m sustained-load run; 264 KB hash-chained audit; summary + analysis) | VERIFIED |
-| `polymath_ai/scheduler/registry.py:litert_qnn_sm8750.confirmed_for_socs` (the registry promotion) | VERIFIED |
-| `docs/ROADMAP-ETA-2026-05-02.md` (Phase 1A.A → Phase 3A with engineering ETAs) | VERIFIED |
-
-## Repo Shape
-
-| Field | Value |
-|---|---|
-| Proof Anchors | 6 |
-| Modality Lanes | 1 (on-device-training) |
-| Authority Source | `docs/DECISIONS.md` (32 rows; canonical truth) |
-| Canonical References | `polymath_ai/boundary/text.py` (BOUNDARY_TEXT, BOUNDARY_SHA256); `LICENSE`; `docs/REPORT-2026-05-02-comprehensive.md` |
-| Python Package | `polymath_ai` |
-| Engineering Lane | `scripts/{host,phone,silicon,linux,termux}/` + `runtime/reports/` |
-
----
-
 ## Reproducer (90-minute clean-slate)
-
-The end-to-end reproducer takes ~90 minutes from a clean Linux x86_64 host plus a SM8750-bearing handset:
 
 ```bash
 # Host (Linux x86_64)
@@ -158,13 +171,10 @@ adb push /tmp/qwen_frozen_subgraph.qnn.bin /data/local/tmp/phase1a/
 adb shell sh /sdcard/Polymath/phase1a/run_qnn_inference.sh qwen_frozen_subgraph 10
 ```
 
-Full reproducer details in `docs/REPORT-2026-05-02-comprehensive.md` §11 + `docs/PHONE-OVERNIGHT-RUNBOOK.md`.
-
 ## Operator runbooks
 
-- `docs/PHONE-OVERNIGHT-RUNBOOK.md` — start the autonomous overnight inference chain; auto-detached from ADB; live HF telemetry; kill-switch documented.
+- `docs/PHONE-OVERNIGHT-RUNBOOK.md` (lands on `main` when PR #4 merges) — start the autonomous overnight inference chain; auto-detached from ADB; live HF telemetry; kill-switch documented.
 - `docs/PHASE-0G-PLAN.md` — Phase 0G plan and the three viable AOT-compile paths.
-- `docs/HANDOFF-TO-LINUX-X86_64.md` / `HANDOFF-TO-APPLE-SILICON.md` — historical agent handoffs (preserved for audit; superseded by current runbooks).
 
 ## Read order for the next agent
 
@@ -172,10 +182,12 @@ If a fresh agent picks up this repo:
 
 1. `RESISTANCE.md` — anti-corruption doctrine. Read first. Headspace.
 2. `MODUS-OPERANDI.md` — multi-agent role chain; cross-workstream principles.
-3. `docs/REPORT-2026-05-02-comprehensive.md` — the current canonical state.
-4. `docs/DECISIONS.md` — the 32-row decision log; canonical truth for every claim.
-5. `docs/ROADMAP-ETA-2026-05-02.md` — every upcoming phase with engineering ETAs.
+3. `PRD.md` — product requirements (the operator-authored Pre-PRD blueprint synthesis).
+4. `docs/DECISIONS.md` — the decision log; canonical truth for every claim.
+5. `docs/EXECUTION-REPORT.md` — current execution state.
 6. Source: `polymath_ai/{boundary,audit,falsifiers,scheduler,elo,models,sync,kg}/` — substrate.
+
+Once PR #4 lands on `main`, additional reading: `docs/REPORT-2026-05-02-comprehensive.md` (zero-context-friendly technical report) and `docs/ROADMAP-ETA-2026-05-02.md` (every upcoming phase with engineering ETAs).
 
 ## Provenance
 
@@ -193,13 +205,9 @@ This workstream runs in parallel with `Zer0pa/Health`, `Zer0pa/Materials`, `Zer0
 
 **Fork-and-own is explicitly permitted.** Implementation patterns, falsifier-registry shapes, audit-log schemas, plug-replaceability harnesses, KG-node taxonomies, code structures, and architectural details may be copied between workstreams freely. **What is rejected is runtime co-dependency** — no shared running services, no shared databases or corpora, no shared git imports.
 
-Polymath AI specifically borrows the heterogeneous-orchestration pattern (CPU + GPU + NPU dispatch) from Energy's L6 control-plane discipline; the model-fine-tuning + corpus discipline from Health's TxGemma fine-tuning queue; the cross-model disagreement primitive (DPA-3 + MACE in Materials, DLKcat + TurNuP + DeepEnzyme in Synbio) translated as Qwen2.5-1.5B + SmolLM3-3B at evaluation; and the falsifier-registry + audit-log shape from all four prior workstreams. None are shared at runtime.
-
 ## License
 
 Project source code: MIT.
 Models: per upstream model card (`Qwen/Qwen2.5-1.5B`: Apache 2.0; `HuggingFaceTB/SmolLM3-3B`: Apache 2.0).
 SDK: QAIRT 2.44.0.260225 under Qualcomm Community redistributable EULA.
 Datasets: per upstream data card.
-
-Full license inventory: `docs/REPORT-2026-05-02-comprehensive.md` §17.3.
