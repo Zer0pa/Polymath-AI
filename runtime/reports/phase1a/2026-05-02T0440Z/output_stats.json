@@ -1,0 +1,60 @@
+{
+  "schema_version": "1.0.0",
+  "kind": "phase1a_on_device_inference_record",
+  "host": "REDMAGIC 10 Pro+ (NX789J)",
+  "soc": "SM8750",
+  "qairt_version": "2.44.0.260225",
+  "qairt_path": "/data/local/tmp/qairt-2.44/",
+  "hexagon_skel_search": "v79+v75+v81",
+  "inference_path": "raw_qnn_context_binary_via_qnn-net-run_retrieve_context",
+  "results": [
+    {
+      "scope": "qwen_block",
+      "model": "Qwen/Qwen2.5-1.5B",
+      "layers_count": 1,
+      "qnn_bin_size_bytes": 93913088,
+      "input_shape": [1, 16, 1536],
+      "input_dtype": "float32",
+      "input_data": "all_zeros_synthetic",
+      "output_shape": [1, 16, 1536],
+      "output_dtype": "float32",
+      "wall_clock_10_inferences_s": 0.523,
+      "output_stats": {
+        "min": -3.378906,
+        "max": 3.501953,
+        "mean": -0.036238,
+        "std": 1.137052,
+        "all_finite": true,
+        "nonzero_count": 24576,
+        "total_count": 24576
+      }
+    },
+    {
+      "scope": "qwen_frozen_subgraph",
+      "model": "Qwen/Qwen2.5-1.5B",
+      "layers_count": 26,
+      "layers_range": "1..26 (the ELO frozen middle)",
+      "qnn_bin_size_bytes": 2438414336,
+      "input_shape": [1, 16, 1536],
+      "input_dtype": "float32",
+      "input_data": "all_zeros_synthetic",
+      "output_shape": [1, 16, 1536],
+      "output_dtype": "float32",
+      "wall_clock_10_inferences_s": 10.621,
+      "output_stats": {
+        "min": -20.375000,
+        "max": 21.593750,
+        "mean": 0.216257,
+        "std": 6.147047,
+        "all_finite": true,
+        "nonzero_count": 24576,
+        "total_count": 24576
+      }
+    }
+  ],
+  "qnn_platform_validator": {
+    "gpu": {"hardware": "Supported", "libraries": "Found"},
+    "dsp": {"hardware": "Supported", "libraries": "Found"}
+  },
+  "verdict": "phase_1a_on_device_qnn_inference_proven"
+}

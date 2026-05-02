@@ -1,0 +1,71 @@
+INFO: [environment.cc:30] Creating LiteRT environment with options
+WARNING: [auto_registration.cc:192] NPU accelerator could not be loaded and registered: kLiteRtStatusErrorInvalidArgument.
+INFO: [auto_registration.cc:279] Loading GPU accelerator(libLiteRtGpuAccelerator.so).
+INFO: [auto_registration.cc:279] Loading GPU accelerator(libLiteRtWebGpuAccelerator.so).
+INFO: [accelerator_registry.cc:54] RegisterAccelerator: ptr=0x5efa5f7e1730, name=GPU WebGPU
+INFO: [auto_registration.cc:287] Dynamically loaded GPU accelerator(libLiteRtWebGpuAccelerator.so) registered.
+INFO: [accelerator_registry.cc:54] RegisterAccelerator: ptr=0x5efa5f7e1fa0, name=CpuAccelerator
+INFO: [auto_registration.cc:325] CPU accelerator registered.
+INFO: [outstream.h:50] Setup file stream
+
+INFO: [outstream.h:40] Setup cerr stream
+
+CMD: apply
+MODEL: /workspace/tmp/tmprvgnqx6a
+SOC_MANUFACTURER: Qualcomm
+SOC_MODEL: SM8750
+
+    __    _ __       ____  __
+   / /   (_/ /____  / __ \/ /_
+  / /   / / __/ _ \/ /_/ / __/
+ / /___/ / /_/  __/ _, _/ /_
+/_____/_/\__/\___/_/ |_|\__/
+
+[LITERT_TOOLS:APPLY] Starting Load Model...
+[LITERT_TOOLS:APPLY] Loading model from: /workspace/tmp/tmprvgnqx6a
+[LITERT_TOOLS:APPLY] LiteRtModel : [ #subgraphs=1 ]
+[LITERT_TOOLS:APPLY] 	 Done!
+[LITERT_TOOLS:APPLY] Starting Load Plugins...
+[LITERT_TOOLS:APPLY] Loading plugins from: /workspace/Polymath-AI/.venv-qairt/lib/python3.10/site-packages/ai_edge_litert/vendors/qualcomm/compiler
+INFO: [compiler_plugin.cc:283] Attempting to load plugin at: /workspace/Polymath-AI/.venv-qairt/lib/python3.10/site-packages/ai_edge_litert/vendors/qualcomm/compiler/libLiteRtCompilerPlugin_Qualcomm.so
+INFO: [compiler_plugin.cc:225] Loading plugin at: /workspace/Polymath-AI/.venv-qairt/lib/python3.10/site-packages/ai_edge_litert/vendors/qualcomm/compiler/libLiteRtCompilerPlugin_Qualcomm.so
+INFO: [compiler_plugin.cc:235] Loaded plugin at: /workspace/Polymath-AI/.venv-qairt/lib/python3.10/site-packages/ai_edge_litert/vendors/qualcomm/compiler/libLiteRtCompilerPlugin_Qualcomm.so
+INFO: [compiler_plugin.cc:238] Resolved plugin api at: /workspace/Polymath-AI/.venv-qairt/lib/python3.10/site-packages/ai_edge_litert/vendors/qualcomm/compiler/libLiteRtCompilerPlugin_Qualcomm.so
+INFO: [common.h:134] 
+::qnn::Options:
+LogLevel: 3
+BackendType: 2
+Profiling: 0
+UseHtpPreference: false
+UseQint16AsQuint16: false
+UseInt64BiasAsInt32: true
+EnableWeightSharing: false
+UseConvHMX: true
+UseFoldReLU: true
+HtpPerformanceMode: 0
+DspPerformanceMode: 0
+DumpTensorIds: 
+IrJsonDir: 
+DlcDir: 
+VtcmSize: 0
+HvxThread: 0
+OptimizationLevel: 2
+GraphPriority: 0
+SaverOutputDir: 
+
+INFO: [compiler_plugin.cc:243] Initialize plugin at: /workspace/Polymath-AI/.venv-qairt/lib/python3.10/site-packages/ai_edge_litert/vendors/qualcomm/compiler/libLiteRtCompilerPlugin_Qualcomm.so
+[LITERT_TOOLS:APPLY] Found plugins
+[LITERT_TOOLS:APPLY] Loaded 1 plugins
+[LITERT_TOOLS:APPLY] 	 Done!
+[LITERT_TOOLS:APPLY] Starting Select Plugin...
+[LITERT_TOOLS:APPLY] Trying plugin: Qualcomm
+[LITERT_TOOLS:APPLY] Selected plugin for: Qualcomm
+[LITERT_TOOLS:APPLY] 	 Done!
+[LITERT_TOOLS:APPLY] Starting Applying plugin...
+INFO: [compiler_plugin.cc:794] Registered 0 transformations.
+INFO: [compiler_plugin.cc:801] Applied transformations.
+ERROR: [qnn_manager.cc:284] Qnn System library version 1.7.0 is mismatched. The minimum supported version is 1.8.0. Please make sure you have the correct library version.
+ERROR: [qnn_compiler_plugin.cc:265] Failed to set up QNN manager
+ERROR: [apply_plugin.cc:455] ERROR: [litert/compiler/plugin/compiler_plugin.cc:444]
+INFO: [accelerator_registry.cc:43] DestroyAccelerator: ptr=0x5efa5f7e1730, name=GPU WebGPU
+INFO: [accelerator_registry.cc:43] DestroyAccelerator: ptr=0x5efa5f7e1fa0, name=CpuAccelerator

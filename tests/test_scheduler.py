@@ -54,16 +54,21 @@ def test_default_registry_includes_required_backends():
     assert {"mac_sim", "android_cpu", "vulkan_gpu", "litert_qnn_sm8750", "fallback_cpu"}.issubset(ids)
 
 
-def test_qnn_backend_is_locked_until_proof():
-    """litert_qnn_sm8750 starts with empty confirmed_for_socs - the
-    scheduler refuses to route to it until Phase 0G adds (SM8750, 1.0).
+def test_qnn_backend_is_unlocked_for_sm8750_after_phase0g_proof():
+    """litert_qnn_sm8750 was promoted to confirmed_for_socs=(("SM8750", 1.0),) on
+    2026-05-02 after Phase 0G AOT-compile proof: ai-edge-litert 2.1.4 + QAIRT
+    2.44.0.260225 produced real Qualcomm SM8750 .bin context binaries for
+    tiny_block (166 KB), qwen_block (90 MB), and qwen_frozen_subgraph (2.3 GB —
+    the actual ELO frozen middle of Qwen2.5-1.5B layers 1..26). Scheduler is now
+    cleared to route SM8750 frozen-subgraph inference to QNN. See D-029 and
+    runtime/reports/export_probe/2026-05-02T014031Z_litert214_qairt244_FULL/.
     """
     reg = default_registry()
     qnn = reg.get("litert_qnn_sm8750")
-    assert qnn.confirmed_for_socs == ()
-    # Find with soc=SM8750 must NOT include qnn yet.
+    assert qnn.confirmed_for_socs == (("SM8750", 1.0),)
+    # Find with soc=SM8750 MUST now include qnn.
     matches = reg.find(soc="SM8750", capability=BackendCapability.frozen_subgraph_inference)
-    assert "litert_qnn_sm8750" not in {m.backend_id for m in matches}
+    assert "litert_qnn_sm8750" in {m.backend_id for m in matches}
 
 
 def test_history_running_mean_and_visit_count():
@@ -113,10 +118,10 @@ def test_static_policy_falls_back_when_preference_misses():
     assert decision.backend_id == "cpu_a"  # second in preference, eligible
 
 
-def test_static_policy_qnn_blocked_by_soc_lock():
-    """Even if QNN is in the preference list, the scheduler must NOT pick
-    it for an op that would require it when the registry lock is set
-    (litert_qnn_sm8750.confirmed_for_socs is empty by default).
+def test_static_policy_qnn_routes_for_sm8750_after_phase0g_proof():
+    """After Phase 0G AOT-compile proof on 2026-05-02 (D-029), litert_qnn_sm8750
+    has confirmed_for_socs=(("SM8750", 1.0),). With SoC=SM8750 the scheduler
+    MUST now pick QNN as first preference for frozen_subgraph_inference.
     """
     reg = default_registry()
     sched = ReflexScheduler(
@@ -124,6 +129,21 @@ def test_static_policy_qnn_blocked_by_soc_lock():
         history=DispatchHistory(),
         policy=static_policy(preference=("litert_qnn_sm8750", "vulkan_gpu", "android_cpu")),
         soc="SM8750",
+    )
+    decision = sched.decide("frozen_subgraph", BackendCapability.frozen_subgraph_inference)
+    assert decision.backend_id == "litert_qnn_sm8750"
+
+
+def test_static_policy_qnn_blocked_for_other_socs():
+    """The promotion is SoC-specific. QNN is confirmed only for SM8750. With
+    SoC=SM8650 (or any other), the scheduler must still skip QNN.
+    """
+    reg = default_registry()
+    sched = ReflexScheduler(
+        registry=reg,
+        history=DispatchHistory(),
+        policy=static_policy(preference=("litert_qnn_sm8750", "vulkan_gpu", "android_cpu")),
+        soc="SM8650",
     )
     decision = sched.decide("frozen_subgraph", BackendCapability.frozen_subgraph_inference)
     assert decision.backend_id != "litert_qnn_sm8750"

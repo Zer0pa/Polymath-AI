@@ -1,0 +1,43 @@
+{
+  "ac_powered_throughout": false,
+  "battery": {
+    "level_end_pct": 73,
+    "level_peak_pct": 85,
+    "level_start_pct": 72,
+    "temp_dC_end": 280,
+    "temp_dC_peak": 320,
+    "temp_dC_start": 240
+  },
+  "duration_hours": 6.26,
+  "end_ts": "2026-05-02T18:07:20Z",
+  "halt_event": "stop_signal_received",
+  "inference_batches": 251,
+  "kind": "phase1a_overnight_v2_summary",
+  "per_scope": {
+    "qwen_block": {
+      "batches": 226,
+      "out_size_correct_pct": 100.0,
+      "per_inf_ms_max": 25,
+      "per_inf_ms_min": 8,
+      "per_inf_ms_p50": 19,
+      "per_inf_ms_p95": 22,
+      "rc_zero_pct": 100.0,
+      "total_inferences": 22600,
+      "wall_ms_p50": 1908
+    },
+    "qwen_frozen_subgraph": {
+      "batches": 25,
+      "out_size_correct_pct": 100.0,
+      "per_inf_ms_max": 817,
+      "per_inf_ms_min": 251,
+      "per_inf_ms_p50": 576,
+      "per_inf_ms_p95": 811,
+      "rc_zero_pct": 100.0,
+      "total_inferences": 250,
+      "wall_ms_p50": 5764
+    }
+  },
+  "schema_version": "1.0.0",
+  "start_ts": "2026-05-02T11:51:28Z",
+  "total_events": 254
+}

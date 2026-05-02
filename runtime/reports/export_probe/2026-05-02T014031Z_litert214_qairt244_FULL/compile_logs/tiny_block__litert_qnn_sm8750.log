@@ -1,0 +1,65 @@
+=== Phase 0G AOT compile: model=Qwen/Qwen2.5-1.5B scope=tiny_block target=litert_qnn_sm8750 ===
+=== started: 2026-05-02T01:40:37Z ===
+
+[1/3] Building scope graph (random init weights)...
+  ok in 0.01s
+  meta: {"seq_len": 16, "config": {"vocab_size": 257, "hidden_size": 32, "intermediate_size": 64, "num_hidden_layers": 1, "num_attention_heads": 4, "num_key_value_heads": 2, "head_dim": 8, "max_position_embeddings": 16, "rope_theta": 10000.0, "rms_norm_eps": 1e-06, "tie_word_embeddings": false}}
+
+[2/3] litert_torch.convert(...)...
+(00:00) [START] LiteRT-Torch Convert
+(00:00) [START] LiteRT-Torch Convert > Torch Export: serving_default
+(00:01) [START] LiteRT-Torch Convert > Torch Export: serving_default > 
+ExportedProgram Run Decompositions
+/usr/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
+(00:01) [ DONE] LiteRT-Torch Convert > Torch Export: serving_default > 
+ExportedProgram Run Decompositions (+00:00)
+(00:01) [ DONE] LiteRT-Torch Convert > Torch Export: serving_default (+00:01)
+(00:01) [START] LiteRT-Torch Convert > Run FX Passes
+(00:02) [START] LiteRT-Torch Convert > Run FX Passes > ExportedProgram Run 
+Decompositions
+(00:02) [ DONE] LiteRT-Torch Convert > Run FX Passes > ExportedProgram Run 
+Decompositions (+00:00)
+(00:02) [ DONE] LiteRT-Torch Convert > Run FX Passes (+00:00)
+(00:02) [START] LiteRT-Torch Convert > Lower to MLIR: serving_default
+(00:02) [START] LiteRT-Torch Convert > Lower to MLIR: serving_default > 
+ExportedProgram Run Decompositions
+/usr/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
+(00:03) [ DONE] LiteRT-Torch Convert > Lower to MLIR: serving_default > 
+ExportedProgram Run Decompositions (+00:00)
+(00:03) [START] LiteRT-Torch Convert > Lower to MLIR: serving_default > 
+ExportedProgram Run Decompositions
+/usr/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
+(00:04) [ DONE] LiteRT-Torch Convert > Lower to MLIR: serving_default > 
+ExportedProgram Run Decompositions (+00:00)
+(00:04) [START] LiteRT-Torch Convert > Lower to MLIR: serving_default > Create 
+MLIR Module
+WARNING:jax._src.xla_bridge:An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.
+(00:04) [ DONE] LiteRT-Torch Convert > Lower to MLIR: serving_default > Create 
+MLIR Module (+00:00)
+(00:04) [ DONE] LiteRT-Torch Convert > Lower to MLIR: serving_default (+00:01)
+/workspace/Polymath-AI/.venv-litert213/lib/python3.10/site-packages/litert_torch/_convert/signature.py:52: FutureWarning: `treespec.children_specs` is deprecated. Use `treespec.child(index)` to access a single child, or `treespec.children()` to get all children.
+  args_spec, kwargs_spec = spec.children_specs
+/workspace/Polymath-AI/.venv-litert213/lib/python3.10/site-packages/litert_torch/_convert/signature.py:58: FutureWarning: `treespec.children_specs` is deprecated. Use `treespec.child(index)` to access a single child, or `treespec.children()` to get all children.
+  kwargs_spec.children_specs, kwargs_spec.context
+(00:04) [START] LiteRT-Torch Convert > Merge MLIR Modules
+(00:04) [ DONE] LiteRT-Torch Convert > Merge MLIR Modules (+00:00)
+(00:04) [START] LiteRT-Torch Convert > Run LiteRT Converter Passes
+(00:04) [ DONE] LiteRT-Torch Convert > Run LiteRT Converter Passes (+00:00)
+(00:04) [ DONE] LiteRT-Torch Convert (+00:04)
+  convert ok in 4.78s
+(00:00) [START] Write Model to 
+runtime/reports/export_probe/2026-05-02T014031Z_litert214_qairt244_FULL/tflite/t
+iny_block.tflite
+(00:00) [ DONE] Write Model to 
+runtime/reports/export_probe/2026-05-02T014031Z_litert214_qairt244_FULL/tflite/t
+iny_block.tflite (+00:00)
+  saved runtime/reports/export_probe/2026-05-02T014031Z_litert214_qairt244_FULL/tflite/tiny_block.tflite (143024 bytes)
+
+[3/3] ai_edge_litert.aot.aot_compile(target=Qualcomm_SM8750)...
+Backend:   0%|          | 0/1 [00:00<?, ?it/s]Compiling Qualcomm_SM8750:   0%|          | 0/1 [00:00<?, ?it/s]Compiling Qualcomm_SM8750: mlir_transforms:   0%|          | 0/1 [00:00<?, ?it/s]Compiling Qualcomm_SM8750: apply_plugin:   0%|          | 0/1 [00:00<?, ?it/s]   Compiling Qualcomm_SM8750: apply_plugin: 100%|##########| 1/1 [00:00<00:00,  1.12it/s]Compiling Qualcomm_SM8750: apply_plugin: 100%|##########| 1/1 [00:00<00:00,  1.12it/s]
+  aot_compile returned in 0.89s; type=CompilationResult
+  result fields: ['models_with_backend=[(<ai_edge_litert.aot.vendors.qualcomm.qualcomm_backend.QualcommBackend object at 0x7e2fb7b14c10>, <ai_edge_litert.aot.core.aot_types.Model object at 0x7e2fb7b17c10>)]']
+  models_with_backend len: 1
