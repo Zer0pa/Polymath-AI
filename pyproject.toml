@@ -1,0 +1,67 @@
+[build-system]
+requires = ["hatchling>=1.27,<2"]
+build-backend = "hatchling.build"
+
+[project]
+name = "polymath-ai"
+version = "0.1.0"
+description = "Zer0pa Polymath AI — on-device LLM training research infrastructure for multilingual experiments."
+readme = "README.md"
+requires-python = ">=3.10"
+license = "LicenseRef-Zer0pa-SAL-7.1"
+authors = [{name = "Zer0pa (Pty) Ltd", email = "architects@zer0pa.ai"}]
+classifiers = [
+  "Intended Audience :: Science/Research",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+  "Development Status :: 3 - Alpha",
+]
+keywords = [
+  "on-device-training",
+  "llm",
+  "multilingual",
+  "falsification",
+  "elo",
+  "research-infrastructure",
+]
+dependencies = [
+  "pyyaml>=6.0",
+  "sentencepiece>=0.2.0",
+]
+
+[project.optional-dependencies]
+host = [
+  "torch>=2.2.0",
+  "numpy<2",
+  "transformers>=4.46.3",
+  "tokenizers>=0.20.3",
+  "safetensors>=0.4.5",
+  "huggingface_hub>=0.36.2",
+  "datasets>=3.6.0",
+  "accelerate>=1.4.0",
+]
+dev = [
+  "pytest>=8",
+]
+
+[project.urls]
+Homepage = "https://github.com/Zer0pa/Polymath-AI"
+Documentation = "https://github.com/Zer0pa/Polymath-AI#readme"
+Repository = "https://github.com/Zer0pa/Polymath-AI"
+Issues = "https://github.com/Zer0pa/Polymath-AI/issues"
+
+[tool.hatchling.build.targets.wheel]
+packages = ["polymath_ai"]
+
+[tool.hatchling.build.targets.sdist]
+exclude = [
+  "source-briefs/",
+  "synthesis/",
+  "runtime/",
+  "configs/",
+  "data/",
+  "scripts/",
+  "HANDOFF-TO-ORCHESTRATOR.md",
+  "HANDOFF-TO-OVERNIGHT-EXECUTOR.md",
+  "ORCHESTRATOR-STARTUP-PROMPT.md",
+  "MODUS-OPERANDI.md",
+]
