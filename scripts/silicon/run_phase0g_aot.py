@@ -276,15 +276,46 @@ def _build_qwen_block(*, seq_len: int = 16):
 
 
 def _build_qwen_frozen_subgraph(*, seq_len: int = 16):
+    """Build the Qwen2.5-1.5B frozen-middle subgraph (layers 1..26).
+
+    By default uses random-init weights (Phase 0G's graph-structure probe).
+    Set environment variable `PHASE0G_REAL_WEIGHTS=1` to load the real
+    pretrained Qwen2.5-1.5B weights via `AutoModelForCausalLM.from_pretrained`
+    and slice `.model.layers[1:27]`. Real weights are required for any
+    downstream cosine-similarity validation against a host CPU reference
+    (see D-033) and for actual ELO Stage-1 training (Phase 1A.A).
+    """
+    import os
     import torch
     from transformers import AutoConfig
     from transformers.models.qwen2.modeling_qwen2 import Qwen2DecoderLayer
+
+    use_real = os.environ.get("PHASE0G_REAL_WEIGHTS", "").strip() in ("1", "true", "True", "yes")
 
     cfg = AutoConfig.from_pretrained("Qwen/Qwen2.5-1.5B")
     cfg._attn_implementation = "eager"  # tflite-traceable; no flash/sdpa kernels
     head_dim = cfg.hidden_size // cfg.num_attention_heads
     a, b = QWEN_FROZEN_RANGE
-    layers = [Qwen2DecoderLayer(cfg, layer_idx=i).eval() for i in range(a, b)]
+
+    if use_real:
+        # Load real pretrained Qwen2.5-1.5B and slice layers 1..26 directly.
+        # Each layer carries its trained parameters; the trace-wrap below
+        # threads the same hand-rolled RoPE / causal mask through them.
+        from transformers import AutoModelForCausalLM
+        full = AutoModelForCausalLM.from_pretrained(
+            "Qwen/Qwen2.5-1.5B",
+            torch_dtype=torch.float32,
+            attn_implementation="eager",
+            device_map="cpu",
+        )
+        layers = list(full.model.layers[a:b])
+        for layer in layers:
+            layer.eval()
+        weights_label = "pretrained_qwen2_5_1p5b_apache_2_0"
+    else:
+        layers = [Qwen2DecoderLayer(cfg, layer_idx=i).eval() for i in range(a, b)]
+        weights_label = "random_init"
+
     wrap = _make_subgraph_tracewrap(
         layers,
         hidden_size=cfg.hidden_size,
@@ -301,7 +332,7 @@ def _build_qwen_frozen_subgraph(*, seq_len: int = 16):
         "hidden_size": cfg.hidden_size,
         "frozen_layer_range": list(QWEN_FROZEN_RANGE),
         "num_layers_in_subgraph": b - a,
-        "weights": "random_init",
+        "weights": weights_label,
     }
     return wrap, sample, meta
 

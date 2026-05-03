@@ -758,3 +758,92 @@ Format per row (PRD §Audit Trail And KG Specification > Decision Log):
 - **follow-up owner:** Device lane. With Phase 1A.0 + 1A.B closed, the open Phase 1A items are:
   - **Phase 1A.A**: real-data ELO Stage-1 experiment. Plan unchanged from D-031.
   - **Phase 1A.C**: wire `ReflexScheduler.decide()` to actually invoke `qnn-net-run`. Smaller scope than 1A.A.
+
+---
+
+## D-033 — Phase 1A.A.0 cosine-validation FAIL with named root cause: Phase 0G binary holds RANDOM-INIT weights (by design); real-weight recompile required to unblock ELO Stage-1
+
+- **timestamp:** 2026-05-03T12:36:00Z
+- **agent_role:** linux-x86_64-executor + on-device-bridge (ADB)
+- **context:** D-031 / D-032 closed Phase 1A inference + Phase 1A.B sustained-load characterisation, both on synthetic FP32 zeros input. Phase 1A.A.0 is the first step toward real ELO Stage-1 training: replace the synthetic input with a real Qwen2.5-1.5B-tokenized hidden state, run it through the on-device frozen-middle binary, compare against a host CPU reference. The acceptance threshold (the falsifier) is cosine_per_token p50 ≥ 0.99 between host CPU and phone NPU outputs.
+- **what we tested:** wrote `scripts/host/phase1aa0_real_data.py`. Generated 20 input hidden-state tensors `(1, 16, 1536)` from English sentences via the Qwen2.5-1.5B tokenizer + embedding layer. Generated host CPU reference outputs by running the same 20 inputs through `Qwen2.5-1.5B.model.layers[1:27]` (the same layer range Phase 0G's `qwen_frozen_subgraph` compiled), with a hand-rolled RoPE + causal mask + position_embeddings construction that matches the AOT runner's `_make_subgraph_tracewrap` exactly (rope_theta = 1000000, position_ids = arange(16), causal mask = upper-triangular -inf). Pushed inputs to phone, ran `qnn-net-run --retrieve_context qwen_frozen_subgraph.qnn.bin`, pulled outputs.
+- **first-cut result:**
+
+  | Statistic | Value | Threshold | Verdict |
+  |---|---|---|---|
+  | n_compared | 20 / 20 | — | ok |
+  | p50_cos_total | 0.0280 | ≥ 0.99 | **FAIL** |
+  | min_cos_total | 0.0055 | — | — |
+  | min(cos_p5_per_tok) | -0.0157 | ≥ 0.95 | **FAIL** |
+  | max_mse | 1011.69 | — | — |
+  | max_abs_err | 503.36 | — | — |
+
+  Cosine ≈ 0 means the phone output is **orthogonal** to the host reference. Not numerical drift; total disagreement.
+
+- **root-cause investigation:** computed pairwise cosine between **phone outputs from different input sentences**:
+
+  | Pair | Input cosine | Output cosine |
+  |---|---:|---:|
+  | seq 0 vs seq 1 | 0.399 | **0.99905** |
+  | seq 0 vs seq 2 | 0.402 | **0.99882** |
+  | seq 0 vs seq 3 | (similar) | **0.99957** |
+  | seq 1 vs seq 2 | 0.340 | **0.99906** |
+
+  Two semantically different sentences produce phone outputs that are **0.999 cosine-similar to each other**. The on-device binary is **input-insensitive at large scale** — its 26-layer cascade collapses every input toward a near-constant output (`mean ≈ 0.21`, `std ≈ 6.15`, `min ≈ -20.4`, `max ≈ 21.7`, all consistent across 20 unrelated sentences). The std=6.15 happens to match what we recorded for the **zero-input** runs in D-031 / D-032 — confirming the binary gives near-identical output regardless of input.
+
+- **the WHY (in the AOT runner's own words):** `scripts/silicon/run_phase0g_aot.py` documents in its module docstring:
+
+  > "Random-init weights are used for the real-architecture scopes (qwen_*, smollm3_*); Phase 0G is a graph-structure / op-coverage probe, not a weight-correctness probe."
+
+  And in `_build_qwen_frozen_subgraph()` itself:
+  ```python
+  cfg = AutoConfig.from_pretrained("Qwen/Qwen2.5-1.5B")
+  ...
+  layers = [Qwen2DecoderLayer(cfg, layer_idx=i).eval() for i in range(a, b)]   # random init; no from_pretrained
+  ...
+  meta = {..., "weights": "random_init"}
+  ```
+
+  The AOT runner only loads the **config** of Qwen2.5-1.5B — it never calls `from_pretrained()` on the model. Each `Qwen2DecoderLayer(cfg, ...)` instance comes up with FRESH RANDOM-INITIALIZED weights. The binary on the phone holds those random weights, baked into the QNN context binary at AOT compile time.
+
+  A 26-layer stack of random-init Qwen2 transformer blocks is **highly contractive**: after ~5–10 layers, hidden-state vectors converge toward the largest singular direction of the composed transformation, and by layer 26 the input's individuality has been crushed. The output is dominated by the layers' weight structure, not by the input. That is *exactly* what we observed.
+
+  Trained Qwen2.5-1.5B doesn't have this property — training has optimized the network to be expressive across inputs, preserving information through depth. Real-weight inference would produce **input-distinguishable** outputs.
+
+- **what this DOES and DOES NOT change:**
+
+  | Earlier claim | Status now |
+  |---|---|
+  | D-030: "Phase 0G AOT compile produces 5 valid SM8750 context binaries" | **TRUE** — graph compiled, ops covered, binary loadable on Hexagon |
+  | D-031: "the binary executes end-to-end on Hexagon NPU" | **TRUE** — re-confirmed by today's 20-sequence run |
+  | D-032: "22,850 inferences at 100% rc=0, 100% out_size=98304" | **TRUE** — the binary IS reliable; just doesn't run a useful function |
+  | D-031 / D-032: "growing variance with depth (std 1.14 → 6.15 over 26 layers)" | **TRUE** but now interpreted as **the random-init contraction property**, not as **trained-Qwen forward through depth** |
+  | (implicit) "the binary represents Qwen2.5-1.5B inference" | **FALSE** — the binary represents *the architecture* of Qwen2.5-1.5B with random weights. It is not a deployable language-model inference path. |
+
+- **decision:** Phase 1A.A.0 is **BLOCKED** on a real-weight Phase 0G recompile. We modify `scripts/silicon/run_phase0g_aot.py` to support a `PHASE0G_REAL_WEIGHTS=1` environment flag that loads `AutoModelForCausalLM.from_pretrained("Qwen/Qwen2.5-1.5B")` and slices `.model.layers[1:27]` instead of building random-init layers. We re-run the Phase 0G AOT sweep for `qwen_frozen_subgraph` (and optionally `qwen_block`) under that flag, redeploy the resulting binary, re-run `phase1aa0_real_data.py --mode compare`, and expect cosine_per_token p50 ≥ 0.99.
+
+- **strongest disconfirming observation:** if a real-weights recompile produces the SAME input-insensitive output (pairwise output cosine still ~0.999 across different sentences), then the issue is not weights but the AOT compile pipeline itself — possibly the input tensor is being elided as a constant by the MLIR / TFLite optimizer. We rule this out by comparing two specific real-weight runs head-to-head; if the diagnosis here is correct, real-weight runs will produce input-distinguishable outputs.
+
+- **falsifier outcomes:**
+  - `phase_1aa0_cosine_validation` → **FAIL** (this is the explicit gate; it now has a named root cause).
+  - `phase_1a_inference_unproven` → still **pass** (the binary executes; D-031 / D-032 evidence is unchanged).
+  - `qnn_runtime_silently_falls_back_to_cpu` → still **pass** (timing remains NPU-consistent).
+  - `silent_output_corruption_under_load` → still **pass** (rc=0 + correct output size on every batch).
+  - new implicit falsifier `binary_holds_meaningful_weights` → **FAIL** (named root cause: AOT runner used `Qwen2DecoderLayer(cfg, ...)` not `from_pretrained`).
+- **methodology validated:** the cosine-validation pipeline (host CPU reference vs phone NPU output) is itself working correctly — it surfaces this exact kind of issue cleanly. The methodology will continue to function once weights are right.
+- **affected configs/artifacts:**
+  - `scripts/host/phase1aa0_real_data.py` — host-side input + reference + compare driver
+  - `scripts/phone/run_phase1aa0_real.sh` — phone-side runner
+  - `runtime/reports/phase1aa0/20260503T102426Z/{audit,inputs,refs,phone_outputs,manifest.json,compare_summary.json,diagnostics.md}` — full evidence (`diagnostics.md` carries the per-sequence numbers and the pairwise output-cosine analysis)
+  - `scripts/silicon/run_phase0g_aot.py` — modified to support `PHASE0G_REAL_WEIGHTS=1` env flag for real-weight recompile
+- **follow-up owner:** Linux-x86_64 lane. Concrete next moves (engineering effort ~1 hour assuming a fresh Linux x86_64 pod):
+  1. Spin a Linux x86_64 pod (the prior `1hx4ctwg1mpmxr` pod is offline; needs a new one).
+  2. `cd /workspace/Polymath-AI && git pull` (PR #4 carries the runner edit + flag).
+  3. Source QAIRT 2.44 envsetup, activate `.venv-litert213`.
+  4. `PHASE0G_REAL_WEIGHTS=1 python scripts/silicon/run_phase0g_aot.py --scope qwen_frozen_subgraph --out-dir runtime/reports/export_probe/<utc>_real_weights/`. Expect ~3-5 min compile time. Output: a NEW `qwen_frozen_subgraph_Qualcomm_SM8750_apply_plugin.tflite` (~4.6 GB) carrying real Qwen weights.
+  5. `python scripts/host/extract_qnn_context.py --tflite <new>.tflite --out /tmp/qwen_frozen_real.qnn.bin` — produces a ~2.3 GB binary with real weights.
+  6. `adb push /tmp/qwen_frozen_real.qnn.bin /data/local/tmp/phase1a/qwen_frozen_subgraph.qnn.bin` (replaces the random-init binary).
+  7. Re-run `sh /sdcard/Polymath/phase1a/run_phase1aa0_real.sh` against the new binary.
+  8. `python scripts/host/phase1aa0_real_data.py --mode compare --out-dir <same-out-dir>` — expect cosine_per_token p50 ≥ 0.99.
+  9. If pass: write D-034 closing Phase 1A.A.0 with real-weight cosine numbers; proceed to Phase 1A.A.1 (backward-pass design).
+  10. If fail: invoke the `strongest disconfirming observation` clause — investigate AOT pipeline for input-elision.
