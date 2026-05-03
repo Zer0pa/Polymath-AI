@@ -53,15 +53,14 @@ Issues = "https://github.com/Zer0pa/Polymath-AI/issues"
 packages = ["polymath_ai"]
 
 [tool.hatchling.build.targets.sdist]
-exclude = [
-  "source-briefs/",
-  "synthesis/",
-  "runtime/",
-  "configs/",
-  "data/",
-  "scripts/",
-  "HANDOFF-TO-ORCHESTRATOR.md",
-  "HANDOFF-TO-OVERNIGHT-EXECUTOR.md",
-  "ORCHESTRATOR-STARTUP-PROMPT.md",
-  "MODUS-OPERANDI.md",
+include = [
+  "/polymath_ai",
+  "/tests",
+  "/pyproject.toml",
+  "/README.md",
+  "/LICENSE",
+  "/NOTICE.md",
+  "/CITATION.cff",
+  "/.zenodo.json",
+  "/requirements-host.txt",
 ]
