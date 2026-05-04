@@ -49,10 +49,10 @@ Documentation = "https://github.com/Zer0pa/Polymath-AI#readme"
 Repository = "https://github.com/Zer0pa/Polymath-AI"
 Issues = "https://github.com/Zer0pa/Polymath-AI/issues"
 
-[tool.hatchling.build.targets.wheel]
+[tool.hatch.build.targets.wheel]
 packages = ["polymath_ai"]
 
-[tool.hatchling.build.targets.sdist]
+[tool.hatch.build.targets.sdist]
 only-include = [
   "polymath_ai",
   "tests",
