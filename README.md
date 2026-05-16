@@ -1,10 +1,10 @@
 # Polymath AI
 
-> Live window into the Zer0pa lab. Private on-device training infrastructure for multilingual LLM experiments, still gated by device and corpus evidence.
+> Live window into the Zer0pa lab. On-device training infrastructure for multilingual LLM experiments, still gated by device and corpus evidence.
 
 ## What This Is
 
-Polymath-AI is a private on-device training workstream for multilingual LLM experiments, with corpus, audit, scheduler, and falsifier scaffolds in progress.
+Polymath-AI is an on-device training workstream for multilingual LLM experiments, with corpus, audit, scheduler, and falsifier scaffolds in progress.
 
 It targets the operator's REDMAGIC 10 Pro+ and the ELO selective continual-pretraining method: train boundary layers while keeping the frozen middle eligible for measured device acceleration. The repo is evidence infrastructure first, not a model release.
 
@@ -34,10 +34,10 @@ It targets the operator's REDMAGIC 10 Pro+ and the ELO selective continual-pretr
 | Identifier | Polymath-AI |
 | Repository | https://github.com/Zer0pa/Polymath-AI |
 | Portfolio | Workstream / on-device training |
-| Visibility | PRIVATE |
+| Visibility | PUBLIC |
 | Default Branch | main |
 | Authority Source | `PRD.md`; `docs/EXECUTION-REPORT.md` |
-| License | Not declared in repo root |
+| License | LicenseRef-Zer0pa-SAL-7.1 |
 
 ## Readiness
 
