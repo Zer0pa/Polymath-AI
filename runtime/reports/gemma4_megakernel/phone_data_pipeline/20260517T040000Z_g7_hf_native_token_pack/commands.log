@@ -1,0 +1,5 @@
+# G7 phone-native HF stream/tokenize/pack commands
+Phone: /system/bin/curl -L --fail --max-time 30 --range 0-4095 https://huggingface.co/datasets/fka/awesome-chatgpt-prompts/resolve/main/prompts.csv -o prompts_head.csv
+RunPod: export_tokenizer_bpe.py --tokenizer-json /workspace/models/gemma4_e4b/snapshot/tokenizer.json --out /workspace/artifacts/polymath_gemma4/tokenizer/gemma4_e4b_bpe_v1
+Phone: ./gemma4_layer_runner_g7 --tokenize-pack tokenizer/gemma4_e4b_bpe_v1 hf_stream/g7/prompts_head.csv hf_stream/g7_token_cache_20260517T040000Z 128 3 https://huggingface.co/datasets/fka/awesome-chatgpt-prompts/resolve/main/prompts.csv
+RunPod: compare_token_cache.py --phone-cache /workspace/artifacts/polymath_gemma4/hf_stream/g7_phone_token_cache_20260517T040000Z --tokenizer-dir /workspace/models/gemma4_e4b/snapshot --seq 128

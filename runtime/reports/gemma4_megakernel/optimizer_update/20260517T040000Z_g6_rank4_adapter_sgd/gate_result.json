@@ -1,0 +1,34 @@
+{
+  "cosine_min": 0.9999999999999384,
+  "cosine_p50": 0.9999999999999956,
+  "failed_tensor_count": 0,
+  "frozen_hashes_stable": true,
+  "frozen_post_sha256": [
+    "d3efd61621310d5578a3653d2f9a989614b6287667b4984720d42dcc8f75fc36  layer_pack/gemma4_e4b_layer0_seq128_v0/weights/layer0.safetensors",
+    "ce1b559f77c3f76efceb1df0c25896a90b0ed31380c6930f46f2d1b4c6a0cd19  layer_pack/gemma4_e4b_layer1_seq128_v0/weights/layer1.safetensors"
+  ],
+  "frozen_pre_sha256": [
+    "d3efd61621310d5578a3653d2f9a989614b6287667b4984720d42dcc8f75fc36  layer_pack/gemma4_e4b_layer0_seq128_v0/weights/layer0.safetensors",
+    "ce1b559f77c3f76efceb1df0c25896a90b0ed31380c6930f46f2d1b4c6a0cd19  layer_pack/gemma4_e4b_layer1_seq128_v0/weights/layer1.safetensors"
+  ],
+  "gate": "G6 - Optimizer Update",
+  "input_checkpoint_sha256": {
+    "adapter_a": "20f2f42d5079b7b3c87305bff5b6234a353ce0e19d40d9b8b3f94681abd38335",
+    "adapter_b": "8ddab43db8638bd204491b09935eb50319106216e72047d9062223bd60ddb205"
+  },
+  "learning_rate": 0.0099999998,
+  "loss_half_mse": 1.6367198658,
+  "notes": [
+    "Updated adapter checkpoint exists on phone output dir; raw checkpoint binaries are external artifacts only."
+  ],
+  "optimizer": "sgd",
+  "run_id": "20260517T040000Z_g6_rank4_adapter_sgd",
+  "runpod_artifact": "/workspace/artifacts/polymath_gemma4/adapter_training/g6_phone_rank4_sgd_20260517T040000Z",
+  "status": "pass",
+  "trainable_mutated": true,
+  "trainable_scope": "post_layer0_rank4_residual_adapter",
+  "updated_checkpoint_sha256": {
+    "adapter_a": "5bbaf55a3d05380ccf9fe2003dfb5a49f72c6e690da555d8688f5d0496fa4ad1",
+    "adapter_b": "cfe25a08caa1481b4456a0bb244d2623690de9183f441bf4da95070fbaffed83"
+  }
+}

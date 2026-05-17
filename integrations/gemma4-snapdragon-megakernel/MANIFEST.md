@@ -1,7 +1,7 @@
 # Gemma 4 Snapdragon Megakernel Integration Manifest
 
 Date: 2026-05-17
-Status: G3_TWO_LAYER_OPENCL_FORWARD_PASSED
+Status: G8_REJECTED_UNDER_FALSIFICATION_AFTER_G4_G7_PASS
 Authority PRD: `docs/PRD-GEMMA4-SNAPDRAGON-MEGAKERNEL-HETEROGENEOUS-TRAINING.md`
 Upstream lane: `/Users/Zer0pa/Gemma4 Kernel`
 Upstream working commit imported: `8a5fb2df0c7e8da52fb0bc346077e63e8c801009`
@@ -188,6 +188,81 @@ Non-claims:
 - This is not an integrated training loop or checkpoint/adaptor claim.
 - This is not G9 sustained authority proof.
 
+## G4-G7 Results
+
+G4 evidence:
+
+- `runtime/reports/gemma4_megakernel/executor_architecture/20260517T040000Z_g4_minimal_executor/gate_result.json`
+
+Result:
+
+- Minimal executor boundaries exist for tensor storage, backend execution,
+  comparison, telemetry, checkpoint storage, and training step execution.
+- `OpenClAdapterTrainingStepExecutor` wires the first concrete training-step
+  executor to the phone OpenCL adapter kernels.
+- Latest runner reproduced G1 and G3 output hashes byte-identically.
+
+G5 evidence:
+
+- `runtime/reports/gemma4_megakernel/backward_path/20260517T040000Z_g5_rank4_adapter_opencl/gate_result.json`
+
+Result:
+
+- Trainable scope: post-layer0 rank-4 residual adapter.
+- Backend: phone OpenCL.
+- Reference: RunPod PyTorch autograd.
+- Gradient cosine min: `0.9999999999999384`.
+- Gradient cosine p50: `0.9999999999999647`.
+- Failed gradient tensors: `0`.
+
+G6 evidence:
+
+- `runtime/reports/gemma4_megakernel/optimizer_update/20260517T040000Z_g6_rank4_adapter_sgd/gate_result.json`
+
+Result:
+
+- Phone-side SGD update emitted updated adapter tensors.
+- Updated adapter tensors matched RunPod reference with cosine min
+  `0.9999999999999384`.
+- Trainable adapter hashes changed.
+- Frozen layer0/layer1 safetensors hashes remained stable.
+
+G7 evidence:
+
+- `runtime/reports/gemma4_megakernel/phone_data_pipeline/20260517T040000Z_g7_hf_native_token_pack/gate_result.json`
+
+Result:
+
+- Phone fetched CC0 Hugging Face text with system `curl`.
+- Native C++ Gemma BPE tokenizer produced exact token IDs against RunPod
+  `transformers`.
+- UFS token cache contained `3` seq128 rows and `343` non-pad tokens.
+- Input ID mismatches: `0`.
+- Attention mask mismatches: `0`.
+
+## G8 Falsifier Result
+
+Evidence:
+
+- `runtime/reports/gemma4_megakernel/integrated_training/20260517T040000Z_g8_streamed_corpus_falsified/gate_result.json`
+- `runtime/reports/gemma4_megakernel/falsifiers/20260517T040000Z_g8_streamed_corpus_falsified/falsifier_report.json`
+
+Result:
+
+- G8 was rejected under falsification.
+- The current G5/G6 training path still consumes hidden-state fixtures rather
+  than deriving `layer_input` and `per_layer_input` from phone-packed token IDs.
+- Combining G5/G6 and G7 as a training claim would introduce a hidden host data
+  path, so no streamed-corpus checkpoint or adapter claim is promoted.
+
+Next required repair:
+
+- Generate Gemma `layer_input` and layer 0/1 `per_layer_input` on the phone from
+  packed `input_ids` using frozen embedding and PLE assets.
+- Run layer0/layer1 from those phone-generated tensors.
+- Feed phone-generated activations into the adapter update path.
+- Emit a replayable adapter checkpoint manifest without host hidden tensors.
+
 ## Acceptance Gate For Import
 
 G2 is considered passed for import/build/harness preservation when:
@@ -200,4 +275,5 @@ G2 is considered passed for import/build/harness preservation when:
 - raw model weights, phone output binaries, runner binaries, SDK files, caches,
   tokens, and secrets remain outside git.
 
-G4 executor architecture is the next incomplete PRD gate.
+G8 integrated streamed-corpus training is the next incomplete PRD gate. The
+specific blocker is the missing phone-native token-to-hidden bridge.

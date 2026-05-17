@@ -12,26 +12,26 @@ the terminal acceptance gate is a phone-native checkpoint or adapter artifact.
 
 | Contract Item | Advanced By Phase(s) | Status |
 | --- | --- | --- |
-| Formal PRD/GPD/branch/import policy | Phase 0 | In Progress |
-| G1 regression floor | Phase 1 and every material runtime phase | Passed, remained green through G3 |
-| Phone-native training artifact | Phases 4-8 | Planned |
+| Formal PRD/GPD/branch/import policy | Phase 0 | Complete |
+| G1 regression floor | Phase 1 and every material runtime phase | Passed, remained green through G7 changes |
+| Phone-native training artifact | Phases 4-8 | Blocked at G8 token-to-hidden bridge |
 | G10 falsifier survival | Phase 9 | Planned |
 
 ## Phases
 
-- [ ] **Phase 0: Control Plane** - Formal GPD state, pivot branch, hardware
+- [x] **Phase 0: Control Plane** - Formal GPD state, pivot branch, hardware
   probes, and import policy.
 - [x] **Phase 1: Import And Regression** - Import Gemma4 Kernel source/evidence
   under policy and build the G1 replay harness.
 - [x] **Phase 2: Forward Expansion** - Expand from one layer to at least two
   sequential E4B layers on phone OpenCL with strict parity.
-- [ ] **Phase 3: Executor Architecture** - Refactor runner into maintainable
+- [x] **Phase 3: Executor Architecture** - Refactor runner into maintainable
   runtime boundaries without tensor semantic drift.
-- [ ] **Phase 4: Backward Path** - Implement phone backward kernels for the
+- [x] **Phase 4: Backward Path** - Implement phone backward kernels for the
   declared trainable scope.
-- [ ] **Phase 5: Optimizer Update** - Perform a real phone-side optimizer update
+- [x] **Phase 5: Optimizer Update** - Perform a real phone-side optimizer update
   with frozen hash stability.
-- [ ] **Phase 6: Phone Data Pipeline** - HF stream to phone CPU tokenizer to UFS
+- [x] **Phase 6: Phone Data Pipeline** - HF stream to phone CPU tokenizer to UFS
   packed cache.
 - [ ] **Phase 7: Integrated Training** - Consume phone-packed batches in
   phone-side forward/backward/update and emit artifact manifest.
@@ -138,7 +138,11 @@ changing tensor semantics.
 2. Code standards are enforced.
 3. G1 and G3 remain green.
 
-**Plans:** TBD
+**Plans:** 1 plan
+
+Plans:
+
+- [x] 03-01: Add minimal executor boundaries and keep G1/G3 green.
 
 ### Phase 4: Backward Path
 
@@ -158,7 +162,11 @@ changing tensor semantics.
 3. Frozen tensor hashes stay unchanged.
 4. G1 remains green.
 
-**Plans:** TBD
+**Plans:** 1 plan
+
+Plans:
+
+- [x] 04-01: Run rank-4 post-layer0 adapter backward on phone OpenCL.
 
 ### Phase 5: Optimizer Update
 
@@ -178,7 +186,11 @@ changing tensor semantics.
    determinism is expected.
 4. G1 remains green.
 
-**Plans:** TBD
+**Plans:** 1 plan
+
+Plans:
+
+- [x] 05-01: Run phone-side SGD update for rank-4 adapter.
 
 ### Phase 6: Phone Data Pipeline
 
@@ -198,7 +210,12 @@ changing tensor semantics.
 3. No secrets are printed or committed.
 4. No hidden host-side data path exists.
 
-**Plans:** TBD
+**Plans:** 1 plan
+
+Plans:
+
+- [x] 06-01: Stream CC0 HF text to phone, tokenize with native Gemma BPE, and
+  pack seq128 UFS cache with exact token parity.
 
 ### Phase 7: Integrated Training
 
@@ -218,7 +235,14 @@ changing tensor semantics.
 3. Frozen base hashes are stable.
 4. No correctness regression or hidden host data path.
 
-**Plans:** TBD
+**Plans:** 1 failed attempt
+
+Plans:
+
+- [ ] 07-01: Attempt integrated streamed-corpus training.
+  **Outcome:** rejected under falsification because the current training path
+  still requires hidden-state fixtures. Next repair must generate
+  `layer_input` and `per_layer_input` from phone-packed token IDs.
 
 ### Phase 8: Sustained Authority Run
 
@@ -267,10 +291,10 @@ changing tensor semantics.
 | 0. Control Plane | 1/1 | Complete | 2026-05-17 |
 | 1. Import And Regression | 1/1 | Complete | 2026-05-17 |
 | 2. Forward Expansion | 1/1 | Complete | 2026-05-17 |
-| 3. Executor Architecture | 0/TBD | Ready to plan | - |
-| 4. Backward Path | 0/TBD | Not started | - |
-| 5. Optimizer Update | 0/TBD | Not started | - |
-| 6. Phone Data Pipeline | 0/TBD | Not started | - |
-| 7. Integrated Training | 0/TBD | Not started | - |
+| 3. Executor Architecture | 1/1 | Complete | 2026-05-17 |
+| 4. Backward Path | 1/1 | Complete | 2026-05-17 |
+| 5. Optimizer Update | 1/1 | Complete | 2026-05-17 |
+| 6. Phone Data Pipeline | 1/1 | Complete | 2026-05-17 |
+| 7. Integrated Training | 0/1 | Failed under falsification | - |
 | 8. Sustained Authority Run | 0/TBD | Not started | - |
 | 9. Falsifier Review | 0/TBD | Not started | - |

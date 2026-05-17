@@ -1,0 +1,36 @@
+{
+  "checks": [
+    {
+      "evidence": "G7 emitted exact phone token cache.",
+      "name": "phone_packed_batch_exists",
+      "status": "pass"
+    },
+    {
+      "evidence": "G6 emitted phone adapter update from a hidden-state fixture.",
+      "name": "phone_training_update_exists",
+      "status": "pass"
+    },
+    {
+      "evidence": "Current training runtime consumes layer0 hidden/target tensors; no phone-native token->layer0 hidden/per_layer_input path exists for the G7 text.",
+      "name": "hidden_host_data_path",
+      "status": "fail"
+    },
+    {
+      "evidence": "No adapter checkpoint was emitted from the G7 packed corpus without host hidden tensors.",
+      "name": "checkpoint_from_streamed_text",
+      "status": "fail"
+    },
+    {
+      "evidence": "G8 promotion was rejected instead of claiming G5/G6+G7 as integrated training.",
+      "name": "proxy_training_claim",
+      "status": "pass"
+    }
+  ],
+  "critical_unresolved": [
+    "hidden_host_data_path",
+    "checkpoint_from_streamed_text"
+  ],
+  "promotion_decision": "reject_g8",
+  "run_id": "20260517T040000Z_g8_streamed_corpus_falsified",
+  "scope": "G8 integrated streamed-corpus training"
+}

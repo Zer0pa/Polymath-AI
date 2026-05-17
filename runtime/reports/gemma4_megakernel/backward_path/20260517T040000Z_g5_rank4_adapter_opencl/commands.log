@@ -1,0 +1,4 @@
+# G5 rank-4 adapter backward commands
+RunPod: create_adapter_training_fixture.py from phone G3 layer0 output and RunPod layer1 reference.
+Phone: ./gemma4_layer_runner_g456 --run-adapter-grad adapter_training/g5g6_rank4_20260517T040000Z/fixture adapter_training/g5g6_rank4_20260517T040000Z/checkpoint adapter_training/g5_rank4_grad_20260517T040000Z
+RunPod: compare_adapter_training.py --phone-output /workspace/artifacts/polymath_gemma4/adapter_training/g5_phone_rank4_grad_20260517T040000Z --reference /workspace/artifacts/polymath_gemma4/adapter_training/g5g6_rank4_20260517T040000Z/reference --threshold 0.99

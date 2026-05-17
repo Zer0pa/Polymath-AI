@@ -1,0 +1,28 @@
+{
+  "checks": [
+    {
+      "evidence": "input_ids and attention_mask were produced by phone runner from phone-fetched raw CSV; RunPod only compared.",
+      "name": "host_side_tokenization",
+      "status": "pass"
+    },
+    {
+      "evidence": "RunPod transformers comparator reports zero input ID and attention mask mismatches.",
+      "name": "tokenizer_drift",
+      "status": "pass"
+    },
+    {
+      "evidence": "Hugging Face dataset card records license cc0-1.0.",
+      "name": "license_ambiguity",
+      "status": "pass"
+    },
+    {
+      "evidence": "Gate result limits promotion to HF stream/tokenize/pack.",
+      "name": "training_claim_inflation",
+      "status": "pass"
+    }
+  ],
+  "critical_unresolved": [],
+  "promotion_decision": "promote_g7_only",
+  "run_id": "20260517T040000Z_g7_hf_native_token_pack",
+  "scope": "G7 phone-native HF stream tokenizer packer"
+}

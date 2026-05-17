@@ -1,0 +1,24 @@
+{
+  "attempted_promotion": "combine G7 phone-packed token cache with G5/G6 adapter training runtime",
+  "failure": "No phone-native path exists yet from packed token IDs to Gemma layer0 hidden/per_layer_input tensors consumed by the adapter training step.",
+  "gate": "G8 - Integrated Training",
+  "non_claims": [
+    "No streamed-corpus training update was promoted.",
+    "No checkpoint from streamed text was promoted."
+  ],
+  "passed_prerequisites": [
+    "G5 adapter backward/update substrate",
+    "G6 phone SGD update substrate",
+    "G7 phone HF stream/tokenizer/UFS cache"
+  ],
+  "required_next_engineering_tasks": [
+    "Implement phone-native Gemma token embedding lookup for packed token IDs or a validated embedding-shard format treated as model weights, not runtime data.",
+    "Implement or derive phone-native per_layer_input generation for Gemma4 E4B text layers.",
+    "Run layer0 forward from phone-packed token IDs through phone-produced hidden/per_layer_input tensors.",
+    "Feed the resulting phone-produced layer0 activation into the adapter backward/update path and emit adapter checkpoint.",
+    "Compare token-to-hidden and adapter update against RunPod PyTorch without host hidden tensors in the runtime path."
+  ],
+  "run_id": "20260517T040000Z_g8_streamed_corpus_falsified",
+  "status": "fail_under_falsification",
+  "why_not_promoted": "Using the existing G5/G6 hidden-state fixture for streamed text would depend on RunPod-generated hidden tensors and violate the phone runtime data-path requirement."
+}

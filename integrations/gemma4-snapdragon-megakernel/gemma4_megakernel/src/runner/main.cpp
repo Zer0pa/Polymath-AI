@@ -1,7 +1,11 @@
 #include <exception>
+#include <cstdlib>
+#include <cstdint>
 #include <iostream>
 #include <string>
 
+#include "polymath/gemma4/adapter_training.h"
+#include "polymath/gemma4/data_pipeline.h"
 #include "polymath/gemma4/device_backend.h"
 #include "polymath/gemma4/json_writer.h"
 #include "polymath/gemma4/layer_pack_reader.h"
@@ -14,10 +18,13 @@ void print_help() {
       << "Usage: gemma4_layer_runner [--help] [--probe] [--validate-pack DIR]\n"
       << "                           [--run-opencl PACK_DIR OUT_DIR]\n"
       << "                           [--run-opencl-stack PACK0 PACK1 OUT_DIR]\n"
+      << "                           [--run-adapter-grad FIXTURE CHECKPOINT OUT_DIR]\n"
+      << "                           [--run-adapter-sgd FIXTURE CHECKPOINT OUT_DIR LR]\n"
+      << "                           [--tokenize-pack TOKENIZER_DIR RAW_TEXT OUT_DIR SEQ N URL]\n"
       << "\n"
       << "Current authority gates: Gemma 4 E4B layer forward-only and stack\n"
-      << "forward-only on REDMAGIC SM8750 Adreno via OpenCL, p50 cosine >= 0.99\n"
-      << "vs RunPod PyTorch.\n"
+      << "forward-only plus rank-4 adapter backward/update on REDMAGIC SM8750\n"
+      << "Adreno via OpenCL, compared against RunPod PyTorch.\n"
       << "\n"
       << "This runner does not claim gate success unless a full real-weight layer\n"
       << "output is produced on a GPU backend and audited externally.\n";
@@ -81,6 +88,64 @@ int run_opencl_stack(int argc, char** argv, int index) {
   return 0;
 }
 
+int run_adapter_grad(int argc, char** argv, int index) {
+  if ((index + 3) >= argc) {
+    throw std::invalid_argument(
+        "--run-adapter-grad requires FIXTURE, CHECKPOINT, and OUT_DIR");
+  }
+  const polymath::gemma4::Status status =
+      polymath::gemma4::run_opencl_adapter_gradient_step(argv[index + 1],
+                                                         argv[index + 2],
+                                                         argv[index + 3]);
+  if (!status.is_ok()) {
+    std::cerr << status.message() << '\n';
+    return 6;
+  }
+  return 0;
+}
+
+int run_adapter_sgd(int argc, char** argv, int index) {
+  if ((index + 4) >= argc) {
+    throw std::invalid_argument(
+        "--run-adapter-sgd requires FIXTURE, CHECKPOINT, OUT_DIR, and LR");
+  }
+  char* end = nullptr;
+  const float learning_rate = std::strtof(argv[index + 4], &end);
+  if (end == argv[index + 4] || *end != '\0') {
+    throw std::invalid_argument("--run-adapter-sgd LR must be a float");
+  }
+  const polymath::gemma4::Status status =
+      polymath::gemma4::run_opencl_adapter_sgd_update(argv[index + 1],
+                                                      argv[index + 2],
+                                                      argv[index + 3],
+                                                      learning_rate);
+  if (!status.is_ok()) {
+    std::cerr << status.message() << '\n';
+    return 7;
+  }
+  return 0;
+}
+
+int run_tokenize_pack(int argc, char** argv, int index) {
+  if ((index + 6) >= argc) {
+    throw std::invalid_argument(
+        "--tokenize-pack requires TOKENIZER_DIR, RAW_TEXT, OUT_DIR, SEQ, N, and URL");
+  }
+  const auto sequence_length =
+      static_cast<std::uint32_t>(std::stoul(argv[index + 4]));
+  const auto max_sequences =
+      static_cast<std::uint32_t>(std::stoul(argv[index + 5]));
+  const polymath::gemma4::Status status =
+      polymath::gemma4::run_tokenize_pack(argv[index + 1], argv[index + 2],
+                                          argv[index + 3], sequence_length,
+                                          max_sequences, argv[index + 6]);
+  if (!status.is_ok()) {
+    std::cerr << status.message() << '\n';
+    return 8;
+  }
+  return 0;
+}
+
 }  // namespace
 
 int main(int argc, char** argv) {
@@ -110,6 +175,15 @@ int main(int argc, char** argv) {
       }
       if (argument == "--run-opencl-stack") {
         return run_opencl_stack(argc, argv, index);
+      }
+      if (argument == "--run-adapter-grad") {
+        return run_adapter_grad(argc, argv, index);
+      }
+      if (argument == "--run-adapter-sgd") {
+        return run_adapter_sgd(argc, argv, index);
+      }
+      if (argument == "--tokenize-pack") {
+        return run_tokenize_pack(argc, argv, index);
       }
       throw std::invalid_argument("unknown argument: " + argument);
     }

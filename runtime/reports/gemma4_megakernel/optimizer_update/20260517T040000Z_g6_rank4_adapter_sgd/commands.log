@@ -1,0 +1,5 @@
+# G6 rank-4 adapter SGD commands
+Phone: sha256sum layer0/layer1 frozen safetensors before update.
+Phone: ./gemma4_layer_runner_g456 --run-adapter-sgd adapter_training/g5g6_rank4_20260517T040000Z/fixture adapter_training/g5g6_rank4_20260517T040000Z/checkpoint adapter_training/g6_rank4_sgd_20260517T040000Z 0.01
+Phone: sha256sum layer0/layer1 frozen safetensors after update.
+RunPod: compare_adapter_training.py --phone-output /workspace/artifacts/polymath_gemma4/adapter_training/g6_phone_rank4_sgd_20260517T040000Z --reference /workspace/artifacts/polymath_gemma4/adapter_training/g5g6_rank4_20260517T040000Z/reference --threshold 0.99 --check-update

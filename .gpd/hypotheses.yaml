@@ -71,7 +71,7 @@ hypotheses:
     first_evidence:
       - seq128/256/512 memory reports.
       - one valid train step with frozen-base invariant.
-    status: active_after_PRD_engineering
+    status: supported_by_G5_G6_adapter_update_but_not_streamed_training
   H6_existing_harness_salvage:
     claim: Existing Polymath phone/QNN/Vulkan/OpenCL harness work can be reused without carrying forward model-first drift.
     first_evidence:
@@ -85,4 +85,11 @@ hypotheses:
       - UFS packed shard manifest with checksums.
       - integrated train_loop gate_result.json.
       - checkpoint or adapter artifact manifest.
-    status: terminal_objective
+    status: partially_supported_by_G7_blocked_at_G8_token_to_hidden_bridge
+  H8_phone_native_token_to_hidden_bridge:
+    claim: Phone-packed Gemma token IDs can be transformed into layer_input and per_layer_input tensors on REDMAGIC from frozen Gemma embedding and PLE assets without host hidden-state fixtures.
+    first_evidence:
+      - phone-generated layer_input and per_layer_input parity against RunPod oracle.
+      - G1 and G3 re-run using phone-generated tensors from G7 token cache.
+      - integrated adapter update consuming phone-generated h0 and phone-generated h1 teacher.
+    status: next_required_repair_after_G8_falsifier

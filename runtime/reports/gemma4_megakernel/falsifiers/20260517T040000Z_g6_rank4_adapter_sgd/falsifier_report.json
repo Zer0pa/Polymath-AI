@@ -1,0 +1,28 @@
+{
+  "checks": [
+    {
+      "evidence": "Updated checkpoint files were emitted by phone runner; RunPod only compared.",
+      "name": "host_update_substitution",
+      "status": "pass"
+    },
+    {
+      "evidence": "Updated adapter_a/b hashes differ from input checkpoint hashes.",
+      "name": "trainable_not_mutated",
+      "status": "pass"
+    },
+    {
+      "evidence": "Layer0 and layer1 safetensors hashes match pre/post phone update.",
+      "name": "frozen_base_mutated",
+      "status": "pass"
+    },
+    {
+      "evidence": "update comparator cosine_min 0.9999999999999384 with failed_tensor_count 0.",
+      "name": "update_tolerance",
+      "status": "pass"
+    }
+  ],
+  "critical_unresolved": [],
+  "promotion_decision": "promote_g6_only",
+  "run_id": "20260517T040000Z_g6_rank4_adapter_sgd",
+  "scope": "G6 rank4 adapter SGD update"
+}

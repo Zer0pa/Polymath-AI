@@ -1,0 +1,23 @@
+{
+  "checks": [
+    {
+      "evidence": "Interfaces are limited to tensor storage, backend execution, comparator, telemetry, checkpoint storage, and training step execution; adapter executor is wired to phone OpenCL kernels.",
+      "name": "decorative_abstraction",
+      "status": "pass"
+    },
+    {
+      "evidence": "Latest runner reproduced G1 and G3 output hashes byte-identically.",
+      "name": "forward_regression",
+      "status": "pass"
+    },
+    {
+      "evidence": "G4 report explicitly limits promotion to architecture.",
+      "name": "training_claim_inflation",
+      "status": "pass"
+    }
+  ],
+  "critical_unresolved": [],
+  "promotion_decision": "promote_g4_only",
+  "run_id": "20260517T040000Z_g4_minimal_executor",
+  "scope": "G4 minimal executor architecture"
+}

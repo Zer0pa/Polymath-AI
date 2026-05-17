@@ -1,0 +1,83 @@
+{
+  "checks": [
+    {
+      "candidate": {
+        "path": "/workspace/artifacts/polymath_gemma4/adapter_training/g6_phone_rank4_sgd_20260517T040000Z/adapter_grad_a.f32.bin",
+        "sha256": "065c1d201dfb24fecdffd5ca7b177c711fed0d4fa721d94de5a4c0d963db4b8f"
+      },
+      "cosine": 0.9999999999999384,
+      "element_count": 10240,
+      "finite": true,
+      "max_abs_error": 2.637889906509372e-12,
+      "mean_abs_error": 4.348888637613791e-14,
+      "name": "adapter_grad_a",
+      "reference": {
+        "path": "/workspace/artifacts/polymath_gemma4/adapter_training/g5g6_rank4_20260517T040000Z/reference/adapter_grad_a.f32.bin",
+        "sha256": "bb5e7b06e569b1f9ea66d1c6e176e9ff6ed0fbc21bd27c72ae7293eb546d9834"
+      },
+      "status": "pass",
+      "threshold": 0.99
+    },
+    {
+      "candidate": {
+        "path": "/workspace/artifacts/polymath_gemma4/adapter_training/g6_phone_rank4_sgd_20260517T040000Z/adapter_grad_b.f32.bin",
+        "sha256": "166d03ff6a2f59e846323afc34e2bbd3fdc5f14c49c283b81c23baff1f6503c1"
+      },
+      "cosine": 0.9999999999999911,
+      "element_count": 10240,
+      "finite": true,
+      "max_abs_error": 1.8189894035458565e-12,
+      "mean_abs_error": 1.9904336467948507e-14,
+      "name": "adapter_grad_b",
+      "reference": {
+        "path": "/workspace/artifacts/polymath_gemma4/adapter_training/g5g6_rank4_20260517T040000Z/reference/adapter_grad_b.f32.bin",
+        "sha256": "de1f34500a8bff3a146e4fa1cecf3f026fb243eb0fc60681181fe2113cb9ba02"
+      },
+      "status": "pass",
+      "threshold": 0.99
+    },
+    {
+      "candidate": {
+        "path": "/workspace/artifacts/polymath_gemma4/adapter_training/g6_phone_rank4_sgd_20260517T040000Z/checkpoint/adapter_a.f32.bin",
+        "sha256": "5bbaf55a3d05380ccf9fe2003dfb5a49f72c6e690da555d8688f5d0496fa4ad1"
+      },
+      "cosine": 1.0,
+      "element_count": 10240,
+      "finite": true,
+      "max_abs_error": 3.637978807091713e-12,
+      "mean_abs_error": 3.5685430305187894e-16,
+      "name": "updated_adapter_a",
+      "reference": {
+        "path": "/workspace/artifacts/polymath_gemma4/adapter_training/g5g6_rank4_20260517T040000Z/reference/checkpoint/adapter_a.f32.bin",
+        "sha256": "75a5c30c1d023855f5a08467bc0597fca1dadf4a084916d90a16e5458981a21a"
+      },
+      "status": "pass",
+      "threshold": 0.99
+    },
+    {
+      "candidate": {
+        "path": "/workspace/artifacts/polymath_gemma4/adapter_training/g6_phone_rank4_sgd_20260517T040000Z/checkpoint/adapter_b.f32.bin",
+        "sha256": "cfe25a08caa1481b4456a0bb244d2623690de9183f441bf4da95070fbaffed83"
+      },
+      "cosine": 1.0,
+      "element_count": 10240,
+      "finite": true,
+      "max_abs_error": 3.637978807091713e-12,
+      "mean_abs_error": 3.5665914666083153e-16,
+      "name": "updated_adapter_b",
+      "reference": {
+        "path": "/workspace/artifacts/polymath_gemma4/adapter_training/g5g6_rank4_20260517T040000Z/reference/checkpoint/adapter_b.f32.bin",
+        "sha256": "c5a18621d9931ee1bbe67913aa57b9f568371d4868489823fd9a3bfc6c6b37a3"
+      },
+      "status": "pass",
+      "threshold": 0.99
+    }
+  ],
+  "cosine_min": 0.9999999999999384,
+  "cosine_p50": 0.9999999999999956,
+  "failed_tensor_count": 0,
+  "schema_version": "gemma4_adapter_training_compare_v1",
+  "status": "pass",
+  "tensor_count": 4,
+  "threshold": 0.99
+}

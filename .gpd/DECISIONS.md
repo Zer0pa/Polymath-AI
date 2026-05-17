@@ -26,3 +26,25 @@ fused megakernel, backward, optimizer, training, NPU, or sustained stability.
 **Rationale:** The manifest policy prevents root overlay drift and forbids
 weights, raw binaries, SDKs, build trees, caches, and secrets.
 **Outcome:** Active.
+
+## D004 - Minimal Adapter Training Scope
+
+**Date:** 2026-05-17
+**Decision:** Use a rank-4 post-layer0 residual adapter as the first trainable
+scope for G5/G6.
+**Rationale:** This is the smallest real trainable scope that can exercise
+phone-side backward and optimizer update while keeping Gemma base tensors
+frozen and hash-stable.
+**Outcome:** G5 and G6 passed; scope remains a substrate, not a terminal
+training claim.
+
+## D005 - Reject Hidden-State Fixture Path For G8
+
+**Date:** 2026-05-17
+**Decision:** Reject G8 promotion while the training step consumes
+RunPod-derived hidden-state fixtures.
+**Rationale:** The authority runtime path must start from phone-streamed raw
+text and phone-packed token IDs. Hidden tensors are allowed only as oracle
+comparison outputs, not phone runtime inputs.
+**Outcome:** G8 was marked `fail_under_falsification`; next repair is
+phone-native `input_ids -> layer_input + per_layer_input` generation.

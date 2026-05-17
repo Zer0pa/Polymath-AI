@@ -1,0 +1,28 @@
+{
+  "checks": [
+    {
+      "evidence": "Phone wrote adapter_grad_a/b from OpenCL runner; RunPod used only as comparator.",
+      "name": "host_gradient_substitution",
+      "status": "pass"
+    },
+    {
+      "evidence": "Comparator reports finite gradients for both tensors.",
+      "name": "non_finite_gradient",
+      "status": "pass"
+    },
+    {
+      "evidence": "cosine_min 0.9999999999999384 >= 0.99 and failed_tensor_count 0.",
+      "name": "gradient_tolerance",
+      "status": "pass"
+    },
+    {
+      "evidence": "Gate result limits promotion to adapter backward path.",
+      "name": "training_claim_inflation",
+      "status": "pass"
+    }
+  ],
+  "critical_unresolved": [],
+  "promotion_decision": "promote_g5_only",
+  "run_id": "20260517T040000Z_g5_rank4_adapter_opencl",
+  "scope": "G5 rank4 adapter backward"
+}

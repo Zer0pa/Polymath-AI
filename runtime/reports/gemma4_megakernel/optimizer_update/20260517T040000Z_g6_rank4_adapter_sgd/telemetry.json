@@ -1,0 +1,32 @@
+{
+  "schema_version": "gemma4_opencl_adapter_training_step_telemetry_v1",
+  "backend": "opencl",
+  "model_id": "google/gemma-4-E4B",
+  "revision": "7aa32e6889efd6300124851b164f8b364314c3d8",
+  "trainable_scope": "post_layer0_rank4_residual_adapter",
+  "kernel_contract": "adapter_backward_real_hidden_state_no_host_gradient",
+  "case_count": 8,
+  "seq": 128,
+  "hidden_size": 2560,
+  "rank": 4,
+  "adapter_scale": 0.25000000,
+  "active_tokens": 111,
+  "loss_half_mse": 1.6367198658,
+  "applied_update": true,
+  "learning_rate": 0.0099999998,
+  "opencl_library": "libOpenCL.so",
+  "elapsed_seconds": 0.602772,
+  "max_rss_kb": 99512,
+  "input_checkpoint_sha256": {
+    "adapter_a": "20f2f42d5079b7b3c87305bff5b6234a353ce0e19d40d9b8b3f94681abd38335",
+    "adapter_b": "8ddab43db8638bd204491b09935eb50319106216e72047d9062223bd60ddb205"
+  },
+  "gradient_sha256": {
+    "adapter_a": "065c1d201dfb24fecdffd5ca7b177c711fed0d4fa721d94de5a4c0d963db4b8f",
+    "adapter_b": "166d03ff6a2f59e846323afc34e2bbd3fdc5f14c49c283b81c23baff1f6503c1"
+  },
+  "updated_checkpoint_sha256": {
+    "adapter_a": "5bbaf55a3d05380ccf9fe2003dfb5a49f72c6e690da555d8688f5d0496fa4ad1",
+    "adapter_b": "cfe25a08caa1481b4456a0bb244d2623690de9183f441bf4da95070fbaffed83"
+  }
+}

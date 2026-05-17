@@ -2,7 +2,7 @@
   "project_reference": {
     "project_md_updated": "2026-05-17",
     "core_research_question": "Can Polymath-AI execute and validate a real Gemma 4 training run natively on REDMAGIC SM8750 without substituting Mac or RunPod for any runtime data-path stage?",
-    "current_focus": "Phase 3: Executor Architecture"
+    "current_focus": "Phase 7: Integrated Training blocked under falsification"
   },
   "project_contract": {
     "schema_version": 1,
@@ -481,22 +481,30 @@
     }
   },
   "position": {
-    "current_phase": "03",
-    "current_phase_name": "Executor Architecture",
+    "current_phase": "07",
+    "current_phase_name": "Integrated Training",
     "total_phases": 10,
     "current_plan": "1",
     "total_plans_in_phase": 1,
-    "status": "Ready to plan",
+    "status": "Blocked",
     "last_activity": "2026-05-17",
-    "last_activity_desc": "G2 import/regression and G3 two-layer phone OpenCL forward expansion passed; G1 remained green.",
-    "progress_percent": 30,
+    "last_activity_desc": "G4 minimal executor architecture, G5 adapter backward, G6 phone SGD update, and G7 phone-native HF stream/tokenize/pack passed. G8 integrated training was rejected because the current training step still consumes hidden-state fixtures instead of deriving Gemma hidden/per-layer inputs from phone-packed token IDs.",
+    "progress_percent": 70,
     "paused_at": null
   },
   "active_calculations": [],
-  "intermediate_results": [],
+  "intermediate_results": [
+    "G1 preserved as regression floor: runtime/reports/gemma4_megakernel/parity/20260516_e4b_layer0_opencl_gate/gate_result.json",
+    "G2 import/regression passed: runtime/reports/gemma4_megakernel/import_and_regression/20260517T030510Z_g2_import_regression/gate_result.json",
+    "G3 two-layer phone OpenCL forward passed: runtime/reports/gemma4_megakernel/forward_stack/20260517T032829Z_g3_two_layer_opencl/gate_result.json",
+    "G4 minimal executor architecture passed: runtime/reports/gemma4_megakernel/executor_architecture/20260517T040000Z_g4_minimal_executor/gate_result.json",
+    "G5 rank-4 adapter backward passed: runtime/reports/gemma4_megakernel/backward_path/20260517T040000Z_g5_rank4_adapter_opencl/gate_result.json",
+    "G6 phone-side SGD update passed: runtime/reports/gemma4_megakernel/optimizer_update/20260517T040000Z_g6_rank4_adapter_sgd/gate_result.json",
+    "G7 phone-native HF stream/tokenizer/UFS cache passed: runtime/reports/gemma4_megakernel/phone_data_pipeline/20260517T040000Z_g7_hf_native_token_pack/gate_result.json",
+    "G8 rejected under falsification: runtime/reports/gemma4_megakernel/integrated_training/20260517T040000Z_g8_streamed_corpus_falsified/gate_result.json"
+  ],
   "open_questions": [
-    "Which minimum adapter or low-rank trainable scope fits the first phone backward/update gate without violating frozen base hashes?",
-    "Which license-clean Hugging Face text slice is acceptable for the first authority training batch?",
+    "Which minimal G8 objective should be promoted after phone-native embedding generation: two-layer phone distillation to a stop-gradient layer1 target or chunked tied-embedding next-token CE/NLL?",
     "Whether OpenCL remains the first training backend or Vulkan earns the route after equal correctness evidence"
   ],
   "performance_metrics": {
@@ -526,11 +534,18 @@
     "custom_conventions": {}
   },
   "propagated_uncertainties": [],
-  "pending_todos": [],
-  "blockers": [],
+  "pending_todos": [
+    "Implement phone-native embedding gather from packed input_ids to layer_input.f32.",
+    "Implement phone-native Gemma PLE/per-layer-input generation for layers 0 and 1.",
+    "Extend phone cache ABI with labels, loss_mask, and position_ids.",
+    "Emit G8 checkpoint manifests with replay validation once streamed-corpus training consumes phone-produced tensors."
+  ],
+  "blockers": [
+    "G8 hidden-host-data-path risk: current G5/G6 update consumes hidden-state fixtures and cannot be claimed as streamed-corpus training."
+  ],
   "session": {
-    "last_date": null,
-    "stopped_at": null,
-    "resume_file": null
+    "last_date": "2026-05-17",
+    "stopped_at": "G8 rejected under falsification; next repair is phone-native token-to-hidden bridge.",
+    "resume_file": ".gpd/STATE.md"
   }
 }

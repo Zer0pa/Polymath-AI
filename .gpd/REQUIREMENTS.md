@@ -40,31 +40,31 @@ any runtime data-path stage?
 
 ### Executor Architecture
 
-- [ ] **ARCH-01**: Refactor direct runner into explicit `TensorStore`,
+- [x] **ARCH-01**: Refactor direct runner into explicit `TensorStore`,
   `LayerPackReader`, `BackendExecutor`, `ReferenceComparator`, `TelemetrySink`,
   `Tokenizer`, `SequencePacker`, `CheckpointStore`, and
   `TrainingStepExecutor` boundaries where useful.
-- [ ] **ARCH-02**: Avoid deep nesting, duplication, opaque names, and decorative
+- [x] **ARCH-02**: Avoid deep nesting, duplication, opaque names, and decorative
   abstractions.
-- [ ] **ARCH-03**: Keep G1 and G3 green after refactor.
+- [x] **ARCH-03**: Keep G1 and G3 green after refactor.
 
 ### Backward And Optimizer
 
-- [ ] **BACK-01**: Declare an adapter or low-rank trainable scope attached to
+- [x] **BACK-01**: Declare an adapter or low-rank trainable scope attached to
   E4B layer 0 and the minimum adjacent tensors required for a real update.
-- [ ] **BACK-02**: Produce PyTorch gradient reference, phone gradient output,
+- [x] **BACK-02**: Produce PyTorch gradient reference, phone gradient output,
   gradient cosine/error report, frozen pre/post hashes, and mutation contract.
-- [ ] **OPT-01**: Perform a phone-side optimizer update with optimizer state on
+- [x] **OPT-01**: Perform a phone-side optimizer update with optimizer state on
   phone, trainable tensor mutation, frozen base hash stability, finite loss,
   deterministic replay where expected, and G1 green.
 
 ### Phone Data Pipeline
 
-- [ ] **DATA-01**: Stream license-clean HF raw text directly to phone without
+- [x] **DATA-01**: Stream license-clean HF raw text directly to phone without
   printing or committing tokens.
-- [ ] **DATA-02**: Run Gemma tokenizer on phone CPU with exact token ID parity
+- [x] **DATA-02**: Run Gemma tokenizer on phone CPU with exact token ID parity
   for fixed samples.
-- [ ] **DATA-03**: Pack fixed-shape sequence shards on phone UFS with checksums
+- [x] **DATA-03**: Pack fixed-shape sequence shards on phone UFS with checksums
   and deterministic replay into identical batches.
 - [ ] **DATA-04**: Feed packed phone shards into the training runtime without
   Mac or RunPod serving batches.
@@ -141,15 +141,15 @@ any runtime data-path stage?
 | FWD-01 | Phase 2: Forward Expansion | Complete |
 | FWD-02 | Phase 2: Forward Expansion | Complete |
 | FWD-03 | Phase 2: Forward Expansion | Complete |
-| ARCH-01 | Phase 3: Executor Architecture | Pending |
-| ARCH-02 | Phase 3: Executor Architecture | Pending |
-| ARCH-03 | Phase 3: Executor Architecture | Pending |
-| BACK-01 | Phase 4: Backward Path | Pending |
-| BACK-02 | Phase 4: Backward Path | Pending |
-| OPT-01 | Phase 5: Optimizer Update | Pending |
-| DATA-01 | Phase 6: Phone Data Pipeline | Pending |
-| DATA-02 | Phase 6: Phone Data Pipeline | Pending |
-| DATA-03 | Phase 6: Phone Data Pipeline | Pending |
+| ARCH-01 | Phase 3: Executor Architecture | Complete |
+| ARCH-02 | Phase 3: Executor Architecture | Complete |
+| ARCH-03 | Phase 3: Executor Architecture | Complete |
+| BACK-01 | Phase 4: Backward Path | Complete |
+| BACK-02 | Phase 4: Backward Path | Complete |
+| OPT-01 | Phase 5: Optimizer Update | Complete |
+| DATA-01 | Phase 6: Phone Data Pipeline | Complete |
+| DATA-02 | Phase 6: Phone Data Pipeline | Complete |
+| DATA-03 | Phase 6: Phone Data Pipeline | Complete |
 | DATA-04 | Phase 6: Phone Data Pipeline | Pending |
 | TRN-01 | Phase 7: Integrated Training | Pending |
 | TRN-02 | Phase 7: Integrated Training | Pending |

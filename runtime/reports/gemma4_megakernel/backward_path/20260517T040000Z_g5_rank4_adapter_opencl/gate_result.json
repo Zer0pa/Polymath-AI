@@ -1,0 +1,23 @@
+{
+  "active_tokens": 111,
+  "backend": "opencl",
+  "cosine_min": 0.9999999999999384,
+  "cosine_p50": 0.9999999999999647,
+  "device": "REDMAGIC NX789J / SM8750",
+  "failed_tensor_count": 0,
+  "gate": "G5 - Backward Path",
+  "gradient_sha256": {
+    "adapter_a": "065c1d201dfb24fecdffd5ca7b177c711fed0d4fa721d94de5a4c0d963db4b8f",
+    "adapter_b": "166d03ff6a2f59e846323afc34e2bbd3fdc5f14c49c283b81c23baff1f6503c1"
+  },
+  "loss_half_mse": 1.6367198658,
+  "notes": [
+    "Adapter input is the phone G3 layer0 output; target is RunPod PyTorch layer1 output.",
+    "This passes adapter backward only and does not claim streamed-corpus training."
+  ],
+  "reference": "RunPod PyTorch autograd",
+  "run_id": "20260517T040000Z_g5_rank4_adapter_opencl",
+  "runpod_artifact": "/workspace/artifacts/polymath_gemma4/adapter_training/g5_phone_rank4_grad_20260517T040000Z",
+  "status": "pass",
+  "trainable_scope": "post_layer0_rank4_residual_adapter"
+}

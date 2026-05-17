@@ -1,0 +1,23 @@
+{
+  "attention_mask_mismatch_count": 0,
+  "attention_mask_sha256": "c96e916a25295777d39ec9dd0a4cb7c4fc060bbaf20216815c4086edbce021ad",
+  "gate": "G7 - Phone Native HF Streaming Tokenization Packing",
+  "input_id_mismatch_count": 0,
+  "input_ids_sha256": "0be704fd5ff89052b2066db969da84c5b0ae27628b88fe111d4ded781ce45d2d",
+  "non_pad_tokens": 343,
+  "notes": [
+    "Phone used native C++ BPE tables exported from Gemma tokenizer.json.",
+    "This passes data pipeline only; it does not claim streamed-corpus training update."
+  ],
+  "phone_fetch": "system curl on REDMAGIC to /data/local/tmp/polymath_gemma4_gate/hf_stream/g7/prompts_head.csv",
+  "raw_text_sha256": "8036c43dce1590335bd350d1eb690173e31e37e3e63b34efc4bd036d601a34d1",
+  "run_id": "20260517T040000Z_g7_hf_native_token_pack",
+  "runpod_artifact": "/workspace/artifacts/polymath_gemma4/hf_stream/g7_phone_token_cache_20260517T040000Z",
+  "selected_text_sha256": "fdd7a6afda48f4c0b9d3db980f6299eaf884a8bc90d067b83e91eb44d48cc9a4",
+  "sequence_count": 3,
+  "sequence_length": 128,
+  "source_license": "cc0-1.0 per Hugging Face dataset card for fka/prompts.chat",
+  "source_url": "https://huggingface.co/datasets/fka/awesome-chatgpt-prompts/resolve/main/prompts.csv",
+  "status": "pass",
+  "tokenizer": "native_cpp_bpe_from_tokenizer_json_tables"
+}

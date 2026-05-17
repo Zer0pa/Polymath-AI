@@ -1,0 +1,47 @@
+{
+  "checks": [
+    {
+      "candidate": {
+        "path": "/workspace/artifacts/polymath_gemma4/adapter_training/g5_phone_rank4_grad_20260517T040000Z/adapter_grad_a.f32.bin",
+        "sha256": "065c1d201dfb24fecdffd5ca7b177c711fed0d4fa721d94de5a4c0d963db4b8f"
+      },
+      "cosine": 0.9999999999999384,
+      "element_count": 10240,
+      "finite": true,
+      "max_abs_error": 2.637889906509372e-12,
+      "mean_abs_error": 4.348888637613791e-14,
+      "name": "adapter_grad_a",
+      "reference": {
+        "path": "/workspace/artifacts/polymath_gemma4/adapter_training/g5g6_rank4_20260517T040000Z/reference/adapter_grad_a.f32.bin",
+        "sha256": "bb5e7b06e569b1f9ea66d1c6e176e9ff6ed0fbc21bd27c72ae7293eb546d9834"
+      },
+      "status": "pass",
+      "threshold": 0.99
+    },
+    {
+      "candidate": {
+        "path": "/workspace/artifacts/polymath_gemma4/adapter_training/g5_phone_rank4_grad_20260517T040000Z/adapter_grad_b.f32.bin",
+        "sha256": "166d03ff6a2f59e846323afc34e2bbd3fdc5f14c49c283b81c23baff1f6503c1"
+      },
+      "cosine": 0.9999999999999911,
+      "element_count": 10240,
+      "finite": true,
+      "max_abs_error": 1.8189894035458565e-12,
+      "mean_abs_error": 1.9904336467948507e-14,
+      "name": "adapter_grad_b",
+      "reference": {
+        "path": "/workspace/artifacts/polymath_gemma4/adapter_training/g5g6_rank4_20260517T040000Z/reference/adapter_grad_b.f32.bin",
+        "sha256": "de1f34500a8bff3a146e4fa1cecf3f026fb243eb0fc60681181fe2113cb9ba02"
+      },
+      "status": "pass",
+      "threshold": 0.99
+    }
+  ],
+  "cosine_min": 0.9999999999999384,
+  "cosine_p50": 0.9999999999999647,
+  "failed_tensor_count": 0,
+  "schema_version": "gemma4_adapter_training_compare_v1",
+  "status": "pass",
+  "tensor_count": 2,
+  "threshold": 0.99
+}

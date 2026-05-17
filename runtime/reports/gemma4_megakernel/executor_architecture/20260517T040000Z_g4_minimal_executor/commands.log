@@ -1,0 +1,5 @@
+# G4 minimal executor architecture commands
+cmake -S integrations/gemma4-snapdragon-megakernel/gemma4_megakernel -B /tmp/polymath_gemma4_g456_build -DGEMMA4_MEGAKERNEL_WARNINGS_AS_ERRORS=ON
+cmake --build /tmp/polymath_gemma4_g456_build -j 4
+ctest --test-dir /tmp/polymath_gemma4_g456_build --output-on-failure
+adb shell 'cd /data/local/tmp/polymath_gemma4_gate && ./gemma4_layer_runner_g7 --run-opencl ... && ./gemma4_layer_runner_g7 --run-opencl-stack ...'

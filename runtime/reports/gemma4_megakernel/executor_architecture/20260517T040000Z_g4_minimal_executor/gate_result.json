@@ -1,0 +1,31 @@
+{
+  "concrete_training_executor": "OpenClAdapterTrainingStepExecutor",
+  "gate": "G4 - Executor Architecture",
+  "interfaces": [
+    "TensorStore",
+    "BackendExecutor",
+    "ReferenceComparator",
+    "TelemetrySink",
+    "CheckpointStore",
+    "TrainingStepExecutor"
+  ],
+  "non_claims": [
+    "No full Gemma layer backward claim",
+    "No streamed-corpus training claim"
+  ],
+  "run_id": "20260517T040000Z_g4_minimal_executor",
+  "scope": "minimal architecture needed to unlock training gates",
+  "source_paths": [
+    "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/include/polymath/gemma4/executor_interfaces.h",
+    "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/include/polymath/gemma4/adapter_training.h",
+    "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/include/polymath/gemma4/data_pipeline.h"
+  ],
+  "status": "pass",
+  "verification": {
+    "g1_regression_output_sha256_latest_runner": "cef523f674cff7ecd01cb59040048f9188f80bcb58b9fc47f1fa7f370ce332cf",
+    "g3_regression_output_sha256_latest_runner": "ce285f30d5eb7e5e6164643b0cdd324c11977f91c4ba52e682512d5c9190d538",
+    "mac_cmake_build": "pass",
+    "mac_ctest": "2/2 pass",
+    "python_syntax_checks": "pass"
+  }
+}

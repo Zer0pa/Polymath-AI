@@ -7,6 +7,7 @@ option(GEMMA4_MEGAKERNEL_WARNINGS_AS_ERRORS "Treat warnings as errors" ON)
 add_library(gemma4_megakernel_core STATIC
   src/core/json_writer.cpp
   src/core/sha256.cpp
+  src/data/tokenizer_packer.cpp
   src/model/layer_pack_reader.cpp
   src/backends/device_probe.cpp
   src/backends/cpu_debug_backend.cpp
