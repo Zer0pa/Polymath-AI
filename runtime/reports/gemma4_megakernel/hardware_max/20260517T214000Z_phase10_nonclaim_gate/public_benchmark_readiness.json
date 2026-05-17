@@ -1,0 +1,25 @@
+{
+  "accepted_evidence_scope": "REDMAGIC phone-native Gemma4 E4B two-layer distillation token-to-hidden bridge; repeated-token PLE projection cache only",
+  "authority_verdict": "public_benchmark_readiness_not_promoted",
+  "blockers": [
+    "hexagon_training_gate_if_claimed",
+    "full_training_scope_gate",
+    "public_corpus_license_manifest",
+    "benchmark_rule_harness",
+    "multi_run_statistics",
+    "artifact_publication_manifest"
+  ],
+  "claim": "public benchmark readiness",
+  "generated_at_utc": "2026-05-17T21:44:57Z",
+  "required": {
+    "artifact_publication_manifest": false,
+    "benchmark_rule_harness": false,
+    "full_training_scope_gate": false,
+    "hexagon_training_gate_if_claimed": false,
+    "multi_run_statistics": false,
+    "public_corpus_license_manifest": false,
+    "six_hour_endurance_gate": true
+  },
+  "schema_version": "gemma4_phase10_public_benchmark_readiness_v1",
+  "status": "fail"
+}

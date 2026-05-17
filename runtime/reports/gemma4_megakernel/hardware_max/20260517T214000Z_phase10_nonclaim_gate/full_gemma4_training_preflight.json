@@ -1,0 +1,17 @@
+{
+  "authority_verdict": "full_gemma4_training_not_promoted",
+  "blockers": [
+    "Current authority lane updates only a rank-4 post-layer0 residual adapter.",
+    "Only Gemma4 layer0/layer1 frozen-forward outputs are in the phone training loop.",
+    "No full text-stack backward/update/checkpoint schema exists for all Gemma4 trainable parameters.",
+    "The objective remains two-layer distillation, not full next-token Gemma4 training."
+  ],
+  "claim": "full Gemma4 training",
+  "generated_at_utc": "2026-05-17T21:44:57Z",
+  "implemented_scope": "REDMAGIC phone-native Gemma4 E4B two-layer distillation token-to-hidden bridge; repeated-token PLE projection cache only",
+  "observed_layer_count": 2,
+  "observed_rank": 4,
+  "observed_trainable_scope": "post_layer0_rank4_residual_adapter",
+  "schema_version": "gemma4_phase10_full_training_preflight_v1",
+  "status": "fail"
+}

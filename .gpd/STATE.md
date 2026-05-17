@@ -17,11 +17,11 @@ any runtime data-path stage?
 **Current Phase:** 10
 **Current Phase Name:** Hardware Max Training Pipeline
 **Total Phases:** 11
-**Current Plan:** 1
+**Current Plan:** 2
 **Total Plans in Phase:** ongoing
-**Status:** First candidate complete; continuing hardware-max backlog
+**Status:** Plan 10-02 mixed: six-hour endurance promoted; remaining non-claims blocked
 **Last Activity:** 2026-05-17
-**Last Activity Description:** Phase 10 instrumented an HF-authenticated phone training baseline, ranked PLE projection as the dominant token-bridge bottleneck, integrated a projected PLE row cache, and passed the optimized phone A/B gate with all parity checks intact.
+**Last Activity Description:** Phase 10 ran the six-hour phone endurance gate for the current rank-4 two-layer lane and passed it; QNN/HTP training, full Gemma4 training, public benchmark readiness, and theoretical maximum gates remain failed or blocked.
 
 **Progress:** [█████████░] 92%
 
@@ -61,6 +61,16 @@ any runtime data-path stage?
 - Phase 10 projected PLE cache passed and was promoted for the narrow current
   training path:
   `runtime/reports/gemma4_megakernel/hardware_max/20260517T084203Z_phase10_projected_ple_cache/gate_result.json`.
+- Phase 10 six-hour endurance passed for the current rank-4 two-layer phone
+  training path:
+  `runtime/reports/gemma4_megakernel/hardware_max/20260517T153500Z_phase10_six_hour_endurance/gate_result.json`.
+- Phase 10 QNN/HTP probe passed platform and inference checks but failed the
+  Hexagon training promotion gate:
+  `runtime/reports/gemma4_megakernel/hardware_max/20260517T213600Z_phase10_qnn_htp_probe/gate_result.json`.
+- Phase 10 non-claim summary remains failed overall: only six-hour endurance is
+  resolved; full Gemma4 training, Hexagon NPU training, public benchmark
+  readiness, and theoretical maximum remain blocked:
+  `runtime/reports/gemma4_megakernel/hardware_max/20260517T214000Z_phase10_nonclaim_gate/gate_result.json`.
 
 ## Open Questions
 
@@ -88,6 +98,7 @@ any runtime data-path stage?
 | Phase 9 final falsifier | pass | no failed checks | Narrow rank-4 two-layer distillation adapter claim only |
 | Phase 10 baseline token bridge | `4.232976s` | 796 active tokens, 285 unique token IDs | HF-auth phone training run |
 | Phase 10 projected PLE cache | `0.667287s` | token-to-hidden bridge | `6.343561316195281x` speedup, all parity gates pass |
+| Phase 10 six-hour endurance | `21692.164205625013s` | 465 chained phone training iterations | sampled parity pass; max thermal status `0` |
 
 ## Accumulated Context
 
@@ -150,13 +161,13 @@ Full log: `.gpd/DECISIONS.md`
 - Phase 9 promotion is narrow only: rank-4 post-layer0 residual adapter,
   two-layer distillation path, phone token cache, OpenCL layers/adapter, and
   checkpoint chain. It is not full Gemma 4 training.
-- Phase 10 first candidate promotes only projected PLE caching for the current
-  narrow route. It is not Hexagon NPU training, six-hour endurance, public
-  benchmark readiness, or theoretical maximum reached.
+- Phase 10 promotes projected PLE caching and six-hour wall-clock endurance for
+  the current narrow route only. It is not Hexagon NPU training, full Gemma4
+  training, public benchmark readiness, or theoretical maximum reached.
 
 ## Session Continuity
 
 **Last session:** 2026-05-17
-**Stopped at:** Phase 10 projected PLE cache accepted; next work is the next
-hardware-max candidate under the same phone A/B authority discipline.
+**Stopped at:** Phase 10 plan 10-02 mixed gate result: six-hour endurance
+accepted for the narrow current lane; remaining non-claims stay blocked.
 **Resume file:** `.gpd/STATE.md`

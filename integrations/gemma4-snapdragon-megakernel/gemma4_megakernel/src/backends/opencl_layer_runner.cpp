@@ -1664,7 +1664,8 @@ void write_streamed_artifact_manifest(const std::string& token_cache_dir,
                                       const std::string& layer0_pack_dir,
                                       const std::string& layer1_pack_dir,
                                       const std::string& checkpoint_dir,
-                                      const std::string& output_dir) {
+                                      const std::string& output_dir,
+                                      bool include_runtime_outputs) {
   std::ofstream file(join_path(output_dir, "artifact_manifest.json"));
   if (!file) {
     throw std::runtime_error("unable to create streamed artifact manifest");
@@ -1711,15 +1712,21 @@ void write_streamed_artifact_manifest(const std::string& token_cache_dir,
   write_sha_field(file, "adapter_a_post", join_path(output_dir, "checkpoint/adapter_a.f32.bin"), true);
   write_sha_field(file, "adapter_b_post", join_path(output_dir, "checkpoint/adapter_b.f32.bin"), false);
   file << "  },\n";
-  file << "  \"runtime_outputs\": {\n";
-  write_sha_field(file, "layer_input", join_path(generated_dir, "layer_input.f32.bin"), true);
-  write_sha_field(file, "per_layer_input_layer0", join_path(generated_dir, "per_layer_input_layer0.f32.bin"), true);
-  write_sha_field(file, "per_layer_input_layer1", join_path(generated_dir, "per_layer_input_layer1.f32.bin"), true);
-  write_sha_field(file, "layer0_output", join_path(output_dir, "layer0_output.f32.bin"), true);
-  write_sha_field(file, "layer1_output", join_path(output_dir, "layer1_output.f32.bin"), true);
-  write_sha_field(file, "adapter_grad_a", join_path(output_dir, "adapter_grad_a.f32.bin"), true);
-  write_sha_field(file, "adapter_grad_b", join_path(output_dir, "adapter_grad_b.f32.bin"), false);
-  file << "  }\n";
+  file << "  \"runtime_outputs\": ";
+  if (include_runtime_outputs) {
+    file << "{\n";
+    write_sha_field(file, "layer_input", join_path(generated_dir, "layer_input.f32.bin"), true);
+    write_sha_field(file, "per_layer_input_layer0", join_path(generated_dir, "per_layer_input_layer0.f32.bin"), true);
+    write_sha_field(file, "per_layer_input_layer1", join_path(generated_dir, "per_layer_input_layer1.f32.bin"), true);
+    write_sha_field(file, "layer0_output", join_path(output_dir, "layer0_output.f32.bin"), true);
+    write_sha_field(file, "layer1_output", join_path(output_dir, "layer1_output.f32.bin"), true);
+    write_sha_field(file, "adapter_grad_a", join_path(output_dir, "adapter_grad_a.f32.bin"), true);
+    write_sha_field(file, "adapter_grad_b", join_path(output_dir, "adapter_grad_b.f32.bin"), false);
+    file << "  }\n";
+  } else {
+    file << "{\"omitted_in_compact_endurance_iteration\": true, "
+         << "\"sample_iteration_required_for_tensor_parity\": true}\n";
+  }
   file << "}\n";
 }
 
@@ -1757,14 +1764,19 @@ void write_streamed_replay_manifest(const std::string& token_cache_dir,
                                     const std::string& layer1_pack_dir,
                                     const std::string& checkpoint_dir,
                                     const std::string& output_dir,
-                                    float learning_rate) {
+                                    float learning_rate,
+                                    bool write_raw_outputs) {
   std::ofstream file(join_path(output_dir, "replay_manifest.json"));
   if (!file) {
     throw std::runtime_error("unable to create streamed replay manifest");
   }
   file << "{\n";
   file << "  \"schema_version\": \"gemma4_streamed_distill_replay_v1\",\n";
-  file << "  \"command\": \"gemma4_layer_runner --run-g8-distill TOKEN_CACHE ASSETS PACK0 PACK1 CHECKPOINT OUT_DIR LR\",\n";
+  file << "  \"command\": ";
+  write_json_string(file, write_raw_outputs
+                              ? "gemma4_layer_runner --run-g8-distill TOKEN_CACHE ASSETS PACK0 PACK1 CHECKPOINT OUT_DIR LR"
+                              : "gemma4_layer_runner --run-g8-distill-compact TOKEN_CACHE ASSETS PACK0 PACK1 CHECKPOINT OUT_DIR LR");
+  file << ",\n";
   file << "  \"token_cache_dir\": ";
   write_json_string(file, token_cache_dir);
   file << ",\n  \"asset_dir\": ";
@@ -1778,7 +1790,9 @@ void write_streamed_replay_manifest(const std::string& token_cache_dir,
   file << ",\n  \"output_dir\": ";
   write_json_string(file, output_dir);
   file << ",\n  \"learning_rate\": " << std::fixed << std::setprecision(10)
-       << learning_rate << "\n";
+       << learning_rate << ",\n";
+  file << "  \"raw_outputs_written\": "
+       << (write_raw_outputs ? "true" : "false") << "\n";
   file << "}\n";
 }
 
@@ -2214,7 +2228,8 @@ Status run_opencl_streamed_distill_update(const std::string& token_cache_dir,
                                           const std::string& layer1_pack_dir,
                                           const std::string& checkpoint_dir,
                                           const std::string& output_dir,
-                                          float learning_rate) {
+                                          float learning_rate,
+                                          bool write_raw_outputs) {
   try {
     if (!(learning_rate > 0.0F) || !std::isfinite(learning_rate)) {
       return Status::invalid("learning rate must be finite and positive");
@@ -2225,30 +2240,38 @@ Status run_opencl_streamed_distill_update(const std::string& token_cache_dir,
 
     const TokenHiddenInputs token_inputs =
         generate_token_hidden_inputs(token_cache_dir, asset_dir);
-    write_binary_vector(join_path(output_dir, "generated/layer_input.f32.bin"),
-                        token_inputs.layer_input);
-    write_binary_vector(join_path(output_dir, "generated/per_layer_input_layer0.f32.bin"),
-                        token_inputs.per_layer0_input);
-    write_binary_vector(join_path(output_dir, "generated/per_layer_input_layer1.f32.bin"),
-                        token_inputs.per_layer1_input);
+    if (write_raw_outputs) {
+      write_binary_vector(join_path(output_dir, "generated/layer_input.f32.bin"),
+                          token_inputs.layer_input);
+      write_binary_vector(join_path(output_dir, "generated/per_layer_input_layer0.f32.bin"),
+                          token_inputs.per_layer0_input);
+      write_binary_vector(join_path(output_dir, "generated/per_layer_input_layer1.f32.bin"),
+                          token_inputs.per_layer1_input);
+    }
 
     const LayerForwardResult first = run_opencl_layer_values(
         layer0_pack_dir, &token_inputs.layer_input, &token_inputs.per_layer0_input,
         &token_inputs.attention_mask, &token_inputs.position_ids);
-    write_binary_vector(join_path(output_dir, "layer0_output.f32.bin"),
-                        first.output_values);
+    if (write_raw_outputs) {
+      write_binary_vector(join_path(output_dir, "layer0_output.f32.bin"),
+                          first.output_values);
+    }
 
     const LayerForwardResult second = run_opencl_layer_values(
         layer1_pack_dir, &first.output_values, &token_inputs.per_layer1_input,
         &token_inputs.attention_mask, &token_inputs.position_ids);
-    write_binary_vector(join_path(output_dir, "layer1_output.f32.bin"),
-                        second.output_values);
+    if (write_raw_outputs) {
+      write_binary_vector(join_path(output_dir, "layer1_output.f32.bin"),
+                          second.output_values);
+    }
 
     const AdapterStepResult adapter = run_adapter_step_from_values(
         first.output_values, second.output_values, token_inputs.attention_mask,
         checkpoint_dir, true, learning_rate);
-    write_binary_vector(join_path(output_dir, "adapter_grad_a.f32.bin"), adapter.grad_a);
-    write_binary_vector(join_path(output_dir, "adapter_grad_b.f32.bin"), adapter.grad_b);
+    if (write_raw_outputs) {
+      write_binary_vector(join_path(output_dir, "adapter_grad_a.f32.bin"), adapter.grad_a);
+      write_binary_vector(join_path(output_dir, "adapter_grad_b.f32.bin"), adapter.grad_b);
+    }
     write_binary_vector(join_path(output_dir, "checkpoint/adapter_a.f32.bin"),
                         adapter.updated_a);
     write_binary_vector(join_path(output_dir, "checkpoint/adapter_b.f32.bin"),
@@ -2257,10 +2280,11 @@ Status run_opencl_streamed_distill_update(const std::string& token_cache_dir,
     write_streamed_checkpoint_manifest(checkpoint_dir, output_dir, adapter,
                                        learning_rate);
     write_streamed_artifact_manifest(token_cache_dir, asset_dir, layer0_pack_dir,
-                                     layer1_pack_dir, checkpoint_dir, output_dir);
+                                     layer1_pack_dir, checkpoint_dir, output_dir,
+                                     write_raw_outputs);
     write_streamed_replay_manifest(token_cache_dir, asset_dir, layer0_pack_dir,
                                    layer1_pack_dir, checkpoint_dir, output_dir,
-                                   learning_rate);
+                                   learning_rate, write_raw_outputs);
     write_streamed_training_telemetry(output_dir, token_inputs, first, second,
                                       adapter, learning_rate);
     return Status::ok();

@@ -1,0 +1,193 @@
+{
+  "checks": [
+    {
+      "details": {
+        "actual": "google/gemma-4-E4B",
+        "expected": "google/gemma-4-E4B"
+      },
+      "name": "model_id",
+      "status": "pass"
+    },
+    {
+      "details": {
+        "actual": "7aa32e6889efd6300124851b164f8b364314c3d8",
+        "expected": "7aa32e6889efd6300124851b164f8b364314c3d8"
+      },
+      "name": "revision",
+      "status": "pass"
+    },
+    {
+      "details": {
+        "actual": 0,
+        "expected": 0
+      },
+      "name": "layer_index",
+      "status": "pass"
+    },
+    {
+      "details": {
+        "actual": [
+          8,
+          128,
+          2560
+        ],
+        "metadata": [
+          8,
+          128,
+          2560
+        ]
+      },
+      "name": "output_shape",
+      "status": "pass"
+    },
+    {
+      "details": {
+        "actual": "opencl",
+        "allowed": [
+          "opencl",
+          "vulkan"
+        ]
+      },
+      "name": "backend",
+      "status": "pass"
+    },
+    {
+      "details": {
+        "actual": "nubia NX789J SM8750 FY25013101C8",
+        "expected_model": "NX789J",
+        "expected_soc": "SM8750"
+      },
+      "name": "device_identity",
+      "status": "pass"
+    },
+    {
+      "details": {
+        "accumulation": "f32",
+        "comparison": "fp64",
+        "input": "f32",
+        "phone_output": "f32",
+        "reference_output": "f32",
+        "weights": "f32"
+      },
+      "name": "dtype_path",
+      "status": "pass"
+    },
+    {
+      "details": {
+        "phone_command_present": true,
+        "reference_command_present": true
+      },
+      "name": "commands",
+      "status": "pass"
+    }
+  ],
+  "commands": {
+    "compare": "gemma4_megakernel/tools/compare_outputs/compare_outputs.py --phone-output /workspace/phase10_endurance_samples/20260517T153500Z_phase10_six_hour_endurance/samples/iter_000240/phone_output/generated/layer_input.f32.bin --reference-output /workspace/phase10_endurance_samples/20260517T153500Z_phase10_six_hour_endurance/samples/iter_000240/reference/generated/layer_input.f32.bin --attention-mask /workspace/phase10_endurance_samples/20260517T153500Z_phase10_six_hour_endurance/samples/iter_000240/token_cache/attention_mask.u8.bin --manifest /workspace/phase10_endurance_samples/20260517T153500Z_phase10_six_hour_endurance/samples/iter_000240/token_metadata.json --shape 8,128,2560 --backend opencl --device-identity nubia NX789J SM8750 FY25013101C8 --input-dtype f32 --weight-dtype f32 --accumulation-dtype f32 --phone-dtype f32 --reference-dtype f32 --phone-command endurance-sample-token-to-hidden --reference-command create_streamed_distill_reference.py --expected-layer-index 0 --tensor-name token_to_hidden_layer_input --report-json /workspace/phase10_endurance_samples/20260517T153500Z_phase10_six_hour_endurance/samples/iter_000240/token_to_hidden_compare.json",
+    "phone": "endurance-sample-token-to-hidden",
+    "reference": "create_streamed_distill_reference.py"
+  },
+  "comparison": {
+    "compared_scalar_non_finite_count": 0,
+    "failed_token_count": 0,
+    "failed_token_indexes": [],
+    "failed_token_threshold": 0.99,
+    "finite_cosine_count": 796,
+    "hidden_size": 2560,
+    "invalid_token_count": 0,
+    "invalid_token_indexes": [],
+    "mask_shape": [
+      8,
+      128
+    ],
+    "method": "fp64_cosine_per_non_pad_token",
+    "non_finite": {
+      "compared_scalar_count": 0,
+      "phone_output_scalar_count": 0,
+      "reference_output_scalar_count": 0
+    },
+    "non_finite_count": 0,
+    "pad_token_count": 228,
+    "percentile_method": "linear",
+    "percentiles": {
+      "max": 0.999998735543266,
+      "min": 0.9999984638767918,
+      "p10": 0.9999985322008497,
+      "p50": 0.999998600022111,
+      "p90": 0.9999986766604723
+    },
+    "shape": [
+      8,
+      128,
+      2560
+    ],
+    "token_count": 796,
+    "token_slots": 1024
+  },
+  "gate": {
+    "authority": "Gemma 4 E4B layer 0 phone Vulkan/OpenCL output vs RunPod PyTorch reference",
+    "p50_threshold": 0.99,
+    "threshold_relaxed": false
+  },
+  "inputs": {
+    "attention_mask": {
+      "bytes": 1024,
+      "dtype": "u8",
+      "path": "/workspace/phase10_endurance_samples/20260517T153500Z_phase10_six_hour_endurance/samples/iter_000240/token_cache/attention_mask.u8.bin",
+      "sha256": "da9b0ff8f430fd2187be7bcecfdff28f97da6288552326545aeb5aa8b6808695",
+      "shape": [
+        8,
+        128
+      ]
+    },
+    "contract": null,
+    "manifest": {
+      "bytes": 132,
+      "path": "/workspace/phase10_endurance_samples/20260517T153500Z_phase10_six_hour_endurance/samples/iter_000240/token_metadata.json",
+      "sha256": "d4723c01f8be34b84eae4e00fa87b41a5ce37f1404f7f67676f8a62cf00a64cb"
+    },
+    "phone_output": {
+      "bytes": 10485760,
+      "dtype": "f32",
+      "path": "/workspace/phase10_endurance_samples/20260517T153500Z_phase10_six_hour_endurance/samples/iter_000240/phone_output/generated/layer_input.f32.bin",
+      "sha256": "60bc5101f15ad4988d1c8b4a6d6435100558d7c69ecdd808f3fdbef6a6dbcccb",
+      "shape": [
+        8,
+        128,
+        2560
+      ]
+    },
+    "phone_telemetry": null,
+    "reference_output": {
+      "bytes": 10485760,
+      "dtype": "f32",
+      "path": "/workspace/phase10_endurance_samples/20260517T153500Z_phase10_six_hour_endurance/samples/iter_000240/reference/generated/layer_input.f32.bin",
+      "sha256": "e1edca1adf9ae32756a3b32cca8e71c2ea3dbdd9ca150c6238ef6af4d299ba04",
+      "shape": [
+        8,
+        128,
+        2560
+      ]
+    }
+  },
+  "provenance": {
+    "backend": "opencl",
+    "device_identity": "nubia NX789J SM8750 FY25013101C8",
+    "dtype_path": {
+      "accumulation": "f32",
+      "comparison": "fp64",
+      "input": "f32",
+      "phone_output": "f32",
+      "reference_output": "f32",
+      "weights": "f32"
+    },
+    "expected_layer_index": 0,
+    "expected_model_id": "google/gemma-4-E4B",
+    "expected_revision": "7aa32e6889efd6300124851b164f8b364314c3d8",
+    "layer_index": 0,
+    "model_id": "google/gemma-4-E4B",
+    "revision": "7aa32e6889efd6300124851b164f8b364314c3d8"
+  },
+  "schema_version": "gemma4_compare_outputs_v1",
+  "status": "pass",
+  "tensor_name": "token_to_hidden_layer_input"
+}

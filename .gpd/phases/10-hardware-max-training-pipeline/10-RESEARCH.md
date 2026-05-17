@@ -67,8 +67,8 @@ adapter-gradient/update parity, artifact hygiene, and no hidden host data path.
 | Projected PLE row cache by token ID | `layer_input`, PLE identity, and projection output are token-ID-determined in the current bridge; repeated tokens should not redo the same 256x2560 matvec. | Same HF-auth token cache, same checkpoint, actual phone `--run-g8-distill`, parity plus timing. | Accepted in 10-01. |
 | Move PLE projection to OpenCL/Vulkan | CPU bridge remains nontrivial after caching. | Kernel output parity for layer0/1 PLE tensors before training A/B. | Deferred. |
 | OpenCL layer kernel cadence/fusion | Layer runtime remains larger than the adapter update. | Actual training run and G1/G3 regression floor. | Deferred. |
-| QNN/ExecuTorch/AI Engine Direct island | Hexagon/HTP may help frozen-forward or quantized inference islands, but training/backward support is not yet proven. | Equal-correctness frozen island with no CPU fallback. | Deferred. |
-| Thermal-aware scheduler/LR cadence | Longer runs require avoiding thermal collapse. | NDK thermal telemetry plus non-regressing chained training. | Deferred. |
+| QNN/ExecuTorch/AI Engine Direct island | Hexagon/HTP may help frozen-forward or quantized inference islands, but training/backward support is not yet proven. | Equal-correctness frozen island with no CPU fallback. | HTP inference/platform pass in 10-02; training update still blocked. |
+| Thermal-aware scheduler/LR cadence | Longer runs require avoiding thermal collapse. | NDK thermal telemetry plus non-regressing chained training. | Six-hour wall-clock endurance passed in 10-02 for current lane; adaptive cadence still deferred. |
 | Checkpoint I/O layout | UFS writes may matter in longer chains. | Multi-batch checkpoint timing with hash replay. | Deferred. |
 
 ## First Accepted Finding
@@ -88,11 +88,37 @@ Measured result:
 - Token cache, bridge tensors, layer outputs, adapter gradients, and checkpoint
   update all remained status `pass`.
 
+## Second Accepted Finding
+
+The six-hour endurance non-claim is now promoted only for the current rank-4
+two-layer phone-native training lane.
+
+Accepted evidence:
+`runtime/reports/gemma4_megakernel/hardware_max/20260517T153500Z_phase10_six_hour_endurance/gate_result.json`.
+
+Measured result:
+- Wall-clock duration: `21692.164205625013s`.
+- Iterations: `465` chained phone training updates.
+- Active training time: `4626.6455870000045s`.
+- Max Android thermal status: `0`.
+- Sampled parity passed for iterations `0`, `240`, and `464`.
+
+## Blocked Non-Claims
+
+The non-claim summary gate remains `fail`:
+`runtime/reports/gemma4_megakernel/hardware_max/20260517T214000Z_phase10_nonclaim_gate/gate_result.json`.
+
+The blocked items are full Gemma4 training, Hexagon NPU training, public
+benchmark readiness, and theoretical maximum reached. QNN/HTP platform and
+inference evidence exists, but no HTP backward/gradient/optimizer update
+executed.
+
 ## Falsifiers
 
 - Any accepted candidate with a failed parity report.
 - Any throughput win that consumes hidden host fixtures or host-served batches.
 - Any CPU fallback presented as Adreno, Vulkan, or Hexagon authority.
 - Any performance improvement that breaks artifact hygiene or leaks HF tokens.
-- Any claim that Phase 10 reaches full Gemma4 training, six-hour endurance, or
-  theoretical maximum without the corresponding gate.
+- Any claim that Phase 10 reaches full Gemma4 training, Hexagon NPU training,
+  public benchmark readiness, or theoretical maximum without the corresponding
+  gate.

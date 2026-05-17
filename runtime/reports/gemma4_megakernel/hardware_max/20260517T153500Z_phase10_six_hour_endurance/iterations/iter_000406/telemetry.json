@@ -1,0 +1,46 @@
+{
+  "active_tokens": 841,
+  "adapter_backend": "opencl",
+  "adapter_elapsed_seconds": 0.347567,
+  "applied_update": true,
+  "backend": "opencl",
+  "case_count": 8,
+  "hidden_size": 2560,
+  "hidden_state_fixtures_consumed": [],
+  "layer_backend": "opencl",
+  "layer_elapsed_seconds": [
+    5.020689,
+    5.008144
+  ],
+  "learning_rate": 0.0099999998,
+  "loss_half_mse": 1.6444584923,
+  "max_rss_kb": 2169868,
+  "model_id": "google/gemma-4-E4B",
+  "opencl_libraries": [
+    "libOpenCL.so",
+    "libOpenCL.so",
+    "libOpenCL.so"
+  ],
+  "optimizer": "sgd",
+  "rank": 4,
+  "revision": "7aa32e6889efd6300124851b164f8b364314c3d8",
+  "runtime_input_path": "token_cache_to_phone_generated_hidden_to_opencl_layers_to_adapter_update",
+  "schema_version": "gemma4_opencl_streamed_distill_training_v1",
+  "seq": 128,
+  "token_to_hidden_backend": "phone_cpu",
+  "token_to_hidden_elapsed_seconds": 0.863326,
+  "token_to_hidden_timing": {
+    "active_tokens": 841,
+    "embedding_cache_rows": 344,
+    "embedding_gather_seconds": 0.011395,
+    "open_asset_seconds": 3.8e-05,
+    "ple_layer0_cache_rows": 344,
+    "ple_layer0_seconds": 0.404537,
+    "ple_layer1_cache_rows": 344,
+    "ple_layer1_seconds": 0.443671,
+    "projection_load_seconds": 0.003566,
+    "read_cache_seconds": 0.000118,
+    "unique_token_count": 344
+  },
+  "trainable_scope": "post_layer0_rank4_residual_adapter"
+}

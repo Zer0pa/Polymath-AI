@@ -1,0 +1,1 @@
+- Hexagon training update is not proven: no HTP backward/gradient/optimizer path executed

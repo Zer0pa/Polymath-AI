@@ -1,0 +1,148 @@
+{
+  "checks": [
+    {
+      "checks": [
+        {
+          "cosine_min": null,
+          "failed_tensor_count": null,
+          "failed_token_count": null,
+          "p50": null,
+          "path": "runtime/reports/gemma4_megakernel/hardware_max/20260517T153500Z_phase10_six_hour_endurance/sample_parity/iter_000000/token_to_hidden_compare.json",
+          "status": "pass"
+        },
+        {
+          "cosine_min": null,
+          "failed_tensor_count": null,
+          "failed_token_count": null,
+          "p50": null,
+          "path": "runtime/reports/gemma4_megakernel/hardware_max/20260517T153500Z_phase10_six_hour_endurance/sample_parity/iter_000000/layer0_compare.json",
+          "status": "pass"
+        },
+        {
+          "cosine_min": null,
+          "failed_tensor_count": null,
+          "failed_token_count": null,
+          "p50": null,
+          "path": "runtime/reports/gemma4_megakernel/hardware_max/20260517T153500Z_phase10_six_hour_endurance/sample_parity/iter_000000/layer1_compare.json",
+          "status": "pass"
+        },
+        {
+          "cosine_min": 0.9999981024312784,
+          "failed_tensor_count": 0,
+          "failed_token_count": null,
+          "p50": null,
+          "path": "runtime/reports/gemma4_megakernel/hardware_max/20260517T153500Z_phase10_six_hour_endurance/sample_parity/iter_000000/adapter_update_compare.json",
+          "status": "pass"
+        }
+      ],
+      "iteration": 0
+    },
+    {
+      "checks": [
+        {
+          "cosine_min": null,
+          "failed_tensor_count": null,
+          "failed_token_count": null,
+          "p50": null,
+          "path": "runtime/reports/gemma4_megakernel/hardware_max/20260517T153500Z_phase10_six_hour_endurance/sample_parity/iter_000240/token_to_hidden_compare.json",
+          "status": "pass"
+        },
+        {
+          "cosine_min": null,
+          "failed_tensor_count": null,
+          "failed_token_count": null,
+          "p50": null,
+          "path": "runtime/reports/gemma4_megakernel/hardware_max/20260517T153500Z_phase10_six_hour_endurance/sample_parity/iter_000240/layer0_compare.json",
+          "status": "pass"
+        },
+        {
+          "cosine_min": null,
+          "failed_tensor_count": null,
+          "failed_token_count": null,
+          "p50": null,
+          "path": "runtime/reports/gemma4_megakernel/hardware_max/20260517T153500Z_phase10_six_hour_endurance/sample_parity/iter_000240/layer1_compare.json",
+          "status": "pass"
+        },
+        {
+          "cosine_min": 0.9999991281373523,
+          "failed_tensor_count": 0,
+          "failed_token_count": null,
+          "p50": null,
+          "path": "runtime/reports/gemma4_megakernel/hardware_max/20260517T153500Z_phase10_six_hour_endurance/sample_parity/iter_000240/adapter_update_compare.json",
+          "status": "pass"
+        }
+      ],
+      "iteration": 240
+    },
+    {
+      "checks": [
+        {
+          "cosine_min": null,
+          "failed_tensor_count": null,
+          "failed_token_count": null,
+          "p50": null,
+          "path": "runtime/reports/gemma4_megakernel/hardware_max/20260517T153500Z_phase10_six_hour_endurance/sample_parity/iter_000464/token_to_hidden_compare.json",
+          "status": "pass"
+        },
+        {
+          "cosine_min": null,
+          "failed_tensor_count": null,
+          "failed_token_count": null,
+          "p50": null,
+          "path": "runtime/reports/gemma4_megakernel/hardware_max/20260517T153500Z_phase10_six_hour_endurance/sample_parity/iter_000464/layer0_compare.json",
+          "status": "pass"
+        },
+        {
+          "cosine_min": null,
+          "failed_tensor_count": null,
+          "failed_token_count": null,
+          "p50": null,
+          "path": "runtime/reports/gemma4_megakernel/hardware_max/20260517T153500Z_phase10_six_hour_endurance/sample_parity/iter_000464/layer1_compare.json",
+          "status": "pass"
+        },
+        {
+          "cosine_min": 0.9999993917530322,
+          "failed_tensor_count": 0,
+          "failed_token_count": null,
+          "p50": null,
+          "path": "runtime/reports/gemma4_megakernel/hardware_max/20260517T153500Z_phase10_six_hour_endurance/sample_parity/iter_000464/adapter_update_compare.json",
+          "status": "pass"
+        }
+      ],
+      "iteration": 464
+    }
+  ],
+  "failed": [],
+  "remote_commands": [
+    {
+      "iteration": 0,
+      "remote_sample_dir": "/workspace/phase10_endurance_samples/20260517T153500Z_phase10_six_hour_endurance/samples/iter_000000",
+      "returncode": 0,
+      "stderr_tail": "[transformers] `torch_dtype` is deprecated! Use `dtype` instead!\n\nLoading weights:   0%|          | 0/2076 [00:00<?, ?it/s]\nLoading weights:  21%|\u2588\u2588        | 441/2076 [00:00<00:00, 4402.95it/s]\nLoading weights:  42%|\u2588\u2588\u2588\u2588\u258f     | 882/2076 [00:00<00:00, 1241.11it/s]\nLoading weights:  54%|\u2588\u2588\u2588\u2588\u2588\u258e    | 1112/2076 [00:01<00:01, 787.95it/s]\nLoading weights:  61%|\u2588\u2588\u2588\u2588\u2588\u2588    | 1257/2076 [00:01<00:01, 672.48it/s]\nLoading weights:  66%|\u2588\u2588\u2588\u2588\u2588\u2588\u258c   | 1362/2076 [00:01<00:01, 594.16it/s]\nLoading weights:  70%|\u2588\u2588\u2588\u2588\u2588\u2588\u2589   | 1444/2076 [00:01<00:01, 584.22it/s]\nLoading weights:  76%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258c  | 1581/2076 [00:02<00:00, 698.68it/s]\nLoading weights:  82%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258f | 1695/2076 [00:02<00:00, 771.51it/s]\nLoading weights:  90%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 | 1869/2076 [00:02<00:00, 962.68it/s]\nLoading weights:  97%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258b| 2016/2076 [00:02<00:00, 1074.07it/s]\nLoading weights: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 2076/2076 [00:02<00:00, 881.18it/s] \n",
+      "stdout_tail": "{\"cases\": 8, \"out\": \"/workspace/phase10_endurance_samples/20260517T153500Z_phase10_six_hour_endurance/samples/iter_000000/reference\", \"status\": \"created\"}\n{\n  \"checks\": [\n    {\n      \"candidate\": {\n        \"path\": \"/workspace/phase10_endurance_samples/20260517T153500Z_phase10_six_hour_endurance/samples/iter_000000/phone_output/adapter_grad_a.f32.bin\",\n        \"sha256\": \"43200111b3109426683279794ecb43202401e316f9d3cc877385ee85fe42dbb2\"\n      },\n      \"cosine\": 0.9999981024312784,\n      \"element_count\": 10240,\n      \"finite\": true,\n      \"max_abs_error\": 1.756279743858613e-08,\n      \"mean_abs_error\": 2.460930588314273e-10,\n      \"name\": \"adapter_grad_a\",\n      \"reference\": {\n        \"path\": \"/workspace/phase10_endurance_samples/20260517T153500Z_phase10_six_hour_endurance/samples/iter_000000/reference/adapter_grad_a.f32.bin\",\n        \"sha256\": \"2fe2e35be472adf53efd224d5bc2d8188a703173d0b7dc4252e8f004ea91adb4\"\n      },\n      \"status\": \"pass\",\n      \"threshold\": 0.99\n    },\n    {\n      \"candidate\": {\n        \"path\": \"/workspace/phase10_endurance_samples/20260517T153500Z_phase10_six_hour_endurance/samples/iter_000000/phone_output/adapter_grad_b.f32.bin\",\n        \"sha256\": \"34efce12c6ad7edcbd36c6ab0ee1f9c69d5e0c94c288951c3323e471aad4d3ae\"\n      },\n      \"cosine\": 0.9999989687055694,\n      \"element_count\": 10240,\n      \"finite\": true,\n      \"max_abs_error\": 4.472349246498197e-08,\n      \"mean_abs_error\": 2.431064206156276e-10,\n      \"name\": \"adapter_grad_b\",\n      \"reference\": {\n        \"path\": \"/workspace/phase10_endurance_samples/20260517T153500Z_phase10_six_hour_endurance/samples/iter_000000/reference/adapter_grad_b.f32.bin\",\n        \"sha256\": \"2fe59c3f69dffa28f890e2becf6866783511c41d011d263537ddfec5f98483a4\"\n      },\n      \"status\": \"pass\",\n      \"threshold\": 0.99\n    },\n    {\n      \"candidate\": {\n        \"path\": \"/workspace/phase10_endurance_samples/20260517T153500Z_phase10_six_hour_endurance/samples/iter_000000/phone_output/checkpoint/adapter_a.f32.bin\",\n        \"sha256\": \"2f9a70815411575f0bf3d3ced6cb7ed0963c6c1685fd123a63fdfcb7a88b0ed7\"\n      },\n      \"cosine\": 0.9999999999999981,\n      \"element_count\": 10240,\n      \"finite\": true,\n      \"max_abs_error\": 1.7462298274040222e-10,\n      \"mean_abs_error\": 2.4315173572514447e-12,\n      \"name\": \"updated_adapter_a\",\n      \"reference\": {\n        \"path\": \"/workspace/phase10_endurance_samples/20260517T153500Z_phase10_six_hour_endurance/samples/iter_000000/reference/checkpoint/adapter_a.f32.bin\",\n        \"sha256\": \"a1ee2b4e5926e25002fb5fc77fa25a9af559c4a8f9de53fcef0d5c69d68e2436\"\n      },\n      \"status\": \"pass\",\n      \"threshold\": 0.99\n    },\n    {\n      \"candidate\": {\n        \"path\": \"/workspace/phase10_endurance_samples/20260517T153500Z_phase10_six_hour_endurance/samples/iter_000000/phone_output/checkpoint/adapter_b.f32.bin\",\n        \"sha256\": \"f38173a4913a994075852e40a912bdb62e156f06ff72845d9ae2722c4f694edc\"\n      },\n      \"cosine\": 0.999999999999996,\n      \"element_count\": 10240,\n      \"finite\": true,\n      \"max_abs_error\": 4.3655745685100555e-10,\n      \"mean_abs_error\": 2.4188536590363795e-12,\n      \"name\": \"updated_adapter_b\",\n      \"reference\": {\n        \"path\": \"/workspace/phase10_endurance_samples/20260517T153500Z_phase10_six_hour_endurance/samples/iter_000000/reference/checkpoint/adapter_b.f32.bin\",\n        \"sha256\": \"7d766f657131e4521722a90513a3dd6447e96e5d314c25e87d6cdce0a21e3943\"\n      },\n      \"status\": \"pass\",\n      \"threshold\": 0.99\n    }\n  ],\n  \"cosine_min\": 0.9999981024312784,\n  \"cosine_p50\": 0.9999994843527826,\n  \"failed_tensor_count\": 0,\n  \"schema_version\": \"gemma4_adapter_training_compare_v1\",\n  \"status\": \"pass\",\n  \"tensor_count\": 4,\n  \"threshold\": 0.99\n}\n"
+    },
+    {
+      "iteration": 240,
+      "remote_sample_dir": "/workspace/phase10_endurance_samples/20260517T153500Z_phase10_six_hour_endurance/samples/iter_000240",
+      "returncode": 0,
+      "stderr_tail": "[transformers] `torch_dtype` is deprecated! Use `dtype` instead!\n\nLoading weights:   0%|          | 0/2076 [00:00<?, ?it/s]\nLoading weights:  29%|\u2588\u2588\u2589       | 609/2076 [00:00<00:00, 6082.88it/s]\nLoading weights:  59%|\u2588\u2588\u2588\u2588\u2588\u258a    | 1218/2076 [00:00<00:00, 1332.48it/s]\nLoading weights:  73%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258e  | 1520/2076 [00:01<00:00, 1126.44it/s]\nLoading weights:  83%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258e | 1722/2076 [00:01<00:00, 1211.59it/s]\nLoading weights:  92%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258f| 1910/2076 [00:01<00:00, 1275.63it/s]\nLoading weights: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 2076/2076 [00:01<00:00, 1367.13it/s]\n",
+      "stdout_tail": "{\"cases\": 8, \"out\": \"/workspace/phase10_endurance_samples/20260517T153500Z_phase10_six_hour_endurance/samples/iter_000240/reference\", \"status\": \"created\"}\n{\n  \"checks\": [\n    {\n      \"candidate\": {\n        \"path\": \"/workspace/phase10_endurance_samples/20260517T153500Z_phase10_six_hour_endurance/samples/iter_000240/phone_output/adapter_grad_a.f32.bin\",\n        \"sha256\": \"95d45349356c4bba539f7ad6b4988cdc9776ddca842c5772aebb7758b6c88a53\"\n      },\n      \"cosine\": 0.9999992373709194,\n      \"element_count\": 10240,\n      \"finite\": true,\n      \"max_abs_error\": 1.7927362705449923e-08,\n      \"mean_abs_error\": 3.059346487360032e-10,\n      \"name\": \"adapter_grad_a\",\n      \"reference\": {\n        \"path\": \"/workspace/phase10_endurance_samples/20260517T153500Z_phase10_six_hour_endurance/samples/iter_000240/reference/adapter_grad_a.f32.bin\",\n        \"sha256\": \"03e4d768a302bea5c489bf7dea71eeff6a28db07e05537159bb1925998cebda2\"\n      },\n      \"status\": \"pass\",\n      \"threshold\": 0.99\n    },\n    {\n      \"candidate\": {\n        \"path\": \"/workspace/phase10_endurance_samples/20260517T153500Z_phase10_six_hour_endurance/samples/iter_000240/phone_output/adapter_grad_b.f32.bin\",\n        \"sha256\": \"b06ab5e911e9b2c98b39486d57258c1940fb91e65fdef884192a5674fea0502b\"\n      },\n      \"cosine\": 0.9999991281373523,\n      \"element_count\": 10240,\n      \"finite\": true,\n      \"max_abs_error\": 6.226400728337467e-08,\n      \"mean_abs_error\": 2.6809751183877944e-10,\n      \"name\": \"adapter_grad_b\",\n      \"reference\": {\n        \"path\": \"/workspace/phase10_endurance_samples/20260517T153500Z_phase10_six_hour_endurance/samples/iter_000240/reference/adapter_grad_b.f32.bin\",\n        \"sha256\": \"09fafcca898880826bbddc2386169cd7ae7dd1d0b979238a08183fe754fa4e40\"\n      },\n      \"status\": \"pass\",\n      \"threshold\": 0.99\n    },\n    {\n      \"candidate\": {\n        \"path\": \"/workspace/phase10_endurance_samples/20260517T153500Z_phase10_six_hour_endurance/samples/iter_000240/phone_output/checkpoint/adapter_a.f32.bin\",\n        \"sha256\": \"96ea943f2553275dec8ae22af5ba123584427ff2e1ea167da4e700f72f3d3891\"\n      },\n      \"cosine\": 0.9999999999999967,\n      \"element_count\": 10240,\n      \"finite\": true,\n      \"max_abs_error\": 1.7462298274040222e-10,\n      \"mean_abs_error\": 3.034155825892837e-12,\n      \"name\": \"updated_adapter_a\",\n      \"reference\": {\n        \"path\": \"/workspace/phase10_endurance_samples/20260517T153500Z_phase10_six_hour_endurance/samples/iter_000240/reference/checkpoint/adapter_a.f32.bin\",\n        \"sha256\": \"ea123114ee5ff020c44e940ff1ec543881541eec60807f0e2d0d0a71372aad77\"\n      },\n      \"status\": \"pass\",\n      \"threshold\": 0.99\n    },\n    {\n      \"candidate\": {\n        \"path\": \"/workspace/phase10_endurance_samples/20260517T153500Z_phase10_six_hour_endurance/samples/iter_000240/phone_output/checkpoint/adapter_b.f32.bin\",\n        \"sha256\": \"1c01c96ac538ca5289ccfc8ab3a0e91be329363d683dd5be07088d038c01268b\"\n      },\n      \"cosine\": 0.9999999999999951,\n      \"element_count\": 10240,\n      \"finite\": true,\n      \"max_abs_error\": 6.111804395914078e-10,\n      \"mean_abs_error\": 2.661867427866671e-12,\n      \"name\": \"updated_adapter_b\",\n      \"reference\": {\n        \"path\": \"/workspace/phase10_endurance_samples/20260517T153500Z_phase10_six_hour_endurance/samples/iter_000240/reference/checkpoint/adapter_b.f32.bin\",\n        \"sha256\": \"00e8cb5dfc650e9add2e4877627c8a373633a70872225c3b5c51f6835fdb7d2a\"\n      },\n      \"status\": \"pass\",\n      \"threshold\": 0.99\n    }\n  ],\n  \"cosine_min\": 0.9999991281373523,\n  \"cosine_p50\": 0.9999996186854573,\n  \"failed_tensor_count\": 0,\n  \"schema_version\": \"gemma4_adapter_training_compare_v1\",\n  \"status\": \"pass\",\n  \"tensor_count\": 4,\n  \"threshold\": 0.99\n}\n"
+    },
+    {
+      "iteration": 464,
+      "remote_sample_dir": "/workspace/phase10_endurance_samples/20260517T153500Z_phase10_six_hour_endurance/samples/iter_000464",
+      "returncode": 0,
+      "stderr_tail": "[transformers] `torch_dtype` is deprecated! Use `dtype` instead!\n\nLoading weights:   0%|          | 0/2076 [00:00<?, ?it/s]\nLoading weights:  31%|\u2588\u2588\u2588       | 644/2076 [00:00<00:00, 6408.80it/s]\nLoading weights:  62%|\u2588\u2588\u2588\u2588\u2588\u2588\u258f   | 1285/2076 [00:00<00:00, 2427.19it/s]\nLoading weights:  79%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2589  | 1649/2076 [00:00<00:00, 2299.95it/s]\nLoading weights:  93%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258e| 1941/2076 [00:00<00:00, 2404.33it/s]\nLoading weights: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 2076/2076 [00:00<00:00, 2589.64it/s]\n",
+      "stdout_tail": "{\"cases\": 8, \"out\": \"/workspace/phase10_endurance_samples/20260517T153500Z_phase10_six_hour_endurance/samples/iter_000464/reference\", \"status\": \"created\"}\n{\n  \"checks\": [\n    {\n      \"candidate\": {\n        \"path\": \"/workspace/phase10_endurance_samples/20260517T153500Z_phase10_six_hour_endurance/samples/iter_000464/phone_output/adapter_grad_a.f32.bin\",\n        \"sha256\": \"97ed656951b139b12a7aed827b51cfdf546a80f4d627c61e61d45a495455ea37\"\n      },\n      \"cosine\": 0.9999995891096357,\n      \"element_count\": 10240,\n      \"finite\": true,\n      \"max_abs_error\": 2.164449597330531e-08,\n      \"mean_abs_error\": 5.532143706145549e-10,\n      \"name\": \"adapter_grad_a\",\n      \"reference\": {\n        \"path\": \"/workspace/phase10_endurance_samples/20260517T153500Z_phase10_six_hour_endurance/samples/iter_000464/reference/adapter_grad_a.f32.bin\",\n        \"sha256\": \"5fab5b10fa225975f17c36cd0580e3cb5ee44f17702e3819b3547ae416e6fd2d\"\n      },\n      \"status\": \"pass\",\n      \"threshold\": 0.99\n    },\n    {\n      \"candidate\": {\n        \"path\": \"/workspace/phase10_endurance_samples/20260517T153500Z_phase10_six_hour_endurance/samples/iter_000464/phone_output/adapter_grad_b.f32.bin\",\n        \"sha256\": \"db2e56395959bbeb7a70e9c30e8c244aafb8b469f7b3f123a325890f7f278305\"\n      },\n      \"cosine\": 0.9999993917530322,\n      \"element_count\": 10240,\n      \"finite\": true,\n      \"max_abs_error\": 1.2504460755735636e-07,\n      \"mean_abs_error\": 4.30390674405628e-10,\n      \"name\": \"adapter_grad_b\",\n      \"reference\": {\n        \"path\": \"/workspace/phase10_endurance_samples/20260517T153500Z_phase10_six_hour_endurance/samples/iter_000464/reference/adapter_grad_b.f32.bin\",\n        \"sha256\": \"479cd5643cb30eb0f1e62560c795d4e5c5d0c72aa8d1dd73b141ac008e4c0af2\"\n      },\n      \"status\": \"pass\",\n      \"threshold\": 0.99\n    },\n    {\n      \"candidate\": {\n        \"path\": \"/workspace/phase10_endurance_samples/20260517T153500Z_phase10_six_hour_endurance/samples/iter_000464/phone_output/checkpoint/adapter_a.f32.bin\",\n        \"sha256\": \"a20e0caaaa5064a836abce5ab7cc9292a9efd03bc5babf3e9e04e6a9d6c22df1\"\n      },\n      \"cosine\": 0.9999999999999893,\n      \"element_count\": 10240,\n      \"finite\": true,\n      \"max_abs_error\": 2.1827872842550278e-10,\n      \"mean_abs_error\": 5.564125451617413e-12,\n      \"name\": \"updated_adapter_a\",\n      \"reference\": {\n        \"path\": \"/workspace/phase10_endurance_samples/20260517T153500Z_phase10_six_hour_endurance/samples/iter_000464/reference/checkpoint/adapter_a.f32.bin\",\n        \"sha256\": \"0580e4a7fe97d2af9067f240e07a2253dfcb2d050320a0da8e69f83d40952f93\"\n      },\n      \"status\": \"pass\",\n      \"threshold\": 0.99\n    },\n    {\n      \"candidate\": {\n        \"path\": \"/workspace/phase10_endurance_samples/20260517T153500Z_phase10_six_hour_endurance/samples/iter_000464/phone_output/checkpoint/adapter_b.f32.bin\",\n        \"sha256\": \"142a887e3d256d2dac7edda7812f9e02cfba982979eedde017a0c8f9376c705b\"\n      },\n      \"cosine\": 0.9999999999999846,\n      \"element_count\": 10240,\n      \"finite\": true,\n      \"max_abs_error\": 1.2514647096395493e-09,\n      \"mean_abs_error\": 4.3573226624071815e-12,\n      \"name\": \"updated_adapter_b\",\n      \"reference\": {\n        \"path\": \"/workspace/phase10_endurance_samples/20260517T153500Z_phase10_six_hour_endurance/samples/iter_000464/reference/checkpoint/adapter_b.f32.bin\",\n        \"sha256\": \"00cf47a413c3bdd12cbe641b6cbc4a7d0525f2704488a2e6d9c1ede4b2bfaf24\"\n      },\n      \"status\": \"pass\",\n      \"threshold\": 0.99\n    }\n  ],\n  \"cosine_min\": 0.9999993917530322,\n  \"cosine_p50\": 0.9999997945548101,\n  \"failed_tensor_count\": 0,\n  \"schema_version\": \"gemma4_adapter_training_compare_v1\",\n  \"status\": \"pass\",\n  \"tensor_count\": 4,\n  \"threshold\": 0.99\n}\n"
+    }
+  ],
+  "remote_root": "/workspace/phase10_endurance_samples/20260517T153500Z_phase10_six_hour_endurance",
+  "run_id": "20260517T153500Z_phase10_six_hour_endurance",
+  "sample_iterations": [
+    0,
+    240,
+    464
+  ],
+  "schema_version": "gemma4_phase10_endurance_sample_parity_v1",
+  "status": "pass"
+}

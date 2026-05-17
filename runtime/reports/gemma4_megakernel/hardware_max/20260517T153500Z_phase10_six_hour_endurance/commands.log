@@ -1,0 +1,4 @@
+Sanitized command pattern:
+adb shell gemma4_layer_runner_phase10_compact --run-g8-distill TOKEN_CACHE ASSETS PACK0 PACK1 CHECKPOINT OUT_DIR LR
+Non-sample iterations use --run-g8-distill-compact and write only checkpoint, telemetry, artifact manifest, and replay manifest.
+No Hugging Face token or selected text is stored in this report.

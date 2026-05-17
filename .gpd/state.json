@@ -1,11 +1,11 @@
 {
   "active_calculations": [
     "Continue Phase 10 hardware-max candidates through actual REDMAGIC phone training A/B gates.",
-    "Next candidates: token bridge OpenCL/Vulkan migration, thermal headroom cadence, layer-kernel profiling, QNN/ExecuTorch islands only after equal-correctness proof."
+    "Next candidates: token bridge OpenCL/Vulkan migration, thermal headroom cadence, layer-kernel profiling, and QNN/ExecuTorch islands only if a training-update path is discovered and equal-correctness proof is available."
   ],
   "approximations": [],
   "blockers": [
-    "No active blocker. Phase 10 first candidate passed, but no full Gemma4, Hexagon NPU, six-hour endurance, public benchmark, or theoretical-maximum claim is promoted."
+    "Phase 10 six-hour endurance is promoted only for the current rank-4 two-layer phone-native lane. Full Gemma4 training, Hexagon NPU training, public benchmark readiness, and theoretical maximum remain blocked."
   ],
   "convention_lock": {
     "commutation_convention": null,
@@ -42,7 +42,10 @@
     "Phase 8 three-batch chained sustained authority objective passed: runtime/reports/gemma4_megakernel/sustained_authority/20260517T071405Z_g9_three_batch_chain/gate_result.json",
     "Phase 9 G10 final falsifier passed: runtime/reports/gemma4_megakernel/falsifiers/20260517T082637Z_g10_final_falsifier_review/gate_result.json",
     "Phase 10 HF-authenticated phone baseline passed: runtime/reports/gemma4_megakernel/hardware_max/20260517T083219Z_phase10_hf_auth_token_bridge_baseline/gate_result.json",
-    "Phase 10 projected PLE cache passed and promoted for the narrow current training path: runtime/reports/gemma4_megakernel/hardware_max/20260517T084203Z_phase10_projected_ple_cache/gate_result.json"
+    "Phase 10 projected PLE cache passed and promoted for the narrow current training path: runtime/reports/gemma4_megakernel/hardware_max/20260517T084203Z_phase10_projected_ple_cache/gate_result.json",
+    "Phase 10 six-hour endurance passed for the current rank-4 two-layer phone training path: runtime/reports/gemma4_megakernel/hardware_max/20260517T153500Z_phase10_six_hour_endurance/gate_result.json",
+    "Phase 10 QNN/HTP probe passed platform and inference checks but failed the Hexagon training promotion gate: runtime/reports/gemma4_megakernel/hardware_max/20260517T213600Z_phase10_qnn_htp_probe/gate_result.json",
+    "Phase 10 non-claim summary remains failed overall: only six-hour endurance is resolved; full Gemma4 training, Hexagon NPU training, public benchmark readiness, and theoretical maximum remain blocked: runtime/reports/gemma4_megakernel/hardware_max/20260517T214000Z_phase10_nonclaim_gate/gate_result.json"
   ],
   "open_questions": [
     "Whether the remaining token bridge should move first to OpenCL or Vulkan, and what equal-correctness bridge parity gate is sufficient before training A/B.",
@@ -78,19 +81,24 @@
         "context": "6.343561316195281x speedup; all parity gates pass",
         "label": "Phase 10 projected PLE cache",
         "value": "0.667287s"
+      },
+      {
+        "context": "465 chained phone training iterations; sampled parity pass; max thermal status 0",
+        "label": "Phase 10 six-hour endurance",
+        "value": "21692.164205625013s"
       }
     ]
   },
   "position": {
     "current_phase": "10",
     "current_phase_name": "Hardware Max Training Pipeline",
-    "current_plan": 1,
+    "current_plan": 2,
     "last_activity": "2026-05-17",
-    "last_activity_desc": "Phase 10 projected PLE cache phone A/B passed: token-to-hidden bridge improved from 4.232976s to 0.667287s with all parity gates green.",
-    "last_activity_description": "Phase 10 projected PLE cache phone A/B passed: token-to-hidden bridge improved from 4.232976s to 0.667287s with all parity gates green.",
+    "last_activity_desc": "Phase 10 ran the six-hour phone endurance gate for the current rank-4 two-layer lane and passed it; QNN/HTP training, full Gemma4 training, public benchmark readiness, and theoretical maximum gates remain failed or blocked.",
+    "last_activity_description": "Phase 10 ran the six-hour phone endurance gate for the current rank-4 two-layer lane and passed it; QNN/HTP training, full Gemma4 training, public benchmark readiness, and theoretical maximum gates remain failed or blocked.",
     "paused_at": null,
     "progress_percent": 92,
-    "status": "First candidate complete; continuing hardware-max backlog",
+    "status": "Plan 10-02 mixed: six-hour endurance promoted; remaining non-claims blocked",
     "total_phases": 11,
     "total_plans_in_phase": "ongoing"
   },

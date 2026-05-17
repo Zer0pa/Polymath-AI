@@ -1,0 +1,22 @@
+{
+  "accepted_optimization": "projected PLE row cache",
+  "accepted_speedup_x": 6.343561316195281,
+  "authority_verdict": "theoretical_maximum_not_promoted",
+  "claim": "Snapdragon/Gemma4 theoretical maximum reached",
+  "generated_at_utc": "2026-05-17T21:44:57Z",
+  "known_deferred_candidates": [
+    "thermal LR governor",
+    "Hexagon/AI Engine Direct backend",
+    "checkpoint layout experiments",
+    "Adreno kernel fusion until comparable phone-run gates exist"
+  ],
+  "missing_evidence": [
+    "No Snapdragon Profiler/AGI/roofline counter envelope for the full training loop.",
+    "No QNN/HTP training island parity gate.",
+    "No OpenCL/Vulkan kernel-fusion A/B gate after the projected PLE cache.",
+    "No checkpoint I/O layout A/B gate over an endurance window.",
+    "No energy/thermal authority metric with external power measurement."
+  ],
+  "schema_version": "gemma4_phase10_theoretical_maximum_gap_v1",
+  "status": "fail"
+}

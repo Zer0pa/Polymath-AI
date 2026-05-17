@@ -1,0 +1,83 @@
+{
+  "checks": [
+    {
+      "candidate": {
+        "path": "/workspace/phase10_endurance_samples/20260517T153500Z_phase10_six_hour_endurance/samples/iter_000464/phone_output/adapter_grad_a.f32.bin",
+        "sha256": "97ed656951b139b12a7aed827b51cfdf546a80f4d627c61e61d45a495455ea37"
+      },
+      "cosine": 0.9999995891096357,
+      "element_count": 10240,
+      "finite": true,
+      "max_abs_error": 2.164449597330531e-08,
+      "mean_abs_error": 5.532143706145549e-10,
+      "name": "adapter_grad_a",
+      "reference": {
+        "path": "/workspace/phase10_endurance_samples/20260517T153500Z_phase10_six_hour_endurance/samples/iter_000464/reference/adapter_grad_a.f32.bin",
+        "sha256": "5fab5b10fa225975f17c36cd0580e3cb5ee44f17702e3819b3547ae416e6fd2d"
+      },
+      "status": "pass",
+      "threshold": 0.99
+    },
+    {
+      "candidate": {
+        "path": "/workspace/phase10_endurance_samples/20260517T153500Z_phase10_six_hour_endurance/samples/iter_000464/phone_output/adapter_grad_b.f32.bin",
+        "sha256": "db2e56395959bbeb7a70e9c30e8c244aafb8b469f7b3f123a325890f7f278305"
+      },
+      "cosine": 0.9999993917530322,
+      "element_count": 10240,
+      "finite": true,
+      "max_abs_error": 1.2504460755735636e-07,
+      "mean_abs_error": 4.30390674405628e-10,
+      "name": "adapter_grad_b",
+      "reference": {
+        "path": "/workspace/phase10_endurance_samples/20260517T153500Z_phase10_six_hour_endurance/samples/iter_000464/reference/adapter_grad_b.f32.bin",
+        "sha256": "479cd5643cb30eb0f1e62560c795d4e5c5d0c72aa8d1dd73b141ac008e4c0af2"
+      },
+      "status": "pass",
+      "threshold": 0.99
+    },
+    {
+      "candidate": {
+        "path": "/workspace/phase10_endurance_samples/20260517T153500Z_phase10_six_hour_endurance/samples/iter_000464/phone_output/checkpoint/adapter_a.f32.bin",
+        "sha256": "a20e0caaaa5064a836abce5ab7cc9292a9efd03bc5babf3e9e04e6a9d6c22df1"
+      },
+      "cosine": 0.9999999999999893,
+      "element_count": 10240,
+      "finite": true,
+      "max_abs_error": 2.1827872842550278e-10,
+      "mean_abs_error": 5.564125451617413e-12,
+      "name": "updated_adapter_a",
+      "reference": {
+        "path": "/workspace/phase10_endurance_samples/20260517T153500Z_phase10_six_hour_endurance/samples/iter_000464/reference/checkpoint/adapter_a.f32.bin",
+        "sha256": "0580e4a7fe97d2af9067f240e07a2253dfcb2d050320a0da8e69f83d40952f93"
+      },
+      "status": "pass",
+      "threshold": 0.99
+    },
+    {
+      "candidate": {
+        "path": "/workspace/phase10_endurance_samples/20260517T153500Z_phase10_six_hour_endurance/samples/iter_000464/phone_output/checkpoint/adapter_b.f32.bin",
+        "sha256": "142a887e3d256d2dac7edda7812f9e02cfba982979eedde017a0c8f9376c705b"
+      },
+      "cosine": 0.9999999999999846,
+      "element_count": 10240,
+      "finite": true,
+      "max_abs_error": 1.2514647096395493e-09,
+      "mean_abs_error": 4.3573226624071815e-12,
+      "name": "updated_adapter_b",
+      "reference": {
+        "path": "/workspace/phase10_endurance_samples/20260517T153500Z_phase10_six_hour_endurance/samples/iter_000464/reference/checkpoint/adapter_b.f32.bin",
+        "sha256": "00cf47a413c3bdd12cbe641b6cbc4a7d0525f2704488a2e6d9c1ede4b2bfaf24"
+      },
+      "status": "pass",
+      "threshold": 0.99
+    }
+  ],
+  "cosine_min": 0.9999993917530322,
+  "cosine_p50": 0.9999997945548101,
+  "failed_tensor_count": 0,
+  "schema_version": "gemma4_adapter_training_compare_v1",
+  "status": "pass",
+  "tensor_count": 4,
+  "threshold": 0.99
+}

@@ -23,7 +23,8 @@ Status run_opencl_streamed_distill_update(const std::string& token_cache_dir,
                                           const std::string& layer1_pack_dir,
                                           const std::string& checkpoint_dir,
                                           const std::string& output_dir,
-                                          float learning_rate);
+                                          float learning_rate,
+                                          bool write_raw_outputs = true);
 
 class OpenClAdapterTrainingStepExecutor final : public TrainingStepExecutor {
  public:

@@ -21,6 +21,7 @@ void print_help() {
       << "                           [--run-adapter-grad FIXTURE CHECKPOINT OUT_DIR]\n"
       << "                           [--run-adapter-sgd FIXTURE CHECKPOINT OUT_DIR LR]\n"
       << "                           [--run-g8-distill TOKEN_CACHE ASSETS PACK0 PACK1 CHECKPOINT OUT_DIR LR]\n"
+      << "                           [--run-g8-distill-compact TOKEN_CACHE ASSETS PACK0 PACK1 CHECKPOINT OUT_DIR LR]\n"
       << "                           [--tokenize-pack TOKENIZER_DIR RAW_TEXT OUT_DIR SEQ N URL]\n"
       << "\n"
       << "Current authority gates: Gemma 4 E4B layer forward-only and stack\n"
@@ -147,10 +148,10 @@ int run_tokenize_pack(int argc, char** argv, int index) {
   return 0;
 }
 
-int run_g8_distill(int argc, char** argv, int index) {
+int run_g8_distill(int argc, char** argv, int index, bool write_raw_outputs) {
   if ((index + 7) >= argc) {
     throw std::invalid_argument(
-        "--run-g8-distill requires TOKEN_CACHE, ASSETS, PACK0, PACK1, CHECKPOINT, OUT_DIR, and LR");
+        "distill run requires TOKEN_CACHE, ASSETS, PACK0, PACK1, CHECKPOINT, OUT_DIR, and LR");
   }
   char* end = nullptr;
   const float learning_rate = std::strtof(argv[index + 7], &end);
@@ -160,7 +161,7 @@ int run_g8_distill(int argc, char** argv, int index) {
   const polymath::gemma4::Status status =
       polymath::gemma4::run_opencl_streamed_distill_update(
           argv[index + 1], argv[index + 2], argv[index + 3], argv[index + 4],
-          argv[index + 5], argv[index + 6], learning_rate);
+          argv[index + 5], argv[index + 6], learning_rate, write_raw_outputs);
   if (!status.is_ok()) {
     std::cerr << status.message() << '\n';
     return 9;
@@ -205,7 +206,10 @@ int main(int argc, char** argv) {
         return run_adapter_sgd(argc, argv, index);
       }
       if (argument == "--run-g8-distill") {
-        return run_g8_distill(argc, argv, index);
+        return run_g8_distill(argc, argv, index, true);
+      }
+      if (argument == "--run-g8-distill-compact") {
+        return run_g8_distill(argc, argv, index, false);
       }
       if (argument == "--tokenize-pack") {
         return run_tokenize_pack(argc, argv, index);

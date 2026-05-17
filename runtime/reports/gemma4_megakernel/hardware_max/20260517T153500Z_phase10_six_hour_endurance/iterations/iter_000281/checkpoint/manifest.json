@@ -1,0 +1,28 @@
+{
+  "active_tokens": 796,
+  "learning_rate": 0.0099999998,
+  "loss_half_mse": 1.6465152543,
+  "optimizer": "sgd",
+  "post_update": {
+    "adapter_a": {
+      "path": "/data/local/tmp/polymath_gemma4_gate/hardware_max/20260517T153500Z_phase10_six_hour_endurance/iterations/iter_000281/checkpoint/adapter_a.f32.bin",
+      "sha256": "b7cb03234d7e422d31adf428cf48ef8f614c8f4a775ecff40f7973e54fdb8e93"
+    },
+    "adapter_b": {
+      "path": "/data/local/tmp/polymath_gemma4_gate/hardware_max/20260517T153500Z_phase10_six_hour_endurance/iterations/iter_000281/checkpoint/adapter_b.f32.bin",
+      "sha256": "d8b6bb84195e53aa77f04db2e72c4adade0f74f9b9609be4aae3637188caad33"
+    }
+  },
+  "pre_update": {
+    "adapter_a": {
+      "path": "/data/local/tmp/polymath_gemma4_gate/hardware_max/20260517T153500Z_phase10_six_hour_endurance/iterations/iter_000280/checkpoint/adapter_a.f32.bin",
+      "sha256": "a08dbc72c3de397e87031355bc0fda0b340d83ab571e439ecc49b0723b73ba49"
+    },
+    "adapter_b": {
+      "path": "/data/local/tmp/polymath_gemma4_gate/hardware_max/20260517T153500Z_phase10_six_hour_endurance/iterations/iter_000280/checkpoint/adapter_b.f32.bin",
+      "sha256": "38139690b8685d80c60fc8dcefb449e3aae18b6418dba0ed76a9b3718f23b329"
+    }
+  },
+  "schema_version": "gemma4_rank4_adapter_checkpoint_v1",
+  "trainable_scope": "post_layer0_rank4_residual_adapter"
+}
