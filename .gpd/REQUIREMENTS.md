@@ -66,26 +66,36 @@ any runtime data-path stage?
   for fixed samples.
 - [x] **DATA-03**: Pack fixed-shape sequence shards on phone UFS with checksums
   and deterministic replay into identical batches.
-- [ ] **DATA-04**: Feed packed phone shards into the training runtime without
+- [x] **DATA-04**: Feed packed phone shards into the training runtime without
   Mac or RunPod serving batches.
 
 ### Integrated Training And Sustained Run
 
-- [ ] **TRN-01**: Execute at least one real streamed-corpus batch through
+- [x] **TRN-01**: Execute at least one real streamed-corpus batch through
   phone-native forward/backward/update.
-- [ ] **TRN-02**: Emit a checkpoint or adapter artifact manifest with hashes,
+- [x] **TRN-02**: Emit a checkpoint or adapter artifact manifest with hashes,
   frozen/trainable tensor evidence, loss trace, telemetry, and replay data.
-- [ ] **SUS-01**: Complete a six-hour authority run or a shorter predeclared
+- [x] **SUS-01**: Complete a six-hour authority run or a shorter predeclared
   objective before six hours without thermal, memory, checkpoint, or
   correctness collapse.
 
 ### Falsification
 
-- [ ] **FALS-01**: Run G10 falsifier review for wrong revision, wrong/random
+- [x] **FALS-01**: Run G10 falsifier review for wrong revision, wrong/random
   weights, backend fallback, pad-token inflation, relaxed tolerances, hidden
   host data path, trainable/frozen scope violation, checkpoint replay failure,
   artifact hash mismatch, thermal/memory hiding, proxy benchmark substitution,
   and narrative pass without artifact pass.
+
+### Hardware-Max Search
+
+- [x] **HMAX-01**: Add phone-side timing instrumentation before accepting any
+  Phase 10 performance candidate.
+- [x] **HMAX-02**: Run an HF-authenticated phone training baseline without
+  printing or committing the Hugging Face token.
+- [x] **HMAX-03**: Promote only candidates that improve an actual REDMAGIC
+  training run while preserving token, bridge, layer, adapter, checkpoint, and
+  artifact-hygiene gates.
 
 ## Follow-up Requirements
 
@@ -115,6 +125,7 @@ any runtime data-path stage?
 | DATA-02 | Exact token ID parity | Fixed-sample tokenizer comparator |
 | TRN-02 | Replayable checkpoint/adapter hash manifest | Re-read and validate artifact |
 | FALS-01 | No unresolved critical falsifier | G10 report |
+| HMAX-03 | Faster phone training path with unchanged parity | Phone A/B run plus RunPod oracle |
 
 ## Contract Coverage
 
@@ -126,6 +137,7 @@ any runtime data-path stage?
 | OPT-01 | Phone update manifest | Frozen hash contract | Trainable mutation contract | CPU/host update masquerading as phone |
 | DATA-04 | UFS cache manifest | PRD runtime topology | Phone tokenizer parity | Hidden host batch serving |
 | FALS-01 | Falsifier report | Resistance V2 | All gate evidence | Narrative pass |
+| HMAX-03 | Phone A/B performance gate | G8/G9/G10 authority chain | HF-auth baseline timing | Microbenchmark-only or regressing throughput win |
 
 ## Traceability
 
@@ -150,16 +162,19 @@ any runtime data-path stage?
 | DATA-01 | Phase 6: Phone Data Pipeline | Complete |
 | DATA-02 | Phase 6: Phone Data Pipeline | Complete |
 | DATA-03 | Phase 6: Phone Data Pipeline | Complete |
-| DATA-04 | Phase 6: Phone Data Pipeline | Pending |
-| TRN-01 | Phase 7: Integrated Training | Pending |
-| TRN-02 | Phase 7: Integrated Training | Pending |
-| SUS-01 | Phase 8: Sustained Authority Run | Pending |
-| FALS-01 | Phase 9: Falsifier Review | Pending |
+| DATA-04 | Phase 7: Integrated Training | Complete |
+| TRN-01 | Phase 7: Integrated Training | Complete |
+| TRN-02 | Phase 7: Integrated Training | Complete |
+| SUS-01 | Phase 8: Sustained Authority Run | Complete |
+| FALS-01 | Phase 9: Falsifier Review | Complete |
+| HMAX-01 | Phase 10: Hardware Max Training Pipeline | Complete for 10-01 |
+| HMAX-02 | Phase 10: Hardware Max Training Pipeline | Complete for 10-01 |
+| HMAX-03 | Phase 10: Hardware Max Training Pipeline | Complete for 10-01 |
 
 **Coverage:**
 
-- Primary requirements: 24 total
-- Mapped to phases: 24
+- Primary requirements: 27 total
+- Mapped to phases: 27
 - Unmapped: 0
 
 ---

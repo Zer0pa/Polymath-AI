@@ -10,25 +10,28 @@ See: `.gpd/PROJECT.md` (updated 2026-05-17)
 **Core research question:** Can Polymath-AI execute and validate a real Gemma 4
 training run natively on REDMAGIC SM8750 without substituting Mac or RunPod for
 any runtime data-path stage?
-**Current focus:** Phase 9: Final Falsifier Review after sustained authority pass
+**Current focus:** Phase 10: Hardware-max training pipeline search after G10 final falsifier pass
 
 ## Current Position
 
-**Current Phase:** 09
-**Current Phase Name:** Falsifier Review
-**Total Phases:** 10
-**Current Plan:** 0
-**Total Plans in Phase:** TBD
-**Status:** Ready to plan
+**Current Phase:** 10
+**Current Phase Name:** Hardware Max Training Pipeline
+**Total Phases:** 11
+**Current Plan:** 1
+**Total Plans in Phase:** ongoing
+**Status:** First candidate complete; continuing hardware-max backlog
 **Last Activity:** 2026-05-17
-**Last Activity Description:** G8 repaired and passed, then Phase 8 passed a predeclared three-batch chained phone-native training objective. Each batch used phone token caches, immutable Gemma assets, OpenCL layer0/layer1, phone-side adapter SGD, checkpoint chaining, RunPod PyTorch comparisons, and final G1/G3 regressions.
+**Last Activity Description:** Phase 10 instrumented an HF-authenticated phone training baseline, ranked PLE projection as the dominant token-bridge bottleneck, integrated a projected PLE row cache, and passed the optimized phone A/B gate with all parity checks intact.
 
-**Progress:** [█████████░] 90%
+**Progress:** [█████████░] 92%
 
 ## Active Calculations
 
-- Next phase: perform the final adversarial falsifier review across G1-G9
-  before any promotion wording is allowed.
+- Continue Phase 10 hardware-max candidates only through phone training A/B
+  reports and authority non-regression gates.
+- Next likely candidates: remaining token bridge work to OpenCL/Vulkan, thermal
+  telemetry/cadence, layer-kernel profiling, and QNN/ExecuTorch islands only
+  after equal-correctness proof.
 
 ## Intermediate Results
 
@@ -51,14 +54,22 @@ any runtime data-path stage?
   `runtime/reports/gemma4_megakernel/integrated_training/20260517T071405Z_g8_streamed_corpus_repaired/gate_result.json`.
 - Phase 8 sustained authority objective passed:
   `runtime/reports/gemma4_megakernel/sustained_authority/20260517T071405Z_g9_three_batch_chain/gate_result.json`.
+- Phase 9 final falsifier review passed under narrow scope:
+  `runtime/reports/gemma4_megakernel/falsifiers/20260517T082637Z_g10_final_falsifier_review/gate_result.json`.
+- Phase 10 HF-authenticated baseline passed with token bridge split telemetry:
+  `runtime/reports/gemma4_megakernel/hardware_max/20260517T083219Z_phase10_hf_auth_token_bridge_baseline/gate_result.json`.
+- Phase 10 projected PLE cache passed and was promoted for the narrow current
+  training path:
+  `runtime/reports/gemma4_megakernel/hardware_max/20260517T084203Z_phase10_projected_ple_cache/gate_result.json`.
 
 ## Open Questions
 
-- Whether the final promotion claim should remain "rank-4 adapter training
-  pipeline" or be further narrowed to "two-layer distillation adapter chain"
-  until chunked next-token NLL exists.
+- Whether the remaining token bridge should move first to OpenCL or Vulkan, and
+  what equal-correctness bridge parity gate is sufficient before training A/B.
 - Whether OpenCL remains the first training backend or Vulkan earns the route
   after equal correctness evidence.
+- How to add thermal headroom telemetry without turning cadence changes into a
+  proxy win.
 
 ## Performance Metrics
 
@@ -74,6 +85,9 @@ any runtime data-path stage?
 | G8 layer0/layer1 p50 | `0.9999895268153007` / `0.9999936773992628` | phone OpenCL | RunPod PyTorch oracle |
 | G8 adapter update cosine min | `0.9999981024312786` | gradient/update/checkpoint | RunPod PyTorch oracle |
 | Phase 8 sustained chain | pass | 3 batches, checkpoint chaining | Phone runtime + RunPod oracle |
+| Phase 9 final falsifier | pass | no failed checks | Narrow rank-4 two-layer distillation adapter claim only |
+| Phase 10 baseline token bridge | `4.232976s` | 796 active tokens, 285 unique token IDs | HF-auth phone training run |
+| Phase 10 projected PLE cache | `0.667287s` | token-to-hidden bridge | `6.343561316195281x` speedup, all parity gates pass |
 
 ## Accumulated Context
 
@@ -124,9 +138,8 @@ Full log: `.gpd/DECISIONS.md`
 
 ### Pending Todos
 
-- Execute Phase 9 falsifier review over wrong revision, hidden data path,
-  backend fallback, pad-token inflation, checkpoint replay, frozen/trainable
-  violations, and overclaiming.
+- Execute the next Phase 10 hardware-max candidate only after defining its
+  authority gate and expected falsifier.
 
 ### Blockers/Concerns
 
@@ -134,10 +147,16 @@ Full log: `.gpd/DECISIONS.md`
   contract validator and state persistence commands are available and were used.
 - Phase 8 passed a predeclared three-batch objective, but it is not a six-hour
   endurance proof and must not be narrated as one.
+- Phase 9 promotion is narrow only: rank-4 post-layer0 residual adapter,
+  two-layer distillation path, phone token cache, OpenCL layers/adapter, and
+  checkpoint chain. It is not full Gemma 4 training.
+- Phase 10 first candidate promotes only projected PLE caching for the current
+  narrow route. It is not Hexagon NPU training, six-hour endurance, public
+  benchmark readiness, or theoretical maximum reached.
 
 ## Session Continuity
 
 **Last session:** 2026-05-17
-**Stopped at:** Phase 8 sustained authority objective passed; next work is
-Phase 9 final falsifier review.
+**Stopped at:** Phase 10 projected PLE cache accepted; next work is the next
+hardware-max candidate under the same phone A/B authority discipline.
 **Resume file:** `.gpd/STATE.md`

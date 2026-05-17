@@ -1,0 +1,414 @@
+{
+  "authority_verdict": "promote_narrow_rank4_two_layer_distillation_adapter_claim",
+  "checks": [
+    {
+      "details": {
+        "reports": {
+          "g1_layer0_opencl": {
+            "path": "runtime/reports/gemma4_megakernel/parity/20260516_e4b_layer0_opencl_gate/gate_result.json",
+            "status": "pass"
+          },
+          "g2_import_regression": {
+            "path": "runtime/reports/gemma4_megakernel/import_and_regression/20260517T030510Z_g2_import_regression/gate_result.json",
+            "status": "pass"
+          },
+          "g3_two_layer_opencl": {
+            "path": "runtime/reports/gemma4_megakernel/forward_stack/20260517T032829Z_g3_two_layer_opencl/gate_result.json",
+            "status": "pass"
+          },
+          "g4_minimal_executor": {
+            "path": "runtime/reports/gemma4_megakernel/executor_architecture/20260517T040000Z_g4_minimal_executor/gate_result.json",
+            "status": "pass"
+          },
+          "g5_rank4_adapter_backward": {
+            "path": "runtime/reports/gemma4_megakernel/backward_path/20260517T040000Z_g5_rank4_adapter_opencl/gate_result.json",
+            "status": "pass"
+          },
+          "g6_rank4_adapter_sgd": {
+            "path": "runtime/reports/gemma4_megakernel/optimizer_update/20260517T040000Z_g6_rank4_adapter_sgd/gate_result.json",
+            "status": "pass"
+          },
+          "g7_hf_native_token_pack": {
+            "path": "runtime/reports/gemma4_megakernel/phone_data_pipeline/20260517T040000Z_g7_hf_native_token_pack/gate_result.json",
+            "status": "pass"
+          },
+          "g8_streamed_corpus_repaired": {
+            "path": "runtime/reports/gemma4_megakernel/integrated_training/20260517T071405Z_g8_streamed_corpus_repaired/gate_result.json",
+            "status": "pass"
+          },
+          "g9_three_batch_chain": {
+            "path": "runtime/reports/gemma4_megakernel/sustained_authority/20260517T071405Z_g9_three_batch_chain/gate_result.json",
+            "status": "pass"
+          }
+        }
+      },
+      "name": "gate_chain_status",
+      "status": "pass"
+    },
+    {
+      "details": {
+        "reports": {
+          "g2_import_regression": {
+            "critical_unresolved": [],
+            "failed_checks": [],
+            "path": "runtime/reports/gemma4_megakernel/falsifiers/20260517T030510Z_g2_import_regression/falsifier_report.json",
+            "status": "pass"
+          },
+          "g3_two_layer_opencl": {
+            "critical_unresolved": [],
+            "failed_checks": [],
+            "path": "runtime/reports/gemma4_megakernel/falsifiers/20260517T032829Z_g3_two_layer_opencl/falsifier_report.json",
+            "status": "pass"
+          },
+          "g4_minimal_executor": {
+            "critical_unresolved": [],
+            "failed_checks": [],
+            "path": "runtime/reports/gemma4_megakernel/falsifiers/20260517T040000Z_g4_minimal_executor/falsifier_report.json",
+            "status": "pass"
+          },
+          "g5_rank4_adapter_backward": {
+            "critical_unresolved": [],
+            "failed_checks": [],
+            "path": "runtime/reports/gemma4_megakernel/falsifiers/20260517T040000Z_g5_rank4_adapter_opencl/falsifier_report.json",
+            "status": "pass"
+          },
+          "g6_rank4_adapter_sgd": {
+            "critical_unresolved": [],
+            "failed_checks": [],
+            "path": "runtime/reports/gemma4_megakernel/falsifiers/20260517T040000Z_g6_rank4_adapter_sgd/falsifier_report.json",
+            "status": "pass"
+          },
+          "g7_hf_native_token_pack": {
+            "critical_unresolved": [],
+            "failed_checks": [],
+            "path": "runtime/reports/gemma4_megakernel/falsifiers/20260517T040000Z_g7_hf_native_token_pack/falsifier_report.json",
+            "status": "pass"
+          },
+          "g8_streamed_corpus_repaired": {
+            "critical_unresolved": [],
+            "failed_checks": [],
+            "path": "runtime/reports/gemma4_megakernel/falsifiers/20260517T071405Z_g8_streamed_corpus_repaired/falsifier_report.json",
+            "status": "pass"
+          },
+          "g9_three_batch_chain": {
+            "critical_unresolved": [],
+            "failed_checks": [],
+            "path": "runtime/reports/gemma4_megakernel/falsifiers/20260517T071405Z_g9_three_batch_chain/falsifier_report.json",
+            "status": "pass"
+          }
+        }
+      },
+      "name": "prior_falsifier_chain_status",
+      "status": "pass"
+    },
+    {
+      "details": {
+        "path": "runtime/reports/gemma4_megakernel/integrated_training/20260517T040000Z_g8_streamed_corpus_falsified/gate_result.json",
+        "status": "fail_under_falsification"
+      },
+      "name": "historical_failed_g8_not_promoted",
+      "status": "pass"
+    },
+    {
+      "details": {
+        "records": [
+          {
+            "expected_model_id": "google/gemma-4-E4B",
+            "expected_revision": "7aa32e6889efd6300124851b164f8b364314c3d8",
+            "model_id": "google/gemma-4-E4B",
+            "path": "runtime/reports/gemma4_megakernel/integrated_training/20260517T071405Z_g8_streamed_corpus_repaired/token_compare.json",
+            "revision": "7aa32e6889efd6300124851b164f8b364314c3d8"
+          },
+          {
+            "expected_model_id": "google/gemma-4-E4B",
+            "expected_revision": "7aa32e6889efd6300124851b164f8b364314c3d8",
+            "model_id": "google/gemma-4-E4B",
+            "path": "runtime/reports/gemma4_megakernel/integrated_training/20260517T071405Z_g8_streamed_corpus_repaired/layer0_compare.json",
+            "revision": "7aa32e6889efd6300124851b164f8b364314c3d8"
+          },
+          {
+            "expected_model_id": "google/gemma-4-E4B",
+            "expected_revision": "7aa32e6889efd6300124851b164f8b364314c3d8",
+            "model_id": "google/gemma-4-E4B",
+            "path": "runtime/reports/gemma4_megakernel/integrated_training/20260517T071405Z_g8_streamed_corpus_repaired/layer1_compare.json",
+            "revision": "7aa32e6889efd6300124851b164f8b364314c3d8"
+          },
+          {
+            "expected_model_id": "google/gemma-4-E4B",
+            "expected_revision": "7aa32e6889efd6300124851b164f8b364314c3d8",
+            "model_id": "google/gemma-4-E4B",
+            "path": "runtime/reports/gemma4_megakernel/sustained_authority/20260517T071405Z_g9_three_batch_chain/layer0_compare_000.json",
+            "revision": "7aa32e6889efd6300124851b164f8b364314c3d8"
+          },
+          {
+            "expected_model_id": "google/gemma-4-E4B",
+            "expected_revision": "7aa32e6889efd6300124851b164f8b364314c3d8",
+            "model_id": "google/gemma-4-E4B",
+            "path": "runtime/reports/gemma4_megakernel/sustained_authority/20260517T071405Z_g9_three_batch_chain/layer1_compare_000.json",
+            "revision": "7aa32e6889efd6300124851b164f8b364314c3d8"
+          },
+          {
+            "expected_model_id": "google/gemma-4-E4B",
+            "expected_revision": "7aa32e6889efd6300124851b164f8b364314c3d8",
+            "model_id": "google/gemma-4-E4B",
+            "path": "runtime/reports/gemma4_megakernel/sustained_authority/20260517T071405Z_g9_three_batch_chain/layer0_compare_001.json",
+            "revision": "7aa32e6889efd6300124851b164f8b364314c3d8"
+          },
+          {
+            "expected_model_id": "google/gemma-4-E4B",
+            "expected_revision": "7aa32e6889efd6300124851b164f8b364314c3d8",
+            "model_id": "google/gemma-4-E4B",
+            "path": "runtime/reports/gemma4_megakernel/sustained_authority/20260517T071405Z_g9_three_batch_chain/layer1_compare_001.json",
+            "revision": "7aa32e6889efd6300124851b164f8b364314c3d8"
+          },
+          {
+            "expected_model_id": "google/gemma-4-E4B",
+            "expected_revision": "7aa32e6889efd6300124851b164f8b364314c3d8",
+            "model_id": "google/gemma-4-E4B",
+            "path": "runtime/reports/gemma4_megakernel/sustained_authority/20260517T071405Z_g9_three_batch_chain/layer0_compare_002.json",
+            "revision": "7aa32e6889efd6300124851b164f8b364314c3d8"
+          },
+          {
+            "expected_model_id": "google/gemma-4-E4B",
+            "expected_revision": "7aa32e6889efd6300124851b164f8b364314c3d8",
+            "model_id": "google/gemma-4-E4B",
+            "path": "runtime/reports/gemma4_megakernel/sustained_authority/20260517T071405Z_g9_three_batch_chain/layer1_compare_002.json",
+            "revision": "7aa32e6889efd6300124851b164f8b364314c3d8"
+          }
+        ]
+      },
+      "name": "model_revision_consistency",
+      "status": "pass"
+    },
+    {
+      "details": {
+        "adapter_backend": "opencl",
+        "backend": "opencl",
+        "hidden_state_fixtures_consumed": [],
+        "layer_backend": "opencl",
+        "runtime_input_path": "token_cache_to_phone_generated_hidden_to_opencl_layers_to_adapter_update",
+        "token_to_hidden_backend": "phone_cpu",
+        "token_to_hidden_status": "pass"
+      },
+      "name": "g8_no_hidden_host_data_path",
+      "status": "pass"
+    },
+    {
+      "details": {
+        "reports": [
+          {
+            "attention_mask_mismatch_count": 0,
+            "input_id_mismatch_count": 0,
+            "label_mismatch_count": 0,
+            "loss_mask_mismatch_count": 0,
+            "path": "runtime/reports/gemma4_megakernel/integrated_training/20260517T071405Z_g8_streamed_corpus_repaired/token_compare.json",
+            "position_id_mismatch_count": 0,
+            "status": "pass"
+          },
+          {
+            "attention_mask_mismatch_count": 0,
+            "input_id_mismatch_count": 0,
+            "label_mismatch_count": 0,
+            "loss_mask_mismatch_count": 0,
+            "path": "runtime/reports/gemma4_megakernel/sustained_authority/20260517T071405Z_g9_three_batch_chain/token_compare_000.json",
+            "position_id_mismatch_count": 0,
+            "status": "pass"
+          },
+          {
+            "attention_mask_mismatch_count": 0,
+            "input_id_mismatch_count": 0,
+            "label_mismatch_count": 0,
+            "loss_mask_mismatch_count": 0,
+            "path": "runtime/reports/gemma4_megakernel/sustained_authority/20260517T071405Z_g9_three_batch_chain/token_compare_001.json",
+            "position_id_mismatch_count": 0,
+            "status": "pass"
+          },
+          {
+            "attention_mask_mismatch_count": 0,
+            "input_id_mismatch_count": 0,
+            "label_mismatch_count": 0,
+            "loss_mask_mismatch_count": 0,
+            "path": "runtime/reports/gemma4_megakernel/sustained_authority/20260517T071405Z_g9_three_batch_chain/token_compare_002.json",
+            "position_id_mismatch_count": 0,
+            "status": "pass"
+          }
+        ]
+      },
+      "name": "token_mask_label_position_parity",
+      "status": "pass"
+    },
+    {
+      "details": {
+        "reports": [
+          {
+            "failed_token_count": 0,
+            "method": "fp64_cosine_per_non_pad_token",
+            "non_finite_count": 0,
+            "p50": 0.9999895268153007,
+            "pad_token_count": 228,
+            "path": "runtime/reports/gemma4_megakernel/integrated_training/20260517T071405Z_g8_streamed_corpus_repaired/layer0_compare.json",
+            "status": "pass",
+            "token_count": 796
+          },
+          {
+            "failed_token_count": 0,
+            "method": "fp64_cosine_per_non_pad_token",
+            "non_finite_count": 0,
+            "p50": 0.9999936773992628,
+            "pad_token_count": 228,
+            "path": "runtime/reports/gemma4_megakernel/integrated_training/20260517T071405Z_g8_streamed_corpus_repaired/layer1_compare.json",
+            "status": "pass",
+            "token_count": 796
+          },
+          {
+            "failed_token_count": 0,
+            "method": "fp64_cosine_per_non_pad_token",
+            "non_finite_count": 0,
+            "p50": 0.9999895268153007,
+            "pad_token_count": 228,
+            "path": "runtime/reports/gemma4_megakernel/sustained_authority/20260517T071405Z_g9_three_batch_chain/layer0_compare_000.json",
+            "status": "pass",
+            "token_count": 796
+          },
+          {
+            "failed_token_count": 0,
+            "method": "fp64_cosine_per_non_pad_token",
+            "non_finite_count": 0,
+            "p50": 0.9999936773992628,
+            "pad_token_count": 228,
+            "path": "runtime/reports/gemma4_megakernel/sustained_authority/20260517T071405Z_g9_three_batch_chain/layer1_compare_000.json",
+            "status": "pass",
+            "token_count": 796
+          },
+          {
+            "failed_token_count": 0,
+            "method": "fp64_cosine_per_non_pad_token",
+            "non_finite_count": 0,
+            "p50": 0.9999891695757134,
+            "pad_token_count": 183,
+            "path": "runtime/reports/gemma4_megakernel/sustained_authority/20260517T071405Z_g9_three_batch_chain/layer0_compare_001.json",
+            "status": "pass",
+            "token_count": 841
+          },
+          {
+            "failed_token_count": 0,
+            "method": "fp64_cosine_per_non_pad_token",
+            "non_finite_count": 0,
+            "p50": 0.9999937029513182,
+            "pad_token_count": 183,
+            "path": "runtime/reports/gemma4_megakernel/sustained_authority/20260517T071405Z_g9_three_batch_chain/layer1_compare_001.json",
+            "status": "pass",
+            "token_count": 841
+          },
+          {
+            "failed_token_count": 0,
+            "method": "fp64_cosine_per_non_pad_token",
+            "non_finite_count": 0,
+            "p50": 0.9999894531476679,
+            "pad_token_count": 196,
+            "path": "runtime/reports/gemma4_megakernel/sustained_authority/20260517T071405Z_g9_three_batch_chain/layer0_compare_002.json",
+            "status": "pass",
+            "token_count": 828
+          },
+          {
+            "failed_token_count": 0,
+            "method": "fp64_cosine_per_non_pad_token",
+            "non_finite_count": 0,
+            "p50": 0.9999935532821822,
+            "pad_token_count": 196,
+            "path": "runtime/reports/gemma4_megakernel/sustained_authority/20260517T071405Z_g9_three_batch_chain/layer1_compare_002.json",
+            "status": "pass",
+            "token_count": 828
+          }
+        ]
+      },
+      "name": "pad_inflation_guard",
+      "status": "pass"
+    },
+    {
+      "details": {
+        "g8": {
+          "checkpoint_manifest_present": "pass",
+          "frozen_layer_hashes_stable": "pass",
+          "trainable_checkpoint_changed": "pass"
+        },
+        "g9": {
+          "batch_000_frozen_hashes_stable": "pass",
+          "batch_000_trainable_hashes_changed": "pass",
+          "batch_001_frozen_hashes_stable": "pass",
+          "batch_001_trainable_hashes_changed": "pass",
+          "batch_002_frozen_hashes_stable": "pass",
+          "batch_002_trainable_hashes_changed": "pass",
+          "checkpoint_chain_000_to_001": "pass",
+          "checkpoint_chain_001_to_002": "pass"
+        }
+      },
+      "name": "checkpoint_chain_and_hash_contract",
+      "status": "pass"
+    },
+    {
+      "details": {
+        "g8": {
+          "adapter_cosine_min": 0.9999981024312786,
+          "elapsed_seconds": 17.123333,
+          "g1_regression_p50": 0.9999890020383452,
+          "g3_regression_p50": 0.999993563915067,
+          "layer0_p50": 0.9999895268153007,
+          "layer1_p50": 0.9999936773992628,
+          "max_rss_kb": 2169344,
+          "token_to_hidden_p50_min": 0.9999982087594611
+        },
+        "g9": {
+          "g1_p50": 0.9999890020383452,
+          "g3_p50": 0.999993563915067
+        }
+      },
+      "name": "g1_g3_regression_floor",
+      "status": "pass"
+    },
+    {
+      "details": {
+        "forbidden_tracked_files": []
+      },
+      "name": "committed_artifact_hygiene",
+      "status": "pass"
+    },
+    {
+      "details": {
+        "files_with_secret_patterns": []
+      },
+      "name": "hf_token_secret_hygiene",
+      "status": "pass"
+    },
+    {
+      "details": {
+        "g8_trainable_scope": "post_layer0_rank4_residual_adapter",
+        "g9_batch_count": 3,
+        "g9_objective": "three chained phone-native streamed-corpus batches",
+        "non_claims": [
+          "not full Gemma 4 training",
+          "not six-hour endurance",
+          "not Hexagon NPU training",
+          "not public benchmark"
+        ]
+      },
+      "name": "overclaim_scope_guard",
+      "status": "pass"
+    }
+  ],
+  "created_utc": "2026-05-17T08:51:00+00:00",
+  "failed_checks": [],
+  "promotion_scope": {
+    "allowed": "REDMAGIC phone-native streamed-token Gemma4 E4B two-layer distillation run with rank-4 post-layer0 adapter SGD checkpoint chain",
+    "forbidden": [
+      "full Gemma4 training",
+      "six-hour endurance",
+      "Hexagon NPU training",
+      "generic Snapdragon maximum claim",
+      "public benchmark or release claim"
+    ]
+  },
+  "run_id": "20260517T082637Z_g10_final_falsifier_review",
+  "schema_version": "gemma4_g10_final_falsifier_review_v1",
+  "status": "pass"
+}

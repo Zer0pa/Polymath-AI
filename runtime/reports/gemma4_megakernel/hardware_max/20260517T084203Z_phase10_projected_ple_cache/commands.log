@@ -1,0 +1,8 @@
+Phase 10 projected PLE cache run (sanitized).
+
+- Reused HF-authenticated phone token cache from 20260517T083219Z_phase10_hf_auth_token_bridge_baseline; no token was printed or persisted in this report.
+- Built Android runner from integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/opencl_layer_runner.cpp after projected PLE cache implementation.
+- adb pushed /tmp/gemma4_layer_runner_phase10_projected_cache to /data/local/tmp/polymath_gemma4_gate/gemma4_layer_runner_phase10_projected_cache.
+- phone ran --run-g8-distill against hf_stream/20260517T083219Z_phase10_hf_auth_token_bridge_baseline_cache and frozen Gemma4 layer0/layer1 packs.
+- Pulled report JSON/manifests and raw outputs to /tmp/polymath_20260517T084203Z_phase10_projected_ple_cache for local comparators; raw tensor binaries were not copied into the repo.
+- Compared token cache, token-to-hidden tensors, layer0/layer1 OpenCL outputs, adapter gradients, and updated rank-4 adapter checkpoint against the baseline RunPod PyTorch reference.

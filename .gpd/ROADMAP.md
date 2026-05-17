@@ -15,7 +15,8 @@ the terminal acceptance gate is a phone-native checkpoint or adapter artifact.
 | Formal PRD/GPD/branch/import policy | Phase 0 | Complete |
 | G1 regression floor | Phase 1 and every material runtime phase | Passed, remained green through G7 changes |
 | Phone-native training artifact | Phases 4-8 | G8 repaired and Phase 8 sustained objective passed |
-| G10 falsifier survival | Phase 9 | Planned |
+| G10 falsifier survival | Phase 9 | Passed under narrow scope |
+| Hardware-max pipeline search | Phase 10+ | First phone A/B candidate passed; ongoing |
 
 ## Phases
 
@@ -37,8 +38,11 @@ the terminal acceptance gate is a phone-native checkpoint or adapter artifact.
   phone-side forward/backward/update and emit artifact manifest.
 - [x] **Phase 8: Sustained Authority Run** - Six-hour or predeclared objective
   phone-native run.
-- [ ] **Phase 9: Falsifier Review** - Attack and resolve critical claim
+- [x] **Phase 9: Falsifier Review** - Attack and resolve critical claim
   falsifiers before promotion.
+- [ ] **Phase 10: Hardware Max Training Pipeline** - Test and integrate only
+  performance candidates that improve measured phone training runs without
+  regressing authority metrics.
 
 ## Phase Details
 
@@ -293,7 +297,47 @@ Plans:
    benchmark proxy substitution are all checked.
 2. No unresolved critical falsifier remains.
 
-**Plans:** TBD
+**Plans:** 1 plan
+
+Plans:
+
+- [x] 09-01: Run final G10 falsifier review.
+  **Outcome:** passed under narrow scope. Evidence:
+  `runtime/reports/gemma4_megakernel/falsifiers/20260517T082637Z_g10_final_falsifier_review/gate_result.json`.
+
+### Phase 10: Hardware Max Training Pipeline
+
+**Goal:** Let REDMAGIC/SM8750 measurements decide which bespoke training-pipeline
+optimizations survive.
+**Depends on:** Phase 9.
+**Requirements:** NPU-01, VULK-01, CORP-01 follow-up requirements.
+**Contract Coverage:**
+- Advances: theoretical-maximum pursuit through falsifiable hardware-specific
+  experiments.
+- Deliverables: opt-in instrumentation, phone training A/B reports,
+  accept/discard ledger, non-regression falsifier reports.
+- Anchor coverage: G8/G9 authority path, G10 final falsifier, current external
+  Snapdragon/Android analogue research.
+- Forbidden proxies: throughput-only win, backend fallback, host-served data,
+  or performance gain that regresses G1/G3/G8/G9 authority metrics.
+**Success Criteria** (what must be TRUE):
+
+1. Every optimization candidate is tested by an actual phone training run.
+2. Authority metrics do not regress.
+3. Accepted candidates improve a measured bottleneck and preserve artifact
+   hygiene.
+4. Discarded candidates record why they failed.
+
+**Plans:** 1 completed first candidate, continuing backlog
+
+Plans:
+
+- [x] 10-01: Instrument HF-authenticated phone baseline and integrate projected
+  PLE row cache.
+  **Outcome:** passed. Token-to-hidden bridge improved from `4.232976s` to
+  `0.667287s` while token cache, bridge tensors, layer outputs, adapter update,
+  checkpoint, and artifact-hygiene gates stayed green. Evidence:
+  `runtime/reports/gemma4_megakernel/hardware_max/20260517T084203Z_phase10_projected_ple_cache/gate_result.json`.
 
 ## Progress
 
@@ -308,4 +352,5 @@ Plans:
 | 6. Phone Data Pipeline | 1/1 | Complete | 2026-05-17 |
 | 7. Integrated Training | 1/2 | Complete after repaired G8 | 2026-05-17 |
 | 8. Sustained Authority Run | 1/1 | Complete | 2026-05-17 |
-| 9. Falsifier Review | 0/TBD | Not started | - |
+| 9. Falsifier Review | 1/1 | Complete | 2026-05-17 |
+| 10. Hardware Max Training Pipeline | 1/ongoing | First candidate complete; next candidates deferred | - |

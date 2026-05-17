@@ -1,0 +1,75 @@
+{
+  "authority": "phase10 projected PLE cache phone-generated token bridge vs RunPod HF captured tensors",
+  "checks": [
+    {
+      "cosine_min": 0.9999984638767918,
+      "cosine_p50": 0.999998600022111,
+      "cosine_p90": 0.9999986766604723,
+      "failed_token_count": 0,
+      "name": "layer_input",
+      "phone": {
+        "path": "/tmp/polymath_20260517T084203Z_phase10_projected_ple_cache/phone_output/outputs/generated/layer_input.f32.bin",
+        "sha256": "60bc5101f15ad4988d1c8b4a6d6435100558d7c69ecdd808f3fdbef6a6dbcccb"
+      },
+      "reference": {
+        "path": "/tmp/polymath_20260517T083219Z_phase10_hf_auth_token_bridge_baseline/reference/generated/layer_input.f32.bin",
+        "sha256": "e1edca1adf9ae32756a3b32cca8e71c2ea3dbdd9ca150c6238ef6af4d299ba04"
+      },
+      "shape": [
+        8,
+        128,
+        2560
+      ],
+      "status": "pass",
+      "token_count": 796
+    },
+    {
+      "cosine_min": 0.9999902437209207,
+      "cosine_p50": 0.9999985500077763,
+      "cosine_p90": 0.999999561314625,
+      "failed_token_count": 0,
+      "name": "per_layer_input_layer0",
+      "phone": {
+        "path": "/tmp/polymath_20260517T084203Z_phase10_projected_ple_cache/phone_output/outputs/generated/per_layer_input_layer0.f32.bin",
+        "sha256": "e92a4a897c0b02525fff5facb98bc2bb98521d65603341f15482fde45eb25b16"
+      },
+      "reference": {
+        "path": "/tmp/polymath_20260517T083219Z_phase10_hf_auth_token_bridge_baseline/reference/generated/per_layer_input_layer0.f32.bin",
+        "sha256": "3fa2659656e7a6bec81fa31b2bebfe494181eb5e17f6dd29558b3558b1931b53"
+      },
+      "shape": [
+        8,
+        128,
+        256
+      ],
+      "status": "pass",
+      "token_count": 796
+    },
+    {
+      "cosine_min": 0.99998962843137,
+      "cosine_p50": 0.9999982087594611,
+      "cosine_p90": 0.9999991192354706,
+      "failed_token_count": 0,
+      "name": "per_layer_input_layer1",
+      "phone": {
+        "path": "/tmp/polymath_20260517T084203Z_phase10_projected_ple_cache/phone_output/outputs/generated/per_layer_input_layer1.f32.bin",
+        "sha256": "c4650da5cd2aa05f73bbde4db02eb46c7de68018197e0305fff0f242e64c1f9c"
+      },
+      "reference": {
+        "path": "/tmp/polymath_20260517T083219Z_phase10_hf_auth_token_bridge_baseline/reference/generated/per_layer_input_layer1.f32.bin",
+        "sha256": "302e74585afa6fbd6051207106e722441e8c9577b9019d5b8e20714266c3e928"
+      },
+      "shape": [
+        8,
+        128,
+        256
+      ],
+      "status": "pass",
+      "token_count": 796
+    }
+  ],
+  "hidden_state_fixtures_consumed": [],
+  "schema_version": "gemma4_token_to_hidden_compare_v1",
+  "status": "pass",
+  "threshold": 0.99
+}

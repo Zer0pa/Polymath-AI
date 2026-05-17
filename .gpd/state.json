@@ -1,10 +1,11 @@
 {
   "active_calculations": [
-    "Phase 9 final falsifier review over G1-G9 evidence before promotion wording."
+    "Continue Phase 10 hardware-max candidates through actual REDMAGIC phone training A/B gates.",
+    "Next candidates: token bridge OpenCL/Vulkan migration, thermal headroom cadence, layer-kernel profiling, QNN/ExecuTorch islands only after equal-correctness proof."
   ],
   "approximations": [],
   "blockers": [
-    "No active blocker. Phase 8 is a predeclared three-batch sustained objective, not a six-hour endurance proof."
+    "No active blocker. Phase 10 first candidate passed, but no full Gemma4, Hexagon NPU, six-hour endurance, public benchmark, or theoretical-maximum claim is promoted."
   ],
   "convention_lock": {
     "commutation_convention": null,
@@ -38,13 +39,18 @@
     "G7 phone-native HF stream/tokenizer/UFS cache passed: runtime/reports/gemma4_megakernel/phone_data_pipeline/20260517T040000Z_g7_hf_native_token_pack/gate_result.json",
     "G8 rejected under falsification: runtime/reports/gemma4_megakernel/integrated_training/20260517T040000Z_g8_streamed_corpus_falsified/gate_result.json",
     "G8 repaired streamed-corpus training passed: runtime/reports/gemma4_megakernel/integrated_training/20260517T071405Z_g8_streamed_corpus_repaired/gate_result.json",
-    "Phase 8 three-batch chained sustained authority objective passed: runtime/reports/gemma4_megakernel/sustained_authority/20260517T071405Z_g9_three_batch_chain/gate_result.json"
+    "Phase 8 three-batch chained sustained authority objective passed: runtime/reports/gemma4_megakernel/sustained_authority/20260517T071405Z_g9_three_batch_chain/gate_result.json",
+    "Phase 9 G10 final falsifier passed: runtime/reports/gemma4_megakernel/falsifiers/20260517T082637Z_g10_final_falsifier_review/gate_result.json",
+    "Phase 10 HF-authenticated phone baseline passed: runtime/reports/gemma4_megakernel/hardware_max/20260517T083219Z_phase10_hf_auth_token_bridge_baseline/gate_result.json",
+    "Phase 10 projected PLE cache passed and promoted for the narrow current training path: runtime/reports/gemma4_megakernel/hardware_max/20260517T084203Z_phase10_projected_ple_cache/gate_result.json"
   ],
   "open_questions": [
-    "Whether final promotion wording must remain narrowed to rank-4 two-layer distillation adapter training until chunked next-token NLL exists."
+    "Whether the remaining token bridge should move first to OpenCL or Vulkan, and what equal-correctness bridge parity gate is sufficient before training A/B.",
+    "Whether OpenCL remains the first training backend or Vulkan earns the route after equal correctness evidence.",
+    "How to add thermal headroom telemetry without turning cadence changes into a proxy win."
   ],
   "pending_todos": [
-    "Execute Phase 9 final falsifier review across wrong revision, hidden host path, backend fallback, pad-token inflation, checkpoint replay, frozen/trainable violations, and overclaiming."
+    "Execute the next Phase 10 hardware-max candidate only after defining its authority gate and expected falsifier."
   ],
   "performance_metrics": {
     "rows": [
@@ -62,21 +68,31 @@
         "context": "worst batch in three-batch chain",
         "label": "Phase 8 adapter cosine min",
         "value": "0.9999977029847468"
+      },
+      {
+        "context": "HF-auth phone training baseline; 796 active tokens, 285 unique token IDs",
+        "label": "Phase 10 baseline token bridge",
+        "value": "4.232976s"
+      },
+      {
+        "context": "6.343561316195281x speedup; all parity gates pass",
+        "label": "Phase 10 projected PLE cache",
+        "value": "0.667287s"
       }
     ]
   },
   "position": {
-    "current_phase": "09",
-    "current_phase_name": "Falsifier Review",
-    "current_plan": 0,
+    "current_phase": "10",
+    "current_phase_name": "Hardware Max Training Pipeline",
+    "current_plan": 1,
     "last_activity": "2026-05-17",
-    "last_activity_desc": "G4 minimal executor architecture, G5 adapter backward, G6 phone SGD update, and G7 phone-native HF stream/tokenize/pack passed. G8 integrated training was rejected because the current training step still consumes hidden-state fixtures instead of deriving Gemma hidden/per-layer inputs from phone-packed token IDs.",
-    "last_activity_description": "G8 repaired and Phase 8 three-batch chained phone-native training objective passed with RunPod oracle falsifiers and G1/G3 regressions.",
+    "last_activity_desc": "Phase 10 projected PLE cache phone A/B passed: token-to-hidden bridge improved from 4.232976s to 0.667287s with all parity gates green.",
+    "last_activity_description": "Phase 10 projected PLE cache phone A/B passed: token-to-hidden bridge improved from 4.232976s to 0.667287s with all parity gates green.",
     "paused_at": null,
-    "progress_percent": 90,
-    "status": "Ready to plan",
-    "total_phases": 10,
-    "total_plans_in_phase": "TBD"
+    "progress_percent": 92,
+    "status": "First candidate complete; continuing hardware-max backlog",
+    "total_phases": 11,
+    "total_plans_in_phase": "ongoing"
   },
   "project_contract": {
     "acceptance_tests": [

@@ -1,0 +1,160 @@
+{
+  "artifacts": {
+    "adapter_update_compare": "adapter_update_compare.json",
+    "layer0_compare": "layer0_compare.json",
+    "layer1_compare": "layer1_compare.json",
+    "telemetry": "telemetry.json",
+    "token_compare": "token_compare.json",
+    "token_to_hidden_compare": "token_to_hidden_compare.json"
+  },
+  "authority_verdict": "promote_projected_ple_token_cache_for_rank4_two_layer_phone_training",
+  "baseline": {
+    "adapter_elapsed_seconds": 0.525225,
+    "gate_result": "runtime/reports/gemma4_megakernel/hardware_max/20260517T083219Z_phase10_hf_auth_token_bridge_baseline/gate_result.json",
+    "layer_elapsed_seconds": [
+      5.678943,
+      5.635501
+    ],
+    "max_rss_kb": 2169372,
+    "run_id": "20260517T083219Z_phase10_hf_auth_token_bridge_baseline",
+    "token_to_hidden_elapsed_seconds": 4.232976,
+    "token_to_hidden_timing": {
+      "active_tokens": 796,
+      "embedding_cache_rows": 285,
+      "embedding_gather_seconds": 0.015157,
+      "open_asset_seconds": 6.3e-05,
+      "ple_layer0_cache_rows": 285,
+      "ple_layer0_seconds": 2.104211,
+      "ple_layer1_cache_rows": 285,
+      "ple_layer1_seconds": 2.105825,
+      "projection_load_seconds": 0.007544,
+      "read_cache_seconds": 0.000174,
+      "unique_token_count": 285
+    }
+  },
+  "checks": [
+    {
+      "details": {
+        "input_id_mismatch_count": 0,
+        "selected_text_sha256": "0e5725947a16f8c543bec92ab93ba9ec860eac88943288dba99f489827696fe9",
+        "sequence_count": 8,
+        "source_baseline": "20260517T083219Z_phase10_hf_auth_token_bridge_baseline"
+      },
+      "name": "hf_authenticated_phone_fetch_and_token_pack_reused",
+      "status": "pass"
+    },
+    {
+      "details": {
+        "cosine_p50_min": 0.9999982087594611,
+        "failed_token_count": 0
+      },
+      "name": "token_to_hidden_parity",
+      "status": "pass"
+    },
+    {
+      "details": {
+        "failed_token_count": 0,
+        "p50": 0.9999895268153007,
+        "token_count": 796
+      },
+      "name": "layer0_phone_opencl_parity",
+      "status": "pass"
+    },
+    {
+      "details": {
+        "failed_token_count": 0,
+        "p50": 0.9999936773992628,
+        "token_count": 796
+      },
+      "name": "layer1_phone_opencl_parity",
+      "status": "pass"
+    },
+    {
+      "details": {
+        "cosine_min": 0.9999981024312786,
+        "failed_tensor_count": 0
+      },
+      "name": "adapter_update_parity",
+      "status": "pass"
+    },
+    {
+      "details": {
+        "baseline_seconds": 4.232976,
+        "projected_cache_seconds": 0.667287,
+        "reduction_fraction": 0.8423598432875594,
+        "speedup_x": 6.343561316195281
+      },
+      "name": "token_bridge_speedup_authority",
+      "status": "pass"
+    },
+    {
+      "details": {
+        "active_tokens": 796,
+        "embedding_cache_rows": 285,
+        "embedding_gather_seconds": 0.007071,
+        "open_asset_seconds": 4.5e-05,
+        "ple_layer0_cache_rows": 285,
+        "ple_layer0_seconds": 0.288276,
+        "ple_layer1_cache_rows": 285,
+        "ple_layer1_seconds": 0.366891,
+        "projection_load_seconds": 0.004898,
+        "read_cache_seconds": 0.000105,
+        "unique_token_count": 285
+      },
+      "name": "instrumentation_present",
+      "status": "pass"
+    }
+  ],
+  "disposition": {
+    "defer": [
+      "thermal LR governor",
+      "Hexagon/AI Engine Direct backend",
+      "checkpoint layout experiments",
+      "Adreno kernel fusion until comparable phone-run gates exist"
+    ],
+    "discard": [
+      "generic DataLoader/allocator rewrites without phone-run authority evidence"
+    ],
+    "integrate": [
+      "projected PLE rows cached per token id inside phone token-to-hidden bridge"
+    ]
+  },
+  "gate": "Phase 10 projected PLE cache hardware-max falsification run",
+  "metrics": {
+    "active_tokens": 796,
+    "adapter_elapsed_seconds": 0.33304,
+    "layer_elapsed_seconds": [
+      3.325338,
+      3.423318
+    ],
+    "loss_half_mse": 1.6465152695,
+    "max_rss_kb": 2169436,
+    "token_to_hidden_elapsed_seconds": 0.667287,
+    "token_to_hidden_reduction_fraction": 0.8423598432875594,
+    "token_to_hidden_speedup_x": 6.343561316195281,
+    "token_to_hidden_timing": {
+      "active_tokens": 796,
+      "embedding_cache_rows": 285,
+      "embedding_gather_seconds": 0.007071,
+      "open_asset_seconds": 4.5e-05,
+      "ple_layer0_cache_rows": 285,
+      "ple_layer0_seconds": 0.288276,
+      "ple_layer1_cache_rows": 285,
+      "ple_layer1_seconds": 0.366891,
+      "projection_load_seconds": 0.004898,
+      "read_cache_seconds": 0.000105,
+      "unique_token_count": 285
+    }
+  },
+  "non_claims": [
+    "not full Gemma 4 training",
+    "not Hexagon NPU training",
+    "not six-hour endurance",
+    "not public benchmark",
+    "not Snapdragon theoretical maximum reached"
+  ],
+  "promotion_scope": "REDMAGIC phone-native Gemma4 E4B two-layer distillation token-to-hidden bridge; repeated-token PLE projection cache only",
+  "run_id": "20260517T084203Z_phase10_projected_ple_cache",
+  "schema_version": "gemma4_phase10_projected_ple_cache_v1",
+  "status": "pass"
+}

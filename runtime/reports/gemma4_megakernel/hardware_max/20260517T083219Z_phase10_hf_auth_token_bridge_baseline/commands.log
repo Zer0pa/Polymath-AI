@@ -1,0 +1,10 @@
+Phase 10 HF-auth token bridge baseline (sanitized).
+
+- hf auth whoami confirmed stored HF token for Architect-Prime without printing token.
+- adb push instrumented runner to /data/local/tmp/polymath_gemma4_gate/gemma4_layer_runner_phase10_instr.
+- adb push local HF token file to temporary phone file .hf_token_phase10; chmod 600.
+- adb shell curl used Authorization: Bearer $(cat .hf_token_phase10) to fetch public HF corpus; token was not logged; temporary file was removed immediately after fetch.
+- phone ran --tokenize-pack into hf_stream/20260517T083219Z_phase10_hf_auth_token_bridge_baseline_cache.
+- phone ran --run-g8-distill into hardware_max/20260517T083219Z_phase10_hf_auth_token_bridge_baseline/outputs.
+- RunPod generated PyTorch reference from pulled phone cache and existing checkpoint.
+- Local comparators generated token, token-to-hidden, layer0, layer1, and adapter update reports.

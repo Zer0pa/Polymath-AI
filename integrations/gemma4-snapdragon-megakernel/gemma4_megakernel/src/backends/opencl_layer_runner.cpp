@@ -1277,6 +1277,20 @@ struct AdapterStepResult {
   long max_rss_kb;
 };
 
+struct TokenHiddenTiming {
+  double read_cache_seconds;
+  double open_asset_seconds;
+  double embedding_gather_seconds;
+  double projection_load_seconds;
+  double ple_layer0_seconds;
+  double ple_layer1_seconds;
+  std::size_t unique_token_count;
+  std::size_t embedding_cache_rows;
+  std::size_t ple_layer0_cache_rows;
+  std::size_t ple_layer1_cache_rows;
+  std::uint32_t active_tokens;
+};
+
 struct TokenHiddenInputs {
   std::vector<float> layer_input;
   std::vector<float> per_layer0_input;
@@ -1284,6 +1298,7 @@ struct TokenHiddenInputs {
   std::vector<std::uint8_t> attention_mask;
   std::vector<std::uint32_t> position_ids;
   double elapsed_seconds;
+  TokenHiddenTiming timing;
   long max_rss_kb;
 };
 
@@ -1293,6 +1308,21 @@ long max_resident_set_kb() {
     return -1L;
   }
   return usage.ru_maxrss;
+}
+
+double elapsed_seconds_since(const std::chrono::steady_clock::time_point& start_time) {
+  return std::chrono::duration<double>(std::chrono::steady_clock::now() - start_time).count();
+}
+
+std::size_t unique_token_count(std::vector<std::uint32_t> values) {
+  std::sort(values.begin(), values.end());
+  const auto end = std::unique(values.begin(), values.end());
+  return static_cast<std::size_t>(std::distance(values.begin(), end));
+}
+
+std::uint32_t active_token_count(const std::vector<std::uint8_t>& attention_mask) {
+  return static_cast<std::uint32_t>(
+      std::count(attention_mask.begin(), attention_mask.end(), static_cast<std::uint8_t>(1)));
 }
 
 void write_layer_telemetry(const std::string& output_dir, const std::string& opencl_library,
@@ -1399,6 +1429,38 @@ std::vector<float> cached_row(Bf16MatrixFile& matrix,
   return values;
 }
 
+std::vector<float> compute_ple_row(const std::vector<float>& layer_input,
+                                   const std::vector<float>& identity,
+                                   const std::vector<float>& projection,
+                                   const std::vector<float>& norm_weight,
+                                   std::size_t input_base) {
+  const float projection_scale =
+      1.0F / std::sqrt(static_cast<float>(kHidden));
+  const float combine_scale = 1.0F / std::sqrt(2.0F);
+  std::vector<float> projection_values(kSmallInput, 0.0F);
+  double sum_sq = 0.0;
+  for (std::size_t out = 0U; out < kSmallInput; ++out) {
+    const std::size_t weight_base = out * kHidden;
+    double sum = 0.0;
+    for (std::size_t hidden = 0U; hidden < kHidden; ++hidden) {
+      sum += static_cast<double>(layer_input[input_base + hidden]) *
+             static_cast<double>(projection[weight_base + hidden]);
+    }
+    const float value = static_cast<float>(sum * projection_scale);
+    projection_values[out] = value;
+    sum_sq += static_cast<double>(value) * static_cast<double>(value);
+  }
+
+  const float rms_scale =
+      1.0F / std::sqrt(static_cast<float>(sum_sq / kSmallInput) + kRmsEpsilon);
+  std::vector<float> row(kSmallInput, 0.0F);
+  for (std::size_t out = 0U; out < kSmallInput; ++out) {
+    const float projected = projection_values[out] * rms_scale * norm_weight[out];
+    row[out] = (projected + identity[out]) * combine_scale;
+  }
+  return row;
+}
+
 void project_ple_for_layer(const std::vector<float>& layer_input,
                            Bf16MatrixFile& ple_tokens,
                            const std::vector<float>& projection,
@@ -1406,41 +1468,32 @@ void project_ple_for_layer(const std::vector<float>& layer_input,
                            const std::vector<std::uint32_t>& input_ids,
                            std::vector<float>& output) {
   std::unordered_map<std::uint32_t, std::vector<float>> token_cache;
+  std::unordered_map<std::uint32_t, std::vector<float>> projected_cache;
   const float token_scale = 16.0F;
-  const float projection_scale =
-      1.0F / std::sqrt(static_cast<float>(kHidden));
-  const float combine_scale = 1.0F / std::sqrt(2.0F);
   output.assign(kTokens * kSmallInput, 0.0F);
-  std::vector<float> projection_values(kSmallInput, 0.0F);
   for (std::size_t token = 0U; token < kTokens; ++token) {
-    const std::vector<float> identity =
-        cached_row(ple_tokens, token_cache, input_ids[token], token_scale);
-    double sum_sq = 0.0;
+    const std::uint32_t token_id = input_ids[token];
     const std::size_t input_base = token * kHidden;
-    for (std::size_t out = 0U; out < kSmallInput; ++out) {
-      const std::size_t weight_base = out * kHidden;
-      double sum = 0.0;
-      for (std::size_t hidden = 0U; hidden < kHidden; ++hidden) {
-        sum += static_cast<double>(layer_input[input_base + hidden]) *
-               static_cast<double>(projection[weight_base + hidden]);
-      }
-      const float value = static_cast<float>(sum * projection_scale);
-      projection_values[out] = value;
-      sum_sq += static_cast<double>(value) * static_cast<double>(value);
+    auto row_iter = projected_cache.find(token_id);
+    if (row_iter == projected_cache.end()) {
+      const std::vector<float> identity =
+          cached_row(ple_tokens, token_cache, token_id, token_scale);
+      // In this bridge both layer_input and PLE identity are token-ID-derived,
+      // so repeated token IDs can reuse the complete projected row.
+      auto inserted = projected_cache.emplace(
+          token_id, compute_ple_row(layer_input, identity, projection, norm_weight, input_base));
+      row_iter = inserted.first;
     }
-    const float rms_scale =
-        1.0F / std::sqrt(static_cast<float>(sum_sq / kSmallInput) + kRmsEpsilon);
     const std::size_t output_base = token * kSmallInput;
-    for (std::size_t out = 0U; out < kSmallInput; ++out) {
-      const float projected = projection_values[out] * rms_scale * norm_weight[out];
-      output[output_base + out] = (projected + identity[out]) * combine_scale;
-    }
+    std::copy(row_iter->second.begin(), row_iter->second.end(),
+              output.begin() + static_cast<std::ptrdiff_t>(output_base));
   }
 }
 
 TokenHiddenInputs generate_token_hidden_inputs(const std::string& token_cache_dir,
                                                const std::string& asset_dir) {
   const auto start_time = std::chrono::steady_clock::now();
+  auto step_time = std::chrono::steady_clock::now();
   std::vector<std::uint32_t> input_ids =
       read_binary_vector<std::uint32_t>(join_path(token_cache_dir, "input_ids.u32.bin"),
                                         kTokens);
@@ -1450,12 +1503,18 @@ TokenHiddenInputs generate_token_hidden_inputs(const std::string& token_cache_di
   std::vector<std::uint32_t> position_ids =
       read_binary_vector<std::uint32_t>(join_path(token_cache_dir, "position_ids.u32.bin"),
                                         kTokens);
+  const double read_cache_seconds = elapsed_seconds_since(step_time);
+
+  step_time = std::chrono::steady_clock::now();
   Bf16MatrixFile embeddings(join_path(asset_dir, "embed_tokens.bf16.bin"), 262144U,
                             kHidden);
   Bf16MatrixFile ple_tokens0(join_path(asset_dir, "ple_token_layer0.bf16.bin"),
                              262144U, kSmallInput);
   Bf16MatrixFile ple_tokens1(join_path(asset_dir, "ple_token_layer1.bf16.bin"),
                              262144U, kSmallInput);
+  const double open_asset_seconds = elapsed_seconds_since(step_time);
+
+  step_time = std::chrono::steady_clock::now();
   const float embed_scale = bf16_round(std::sqrt(static_cast<float>(kHidden)));
   std::unordered_map<std::uint32_t, std::vector<float>> embedding_cache;
   std::vector<float> layer_input(kTokens * kHidden, 0.0F);
@@ -1465,7 +1524,9 @@ TokenHiddenInputs generate_token_hidden_inputs(const std::string& token_cache_di
     std::copy(row.begin(), row.end(), layer_input.begin() +
                                          static_cast<std::ptrdiff_t>(token * kHidden));
   }
+  const double embedding_gather_seconds = elapsed_seconds_since(step_time);
 
+  step_time = std::chrono::steady_clock::now();
   const std::vector<float> ple_projection0 = load_bf16_file(
       join_path(asset_dir, "ple_projection_layer0.bf16.bin"), kSmallInput * kHidden,
       1.0F);
@@ -1475,22 +1536,42 @@ TokenHiddenInputs generate_token_hidden_inputs(const std::string& token_cache_di
   const std::vector<float> ple_norm_weight =
       read_binary_vector<float>(join_path(asset_dir, "ple_projection_norm.f32.bin"),
                                 kSmallInput);
+  const double projection_load_seconds = elapsed_seconds_since(step_time);
+
   std::vector<float> per_layer0_input;
   std::vector<float> per_layer1_input;
+  step_time = std::chrono::steady_clock::now();
   project_ple_for_layer(layer_input, ple_tokens0, ple_projection0, ple_norm_weight,
                         input_ids, per_layer0_input);
+  const double ple_layer0_seconds = elapsed_seconds_since(step_time);
+
+  step_time = std::chrono::steady_clock::now();
   project_ple_for_layer(layer_input, ple_tokens1, ple_projection1, ple_norm_weight,
                         input_ids, per_layer1_input);
+  const double ple_layer1_seconds = elapsed_seconds_since(step_time);
 
   const auto end_time = std::chrono::steady_clock::now();
   const double elapsed_seconds =
       std::chrono::duration<double>(end_time - start_time).count();
+  const std::size_t unique_ids = unique_token_count(input_ids);
+  const TokenHiddenTiming timing{read_cache_seconds,
+                                 open_asset_seconds,
+                                 embedding_gather_seconds,
+                                 projection_load_seconds,
+                                 ple_layer0_seconds,
+                                 ple_layer1_seconds,
+                                 unique_ids,
+                                 embedding_cache.size(),
+                                 unique_ids,
+                                 unique_ids,
+                                 active_token_count(attention_mask)};
   return TokenHiddenInputs{std::move(layer_input),
                            std::move(per_layer0_input),
                            std::move(per_layer1_input),
                            std::move(attention_mask),
                            std::move(position_ids),
                            elapsed_seconds,
+                           timing,
                            max_resident_set_kb()};
 }
 
@@ -1742,6 +1823,25 @@ void write_streamed_training_telemetry(const std::string& output_dir,
   file << "],\n";
   file << "  \"token_to_hidden_elapsed_seconds\": " << std::fixed << std::setprecision(6)
        << token_inputs.elapsed_seconds << ",\n";
+  file << "  \"token_to_hidden_timing\": {\n";
+  file << "    \"read_cache_seconds\": " << std::fixed << std::setprecision(6)
+       << token_inputs.timing.read_cache_seconds << ",\n";
+  file << "    \"open_asset_seconds\": " << std::fixed << std::setprecision(6)
+       << token_inputs.timing.open_asset_seconds << ",\n";
+  file << "    \"embedding_gather_seconds\": " << std::fixed << std::setprecision(6)
+       << token_inputs.timing.embedding_gather_seconds << ",\n";
+  file << "    \"projection_load_seconds\": " << std::fixed << std::setprecision(6)
+       << token_inputs.timing.projection_load_seconds << ",\n";
+  file << "    \"ple_layer0_seconds\": " << std::fixed << std::setprecision(6)
+       << token_inputs.timing.ple_layer0_seconds << ",\n";
+  file << "    \"ple_layer1_seconds\": " << std::fixed << std::setprecision(6)
+       << token_inputs.timing.ple_layer1_seconds << ",\n";
+  file << "    \"unique_token_count\": " << token_inputs.timing.unique_token_count << ",\n";
+  file << "    \"embedding_cache_rows\": " << token_inputs.timing.embedding_cache_rows << ",\n";
+  file << "    \"ple_layer0_cache_rows\": " << token_inputs.timing.ple_layer0_cache_rows << ",\n";
+  file << "    \"ple_layer1_cache_rows\": " << token_inputs.timing.ple_layer1_cache_rows << ",\n";
+  file << "    \"active_tokens\": " << token_inputs.timing.active_tokens << "\n";
+  file << "  },\n";
   file << "  \"layer_elapsed_seconds\": [" << std::fixed << std::setprecision(6)
        << first.elapsed_seconds << ", " << second.elapsed_seconds << "],\n";
   file << "  \"adapter_elapsed_seconds\": " << std::fixed << std::setprecision(6)
