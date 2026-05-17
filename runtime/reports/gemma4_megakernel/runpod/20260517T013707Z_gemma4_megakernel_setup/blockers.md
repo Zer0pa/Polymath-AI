@@ -1,0 +1,2 @@
+- Remote clone does not contain the active Gemma4 megakernel PRD; local control-plane artifacts appear not to be present on RunPod.
+- Remote clone does not contain the active RunPod setup runbook.

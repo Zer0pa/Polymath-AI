@@ -1,0 +1,24 @@
+2026-05-17T032829Z G3 two-layer OpenCL command ledger
+
+Local build/test:
+- cmake --build /tmp/polymath_gemma4_import_build_g3 -j 4
+- ctest --test-dir /tmp/polymath_gemma4_import_build_g3 --output-on-failure
+- python3 -m unittest discover -s integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/compare_outputs -p 'test_*.py'
+
+RunPod sync/build/reference:
+- rsync patched gemma4_megakernel source to /workspace/Polymath-AI/gemma4_megakernel/
+- /workspace/Polymath-AI/.venv/bin/python /workspace/Polymath-AI/gemma4_megakernel/tools/reference/create_e4b_layer0_reference.py --out /workspace/artifacts/polymath_gemma4/layer_pack/gemma4_e4b_layer1_seq128_v0 --cache-dir /workspace/models/gemma4_e4b --seq 128 --layer 1
+- cd /workspace/Polymath-AI && rm -rf build/gemma4_megakernel_android && ANDROID_NDK_HOME=/workspace/android-ndk-r28b bash gemma4_megakernel/android/cmake/build_android.sh
+
+Phone safety:
+- adb -s FY25013101C8 shell 'mkdir -p /data/local/tmp/polymath_gemma4_gate/bin_backup && cp /data/local/tmp/polymath_gemma4_gate/gemma4_layer_runner /data/local/tmp/polymath_gemma4_gate/bin_backup/gemma4_layer_runner_pre_g3_20260517T031320Z'
+- adb -s FY25013101C8 push /tmp/polymath_gemma4_g3/gemma4_layer_runner_rss /data/local/tmp/polymath_gemma4_gate/gemma4_layer_runner_g3_rss
+- adb -s FY25013101C8 push /tmp/polymath_gemma4_g3/gemma4_e4b_layer1_seq128_v0 /data/local/tmp/polymath_gemma4_gate/layer_pack/
+
+Phone execution:
+- adb -s FY25013101C8 shell 'cd /data/local/tmp/polymath_gemma4_gate && rm -rf outputs_opencl_stack_g3_20260517T032829Z && ./gemma4_layer_runner_g3_rss --run-opencl-stack /data/local/tmp/polymath_gemma4_gate/layer_pack/gemma4_e4b_layer0_seq128_v0 /data/local/tmp/polymath_gemma4_gate/layer_pack/gemma4_e4b_layer1_seq128_v0 /data/local/tmp/polymath_gemma4_gate/outputs_opencl_stack_g3_20260517T032829Z && sha256sum /data/local/tmp/polymath_gemma4_gate/outputs_opencl_stack_g3_20260517T032829Z/layer_output.f32.bin /data/local/tmp/polymath_gemma4_gate/outputs_opencl_stack_g3_20260517T032829Z/layer0_output.f32.bin && cat /data/local/tmp/polymath_gemma4_gate/outputs_opencl_stack_g3_20260517T032829Z/telemetry.json'
+
+Comparison:
+- Pull final phone output and telemetry to /tmp/polymath_gemma4_g3/opencl_stack_g3_20260517T032829Z/
+- Copy final phone output and telemetry to /workspace/artifacts/polymath_gemma4/phone_outputs/opencl_stack_g3_20260517T032829Z/
+- /workspace/Polymath-AI/.venv/bin/python /workspace/Polymath-AI/gemma4_megakernel/tools/compare_outputs/compare_outputs.py --reference-output /workspace/artifacts/polymath_gemma4/layer_pack/gemma4_e4b_layer1_seq128_v0/reference/layer_output.f32.bin --phone-output /workspace/artifacts/polymath_gemma4/phone_outputs/opencl_stack_g3_20260517T032829Z/layer_output.f32.bin --attention-mask /workspace/artifacts/polymath_gemma4/layer_pack/gemma4_e4b_layer1_seq128_v0/input/attention_mask.u8.bin --shape 8,128,2560 --manifest /workspace/artifacts/polymath_gemma4/layer_pack/gemma4_e4b_layer1_seq128_v0/manifest.json --contract /workspace/artifacts/polymath_gemma4/layer_pack/gemma4_e4b_layer1_seq128_v0/contract.json --phone-telemetry /workspace/artifacts/polymath_gemma4/phone_outputs/opencl_stack_g3_20260517T032829Z/telemetry.json --backend opencl --device-identity 'nubia NX789J SM8750 FY25013101C8' --input-dtype f32 --weight-dtype f32 --accumulation-dtype f32 --phone-command 'adb shell gemma4_layer_runner_g3_rss --run-opencl-stack layer0 layer1' --reference-command 'create_e4b_layer0_reference.py --layer 1 revision 7aa32e6889efd6300124851b164f8b364314c3d8' --expected-layer-index 1 --report-json /workspace/artifacts/polymath_gemma4/phone_outputs/opencl_stack_g3_20260517T032829Z/gate_report.json

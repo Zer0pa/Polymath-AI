@@ -1,0 +1,53 @@
+{
+  "run_id": "20260517T030510Z_g2_import_regression",
+  "scope": "G2 import and regression harness preservation",
+  "promotion_decision": "promote_g2",
+  "checks": [
+    {
+      "name": "wrong_model_revision",
+      "status": "pass",
+      "evidence": "G1 pointer and imported reports preserve revision 7aa32e6889efd6300124851b164f8b364314c3d8."
+    },
+    {
+      "name": "random_or_wrong_weights_substitution",
+      "status": "pass",
+      "evidence": "No weights imported; G1 evidence remains anchored to prior real-pretrained-weight RunPod/phone gate."
+    },
+    {
+      "name": "cpu_fallback_masquerading_as_opencl",
+      "status": "pass_for_g2",
+      "evidence": "G2 does not promote a new phone compute claim; G1 imported evidence states OpenCL and remains the regression floor."
+    },
+    {
+      "name": "pad_token_metric_inflation",
+      "status": "pass",
+      "evidence": "G1 cosine report records 111 non-pad tokens and failed_tokens_below_threshold = 0."
+    },
+    {
+      "name": "comparator_tolerance_relaxation",
+      "status": "pass",
+      "evidence": "Threshold remains p50 >= 0.99 in PRD, GPD requirements, runbook, manifest, and G1 result."
+    },
+    {
+      "name": "forbidden_artifact_leakage",
+      "status": "pass",
+      "evidence": "Integration namespace leak scans found zero forbidden files and zero forbidden directories after generated pycache removal."
+    },
+    {
+      "name": "hidden_host_runtime_path",
+      "status": "not_applicable_to_g2",
+      "evidence": "G2 imports and builds harness only; no training runtime claim is promoted."
+    },
+    {
+      "name": "g1_regression",
+      "status": "pass",
+      "evidence": "Prior authority G1 result is preserved, and after the device was reconnected live phone replay produced the same sha256 cef523f674cff7ecd01cb59040048f9188f80bcb58b9fc47f1fa7f370ce332cf."
+    },
+    {
+      "name": "narrative_pass_without_artifact_pass",
+      "status": "pass",
+      "evidence": "G2 has host build, CTest, comparator unit tests, import index, leak scan, and blocker report. G3 is explicitly blocked."
+    }
+  ],
+  "critical_unresolved": []
+}

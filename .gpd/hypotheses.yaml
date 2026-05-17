@@ -1,0 +1,88 @@
+project: polymath-gemma4-snapdragon-megakernel
+initialized_at: "2026-05-16T00:00:00Z"
+gpd_cli: "unavailable_or_not_yet_used"
+fallback_structure:
+  - .gpd/hypotheses.yaml
+  - .gpd/streams/
+  - .gpd/evidence/
+  - .gpd/deferrals/
+  - .gpd/runlog.jsonl
+authority_prd: docs/PRD-GEMMA4-SNAPDRAGON-MEGAKERNEL-HETEROGENEOUS-TRAINING.md
+active_operating_order:
+  source: /Users/Zer0pa/Polymat AI/orchestrator_brief.md
+  doctrine: RESISTANCE-V2.md
+  passed_gate: One real-pretrained-weight Gemma layer, forward-only, ran on RedMagic 10 Pro Adreno GPU through OpenCL and matched RunPod/host PyTorch with per-token cosine p50 0.9999890020383452.
+  authority_prd: docs/PRD-GEMMA4-SNAPDRAGON-MEGAKERNEL-HETEROGENEOUS-TRAINING.md
+  next_gate: Formal GPD project initialization or repair, Gemma4 Kernel import, and regression harness preservation for the passed OpenCL layer gate.
+  terminal_gate: Native phone Gemma 4 training run consuming Hugging Face streamed text, tokenizing and packing on phone, updating declared trainable scope on phone, preserving frozen base hashes, and emitting validated checkpoint or adapter artifacts.
+  forbidden_regressions:
+    - Qwen frozen-middle correctness work.
+    - Corpus expansion detached from phone-native streaming/tokenization/training.
+    - Reflex Agent implementation.
+    - Heterogeneous routing before dispatchable training work exists.
+    - Sustained thermal or throughput claims that bypass parity.
+    - NPU Gemma parity before the Adreno training route is specified.
+hypotheses:
+  H0_single_layer_forward_parity:
+    claim: A real-pretrained-weight Gemma layer can run forward-only on RedMagic Adreno through Vulkan or OpenCL and match a host PyTorch reference at per-token cosine p50 >= 0.99.
+    first_evidence:
+      - runtime/reports/gemma4_megakernel/parity/20260516_e4b_layer0_opencl_gate/artifact_manifest.json
+      - runtime/reports/gemma4_megakernel/parity/20260516_e4b_layer0_opencl_gate/gate_result.json
+      - runtime/reports/gemma4_megakernel/parity/20260516_e4b_layer0_opencl_gate/cosine_report.json
+    result:
+      status: pass
+      backend: opencl
+      device: REDMAGIC NX789J / SM8750
+      model: google/gemma-4-E4B
+      revision: 7aa32e6889efd6300124851b164f8b364314c3d8
+      layer_index: 0
+      cosine_p50: 0.9999890020383452
+      cosine_min: 0.9999801999737985
+      failed_tokens: 0
+      upstream_gate_commit: c5b6e3522d28d0e1dc56084cb97fa9e95e29aa4e
+    status: passed_regression_gate
+  H1_static_megakernel_advantage:
+    claim: A static or megakernel-like Gemma 4 executor can beat same-phone op-by-op execution under equal correctness, memory, and thermal gates.
+    first_evidence:
+      - RedMagic OpenCL/Vulkan parity for RMSNorm and matmul.
+      - Tiny Gemma block static schedule with bounded arenas.
+      - Same-phone baseline comparison.
+    status: active_after_G3_two_layer_forward_pass
+  H2_opencl_vs_vulkan_empirical_backend:
+    claim: OpenCL or Vulkan may be the right first Adreno backend, but device measurement must choose.
+    first_evidence:
+      - Equivalent golden-vector harnesses for both backends.
+      - Battery, thermal, memory, and throughput telemetry on RedMagic.
+    status: opencl_supported_by_G1_and_G3_without_vulkan_comparison
+  H3_hexagon_frozen_forward_only:
+    claim: Hexagon/QNN may serve frozen-forward or recompute roles but is not assumed to support training/backward.
+    first_evidence:
+      - QAIRT/QNN toolchain manifest from RunPod.
+      - Real-weight frozen-forward correctness if a bridge probe is run.
+    status: parked_until_Adreno_forward_gate_passes
+  H4_runpod_qualcomm_reproducibility:
+    claim: RunPod can provide reproducible Qualcomm setup, compile probes, and measurement manifests for this lane.
+    first_evidence:
+      - Text-only toolchain manifest.
+      - Compile probe plan and command logs.
+    status: supporting_build_oracle_only
+  H5_gemma4_e2b_selective_training_fit:
+    claim: Gemma 4 selective training can fit within RedMagic memory and thermal constraints under a bounded static executor.
+    first_evidence:
+      - seq128/256/512 memory reports.
+      - one valid train step with frozen-base invariant.
+    status: active_after_PRD_engineering
+  H6_existing_harness_salvage:
+    claim: Existing Polymath phone/QNN/Vulkan/OpenCL harness work can be reused without carrying forward model-first drift.
+    first_evidence:
+      - inventory of reusable phone scripts and binaries.
+      - cut list for Qwen/SmolLM/corpus artifacts not serving Gemma 4 megakernel training.
+    status: supported_by_G2_import_with_policy_excludes
+  H7_phone_native_training_pipeline:
+    claim: REDMAGIC can stream HF raw text, tokenize Gemma text on Oryon CPU, pack sequences to UFS, and feed a native phone training loop without Mac or RunPod in the runtime data path.
+    first_evidence:
+      - phone tokenizer parity report on fixed samples.
+      - UFS packed shard manifest with checksums.
+      - integrated train_loop gate_result.json.
+      - checkpoint or adapter artifact manifest.
+    status: terminal_objective

@@ -1,0 +1,33 @@
+{
+  "upstream_repo": "/Users/Zer0pa/Gemma4 Kernel",
+  "commits": {
+    "gate": "c5b6e3522d28d0e1dc56084cb97fa9e95e29aa4e",
+    "crosswalk": "8a5fb2df0c7e8da52fb0bc346077e63e8c801009"
+  },
+  "source_files": {
+    "gate_report": "/Users/Zer0pa/Gemma4 Kernel/gemma4_megakernel/docs/gate_reports/20260516_e4b_layer0_gate_execution.md",
+    "handover": "/Users/Zer0pa/Gemma4 Kernel/docs/orchestrator_handover_gemma4_e4b_gate.md",
+    "crosswalk": "/Users/Zer0pa/Gemma4 Kernel/docs/orchestrator_brief_completion_crosswalk.md",
+    "opencl_runner": "/Users/Zer0pa/Gemma4 Kernel/gemma4_megakernel/src/backends/opencl_layer_runner.cpp",
+    "phone_run_script": "/Users/Zer0pa/Gemma4 Kernel/gemma4_megakernel/android/adb/run_opencl_gate.sh",
+    "strict_comparator": "/Users/Zer0pa/Gemma4 Kernel/gemma4_megakernel/tools/compare_outputs/compare_outputs.py",
+    "reference_generator": "/Users/Zer0pa/Gemma4 Kernel/gemma4_megakernel/tools/reference/create_e4b_layer0_reference.py"
+  },
+  "external_artifacts": {
+    "runpod_layer_pack": "/workspace/artifacts/polymath_gemma4/layer_pack/gemma4_e4b_layer0_seq128_v0",
+    "runpod_phone_output_packet": "/workspace/artifacts/polymath_gemma4/phone_outputs/opencl_20260516T222643Z",
+    "phone_runner": "/data/local/tmp/polymath_gemma4_gate/gemma4_layer_runner",
+    "phone_layer_pack": "/data/local/tmp/polymath_gemma4_gate/layer_pack/gemma4_e4b_layer0_seq128_v0",
+    "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/outputs_opencl",
+    "mac_pulled_packet": "/Users/Zer0pa/Gemma4 Kernel/runtime/gemma4_megakernel/opencl_20260516T222643Z",
+    "mac_repeat_packet": "/Users/Zer0pa/Gemma4 Kernel/runtime/gemma4_megakernel/opencl_20260516T223001Z"
+  },
+  "excluded_from_polymath_copy": [
+    "model weights",
+    "raw phone output binaries",
+    "runner binaries",
+    "SDK files",
+    "token-bearing files",
+    "large runtime caches"
+  ]
+}

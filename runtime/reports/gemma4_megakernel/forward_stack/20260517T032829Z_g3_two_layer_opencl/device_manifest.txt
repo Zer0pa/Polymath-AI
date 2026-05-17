@@ -1,0 +1,19 @@
+Phone:
+- Serial: FY25013101C8
+- Model: NX789J
+- SoC: SM8750
+- Manufacturer: nubia
+- Android release: 15
+- Backend: OpenCL via libOpenCL.so
+- Runner: /data/local/tmp/polymath_gemma4_gate/gemma4_layer_runner_g3_rss
+- Runner sha256: 911af7fd7f72990fc24bdeed3b57020a7caf695d275178288a78373cc163924f
+
+RunPod:
+- Pod ID: ltg8fdnxgmzwjy
+- Reference pack: /workspace/artifacts/polymath_gemma4/layer_pack/gemma4_e4b_layer1_seq128_v0
+- Phone output packet: /workspace/artifacts/polymath_gemma4/phone_outputs/opencl_stack_g3_20260517T032829Z
+- Python env: /workspace/Polymath-AI/.venv/bin/python
+
+Mac:
+- Role: control plane
+- Raw pulled outputs stayed under /tmp/polymath_gemma4_g3 and were not committed.

@@ -1,0 +1,681 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://zer0pa.local/gemma4-kernel/executor_ir/schema.json",
+  "title": "Static selective training executor IR",
+  "description": "Minimal static IR for a Gemma-4-shaped selective training step. The IR records tensor lifetimes, memory pools, trainable scopes, device hints, and fallback schedules without prescribing CUDA or backend-specific kernel code.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "ir_kind",
+    "metadata",
+    "model",
+    "training_step",
+    "devices",
+    "tensors",
+    "memory_pools",
+    "ops",
+    "schedules"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "0.1.0"
+    },
+    "ir_kind": {
+      "const": "static_selective_training_step"
+    },
+    "metadata": {
+      "type": "object",
+      "required": [
+        "name",
+        "owner",
+        "purpose"
+      ],
+      "additionalProperties": true,
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "owner": {
+          "type": "string",
+          "minLength": 1
+        },
+        "purpose": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/sourceRef"
+          }
+        },
+        "notes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "model": {
+      "type": "object",
+      "required": [
+        "family",
+        "variant",
+        "shape_profile"
+      ],
+      "additionalProperties": true,
+      "properties": {
+        "family": {
+          "type": "string",
+          "minLength": 1
+        },
+        "variant": {
+          "type": "string",
+          "minLength": 1
+        },
+        "format": {
+          "type": "string"
+        },
+        "shape_profile": {
+          "type": "object",
+          "required": [
+            "dimensions",
+            "seq_profiles"
+          ],
+          "additionalProperties": true,
+          "properties": {
+            "dimensions": {
+              "type": "object",
+              "additionalProperties": {
+                "$ref": "#/$defs/dimensionValue"
+              }
+            },
+            "seq_profiles": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "minItems": 1,
+              "uniqueItems": true
+            },
+            "context_limit": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "modalities": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "training_step": {
+      "type": "object",
+      "required": [
+        "objective",
+        "micro_batch",
+        "precision",
+        "selective_scope",
+        "optimizer"
+      ],
+      "additionalProperties": true,
+      "properties": {
+        "objective": {
+          "type": "string",
+          "minLength": 1
+        },
+        "micro_batch": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "precision": {
+          "type": "object",
+          "required": [
+            "activation",
+            "parameter",
+            "gradient"
+          ],
+          "additionalProperties": true,
+          "properties": {
+            "activation": {
+              "$ref": "#/$defs/dtype"
+            },
+            "parameter": {
+              "$ref": "#/$defs/dtype"
+            },
+            "gradient": {
+              "$ref": "#/$defs/dtype"
+            }
+          }
+        },
+        "selective_scope": {
+          "type": "object",
+          "required": [
+            "base_policy",
+            "trainable",
+            "fallback_order"
+          ],
+          "additionalProperties": true,
+          "properties": {
+            "base_policy": {
+              "enum": [
+                "frozen",
+                "selective_dense",
+                "adapter_only",
+                "unknown"
+              ]
+            },
+            "trainable": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "fallback_order": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "optimizer": {
+          "type": "object",
+          "required": [
+            "type",
+            "state_location"
+          ],
+          "additionalProperties": true,
+          "properties": {
+            "type": {
+              "type": "string",
+              "minLength": 1
+            },
+            "state_location": {
+              "$ref": "#/$defs/deviceKind"
+            },
+            "update_dtype": {
+              "$ref": "#/$defs/dtype"
+            }
+          }
+        }
+      }
+    },
+    "devices": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/device"
+      },
+      "minItems": 1
+    },
+    "tensors": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/tensor"
+      },
+      "minItems": 1
+    },
+    "memory_pools": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/memoryPool"
+      },
+      "minItems": 1
+    },
+    "ops": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/op"
+      },
+      "minItems": 1
+    },
+    "schedules": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/schedule"
+      },
+      "minItems": 1
+    }
+  },
+  "$defs": {
+    "dimensionValue": {
+      "oneOf": [
+        {
+          "type": "integer",
+          "minimum": 1
+        },
+        {
+          "type": "string",
+          "minLength": 1
+        }
+      ]
+    },
+    "dtype": {
+      "enum": [
+        "bool",
+        "i32",
+        "u8",
+        "q4",
+        "q8",
+        "f16",
+        "bf16",
+        "f32"
+      ]
+    },
+    "deviceKind": {
+      "enum": [
+        "CPU",
+        "GPU",
+        "NPU",
+        "unknown"
+      ]
+    },
+    "deviceHint": {
+      "type": "object",
+      "required": [
+        "preferred",
+        "allowed"
+      ],
+      "additionalProperties": true,
+      "properties": {
+        "preferred": {
+          "$ref": "#/$defs/deviceKind"
+        },
+        "allowed": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/deviceKind"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "fallback": {
+          "$ref": "#/$defs/deviceKind"
+        },
+        "reason": {
+          "type": "string"
+        }
+      }
+    },
+    "device": {
+      "type": "object",
+      "required": [
+        "id",
+        "kind",
+        "role"
+      ],
+      "additionalProperties": true,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_.-]+$"
+        },
+        "kind": {
+          "$ref": "#/$defs/deviceKind"
+        },
+        "role": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "sourceRef": {
+      "type": "object",
+      "required": [
+        "path",
+        "facts"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "facts": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        }
+      }
+    },
+    "tensor": {
+      "type": "object",
+      "required": [
+        "id",
+        "role",
+        "dtype",
+        "shape",
+        "layout",
+        "mutability",
+        "memory_pool",
+        "lifetime",
+        "device_hint"
+      ],
+      "additionalProperties": true,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_.-]+$"
+        },
+        "role": {
+          "enum": [
+            "token",
+            "label",
+            "mask",
+            "activation",
+            "parameter",
+            "adapter_parameter",
+            "gradient",
+            "optimizer_state",
+            "scratch",
+            "scalar",
+            "checkpoint"
+          ]
+        },
+        "dtype": {
+          "$ref": "#/$defs/dtype"
+        },
+        "shape": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/dimensionValue"
+          }
+        },
+        "layout": {
+          "enum": [
+            "row_major",
+            "block_q4",
+            "block_q8",
+            "packed",
+            "packed_kv",
+            "opaque"
+          ]
+        },
+        "mutability": {
+          "enum": [
+            "frozen",
+            "trainable",
+            "ephemeral"
+          ]
+        },
+        "memory_pool": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_.-]+$"
+        },
+        "lifetime": {
+          "type": "object",
+          "required": [
+            "start",
+            "end"
+          ],
+          "additionalProperties": true,
+          "properties": {
+            "start": {
+              "type": "string"
+            },
+            "end": {
+              "type": "string"
+            },
+            "reuse_group": {
+              "type": "string"
+            }
+          }
+        },
+        "device_hint": {
+          "$ref": "#/$defs/deviceHint"
+        }
+      }
+    },
+    "memoryPool": {
+      "type": "object",
+      "required": [
+        "id",
+        "space",
+        "device_hint",
+        "byte_formula",
+        "reuse_policy"
+      ],
+      "additionalProperties": true,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_.-]+$"
+        },
+        "space": {
+          "enum": [
+            "host_ram",
+            "gpu_global",
+            "npu_local",
+            "unified",
+            "file_mapped",
+            "unknown"
+          ]
+        },
+        "device_hint": {
+          "$ref": "#/$defs/deviceHint"
+        },
+        "byte_formula": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reuse_policy": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "op": {
+      "type": "object",
+      "required": [
+        "id",
+        "op_type",
+        "phase",
+        "inputs",
+        "outputs",
+        "device_hint",
+        "selective",
+        "memory"
+      ],
+      "additionalProperties": true,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_.-]+$"
+        },
+        "op_type": {
+          "enum": [
+            "host_prepare_batch",
+            "transfer",
+            "embedding_lookup",
+            "rms_norm",
+            "linear",
+            "rope",
+            "attention",
+            "mlp_gated",
+            "residual_add",
+            "cross_entropy_loss",
+            "backward",
+            "gradient_reduce",
+            "optimizer_step",
+            "checkpoint_write",
+            "composite",
+            "barrier",
+            "unknown"
+          ]
+        },
+        "phase": {
+          "enum": [
+            "input",
+            "forward",
+            "loss",
+            "backward",
+            "optimizer",
+            "io",
+            "fallback"
+          ]
+        },
+        "inputs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "outputs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "device_hint": {
+          "$ref": "#/$defs/deviceHint"
+        },
+        "selective": {
+          "type": "object",
+          "required": [
+            "gradient_policy"
+          ],
+          "additionalProperties": true,
+          "properties": {
+            "gradient_policy": {
+              "enum": [
+                "no_grad",
+                "loss_only",
+                "adapter_only",
+                "selective_dense",
+                "unknown"
+              ]
+            },
+            "trainable_refs": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "memory": {
+          "type": "object",
+          "required": [
+            "pools",
+            "activation_policy"
+          ],
+          "additionalProperties": true,
+          "properties": {
+            "pools": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "activation_policy": {
+              "enum": [
+                "retain",
+                "ring_reuse",
+                "recompute",
+                "stream",
+                "none",
+                "unknown"
+              ]
+            }
+          }
+        },
+        "depends_on": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "repeat": {
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "axis": {
+              "type": "string"
+            },
+            "count": {
+              "$ref": "#/$defs/dimensionValue"
+            }
+          }
+        }
+      }
+    },
+    "schedule": {
+      "type": "object",
+      "required": [
+        "id",
+        "kind",
+        "entry_condition",
+        "steps"
+      ],
+      "additionalProperties": true,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_.-]+$"
+        },
+        "kind": {
+          "enum": [
+            "primary",
+            "fallback_lora",
+            "fallback_adapter",
+            "validation"
+          ]
+        },
+        "entry_condition": {
+          "type": "string",
+          "minLength": 1
+        },
+        "steps": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/scheduleStep"
+          },
+          "minItems": 1
+        }
+      }
+    },
+    "scheduleStep": {
+      "type": "object",
+      "required": [
+        "id",
+        "ops",
+        "device_hint"
+      ],
+      "additionalProperties": true,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_.-]+$"
+        },
+        "ops": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        },
+        "device_hint": {
+          "$ref": "#/$defs/deviceHint"
+        },
+        "barrier_after": {
+          "type": "boolean"
+        },
+        "notes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

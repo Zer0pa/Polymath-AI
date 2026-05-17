@@ -1,0 +1,16 @@
+{
+  "comparison": "FP64 cosine per non-pad token against RunPod PyTorch layer-1 reference after two sequential phone OpenCL layers",
+  "status": "pass",
+  "threshold_p50": 0.99,
+  "tokens_compared": 111,
+  "token_slots": 1024,
+  "pad_token_count": 913,
+  "failed_tokens_below_threshold": 0,
+  "percentiles": {
+    "min": 0.9999842650888192,
+    "p10": 0.9999902994408791,
+    "p50": 0.999993563915067,
+    "p90": 0.9999951631156818,
+    "max": 0.9999959926644638
+  }
+}

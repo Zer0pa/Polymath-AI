@@ -1,0 +1,536 @@
+{
+  "project_reference": {
+    "project_md_updated": "2026-05-17",
+    "core_research_question": "Can Polymath-AI execute and validate a real Gemma 4 training run natively on REDMAGIC SM8750 without substituting Mac or RunPod for any runtime data-path stage?",
+    "current_focus": "Phase 3: Executor Architecture"
+  },
+  "project_contract": {
+    "schema_version": 1,
+    "scope": {
+      "question": "Can Polymath-AI execute a real Gemma 4 native training run on REDMAGIC SM8750, with phone-native Hugging Face text streaming, CPU tokenization, UFS sequence packing, Adreno/Hexagon/CPU training execution, and a validated checkpoint or adapter artifact?",
+      "in_scope": [
+        "Gemma 4 model-specific phone runtime work on REDMAGIC NX789J / SM8750",
+        "OpenCL/Vulkan Adreno forward, backward, reduction, and optimizer kernels",
+        "Phone CPU tokenization, UFS packed sequence cache, training telemetry, checkpoint or adapter emission",
+        "RunPod as build server and PyTorch oracle only",
+        "G1 E4B layer 0 OpenCL gate preservation as a regression floor"
+      ],
+      "out_of_scope": [
+        "Qwen frozen-middle correctness as an active route",
+        "Host-only training claims",
+        "Mac or RunPod tokenization, packing, minibatch serving, gradient computation, or optimizer update in the authority runtime path",
+        "Public benchmark, release, or deployment claims before license and falsifier gates close"
+      ],
+      "unresolved_questions": [
+        "Which minimum adapter or low-rank trainable scope fits the first phone backward/update gate without violating frozen base hashes?",
+        "Which license-clean Hugging Face text slice is acceptable for the first authority training batch?",
+        "Whether OpenCL remains the first training backend or Vulkan earns the route after equal correctness evidence"
+      ]
+    },
+    "context_intake": {
+      "must_read_refs": [
+        "ref-authority-prd",
+        "ref-resistance-v2",
+        "ref-g1-result",
+        "ref-upstream-gate-report",
+        "ref-upstream-handover",
+        "ref-import-manifest"
+      ],
+      "must_include_prior_outputs": [
+        "runtime/reports/gemma4_megakernel/parity/20260516_e4b_layer0_opencl_gate/gate_result.json",
+        "runtime/reports/gemma4_megakernel/parity/20260516_e4b_layer0_opencl_gate/cosine_report.json",
+        "integrations/gemma4-snapdragon-megakernel/MANIFEST.md"
+      ],
+      "user_asserted_anchors": [
+        "G1 passed: google/gemma-4-E4B layer 0 OpenCL on REDMAGIC NX789J / SM8750 with p50 cosine 0.9999890020383452, min cosine 0.9999801999737985, failed tokens 0, repeat output byte-identical",
+        "Phone is the authority runtime; RunPod is build/reference oracle only; Mac is control plane only"
+      ],
+      "known_good_baselines": [
+        "Upstream commit c5b6e3522d28d0e1dc56084cb97fa9e95e29aa4e for the passed phone OpenCL gate",
+        "Polymath pointer runtime/reports/gemma4_megakernel/parity/20260516_e4b_layer0_opencl_gate/gate_result.json"
+      ],
+      "context_gaps": [
+        "Formal GPD project files were missing before this repair; fallback hypotheses and runlog existed only",
+        "Gemma4 Kernel import into Polymath is not yet complete until source, tests, runbooks, and manifest hashes are committed"
+      ],
+      "crucial_inputs": [
+        "docs/PRD-GEMMA4-SNAPDRAGON-MEGAKERNEL-HETEROGENEOUS-TRAINING.md",
+        "RESISTANCE-V2.md",
+        "/Users/Zer0pa/Gemma4 Kernel",
+        "REDMAGIC serial FY25013101C8",
+        "RunPod pod ltg8fdnxgmzwjy"
+      ]
+    },
+    "approach_policy": {
+      "formulations": [
+        "Gate-ladder execution from G0 through G10 with G1 as non-regressing floor",
+        "Model-specific Gemma 4 static or megakernel runtime with explicit tensor contracts and replayable manifests"
+      ],
+      "allowed_estimator_families": [
+        "FP64 cosine comparisons against RunPod PyTorch references for forward and gradient fixtures",
+        "Hash-stability checks for frozen tensors and mutation checks for declared trainable tensors",
+        "Replayable checkpoint or adapter validation manifests"
+      ],
+      "forbidden_estimator_families": [
+        "Throughput-only, compile-only, local test-only, or report-only proxies",
+        "Pad-token-inflated metrics",
+        "CPU fallback masquerading as Adreno/OpenCL/Vulkan authority execution"
+      ],
+      "allowed_fit_families": [
+        "Evidence-driven trainable-scope expansion from adapter or low-rank deltas",
+        "Backend choice by equal-correctness phone measurement"
+      ],
+      "forbidden_fit_families": [
+        "Model shopping as infrastructure strategy",
+        "Broad corpus construction before the first phone-native training slice works"
+      ],
+      "stop_and_rethink_conditions": [
+        "G1 p50 cosine falls below 0.99 or failed non-pad tokens become nonzero after material runtime changes",
+        "The training runtime depends on Mac or RunPod for tokenization, packing, minibatch serving, gradients, or optimizer updates",
+        "Frozen base tensor hashes mutate unexpectedly",
+        "A command risks destructive phone changes without rollback",
+        "License ambiguity blocks the selected model or corpus artifact"
+      ]
+    },
+    "observables": [
+      {
+        "id": "obs-g1-forward-cosine",
+        "name": "G1 E4B layer 0 OpenCL phone parity",
+        "kind": "scalar",
+        "definition": "FP64 per-token cosine against RunPod PyTorch reference for non-pad tokens on REDMAGIC Adreno OpenCL",
+        "regime": null,
+        "units": null
+      },
+      {
+        "id": "obs-terminal-training-artifact",
+        "name": "Phone-native Gemma 4 training artifact",
+        "kind": "other",
+        "definition": "Validated checkpoint or adapter emitted by a REDMAGIC-native HF stream, tokenization, UFS packing, forward, backward, and optimizer loop",
+        "regime": null,
+        "units": null
+      },
+      {
+        "id": "obs-frozen-hash-stability",
+        "name": "Frozen base tensor hash stability",
+        "kind": "classification",
+        "definition": "Pre/post hashes for frozen Gemma base tensors remain unchanged while declared trainable tensors mutate",
+        "regime": null,
+        "units": null
+      }
+    ],
+    "claims": [
+      {
+        "id": "claim-terminal-phone-training",
+        "statement": "Polymath-AI can execute a real Gemma 4 native training run on REDMAGIC SM8750 from HF raw text stream through phone checkpoint or adapter emission without host runtime data-path substitution.",
+        "observables": [
+          "obs-terminal-training-artifact",
+          "obs-frozen-hash-stability",
+          "obs-g1-forward-cosine"
+        ],
+        "deliverables": [
+          "deliv-training-runtime",
+          "deliv-checkpoint-manifest",
+          "deliv-falsifier-report"
+        ],
+        "acceptance_tests": [
+          "test-terminal-gate",
+          "test-g1-regression",
+          "test-falsifier"
+        ],
+        "references": [
+          "ref-authority-prd",
+          "ref-resistance-v2",
+          "ref-g1-result"
+        ]
+      },
+      {
+        "id": "claim-g1-regression-floor",
+        "statement": "The passed Gemma 4 E4B layer 0 OpenCL phone gate is a permanent regression floor and not a terminal training claim.",
+        "observables": [
+          "obs-g1-forward-cosine"
+        ],
+        "deliverables": [
+          "deliv-g1-regression-harness"
+        ],
+        "acceptance_tests": [
+          "test-g1-regression"
+        ],
+        "references": [
+          "ref-g1-result",
+          "ref-upstream-gate-report",
+          "ref-upstream-handover"
+        ]
+      }
+    ],
+    "deliverables": [
+      {
+        "id": "deliv-g1-regression-harness",
+        "kind": "code",
+        "path": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel",
+        "description": "Imported source, runbooks, and comparator path that preserve and rerun the G1 phone OpenCL regression without forbidden artifact leakage.",
+        "must_contain": [
+          "source commit hashes",
+          "phone run command",
+          "RunPod comparator command",
+          "no model weights or raw binaries in git"
+        ]
+      },
+      {
+        "id": "deliv-training-runtime",
+        "kind": "code",
+        "path": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel",
+        "description": "Phone-native Gemma 4 runtime including tokenizer, sequence packer, backend executor, backward path, optimizer update, telemetry, and checkpoint store.",
+        "must_contain": [
+          "declared trainable scope",
+          "phone tokenizer",
+          "UFS cache",
+          "forward/backward/update",
+          "telemetry"
+        ]
+      },
+      {
+        "id": "deliv-checkpoint-manifest",
+        "kind": "report",
+        "path": "runtime/reports/gemma4_megakernel/train_loop",
+        "description": "Checkpoint or adapter manifest with hashes, replay data, frozen/trainable tensor hash checks, and loss/gradient telemetry.",
+        "must_contain": [
+          "checkpoint or adapter hash",
+          "frozen tensor pre/post hashes",
+          "trainable mutation evidence",
+          "loss trace"
+        ]
+      },
+      {
+        "id": "deliv-falsifier-report",
+        "kind": "report",
+        "path": "runtime/reports/gemma4_megakernel/falsifiers",
+        "description": "Adversarial review of model revision, weight provenance, backend execution, host-path absence, tolerances, checkpoint replay, and G1 preservation.",
+        "must_contain": [
+          "critical falsifier checklist",
+          "unresolved blockers",
+          "promotion decision"
+        ]
+      }
+    ],
+    "acceptance_tests": [
+      {
+        "id": "test-g1-regression",
+        "subject": "claim-g1-regression-floor",
+        "kind": "oracle",
+        "procedure": "Run or preserve the G1 E4B layer 0 OpenCL phone regression with real pretrained weights, non-pad token cosine comparison, and deterministic repeat evidence after material runtime changes.",
+        "pass_condition": "p50 cosine >= 0.99, failed non-pad tokens below threshold = 0, claimed backend is phone OpenCL/Vulkan, and no artifact policy violation occurs.",
+        "evidence_required": [
+          "deliv-g1-regression-harness",
+          "ref-g1-result",
+          "ref-upstream-gate-report"
+        ],
+        "automation": "hybrid"
+      },
+      {
+        "id": "test-terminal-gate",
+        "subject": "claim-terminal-phone-training",
+        "kind": "reproducibility",
+        "procedure": "Execute the PRD terminal gate: HF raw text streams directly to phone, tokenization and packing run on phone, phone runtime performs forward/backward/update, frozen hashes stay stable, trainable tensors mutate, and a replayable checkpoint or adapter is emitted.",
+        "pass_condition": "All 13 terminal acceptance conditions in the authority PRD are satisfied, including G1 remaining green and a sustained authority run or predeclared objective completion.",
+        "evidence_required": [
+          "deliv-training-runtime",
+          "deliv-checkpoint-manifest",
+          "deliv-g1-regression-harness",
+          "ref-authority-prd"
+        ],
+        "automation": "hybrid"
+      },
+      {
+        "id": "test-falsifier",
+        "subject": "claim-terminal-phone-training",
+        "kind": "human_review",
+        "procedure": "Run the G10 falsifier checklist against the promoted gate claim and rerun or fix any unresolved critical issue.",
+        "pass_condition": "All critical falsifiers pass or are explicitly resolved; no unresolved critical falsifier remains.",
+        "evidence_required": [
+          "deliv-falsifier-report",
+          "ref-resistance-v2"
+        ],
+        "automation": "human"
+      }
+    ],
+    "references": [
+      {
+        "id": "ref-authority-prd",
+        "kind": "spec",
+        "locator": "docs/PRD-GEMMA4-SNAPDRAGON-MEGAKERNEL-HETEROGENEOUS-TRAINING.md",
+        "aliases": [
+          "AUTHORITY_PRD",
+          "Gemma 4 Snapdragon Megakernel Native Phone Training PRD"
+        ],
+        "role": "definition",
+        "why_it_matters": "Defines the terminal objective, gate ladder, artifact policy, GPD requirements, and true blockers.",
+        "applies_to": [
+          "claim-terminal-phone-training"
+        ],
+        "carry_forward_to": [
+          "planning",
+          "execution",
+          "verification",
+          "writing"
+        ],
+        "must_surface": true,
+        "required_actions": [
+          "read",
+          "use",
+          "compare"
+        ]
+      },
+      {
+        "id": "ref-resistance-v2",
+        "kind": "spec",
+        "locator": "RESISTANCE-V2.md",
+        "aliases": [
+          "Resistance V2",
+          "anti-demo doctrine"
+        ],
+        "role": "definition",
+        "why_it_matters": "Prevents proxy wins, local-green narratives, soft refusal by implementation, and premature completion claims.",
+        "applies_to": [
+          "claim-terminal-phone-training"
+        ],
+        "carry_forward_to": [
+          "planning",
+          "execution",
+          "verification",
+          "writing"
+        ],
+        "must_surface": true,
+        "required_actions": [
+          "read",
+          "use"
+        ]
+      },
+      {
+        "id": "ref-g1-result",
+        "kind": "prior_artifact",
+        "locator": "runtime/reports/gemma4_megakernel/parity/20260516_e4b_layer0_opencl_gate/gate_result.json",
+        "aliases": [
+          "G1 gate_result",
+          "E4B layer 0 OpenCL pass"
+        ],
+        "role": "benchmark",
+        "why_it_matters": "Provides the regression floor metrics and artifact pointers for the first authority phone gate.",
+        "applies_to": [
+          "claim-g1-regression-floor",
+          "claim-terminal-phone-training"
+        ],
+        "carry_forward_to": [
+          "planning",
+          "execution",
+          "verification"
+        ],
+        "must_surface": true,
+        "required_actions": [
+          "read",
+          "compare",
+          "use"
+        ]
+      },
+      {
+        "id": "ref-upstream-gate-report",
+        "kind": "prior_artifact",
+        "locator": "/Users/Zer0pa/Gemma4 Kernel/gemma4_megakernel/docs/gate_reports/20260516_e4b_layer0_gate_execution.md",
+        "aliases": [
+          "upstream G1 report"
+        ],
+        "role": "benchmark",
+        "why_it_matters": "Documents commands, evidence locations, implementation notes, tests, and non-claims for the passed phone gate.",
+        "applies_to": [
+          "claim-g1-regression-floor"
+        ],
+        "carry_forward_to": [
+          "planning",
+          "execution",
+          "verification"
+        ],
+        "must_surface": true,
+        "required_actions": [
+          "read",
+          "use",
+          "compare"
+        ]
+      },
+      {
+        "id": "ref-upstream-handover",
+        "kind": "prior_artifact",
+        "locator": "/Users/Zer0pa/Gemma4 Kernel/docs/orchestrator_handover_gemma4_e4b_gate.md",
+        "aliases": [
+          "orchestrator handover"
+        ],
+        "role": "must_consider",
+        "why_it_matters": "Records inspection entry points and non-claims after the authority gate pass.",
+        "applies_to": [
+          "claim-g1-regression-floor"
+        ],
+        "carry_forward_to": [
+          "planning",
+          "execution"
+        ],
+        "must_surface": true,
+        "required_actions": [
+          "read",
+          "use"
+        ]
+      },
+      {
+        "id": "ref-import-manifest",
+        "kind": "spec",
+        "locator": "integrations/gemma4-snapdragon-megakernel/MANIFEST.md",
+        "aliases": [
+          "integration manifest"
+        ],
+        "role": "definition",
+        "why_it_matters": "Defines the only approved landing zone and artifact exclusions for importing Gemma4 Kernel into Polymath.",
+        "applies_to": [
+          "deliv-g1-regression-harness",
+          "deliv-training-runtime"
+        ],
+        "carry_forward_to": [
+          "planning",
+          "execution",
+          "verification"
+        ],
+        "must_surface": true,
+        "required_actions": [
+          "read",
+          "use",
+          "compare"
+        ]
+      }
+    ],
+    "forbidden_proxies": [
+      {
+        "id": "fp-localgreen",
+        "subject": "claim-terminal-phone-training",
+        "proxy": "Mac build, CTest, RunPod compile, or local tests presented as authority training progress without phone gate evidence.",
+        "reason": "Local green is not truth; the phone runtime is the authority metric."
+      },
+      {
+        "id": "fp-demogravity",
+        "subject": "claim-terminal-phone-training",
+        "proxy": "A small demo or report-only pipeline treated as a training appliance.",
+        "reason": "The terminal gate requires real phone-native streaming, tokenization, packing, training update, checkpoint, G1 regression, and falsifier survival."
+      },
+      {
+        "id": "fp-g1-inflation",
+        "subject": "claim-g1-regression-floor",
+        "proxy": "The passed layer 0 forward gate inflated into a fused megakernel, backward, optimizer, training, NPU, or sustained thermal claim.",
+        "reason": "G1 is a regression floor only; it does not satisfy later gates."
+      },
+      {
+        "id": "fp-hidden-host-path",
+        "subject": "claim-terminal-phone-training",
+        "proxy": "Mac or RunPod secretly serves tokenization, sequence packing, minibatches, gradients, or optimizer state during the authority run.",
+        "reason": "That would violate the PRD runtime topology and invalidate the terminal claim."
+      }
+    ],
+    "links": [
+      {
+        "id": "link-g1-claim-deliverable",
+        "source": "claim-g1-regression-floor",
+        "target": "deliv-g1-regression-harness",
+        "relation": "supports",
+        "verified_by": [
+          "test-g1-regression"
+        ]
+      },
+      {
+        "id": "link-terminal-runtime",
+        "source": "claim-terminal-phone-training",
+        "target": "deliv-training-runtime",
+        "relation": "supports",
+        "verified_by": [
+          "test-terminal-gate",
+          "test-falsifier"
+        ]
+      },
+      {
+        "id": "link-terminal-checkpoint",
+        "source": "claim-terminal-phone-training",
+        "target": "deliv-checkpoint-manifest",
+        "relation": "supports",
+        "verified_by": [
+          "test-terminal-gate",
+          "test-falsifier"
+        ]
+      }
+    ],
+    "uncertainty_markers": {
+      "weakest_anchors": [
+        "First trainable-scope memory and correctness budget is not yet proven on phone",
+        "HF corpus/license choice for the first streamed batch is not yet locked"
+      ],
+      "unvalidated_assumptions": [
+        "OpenCL source import can be built in the Polymath namespace without semantic drift from upstream",
+        "Existing phone runner artifacts remain sufficient to rerun G1 until the imported build replaces them"
+      ],
+      "competing_explanations": [
+        "G1 may reflect a correct one-layer forward implementation while the training memory/backward path still exceeds phone constraints",
+        "A phone data pipeline can pass tokenizer/packing parity while still failing integrated training due backend or checkpoint constraints"
+      ],
+      "disconfirming_observations": [
+        "G1 regression fails after import or refactor",
+        "A supposed authority training run requires host-side tokenization, packing, gradients, optimizer state, or minibatch serving",
+        "Frozen base hashes change during an adapter-scope update"
+      ]
+    }
+  },
+  "position": {
+    "current_phase": "03",
+    "current_phase_name": "Executor Architecture",
+    "total_phases": 10,
+    "current_plan": "1",
+    "total_plans_in_phase": 1,
+    "status": "Ready to plan",
+    "last_activity": "2026-05-17",
+    "last_activity_desc": "G2 import/regression and G3 two-layer phone OpenCL forward expansion passed; G1 remained green.",
+    "progress_percent": 30,
+    "paused_at": null
+  },
+  "active_calculations": [],
+  "intermediate_results": [],
+  "open_questions": [
+    "Which minimum adapter or low-rank trainable scope fits the first phone backward/update gate without violating frozen base hashes?",
+    "Which license-clean Hugging Face text slice is acceptable for the first authority training batch?",
+    "Whether OpenCL remains the first training backend or Vulkan earns the route after equal correctness evidence"
+  ],
+  "performance_metrics": {
+    "rows": []
+  },
+  "decisions": [],
+  "approximations": [],
+  "convention_lock": {
+    "metric_signature": null,
+    "fourier_convention": null,
+    "natural_units": null,
+    "gauge_choice": null,
+    "regularization_scheme": null,
+    "renormalization_scheme": null,
+    "coordinate_system": null,
+    "spin_basis": null,
+    "state_normalization": null,
+    "coupling_convention": null,
+    "index_positioning": null,
+    "time_ordering": null,
+    "commutation_convention": null,
+    "levi_civita_sign": null,
+    "generator_normalization": null,
+    "covariant_derivative_sign": null,
+    "gamma_matrix_convention": null,
+    "creation_annihilation_order": null,
+    "custom_conventions": {}
+  },
+  "propagated_uncertainties": [],
+  "pending_todos": [],
+  "blockers": [],
+  "session": {
+    "last_date": null,
+    "stopped_at": null,
+    "resume_file": null
+  }
+}

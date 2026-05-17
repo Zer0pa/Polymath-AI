@@ -1,0 +1,8 @@
+{
+  "schema_version": "gemma4_forward_stack_memory_report_v1",
+  "source": "native getrusage(RUSAGE_SELF).ru_maxrss telemetry from REDMAGIC runner",
+  "unit": "kilobytes",
+  "layer_max_rss_kb": [809032, 818764],
+  "max_rss_kb": 818764,
+  "note": "This is process high-water RSS as exposed by Android getrusage, recorded after the two-layer OpenCL stack run."
+}

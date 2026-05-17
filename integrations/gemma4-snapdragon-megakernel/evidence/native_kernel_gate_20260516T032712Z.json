@@ -1,0 +1,137 @@
+{
+  "cases": [
+    {
+      "abs_tolerance": 1e-05,
+      "compared_values": 8,
+      "name": "rmsnorm_forward",
+      "outputs": [
+        {
+          "count": 8,
+          "first_mismatch": null,
+          "max_abs_error": 5.7123915597756536e-08,
+          "max_rel_error": 5.5096952126475384e-08,
+          "name": "output",
+          "status": "pass"
+        }
+      ],
+      "rel_tolerance": 1e-05,
+      "status": "pass"
+    },
+    {
+      "abs_tolerance": 1e-05,
+      "compared_values": 12,
+      "name": "rmsnorm_backward",
+      "outputs": [
+        {
+          "count": 8,
+          "first_mismatch": null,
+          "max_abs_error": 2.5412578152916865e-08,
+          "max_rel_error": 1.0270913430837532e-07,
+          "name": "grad_input",
+          "status": "pass"
+        },
+        {
+          "count": 4,
+          "first_mismatch": null,
+          "max_abs_error": 5.357236976255564e-08,
+          "max_rel_error": 1.0537472691186105e-07,
+          "name": "grad_weight",
+          "status": "pass"
+        }
+      ],
+      "rel_tolerance": 1e-05,
+      "status": "pass"
+    },
+    {
+      "abs_tolerance": 1e-05,
+      "compared_values": 8,
+      "name": "matmul_forward",
+      "outputs": [
+        {
+          "count": 8,
+          "first_mismatch": null,
+          "max_abs_error": 0.0,
+          "max_rel_error": 0.0,
+          "name": "output",
+          "status": "pass"
+        }
+      ],
+      "rel_tolerance": 1e-05,
+      "status": "pass"
+    },
+    {
+      "abs_tolerance": 1e-05,
+      "compared_values": 18,
+      "name": "matmul_backward",
+      "outputs": [
+        {
+          "count": 6,
+          "first_mismatch": null,
+          "max_abs_error": 4.7999999752690314e-08,
+          "max_rel_error": 4.619354834129434e-08,
+          "name": "grad_lhs",
+          "status": "pass"
+        },
+        {
+          "count": 12,
+          "first_mismatch": null,
+          "max_abs_error": 2.399999998736746e-08,
+          "max_rel_error": 6.80000000752301e-08,
+          "name": "grad_rhs",
+          "status": "pass"
+        }
+      ],
+      "rel_tolerance": 1e-05,
+      "status": "pass"
+    }
+  ],
+  "commands": [
+    {
+      "command": [
+        "cmake",
+        "-S",
+        "/Users/Zer0pa/Gemma4 Kernel/polymath_native",
+        "-B",
+        "/Users/Zer0pa/Gemma4 Kernel/build/native",
+        "-DCMAKE_BUILD_TYPE=Release"
+      ],
+      "returncode": 0
+    },
+    {
+      "command": [
+        "cmake",
+        "--build",
+        "/Users/Zer0pa/Gemma4 Kernel/build/native",
+        "--target",
+        "native_kernel_tests",
+        "--config",
+        "Release"
+      ],
+      "returncode": 0
+    },
+    {
+      "command": [
+        "/Users/Zer0pa/Gemma4 Kernel/build/native/native_kernel_tests",
+        "--output",
+        "/Users/Zer0pa/Gemma4 Kernel/build/native/actual_vectors.json"
+      ],
+      "returncode": 0
+    }
+  ],
+  "paths": {
+    "actual": "/Users/Zer0pa/Gemma4 Kernel/build/native/actual_vectors.json",
+    "build_dir": "/Users/Zer0pa/Gemma4 Kernel/build/native",
+    "golden": "/Users/Zer0pa/Gemma4 Kernel/build/native/golden_vectors.json",
+    "output": "/Users/Zer0pa/Gemma4 Kernel/build/native/test_results.json",
+    "source_dir": "/Users/Zer0pa/Gemma4 Kernel/polymath_native"
+  },
+  "schema_version": 1,
+  "status": "pass",
+  "suite": "polymath_native_kernel_gate",
+  "summary": {
+    "compared_values": 46,
+    "failed_cases": 0,
+    "passed_cases": 4,
+    "total_cases": 4
+  }
+}

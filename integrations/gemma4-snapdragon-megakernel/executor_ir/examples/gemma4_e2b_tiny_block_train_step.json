@@ -1,0 +1,1157 @@
+{
+  "schema_version": "0.1.0",
+  "ir_kind": "static_selective_training_step",
+  "metadata": {
+    "name": "gemma4_e2b_tiny_block_train_step",
+    "owner": "sub-agent-d-static-executor",
+    "purpose": "Static executor contract for one Gemma-4-shaped tiny-block selective training step over seq128/256/512 profiles.",
+    "source_refs": [
+      {
+        "path": "third_party_maps/_sources/gallery/model_allowlists/1_0_14.json",
+        "facts": [
+          "Gemma-4-E2B-it uses modelFile gemma-4-E2B-it.litertlm.",
+          "The local allowlist records maxContextLength 32000 and accelerators gpu,cpu for Gemma-4-E2B-it.",
+          "The local allowlist records speculative_decoding capability and an MTP update note for Gemma 4."
+        ]
+      },
+      {
+        "path": "third_party_maps/_sources/LiteRT-LM/README.md",
+        "facts": [
+          "LiteRT-LM v0.11.0 notes Gemma 4 single-position multi-token prediction support.",
+          "LiteRT-LM advertises CPU, GPU, and NPU acceleration at the runtime level."
+        ]
+      }
+    ],
+    "notes": [
+      "All Gemma 4 internal dimensions are symbolic unless they are present in local source refs.",
+      "This IR is a planning artifact and intentionally contains no CUDA or backend-specific kernel source."
+    ]
+  },
+  "model": {
+    "family": "Gemma 4",
+    "variant": "E2B-it tiny block",
+    "format": "litertlm",
+    "shape_profile": {
+      "dimensions": {
+        "B": 1,
+        "S": "profile.seq_len",
+        "H": "gemma4_e2b_hidden_symbolic",
+        "A": "gemma4_e2b_attention_heads_symbolic",
+        "KV": "gemma4_e2b_kv_heads_symbolic",
+        "D_HEAD": "H / A",
+        "V": "gemma4_vocab_symbolic",
+        "L_TINY": 2,
+        "R_LORA": 8,
+        "ADAPTER_SITES": "q_proj,v_proj,o_proj,gate_proj,up_proj,down_proj"
+      },
+      "seq_profiles": [
+        128,
+        256,
+        512
+      ],
+      "context_limit": 32000,
+      "modalities": [
+        "text",
+        "image",
+        "audio"
+      ]
+    }
+  },
+  "training_step": {
+    "objective": "next_token_cross_entropy",
+    "micro_batch": 1,
+    "precision": {
+      "activation": "f16",
+      "parameter": "q4",
+      "gradient": "f16",
+      "accumulator": "f32"
+    },
+    "selective_scope": {
+      "base_policy": "frozen",
+      "trainable": [
+        "blocks[0..1].attn.q_proj.lora",
+        "blocks[0..1].attn.v_proj.lora",
+        "blocks[0..1].attn.o_proj.lora",
+        "blocks[0..1].mlp.gate_proj.lora",
+        "blocks[0..1].mlp.up_proj.lora",
+        "blocks[0..1].mlp.down_proj.lora"
+      ],
+      "fallback_order": [
+        "lora_all_target_sites",
+        "lora_attention_qvo_only",
+        "lora_qv_only",
+        "adapter_bias_or_prompt_only",
+        "cpu_reference_seq128_only"
+      ],
+      "dense_upgrade_gate": "Only enable selective_dense when backend exposes mutable f16 shadow weights and matching gradient reductions."
+    },
+    "optimizer": {
+      "type": "adamw_lora_cpu_state",
+      "state_location": "CPU",
+      "update_dtype": "f32",
+      "transfer_policy": "ship_adapter_gradients_only"
+    }
+  },
+  "devices": [
+    {
+      "id": "host_cpu",
+      "kind": "CPU",
+      "role": "Batch preparation, scalar bookkeeping, fallback optimizer, and reference microstep."
+    },
+    {
+      "id": "primary_gpu",
+      "kind": "GPU",
+      "role": "Primary static forward, adapter backward, reductions, and activation ring owner."
+    },
+    {
+      "id": "edge_npu",
+      "kind": "NPU",
+      "role": "Candidate frozen forward arena only until training gradient support is known."
+    },
+    {
+      "id": "backend_unknown",
+      "kind": "unknown",
+      "role": "Explicit placeholder for unresolved runtime lowering or vendor-specific fused op mapping."
+    }
+  ],
+  "memory_pools": [
+    {
+      "id": "host_batch",
+      "space": "host_ram",
+      "device_hint": {
+        "preferred": "CPU",
+        "allowed": [
+          "CPU"
+        ],
+        "reason": "Tokenizer and label construction stay host-side."
+      },
+      "byte_formula": "B*S*(sizeof(i32 token_ids)+sizeof(i32 labels)+sizeof(bool mask))",
+      "reuse_policy": "Reused every step after device staging."
+    },
+    {
+      "id": "frozen_weight_mmap",
+      "space": "file_mapped",
+      "device_hint": {
+        "preferred": "CPU",
+        "allowed": [
+          "CPU",
+          "GPU",
+          "NPU"
+        ],
+        "fallback": "CPU",
+        "reason": "Base Gemma weights remain frozen and can be runtime-managed."
+      },
+      "byte_formula": "runtime_owned_litertlm_q4_or_q8_weights",
+      "reuse_policy": "Persistent across all train steps."
+    },
+    {
+      "id": "gpu_activation_ring",
+      "space": "gpu_global",
+      "device_hint": {
+        "preferred": "GPU",
+        "allowed": [
+          "GPU",
+          "CPU"
+        ],
+        "fallback": "CPU",
+        "reason": "Static ring avoids dynamic activation allocation; CPU fallback is for seq128 reference only."
+      },
+      "byte_formula": "3*B*S*H*sizeof(f16)",
+      "reuse_policy": "Ring slots are reused at block boundaries; rematerialize frozen block activations for backward."
+    },
+    {
+      "id": "gpu_attention_scratch",
+      "space": "gpu_global",
+      "device_hint": {
+        "preferred": "GPU",
+        "allowed": [
+          "GPU",
+          "unknown"
+        ],
+        "fallback": "unknown",
+        "reason": "Fused attention is preferred; backend-specific scratch shape may be opaque."
+      },
+      "byte_formula": "preferred: O(B*S*H); reject materialized B*A*S*S unless budgeted",
+      "reuse_policy": "Single scratch arena reused by each repeated block."
+    },
+    {
+      "id": "trainable_adapter",
+      "space": "unified",
+      "device_hint": {
+        "preferred": "GPU",
+        "allowed": [
+          "GPU",
+          "CPU"
+        ],
+        "fallback": "CPU",
+        "reason": "Adapters are the only trainable model state in the default plan."
+      },
+      "byte_formula": "P_lora*sizeof(f16)",
+      "reuse_policy": "Persistent and checkpointed independently from base weights."
+    },
+    {
+      "id": "adapter_gradients",
+      "space": "gpu_global",
+      "device_hint": {
+        "preferred": "GPU",
+        "allowed": [
+          "GPU",
+          "CPU"
+        ],
+        "fallback": "CPU",
+        "reason": "Gradient reductions should stay close to adapter matmuls when possible."
+      },
+      "byte_formula": "P_lora*sizeof(f16)",
+      "reuse_policy": "Zeroed or overwritten after optimizer handoff."
+    },
+    {
+      "id": "host_optimizer_state",
+      "space": "host_ram",
+      "device_hint": {
+        "preferred": "CPU",
+        "allowed": [
+          "CPU",
+          "GPU"
+        ],
+        "fallback": "CPU",
+        "reason": "CPU optimizer state protects GPU memory at seq512."
+      },
+      "byte_formula": "2*P_lora*sizeof(f32) for Adam moments; optional master weights add P_lora*sizeof(f32)",
+      "reuse_policy": "Persistent across steps; transferred deltas are adapter-sized only."
+    },
+    {
+      "id": "npu_forward_arena",
+      "space": "npu_local",
+      "device_hint": {
+        "preferred": "NPU",
+        "allowed": [
+          "NPU"
+        ],
+        "reason": "Reserved for frozen forward experiments only; not required by primary training schedule."
+      },
+      "byte_formula": "vendor_static_arena_unknown_until_lowering",
+      "reuse_policy": "Do not allocate for backward unless gradient support is explicitly proven."
+    },
+    {
+      "id": "unknown_backend_arena",
+      "space": "unknown",
+      "device_hint": {
+        "preferred": "unknown",
+        "allowed": [
+          "unknown",
+          "CPU",
+          "GPU",
+          "NPU"
+        ],
+        "fallback": "CPU",
+        "reason": "Names unresolved runtime-owned memory instead of pretending it is free."
+      },
+      "byte_formula": "opaque_backend_reserved_bytes",
+      "reuse_policy": "Must be bounded before a backend-specific executor can pass planning."
+    }
+  ],
+  "tensors": [
+    {
+      "id": "batch.token_ids",
+      "role": "token",
+      "dtype": "i32",
+      "shape": [
+        "B",
+        "S"
+      ],
+      "layout": "row_major",
+      "mutability": "ephemeral",
+      "memory_pool": "host_batch",
+      "lifetime": {
+        "start": "prepare_batch",
+        "end": "stage_batch",
+        "reuse_group": "batch"
+      },
+      "device_hint": {
+        "preferred": "CPU",
+        "allowed": [
+          "CPU"
+        ],
+        "reason": "Created by tokenizer or data loader."
+      }
+    },
+    {
+      "id": "batch.labels",
+      "role": "label",
+      "dtype": "i32",
+      "shape": [
+        "B",
+        "S"
+      ],
+      "layout": "row_major",
+      "mutability": "ephemeral",
+      "memory_pool": "host_batch",
+      "lifetime": {
+        "start": "prepare_batch",
+        "end": "loss_forward",
+        "reuse_group": "batch"
+      },
+      "device_hint": {
+        "preferred": "CPU",
+        "allowed": [
+          "CPU",
+          "GPU"
+        ],
+        "fallback": "CPU",
+        "reason": "Labels can stay host-side for streamed loss or be staged to GPU."
+      }
+    },
+    {
+      "id": "batch.loss_mask",
+      "role": "mask",
+      "dtype": "bool",
+      "shape": [
+        "B",
+        "S"
+      ],
+      "layout": "row_major",
+      "mutability": "ephemeral",
+      "memory_pool": "host_batch",
+      "lifetime": {
+        "start": "prepare_batch",
+        "end": "loss_forward",
+        "reuse_group": "batch"
+      },
+      "device_hint": {
+        "preferred": "CPU",
+        "allowed": [
+          "CPU",
+          "GPU"
+        ],
+        "fallback": "CPU",
+        "reason": "Mask is small and can be staged with labels when loss is on GPU."
+      }
+    },
+    {
+      "id": "model.base_weights",
+      "role": "parameter",
+      "dtype": "q4",
+      "shape": [
+        "runtime_litertlm_archive"
+      ],
+      "layout": "block_q4",
+      "mutability": "frozen",
+      "memory_pool": "frozen_weight_mmap",
+      "lifetime": {
+        "start": "executor_init",
+        "end": "executor_shutdown",
+        "reuse_group": "frozen_weights"
+      },
+      "device_hint": {
+        "preferred": "GPU",
+        "allowed": [
+          "GPU",
+          "CPU",
+          "NPU"
+        ],
+        "fallback": "CPU",
+        "reason": "Runtime may page or upload frozen weights according to backend."
+      }
+    },
+    {
+      "id": "adapters.lora_A",
+      "role": "adapter_parameter",
+      "dtype": "f16",
+      "shape": [
+        "L_TINY",
+        "ADAPTER_SITES",
+        "R_LORA",
+        "IN_SITE"
+      ],
+      "layout": "row_major",
+      "mutability": "trainable",
+      "memory_pool": "trainable_adapter",
+      "lifetime": {
+        "start": "executor_init",
+        "end": "checkpoint_adapters",
+        "reuse_group": "adapters"
+      },
+      "device_hint": {
+        "preferred": "GPU",
+        "allowed": [
+          "GPU",
+          "CPU"
+        ],
+        "fallback": "CPU",
+        "reason": "LoRA A matrices are small enough for host fallback."
+      }
+    },
+    {
+      "id": "adapters.lora_B",
+      "role": "adapter_parameter",
+      "dtype": "f16",
+      "shape": [
+        "L_TINY",
+        "ADAPTER_SITES",
+        "OUT_SITE",
+        "R_LORA"
+      ],
+      "layout": "row_major",
+      "mutability": "trainable",
+      "memory_pool": "trainable_adapter",
+      "lifetime": {
+        "start": "executor_init",
+        "end": "checkpoint_adapters",
+        "reuse_group": "adapters"
+      },
+      "device_hint": {
+        "preferred": "GPU",
+        "allowed": [
+          "GPU",
+          "CPU"
+        ],
+        "fallback": "CPU",
+        "reason": "LoRA B matrices are small enough for host fallback."
+      }
+    },
+    {
+      "id": "act.hidden",
+      "role": "activation",
+      "dtype": "f16",
+      "shape": [
+        "B",
+        "S",
+        "H"
+      ],
+      "layout": "row_major",
+      "mutability": "ephemeral",
+      "memory_pool": "gpu_activation_ring",
+      "lifetime": {
+        "start": "embed_forward",
+        "end": "backward_adapters",
+        "reuse_group": "activation_ring_slot"
+      },
+      "device_hint": {
+        "preferred": "GPU",
+        "allowed": [
+          "GPU",
+          "CPU"
+        ],
+        "fallback": "CPU",
+        "reason": "Primary plan keeps hidden states in the GPU ring."
+      }
+    },
+    {
+      "id": "scratch.attention",
+      "role": "scratch",
+      "dtype": "f16",
+      "shape": [
+        "backend_fused_attention_scratch"
+      ],
+      "layout": "opaque",
+      "mutability": "ephemeral",
+      "memory_pool": "gpu_attention_scratch",
+      "lifetime": {
+        "start": "tiny_blocks_forward",
+        "end": "tiny_blocks_forward",
+        "reuse_group": "attention_scratch"
+      },
+      "device_hint": {
+        "preferred": "unknown",
+        "allowed": [
+          "GPU",
+          "unknown"
+        ],
+        "fallback": "unknown",
+        "reason": "Exact scratch contract depends on fused attention lowering."
+      }
+    },
+    {
+      "id": "loss.scalar",
+      "role": "scalar",
+      "dtype": "f32",
+      "shape": [],
+      "layout": "row_major",
+      "mutability": "ephemeral",
+      "memory_pool": "host_batch",
+      "lifetime": {
+        "start": "loss_forward",
+        "end": "optimizer_update",
+        "reuse_group": "scalars"
+      },
+      "device_hint": {
+        "preferred": "CPU",
+        "allowed": [
+          "CPU",
+          "GPU"
+        ],
+        "fallback": "CPU",
+        "reason": "Scalar loss can be reduced on GPU and copied to CPU."
+      }
+    },
+    {
+      "id": "grads.adapters",
+      "role": "gradient",
+      "dtype": "f16",
+      "shape": [
+        "P_lora"
+      ],
+      "layout": "packed",
+      "mutability": "ephemeral",
+      "memory_pool": "adapter_gradients",
+      "lifetime": {
+        "start": "backward_adapters",
+        "end": "optimizer_update",
+        "reuse_group": "adapter_grads"
+      },
+      "device_hint": {
+        "preferred": "GPU",
+        "allowed": [
+          "GPU",
+          "CPU"
+        ],
+        "fallback": "CPU",
+        "reason": "Gradient tensor is adapter-sized; CPU fallback remains bounded."
+      }
+    },
+    {
+      "id": "optimizer.adapter_state",
+      "role": "optimizer_state",
+      "dtype": "f32",
+      "shape": [
+        "2",
+        "P_lora"
+      ],
+      "layout": "packed",
+      "mutability": "trainable",
+      "memory_pool": "host_optimizer_state",
+      "lifetime": {
+        "start": "executor_init",
+        "end": "executor_shutdown",
+        "reuse_group": "optimizer_state"
+      },
+      "device_hint": {
+        "preferred": "CPU",
+        "allowed": [
+          "CPU",
+          "GPU"
+        ],
+        "fallback": "CPU",
+        "reason": "Adam moments are kept off the GPU unless memory budget explicitly admits them."
+      }
+    },
+    {
+      "id": "checkpoint.adapter_pack",
+      "role": "checkpoint",
+      "dtype": "u8",
+      "shape": [
+        "serialized_adapter_delta"
+      ],
+      "layout": "packed",
+      "mutability": "ephemeral",
+      "memory_pool": "host_batch",
+      "lifetime": {
+        "start": "checkpoint_adapters",
+        "end": "checkpoint_adapters",
+        "reuse_group": "io"
+      },
+      "device_hint": {
+        "preferred": "CPU",
+        "allowed": [
+          "CPU"
+        ],
+        "reason": "Checkpoint output is serialized after adapter update."
+      }
+    }
+  ],
+  "ops": [
+    {
+      "id": "prepare_batch",
+      "op_type": "host_prepare_batch",
+      "phase": "input",
+      "inputs": [],
+      "outputs": [
+        "batch.token_ids",
+        "batch.labels",
+        "batch.loss_mask"
+      ],
+      "device_hint": {
+        "preferred": "CPU",
+        "allowed": [
+          "CPU"
+        ],
+        "reason": "Data loading and token alignment are host responsibilities."
+      },
+      "selective": {
+        "gradient_policy": "no_grad"
+      },
+      "memory": {
+        "pools": [
+          "host_batch"
+        ],
+        "activation_policy": "none"
+      }
+    },
+    {
+      "id": "stage_batch",
+      "op_type": "transfer",
+      "phase": "input",
+      "inputs": [
+        "batch.token_ids",
+        "batch.labels",
+        "batch.loss_mask"
+      ],
+      "outputs": [
+        "batch.token_ids",
+        "batch.labels",
+        "batch.loss_mask"
+      ],
+      "device_hint": {
+        "preferred": "GPU",
+        "allowed": [
+          "GPU",
+          "CPU"
+        ],
+        "fallback": "CPU",
+        "reason": "No-op on CPU reference path; upload on GPU path."
+      },
+      "selective": {
+        "gradient_policy": "no_grad"
+      },
+      "memory": {
+        "pools": [
+          "host_batch",
+          "gpu_activation_ring"
+        ],
+        "activation_policy": "none"
+      },
+      "depends_on": [
+        "prepare_batch"
+      ]
+    },
+    {
+      "id": "embed_forward",
+      "op_type": "embedding_lookup",
+      "phase": "forward",
+      "inputs": [
+        "batch.token_ids",
+        "model.base_weights"
+      ],
+      "outputs": [
+        "act.hidden"
+      ],
+      "device_hint": {
+        "preferred": "GPU",
+        "allowed": [
+          "GPU",
+          "CPU",
+          "NPU"
+        ],
+        "fallback": "CPU",
+        "reason": "Embedding is frozen; NPU is acceptable only as a forward-only offload."
+      },
+      "selective": {
+        "gradient_policy": "no_grad"
+      },
+      "memory": {
+        "pools": [
+          "frozen_weight_mmap",
+          "gpu_activation_ring",
+          "npu_forward_arena"
+        ],
+        "activation_policy": "ring_reuse"
+      },
+      "depends_on": [
+        "stage_batch"
+      ]
+    },
+    {
+      "id": "tiny_blocks_forward",
+      "op_type": "composite",
+      "phase": "forward",
+      "inputs": [
+        "act.hidden",
+        "model.base_weights",
+        "adapters.lora_A",
+        "adapters.lora_B",
+        "scratch.attention"
+      ],
+      "outputs": [
+        "act.hidden"
+      ],
+      "device_hint": {
+        "preferred": "GPU",
+        "allowed": [
+          "GPU",
+          "CPU",
+          "NPU",
+          "unknown"
+        ],
+        "fallback": "CPU",
+        "reason": "Composite block can lower to GPU primary, CPU reference, NPU frozen-forward trial, or unknown fused backend."
+      },
+      "selective": {
+        "gradient_policy": "adapter_only",
+        "trainable_refs": [
+          "adapters.lora_A",
+          "adapters.lora_B"
+        ]
+      },
+      "memory": {
+        "pools": [
+          "frozen_weight_mmap",
+          "gpu_activation_ring",
+          "gpu_attention_scratch",
+          "trainable_adapter",
+          "unknown_backend_arena"
+        ],
+        "activation_policy": "recompute",
+        "checkpoint": "retain block input and final hidden only; recompute frozen intermediates for adapter backward"
+      },
+      "depends_on": [
+        "embed_forward"
+      ],
+      "repeat": {
+        "axis": "transformer_block",
+        "count": "L_TINY"
+      },
+      "expanded_ops": [
+        "rms_norm",
+        "qkv_linear_plus_lora",
+        "rope",
+        "attention",
+        "o_linear_plus_lora",
+        "residual_add",
+        "rms_norm",
+        "gated_mlp_plus_lora",
+        "residual_add"
+      ]
+    },
+    {
+      "id": "loss_forward",
+      "op_type": "cross_entropy_loss",
+      "phase": "loss",
+      "inputs": [
+        "act.hidden",
+        "batch.labels",
+        "batch.loss_mask",
+        "model.base_weights"
+      ],
+      "outputs": [
+        "loss.scalar"
+      ],
+      "device_hint": {
+        "preferred": "GPU",
+        "allowed": [
+          "GPU",
+          "CPU"
+        ],
+        "fallback": "CPU",
+        "reason": "Use streamed or chunked vocabulary projection; avoid full B*S*V logits materialization."
+      },
+      "selective": {
+        "gradient_policy": "loss_only"
+      },
+      "memory": {
+        "pools": [
+          "frozen_weight_mmap",
+          "gpu_activation_ring",
+          "host_batch"
+        ],
+        "activation_policy": "stream"
+      },
+      "depends_on": [
+        "tiny_blocks_forward"
+      ]
+    },
+    {
+      "id": "backward_adapters",
+      "op_type": "backward",
+      "phase": "backward",
+      "inputs": [
+        "loss.scalar",
+        "act.hidden",
+        "model.base_weights",
+        "adapters.lora_A",
+        "adapters.lora_B"
+      ],
+      "outputs": [
+        "grads.adapters"
+      ],
+      "device_hint": {
+        "preferred": "GPU",
+        "allowed": [
+          "GPU",
+          "CPU"
+        ],
+        "fallback": "CPU",
+        "reason": "Default gradient path is adapter-only; no NPU backward is assumed."
+      },
+      "selective": {
+        "gradient_policy": "adapter_only",
+        "trainable_refs": [
+          "adapters.lora_A",
+          "adapters.lora_B"
+        ]
+      },
+      "memory": {
+        "pools": [
+          "gpu_activation_ring",
+          "gpu_attention_scratch",
+          "adapter_gradients"
+        ],
+        "activation_policy": "recompute"
+      },
+      "depends_on": [
+        "loss_forward"
+      ],
+      "repeat": {
+        "axis": "transformer_block_reverse",
+        "count": "L_TINY"
+      }
+    },
+    {
+      "id": "reduce_adapter_grads",
+      "op_type": "gradient_reduce",
+      "phase": "backward",
+      "inputs": [
+        "grads.adapters"
+      ],
+      "outputs": [
+        "grads.adapters"
+      ],
+      "device_hint": {
+        "preferred": "GPU",
+        "allowed": [
+          "GPU",
+          "CPU"
+        ],
+        "fallback": "CPU",
+        "reason": "Single micro-batch now, but the op keeps accumulation explicit."
+      },
+      "selective": {
+        "gradient_policy": "adapter_only",
+        "trainable_refs": [
+          "adapters.lora_A",
+          "adapters.lora_B"
+        ]
+      },
+      "memory": {
+        "pools": [
+          "adapter_gradients"
+        ],
+        "activation_policy": "none"
+      },
+      "depends_on": [
+        "backward_adapters"
+      ]
+    },
+    {
+      "id": "optimizer_update",
+      "op_type": "optimizer_step",
+      "phase": "optimizer",
+      "inputs": [
+        "adapters.lora_A",
+        "adapters.lora_B",
+        "grads.adapters",
+        "optimizer.adapter_state"
+      ],
+      "outputs": [
+        "adapters.lora_A",
+        "adapters.lora_B",
+        "optimizer.adapter_state"
+      ],
+      "device_hint": {
+        "preferred": "CPU",
+        "allowed": [
+          "CPU",
+          "GPU"
+        ],
+        "fallback": "CPU",
+        "reason": "CPU AdamW keeps seq512 GPU memory dominated by activations, not optimizer state."
+      },
+      "selective": {
+        "gradient_policy": "adapter_only",
+        "trainable_refs": [
+          "adapters.lora_A",
+          "adapters.lora_B"
+        ]
+      },
+      "memory": {
+        "pools": [
+          "trainable_adapter",
+          "adapter_gradients",
+          "host_optimizer_state"
+        ],
+        "activation_policy": "none"
+      },
+      "depends_on": [
+        "reduce_adapter_grads"
+      ]
+    },
+    {
+      "id": "checkpoint_adapters",
+      "op_type": "checkpoint_write",
+      "phase": "io",
+      "inputs": [
+        "adapters.lora_A",
+        "adapters.lora_B",
+        "optimizer.adapter_state"
+      ],
+      "outputs": [
+        "checkpoint.adapter_pack"
+      ],
+      "device_hint": {
+        "preferred": "CPU",
+        "allowed": [
+          "CPU"
+        ],
+        "reason": "Only adapter deltas are serialized; frozen base model is never rewritten."
+      },
+      "selective": {
+        "gradient_policy": "no_grad"
+      },
+      "memory": {
+        "pools": [
+          "host_batch",
+          "trainable_adapter",
+          "host_optimizer_state"
+        ],
+        "activation_policy": "none"
+      },
+      "depends_on": [
+        "optimizer_update"
+      ]
+    },
+    {
+      "id": "unknown_backend_lowering_gate",
+      "op_type": "unknown",
+      "phase": "fallback",
+      "inputs": [
+        "scratch.attention"
+      ],
+      "outputs": [
+        "scratch.attention"
+      ],
+      "device_hint": {
+        "preferred": "unknown",
+        "allowed": [
+          "unknown"
+        ],
+        "reason": "Backend-specific fused attention or MTP lowering must publish a bounded scratch contract before use."
+      },
+      "selective": {
+        "gradient_policy": "unknown"
+      },
+      "memory": {
+        "pools": [
+          "unknown_backend_arena"
+        ],
+        "activation_policy": "unknown"
+      }
+    }
+  ],
+  "schedules": [
+    {
+      "id": "primary_gpu_static_lora_step",
+      "kind": "primary",
+      "entry_condition": "GPU available and fused or chunked attention/loss memory fits selected seq profile.",
+      "steps": [
+        {
+          "id": "input_cpu",
+          "ops": [
+            "prepare_batch"
+          ],
+          "device_hint": {
+            "preferred": "CPU",
+            "allowed": [
+              "CPU"
+            ],
+            "reason": "Host-only batch construction."
+          },
+          "barrier_after": true
+        },
+        {
+          "id": "forward_gpu",
+          "ops": [
+            "stage_batch",
+            "embed_forward",
+            "tiny_blocks_forward",
+            "loss_forward"
+          ],
+          "device_hint": {
+            "preferred": "GPU",
+            "allowed": [
+              "GPU",
+              "CPU"
+            ],
+            "fallback": "CPU",
+            "reason": "GPU owns activation ring and adapter matmuls in the primary path."
+          },
+          "barrier_after": true,
+          "notes": [
+            "Persistent-kernel principle: static shapes, resident weights, and one preplanned scratch arena.",
+            "No CUDA is implied by this schedule."
+          ]
+        },
+        {
+          "id": "backward_gpu",
+          "ops": [
+            "backward_adapters",
+            "reduce_adapter_grads"
+          ],
+          "device_hint": {
+            "preferred": "GPU",
+            "allowed": [
+              "GPU",
+              "CPU"
+            ],
+            "fallback": "CPU",
+            "reason": "Adapter-only gradients are bounded."
+          },
+          "barrier_after": true
+        },
+        {
+          "id": "optimizer_cpu",
+          "ops": [
+            "optimizer_update",
+            "checkpoint_adapters"
+          ],
+          "device_hint": {
+            "preferred": "CPU",
+            "allowed": [
+              "CPU",
+              "GPU"
+            ],
+            "fallback": "CPU",
+            "reason": "CPU optimizer state prevents GPU memory regression at seq512."
+          }
+        }
+      ]
+    },
+    {
+      "id": "fallback_lora_all_target_sites",
+      "kind": "fallback_lora",
+      "entry_condition": "Selective dense training is unavailable or frozen base format cannot expose mutable dense shadows.",
+      "steps": [
+        {
+          "id": "lora_all_forward_backward",
+          "ops": [
+            "prepare_batch",
+            "stage_batch",
+            "embed_forward",
+            "tiny_blocks_forward",
+            "loss_forward",
+            "backward_adapters",
+            "reduce_adapter_grads"
+          ],
+          "device_hint": {
+            "preferred": "GPU",
+            "allowed": [
+              "GPU",
+              "CPU"
+            ],
+            "fallback": "CPU",
+            "reason": "Full target-site LoRA is the bounded replacement for dense mutation."
+          },
+          "barrier_after": true,
+          "notes": [
+            "Train q, v, o, gate, up, and down LoRA sites for the tiny block."
+          ]
+        },
+        {
+          "id": "lora_all_update",
+          "ops": [
+            "optimizer_update",
+            "checkpoint_adapters"
+          ],
+          "device_hint": {
+            "preferred": "CPU",
+            "allowed": [
+              "CPU"
+            ],
+            "reason": "Adapter-sized update and checkpoint."
+          }
+        }
+      ]
+    },
+    {
+      "id": "fallback_lora_attention_qvo",
+      "kind": "fallback_lora",
+      "entry_condition": "seq512 or device memory cannot hold all target-site adapter gradients.",
+      "steps": [
+        {
+          "id": "qvo_only_step",
+          "ops": [
+            "prepare_batch",
+            "stage_batch",
+            "embed_forward",
+            "tiny_blocks_forward",
+            "loss_forward",
+            "backward_adapters",
+            "reduce_adapter_grads",
+            "optimizer_update"
+          ],
+          "device_hint": {
+            "preferred": "GPU",
+            "allowed": [
+              "GPU",
+              "CPU"
+            ],
+            "fallback": "CPU",
+            "reason": "Attention-only LoRA shrinks adapter and optimizer memory before reducing sequence length."
+          },
+          "notes": [
+            "Disable MLP LoRA sites first; keep q, v, and o sites."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fallback_adapter_bias_or_prompt",
+      "kind": "fallback_adapter",
+      "entry_condition": "Adapter matmul gradients still exceed budget or only CPU reference execution is available.",
+      "steps": [
+        {
+          "id": "minimal_adapter_step",
+          "ops": [
+            "prepare_batch",
+            "embed_forward",
+            "tiny_blocks_forward",
+            "loss_forward",
+            "backward_adapters",
+            "optimizer_update"
+          ],
+          "device_hint": {
+            "preferred": "CPU",
+            "allowed": [
+              "CPU",
+              "GPU"
+            ],
+            "fallback": "CPU",
+            "reason": "Last bounded schedule trains prompt, bias, or a single small adapter family only."
+          },
+          "notes": [
+            "Use seq128 only for CPU reference unless an explicit device budget says otherwise."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "validation_unknown_backend_contract",
+      "kind": "validation",
+      "entry_condition": "Any op or tensor chooses unknown device placement.",
+      "steps": [
+        {
+          "id": "bound_unknown_memory",
+          "ops": [
+            "unknown_backend_lowering_gate"
+          ],
+          "device_hint": {
+            "preferred": "unknown",
+            "allowed": [
+              "unknown"
+            ],
+            "reason": "Unknown placement must resolve to a bounded memory contract before the primary schedule can claim fit."
+          },
+          "barrier_after": true
+        }
+      ]
+    }
+  ]
+}

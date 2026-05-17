@@ -1,0 +1,28 @@
+{
+  "planning": {
+    "commit_docs": true
+  },
+  "commit_docs": true,
+  "autonomy": "yolo",
+  "execution": {
+    "review_cadence": "dense",
+    "max_unattended_minutes_per_plan": 45,
+    "max_unattended_minutes_per_wave": 90,
+    "checkpoint_after_n_tasks": 3,
+    "checkpoint_after_first_load_bearing_result": true,
+    "checkpoint_before_downstream_dependent_tasks": true
+  },
+  "research_mode": "exploit",
+  "parallelization": false,
+  "model_profile": "numerical",
+  "git": {
+    "branching_strategy": "none",
+    "phase_branch_template": "gpd/phase-{phase}-{slug}",
+    "milestone_branch_template": "gpd/{milestone}-{slug}"
+  },
+  "workflow": {
+    "research": true,
+    "verifier": true,
+    "plan_checker": true
+  }
+}

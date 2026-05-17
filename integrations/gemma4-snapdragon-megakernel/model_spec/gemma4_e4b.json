@@ -1,0 +1,299 @@
+{
+  "schema_version": "gemma4-recon-v1",
+  "as_of": "2026-05-16",
+  "model_name": "Gemma 4 E4B",
+  "availability": {
+    "available": true,
+    "verification": "Official Google docs, Google launch blog, public Hugging Face Google repos, and LiteRT-LM docs all list Gemma 4 E4B.",
+    "official_google_urls": [
+      "https://ai.google.dev/gemma/docs/get_started",
+      "https://ai.google.dev/gemma/docs/core",
+      "https://ai.google.dev/gemma/docs/core/model_card_4",
+      "https://blog.google/innovation-and-ai/technology/developers-tools/gemma-4/"
+    ]
+  },
+  "repos": {
+    "base": {
+      "id": "google/gemma-4-E4B",
+      "url": "https://huggingface.co/google/gemma-4-E4B",
+      "sha": "7aa32e6889efd6300124851b164f8b364314c3d8",
+      "created_at": "2026-03-02T19:57:53.000Z",
+      "last_modified": "2026-04-02T16:14:15.000Z",
+      "private": false,
+      "gated": false,
+      "disabled": false,
+      "license": "apache-2.0"
+    },
+    "instruction_tuned": {
+      "id": "google/gemma-4-E4B-it",
+      "url": "https://huggingface.co/google/gemma-4-E4B-it",
+      "sha": "3555bddc93a623db8887dd2e52123facc45ade77",
+      "created_at": "2026-03-02T19:57:40.000Z",
+      "last_modified": "2026-05-07T07:39:39.000Z",
+      "private": false,
+      "gated": false,
+      "disabled": false,
+      "license": "apache-2.0",
+      "base_model": "google/gemma-4-E4B"
+    },
+    "litert_lm": {
+      "id": "litert-community/gemma-4-E4B-it-litert-lm",
+      "url": "https://huggingface.co/litert-community/gemma-4-E4B-it-litert-lm",
+      "format": "litertlm/task deployment artifacts"
+    }
+  },
+  "parameter_counts": {
+    "effective_parameters_google_card": 4500000000,
+    "hf_safetensors_bf16_parameters": 7996156490,
+    "google_card_total_with_embeddings": 8000000000
+  },
+  "hf_config_summary": {
+    "architectures": [
+      "Gemma4ForConditionalGeneration"
+    ],
+    "model_type": "gemma4",
+    "dtype": "bfloat16",
+    "transformers_version": "5.5.0.dev0",
+    "tie_word_embeddings": true,
+    "text_config": {
+      "model_type": "gemma4_text",
+      "dtype": "bfloat16",
+      "hidden_size": 2560,
+      "hidden_size_per_layer_input": 256,
+      "intermediate_size": 10240,
+      "num_hidden_layers": 42,
+      "num_attention_heads": 8,
+      "num_key_value_heads": 2,
+      "num_kv_shared_layers": 18,
+      "head_dim": 256,
+      "global_head_dim": 512,
+      "attention_bias": false,
+      "attention_dropout": 0.0,
+      "attention_k_eq_v": false,
+      "hidden_activation": "gelu_pytorch_tanh",
+      "rms_norm_eps": 0.000001,
+      "initializer_range": 0.02,
+      "final_logit_softcapping": 30.0,
+      "max_position_embeddings": 131072,
+      "sliding_window": 512,
+      "vocab_size": 262144,
+      "vocab_size_per_layer_input": 262144,
+      "use_cache": true,
+      "use_double_wide_mlp": false,
+      "enable_moe_block": false,
+      "num_experts": null,
+      "top_k_experts": null,
+      "full_attention_layer_indexes_zero_based": [
+        5,
+        11,
+        17,
+        23,
+        29,
+        35,
+        41
+      ],
+      "sliding_attention_layers": 35,
+      "full_attention_layers": 7,
+      "rope_parameters": {
+        "sliding_attention": {
+          "rope_type": "default",
+          "rope_theta": 10000.0
+        },
+        "full_attention": {
+          "rope_type": "proportional",
+          "rope_theta": 1000000.0,
+          "partial_rotary_factor": 0.25
+        }
+      },
+      "bos_token_id": 2,
+      "eos_token_id": 1,
+      "pad_token_id": 0
+    },
+    "vision_config": {
+      "model_type": "gemma4_vision",
+      "dtype": "bfloat16",
+      "hidden_size": 768,
+      "intermediate_size": 3072,
+      "num_hidden_layers": 16,
+      "num_attention_heads": 12,
+      "num_key_value_heads": 12,
+      "head_dim": 64,
+      "global_head_dim": 64,
+      "patch_size": 16,
+      "pooling_kernel_size": 3,
+      "default_output_length": 280,
+      "position_embedding_size": 10240,
+      "max_position_embeddings": 131072,
+      "rms_norm_eps": 0.000001,
+      "rope_theta": 100.0,
+      "use_clipped_linears": true
+    },
+    "audio_config": {
+      "model_type": "gemma4_audio",
+      "dtype": "bfloat16",
+      "hidden_size": 1024,
+      "num_hidden_layers": 12,
+      "num_attention_heads": 8,
+      "hidden_act": "silu",
+      "conv_kernel_size": 5,
+      "attention_chunk_size": 12,
+      "attention_context_left": 13,
+      "attention_context_right": 0,
+      "attention_logit_cap": 50.0,
+      "output_proj_dims": 1536,
+      "subsampling_conv_channels": [
+        128,
+        32
+      ],
+      "rms_norm_eps": 0.000001,
+      "residual_weight": 0.5,
+      "use_clipped_linears": true
+    },
+    "special_token_ids": {
+      "boi_token_id": 255999,
+      "boa_token_id": 256000,
+      "image_token_id": 258880,
+      "audio_token_id": 258881,
+      "eoi_token_id": 258882,
+      "eoa_token_id": 258883,
+      "video_token_id": 258884
+    }
+  },
+  "processor_summary": {
+    "processor_class": "Gemma4Processor",
+    "image_seq_length": 280,
+    "vision_soft_tokens_per_image": 280,
+    "audio_ms_per_token": 40,
+    "audio_seq_length": 750,
+    "feature_extractor": {
+      "type": "Gemma4AudioFeatureExtractor",
+      "sampling_rate": 16000,
+      "feature_size": 128,
+      "fft_length": 512,
+      "frame_length": 320,
+      "hop_length": 160,
+      "max_frequency": 8000.0
+    },
+    "image_processor": {
+      "type": "Gemma4ImageProcessor",
+      "patch_size": 16,
+      "pooling_kernel_size": 3,
+      "max_soft_tokens": 280,
+      "do_resize": true,
+      "do_rescale": true,
+      "do_normalize": false
+    },
+    "video_processor": {
+      "type": "Gemma4VideoProcessor",
+      "num_frames": 32,
+      "max_soft_tokens": 70,
+      "patch_size": 16,
+      "pooling_kernel_size": 3,
+      "do_sample_frames": true
+    }
+  },
+  "tokenizer_summary": {
+    "tokenizer_class": "GemmaTokenizer",
+    "tokenizer_json_model_type": "BPE",
+    "vocab_count": 262144,
+    "added_tokens_count": 24,
+    "padding_side": "left",
+    "special_tokens": {
+      "<pad>": 0,
+      "<eos>": 1,
+      "<bos>": 2,
+      "<unk>": 3,
+      "<mask>": 4,
+      "<|tool>": 46,
+      "<tool|>": 47,
+      "<|tool_call>": 48,
+      "<tool_call|>": 49,
+      "<|tool_response>": 50,
+      "<tool_response|>": 51,
+      "<|\"|>": 52,
+      "<|think|>": 98,
+      "<|channel>": 100,
+      "<channel|>": 101,
+      "<|turn>": 105,
+      "<turn|>": 106,
+      "<|image>": 255999,
+      "<|audio>": 256000,
+      "<|image|>": 258880,
+      "<|audio|>": 258881,
+      "<image|>": 258882,
+      "<audio|>": 258883,
+      "<|video|>": 258884
+    }
+  },
+  "generation_config": {
+    "bos_token_id": 2,
+    "eos_token_id": 1,
+    "pad_token_id": 0,
+    "do_sample": true,
+    "temperature": 1.0,
+    "top_k": 64,
+    "top_p": 0.95
+  },
+  "instruction_tuned_config_delta": {
+    "top_level_eos_token_id": [
+      1,
+      106
+    ],
+    "chat_template_file": "chat_template.jinja"
+  },
+  "file_manifest": {
+    "base": [
+      {"path": ".gitattributes", "size": 1570, "oid": "52373fe24473b1aa44333d318f578ae6bf04b49b"},
+      {"path": "README.md", "size": 26676, "oid": "fb28cf61208960d1d9d57ee6cbe6380e7ba6e6df"},
+      {"path": "config.json", "size": 5105, "oid": "080fd8d51bb6e846df168157c9d57b928a2a2687"},
+      {"path": "generation_config.json", "size": 181, "oid": "a07eb97486e34532ffd3cf64e44cba33af40127c"},
+      {"path": "model.safetensors", "size": 15992595884, "lfs_oid": "43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651"},
+      {"path": "processor_config.json", "size": 1689, "oid": "5465974d23e1eca2c46c2809b26c997946ce0d90"},
+      {"path": "tokenizer.json", "size": 32170070, "lfs_oid": "12bac982b793c44b03d52a250a9f0d0b666813da566b910c24a6da0695fd11e6"},
+      {"path": "tokenizer_config.json", "size": 881, "oid": "54a4569882af13f7bf57fdf459f2db243ff29680"}
+    ],
+    "instruction_tuned": [
+      {"path": ".gitattributes", "size": 1570, "oid": "52373fe24473b1aa44333d318f578ae6bf04b49b"},
+      {"path": "README.md", "size": 26710, "oid": "5be5ea4ff301d02af07a463d63287b0a39776ff7"},
+      {"path": "chat_template.jinja", "size": 16804, "oid": "dc032e46e28e0d325b18d26da1279cdda3afa8d7"},
+      {"path": "config.json", "size": 5145, "oid": "d68960fdcce766f2bfe41436325a8a483a74d125"},
+      {"path": "generation_config.json", "size": 208, "oid": "e605bb4523b1462ea9d9a3810b9e3ecf7ab7b1f6"},
+      {"path": "model.safetensors", "size": 15992595884, "lfs_oid": "cfbd3d2f1cd71bd471c37fe2bf8546d5028d41e5736f64e1ca6c6b8893125503"},
+      {"path": "processor_config.json", "size": 1689, "oid": "5465974d23e1eca2c46c2809b26c997946ce0d90"},
+      {"path": "tokenizer.json", "size": 32169626, "lfs_oid": "cc8d3a0ce36466ccc1278bf987df5f71db1719b9ca6b4118264f45cb627bfe0f"},
+      {"path": "tokenizer_config.json", "size": 2095, "oid": "375b25dc8be85705251e41be1c25310d24932051"}
+    ],
+    "litert_lm": [
+      {"path": ".gitattributes", "size": 1700, "oid": "cd26c0748adc9138f1e155baff8083550549aa5c"},
+      {"path": "README.md", "size": 13267, "oid": "d2d50ad5b4dd66efae468f3dfb2b3cd3e8843d54"},
+      {"path": "chat_template.jinja", "size": 11995, "oid": "fc07877d13ebc35a1cf9a2fefb7a253ee8603412"},
+      {"path": "gemma-4-E4B-it-web.task", "size": 2964324352, "lfs_oid": "f3bd72fc27627be2a2cc6722199a333599590ed0962ee7047b516a506b7bf086"},
+      {"path": "gemma-4-E4B-it.litertlm", "size": 3659530240, "lfs_oid": "0b2a8980ce155fd97673d8e820b4d29d9c7d99b8fa6806f425d969b145bd52e0"}
+    ]
+  },
+  "license": {
+    "spdx": "Apache-2.0",
+    "url": "https://ai.google.dev/gemma/docs/gemma_4_license"
+  },
+  "trainability": {
+    "text_lora_qlora": "yes",
+    "vision_qlora": "yes_with_bf16_gpu_caveats",
+    "full_finetune": "conditional_high_resource",
+    "audio_finetune": "unknown_blocked_pending_official_recipe",
+    "litert_lm_direct_training": "no_train_safetensors_then_export"
+  },
+  "blockers": [
+    "Exact internal tensor layout of LiteRT .litertlm/.task files was not decoded.",
+    "Audio fine-tuning recipe for Gemma 4 E4B was not found in official docs during this pass.",
+    "Implementation work should verify the released Transformers version that contains Gemma4ForConditionalGeneration and Gemma4Processor."
+  ],
+  "sources": [
+    "https://huggingface.co/api/models/google/gemma-4-E4B",
+    "https://huggingface.co/api/models/google/gemma-4-E4B-it",
+    "https://huggingface.co/api/models/google/gemma-4-E4B/tree/main?recursive=1&expand=true",
+    "https://huggingface.co/api/models/google/gemma-4-E4B-it/tree/main?recursive=1&expand=true",
+    "https://huggingface.co/api/models/litert-community/gemma-4-E4B-it-litert-lm/tree/main?recursive=1&expand=true",
+    "https://ai.google.dev/gemma/docs/core/model_card_4",
+    "https://ai.google.dev/edge/litert-lm/models/gemma-4"
+  ]
+}

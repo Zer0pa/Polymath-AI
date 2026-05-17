@@ -55,9 +55,16 @@ data/bulk/
 profiling/
 
 # Android build artifacts
+build/
 *.apk
 *.aab
 android/build/
+
+# Research/export packs are external artifacts, not source.
+/research-packs/
+
+# GPD generated backups
+.gpd/*.bak
 
 # IDE
 .idea/

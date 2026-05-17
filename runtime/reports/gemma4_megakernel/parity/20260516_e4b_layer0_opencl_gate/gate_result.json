@@ -1,0 +1,30 @@
+{
+  "run_id": "20260516_e4b_layer0_opencl_gate",
+  "status": "pass",
+  "model": "google/gemma-4-E4B",
+  "model_revision": "7aa32e6889efd6300124851b164f8b364314c3d8",
+  "layer_index": 0,
+  "backend": "opencl",
+  "device": "REDMAGIC NX789J / SM8750",
+  "device_identity": "nubia NX789J SM8750 FY25013101C8",
+  "real_weights": true,
+  "compared_non_pad_tokens": 111,
+  "failed_tokens_below_threshold": 0,
+  "cosine_p50": 0.9999890020383452,
+  "cosine_min": 0.9999801999737985,
+  "pass_threshold_p50": 0.99,
+  "phone_output_sha256": "cef523f674cff7ecd01cb59040048f9188f80bcb58b9fc47f1fa7f370ce332cf",
+  "first_elapsed_seconds": 5.750567,
+  "repeat_elapsed_seconds": 5.658739,
+  "repeat_output_byte_identical": true,
+  "upstream_repo": "/Users/Zer0pa/Gemma4 Kernel",
+  "upstream_gate_commit": "c5b6e3522d28d0e1dc56084cb97fa9e95e29aa4e",
+  "upstream_crosswalk_commit": "8a5fb2df0c7e8da52fb0bc346077e63e8c801009",
+  "primary_gate_report": "/Users/Zer0pa/Gemma4 Kernel/gemma4_megakernel/docs/gate_reports/20260516_e4b_layer0_gate_execution.md",
+  "orchestrator_handover": "/Users/Zer0pa/Gemma4 Kernel/docs/orchestrator_handover_gemma4_e4b_gate.md",
+  "notes": [
+    "Text-only Polymath pointer to upstream Gemma4 Kernel evidence.",
+    "No model weights, phone binaries, raw output bins, SDK files, or token-bearing files copied into this repo.",
+    "This passes the single-layer forward phone parity gate only. It does not claim fused megakernel, Vulkan parity, backward pass, optimizer, training, NPU parity, or sustained thermal stability."
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "run_id": "20260517T030510Z_g2_import_regression",
+  "artifacts": {
+    "gate_result": "runtime/reports/gemma4_megakernel/import_and_regression/20260517T030510Z_g2_import_regression/gate_result.json",
+    "commands": "runtime/reports/gemma4_megakernel/import_and_regression/20260517T030510Z_g2_import_regression/commands.log",
+    "blockers": "runtime/reports/gemma4_megakernel/import_and_regression/20260517T030510Z_g2_import_regression/blockers.md",
+    "device_manifest": "runtime/reports/gemma4_megakernel/import_and_regression/20260517T030510Z_g2_import_regression/device_manifest.txt",
+    "falsifier_report": "runtime/reports/gemma4_megakernel/falsifiers/20260517T030510Z_g2_import_regression/falsifier_report.json",
+    "integration_manifest": "integrations/gemma4-snapdragon-megakernel/MANIFEST.md",
+    "import_file_index": "integrations/gemma4-snapdragon-megakernel/IMPORT_FILE_INDEX.tsv",
+    "g1_runbook": "integrations/gemma4-snapdragon-megakernel/docs/runbooks/G1_OPENCL_REGRESSION.md"
+  },
+  "external_artifacts_not_copied": {
+    "runpod_layer_pack": "/workspace/artifacts/polymath_gemma4/layer_pack/gemma4_e4b_layer0_seq128_v0",
+    "runpod_phone_output_packet": "/workspace/artifacts/polymath_gemma4/phone_outputs/opencl_20260516T222643Z",
+    "phone_runner": "/data/local/tmp/polymath_gemma4_gate/gemma4_layer_runner",
+    "phone_layer_pack": "/data/local/tmp/polymath_gemma4_gate/layer_pack/gemma4_e4b_layer0_seq128_v0",
+    "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/outputs_opencl"
+  },
+  "forbidden_artifact_policy": {
+    "weights_copied": false,
+    "raw_tensor_bins_copied": false,
+    "sdk_binaries_copied": false,
+    "build_directories_copied": false,
+    "caches_copied": false,
+    "tokens_or_secrets_copied": false
+  }
+}

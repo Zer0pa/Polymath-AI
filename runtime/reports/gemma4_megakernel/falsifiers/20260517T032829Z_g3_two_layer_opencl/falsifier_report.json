@@ -1,0 +1,58 @@
+{
+  "run_id": "20260517T032829Z_g3_two_layer_opencl",
+  "scope": "G3 two-layer forward expansion",
+  "promotion_decision": "promote_g3_only",
+  "checks": [
+    {
+      "name": "wrong_model_revision",
+      "status": "pass",
+      "evidence": "Comparator provenance confirms google/gemma-4-E4B revision 7aa32e6889efd6300124851b164f8b364314c3d8."
+    },
+    {
+      "name": "wrong_layer_or_one_layer_only",
+      "status": "pass",
+      "evidence": "Phone telemetry records layer_indices [0, 1], and comparator expected layer index 1 against the layer-1 RunPod reference."
+    },
+    {
+      "name": "layer1_not_consuming_phone_layer0",
+      "status": "pass",
+      "evidence": "Stack runner feeds layer 0 output vector directly into layer 1 inside the phone process; layer0_output hash matches G1."
+    },
+    {
+      "name": "cpu_fallback_masquerading_as_opencl",
+      "status": "pass",
+      "evidence": "Phone telemetry records backend opencl, opencl_libraries [libOpenCL.so, libOpenCL.so], and kernel_contract two_sequential_layer_forward_real_weights_no_cpu_fallback."
+    },
+    {
+      "name": "pad_token_metric_inflation",
+      "status": "pass",
+      "evidence": "Comparator reports 111 non-pad tokens, 913 pad slots, and failed_token_count 0."
+    },
+    {
+      "name": "comparator_tolerance_relaxation",
+      "status": "pass",
+      "evidence": "p50 threshold remained 0.99 and threshold_relaxed is false."
+    },
+    {
+      "name": "g1_regression",
+      "status": "pass",
+      "evidence": "Layer 0 output inside the two-layer stack has sha256 cef523f674cff7ecd01cb59040048f9188f80bcb58b9fc47f1fa7f370ce332cf, matching the passed G1 output."
+    },
+    {
+      "name": "memory_report_missing",
+      "status": "pass",
+      "evidence": "Telemetry includes max_rss_kb 818764 and layer_max_rss_kb [809032, 818764]."
+    },
+    {
+      "name": "forbidden_artifact_leakage",
+      "status": "pass",
+      "evidence": "Raw layer packs and phone output binaries stayed under /workspace artifacts, phone storage, and /tmp; only text/JSON reports are in git."
+    },
+    {
+      "name": "training_claim_inflation",
+      "status": "pass",
+      "evidence": "Gate result explicitly limits promotion to G3 forward expansion and makes no backward, optimizer, data pipeline, training, or sustained run claim."
+    }
+  ],
+  "critical_unresolved": []
+}

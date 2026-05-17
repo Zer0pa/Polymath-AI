@@ -1,0 +1,49 @@
+2026-05-17T03:05:10Z G2 import/regression command ledger
+
+Read authority files:
+- PRD.md
+- docs/PRD-GEMMA4-SNAPDRAGON-MEGAKERNEL-HETEROGENEOUS-TRAINING.md
+- RESISTANCE-V2.md
+- .gpd/hypotheses.yaml
+- .gpd/runlog.jsonl
+- integrations/gemma4-snapdragon-megakernel/MANIFEST.md
+- runtime/reports/gemma4_megakernel/parity/20260516_e4b_layer0_opencl_gate/gate_result.json
+- /Users/Zer0pa/Gemma4 Kernel/docs/orchestrator_handover_gemma4_e4b_gate.md
+- /Users/Zer0pa/Gemma4 Kernel/gemma4_megakernel/docs/gate_reports/20260516_e4b_layer0_gate_execution.md
+
+Local control plane:
+- git status --short --branch
+- git remote -v
+- git switch -c gemma4-megakernel-native-training
+
+RunPod:
+- ssh root@38.80.152.147 -p 31002 -i ~/.ssh/id_ed25519 'test -d /workspace/Polymath-AI && git -C /workspace/Polymath-AI rev-parse --abbrev-ref HEAD && git -C /workspace/Polymath-AI rev-parse HEAD && ls -ld /workspace/artifacts/polymath_gemma4'
+- ssh root@38.80.152.147 -p 31002 -i ~/.ssh/id_ed25519 'test -f /workspace/artifacts/polymath_gemma4/layer_pack/gemma4_e4b_layer0_seq128_v0/reference/layer_output.f32.bin && sha256sum /workspace/artifacts/polymath_gemma4/layer_pack/gemma4_e4b_layer0_seq128_v0/reference/layer_output.f32.bin && test -f /workspace/artifacts/polymath_gemma4/phone_outputs/opencl_20260516T222643Z/gate_report.json'
+
+ADB:
+- adb devices -l
+- adb -s FY25013101C8 shell 'getprop ro.product.model; getprop ro.soc.model; getprop ro.product.manufacturer; getprop ro.build.version.release; id; ls /data/local/tmp/polymath_gemma4_gate 2>/dev/null'
+- adb -s FY25013101C8 shell 'cd /data/local/tmp/polymath_gemma4_gate && ./gemma4_layer_runner --probe && ./gemma4_layer_runner --validate-pack ... && ./gemma4_layer_runner --run-opencl ...'
+- adb kill-server
+- adb start-server
+- adb reconnect
+- adb devices -l
+- system_profiler SPUSBDataType | rg -i -C 4 'nubia|NX789J|Qualcomm|Android|REDMAGIC|SM8750'
+- ioreg -p IOUSB -l -w 0 | rg -i -C 3 'nubia|NX789J|Qualcomm|Android|REDMAGIC|SM8750|FY25013101C8'
+
+GPD:
+- /Users/prinivenpillay/.gpd/venv/bin/python -m gpd.runtime_cli --runtime codex --config-dir /Users/prinivenpillay/.codex --install-scope global --raw validate project-contract -
+- /Users/prinivenpillay/.gpd/venv/bin/python -m gpd.runtime_cli --runtime codex --config-dir /Users/prinivenpillay/.codex --install-scope global state set-project-contract -
+- /Users/prinivenpillay/.gpd/venv/bin/python -m gpd.runtime_cli --runtime codex --config-dir /Users/prinivenpillay/.codex --install-scope global state validate
+- /Users/prinivenpillay/.gpd/venv/bin/python -m gpd.runtime_cli --runtime codex --config-dir /Users/prinivenpillay/.codex --install-scope global init plan-phase 01 --include state,roadmap,requirements,context,research,verification,validation
+
+Import:
+- rsync selected upstream docs, gemma4_megakernel, executor_ir, model_spec, polymath_native source subset, architecture/decision docs, and native kernel gate text evidence into integrations/gemma4-snapdragon-megakernel/
+- find integrations/gemma4-snapdragon-megakernel -type f/d leak scans
+- find integrations/gemma4-snapdragon-megakernel -type f ... > IMPORT_FILE_INDEX.tsv
+
+Host verification:
+- cmake -S integrations/gemma4-snapdragon-megakernel/gemma4_megakernel -B /tmp/polymath_gemma4_import_build -DGEMMA4_MEGAKERNEL_WARNINGS_AS_ERRORS=ON
+- cmake --build /tmp/polymath_gemma4_import_build -j 4
+- ctest --test-dir /tmp/polymath_gemma4_import_build --output-on-failure
+- python3 -m unittest discover -s integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/compare_outputs -p 'test_*.py'

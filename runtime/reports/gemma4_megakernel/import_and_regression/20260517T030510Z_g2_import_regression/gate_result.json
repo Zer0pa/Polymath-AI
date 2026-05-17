@@ -1,0 +1,49 @@
+{
+  "run_id": "20260517T030510Z_g2_import_regression",
+  "gate": "G2 - Import And Regression Harness",
+  "status": "pass",
+  "branch": "gemma4-megakernel-native-training",
+  "upstream_repo": "/Users/Zer0pa/Gemma4 Kernel",
+  "upstream_imported_commit": "8a5fb2df0c7e8da52fb0bc346077e63e8c801009",
+  "upstream_g1_gate_commit": "c5b6e3522d28d0e1dc56084cb97fa9e95e29aa4e",
+  "gpd": {
+    "contract_validated": true,
+    "state_validate": "pass",
+    "plan_phase_01_init": "pass"
+  },
+  "import": {
+    "namespace": "integrations/gemma4-snapdragon-megakernel",
+    "file_index": "integrations/gemma4-snapdragon-megakernel/IMPORT_FILE_INDEX.tsv",
+    "forbidden_integration_files_found": 0,
+    "forbidden_integration_dirs_found": 0
+  },
+  "host_verification": {
+    "cmake_configure": "pass",
+    "cmake_build": "pass",
+    "ctest": "2/2 pass",
+    "comparator_unittest": "3/3 pass"
+  },
+  "g1_regression_floor": {
+    "preserved_pointer": "runtime/reports/gemma4_megakernel/parity/20260516_e4b_layer0_opencl_gate/gate_result.json",
+    "status": "previous_authority_pass_preserved",
+    "p50_cosine": 0.9999890020383452,
+    "min_cosine": 0.9999801999737985,
+    "failed_tokens_below_threshold": 0,
+    "repeat_output_byte_identical": true,
+    "phone_output_sha256": "cef523f674cff7ecd01cb59040048f9188f80bcb58b9fc47f1fa7f370ce332cf",
+    "live_replay_attempted": true,
+    "live_replay_status": "pass_after_device_reconnected",
+    "live_replay_output_sha256": "cef523f674cff7ecd01cb59040048f9188f80bcb58b9fc47f1fa7f370ce332cf"
+  },
+  "next_gate": "G3 - Forward Expansion",
+  "next_gate_status": "passed_in_runtime/reports/gemma4_megakernel/forward_stack/20260517T032829Z_g3_two_layer_opencl",
+  "non_claims": [
+    "No fused megakernel claim",
+    "No multi-layer forward claim",
+    "No backward path claim",
+    "No optimizer update claim",
+    "No phone-native HF streaming/tokenization/packing claim",
+    "No training claim",
+    "No sustained authority run claim"
+  ]
+}
