@@ -1,0 +1,319 @@
+{
+  "checks": [
+    {
+      "details": {
+        "batch_count": 3
+      },
+      "name": "predeclared_three_batches",
+      "status": "pass"
+    },
+    {
+      "details": {
+        "active_tokens": 796,
+        "adapter_cosine_min": 0.9999981024312786,
+        "adapter_status": "pass",
+        "batch": "000",
+        "layer0_p50": 0.9999895268153007,
+        "layer0_status": "pass",
+        "layer1_p50": 0.9999936773992628,
+        "layer1_status": "pass",
+        "loss_half_mse": 1.6465152695,
+        "max_rss_kb": 2169220,
+        "token_status": "pass",
+        "token_to_hidden_p50_min": 0.9999982087594611,
+        "token_to_hidden_status": "pass"
+      },
+      "name": "batch_000_all_comparators",
+      "status": "pass"
+    },
+    {
+      "details": {
+        "artifact": [],
+        "telemetry": []
+      },
+      "name": "batch_000_no_hidden_fixtures",
+      "status": "pass"
+    },
+    {
+      "details": {
+        "layer0": {
+          "post_sha256": "d3efd61621310d5578a3653d2f9a989614b6287667b4984720d42dcc8f75fc36",
+          "pre_sha256": "d3efd61621310d5578a3653d2f9a989614b6287667b4984720d42dcc8f75fc36"
+        },
+        "layer1": {
+          "post_sha256": "ce1b559f77c3f76efceb1df0c25896a90b0ed31380c6930f46f2d1b4c6a0cd19",
+          "pre_sha256": "ce1b559f77c3f76efceb1df0c25896a90b0ed31380c6930f46f2d1b4c6a0cd19"
+        }
+      },
+      "name": "batch_000_frozen_hashes_stable",
+      "status": "pass"
+    },
+    {
+      "details": {
+        "adapter_a_post": {
+          "path": "sustained_g9_20260517T071405Z/outputs/batch_000/checkpoint/adapter_a.f32.bin",
+          "sha256": "2f9a70815411575f0bf3d3ced6cb7ed0963c6c1685fd123a63fdfcb7a88b0ed7"
+        },
+        "adapter_a_pre": {
+          "path": "adapter_training/g5g6_rank4_20260517T040000Z/checkpoint/adapter_a.f32.bin",
+          "sha256": "20f2f42d5079b7b3c87305bff5b6234a353ce0e19d40d9b8b3f94681abd38335"
+        },
+        "adapter_b_post": {
+          "path": "sustained_g9_20260517T071405Z/outputs/batch_000/checkpoint/adapter_b.f32.bin",
+          "sha256": "f38173a4913a994075852e40a912bdb62e156f06ff72845d9ae2722c4f694edc"
+        },
+        "adapter_b_pre": {
+          "path": "adapter_training/g5g6_rank4_20260517T040000Z/checkpoint/adapter_b.f32.bin",
+          "sha256": "8ddab43db8638bd204491b09935eb50319106216e72047d9062223bd60ddb205"
+        }
+      },
+      "name": "batch_000_trainable_hashes_changed",
+      "status": "pass"
+    },
+    {
+      "details": {
+        "active_tokens": 841,
+        "adapter_cosine_min": 0.9999977029847468,
+        "adapter_status": "pass",
+        "batch": "001",
+        "layer0_p50": 0.9999891695757134,
+        "layer0_status": "pass",
+        "layer1_p50": 0.9999937029513182,
+        "layer1_status": "pass",
+        "loss_half_mse": 1.64445853,
+        "max_rss_kb": 2169420,
+        "token_status": "pass",
+        "token_to_hidden_p50_min": 0.9999981110483513,
+        "token_to_hidden_status": "pass"
+      },
+      "name": "batch_001_all_comparators",
+      "status": "pass"
+    },
+    {
+      "details": {
+        "artifact": [],
+        "telemetry": []
+      },
+      "name": "batch_001_no_hidden_fixtures",
+      "status": "pass"
+    },
+    {
+      "details": {
+        "layer0": {
+          "post_sha256": "d3efd61621310d5578a3653d2f9a989614b6287667b4984720d42dcc8f75fc36",
+          "pre_sha256": "d3efd61621310d5578a3653d2f9a989614b6287667b4984720d42dcc8f75fc36"
+        },
+        "layer1": {
+          "post_sha256": "ce1b559f77c3f76efceb1df0c25896a90b0ed31380c6930f46f2d1b4c6a0cd19",
+          "pre_sha256": "ce1b559f77c3f76efceb1df0c25896a90b0ed31380c6930f46f2d1b4c6a0cd19"
+        }
+      },
+      "name": "batch_001_frozen_hashes_stable",
+      "status": "pass"
+    },
+    {
+      "details": {
+        "adapter_a_post": {
+          "path": "sustained_g9_20260517T071405Z/outputs/batch_001/checkpoint/adapter_a.f32.bin",
+          "sha256": "dee699fc8075ab1366c85f290154cadda6591c2a293166733984abdf721660dd"
+        },
+        "adapter_a_pre": {
+          "path": "sustained_g9_20260517T071405Z/outputs/batch_000/checkpoint/adapter_a.f32.bin",
+          "sha256": "2f9a70815411575f0bf3d3ced6cb7ed0963c6c1685fd123a63fdfcb7a88b0ed7"
+        },
+        "adapter_b_post": {
+          "path": "sustained_g9_20260517T071405Z/outputs/batch_001/checkpoint/adapter_b.f32.bin",
+          "sha256": "c1c274ea5960029b4cfe2b9b03440cebad338d02d3ec0afd7469ae5f7a70898c"
+        },
+        "adapter_b_pre": {
+          "path": "sustained_g9_20260517T071405Z/outputs/batch_000/checkpoint/adapter_b.f32.bin",
+          "sha256": "f38173a4913a994075852e40a912bdb62e156f06ff72845d9ae2722c4f694edc"
+        }
+      },
+      "name": "batch_001_trainable_hashes_changed",
+      "status": "pass"
+    },
+    {
+      "details": {
+        "active_tokens": 828,
+        "adapter_cosine_min": 0.9999978730537458,
+        "adapter_status": "pass",
+        "batch": "002",
+        "layer0_p50": 0.9999894531476679,
+        "layer0_status": "pass",
+        "layer1_p50": 0.9999935532821822,
+        "layer1_status": "pass",
+        "loss_half_mse": 1.6474150801,
+        "max_rss_kb": 2169412,
+        "token_status": "pass",
+        "token_to_hidden_p50_min": 0.9999980482689419,
+        "token_to_hidden_status": "pass"
+      },
+      "name": "batch_002_all_comparators",
+      "status": "pass"
+    },
+    {
+      "details": {
+        "artifact": [],
+        "telemetry": []
+      },
+      "name": "batch_002_no_hidden_fixtures",
+      "status": "pass"
+    },
+    {
+      "details": {
+        "layer0": {
+          "post_sha256": "d3efd61621310d5578a3653d2f9a989614b6287667b4984720d42dcc8f75fc36",
+          "pre_sha256": "d3efd61621310d5578a3653d2f9a989614b6287667b4984720d42dcc8f75fc36"
+        },
+        "layer1": {
+          "post_sha256": "ce1b559f77c3f76efceb1df0c25896a90b0ed31380c6930f46f2d1b4c6a0cd19",
+          "pre_sha256": "ce1b559f77c3f76efceb1df0c25896a90b0ed31380c6930f46f2d1b4c6a0cd19"
+        }
+      },
+      "name": "batch_002_frozen_hashes_stable",
+      "status": "pass"
+    },
+    {
+      "details": {
+        "adapter_a_post": {
+          "path": "sustained_g9_20260517T071405Z/outputs/batch_002/checkpoint/adapter_a.f32.bin",
+          "sha256": "1ae526a457ba921cb7e2a1b94b506f3d83035205343973ce27a9bc3e0d7e38e9"
+        },
+        "adapter_a_pre": {
+          "path": "sustained_g9_20260517T071405Z/outputs/batch_001/checkpoint/adapter_a.f32.bin",
+          "sha256": "dee699fc8075ab1366c85f290154cadda6591c2a293166733984abdf721660dd"
+        },
+        "adapter_b_post": {
+          "path": "sustained_g9_20260517T071405Z/outputs/batch_002/checkpoint/adapter_b.f32.bin",
+          "sha256": "de411eeba2a144e2bd3275cda8750455ac07d4e79dff668129ca8bb8d0d8b939"
+        },
+        "adapter_b_pre": {
+          "path": "sustained_g9_20260517T071405Z/outputs/batch_001/checkpoint/adapter_b.f32.bin",
+          "sha256": "c1c274ea5960029b4cfe2b9b03440cebad338d02d3ec0afd7469ae5f7a70898c"
+        }
+      },
+      "name": "batch_002_trainable_hashes_changed",
+      "status": "pass"
+    },
+    {
+      "details": {
+        "batch0_post": {
+          "adapter_a_post": {
+            "path": "sustained_g9_20260517T071405Z/outputs/batch_000/checkpoint/adapter_a.f32.bin",
+            "sha256": "2f9a70815411575f0bf3d3ced6cb7ed0963c6c1685fd123a63fdfcb7a88b0ed7"
+          },
+          "adapter_a_pre": {
+            "path": "adapter_training/g5g6_rank4_20260517T040000Z/checkpoint/adapter_a.f32.bin",
+            "sha256": "20f2f42d5079b7b3c87305bff5b6234a353ce0e19d40d9b8b3f94681abd38335"
+          },
+          "adapter_b_post": {
+            "path": "sustained_g9_20260517T071405Z/outputs/batch_000/checkpoint/adapter_b.f32.bin",
+            "sha256": "f38173a4913a994075852e40a912bdb62e156f06ff72845d9ae2722c4f694edc"
+          },
+          "adapter_b_pre": {
+            "path": "adapter_training/g5g6_rank4_20260517T040000Z/checkpoint/adapter_b.f32.bin",
+            "sha256": "8ddab43db8638bd204491b09935eb50319106216e72047d9062223bd60ddb205"
+          }
+        },
+        "batch1_pre": {
+          "adapter_a_post": {
+            "path": "sustained_g9_20260517T071405Z/outputs/batch_001/checkpoint/adapter_a.f32.bin",
+            "sha256": "dee699fc8075ab1366c85f290154cadda6591c2a293166733984abdf721660dd"
+          },
+          "adapter_a_pre": {
+            "path": "sustained_g9_20260517T071405Z/outputs/batch_000/checkpoint/adapter_a.f32.bin",
+            "sha256": "2f9a70815411575f0bf3d3ced6cb7ed0963c6c1685fd123a63fdfcb7a88b0ed7"
+          },
+          "adapter_b_post": {
+            "path": "sustained_g9_20260517T071405Z/outputs/batch_001/checkpoint/adapter_b.f32.bin",
+            "sha256": "c1c274ea5960029b4cfe2b9b03440cebad338d02d3ec0afd7469ae5f7a70898c"
+          },
+          "adapter_b_pre": {
+            "path": "sustained_g9_20260517T071405Z/outputs/batch_000/checkpoint/adapter_b.f32.bin",
+            "sha256": "f38173a4913a994075852e40a912bdb62e156f06ff72845d9ae2722c4f694edc"
+          }
+        }
+      },
+      "name": "checkpoint_chain_000_to_001",
+      "status": "pass"
+    },
+    {
+      "details": {
+        "batch1_post": {
+          "adapter_a_post": {
+            "path": "sustained_g9_20260517T071405Z/outputs/batch_001/checkpoint/adapter_a.f32.bin",
+            "sha256": "dee699fc8075ab1366c85f290154cadda6591c2a293166733984abdf721660dd"
+          },
+          "adapter_a_pre": {
+            "path": "sustained_g9_20260517T071405Z/outputs/batch_000/checkpoint/adapter_a.f32.bin",
+            "sha256": "2f9a70815411575f0bf3d3ced6cb7ed0963c6c1685fd123a63fdfcb7a88b0ed7"
+          },
+          "adapter_b_post": {
+            "path": "sustained_g9_20260517T071405Z/outputs/batch_001/checkpoint/adapter_b.f32.bin",
+            "sha256": "c1c274ea5960029b4cfe2b9b03440cebad338d02d3ec0afd7469ae5f7a70898c"
+          },
+          "adapter_b_pre": {
+            "path": "sustained_g9_20260517T071405Z/outputs/batch_000/checkpoint/adapter_b.f32.bin",
+            "sha256": "f38173a4913a994075852e40a912bdb62e156f06ff72845d9ae2722c4f694edc"
+          }
+        },
+        "batch2_pre": {
+          "adapter_a_post": {
+            "path": "sustained_g9_20260517T071405Z/outputs/batch_002/checkpoint/adapter_a.f32.bin",
+            "sha256": "1ae526a457ba921cb7e2a1b94b506f3d83035205343973ce27a9bc3e0d7e38e9"
+          },
+          "adapter_a_pre": {
+            "path": "sustained_g9_20260517T071405Z/outputs/batch_001/checkpoint/adapter_a.f32.bin",
+            "sha256": "dee699fc8075ab1366c85f290154cadda6591c2a293166733984abdf721660dd"
+          },
+          "adapter_b_post": {
+            "path": "sustained_g9_20260517T071405Z/outputs/batch_002/checkpoint/adapter_b.f32.bin",
+            "sha256": "de411eeba2a144e2bd3275cda8750455ac07d4e79dff668129ca8bb8d0d8b939"
+          },
+          "adapter_b_pre": {
+            "path": "sustained_g9_20260517T071405Z/outputs/batch_001/checkpoint/adapter_b.f32.bin",
+            "sha256": "c1c274ea5960029b4cfe2b9b03440cebad338d02d3ec0afd7469ae5f7a70898c"
+          }
+        }
+      },
+      "name": "checkpoint_chain_001_to_002",
+      "status": "pass"
+    },
+    {
+      "details": {
+        "bytes": 9659
+      },
+      "name": "thermal_telemetry_present",
+      "status": "pass"
+    },
+    {
+      "details": {
+        "bytes": 100
+      },
+      "name": "storage_telemetry_present",
+      "status": "pass"
+    },
+    {
+      "details": {
+        "failed_tokens": 0,
+        "p50": 0.9999890020383452
+      },
+      "name": "g1_post_regression",
+      "status": "pass"
+    },
+    {
+      "details": {
+        "failed_tokens": 0,
+        "p50": 0.999993563915067
+      },
+      "name": "g3_post_regression",
+      "status": "pass"
+    }
+  ],
+  "failed_check_count": 0,
+  "gate": "Phase 8 predeclared three-batch sustained authority run",
+  "schema_version": "gemma4_g9_sustained_falsifier_v1",
+  "status": "pass",
+  "summary": "runtime/reports/gemma4_megakernel/sustained_authority/20260517T071405Z_g9_three_batch_chain/sustained_compare_summary.json"
+}

@@ -10,27 +10,25 @@ See: `.gpd/PROJECT.md` (updated 2026-05-17)
 **Core research question:** Can Polymath-AI execute and validate a real Gemma 4
 training run natively on REDMAGIC SM8750 without substituting Mac or RunPod for
 any runtime data-path stage?
-**Current focus:** Phase 7: Integrated Training blocked under falsification
+**Current focus:** Phase 9: Final Falsifier Review after sustained authority pass
 
 ## Current Position
 
-**Current Phase:** 07
-**Current Phase Name:** Integrated Training
+**Current Phase:** 09
+**Current Phase Name:** Falsifier Review
 **Total Phases:** 10
-**Current Plan:** 1
-**Total Plans in Phase:** 1
-**Status:** Blocked
+**Current Plan:** 0
+**Total Plans in Phase:** TBD
+**Status:** Ready to plan
 **Last Activity:** 2026-05-17
-**Last Activity Description:** G4 minimal executor architecture, G5 adapter backward, G6 phone SGD update, and G7 phone-native HF stream/tokenize/pack passed. G8 integrated training was rejected because the current training step still consumes hidden-state fixtures instead of deriving Gemma hidden/per-layer inputs from phone-packed token IDs.
+**Last Activity Description:** G8 repaired and passed, then Phase 8 passed a predeclared three-batch chained phone-native training objective. Each batch used phone token caches, immutable Gemma assets, OpenCL layer0/layer1, phone-side adapter SGD, checkpoint chaining, RunPod PyTorch comparisons, and final G1/G3 regressions.
 
-**Progress:** [███████░░░] 70%
+**Progress:** [█████████░] 90%
 
 ## Active Calculations
 
-- Next valid G8 repair: implement phone-native `input_ids -> layer_input +
-  per_layer_input` generation from frozen Gemma embedding/per-layer-input
-  assets, then feed phone-produced tensors into layer0/layer1 and adapter
-  backward/update without host hidden fixtures.
+- Next phase: perform the final adversarial falsifier review across G1-G9
+  before any promotion wording is allowed.
 
 ## Intermediate Results
 
@@ -49,14 +47,16 @@ any runtime data-path stage?
 - G7 phone-native HF stream, Gemma BPE tokenization, and UFS packing passed
   exact token/mask parity:
   `runtime/reports/gemma4_megakernel/phone_data_pipeline/20260517T040000Z_g7_hf_native_token_pack/gate_result.json`.
-- G8 integrated streamed-corpus training was rejected under falsification:
-  `runtime/reports/gemma4_megakernel/integrated_training/20260517T040000Z_g8_streamed_corpus_falsified/gate_result.json`.
+- G8 integrated streamed-corpus training was repaired and passed:
+  `runtime/reports/gemma4_megakernel/integrated_training/20260517T071405Z_g8_streamed_corpus_repaired/gate_result.json`.
+- Phase 8 sustained authority objective passed:
+  `runtime/reports/gemma4_megakernel/sustained_authority/20260517T071405Z_g9_three_batch_chain/gate_result.json`.
 
 ## Open Questions
 
-- Which minimal G8 objective should be promoted after phone-native embedding
-  generation: two-layer phone distillation to a stop-gradient layer1 target or
-  chunked tied-embedding next-token CE/NLL?
+- Whether the final promotion claim should remain "rank-4 adapter training
+  pipeline" or be further narrowed to "two-layer distillation adapter chain"
+  until chunked next-token NLL exists.
 - Whether OpenCL remains the first training backend or Vulkan earns the route
   after equal correctness evidence.
 
@@ -69,6 +69,11 @@ any runtime data-path stage?
 | G5 adapter grad elapsed | `0.600701s` | Rank-4 adapter backward | Phone OpenCL |
 | G6 adapter SGD elapsed | `0.602772s` | Rank-4 adapter update | Phone OpenCL |
 | G7 token cache | exact parity | 3 HF-streamed sequences, seq128 | Phone CPU/UFS |
+| G8 token cache | exact parity | 8 HF-streamed sequences, seq128 | Phone CPU/UFS |
+| G8 token-to-hidden p50 min | `0.9999982087594611` | layer input + layer0/1 PLE | Phone asset bridge vs RunPod HF |
+| G8 layer0/layer1 p50 | `0.9999895268153007` / `0.9999936773992628` | phone OpenCL | RunPod PyTorch oracle |
+| G8 adapter update cosine min | `0.9999981024312786` | gradient/update/checkpoint | RunPod PyTorch oracle |
+| Phase 8 sustained chain | pass | 3 batches, checkpoint chaining | Phone runtime + RunPod oracle |
 
 ## Accumulated Context
 
@@ -83,15 +88,14 @@ Full log: `.gpd/DECISIONS.md`
 - Phase 0: Import Gemma4 Kernel only under
   `integrations/gemma4-snapdragon-megakernel/`.
 - Phase 0: Treat G1 as regression floor only.
-- Phase 7: Reject G8 promotion while training still consumes hidden-state
-  fixtures; the next valid gate must derive Gemma hidden/per-layer inputs from
-  phone-packed token IDs.
+- Phase 7: Repaired G8 promotion is valid only because training consumes
+  phone-packed token IDs plus immutable Gemma assets, not host hidden fixtures.
 
 ### Active Approximations
 
 | Approximation | Validity Range | Controlling Parameter | Current Value | Status |
 | --- | --- | --- | --- | --- |
-| Adapter/low-rank first trainable scope | G5/G6 and next G8 repair | rank `r` | 4 | Passed for fixture gradient/update; insufficient for streamed training until token-to-hidden bridge exists |
+| Adapter/low-rank first trainable scope | G5/G6/G8 | rank `r` | 4 | Passed for fixture and streamed phone-native gradient/update; still a minimal training scope, not full-model training |
 
 **Convention Lock:**
 
@@ -114,28 +118,26 @@ Full log: `.gpd/DECISIONS.md`
 | G5 gradient cosine min | `0.9999999999999384` | Comparator/report precision | Phase 4 | RunPod PyTorch oracle |
 | G6 update cosine min | `0.9999999999999384` | Comparator/report precision | Phase 5 | RunPod PyTorch oracle |
 | G7 token mismatches | `0` | Exact ID/mask comparison | Phase 6 | RunPod Transformers oracle |
+| G8 token mismatches | `0` | Exact ID/mask/label/loss-mask/position comparison | Phase 7 | RunPod Transformers oracle |
+| G8 max RSS | `2169344` KB | Android getrusage high-water semantics | Phase 7 | Phone telemetry |
+| Phase 8 adapter cosine min | `0.9999977029847468` | Worst batch in 3-batch chain | Phase 8 | RunPod PyTorch oracle |
 
 ### Pending Todos
 
-- Implement phone-native embedding gather from packed `input_ids` to
-  `layer_input.f32`.
-- Implement phone-native Gemma PLE/per-layer-input generation for layers 0 and
-  1.
-- Extend phone cache ABI with `labels`, `loss_mask`, and `position_ids`.
-- Emit G8 checkpoint manifests with replay validation once streamed-corpus
-  training consumes phone-produced tensors.
+- Execute Phase 9 falsifier review over wrong revision, hidden data path,
+  backend fallback, pad-token inflation, checkpoint replay, frozen/trainable
+  violations, and overclaiming.
 
 ### Blockers/Concerns
 
 - Formal GPD one-shot project writer is not exposed by the installed CLI; the
   contract validator and state persistence commands are available and were used.
-- G8 is currently falsified by hidden-host-data-path risk. Current G5/G6 update
-  consumes hidden-state fixtures and cannot be claimed as streamed-corpus
-  training.
+- Phase 8 passed a predeclared three-batch objective, but it is not a six-hour
+  endurance proof and must not be narrated as one.
 
 ## Session Continuity
 
 **Last session:** 2026-05-17
-**Stopped at:** G8 rejected under falsification; next repair is the
-phone-native token-to-hidden bridge.
+**Stopped at:** Phase 8 sustained authority objective passed; next work is
+Phase 9 final falsifier review.
 **Resume file:** `.gpd/STATE.md`

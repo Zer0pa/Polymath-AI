@@ -1,0 +1,16 @@
+{
+  "schema_version": "gemma4_rank4_adapter_checkpoint_v1",
+  "trainable_scope": "post_layer0_rank4_residual_adapter",
+  "optimizer": "sgd",
+  "learning_rate": 0.0099999998,
+  "loss_half_mse": 1.6465152695,
+  "active_tokens": 796,
+  "pre_update": {
+    "adapter_a": {"path": "adapter_training/g5g6_rank4_20260517T040000Z/checkpoint/adapter_a.f32.bin", "sha256": "20f2f42d5079b7b3c87305bff5b6234a353ce0e19d40d9b8b3f94681abd38335"},
+    "adapter_b": {"path": "adapter_training/g5g6_rank4_20260517T040000Z/checkpoint/adapter_b.f32.bin", "sha256": "8ddab43db8638bd204491b09935eb50319106216e72047d9062223bd60ddb205"}
+  },
+  "post_update": {
+    "adapter_a": {"path": "outputs_g8_streamed_distill_20260517T071405Z/checkpoint/adapter_a.f32.bin", "sha256": "2f9a70815411575f0bf3d3ced6cb7ed0963c6c1685fd123a63fdfcb7a88b0ed7"},
+    "adapter_b": {"path": "outputs_g8_streamed_distill_20260517T071405Z/checkpoint/adapter_b.f32.bin", "sha256": "f38173a4913a994075852e40a912bdb62e156f06ff72845d9ae2722c4f694edc"}
+  }
+}

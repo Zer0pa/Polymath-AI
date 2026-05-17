@@ -1,0 +1,30 @@
+G8 repaired streamed-corpus run, 2026-05-17.
+
+Local build:
+- python3 -m py_compile export_streamed_training_assets.py create_streamed_distill_reference.py compare_token_cache.py
+- cmake -S integrations/gemma4-snapdragon-megakernel/gemma4_megakernel -B /tmp/polymath_gemma4_g8_build -DGEMMA4_MEGAKERNEL_WARNINGS_AS_ERRORS=ON
+- cmake --build /tmp/polymath_gemma4_g8_build -j 4
+- ctest --test-dir /tmp/polymath_gemma4_g8_build --output-on-failure
+
+RunPod build/reference:
+- rsync patched G8 runner/reference scripts to /workspace/Polymath-AI/gemma4_megakernel
+- cmake -S gemma4_megakernel -B /tmp/polymath_gemma4_g8_build -DGEMMA4_MEGAKERNEL_WARNINGS_AS_ERRORS=ON
+- ANDROID_NDK_HOME=/workspace/android-ndk-r28b bash gemma4_megakernel/android/cmake/build_android.sh
+- python gemma4_megakernel/tools/reference/export_streamed_training_assets.py --model-safetensors /workspace/models/gemma4_e4b/snapshot/model.safetensors --out /tmp/g8_assets_071405 --layers 0 1
+- python gemma4_megakernel/tools/compare_outputs/compare_token_cache.py --phone-cache /tmp/g8_token_cache_071405 --tokenizer-dir /workspace/models/gemma4_e4b/snapshot --seq 128 --report /tmp/g8_token_cache_071405/token_compare.json
+- python gemma4_megakernel/tools/reference/create_streamed_distill_reference.py --snapshot-dir /workspace/models/gemma4_e4b/snapshot --token-cache /tmp/g8_token_cache_071405 --checkpoint /workspace/artifacts/polymath_gemma4/adapter_training/g5g6_rank4_20260517T040000Z/checkpoint --out /tmp/g8_reference_071405 --seq 128 --learning-rate 0.01
+
+Phone deployment and run:
+- adb push /tmp/gemma4_layer_runner_g8_071405 /data/local/tmp/polymath_gemma4_gate/gemma4_layer_runner_g8_071405
+- adb push /tmp/g8_assets_071405/. /data/local/tmp/polymath_gemma4_gate/streamed_assets/g8_layer01_20260517T071405Z/
+- adb shell 'cd /data/local/tmp/polymath_gemma4_gate && curl -L --fail --max-time 120 -o hf_stream/g8/prompts.csv https://huggingface.co/datasets/fka/awesome-chatgpt-prompts/resolve/main/prompts.csv'
+- adb shell 'cd /data/local/tmp/polymath_gemma4_gate && ./gemma4_layer_runner_g8_071405 --tokenize-pack tokenizer/gemma4_e4b_bpe_v1 hf_stream/g8/prompts.csv hf_stream/g8_token_cache_20260517T071405Z 128 8 https://huggingface.co/datasets/fka/awesome-chatgpt-prompts/resolve/main/prompts.csv'
+- adb shell 'cd /data/local/tmp/polymath_gemma4_gate && ./gemma4_layer_runner_g8_071405 --run-g8-distill hf_stream/g8_token_cache_20260517T071405Z streamed_assets/g8_layer01_20260517T071405Z layer_pack/gemma4_e4b_layer0_seq128_v0 layer_pack/gemma4_e4b_layer1_seq128_v0 adapter_training/g5g6_rank4_20260517T040000Z/checkpoint outputs_g8_streamed_distill_20260517T071405Z 0.01'
+- adb shell 'cd /data/local/tmp/polymath_gemma4_gate && ./gemma4_layer_runner_g8_071405 --run-opencl layer_pack/gemma4_e4b_layer0_seq128_v0 outputs_g1_regression_20260517T071405Z'
+- adb shell 'cd /data/local/tmp/polymath_gemma4_gate && ./gemma4_layer_runner_g8_071405 --run-opencl-stack layer_pack/gemma4_e4b_layer0_seq128_v0 layer_pack/gemma4_e4b_layer1_seq128_v0 outputs_g3_regression_20260517T071405Z'
+
+Comparators:
+- compare_outputs.py for layer0/layer1 G8 outputs against RunPod PyTorch reference.
+- compare_adapter_training.py --check-update for phone adapter gradients and checkpoint update.
+- compare_outputs.py for G1/G3 regression gates after G8 runtime changes.
+- token_to_hidden_compare.json computed with FP64 per-token cosine over non-pad tokens for layer input and layer0/1 PLE tensors.

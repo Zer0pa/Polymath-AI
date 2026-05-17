@@ -1,0 +1,165 @@
+{
+  "artifacts": {
+    "adapter_update_compare": "runtime/reports/gemma4_megakernel/integrated_training/20260517T071405Z_g8_streamed_corpus_repaired/adapter_update_compare.json",
+    "gate_dir": "runtime/reports/gemma4_megakernel/integrated_training/20260517T071405Z_g8_streamed_corpus_repaired",
+    "layer_forward_compare": "runtime/reports/gemma4_megakernel/integrated_training/20260517T071405Z_g8_streamed_corpus_repaired/layer_forward_compare.json",
+    "regression_dir": "runtime/reports/gemma4_megakernel/regressions/20260517T071405Z_g1_g3_after_g8",
+    "token_compare": "runtime/reports/gemma4_megakernel/integrated_training/20260517T071405Z_g8_streamed_corpus_repaired/token_compare.json",
+    "token_to_hidden_compare": "runtime/reports/gemma4_megakernel/integrated_training/20260517T071405Z_g8_streamed_corpus_repaired/token_to_hidden_compare.json"
+  },
+  "authority": "REDMAGIC NX789J SM8750 phone runtime with RunPod PyTorch oracle comparisons",
+  "checks": [
+    {
+      "details": {
+        "sequence_count": 8,
+        "status": "pass"
+      },
+      "name": "phone_token_cache_abi",
+      "status": "pass"
+    },
+    {
+      "details": {
+        "artifact_manifest": [],
+        "telemetry": []
+      },
+      "name": "no_hidden_state_fixture_runtime_inputs",
+      "status": "pass"
+    },
+    {
+      "details": {
+        "runtime_input_path": "token_cache_to_phone_generated_hidden_to_opencl_layers_to_adapter_update"
+      },
+      "name": "runtime_input_path",
+      "status": "pass"
+    },
+    {
+      "details": {
+        "asset_file_count": 6,
+        "embed_tokens_sha256": "99b376de6be8aec439365a8896f82a933450a09246c39dbcfd11bb29cab025e0"
+      },
+      "name": "frozen_embedding_assets_present",
+      "status": "pass"
+    },
+    {
+      "details": {
+        "cosine_p50": [
+          0.999998600022111,
+          0.9999985500077763,
+          0.9999982087594611
+        ],
+        "status": "pass"
+      },
+      "name": "token_to_hidden_oracle_compare",
+      "status": "pass"
+    },
+    {
+      "details": {
+        "checks": [
+          {
+            "cosine_p50": 0.9999895268153007,
+            "failed_token_count": 0,
+            "name": "layer0",
+            "report": "runtime/reports/gemma4_megakernel/integrated_training/20260517T071405Z_g8_streamed_corpus_repaired/layer0_compare.json",
+            "status": "pass"
+          },
+          {
+            "cosine_p50": 0.9999936773992628,
+            "failed_token_count": 0,
+            "name": "layer1",
+            "report": "runtime/reports/gemma4_megakernel/integrated_training/20260517T071405Z_g8_streamed_corpus_repaired/layer1_compare.json",
+            "status": "pass"
+          }
+        ],
+        "status": "pass"
+      },
+      "name": "layer_forward_oracle_compare",
+      "status": "pass"
+    },
+    {
+      "details": {
+        "cosine_min": 0.9999981024312786,
+        "status": "pass",
+        "tensor_count": 4
+      },
+      "name": "adapter_update_oracle_compare",
+      "status": "pass"
+    },
+    {
+      "details": {
+        "layer0": {
+          "post_sha256": "d3efd61621310d5578a3653d2f9a989614b6287667b4984720d42dcc8f75fc36",
+          "pre_sha256": "d3efd61621310d5578a3653d2f9a989614b6287667b4984720d42dcc8f75fc36"
+        },
+        "layer1": {
+          "post_sha256": "ce1b559f77c3f76efceb1df0c25896a90b0ed31380c6930f46f2d1b4c6a0cd19",
+          "pre_sha256": "ce1b559f77c3f76efceb1df0c25896a90b0ed31380c6930f46f2d1b4c6a0cd19"
+        }
+      },
+      "name": "frozen_layer_hashes_stable",
+      "status": "pass"
+    },
+    {
+      "details": {
+        "adapter_a_post": {
+          "path": "outputs_g8_streamed_distill_20260517T071405Z/checkpoint/adapter_a.f32.bin",
+          "sha256": "2f9a70815411575f0bf3d3ced6cb7ed0963c6c1685fd123a63fdfcb7a88b0ed7"
+        },
+        "adapter_a_pre": {
+          "path": "adapter_training/g5g6_rank4_20260517T040000Z/checkpoint/adapter_a.f32.bin",
+          "sha256": "20f2f42d5079b7b3c87305bff5b6234a353ce0e19d40d9b8b3f94681abd38335"
+        },
+        "adapter_b_post": {
+          "path": "outputs_g8_streamed_distill_20260517T071405Z/checkpoint/adapter_b.f32.bin",
+          "sha256": "f38173a4913a994075852e40a912bdb62e156f06ff72845d9ae2722c4f694edc"
+        },
+        "adapter_b_pre": {
+          "path": "adapter_training/g5g6_rank4_20260517T040000Z/checkpoint/adapter_b.f32.bin",
+          "sha256": "8ddab43db8638bd204491b09935eb50319106216e72047d9062223bd60ddb205"
+        }
+      },
+      "name": "trainable_checkpoint_changed",
+      "status": "pass"
+    },
+    {
+      "details": {
+        "sha256": "eb792248b61996d038f944bc4df54653b8a65f9e8213d00228e9a033547dce04"
+      },
+      "name": "checkpoint_manifest_present",
+      "status": "pass"
+    },
+    {
+      "details": {
+        "failed_tokens": 0,
+        "p50": 0.9999890020383452,
+        "status": "pass"
+      },
+      "name": "g1_regression",
+      "status": "pass"
+    },
+    {
+      "details": {
+        "failed_tokens": 0,
+        "p50": 0.999993563915067,
+        "status": "pass"
+      },
+      "name": "g3_regression",
+      "status": "pass"
+    },
+    {
+      "details": {
+        "backend": "opencl",
+        "opencl_libraries": [
+          "libOpenCL.so",
+          "libOpenCL.so",
+          "libOpenCL.so"
+        ]
+      },
+      "name": "backend_is_phone_opencl",
+      "status": "pass"
+    }
+  ],
+  "failed_check_count": 0,
+  "gate": "G8 streamed-corpus phone-native training update",
+  "schema_version": "gemma4_g8_falsifier_report_v1",
+  "status": "pass"
+}

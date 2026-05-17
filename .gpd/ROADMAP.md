@@ -14,7 +14,7 @@ the terminal acceptance gate is a phone-native checkpoint or adapter artifact.
 | --- | --- | --- |
 | Formal PRD/GPD/branch/import policy | Phase 0 | Complete |
 | G1 regression floor | Phase 1 and every material runtime phase | Passed, remained green through G7 changes |
-| Phone-native training artifact | Phases 4-8 | Blocked at G8 token-to-hidden bridge |
+| Phone-native training artifact | Phases 4-8 | G8 repaired and Phase 8 sustained objective passed |
 | G10 falsifier survival | Phase 9 | Planned |
 
 ## Phases
@@ -33,9 +33,9 @@ the terminal acceptance gate is a phone-native checkpoint or adapter artifact.
   with frozen hash stability.
 - [x] **Phase 6: Phone Data Pipeline** - HF stream to phone CPU tokenizer to UFS
   packed cache.
-- [ ] **Phase 7: Integrated Training** - Consume phone-packed batches in
+- [x] **Phase 7: Integrated Training** - Consume phone-packed batches in
   phone-side forward/backward/update and emit artifact manifest.
-- [ ] **Phase 8: Sustained Authority Run** - Six-hour or predeclared objective
+- [x] **Phase 8: Sustained Authority Run** - Six-hour or predeclared objective
   phone-native run.
 - [ ] **Phase 9: Falsifier Review** - Attack and resolve critical claim
   falsifiers before promotion.
@@ -235,7 +235,7 @@ Plans:
 3. Frozen base hashes are stable.
 4. No correctness regression or hidden host data path.
 
-**Plans:** 1 failed attempt
+**Plans:** 1 failed attempt, 1 completed repair
 
 Plans:
 
@@ -243,6 +243,10 @@ Plans:
   **Outcome:** rejected under falsification because the current training path
   still requires hidden-state fixtures. Next repair must generate
   `layer_input` and `per_layer_input` from phone-packed token IDs.
+- [x] 07-02: Repair G8 with phone-native token-to-hidden bridge and streamed
+  adapter update.
+  **Outcome:** passed. Evidence:
+  `runtime/reports/gemma4_megakernel/integrated_training/20260517T071405Z_g8_streamed_corpus_repaired/gate_result.json`.
 
 ### Phase 8: Sustained Authority Run
 
@@ -262,7 +266,14 @@ Plans:
 3. No checkpoint corruption.
 4. Final checkpoint or adapter validates and G1 remains green.
 
-**Plans:** TBD
+**Plans:** 1 plan
+
+Plans:
+
+- [x] 08-01: Run predeclared three-batch chained phone-native training
+  objective.
+  **Outcome:** passed. Evidence:
+  `runtime/reports/gemma4_megakernel/sustained_authority/20260517T071405Z_g9_three_batch_chain/gate_result.json`.
 
 ### Phase 9: Falsifier Review
 
@@ -295,6 +306,6 @@ Plans:
 | 4. Backward Path | 1/1 | Complete | 2026-05-17 |
 | 5. Optimizer Update | 1/1 | Complete | 2026-05-17 |
 | 6. Phone Data Pipeline | 1/1 | Complete | 2026-05-17 |
-| 7. Integrated Training | 0/1 | Failed under falsification | - |
-| 8. Sustained Authority Run | 0/TBD | Not started | - |
+| 7. Integrated Training | 1/2 | Complete after repaired G8 | 2026-05-17 |
+| 8. Sustained Authority Run | 1/1 | Complete | 2026-05-17 |
 | 9. Falsifier Review | 0/TBD | Not started | - |

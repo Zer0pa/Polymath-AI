@@ -5,6 +5,7 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 
+#include <algorithm>
 #include <chrono>
 #include <cstdint>
 #include <cstring>
@@ -15,6 +16,7 @@
 #include <sstream>
 #include <stdexcept>
 #include <string>
+#include <unordered_map>
 #include <utility>
 #include <vector>
 
@@ -475,6 +477,17 @@ float bf16_to_float(std::uint16_t value) {
   return result;
 }
 
+std::uint16_t float_to_bf16_bits(float value) {
+  std::uint32_t bits = 0U;
+  std::memcpy(&bits, &value, sizeof(float));
+  const std::uint32_t round_bias = 0x7FFFU + ((bits >> 16U) & 1U);
+  return static_cast<std::uint16_t>((bits + round_bias) >> 16U);
+}
+
+float bf16_round(float value) {
+  return bf16_to_float(float_to_bf16_bits(value));
+}
+
 std::size_t parse_unsigned_after(const std::string& text, std::size_t offset) {
   while (offset < text.size() && (text[offset] < '0' || text[offset] > '9')) {
     ++offset;
@@ -535,6 +548,63 @@ std::vector<float> load_bf16_tensor(const std::vector<std::uint8_t>& file,
   }
   return values;
 }
+
+std::vector<float> load_bf16_file(const std::string& path, std::size_t expected_count,
+                                  float scale) {
+  const std::vector<std::uint8_t> bytes = read_bytes(path);
+  const std::size_t expected_bytes = expected_count * sizeof(std::uint16_t);
+  if (bytes.size() != expected_bytes) {
+    throw std::runtime_error(path + " has " + std::to_string(bytes.size()) +
+                             " bytes; expected " + std::to_string(expected_bytes));
+  }
+  std::vector<float> values(expected_count);
+  for (std::size_t index = 0U; index < expected_count; ++index) {
+    values[index] =
+        bf16_to_float(read_little_u16(bytes.data() + (index * sizeof(std::uint16_t)))) *
+        scale;
+  }
+  return values;
+}
+
+class Bf16MatrixFile {
+ public:
+  Bf16MatrixFile(const std::string& path, std::uint32_t rows, std::uint32_t cols)
+      : path_(path), rows_(rows), cols_(cols), file_(path, std::ios::binary) {
+    if (!file_) {
+      throw std::runtime_error("unable to open " + path);
+    }
+  }
+
+  std::vector<float> read_row(std::uint32_t row, float scale) {
+    if (row >= rows_) {
+      throw std::runtime_error(path_ + " row " + std::to_string(row) +
+                               " exceeds row count " + std::to_string(rows_));
+    }
+    const std::size_t row_bytes = static_cast<std::size_t>(cols_) * sizeof(std::uint16_t);
+    std::vector<std::uint8_t> bytes(row_bytes);
+    file_.clear();
+    file_.seekg(static_cast<std::streamoff>(static_cast<std::uint64_t>(row) * row_bytes),
+                std::ios::beg);
+    file_.read(reinterpret_cast<char*>(bytes.data()),
+               static_cast<std::streamsize>(bytes.size()));
+    if (!file_) {
+      throw std::runtime_error("unable to read row from " + path_);
+    }
+    std::vector<float> values(cols_);
+    for (std::uint32_t col = 0U; col < cols_; ++col) {
+      values[col] =
+          bf16_to_float(read_little_u16(bytes.data() + (col * sizeof(std::uint16_t)))) *
+          scale;
+    }
+    return values;
+  }
+
+ private:
+  std::string path_;
+  std::uint32_t rows_;
+  std::uint32_t cols_;
+  std::ifstream file_;
+};
 
 TensorData load_weights(const std::string& pack_dir, std::uint32_t layer_index) {
   const std::string path =
@@ -1207,6 +1277,16 @@ struct AdapterStepResult {
   long max_rss_kb;
 };
 
+struct TokenHiddenInputs {
+  std::vector<float> layer_input;
+  std::vector<float> per_layer0_input;
+  std::vector<float> per_layer1_input;
+  std::vector<std::uint8_t> attention_mask;
+  std::vector<std::uint32_t> position_ids;
+  double elapsed_seconds;
+  long max_rss_kb;
+};
+
 long max_resident_set_kb() {
   rusage usage{};
   if (getrusage(RUSAGE_SELF, &usage) != 0) {
@@ -1306,6 +1386,114 @@ double masked_mse_half_loss(const std::vector<float>& diff,
   return 0.5 * sum_sq / norm;
 }
 
+std::vector<float> cached_row(Bf16MatrixFile& matrix,
+                              std::unordered_map<std::uint32_t, std::vector<float>>& cache,
+                              std::uint32_t row,
+                              float scale) {
+  const auto found = cache.find(row);
+  if (found != cache.end()) {
+    return found->second;
+  }
+  std::vector<float> values = matrix.read_row(row, scale);
+  cache.emplace(row, values);
+  return values;
+}
+
+void project_ple_for_layer(const std::vector<float>& layer_input,
+                           Bf16MatrixFile& ple_tokens,
+                           const std::vector<float>& projection,
+                           const std::vector<float>& norm_weight,
+                           const std::vector<std::uint32_t>& input_ids,
+                           std::vector<float>& output) {
+  std::unordered_map<std::uint32_t, std::vector<float>> token_cache;
+  const float token_scale = 16.0F;
+  const float projection_scale =
+      1.0F / std::sqrt(static_cast<float>(kHidden));
+  const float combine_scale = 1.0F / std::sqrt(2.0F);
+  output.assign(kTokens * kSmallInput, 0.0F);
+  std::vector<float> projection_values(kSmallInput, 0.0F);
+  for (std::size_t token = 0U; token < kTokens; ++token) {
+    const std::vector<float> identity =
+        cached_row(ple_tokens, token_cache, input_ids[token], token_scale);
+    double sum_sq = 0.0;
+    const std::size_t input_base = token * kHidden;
+    for (std::size_t out = 0U; out < kSmallInput; ++out) {
+      const std::size_t weight_base = out * kHidden;
+      double sum = 0.0;
+      for (std::size_t hidden = 0U; hidden < kHidden; ++hidden) {
+        sum += static_cast<double>(layer_input[input_base + hidden]) *
+               static_cast<double>(projection[weight_base + hidden]);
+      }
+      const float value = static_cast<float>(sum * projection_scale);
+      projection_values[out] = value;
+      sum_sq += static_cast<double>(value) * static_cast<double>(value);
+    }
+    const float rms_scale =
+        1.0F / std::sqrt(static_cast<float>(sum_sq / kSmallInput) + kRmsEpsilon);
+    const std::size_t output_base = token * kSmallInput;
+    for (std::size_t out = 0U; out < kSmallInput; ++out) {
+      const float projected = projection_values[out] * rms_scale * norm_weight[out];
+      output[output_base + out] = (projected + identity[out]) * combine_scale;
+    }
+  }
+}
+
+TokenHiddenInputs generate_token_hidden_inputs(const std::string& token_cache_dir,
+                                               const std::string& asset_dir) {
+  const auto start_time = std::chrono::steady_clock::now();
+  std::vector<std::uint32_t> input_ids =
+      read_binary_vector<std::uint32_t>(join_path(token_cache_dir, "input_ids.u32.bin"),
+                                        kTokens);
+  std::vector<std::uint8_t> attention_mask =
+      read_binary_vector<std::uint8_t>(join_path(token_cache_dir, "attention_mask.u8.bin"),
+                                       kTokens);
+  std::vector<std::uint32_t> position_ids =
+      read_binary_vector<std::uint32_t>(join_path(token_cache_dir, "position_ids.u32.bin"),
+                                        kTokens);
+  Bf16MatrixFile embeddings(join_path(asset_dir, "embed_tokens.bf16.bin"), 262144U,
+                            kHidden);
+  Bf16MatrixFile ple_tokens0(join_path(asset_dir, "ple_token_layer0.bf16.bin"),
+                             262144U, kSmallInput);
+  Bf16MatrixFile ple_tokens1(join_path(asset_dir, "ple_token_layer1.bf16.bin"),
+                             262144U, kSmallInput);
+  const float embed_scale = bf16_round(std::sqrt(static_cast<float>(kHidden)));
+  std::unordered_map<std::uint32_t, std::vector<float>> embedding_cache;
+  std::vector<float> layer_input(kTokens * kHidden, 0.0F);
+  for (std::size_t token = 0U; token < kTokens; ++token) {
+    const std::vector<float> row =
+        cached_row(embeddings, embedding_cache, input_ids[token], embed_scale);
+    std::copy(row.begin(), row.end(), layer_input.begin() +
+                                         static_cast<std::ptrdiff_t>(token * kHidden));
+  }
+
+  const std::vector<float> ple_projection0 = load_bf16_file(
+      join_path(asset_dir, "ple_projection_layer0.bf16.bin"), kSmallInput * kHidden,
+      1.0F);
+  const std::vector<float> ple_projection1 = load_bf16_file(
+      join_path(asset_dir, "ple_projection_layer1.bf16.bin"), kSmallInput * kHidden,
+      1.0F);
+  const std::vector<float> ple_norm_weight =
+      read_binary_vector<float>(join_path(asset_dir, "ple_projection_norm.f32.bin"),
+                                kSmallInput);
+  std::vector<float> per_layer0_input;
+  std::vector<float> per_layer1_input;
+  project_ple_for_layer(layer_input, ple_tokens0, ple_projection0, ple_norm_weight,
+                        input_ids, per_layer0_input);
+  project_ple_for_layer(layer_input, ple_tokens1, ple_projection1, ple_norm_weight,
+                        input_ids, per_layer1_input);
+
+  const auto end_time = std::chrono::steady_clock::now();
+  const double elapsed_seconds =
+      std::chrono::duration<double>(end_time - start_time).count();
+  return TokenHiddenInputs{std::move(layer_input),
+                           std::move(per_layer0_input),
+                           std::move(per_layer1_input),
+                           std::move(attention_mask),
+                           std::move(position_ids),
+                           elapsed_seconds,
+                           max_resident_set_kb()};
+}
+
 void write_adapter_telemetry(const std::string& output_dir,
                              const std::string& checkpoint_dir,
                              const AdapterStepResult& result,
@@ -1373,20 +1561,208 @@ void write_adapter_telemetry(const std::string& output_dir,
   file << "\n}\n";
 }
 
-AdapterStepResult run_adapter_step_values(const std::string& fixture_dir,
-                                          const std::string& checkpoint_dir,
-                                          bool apply_update,
-                                          float learning_rate) {
+void write_sha_field(std::ofstream& file,
+                     const std::string& name,
+                     const std::string& path,
+                     bool comma) {
+  file << "    ";
+  write_json_string(file, name);
+  file << ": {\"path\": ";
+  write_json_string(file, path);
+  file << ", \"sha256\": ";
+  write_json_string(file, sha256_file_hex(path));
+  file << "}";
+  if (comma) {
+    file << ",";
+  }
+  file << "\n";
+}
+
+void write_streamed_artifact_manifest(const std::string& token_cache_dir,
+                                      const std::string& asset_dir,
+                                      const std::string& layer0_pack_dir,
+                                      const std::string& layer1_pack_dir,
+                                      const std::string& checkpoint_dir,
+                                      const std::string& output_dir) {
+  std::ofstream file(join_path(output_dir, "artifact_manifest.json"));
+  if (!file) {
+    throw std::runtime_error("unable to create streamed artifact manifest");
+  }
+
+  const std::string generated_dir = join_path(output_dir, "generated");
+  file << "{\n";
+  file << "  \"schema_version\": \"gemma4_streamed_distill_artifacts_v1\",\n";
+  file << "  \"authority_contract\": \"input_ids_to_phone_generated_hidden_to_opencl_layers_to_adapter_update\",\n";
+  file << "  \"hidden_state_fixtures_consumed\": [],\n";
+  file << "  \"token_cache\": {\n";
+  write_sha_field(file, "input_ids", join_path(token_cache_dir, "input_ids.u32.bin"), true);
+  write_sha_field(file, "attention_mask", join_path(token_cache_dir, "attention_mask.u8.bin"), true);
+  write_sha_field(file, "labels", join_path(token_cache_dir, "labels.u32.bin"), true);
+  write_sha_field(file, "loss_mask", join_path(token_cache_dir, "loss_mask.u8.bin"), true);
+  write_sha_field(file, "position_ids", join_path(token_cache_dir, "position_ids.u32.bin"), false);
+  file << "  },\n";
+  file << "  \"frozen_token_assets\": {\n";
+  write_sha_field(file, "asset_manifest", join_path(asset_dir, "manifest.json"), true);
+  write_sha_field(file, "embed_tokens", join_path(asset_dir, "embed_tokens.bf16.bin"), true);
+  write_sha_field(file, "ple_projection_norm", join_path(asset_dir, "ple_projection_norm.f32.bin"), true);
+  write_sha_field(file, "ple_token_layer0", join_path(asset_dir, "ple_token_layer0.bf16.bin"), true);
+  write_sha_field(file, "ple_token_layer1", join_path(asset_dir, "ple_token_layer1.bf16.bin"), true);
+  write_sha_field(file, "ple_projection_layer0", join_path(asset_dir, "ple_projection_layer0.bf16.bin"), true);
+  write_sha_field(file, "ple_projection_layer1", join_path(asset_dir, "ple_projection_layer1.bf16.bin"), false);
+  file << "  },\n";
+  file << "  \"frozen_layer_weights_pre_post\": {\n";
+  const std::string layer0 = join_path(layer0_pack_dir, "weights/layer0.safetensors");
+  const std::string layer1 = join_path(layer1_pack_dir, "weights/layer1.safetensors");
+  file << "    \"layer0\": {\"pre_sha256\": ";
+  write_json_string(file, sha256_file_hex(layer0));
+  file << ", \"post_sha256\": ";
+  write_json_string(file, sha256_file_hex(layer0));
+  file << "},\n";
+  file << "    \"layer1\": {\"pre_sha256\": ";
+  write_json_string(file, sha256_file_hex(layer1));
+  file << ", \"post_sha256\": ";
+  write_json_string(file, sha256_file_hex(layer1));
+  file << "}\n";
+  file << "  },\n";
+  file << "  \"trainable_checkpoint_pre_post\": {\n";
+  write_sha_field(file, "adapter_a_pre", join_path(checkpoint_dir, "adapter_a.f32.bin"), true);
+  write_sha_field(file, "adapter_b_pre", join_path(checkpoint_dir, "adapter_b.f32.bin"), true);
+  write_sha_field(file, "adapter_a_post", join_path(output_dir, "checkpoint/adapter_a.f32.bin"), true);
+  write_sha_field(file, "adapter_b_post", join_path(output_dir, "checkpoint/adapter_b.f32.bin"), false);
+  file << "  },\n";
+  file << "  \"runtime_outputs\": {\n";
+  write_sha_field(file, "layer_input", join_path(generated_dir, "layer_input.f32.bin"), true);
+  write_sha_field(file, "per_layer_input_layer0", join_path(generated_dir, "per_layer_input_layer0.f32.bin"), true);
+  write_sha_field(file, "per_layer_input_layer1", join_path(generated_dir, "per_layer_input_layer1.f32.bin"), true);
+  write_sha_field(file, "layer0_output", join_path(output_dir, "layer0_output.f32.bin"), true);
+  write_sha_field(file, "layer1_output", join_path(output_dir, "layer1_output.f32.bin"), true);
+  write_sha_field(file, "adapter_grad_a", join_path(output_dir, "adapter_grad_a.f32.bin"), true);
+  write_sha_field(file, "adapter_grad_b", join_path(output_dir, "adapter_grad_b.f32.bin"), false);
+  file << "  }\n";
+  file << "}\n";
+}
+
+void write_streamed_checkpoint_manifest(const std::string& checkpoint_dir,
+                                        const std::string& output_dir,
+                                        const AdapterStepResult& result,
+                                        float learning_rate) {
+  std::ofstream file(join_path(output_dir, "checkpoint/manifest.json"));
+  if (!file) {
+    throw std::runtime_error("unable to create streamed checkpoint manifest");
+  }
+  file << "{\n";
+  file << "  \"schema_version\": \"gemma4_rank4_adapter_checkpoint_v1\",\n";
+  file << "  \"trainable_scope\": \"post_layer0_rank4_residual_adapter\",\n";
+  file << "  \"optimizer\": \"sgd\",\n";
+  file << "  \"learning_rate\": " << std::fixed << std::setprecision(10)
+       << learning_rate << ",\n";
+  file << "  \"loss_half_mse\": " << std::fixed << std::setprecision(10)
+       << result.loss << ",\n";
+  file << "  \"active_tokens\": " << result.active_tokens << ",\n";
+  file << "  \"pre_update\": {\n";
+  write_sha_field(file, "adapter_a", join_path(checkpoint_dir, "adapter_a.f32.bin"), true);
+  write_sha_field(file, "adapter_b", join_path(checkpoint_dir, "adapter_b.f32.bin"), false);
+  file << "  },\n";
+  file << "  \"post_update\": {\n";
+  write_sha_field(file, "adapter_a", join_path(output_dir, "checkpoint/adapter_a.f32.bin"), true);
+  write_sha_field(file, "adapter_b", join_path(output_dir, "checkpoint/adapter_b.f32.bin"), false);
+  file << "  }\n";
+  file << "}\n";
+}
+
+void write_streamed_replay_manifest(const std::string& token_cache_dir,
+                                    const std::string& asset_dir,
+                                    const std::string& layer0_pack_dir,
+                                    const std::string& layer1_pack_dir,
+                                    const std::string& checkpoint_dir,
+                                    const std::string& output_dir,
+                                    float learning_rate) {
+  std::ofstream file(join_path(output_dir, "replay_manifest.json"));
+  if (!file) {
+    throw std::runtime_error("unable to create streamed replay manifest");
+  }
+  file << "{\n";
+  file << "  \"schema_version\": \"gemma4_streamed_distill_replay_v1\",\n";
+  file << "  \"command\": \"gemma4_layer_runner --run-g8-distill TOKEN_CACHE ASSETS PACK0 PACK1 CHECKPOINT OUT_DIR LR\",\n";
+  file << "  \"token_cache_dir\": ";
+  write_json_string(file, token_cache_dir);
+  file << ",\n  \"asset_dir\": ";
+  write_json_string(file, asset_dir);
+  file << ",\n  \"layer0_pack_dir\": ";
+  write_json_string(file, layer0_pack_dir);
+  file << ",\n  \"layer1_pack_dir\": ";
+  write_json_string(file, layer1_pack_dir);
+  file << ",\n  \"checkpoint_dir\": ";
+  write_json_string(file, checkpoint_dir);
+  file << ",\n  \"output_dir\": ";
+  write_json_string(file, output_dir);
+  file << ",\n  \"learning_rate\": " << std::fixed << std::setprecision(10)
+       << learning_rate << "\n";
+  file << "}\n";
+}
+
+void write_streamed_training_telemetry(const std::string& output_dir,
+                                       const TokenHiddenInputs& token_inputs,
+                                       const LayerForwardResult& first,
+                                       const LayerForwardResult& second,
+                                       const AdapterStepResult& adapter,
+                                       float learning_rate) {
+  std::ofstream file(join_path(output_dir, "telemetry.json"));
+  if (!file) {
+    throw std::runtime_error("unable to create streamed telemetry.json");
+  }
+  file << "{\n";
+  file << "  \"schema_version\": \"gemma4_opencl_streamed_distill_training_v1\",\n";
+  file << "  \"backend\": \"opencl\",\n";
+  file << "  \"token_to_hidden_backend\": \"phone_cpu\",\n";
+  file << "  \"layer_backend\": \"opencl\",\n";
+  file << "  \"adapter_backend\": \"opencl\",\n";
+  file << "  \"model_id\": \"google/gemma-4-E4B\",\n";
+  file << "  \"revision\": \"7aa32e6889efd6300124851b164f8b364314c3d8\",\n";
+  file << "  \"runtime_input_path\": \"token_cache_to_phone_generated_hidden_to_opencl_layers_to_adapter_update\",\n";
+  file << "  \"hidden_state_fixtures_consumed\": [],\n";
+  file << "  \"trainable_scope\": \"post_layer0_rank4_residual_adapter\",\n";
+  file << "  \"optimizer\": \"sgd\",\n";
+  file << "  \"case_count\": " << kCases << ",\n";
+  file << "  \"seq\": " << kSequence << ",\n";
+  file << "  \"hidden_size\": " << kHidden << ",\n";
+  file << "  \"rank\": " << kAdapterRank << ",\n";
+  file << "  \"learning_rate\": " << std::fixed << std::setprecision(10)
+       << learning_rate << ",\n";
+  file << "  \"active_tokens\": " << adapter.active_tokens << ",\n";
+  file << "  \"loss_half_mse\": " << std::fixed << std::setprecision(10)
+       << adapter.loss << ",\n";
+  file << "  \"applied_update\": " << (adapter.applied_update ? "true" : "false") << ",\n";
+  file << "  \"opencl_libraries\": [";
+  write_json_string(file, first.opencl_library);
+  file << ", ";
+  write_json_string(file, second.opencl_library);
+  file << ", ";
+  write_json_string(file, adapter.opencl_library);
+  file << "],\n";
+  file << "  \"token_to_hidden_elapsed_seconds\": " << std::fixed << std::setprecision(6)
+       << token_inputs.elapsed_seconds << ",\n";
+  file << "  \"layer_elapsed_seconds\": [" << std::fixed << std::setprecision(6)
+       << first.elapsed_seconds << ", " << second.elapsed_seconds << "],\n";
+  file << "  \"adapter_elapsed_seconds\": " << std::fixed << std::setprecision(6)
+       << adapter.elapsed_seconds << ",\n";
+  file << "  \"max_rss_kb\": " << max_resident_set_kb() << "\n";
+  file << "}\n";
+}
+
+AdapterStepResult run_adapter_step_from_values(const std::vector<float>& input,
+                                               const std::vector<float>& target,
+                                               const std::vector<std::uint8_t>& mask,
+                                               const std::string& checkpoint_dir,
+                                               bool apply_update,
+                                               float learning_rate) {
   const auto start_time = std::chrono::steady_clock::now();
-  std::vector<float> input =
-      read_binary_vector<float>(join_path(fixture_dir, "input/layer0_output.f32.bin"),
-                                kTokens * kHidden);
-  std::vector<float> target =
-      read_binary_vector<float>(join_path(fixture_dir, "target/layer1_output.f32.bin"),
-                                kTokens * kHidden);
-  std::vector<std::uint8_t> mask =
-      read_binary_vector<std::uint8_t>(join_path(fixture_dir, "input/attention_mask.u8.bin"),
-                                       kTokens);
+  if (input.size() != (kTokens * kHidden) || target.size() != (kTokens * kHidden)) {
+    throw std::runtime_error("adapter step input or target has invalid hidden element count");
+  }
+  if (mask.size() != kTokens) {
+    throw std::runtime_error("adapter step mask has invalid token count");
+  }
   std::vector<float> adapter_a =
       read_binary_vector<float>(join_path(checkpoint_dir, "adapter_a.f32.bin"),
                                 kHidden * kAdapterRank);
@@ -1404,9 +1780,12 @@ AdapterStepResult run_adapter_step_values(const std::string& fixture_dir,
   runtime.build_program(opencl_source());
   const KernelSet kernels = create_kernels(runtime);
 
-  cl_mem input_buffer = runtime.buffer_from_vector(input);
-  cl_mem target_buffer = runtime.buffer_from_vector(target);
-  cl_mem mask_buffer = runtime.buffer_from_vector(mask);
+  std::vector<float> input_values = input;
+  std::vector<float> target_values = target;
+  std::vector<std::uint8_t> mask_values = mask;
+  cl_mem input_buffer = runtime.buffer_from_vector(input_values);
+  cl_mem target_buffer = runtime.buffer_from_vector(target_values);
+  cl_mem mask_buffer = runtime.buffer_from_vector(mask_values);
   cl_mem adapter_a_buffer = runtime.buffer_from_vector(adapter_a);
   cl_mem adapter_b_buffer = runtime.buffer_from_vector(adapter_b);
   cl_mem z = runtime.buffer(kTokens * kAdapterRank * sizeof(float));
@@ -1459,8 +1838,28 @@ AdapterStepResult run_adapter_step_values(const std::string& fixture_dir,
                            max_resident_set_kb()};
 }
 
+AdapterStepResult run_adapter_step_values(const std::string& fixture_dir,
+                                          const std::string& checkpoint_dir,
+                                          bool apply_update,
+                                          float learning_rate) {
+  std::vector<float> input =
+      read_binary_vector<float>(join_path(fixture_dir, "input/layer0_output.f32.bin"),
+                                kTokens * kHidden);
+  std::vector<float> target =
+      read_binary_vector<float>(join_path(fixture_dir, "target/layer1_output.f32.bin"),
+                                kTokens * kHidden);
+  std::vector<std::uint8_t> mask =
+      read_binary_vector<std::uint8_t>(join_path(fixture_dir, "input/attention_mask.u8.bin"),
+                                       kTokens);
+  return run_adapter_step_from_values(input, target, mask, checkpoint_dir, apply_update,
+                                      learning_rate);
+}
+
 LayerForwardResult run_opencl_layer_values(const std::string& pack_dir,
-                                           const std::vector<float>* input_override) {
+                                           const std::vector<float>* input_override,
+                                           const std::vector<float>* per_input_override,
+                                           const std::vector<std::uint8_t>* mask_override,
+                                           const std::vector<std::uint32_t>* position_override) {
   const auto start_time = std::chrono::steady_clock::now();
   const std::uint32_t layer_index = parse_layer_index(pack_dir);
   TensorData weights = load_weights(pack_dir, layer_index);
@@ -1472,12 +1871,27 @@ LayerForwardResult run_opencl_layer_values(const std::string& pack_dir,
   if (layer_input.size() != (kTokens * kHidden)) {
     throw std::runtime_error("layer input override has invalid element count");
   }
-    std::vector<float> per_layer_input = read_binary_vector<float>(
-        join_path(pack_dir, "input/per_layer_input.f32.bin"), kTokens * kSmallInput);
-    std::vector<std::uint8_t> attention_mask = read_binary_vector<std::uint8_t>(
-        join_path(pack_dir, "input/attention_mask.u8.bin"), kTokens);
-    std::vector<std::uint32_t> position_ids = read_binary_vector<std::uint32_t>(
-        join_path(pack_dir, "input/position_ids.u32.bin"), kTokens);
+    std::vector<float> per_layer_input =
+        per_input_override == nullptr
+            ? read_binary_vector<float>(join_path(pack_dir, "input/per_layer_input.f32.bin"),
+                                        kTokens * kSmallInput)
+            : *per_input_override;
+    std::vector<std::uint8_t> attention_mask =
+        mask_override == nullptr
+            ? read_binary_vector<std::uint8_t>(join_path(pack_dir, "input/attention_mask.u8.bin"),
+                                               kTokens)
+            : *mask_override;
+    std::vector<std::uint32_t> position_ids =
+        position_override == nullptr
+            ? read_binary_vector<std::uint32_t>(
+                  join_path(pack_dir, "input/position_ids.u32.bin"), kTokens)
+            : *position_override;
+    if (per_layer_input.size() != (kTokens * kSmallInput)) {
+      throw std::runtime_error("per-layer input override has invalid element count");
+    }
+    if (attention_mask.size() != kTokens || position_ids.size() != kTokens) {
+      throw std::runtime_error("mask or position override has invalid token count");
+    }
 
     DynamicLibrary library;
     OpenClApi api(library.handle());
@@ -1619,7 +2033,8 @@ LayerForwardResult run_opencl_layer_values(const std::string& pack_dir,
 Status run_opencl_layer_forward(const std::string& pack_dir, const std::string& output_dir) {
   try {
     ensure_directory(output_dir);
-    const LayerForwardResult result = run_opencl_layer_values(pack_dir, nullptr);
+    const LayerForwardResult result =
+        run_opencl_layer_values(pack_dir, nullptr, nullptr, nullptr, nullptr);
     write_binary_vector(join_path(output_dir, "layer_output.f32.bin"), result.output_values);
     write_layer_telemetry(output_dir, result.opencl_library, result.elapsed_seconds,
                           result.layer_index);
@@ -1638,10 +2053,12 @@ Status run_opencl_two_layer_stack(const std::string& first_pack_dir,
                                   const std::string& output_dir) {
   try {
     ensure_directory(output_dir);
-    const LayerForwardResult first = run_opencl_layer_values(first_pack_dir, nullptr);
+    const LayerForwardResult first =
+        run_opencl_layer_values(first_pack_dir, nullptr, nullptr, nullptr, nullptr);
     write_binary_vector(join_path(output_dir, "layer0_output.f32.bin"), first.output_values);
     const LayerForwardResult second =
-        run_opencl_layer_values(second_pack_dir, &first.output_values);
+        run_opencl_layer_values(second_pack_dir, &first.output_values, nullptr, nullptr,
+                                nullptr);
     write_binary_vector(join_path(output_dir, "layer_output.f32.bin"), second.output_values);
     write_stack_telemetry(output_dir, first, second);
     return Status::ok();
@@ -1685,6 +2102,67 @@ Status run_opencl_adapter_sgd_update(const std::string& fixture_dir,
     write_binary_vector(join_path(output_dir, "checkpoint/adapter_b.f32.bin"),
                         result.updated_b);
     write_adapter_telemetry(output_dir, checkpoint_dir, result, learning_rate);
+    return Status::ok();
+  } catch (const std::exception& error) {
+    return Status::invalid(error.what());
+  }
+}
+
+Status run_opencl_streamed_distill_update(const std::string& token_cache_dir,
+                                          const std::string& asset_dir,
+                                          const std::string& layer0_pack_dir,
+                                          const std::string& layer1_pack_dir,
+                                          const std::string& checkpoint_dir,
+                                          const std::string& output_dir,
+                                          float learning_rate) {
+  try {
+    if (!(learning_rate > 0.0F) || !std::isfinite(learning_rate)) {
+      return Status::invalid("learning rate must be finite and positive");
+    }
+    ensure_directory(output_dir);
+    ensure_directory(join_path(output_dir, "generated"));
+    ensure_directory(join_path(output_dir, "checkpoint"));
+
+    const TokenHiddenInputs token_inputs =
+        generate_token_hidden_inputs(token_cache_dir, asset_dir);
+    write_binary_vector(join_path(output_dir, "generated/layer_input.f32.bin"),
+                        token_inputs.layer_input);
+    write_binary_vector(join_path(output_dir, "generated/per_layer_input_layer0.f32.bin"),
+                        token_inputs.per_layer0_input);
+    write_binary_vector(join_path(output_dir, "generated/per_layer_input_layer1.f32.bin"),
+                        token_inputs.per_layer1_input);
+
+    const LayerForwardResult first = run_opencl_layer_values(
+        layer0_pack_dir, &token_inputs.layer_input, &token_inputs.per_layer0_input,
+        &token_inputs.attention_mask, &token_inputs.position_ids);
+    write_binary_vector(join_path(output_dir, "layer0_output.f32.bin"),
+                        first.output_values);
+
+    const LayerForwardResult second = run_opencl_layer_values(
+        layer1_pack_dir, &first.output_values, &token_inputs.per_layer1_input,
+        &token_inputs.attention_mask, &token_inputs.position_ids);
+    write_binary_vector(join_path(output_dir, "layer1_output.f32.bin"),
+                        second.output_values);
+
+    const AdapterStepResult adapter = run_adapter_step_from_values(
+        first.output_values, second.output_values, token_inputs.attention_mask,
+        checkpoint_dir, true, learning_rate);
+    write_binary_vector(join_path(output_dir, "adapter_grad_a.f32.bin"), adapter.grad_a);
+    write_binary_vector(join_path(output_dir, "adapter_grad_b.f32.bin"), adapter.grad_b);
+    write_binary_vector(join_path(output_dir, "checkpoint/adapter_a.f32.bin"),
+                        adapter.updated_a);
+    write_binary_vector(join_path(output_dir, "checkpoint/adapter_b.f32.bin"),
+                        adapter.updated_b);
+
+    write_streamed_checkpoint_manifest(checkpoint_dir, output_dir, adapter,
+                                       learning_rate);
+    write_streamed_artifact_manifest(token_cache_dir, asset_dir, layer0_pack_dir,
+                                     layer1_pack_dir, checkpoint_dir, output_dir);
+    write_streamed_replay_manifest(token_cache_dir, asset_dir, layer0_pack_dir,
+                                   layer1_pack_dir, checkpoint_dir, output_dir,
+                                   learning_rate);
+    write_streamed_training_telemetry(output_dir, token_inputs, first, second,
+                                      adapter, learning_rate);
     return Status::ok();
   } catch (const std::exception& error) {
     return Status::invalid(error.what());

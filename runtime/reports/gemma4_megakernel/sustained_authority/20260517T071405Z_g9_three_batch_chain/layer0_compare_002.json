@@ -1,0 +1,197 @@
+{
+  "checks": [
+    {
+      "details": {
+        "actual": "google/gemma-4-E4B",
+        "expected": "google/gemma-4-E4B"
+      },
+      "name": "model_id",
+      "status": "pass"
+    },
+    {
+      "details": {
+        "actual": "7aa32e6889efd6300124851b164f8b364314c3d8",
+        "expected": "7aa32e6889efd6300124851b164f8b364314c3d8"
+      },
+      "name": "revision",
+      "status": "pass"
+    },
+    {
+      "details": {
+        "actual": 0,
+        "expected": 0
+      },
+      "name": "layer_index",
+      "status": "pass"
+    },
+    {
+      "details": {
+        "actual": [
+          8,
+          128,
+          2560
+        ],
+        "metadata": null
+      },
+      "name": "output_shape",
+      "status": "pass"
+    },
+    {
+      "details": {
+        "actual": "opencl",
+        "allowed": [
+          "opencl",
+          "vulkan"
+        ]
+      },
+      "name": "backend",
+      "status": "pass"
+    },
+    {
+      "details": {
+        "actual": "nubia NX789J SM8750 FY25013101C8",
+        "expected_model": "NX789J",
+        "expected_soc": "SM8750"
+      },
+      "name": "device_identity",
+      "status": "pass"
+    },
+    {
+      "details": {
+        "accumulation": "f32",
+        "comparison": "fp64",
+        "input": "f32",
+        "phone_output": "f32",
+        "reference_output": "f32",
+        "weights": "f32"
+      },
+      "name": "dtype_path",
+      "status": "pass"
+    },
+    {
+      "details": {
+        "phone_command_present": true,
+        "reference_command_present": true
+      },
+      "name": "commands",
+      "status": "pass"
+    }
+  ],
+  "commands": {
+    "compare": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/compare_outputs/compare_outputs.py --phone-output runtime/reports/gemma4_megakernel/sustained_authority/20260517T071405Z_g9_three_batch_chain/outputs/batch_002/layer0_output.f32.bin --reference-output /tmp/g9_chain_refs_071405_local/batch_002/layer0_output.f32.bin --attention-mask runtime/reports/gemma4_megakernel/sustained_authority/20260517T071405Z_g9_three_batch_chain/cache_002/attention_mask.u8.bin --shape 8,128,2560 --manifest runtime/reports/gemma4_megakernel/sustained_authority/20260517T071405Z_g9_three_batch_chain/layer_pack_meta/layer0/manifest.json --contract runtime/reports/gemma4_megakernel/sustained_authority/20260517T071405Z_g9_three_batch_chain/layer_pack_meta/layer0/contract.json --phone-telemetry runtime/reports/gemma4_megakernel/sustained_authority/20260517T071405Z_g9_three_batch_chain/outputs/batch_002/telemetry.json --backend opencl --device-identity nubia NX789J SM8750 FY25013101C8 --input-dtype f32 --weight-dtype f32 --accumulation-dtype f32 --phone-dtype f32 --reference-dtype f32 --phone-command adb shell g8 runner sustained batch 002 --reference-command create_streamed_distill_reference.py sustained batch 002 --expected-layer-index 0 --tensor-name batch_002_layer0_output --report-json runtime/reports/gemma4_megakernel/sustained_authority/20260517T071405Z_g9_three_batch_chain/layer0_compare_002.json",
+    "phone": "adb shell g8 runner sustained batch 002",
+    "reference": "create_streamed_distill_reference.py sustained batch 002"
+  },
+  "comparison": {
+    "compared_scalar_non_finite_count": 0,
+    "failed_token_count": 0,
+    "failed_token_indexes": [],
+    "failed_token_threshold": 0.99,
+    "finite_cosine_count": 828,
+    "hidden_size": 2560,
+    "invalid_token_count": 0,
+    "invalid_token_indexes": [],
+    "mask_shape": [
+      8,
+      128
+    ],
+    "method": "fp64_cosine_per_non_pad_token",
+    "non_finite": {
+      "compared_scalar_count": 0,
+      "phone_output_scalar_count": 0,
+      "reference_output_scalar_count": 0
+    },
+    "non_finite_count": 0,
+    "pad_token_count": 196,
+    "percentile_method": "linear",
+    "percentiles": {
+      "max": 0.9999946637534891,
+      "min": 0.999971387046781,
+      "p10": 0.9999857936038183,
+      "p50": 0.9999894531476679,
+      "p90": 0.9999917076155022
+    },
+    "shape": [
+      8,
+      128,
+      2560
+    ],
+    "token_count": 828,
+    "token_slots": 1024
+  },
+  "gate": {
+    "authority": "Gemma 4 E4B layer 0 phone Vulkan/OpenCL output vs RunPod PyTorch reference",
+    "p50_threshold": 0.99,
+    "threshold_relaxed": false
+  },
+  "inputs": {
+    "attention_mask": {
+      "bytes": 1024,
+      "dtype": "u8",
+      "path": "runtime/reports/gemma4_megakernel/sustained_authority/20260517T071405Z_g9_three_batch_chain/cache_002/attention_mask.u8.bin",
+      "sha256": "0815aee1131412914987e8196ae1ac2dfaa9e43456f4d32995ab58c28eb67c50",
+      "shape": [
+        8,
+        128
+      ]
+    },
+    "contract": {
+      "bytes": 644,
+      "path": "runtime/reports/gemma4_megakernel/sustained_authority/20260517T071405Z_g9_three_batch_chain/layer_pack_meta/layer0/contract.json",
+      "sha256": "530f642a2c2ca4d6c1351bbc6bdd6f5d306a82c5196243b7ba3d0f568e34cb3b"
+    },
+    "manifest": {
+      "bytes": 2377,
+      "path": "runtime/reports/gemma4_megakernel/sustained_authority/20260517T071405Z_g9_three_batch_chain/layer_pack_meta/layer0/manifest.json",
+      "sha256": "cc3ccad8d5c58bfde20faf142280ab3efa7d6b424a059ffd7498bd1972124b8a"
+    },
+    "phone_output": {
+      "bytes": 10485760,
+      "dtype": "f32",
+      "path": "runtime/reports/gemma4_megakernel/sustained_authority/20260517T071405Z_g9_three_batch_chain/outputs/batch_002/layer0_output.f32.bin",
+      "sha256": "f4407ae70f08ad95ff002249f72acb9f8ce69eaac9cf3cd350ca7ca3cf167e65",
+      "shape": [
+        8,
+        128,
+        2560
+      ]
+    },
+    "phone_telemetry": {
+      "bytes": 824,
+      "path": "runtime/reports/gemma4_megakernel/sustained_authority/20260517T071405Z_g9_three_batch_chain/outputs/batch_002/telemetry.json",
+      "sha256": "3fb8a8fa7f60db623c1ea8db9f185a2821b3210c97fadec8e9947f140578d745"
+    },
+    "reference_output": {
+      "bytes": 10485760,
+      "dtype": "f32",
+      "path": "/tmp/g9_chain_refs_071405_local/batch_002/layer0_output.f32.bin",
+      "sha256": "0af9655b7801cc9431f6096f326e32ab73fc299716420dc19a1b86790956c685",
+      "shape": [
+        8,
+        128,
+        2560
+      ]
+    }
+  },
+  "provenance": {
+    "backend": "opencl",
+    "device_identity": "nubia NX789J SM8750 FY25013101C8",
+    "dtype_path": {
+      "accumulation": "f32",
+      "comparison": "fp64",
+      "input": "f32",
+      "phone_output": "f32",
+      "reference_output": "f32",
+      "weights": "f32"
+    },
+    "expected_layer_index": 0,
+    "expected_model_id": "google/gemma-4-E4B",
+    "expected_revision": "7aa32e6889efd6300124851b164f8b364314c3d8",
+    "layer_index": 0,
+    "model_id": "google/gemma-4-E4B",
+    "revision": "7aa32e6889efd6300124851b164f8b364314c3d8"
+  },
+  "schema_version": "gemma4_compare_outputs_v1",
+  "status": "pass",
+  "tensor_name": "batch_002_layer0_output"
+}

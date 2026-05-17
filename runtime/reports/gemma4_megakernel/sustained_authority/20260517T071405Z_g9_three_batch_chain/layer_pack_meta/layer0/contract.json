@@ -1,0 +1,30 @@
+{
+  "activation": "gelu_pytorch_tanh",
+  "batch": 1,
+  "case_count": 8,
+  "comparison": {
+    "metric": "cosine_per_non_pad_token",
+    "p50_threshold": 0.99
+  },
+  "fixture_ids": [
+    "fixture_00",
+    "fixture_01",
+    "fixture_02",
+    "fixture_03",
+    "fixture_04",
+    "fixture_05",
+    "fixture_06",
+    "fixture_07"
+  ],
+  "head_dim": 256,
+  "heads": 8,
+  "hidden_size": 2560,
+  "intermediate_size": 10240,
+  "kv_heads": 2,
+  "layer_index": 0,
+  "model_id": "google/gemma-4-E4B",
+  "revision": "7aa32e6889efd6300124851b164f8b364314c3d8",
+  "rms_norm_epsilon": 1e-06,
+  "schema_version": "gemma4_layer_gate_contract_v1",
+  "seq": 128
+}

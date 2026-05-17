@@ -292,7 +292,8 @@ void write_manifest(const std::string& output_cache_dir,
                     const std::string& source_url,
                     std::uint32_t sequence_length,
                     std::uint32_t sequence_count,
-                    std::uint64_t non_pad_tokens) {
+                    std::uint64_t non_pad_tokens,
+                    std::uint64_t loss_tokens) {
   std::ofstream file(join_path(output_cache_dir, "manifest.json"));
   if (!file) {
     throw std::runtime_error("unable to create token cache manifest");
@@ -323,6 +324,16 @@ void write_manifest(const std::string& output_cache_dir,
   file << "  \"attention_mask_sha256\": ";
   write_json_string(file, sha256_file_hex(join_path(output_cache_dir, "attention_mask.u8.bin")));
   file << ",\n";
+  file << "  \"labels_sha256\": ";
+  write_json_string(file, sha256_file_hex(join_path(output_cache_dir, "labels.u32.bin")));
+  file << ",\n";
+  file << "  \"loss_mask_sha256\": ";
+  write_json_string(file, sha256_file_hex(join_path(output_cache_dir, "loss_mask.u8.bin")));
+  file << ",\n";
+  file << "  \"position_ids_sha256\": ";
+  write_json_string(file, sha256_file_hex(join_path(output_cache_dir, "position_ids.u32.bin")));
+  file << ",\n";
+  file << "  \"loss_tokens\": " << loss_tokens << ",\n";
   file << "  \"selected_text_sha256\": ";
   write_json_string(file, sha256_file_hex(join_path(output_cache_dir, "selected_text.txt")));
   file << "\n}\n";
@@ -348,7 +359,10 @@ Status run_tokenize_pack(const std::string& tokenizer_dir,
     write_texts(join_path(output_cache_dir, "selected_text.txt"), texts);
 
     std::vector<std::uint32_t> input_ids(texts.size() * sequence_length, kPadTokenId);
+    std::vector<std::uint32_t> labels(texts.size() * sequence_length, kPadTokenId);
+    std::vector<std::uint32_t> position_ids(texts.size() * sequence_length, 0U);
     std::vector<std::uint8_t> attention_mask(texts.size() * sequence_length, 0U);
+    std::vector<std::uint8_t> loss_mask(texts.size() * sequence_length, 0U);
     std::uint64_t non_pad_tokens = 0U;
     for (std::size_t row = 0U; row < texts.size(); ++row) {
       std::vector<std::uint32_t> ids = tokenizer.encode(texts[row]);
@@ -360,14 +374,31 @@ Status run_tokenize_pack(const std::string& tokenizer_dir,
       for (std::size_t col = 0U; col < ids.size(); ++col) {
         input_ids[(row * sequence_length) + start + col] = ids[col];
         attention_mask[(row * sequence_length) + start + col] = 1U;
+        position_ids[(row * sequence_length) + start + col] =
+            static_cast<std::uint32_t>(col);
+      }
+    }
+    std::uint64_t loss_tokens = 0U;
+    for (std::size_t row = 0U; row < texts.size(); ++row) {
+      const std::size_t row_base = row * sequence_length;
+      for (std::size_t col = 0U; col + 1U < sequence_length; ++col) {
+        const std::size_t index = row_base + col;
+        if (attention_mask[index] != 0U && attention_mask[index + 1U] != 0U) {
+          labels[index] = input_ids[index + 1U];
+          loss_mask[index] = 1U;
+          ++loss_tokens;
+        }
       }
     }
 
     write_binary_vector(join_path(output_cache_dir, "input_ids.u32.bin"), input_ids);
     write_binary_vector(join_path(output_cache_dir, "attention_mask.u8.bin"), attention_mask);
+    write_binary_vector(join_path(output_cache_dir, "labels.u32.bin"), labels);
+    write_binary_vector(join_path(output_cache_dir, "loss_mask.u8.bin"), loss_mask);
+    write_binary_vector(join_path(output_cache_dir, "position_ids.u32.bin"), position_ids);
     write_manifest(output_cache_dir, tokenizer_dir, raw_text_path, source_url,
                    sequence_length, static_cast<std::uint32_t>(texts.size()),
-                   non_pad_tokens);
+                   non_pad_tokens, loss_tokens);
     return Status::ok();
   } catch (const std::exception& error) {
     return Status::invalid(error.what());

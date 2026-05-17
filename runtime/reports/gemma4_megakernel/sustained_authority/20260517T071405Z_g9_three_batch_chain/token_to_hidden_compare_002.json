@@ -1,0 +1,52 @@
+{
+  "batch": "002",
+  "checks": [
+    {
+      "cosine_min": 0.9999984626080862,
+      "cosine_p50": 0.9999985939157274,
+      "failed_token_count": 0,
+      "name": "layer_input",
+      "phone_sha256": "dc168e2b97c976047e1ce03e56d9b9bafb69670c05d2fa0933b77044976ee650",
+      "reference_sha256": "bdc8ecb0443c1731df4bd47c4391d169b48cfb98dd1c049372b3d5ede5c06bd1",
+      "shape": [
+        8,
+        128,
+        2560
+      ],
+      "status": "pass",
+      "token_count": 828
+    },
+    {
+      "cosine_min": 0.9999907300440722,
+      "cosine_p50": 0.9999986144045646,
+      "failed_token_count": 0,
+      "name": "per_layer_input_layer0",
+      "phone_sha256": "054ad6d238dcbb79824072b5cc32c9b497c2cce4a60b0690a27e159d93df2579",
+      "reference_sha256": "7bcc0bc0f0c518275b0ccd0df9739b21ed0f94d154f43fa644899db03861792e",
+      "shape": [
+        8,
+        128,
+        256
+      ],
+      "status": "pass",
+      "token_count": 828
+    },
+    {
+      "cosine_min": 0.99998962843137,
+      "cosine_p50": 0.9999980482689419,
+      "failed_token_count": 0,
+      "name": "per_layer_input_layer1",
+      "phone_sha256": "63426914a59c303bb0acd781a7ffed87e826b85c451efb497c27d9dcfd7597df",
+      "reference_sha256": "ae79f110b598c90c15e54503e04240979f7df99fab90c65e7e4d100dc3c29647",
+      "shape": [
+        8,
+        128,
+        256
+      ],
+      "status": "pass",
+      "token_count": 828
+    }
+  ],
+  "schema_version": "gemma4_token_to_hidden_compare_v1",
+  "status": "pass"
+}

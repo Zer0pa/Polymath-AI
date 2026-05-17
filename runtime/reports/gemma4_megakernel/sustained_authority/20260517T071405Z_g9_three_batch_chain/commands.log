@@ -1,0 +1,25 @@
+Phase 8 sustained authority run, 2026-05-17.
+
+Predeclared objective:
+- Three chained phone-native training batches.
+- Eight seq128 examples per batch.
+- Rank-4 post-layer0 adapter SGD, learning rate 0.01.
+- Batch 0 starts from G5/G6 checkpoint; batch 1 starts from batch 0 phone checkpoint; batch 2 starts from batch 1 phone checkpoint.
+
+Phone commands:
+- Reuse phone HF corpus file: /data/local/tmp/polymath_gemma4_gate/hf_stream/g8/prompts.csv
+- Create chunk files under sustained_g9_20260517T071405Z/chunks.
+- Run ./gemma4_layer_runner_g8_071405 --tokenize-pack for cache_001 and cache_002; cache_000 reuses the passed G8 8-sequence cache.
+- Run ./gemma4_layer_runner_g8_071405 --run-g8-distill for batch_000, batch_001, and batch_002 with checkpoint chaining.
+- Capture dumpsys thermalservice and df -h after the chain.
+- Rerun --run-opencl and --run-opencl-stack after the chain for G1/G3 regressions.
+
+RunPod oracle:
+- compare_token_cache.py for cache_000/cache_001/cache_002.
+- create_streamed_distill_reference.py for each batch using the exact phone pre-checkpoint for that batch.
+
+Comparators:
+- compare_outputs.py for layer0/layer1 on all three batches.
+- compare_adapter_training.py --check-update for all three batches.
+- FP64 token-to-hidden comparison for generated layer input and layer0/1 PLE tensors on all three batches.
+- compare_outputs.py for post-chain G1/G3 regressions.

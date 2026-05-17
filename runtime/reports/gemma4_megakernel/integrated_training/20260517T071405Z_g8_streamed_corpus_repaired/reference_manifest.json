@@ -1,0 +1,63 @@
+{
+  "active_tokens": 796,
+  "case_count": 8,
+  "checkpoint": "/workspace/artifacts/polymath_gemma4/adapter_training/g5g6_rank4_20260517T040000Z/checkpoint",
+  "files": [
+    {
+      "bytes": 40960,
+      "path": "adapter_grad_a.f32.bin",
+      "sha256": "2fe2e35be472adf53efd224d5bc2d8188a703173d0b7dc4252e8f004ea91adb4"
+    },
+    {
+      "bytes": 40960,
+      "path": "adapter_grad_b.f32.bin",
+      "sha256": "2fe59c3f69dffa28f890e2becf6866783511c41d011d263537ddfec5f98483a4"
+    },
+    {
+      "bytes": 40960,
+      "path": "checkpoint/adapter_a.f32.bin",
+      "sha256": "a1ee2b4e5926e25002fb5fc77fa25a9af559c4a8f9de53fcef0d5c69d68e2436"
+    },
+    {
+      "bytes": 40960,
+      "path": "checkpoint/adapter_b.f32.bin",
+      "sha256": "7d766f657131e4521722a90513a3dd6447e96e5d314c25e87d6cdce0a21e3943"
+    },
+    {
+      "bytes": 10485760,
+      "path": "generated/layer_input.f32.bin",
+      "sha256": "e1edca1adf9ae32756a3b32cca8e71c2ea3dbdd9ca150c6238ef6af4d299ba04"
+    },
+    {
+      "bytes": 1048576,
+      "path": "generated/per_layer_input_layer0.f32.bin",
+      "sha256": "3fa2659656e7a6bec81fa31b2bebfe494181eb5e17f6dd29558b3558b1931b53"
+    },
+    {
+      "bytes": 1048576,
+      "path": "generated/per_layer_input_layer1.f32.bin",
+      "sha256": "302e74585afa6fbd6051207106e722441e8c9577b9019d5b8e20714266c3e928"
+    },
+    {
+      "bytes": 10485760,
+      "path": "layer0_output.f32.bin",
+      "sha256": "921bbdc3e61d9929b775be377fe384fa8c79599b7d5b6e20dac259f60de4f942"
+    },
+    {
+      "bytes": 10485760,
+      "path": "layer1_output.f32.bin",
+      "sha256": "0f48037e9a1f33d5f5ffb7d98dce10852b4423ca515fa573e0be1f0e63139aa5"
+    }
+  ],
+  "hidden_size": 2560,
+  "learning_rate": 0.01,
+  "loss_half_mse": 1.6451627016067505,
+  "model_id": "google/gemma-4-E4B",
+  "ple_dim": 256,
+  "rank": 4,
+  "revision": "7aa32e6889efd6300124851b164f8b364314c3d8",
+  "schema_version": "gemma4_streamed_distill_reference_v1",
+  "seq": 128,
+  "snapshot_dir": "/workspace/models/gemma4_e4b/snapshot",
+  "token_cache": "/tmp/g8_token_cache_071405"
+}

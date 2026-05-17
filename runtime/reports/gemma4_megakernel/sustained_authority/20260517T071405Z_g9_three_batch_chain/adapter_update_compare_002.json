@@ -1,0 +1,83 @@
+{
+  "checks": [
+    {
+      "candidate": {
+        "path": "runtime/reports/gemma4_megakernel/sustained_authority/20260517T071405Z_g9_three_batch_chain/outputs/batch_002/adapter_grad_a.f32.bin",
+        "sha256": "2dafa644554d1324c8e1c173ce708351e0f15a47ad59a2586b7830c49da353ec"
+      },
+      "cosine": 0.9999978730537458,
+      "element_count": 10240,
+      "finite": true,
+      "max_abs_error": 1.937007709784666e-08,
+      "mean_abs_error": 2.863902999828936e-10,
+      "name": "adapter_grad_a",
+      "reference": {
+        "path": "/tmp/g9_chain_refs_071405_local/batch_002/adapter_grad_a.f32.bin",
+        "sha256": "b6006791a1895a85c7d0fd4a49a44d70124075d3e334ba274805faa9195e7b86"
+      },
+      "status": "pass",
+      "threshold": 0.99
+    },
+    {
+      "candidate": {
+        "path": "runtime/reports/gemma4_megakernel/sustained_authority/20260517T071405Z_g9_three_batch_chain/outputs/batch_002/adapter_grad_b.f32.bin",
+        "sha256": "c7a0d0f29be7045ee6f5ce012196658e2f437b8fad7450fa332ae98f9ba229d3"
+      },
+      "cosine": 0.9999989727735279,
+      "element_count": 10240,
+      "finite": true,
+      "max_abs_error": 4.864523361902684e-08,
+      "mean_abs_error": 2.594710868100415e-10,
+      "name": "adapter_grad_b",
+      "reference": {
+        "path": "/tmp/g9_chain_refs_071405_local/batch_002/adapter_grad_b.f32.bin",
+        "sha256": "a1e1a7f91492043ba1d2b59ee312d3cf4d8ce7f83f76391f4fb4f2210fdcc116"
+      },
+      "status": "pass",
+      "threshold": 0.99
+    },
+    {
+      "candidate": {
+        "path": "runtime/reports/gemma4_megakernel/sustained_authority/20260517T071405Z_g9_three_batch_chain/outputs/batch_002/checkpoint/adapter_a.f32.bin",
+        "sha256": "1ae526a457ba921cb7e2a1b94b506f3d83035205343973ce27a9bc3e0d7e38e9"
+      },
+      "cosine": 0.9999999999999967,
+      "element_count": 10240,
+      "finite": true,
+      "max_abs_error": 1.964508555829525e-10,
+      "mean_abs_error": 2.8942239663903855e-12,
+      "name": "updated_adapter_a",
+      "reference": {
+        "path": "/tmp/g9_chain_refs_071405_local/batch_002/checkpoint/adapter_a.f32.bin",
+        "sha256": "1b915ec4cd4ff9a37c1896be834c096b9ab1f913fb6d64874f5e9d4720c79680"
+      },
+      "status": "pass",
+      "threshold": 0.99
+    },
+    {
+      "candidate": {
+        "path": "runtime/reports/gemma4_megakernel/sustained_authority/20260517T071405Z_g9_three_batch_chain/outputs/batch_002/checkpoint/adapter_b.f32.bin",
+        "sha256": "de411eeba2a144e2bd3275cda8750455ac07d4e79dff668129ca8bb8d0d8b939"
+      },
+      "cosine": 0.9999999999999953,
+      "element_count": 10240,
+      "finite": true,
+      "max_abs_error": 4.802132025361061e-10,
+      "mean_abs_error": 2.556814135412644e-12,
+      "name": "updated_adapter_b",
+      "reference": {
+        "path": "/tmp/g9_chain_refs_071405_local/batch_002/checkpoint/adapter_b.f32.bin",
+        "sha256": "b99bfc9c6f5d48893a79ea7bd336de63065ff6d6150922f423508c9ff3c0b4af"
+      },
+      "status": "pass",
+      "threshold": 0.99
+    }
+  ],
+  "cosine_min": 0.9999978730537458,
+  "cosine_p50": 0.9999994863867616,
+  "failed_tensor_count": 0,
+  "schema_version": "gemma4_adapter_training_compare_v1",
+  "status": "pass",
+  "tensor_count": 4,
+  "threshold": 0.99
+}

@@ -1,0 +1,11 @@
+{
+  "schema_version": "gemma4_streamed_distill_replay_v1",
+  "command": "gemma4_layer_runner --run-g8-distill TOKEN_CACHE ASSETS PACK0 PACK1 CHECKPOINT OUT_DIR LR",
+  "token_cache_dir": "sustained_g9_20260517T071405Z/cache_002",
+  "asset_dir": "streamed_assets/g8_layer01_20260517T071405Z",
+  "layer0_pack_dir": "layer_pack/gemma4_e4b_layer0_seq128_v0",
+  "layer1_pack_dir": "layer_pack/gemma4_e4b_layer1_seq128_v0",
+  "checkpoint_dir": "sustained_g9_20260517T071405Z/outputs/batch_001/checkpoint",
+  "output_dir": "sustained_g9_20260517T071405Z/outputs/batch_002",
+  "learning_rate": 0.0099999998
+}

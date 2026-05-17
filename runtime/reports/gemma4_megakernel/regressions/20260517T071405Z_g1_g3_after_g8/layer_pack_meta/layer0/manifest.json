@@ -1,0 +1,82 @@
+{
+  "model_id": "google/gemma-4-E4B",
+  "prompts": [
+    {
+      "id": "fixture_00",
+      "text": "A native Gemma kernel must preserve tensor semantics."
+    },
+    {
+      "id": "fixture_01",
+      "text": "Compute 17 * 23, then explain the invariant."
+    },
+    {
+      "id": "fixture_02",
+      "text": "def rms_norm(x, w): return x * inv_rms(x) * w"
+    },
+    {
+      "id": "fixture_03",
+      "text": "Qualcomm Adreno execution is measured, not assumed."
+    },
+    {
+      "id": "fixture_04",
+      "text": "Short prompt with punctuation: alpha, beta; gamma."
+    },
+    {
+      "id": "fixture_05",
+      "text": "The layer gate rejects random weights and CPU fallback."
+    },
+    {
+      "id": "fixture_06",
+      "text": "Matrix rows, rotary phases, and residuals must align."
+    },
+    {
+      "id": "fixture_07",
+      "text": "High entropy tokens: qzv 91827 :: @@ kernel parity."
+    }
+  ],
+  "revision": "7aa32e6889efd6300124851b164f8b364314c3d8",
+  "schema_version": "layer_bundle_v1",
+  "snapshot_dir": "/workspace/models/gemma4_e4b/snapshot",
+  "tensors": [
+    {
+      "bytes": 644,
+      "path": "contract.json",
+      "sha256": "530f642a2c2ca4d6c1351bbc6bdd6f5d306a82c5196243b7ba3d0f568e34cb3b"
+    },
+    {
+      "bytes": 1024,
+      "path": "input/attention_mask.u8.bin",
+      "sha256": "4be501025ac533c7d9adfa25e1c6232aca8777e39cc91a06369e286c1f7f5b64"
+    },
+    {
+      "bytes": 4096,
+      "path": "input/input_ids.u32.bin",
+      "sha256": "2d59ae8c8152c36816a1a3f6660609235406fbb3bc71c191715584fc1ab31a94"
+    },
+    {
+      "bytes": 10485760,
+      "path": "input/layer_input.f32.bin",
+      "sha256": "bc2e13796ca19f3510ff0455e84f83d8d42b7eec7060cd7136a16b249cf54b86"
+    },
+    {
+      "bytes": 1048576,
+      "path": "input/per_layer_input.f32.bin",
+      "sha256": "5f4879dafff907d35b8e902df730770f8b786f6bee07313da715689298fafbb9"
+    },
+    {
+      "bytes": 4096,
+      "path": "input/position_ids.u32.bin",
+      "sha256": "fa75bd154ca763f7bcbf62c0f2942888af28af9b315d101066c484836018d8b0"
+    },
+    {
+      "bytes": 10485760,
+      "path": "reference/layer_output.f32.bin",
+      "sha256": "937e1a5b7cda6537aa453aba7029aff0c09861968bba7289f01c92739a24a889"
+    },
+    {
+      "bytes": 186150522,
+      "path": "weights/layer0.safetensors",
+      "sha256": "d3efd61621310d5578a3653d2f9a989614b6287667b4984720d42dcc8f75fc36"
+    }
+  ]
+}

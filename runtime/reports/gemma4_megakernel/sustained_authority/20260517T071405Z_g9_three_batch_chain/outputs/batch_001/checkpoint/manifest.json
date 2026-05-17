@@ -1,0 +1,16 @@
+{
+  "schema_version": "gemma4_rank4_adapter_checkpoint_v1",
+  "trainable_scope": "post_layer0_rank4_residual_adapter",
+  "optimizer": "sgd",
+  "learning_rate": 0.0099999998,
+  "loss_half_mse": 1.6444585300,
+  "active_tokens": 841,
+  "pre_update": {
+    "adapter_a": {"path": "sustained_g9_20260517T071405Z/outputs/batch_000/checkpoint/adapter_a.f32.bin", "sha256": "2f9a70815411575f0bf3d3ced6cb7ed0963c6c1685fd123a63fdfcb7a88b0ed7"},
+    "adapter_b": {"path": "sustained_g9_20260517T071405Z/outputs/batch_000/checkpoint/adapter_b.f32.bin", "sha256": "f38173a4913a994075852e40a912bdb62e156f06ff72845d9ae2722c4f694edc"}
+  },
+  "post_update": {
+    "adapter_a": {"path": "sustained_g9_20260517T071405Z/outputs/batch_001/checkpoint/adapter_a.f32.bin", "sha256": "dee699fc8075ab1366c85f290154cadda6591c2a293166733984abdf721660dd"},
+    "adapter_b": {"path": "sustained_g9_20260517T071405Z/outputs/batch_001/checkpoint/adapter_b.f32.bin", "sha256": "c1c274ea5960029b4cfe2b9b03440cebad338d02d3ec0afd7469ae5f7a70898c"}
+  }
+}

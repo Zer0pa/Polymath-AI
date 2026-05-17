@@ -46,11 +46,23 @@ def main() -> int:
     )
     reference_ids = encoded["input_ids"].astype("<u4")
     reference_mask = encoded["attention_mask"].astype("u1")
+    reference_positions = np.maximum(reference_mask.cumsum(axis=1, dtype=np.int64) - 1, 0).astype("<u4")
+    reference_labels = np.zeros_like(reference_ids, dtype="<u4")
+    reference_loss_mask = np.zeros_like(reference_mask, dtype="u1")
+    valid_next = (reference_mask[:, :-1] != 0) & (reference_mask[:, 1:] != 0)
+    reference_labels[:, :-1] = np.where(valid_next, reference_ids[:, 1:], 0).astype("<u4")
+    reference_loss_mask[:, :-1] = valid_next.astype("u1")
     phone_ids = np.fromfile(args.phone_cache / "input_ids.u32.bin", dtype="<u4").reshape(reference_ids.shape)
     phone_mask = np.fromfile(args.phone_cache / "attention_mask.u8.bin", dtype="u1").reshape(reference_mask.shape)
+    phone_labels = np.fromfile(args.phone_cache / "labels.u32.bin", dtype="<u4").reshape(reference_ids.shape)
+    phone_loss_mask = np.fromfile(args.phone_cache / "loss_mask.u8.bin", dtype="u1").reshape(reference_mask.shape)
+    phone_positions = np.fromfile(args.phone_cache / "position_ids.u32.bin", dtype="<u4").reshape(reference_ids.shape)
 
     id_mismatches = np.argwhere(phone_ids != reference_ids)
     mask_mismatches = np.argwhere(phone_mask != reference_mask)
+    label_mismatches = np.argwhere(phone_labels != reference_labels)
+    loss_mask_mismatches = np.argwhere(phone_loss_mask != reference_loss_mask)
+    position_mismatches = np.argwhere(phone_positions != reference_positions)
     examples: list[dict[str, Any]] = []
     for row, col in id_mismatches[:10]:
         examples.append({
@@ -62,15 +74,27 @@ def main() -> int:
 
     report = {
         "schema_version": "gemma4_token_cache_compare_v1",
-        "status": "pass" if len(id_mismatches) == 0 and len(mask_mismatches) == 0 else "fail",
+        "status": "pass" if (
+            len(id_mismatches) == 0
+            and len(mask_mismatches) == 0
+            and len(label_mismatches) == 0
+            and len(loss_mask_mismatches) == 0
+            and len(position_mismatches) == 0
+        ) else "fail",
         "model_id": MODEL_ID,
         "revision": REVISION,
         "sequence_count": len(texts),
         "sequence_length": args.seq,
         "input_id_mismatch_count": int(len(id_mismatches)),
         "attention_mask_mismatch_count": int(len(mask_mismatches)),
+        "label_mismatch_count": int(len(label_mismatches)),
+        "loss_mask_mismatch_count": int(len(loss_mask_mismatches)),
+        "position_id_mismatch_count": int(len(position_mismatches)),
         "input_ids_sha256": sha256_file(args.phone_cache / "input_ids.u32.bin"),
         "attention_mask_sha256": sha256_file(args.phone_cache / "attention_mask.u8.bin"),
+        "labels_sha256": sha256_file(args.phone_cache / "labels.u32.bin"),
+        "loss_mask_sha256": sha256_file(args.phone_cache / "loss_mask.u8.bin"),
+        "position_ids_sha256": sha256_file(args.phone_cache / "position_ids.u32.bin"),
         "selected_text_sha256": sha256_file(args.phone_cache / "selected_text.txt"),
         "mismatch_examples": examples,
     }
