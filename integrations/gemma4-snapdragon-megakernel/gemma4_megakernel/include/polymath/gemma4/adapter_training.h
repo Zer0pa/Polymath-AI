@@ -1,6 +1,7 @@
 #ifndef POLYMATH_GEMMA4_ADAPTER_TRAINING_H_
 #define POLYMATH_GEMMA4_ADAPTER_TRAINING_H_
 
+#include <cstdint>
 #include <string>
 
 #include "polymath/gemma4/executor_interfaces.h"
@@ -26,6 +27,17 @@ Status run_opencl_streamed_distill_update(const std::string& token_cache_dir,
                                           float learning_rate,
                                           bool write_raw_outputs = true,
                                           bool hash_static_artifacts = true);
+
+Status run_opencl_streamed_distill_update_rank(const std::string& token_cache_dir,
+                                               const std::string& asset_dir,
+                                               const std::string& layer0_pack_dir,
+                                               const std::string& layer1_pack_dir,
+                                               const std::string& checkpoint_dir,
+                                               const std::string& output_dir,
+                                               float learning_rate,
+                                               std::uint32_t adapter_rank,
+                                               bool write_raw_outputs = true,
+                                               bool hash_static_artifacts = true);
 
 class OpenClAdapterTrainingStepExecutor final : public TrainingStepExecutor {
  public:

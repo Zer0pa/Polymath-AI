@@ -19,7 +19,7 @@ phone-resident POVC campaign rather than another host-driven endurance loop.
 | Phone-native training artifact | Phases 4-8 | G8 repaired and Phase 8 sustained objective passed |
 | G10 falsifier survival | Phase 9 | Passed under narrow scope |
 | Hardware-max pipeline search | Phase 10+ | First phone A/B candidate passed; ongoing |
-| Hardware-native training POVC | Phase 11 | H11-A passed; H11-B failed; H11-C passed; H11-D passed; H11-E next |
+| Hardware-native training POVC | Phase 11 | H11-A passed; H11-B failed; H11-C passed; H11-D passed; H11-E failed with rank-4 baseline retained; H11-F next |
 
 ## Phases
 
@@ -403,6 +403,12 @@ Plans:
   Recordable queues are eligible for narrow A/B integration, not default
   end-to-end training. Evidence:
   `runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T205951Z_h11d_recordable_queues/H11-D-recordable-queues/gate_result.json`.
+  H11-E trainable scope sweep failed with the rank-4 baseline retained.
+  Rank-16 and rank-32 trials completed with finite losses and changed
+  checkpoints, but neither reduced loss over two phone-local daemon iterations;
+  projection LoRA remains blocked by missing layer-internal backward kernels and
+  checkpoint layout. Evidence:
+  `runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T211427Z_h11e_scope_sweep/H11-E-scope-sweep/gate_result.json`.
 
 ## Progress
 
@@ -419,4 +425,4 @@ Plans:
 | 8. Sustained Authority Run | 1/1 | Complete | 2026-05-17 |
 | 9. Falsifier Review | 1/1 | Complete | 2026-05-17 |
 | 10. Hardware Max Training Pipeline | 2/ongoing | Six-hour narrow endurance passed; remaining nonclaims blocked | - |
-| 11. Hardware-Native Training POVC | 0/1 | H11-A passed; H11-B failed; H11-C passed; H11-D passed; H11-E next | 2026-05-23 |
+| 11. Hardware-Native Training POVC | 0/1 | H11-A passed; H11-B failed; H11-C passed; H11-D passed; H11-E failed with rank-4 baseline retained; H11-F next | 2026-05-23 |

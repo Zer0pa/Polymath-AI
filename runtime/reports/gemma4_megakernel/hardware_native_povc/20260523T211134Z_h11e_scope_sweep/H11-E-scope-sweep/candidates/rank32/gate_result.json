@@ -1,0 +1,21 @@
+{
+  "schema_version": "phase11_h11a_gate_result_v1",
+  "gate": "H11-A",
+  "runner_build_id": "phase11_runner_h11a_v1_20260523",
+  "status": "fail",
+  "iteration_count": 1,
+  "required_iteration_count": 2,
+  "queue_execution_wall_seconds": 6.701721,
+  "active_training_seconds": 0.000000,
+  "active_wall_ratio": 0.00000000,
+  "phase10_active_wall_baseline": 0.21328649,
+  "active_wall_acceptance": false,
+  "disconnect_marker_seen": false,
+  "disconnect_hold_seconds": 0.000000,
+  "disconnect_acceptance": true,
+  "checkpoint_chain_acceptance": true,
+  "runtime_topology": "phone_local_queue_no_adb_per_iteration",
+  "one_shot_fallback_preserved": true,
+  "blockers": ["iteration 0 failed: l2_delta vector sizes differ", "completed fewer than configured H11-A iterations", "active/wall did not reach >=0.50 or >=2x Phase 10 baseline"],
+  "ended_at_utc": "2026-05-23T21:12:30Z"
+}

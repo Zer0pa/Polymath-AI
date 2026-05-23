@@ -1,0 +1,3 @@
+- iteration 0 failed: l2_delta vector sizes differ
+- completed fewer than configured H11-A iterations
+- active/wall did not reach >=0.50 or >=2x Phase 10 baseline

@@ -1,0 +1,52 @@
+{
+  "baseline_rank": 4,
+  "blockers": [
+    "rank-16 did not reduce loss over two iterations",
+    "rank-32 did not reduce loss over two iterations",
+    "no expanded rank candidate was viable"
+  ],
+  "ended_at_utc": "2026-05-23T21:15:51Z",
+  "expanded_ranks_tested": [
+    16,
+    32
+  ],
+  "gate": "H11-E",
+  "host_report_dir": "runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T211427Z_h11e_scope_sweep/H11-E-scope-sweep",
+  "projection_lora_status": "blocked_not_promoted",
+  "schema_version": "phase11_h11e_gate_result_v1",
+  "selected_rank": 4,
+  "selected_scope": {
+    "active_seconds": 12.500036,
+    "candidate_run": {
+      "candidate_run_id": "20260523T211427Z_h11e_scope_sweep_rank4",
+      "ended_at_utc": "2026-05-23T21:14:55Z",
+      "local_report_dir": "runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T211427Z_h11e_scope_sweep/H11-E-scope-sweep/candidates/rank4",
+      "phone_gate_dir": "/data/local/tmp/polymath_gemma4_gate/phase11/runs/20260523T211427Z_h11e_scope_sweep_rank4/H11-A-daemon",
+      "rank": 4,
+      "returncode": 0,
+      "schema_version": "phase11_h11e_candidate_run_v1",
+      "started_at_utc": "2026-05-23T21:14:28Z",
+      "stderr_first_4096": "",
+      "stdout_first_4096": ""
+    },
+    "checkpoint_changed": true,
+    "checkpoint_delta_l2_sum_first": 9.163e-07,
+    "finite_losses": true,
+    "gate_status": "pass",
+    "gradient_l2_sum_first": 9.163159999999999e-05,
+    "loss_delta": 1.000000082740371e-10,
+    "loss_delta_per_active_second": 7.999977621987417e-12,
+    "loss_delta_per_wall_second": 6.987902493474669e-12,
+    "losses": [
+      1.6465152695,
+      1.6465152694
+    ],
+    "max_rss_kb": 3938248,
+    "rank": 4,
+    "schema_version": "phase11_h11e_candidate_summary_v1",
+    "status": "pass",
+    "wall_seconds": 14.310447
+  },
+  "started_at_utc": "2026-05-23T21:14:28Z",
+  "status": "fail"
+}

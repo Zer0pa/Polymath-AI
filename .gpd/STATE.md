@@ -19,9 +19,9 @@ any runtime data-path stage?
 **Total Phases:** 12
 **Current Plan:** 1
 **Total Plans in Phase:** 1
-**Status:** H11-A phone-resident daemon passed; H11-B safe performance envelope failed; H11-C bottleneck autopsy passed; H11-D recordable queues passed; H11-E trainable scope sweep next
+**Status:** H11-A phone-resident daemon passed; H11-B safe performance envelope failed; H11-C bottleneck autopsy passed; H11-D recordable queues passed; H11-E trainable scope sweep failed with rank-4 baseline retained; H11-F objective upgrade next
 **Last Activity:** 2026-05-23
-**Last Activity Description:** Ran H11-D OpenCL recordable queue probe on REDMAGIC. Adreno 830 advertises `cl_qcom_recordable_queues`, QCOM recording symbols resolve, `CL_QUEUE_RECORDABLE_QCOM` property `0x40000000` is accepted, and no-op/fixed/mutable recorded sequences match ordinary queue outputs. Best launch speedup was `1.968636098x`; recordable queues are eligible for narrow A/B integration, not a default end-to-end training path yet. Proceed to H11-E trainable scope sweep.
+**Last Activity Description:** Ran H11-E trainable scope sweep on REDMAGIC. Rank-4 baseline completed two phone-local daemon iterations with finite losses and tiny positive loss reduction; rank-16 and rank-32 completed with finite losses and changed checkpoints but no two-iteration loss reduction. Expanded scopes were not promoted, projection LoRA remains blocked, and H11-F proceeds with the rank-4 baseline only.
 
 **Progress:** [#########-] 92%
 
@@ -29,9 +29,9 @@ any runtime data-path stage?
 
 - Execute Phase 11 only through phone-resident queue-run experiments with
   authority non-regression gates and artifact hygiene.
-- Sequential hypotheses complete through H11-D; continue H11-E trainable scope
-  sweep before H11-F objective upgrade, H11-G HTP mutable-adapter/zero-order
-  arm, and H11-H combined POVC run.
+- Sequential hypotheses complete through H11-E; continue H11-F objective
+  upgrade before H11-G HTP mutable-adapter/zero-order arm and H11-H combined
+  POVC run.
 
 ## Intermediate Results
 
@@ -113,6 +113,17 @@ any runtime data-path stage?
   and passes no-op, fixed-arg, and mutable-arg output comparisons. Recordable
   queues are eligible for narrow A/B use only; H11-H must still prove any
   end-to-end relevance.
+- H11-E trainable scope sweep failed with the rank-4 baseline retained:
+  `runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T211427Z_h11e_scope_sweep/H11-E-scope-sweep/gate_result.json`.
+  The first H11-E attempt is preserved as an implementation failure:
+  `runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T211134Z_h11e_scope_sweep/H11-E-scope-sweep/gate_result.json`.
+  Rank-4 completed two phone-local daemon iterations with finite losses
+  `[1.6465152695, 1.6465152694]`, changed checkpoint, active seconds
+  `12.500036`, and loss delta per active second `7.999977622e-12`. Rank-16 and
+  rank-32 completed with finite losses and changed checkpoints but zero
+  two-iteration loss reduction, so no expanded rank crossed the promotion gate.
+  Projection LoRA across q/o/gate/up projections remains `blocked_not_promoted`
+  because layer-internal backward kernels and checkpoint layout are not present.
 
 ## Open Questions
 
@@ -120,8 +131,8 @@ any runtime data-path stage?
   ADB/USB disconnect, and what resume behavior is needed if it does not.
 - Whether safe fixed performance mode, charge separation, fan state, and OEM
   controls materially improve active/wall without unsafe thermal behavior.
-- Which expanded DoRA/LoRA scope and objective produces a capability-relevant
-  signal beyond the rank-4 parity lane.
+- Whether H11-F can replace parity-MSE with a predeclared objective that moves a
+  held-out teacher/capability signal while retaining the rank-4 baseline scope.
 - Whether H11-D recordable queue launch savings remain useful in an end-to-end
   H11-H training sequence after the H11-C residual was already reduced below
   threshold.
@@ -153,6 +164,8 @@ any runtime data-path stage?
 | H11-B throughput delta | `+1.6502977%` | 12-iteration baseline vs fixed-performance/stay-awake profile | failed required `>=15%`; controls reverted |
 | H11-C residual | `0.365645667s/iter` | 30-iteration daemon autopsy | passed; accounted fraction `0.952561994` |
 | H11-D recordable queue launch | `1.968636098x` best speedup | 100 no-op/fixed/mutable OpenCL dispatches | passed; mutable output `300 == 300`, property `0x40000000` |
+| H11-E rank-4 loss delta | `1.000000082740371e-10` | two phone-local daemon iterations | retained baseline; loss delta per active second `7.999977622e-12` |
+| H11-E expanded rank loss delta | `0.0` | rank-16 and rank-32 scope trials | failed promotion despite finite losses and changed checkpoints |
 
 ## Accumulated Context
 
@@ -205,10 +218,10 @@ Full log: `.gpd/DECISIONS.md`
 
 ### Pending Todos
 
-- Execute H11-E next under the H11-A daemon and H11-B baseline-safe fallback:
-  compare the rank-4 post-layer0 baseline against larger meaningful adapter
-  scopes by memory, active time, checkpoint size, finite gradients, replay, and
-  objective/capability signal.
+- Execute H11-F next under the H11-A daemon and H11-B baseline-safe fallback:
+  replace parity-MSE with a predeclared capability-relevant objective, run a
+  fixed-adapter control, require held-out non-regression, and do not claim
+  capability movement unless the declared metric improves.
 - Preserve H11-A runner topology for later gates; do not return to host-driven
   per-iteration training except as a declared diagnostic fallback.
 - Do not run H11-H or another long endurance job until H11-B through H11-G have
@@ -242,10 +255,15 @@ Full log: `.gpd/DECISIONS.md`
 - H11-D does not claim end-to-end training speedup. It proves OpenCL extension
   support, mutable-arg correctness, and launch-level benefit; later gates may
   use recordable queues only through narrow A/B evidence.
+- H11-E does not promote rank-16, rank-32, or projection LoRA. Expanded ranks
+  were finite and mutable but did not reduce loss over two iterations; projection
+  LoRA remains blocked until layer-internal backward kernels and checkpoint
+  layout exist.
 
 ## Session Continuity
 
 **Last session:** 2026-05-23
-**Stopped at:** H11-D OpenCL recordable queue probe passed. Continue with H11-E
-trainable scope sweep under the H11-A runner; do not skip to H11-H.
+**Stopped at:** H11-E trainable scope sweep failed with rank-4 baseline retained.
+Continue with H11-F objective upgrade under the H11-A runner; do not skip to
+H11-H.
 **Resume file:** `.gpd/STATE.md`

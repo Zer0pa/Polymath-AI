@@ -57,6 +57,7 @@ struct H11AConfig {
   int marker_wait_seconds = 1800;
   int disconnect_hold_seconds = 600;
   double learning_rate = 0.01;
+  int adapter_rank = 4;
   bool require_disconnect_marker = true;
 };
 
@@ -694,6 +695,7 @@ H11AConfig read_h11a_config(const std::string& config_path,
   config.disconnect_hold_seconds =
       json_int_or(json, "disconnect_hold_seconds", config.disconnect_hold_seconds);
   config.learning_rate = json_double_or(json, "learning_rate", config.learning_rate);
+  config.adapter_rank = json_int_or(json, "adapter_rank", config.adapter_rank);
   config.require_disconnect_marker =
       json_bool_or(json, "require_disconnect_marker", config.require_disconnect_marker);
 
@@ -709,6 +711,9 @@ H11AConfig read_h11a_config(const std::string& config_path,
   }
   if (config.iteration_count <= 0) {
     throw std::runtime_error("H11-A iteration_count must be positive");
+  }
+  if (config.adapter_rank <= 0) {
+    throw std::runtime_error("H11-A adapter_rank must be positive");
   }
   return config;
 }
@@ -1238,10 +1243,11 @@ int run_h11a(const RunnerArgs& args,
     heartbeat.set_step("iteration_" + std::to_string(index));
     const auto iteration_start = std::chrono::steady_clock::now();
     const polymath::gemma4::Status status =
-        polymath::gemma4::run_opencl_streamed_distill_update(
+        polymath::gemma4::run_opencl_streamed_distill_update_rank(
             iteration.token_cache, config.asset_dir, config.layer0_pack,
             config.layer1_pack, state.checkpoint_dir, iteration.phone_output_dir,
-            static_cast<float>(config.learning_rate), iteration.sample, false);
+            static_cast<float>(config.learning_rate),
+            static_cast<std::uint32_t>(config.adapter_rank), iteration.sample, false);
     iteration.wall_seconds =
         std::chrono::duration<double>(std::chrono::steady_clock::now() - iteration_start)
             .count();

@@ -1,0 +1,6 @@
+{
+  "non_promotion": "No projection-LoRA capability claim is made by H11-E.",
+  "q_proj_o_proj_gate_proj_up_proj_status": "blocked_for_this_gate",
+  "reason": "Current authority backward/update implementation is a post-layer0 residual adapter. Projection LoRA/DoRA across q_proj, o_proj, gate_proj, and up_proj would require layer-internal backward kernels and optimizer/checkpoint layout not present in this code path.",
+  "schema_version": "phase11_h11e_projection_lora_feasibility_v1"
+}

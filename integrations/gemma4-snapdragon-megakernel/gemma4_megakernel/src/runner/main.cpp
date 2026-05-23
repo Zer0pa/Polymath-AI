@@ -22,6 +22,7 @@ void print_help() {
       << "                           [--run-adapter-sgd FIXTURE CHECKPOINT OUT_DIR LR]\n"
       << "                           [--run-g8-distill TOKEN_CACHE ASSETS PACK0 PACK1 CHECKPOINT OUT_DIR LR]\n"
       << "                           [--run-g8-distill-compact TOKEN_CACHE ASSETS PACK0 PACK1 CHECKPOINT OUT_DIR LR]\n"
+      << "                           [--run-g8-distill-compact-rank TOKEN_CACHE ASSETS PACK0 PACK1 CHECKPOINT OUT_DIR LR RANK]\n"
       << "                           [--tokenize-pack TOKENIZER_DIR RAW_TEXT OUT_DIR SEQ N URL]\n"
       << "\n"
       << "Current authority gates: Gemma 4 E4B layer forward-only and stack\n"
@@ -169,6 +170,30 @@ int run_g8_distill(int argc, char** argv, int index, bool write_raw_outputs) {
   return 0;
 }
 
+int run_g8_distill_rank(int argc, char** argv, int index, bool write_raw_outputs) {
+  if ((index + 8) >= argc) {
+    throw std::invalid_argument(
+        "rank distill run requires TOKEN_CACHE, ASSETS, PACK0, PACK1, CHECKPOINT, OUT_DIR, LR, and RANK");
+  }
+  char* end = nullptr;
+  const float learning_rate = std::strtof(argv[index + 7], &end);
+  if (end == argv[index + 7] || *end != '\0') {
+    throw std::invalid_argument("--run-g8-distill-compact-rank LR must be a float");
+  }
+  const auto adapter_rank =
+      static_cast<std::uint32_t>(std::stoul(argv[index + 8]));
+  const polymath::gemma4::Status status =
+      polymath::gemma4::run_opencl_streamed_distill_update_rank(
+          argv[index + 1], argv[index + 2], argv[index + 3], argv[index + 4],
+          argv[index + 5], argv[index + 6], learning_rate, adapter_rank,
+          write_raw_outputs, false);
+  if (!status.is_ok()) {
+    std::cerr << status.message() << '\n';
+    return 10;
+  }
+  return 0;
+}
+
 }  // namespace
 
 int main(int argc, char** argv) {
@@ -210,6 +235,9 @@ int main(int argc, char** argv) {
       }
       if (argument == "--run-g8-distill-compact") {
         return run_g8_distill(argc, argv, index, false);
+      }
+      if (argument == "--run-g8-distill-compact-rank") {
+        return run_g8_distill_rank(argc, argv, index, false);
       }
       if (argument == "--tokenize-pack") {
         return run_tokenize_pack(argc, argv, index);

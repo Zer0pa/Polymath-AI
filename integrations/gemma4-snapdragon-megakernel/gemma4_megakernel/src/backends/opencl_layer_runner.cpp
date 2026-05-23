@@ -60,7 +60,17 @@ constexpr std::uint32_t kKeyValueHeads = 2U;
 constexpr std::uint32_t kHeadDim = 256U;
 constexpr std::uint32_t kAdapterRank = 4U;
 constexpr float kRmsEpsilon = 1.0e-6F;
-constexpr float kAdapterScale = 1.0F / static_cast<float>(kAdapterRank);
+
+float adapter_scale(std::uint32_t adapter_rank) {
+  if (adapter_rank == 0U) {
+    throw std::runtime_error("adapter rank must be positive");
+  }
+  return 1.0F / static_cast<float>(adapter_rank);
+}
+
+std::string residual_adapter_scope(std::uint32_t adapter_rank) {
+  return "post_layer0_rank" + std::to_string(adapter_rank) + "_residual_adapter";
+}
 
 template <typename Function>
 Function resolve_symbol(void* library, const char* name) {
@@ -1168,25 +1178,28 @@ void dispatch_scale(ClRuntime& runtime, cl_kernel kernel, cl_mem values, float s
 }
 
 void dispatch_adapter_forward_z(ClRuntime& runtime, cl_kernel kernel, cl_mem input,
-                                cl_mem adapter_a, cl_mem z) {
+                                cl_mem adapter_a, cl_mem z,
+                                std::uint32_t adapter_rank) {
   const std::int32_t tokens = static_cast<std::int32_t>(kTokens);
   const std::int32_t hidden = static_cast<std::int32_t>(kHidden);
-  const std::int32_t rank = static_cast<std::int32_t>(kAdapterRank);
+  const std::int32_t rank = static_cast<std::int32_t>(adapter_rank);
   runtime.set_arg(kernel, 0U, input);
   runtime.set_arg(kernel, 1U, adapter_a);
   runtime.set_arg(kernel, 2U, z);
   runtime.set_arg(kernel, 3U, tokens);
   runtime.set_arg(kernel, 4U, hidden);
   runtime.set_arg(kernel, 5U, rank);
-  runtime.run_1d(kernel, kTokens * kAdapterRank);
+  runtime.run_1d(kernel, kTokens * adapter_rank);
 }
 
 void dispatch_adapter_output_diff(ClRuntime& runtime, cl_kernel kernel, cl_mem input,
                                   cl_mem target, cl_mem mask, cl_mem z,
-                                  cl_mem adapter_b, cl_mem diff) {
+                                  cl_mem adapter_b, cl_mem diff,
+                                  std::uint32_t adapter_rank) {
   const std::int32_t tokens = static_cast<std::int32_t>(kTokens);
   const std::int32_t hidden = static_cast<std::int32_t>(kHidden);
-  const std::int32_t rank = static_cast<std::int32_t>(kAdapterRank);
+  const std::int32_t rank = static_cast<std::int32_t>(adapter_rank);
+  const float scale = adapter_scale(adapter_rank);
   runtime.set_arg(kernel, 0U, input);
   runtime.set_arg(kernel, 1U, target);
   runtime.set_arg(kernel, 2U, mask);
@@ -1196,55 +1209,60 @@ void dispatch_adapter_output_diff(ClRuntime& runtime, cl_kernel kernel, cl_mem i
   runtime.set_arg(kernel, 6U, tokens);
   runtime.set_arg(kernel, 7U, hidden);
   runtime.set_arg(kernel, 8U, rank);
-  runtime.set_arg(kernel, 9U, kAdapterScale);
+  runtime.set_arg(kernel, 9U, scale);
   runtime.run_1d(kernel, kTokens * kHidden);
 }
 
 void dispatch_adapter_grad_b(ClRuntime& runtime, cl_kernel kernel, cl_mem z,
-                             cl_mem diff, cl_mem grad_b, float inv_norm) {
+                             cl_mem diff, cl_mem grad_b, float inv_norm,
+                             std::uint32_t adapter_rank) {
   const std::int32_t tokens = static_cast<std::int32_t>(kTokens);
   const std::int32_t hidden = static_cast<std::int32_t>(kHidden);
-  const std::int32_t rank = static_cast<std::int32_t>(kAdapterRank);
+  const std::int32_t rank = static_cast<std::int32_t>(adapter_rank);
+  const float scale = adapter_scale(adapter_rank);
   runtime.set_arg(kernel, 0U, z);
   runtime.set_arg(kernel, 1U, diff);
   runtime.set_arg(kernel, 2U, grad_b);
   runtime.set_arg(kernel, 3U, tokens);
   runtime.set_arg(kernel, 4U, hidden);
   runtime.set_arg(kernel, 5U, rank);
-  runtime.set_arg(kernel, 6U, kAdapterScale);
+  runtime.set_arg(kernel, 6U, scale);
   runtime.set_arg(kernel, 7U, inv_norm);
-  runtime.run_1d(kernel, kAdapterRank * kHidden);
+  runtime.run_1d(kernel, adapter_rank * kHidden);
 }
 
 void dispatch_adapter_hidden_rank_grad(ClRuntime& runtime, cl_kernel kernel, cl_mem diff,
                                        cl_mem adapter_b, cl_mem hidden_rank_grad,
-                                       float inv_norm) {
+                                       float inv_norm,
+                                       std::uint32_t adapter_rank) {
   const std::int32_t tokens = static_cast<std::int32_t>(kTokens);
   const std::int32_t hidden = static_cast<std::int32_t>(kHidden);
-  const std::int32_t rank = static_cast<std::int32_t>(kAdapterRank);
+  const std::int32_t rank = static_cast<std::int32_t>(adapter_rank);
+  const float scale = adapter_scale(adapter_rank);
   runtime.set_arg(kernel, 0U, diff);
   runtime.set_arg(kernel, 1U, adapter_b);
   runtime.set_arg(kernel, 2U, hidden_rank_grad);
   runtime.set_arg(kernel, 3U, tokens);
   runtime.set_arg(kernel, 4U, hidden);
   runtime.set_arg(kernel, 5U, rank);
-  runtime.set_arg(kernel, 6U, kAdapterScale);
+  runtime.set_arg(kernel, 6U, scale);
   runtime.set_arg(kernel, 7U, inv_norm);
-  runtime.run_1d(kernel, kTokens * kAdapterRank);
+  runtime.run_1d(kernel, kTokens * adapter_rank);
 }
 
 void dispatch_adapter_grad_a(ClRuntime& runtime, cl_kernel kernel, cl_mem input,
-                             cl_mem hidden_rank_grad, cl_mem grad_a) {
+                             cl_mem hidden_rank_grad, cl_mem grad_a,
+                             std::uint32_t adapter_rank) {
   const std::int32_t tokens = static_cast<std::int32_t>(kTokens);
   const std::int32_t hidden = static_cast<std::int32_t>(kHidden);
-  const std::int32_t rank = static_cast<std::int32_t>(kAdapterRank);
+  const std::int32_t rank = static_cast<std::int32_t>(adapter_rank);
   runtime.set_arg(kernel, 0U, input);
   runtime.set_arg(kernel, 1U, hidden_rank_grad);
   runtime.set_arg(kernel, 2U, grad_a);
   runtime.set_arg(kernel, 3U, tokens);
   runtime.set_arg(kernel, 4U, hidden);
   runtime.set_arg(kernel, 5U, rank);
-  runtime.run_1d(kernel, kHidden * kAdapterRank);
+  runtime.run_1d(kernel, kHidden * adapter_rank);
 }
 
 void dispatch_sgd_update(ClRuntime& runtime, cl_kernel kernel, cl_mem values,
@@ -1275,6 +1293,10 @@ struct AdapterStepResult {
   std::uint32_t active_tokens;
   bool applied_update;
   long max_rss_kb;
+  double grad_a_l2;
+  double grad_b_l2;
+  double update_a_delta_l2;
+  double update_b_delta_l2;
 };
 
 struct TokenHiddenTiming {
@@ -1312,6 +1334,36 @@ long max_resident_set_kb() {
 
 double elapsed_seconds_since(const std::chrono::steady_clock::time_point& start_time) {
   return std::chrono::duration<double>(std::chrono::steady_clock::now() - start_time).count();
+}
+
+void ensure_finite_values(const std::vector<float>& values, const std::string& label) {
+  for (const float value : values) {
+    if (!std::isfinite(static_cast<double>(value))) {
+      throw std::runtime_error(label + " contains a non-finite value");
+    }
+  }
+}
+
+double l2_norm(const std::vector<float>& values) {
+  double sum_sq = 0.0;
+  for (const float value : values) {
+    const double x = static_cast<double>(value);
+    sum_sq += x * x;
+  }
+  return std::sqrt(sum_sq);
+}
+
+double l2_delta(const std::vector<float>& before, const std::vector<float>& after) {
+  if (before.size() != after.size()) {
+    throw std::runtime_error("l2_delta vector sizes differ");
+  }
+  double sum_sq = 0.0;
+  for (std::size_t index = 0; index < before.size(); ++index) {
+    const double delta =
+        static_cast<double>(after[index]) - static_cast<double>(before[index]);
+    sum_sq += delta * delta;
+  }
+  return std::sqrt(sum_sq);
 }
 
 std::size_t unique_token_count(std::vector<std::uint32_t> values) {
@@ -1578,7 +1630,8 @@ TokenHiddenInputs generate_token_hidden_inputs(const std::string& token_cache_di
 void write_adapter_telemetry(const std::string& output_dir,
                              const std::string& checkpoint_dir,
                              const AdapterStepResult& result,
-                             float learning_rate) {
+                             float learning_rate,
+                             std::uint32_t adapter_rank) {
   std::ofstream file(join_path(output_dir, "telemetry.json"));
   if (!file) {
     throw std::runtime_error("unable to create adapter telemetry.json");
@@ -1594,20 +1647,27 @@ void write_adapter_telemetry(const std::string& output_dir,
   file << "  \"backend\": \"opencl\",\n";
   file << "  \"model_id\": \"google/gemma-4-E4B\",\n";
   file << "  \"revision\": \"7aa32e6889efd6300124851b164f8b364314c3d8\",\n";
-  file << "  \"trainable_scope\": \"post_layer0_rank4_residual_adapter\",\n";
+  file << "  \"trainable_scope\": ";
+  write_json_string(file, residual_adapter_scope(adapter_rank));
+  file << ",\n";
   file << "  \"kernel_contract\": \"adapter_backward_real_hidden_state_no_host_gradient\",\n";
   file << "  \"case_count\": " << kCases << ",\n";
   file << "  \"seq\": " << kSequence << ",\n";
   file << "  \"hidden_size\": " << kHidden << ",\n";
-  file << "  \"rank\": " << kAdapterRank << ",\n";
+  file << "  \"rank\": " << adapter_rank << ",\n";
   file << "  \"adapter_scale\": " << std::fixed << std::setprecision(8)
-       << kAdapterScale << ",\n";
+       << adapter_scale(adapter_rank) << ",\n";
   file << "  \"active_tokens\": " << result.active_tokens << ",\n";
   file << "  \"loss_half_mse\": " << std::fixed << std::setprecision(10)
        << result.loss << ",\n";
   file << "  \"applied_update\": " << (result.applied_update ? "true" : "false") << ",\n";
   file << "  \"learning_rate\": " << std::fixed << std::setprecision(10)
        << learning_rate << ",\n";
+  file << "  \"gradient_l2\": {\"adapter_a\": " << std::fixed << std::setprecision(10)
+       << result.grad_a_l2 << ", \"adapter_b\": " << result.grad_b_l2 << "},\n";
+  file << "  \"checkpoint_delta_l2\": {\"adapter_a\": " << std::fixed
+       << std::setprecision(10) << result.update_a_delta_l2 << ", \"adapter_b\": "
+       << result.update_b_delta_l2 << "},\n";
   file << "  \"opencl_library\": ";
   write_json_string(file, result.opencl_library);
   file << ",\n";
@@ -1768,19 +1828,28 @@ void write_streamed_artifact_manifest(const std::string& token_cache_dir,
 void write_streamed_checkpoint_manifest(const std::string& checkpoint_dir,
                                         const std::string& output_dir,
                                         const AdapterStepResult& result,
-                                        float learning_rate) {
+                                        float learning_rate,
+                                        std::uint32_t adapter_rank) {
   std::ofstream file(join_path(output_dir, "checkpoint/manifest.json"));
   if (!file) {
     throw std::runtime_error("unable to create streamed checkpoint manifest");
   }
   file << "{\n";
-  file << "  \"schema_version\": \"gemma4_rank4_adapter_checkpoint_v1\",\n";
-  file << "  \"trainable_scope\": \"post_layer0_rank4_residual_adapter\",\n";
+  file << "  \"schema_version\": \"gemma4_rank_adapter_checkpoint_v1\",\n";
+  file << "  \"trainable_scope\": ";
+  write_json_string(file, residual_adapter_scope(adapter_rank));
+  file << ",\n";
+  file << "  \"rank\": " << adapter_rank << ",\n";
   file << "  \"optimizer\": \"sgd\",\n";
   file << "  \"learning_rate\": " << std::fixed << std::setprecision(10)
        << learning_rate << ",\n";
   file << "  \"loss_half_mse\": " << std::fixed << std::setprecision(10)
        << result.loss << ",\n";
+  file << "  \"gradient_l2\": {\"adapter_a\": " << std::fixed << std::setprecision(10)
+       << result.grad_a_l2 << ", \"adapter_b\": " << result.grad_b_l2 << "},\n";
+  file << "  \"checkpoint_delta_l2\": {\"adapter_a\": " << std::fixed
+       << std::setprecision(10) << result.update_a_delta_l2 << ", \"adapter_b\": "
+       << result.update_b_delta_l2 << "},\n";
   file << "  \"active_tokens\": " << result.active_tokens << ",\n";
   file << "  \"pre_update\": {\n";
   write_sha_field(file, "adapter_a", join_path(checkpoint_dir, "adapter_a.f32.bin"), true);
@@ -1836,7 +1905,8 @@ void write_streamed_training_telemetry(const std::string& output_dir,
                                        const LayerForwardResult& first,
                                        const LayerForwardResult& second,
                                        const AdapterStepResult& adapter,
-                                       float learning_rate) {
+                                       float learning_rate,
+                                       std::uint32_t adapter_rank) {
   std::ofstream file(join_path(output_dir, "telemetry.json"));
   if (!file) {
     throw std::runtime_error("unable to create streamed telemetry.json");
@@ -1851,17 +1921,24 @@ void write_streamed_training_telemetry(const std::string& output_dir,
   file << "  \"revision\": \"7aa32e6889efd6300124851b164f8b364314c3d8\",\n";
   file << "  \"runtime_input_path\": \"token_cache_to_phone_generated_hidden_to_opencl_layers_to_adapter_update\",\n";
   file << "  \"hidden_state_fixtures_consumed\": [],\n";
-  file << "  \"trainable_scope\": \"post_layer0_rank4_residual_adapter\",\n";
+  file << "  \"trainable_scope\": ";
+  write_json_string(file, residual_adapter_scope(adapter_rank));
+  file << ",\n";
   file << "  \"optimizer\": \"sgd\",\n";
   file << "  \"case_count\": " << kCases << ",\n";
   file << "  \"seq\": " << kSequence << ",\n";
   file << "  \"hidden_size\": " << kHidden << ",\n";
-  file << "  \"rank\": " << kAdapterRank << ",\n";
+  file << "  \"rank\": " << adapter_rank << ",\n";
   file << "  \"learning_rate\": " << std::fixed << std::setprecision(10)
        << learning_rate << ",\n";
   file << "  \"active_tokens\": " << adapter.active_tokens << ",\n";
   file << "  \"loss_half_mse\": " << std::fixed << std::setprecision(10)
        << adapter.loss << ",\n";
+  file << "  \"gradient_l2\": {\"adapter_a\": " << std::fixed << std::setprecision(10)
+       << adapter.grad_a_l2 << ", \"adapter_b\": " << adapter.grad_b_l2 << "},\n";
+  file << "  \"checkpoint_delta_l2\": {\"adapter_a\": " << std::fixed
+       << std::setprecision(10) << adapter.update_a_delta_l2 << ", \"adapter_b\": "
+       << adapter.update_b_delta_l2 << "},\n";
   file << "  \"applied_update\": " << (adapter.applied_update ? "true" : "false") << ",\n";
   file << "  \"opencl_libraries\": [";
   write_json_string(file, first.opencl_library);
@@ -1904,7 +1981,8 @@ AdapterStepResult run_adapter_step_from_values(const std::vector<float>& input,
                                                const std::vector<std::uint8_t>& mask,
                                                const std::string& checkpoint_dir,
                                                bool apply_update,
-                                               float learning_rate) {
+                                               float learning_rate,
+                                               std::uint32_t adapter_rank) {
   const auto start_time = std::chrono::steady_clock::now();
   if (input.size() != (kTokens * kHidden) || target.size() != (kTokens * kHidden)) {
     throw std::runtime_error("adapter step input or target has invalid hidden element count");
@@ -1914,10 +1992,10 @@ AdapterStepResult run_adapter_step_from_values(const std::vector<float>& input,
   }
   std::vector<float> adapter_a =
       read_binary_vector<float>(join_path(checkpoint_dir, "adapter_a.f32.bin"),
-                                kHidden * kAdapterRank);
+                                kHidden * adapter_rank);
   std::vector<float> adapter_b =
       read_binary_vector<float>(join_path(checkpoint_dir, "adapter_b.f32.bin"),
-                                kAdapterRank * kHidden);
+                                adapter_rank * kHidden);
 
   const std::uint32_t active_tokens = count_active_tokens(mask);
   const float inv_norm =
@@ -1937,44 +2015,55 @@ AdapterStepResult run_adapter_step_from_values(const std::vector<float>& input,
   cl_mem mask_buffer = runtime.buffer_from_vector(mask_values);
   cl_mem adapter_a_buffer = runtime.buffer_from_vector(adapter_a);
   cl_mem adapter_b_buffer = runtime.buffer_from_vector(adapter_b);
-  cl_mem z = runtime.buffer(kTokens * kAdapterRank * sizeof(float));
+  cl_mem z = runtime.buffer(kTokens * adapter_rank * sizeof(float));
   cl_mem diff = runtime.buffer(kTokens * kHidden * sizeof(float));
-  cl_mem hidden_rank_grad = runtime.buffer(kTokens * kAdapterRank * sizeof(float));
-  cl_mem grad_a = runtime.buffer(kHidden * kAdapterRank * sizeof(float));
-  cl_mem grad_b = runtime.buffer(kAdapterRank * kHidden * sizeof(float));
+  cl_mem hidden_rank_grad = runtime.buffer(kTokens * adapter_rank * sizeof(float));
+  cl_mem grad_a = runtime.buffer(kHidden * adapter_rank * sizeof(float));
+  cl_mem grad_b = runtime.buffer(adapter_rank * kHidden * sizeof(float));
 
   dispatch_adapter_forward_z(runtime, kernels.adapter_forward_z, input_buffer,
-                             adapter_a_buffer, z);
+                             adapter_a_buffer, z, adapter_rank);
   dispatch_adapter_output_diff(runtime, kernels.adapter_output_diff, input_buffer,
-                               target_buffer, mask_buffer, z, adapter_b_buffer, diff);
-  dispatch_adapter_grad_b(runtime, kernels.adapter_grad_b, z, diff, grad_b, inv_norm);
+                               target_buffer, mask_buffer, z, adapter_b_buffer, diff,
+                               adapter_rank);
+  dispatch_adapter_grad_b(runtime, kernels.adapter_grad_b, z, diff, grad_b, inv_norm,
+                          adapter_rank);
   dispatch_adapter_hidden_rank_grad(runtime, kernels.adapter_hidden_rank_grad, diff,
-                                    adapter_b_buffer, hidden_rank_grad, inv_norm);
+                                    adapter_b_buffer, hidden_rank_grad, inv_norm,
+                                    adapter_rank);
   dispatch_adapter_grad_a(runtime, kernels.adapter_grad_a, input_buffer,
-                          hidden_rank_grad, grad_a);
+                          hidden_rank_grad, grad_a, adapter_rank);
   if (apply_update) {
     dispatch_sgd_update(runtime, kernels.sgd_update, adapter_a_buffer, grad_a,
-                        learning_rate, static_cast<std::int32_t>(kHidden * kAdapterRank));
+                        learning_rate, static_cast<std::int32_t>(kHidden * adapter_rank));
     dispatch_sgd_update(runtime, kernels.sgd_update, adapter_b_buffer, grad_b,
-                        learning_rate, static_cast<std::int32_t>(kAdapterRank * kHidden));
+                        learning_rate, static_cast<std::int32_t>(adapter_rank * kHidden));
   }
   runtime.finish();
 
   std::vector<float> diff_values(kTokens * kHidden);
-  std::vector<float> grad_a_values(kHidden * kAdapterRank);
-  std::vector<float> grad_b_values(kAdapterRank * kHidden);
-  std::vector<float> updated_a_values(kHidden * kAdapterRank);
-  std::vector<float> updated_b_values(kAdapterRank * kHidden);
+  std::vector<float> grad_a_values(kHidden * adapter_rank);
+  std::vector<float> grad_b_values(adapter_rank * kHidden);
+  std::vector<float> updated_a_values(kHidden * adapter_rank);
+  std::vector<float> updated_b_values(adapter_rank * kHidden);
   runtime.read_buffer(diff, diff_values);
   runtime.read_buffer(grad_a, grad_a_values);
   runtime.read_buffer(grad_b, grad_b_values);
   runtime.read_buffer(adapter_a_buffer, updated_a_values);
   runtime.read_buffer(adapter_b_buffer, updated_b_values);
+  ensure_finite_values(grad_a_values, "adapter_grad_a");
+  ensure_finite_values(grad_b_values, "adapter_grad_b");
+  ensure_finite_values(updated_a_values, "updated_adapter_a");
+  ensure_finite_values(updated_b_values, "updated_adapter_b");
 
   const auto end_time = std::chrono::steady_clock::now();
   const double elapsed_seconds =
       std::chrono::duration<double>(end_time - start_time).count();
   const double loss = masked_mse_half_loss(diff_values, mask, active_tokens);
+  const double grad_a_l2 = l2_norm(grad_a_values);
+  const double grad_b_l2 = l2_norm(grad_b_values);
+  const double update_a_delta_l2 = l2_delta(adapter_a, updated_a_values);
+  const double update_b_delta_l2 = l2_delta(adapter_b, updated_b_values);
   return AdapterStepResult{std::move(grad_a_values),
                            std::move(grad_b_values),
                            std::move(updated_a_values),
@@ -1984,13 +2073,18 @@ AdapterStepResult run_adapter_step_from_values(const std::vector<float>& input,
                            loss,
                            active_tokens,
                            apply_update,
-                           max_resident_set_kb()};
+                           max_resident_set_kb(),
+                           grad_a_l2,
+                           grad_b_l2,
+                           update_a_delta_l2,
+                           update_b_delta_l2};
 }
 
 AdapterStepResult run_adapter_step_values(const std::string& fixture_dir,
                                           const std::string& checkpoint_dir,
                                           bool apply_update,
-                                          float learning_rate) {
+                                          float learning_rate,
+                                          std::uint32_t adapter_rank) {
   std::vector<float> input =
       read_binary_vector<float>(join_path(fixture_dir, "input/layer0_output.f32.bin"),
                                 kTokens * kHidden);
@@ -2001,7 +2095,7 @@ AdapterStepResult run_adapter_step_values(const std::string& fixture_dir,
       read_binary_vector<std::uint8_t>(join_path(fixture_dir, "input/attention_mask.u8.bin"),
                                        kTokens);
   return run_adapter_step_from_values(input, target, mask, checkpoint_dir, apply_update,
-                                      learning_rate);
+                                      learning_rate, adapter_rank);
 }
 
 LayerForwardResult run_opencl_layer_values(const std::string& pack_dir,
@@ -2222,10 +2316,10 @@ Status run_opencl_adapter_gradient_step(const std::string& fixture_dir,
   try {
     ensure_directory(output_dir);
     const AdapterStepResult result =
-        run_adapter_step_values(fixture_dir, checkpoint_dir, false, 0.0F);
+        run_adapter_step_values(fixture_dir, checkpoint_dir, false, 0.0F, kAdapterRank);
     write_binary_vector(join_path(output_dir, "adapter_grad_a.f32.bin"), result.grad_a);
     write_binary_vector(join_path(output_dir, "adapter_grad_b.f32.bin"), result.grad_b);
-    write_adapter_telemetry(output_dir, checkpoint_dir, result, 0.0F);
+    write_adapter_telemetry(output_dir, checkpoint_dir, result, 0.0F, kAdapterRank);
     return Status::ok();
   } catch (const std::exception& error) {
     return Status::invalid(error.what());
@@ -2243,14 +2337,16 @@ Status run_opencl_adapter_sgd_update(const std::string& fixture_dir,
     ensure_directory(output_dir);
     ensure_directory(join_path(output_dir, "checkpoint"));
     const AdapterStepResult result =
-        run_adapter_step_values(fixture_dir, checkpoint_dir, true, learning_rate);
+        run_adapter_step_values(fixture_dir, checkpoint_dir, true, learning_rate,
+                                kAdapterRank);
     write_binary_vector(join_path(output_dir, "adapter_grad_a.f32.bin"), result.grad_a);
     write_binary_vector(join_path(output_dir, "adapter_grad_b.f32.bin"), result.grad_b);
     write_binary_vector(join_path(output_dir, "checkpoint/adapter_a.f32.bin"),
                         result.updated_a);
     write_binary_vector(join_path(output_dir, "checkpoint/adapter_b.f32.bin"),
                         result.updated_b);
-    write_adapter_telemetry(output_dir, checkpoint_dir, result, learning_rate);
+    write_adapter_telemetry(output_dir, checkpoint_dir, result, learning_rate,
+                            kAdapterRank);
     return Status::ok();
   } catch (const std::exception& error) {
     return Status::invalid(error.what());
@@ -2266,9 +2362,27 @@ Status run_opencl_streamed_distill_update(const std::string& token_cache_dir,
                                           float learning_rate,
                                           bool write_raw_outputs,
                                           bool hash_static_artifacts) {
+  return run_opencl_streamed_distill_update_rank(
+      token_cache_dir, asset_dir, layer0_pack_dir, layer1_pack_dir, checkpoint_dir,
+      output_dir, learning_rate, kAdapterRank, write_raw_outputs, hash_static_artifacts);
+}
+
+Status run_opencl_streamed_distill_update_rank(const std::string& token_cache_dir,
+                                               const std::string& asset_dir,
+                                               const std::string& layer0_pack_dir,
+                                               const std::string& layer1_pack_dir,
+                                               const std::string& checkpoint_dir,
+                                               const std::string& output_dir,
+                                               float learning_rate,
+                                               std::uint32_t adapter_rank,
+                                               bool write_raw_outputs,
+                                               bool hash_static_artifacts) {
   try {
     if (!(learning_rate > 0.0F) || !std::isfinite(learning_rate)) {
       return Status::invalid("learning rate must be finite and positive");
+    }
+    if (adapter_rank == 0U) {
+      return Status::invalid("adapter rank must be positive");
     }
     ensure_directory(output_dir);
     ensure_directory(join_path(output_dir, "generated"));
@@ -2303,7 +2417,7 @@ Status run_opencl_streamed_distill_update(const std::string& token_cache_dir,
 
     const AdapterStepResult adapter = run_adapter_step_from_values(
         first.output_values, second.output_values, token_inputs.attention_mask,
-        checkpoint_dir, true, learning_rate);
+        checkpoint_dir, true, learning_rate, adapter_rank);
     if (write_raw_outputs) {
       write_binary_vector(join_path(output_dir, "adapter_grad_a.f32.bin"), adapter.grad_a);
       write_binary_vector(join_path(output_dir, "adapter_grad_b.f32.bin"), adapter.grad_b);
@@ -2314,7 +2428,7 @@ Status run_opencl_streamed_distill_update(const std::string& token_cache_dir,
                         adapter.updated_b);
 
     write_streamed_checkpoint_manifest(checkpoint_dir, output_dir, adapter,
-                                       learning_rate);
+                                       learning_rate, adapter_rank);
     write_streamed_artifact_manifest(token_cache_dir, asset_dir, layer0_pack_dir,
                                      layer1_pack_dir, checkpoint_dir, output_dir,
                                      write_raw_outputs, hash_static_artifacts);
@@ -2322,7 +2436,7 @@ Status run_opencl_streamed_distill_update(const std::string& token_cache_dir,
                                    layer1_pack_dir, checkpoint_dir, output_dir,
                                    learning_rate, write_raw_outputs);
     write_streamed_training_telemetry(output_dir, token_inputs, first, second,
-                                      adapter, learning_rate);
+                                      adapter, learning_rate, adapter_rank);
     return Status::ok();
   } catch (const std::exception& error) {
     return Status::invalid(error.what());

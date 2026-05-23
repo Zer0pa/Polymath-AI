@@ -1,12 +1,13 @@
 {
-  "_synced_at": "2026-05-23T21:00:33Z",
+  "_synced_at": "2026-05-23T21:18:38Z",
   "active_calculations": [
     "Execute Phase 11 only through phone-resident queue-run experiments with authority non-regression gates and artifact hygiene.",
-    "Sequential hypotheses complete through H11-D; continue H11-E trainable scope sweep before H11-F/H11-G/H11-H."
+    "Sequential hypotheses complete through H11-E; continue H11-F objective upgrade before H11-G/H11-H."
   ],
   "approximations": [],
   "blockers": [
     "Phase 10 six-hour endurance is promoted only for the current rank-4 two-layer phone-native lane. Full Gemma4 training, Hexagon NPU training, public benchmark readiness, and theoretical maximum remain blocked.",
+    "H11-E did not promote expanded adapter ranks or projection LoRA. Rank-16 and rank-32 were finite and mutable but showed zero two-iteration loss reduction; projection LoRA remains blocked until layer-internal backward kernels and checkpoint layout exist.",
     "GPD phase-add succeeded for Phase 11, but generic GPD state synchronization rewrote .gpd/state.json in a lossy parser format during this PRD-writing task. The machine state was restored and updated via structured JSON; future agents should parse-check .gpd/state.json after GPD CLI state commands."
   ],
   "convention_lock": {
@@ -58,18 +59,19 @@
     "Phase 11 authority PRD and execution handoff were written: docs/PRD-HARDWARE-NATIVE-TRAINING-POVC.md, docs/HANDOFF-HARDWARE-NATIVE-TRAINING-POVC-EXECUTOR.md, docs/STARTUP-PROMPT-HARDWARE-NATIVE-TRAINING-POVC.md",
     "Phase 11 GPD execution plan was scaffolded: .gpd/phases/11-hardware-native-training-povc/11-01-PLAN.md",
     "Phase 11 executor controls were hardened for long-horizon campaign execution: no stopping after intermediate wins, exact pass/fail/blocker cadence after each H11 gate, targeted subagent/falsification decision rules, RunPod alternate SSH, and no minimized-proxy language in HTP probing.",
-    "H11-D OpenCL recordable queues passed: runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T205951Z_h11d_recordable_queues/H11-D-recordable-queues/gate_result.json"
+    "H11-D OpenCL recordable queues passed: runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T205951Z_h11d_recordable_queues/H11-D-recordable-queues/gate_result.json",
+    "H11-E trainable scope sweep failed with rank-4 baseline retained: runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T211427Z_h11e_scope_sweep/H11-E-scope-sweep/gate_result.json; first implementation failure preserved at runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T211134Z_h11e_scope_sweep/H11-E-scope-sweep/gate_result.json"
   ],
   "open_questions": [
     "Whether Android permits the phone-resident runner to continue reliably after ADB/USB disconnect, and what resume behavior is needed if it does not.",
     "Whether safe fixed performance mode, charge separation, fan state, and OEM controls materially improve active/wall without unsafe thermal behavior.",
-    "Which expanded DoRA/LoRA scope and objective produces a capability-relevant signal beyond the rank-4 parity lane.",
+    "Whether H11-F can replace parity-MSE with a predeclared objective that moves a held-out teacher/capability signal while retaining the rank-4 baseline scope.",
     "Whether QAIRT mutable sections can become an HTP teacher/frozen-forward or zero-order arm without claiming normal HTP backprop.",
     "Whether H11-D recordable queue launch savings remain useful in an end-to-end H11-H training sequence after the H11-C residual was already reduced below threshold."
   ],
   "pending_todos": [
-    "Start the next execution agent with docs/STARTUP-PROMPT-HARDWARE-NATIVE-TRAINING-POVC.md.",
-    "Execute H11-A first: phone-resident daemon, local queue, heartbeat, checksum chain, STOP file, and resume behavior.",
+    "Continue Phase 11 with H11-F objective upgrade under the H11-A daemon topology and rank-4 baseline scope.",
+    "Do not promote capability movement unless the predeclared objective improves beyond a fixed-adapter control with held-out non-regression.",
     "Do not run H11-H or another long endurance job until H11-A through H11-G have pass/fail/blocker artifacts or exact boundary blockers."
   ],
   "performance_metrics": {
@@ -117,7 +119,7 @@
     ]
   },
   "phase11": {
-    "current_gate": "H11-E",
+    "current_gate": "H11-F",
     "h11a": {
       "active_training_seconds": 527.878356,
       "active_wall_ratio": 0.96051948,
@@ -167,6 +169,29 @@
       "recordable_queues_supported": true,
       "selected_recordable_property": "0x40000000",
       "status": "pass"
+    },
+    "h11e": {
+      "baseline_rank": 4,
+      "blockers": [
+        "rank-16 did not reduce loss over two iterations",
+        "rank-32 did not reduce loss over two iterations",
+        "no expanded rank candidate was viable"
+      ],
+      "expanded_ranks_tested": [
+        16,
+        32
+      ],
+      "failed_attempt_preserved": "runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T211134Z_h11e_scope_sweep/H11-E-scope-sweep/gate_result.json",
+      "gate_result": "runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T211427Z_h11e_scope_sweep/H11-E-scope-sweep/gate_result.json",
+      "next_gate": "H11-F objective upgrade",
+      "projection_lora_status": "blocked_not_promoted",
+      "rank16_loss_delta": 0.0,
+      "rank32_loss_delta": 0.0,
+      "rank4_active_seconds": 12.500036,
+      "rank4_loss_delta": 1.000000082740371e-10,
+      "rank4_loss_delta_per_active_second": 7.999977621987417e-12,
+      "selected_rank": 4,
+      "status": "fail_with_rank4_baseline_retained"
     }
   },
   "position": {
@@ -174,11 +199,11 @@
     "current_phase_name": "Hardware-Native Training POVC",
     "current_plan": 1,
     "last_activity": "2026-05-23",
-    "last_activity_desc": "Hardened the Phase 11 control artifacts for long-horizon execution: added RunPod alternate SSH, explicit campaign cadence, no-intermediate-report stopping rules, subagent/falsification decision rules, safe device handling, and removed minimized-proxy language from HTP probing. No phone experiments or training runs were executed.",
-    "last_activity_description": "Hardened the Phase 11 control artifacts for long-horizon execution: added RunPod alternate SSH, explicit campaign cadence, no-intermediate-report stopping rules, subagent/falsification decision rules, safe device handling, and removed minimized-proxy language from HTP probing. No phone experiments or training runs were executed.",
+    "last_activity_desc": "Ran H11-E trainable scope sweep. Rank-16 and rank-32 were finite and mutable but did not reduce loss over two phone-local daemon iterations, so expanded scopes and projection LoRA were not promoted. Rank-4 baseline is retained for H11-F.",
+    "last_activity_description": "Ran H11-E trainable scope sweep. Rank-16 and rank-32 were finite and mutable but did not reduce loss over two phone-local daemon iterations, so expanded scopes and projection LoRA were not promoted. Rank-4 baseline is retained for H11-F.",
     "paused_at": null,
     "progress_percent": 92,
-    "status": "Phase 11 PRD, handoff, startup prompt, and GPD plan hardened; execution not started",
+    "status": "H11-E trainable scope sweep failed with rank-4 baseline retained; H11-F objective upgrade next",
     "total_phases": 12,
     "total_plans_in_phase": 1
   },

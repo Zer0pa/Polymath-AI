@@ -1,0 +1,3 @@
+- rank-16 did not reduce loss over two iterations
+- rank-32 did not reduce loss over two iterations
+- no expanded rank candidate was viable

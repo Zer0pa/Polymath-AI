@@ -1,0 +1,3 @@
+adb push phase11_runner PHONE_PHASE11_ROOT/phase11_runner
+adb push rankN initial adapter checkpoint PHONE_PHASE11_ROOT/h11e_checkpoints/rankN_init
+adb shell phase11_runner --queue queue/h11e_rankN_queue.jsonl --run-root runs --heartbeat ... --state ...
