@@ -1,0 +1,16 @@
+{
+  "daemon": "H11-A phone-resident queue runner with heartbeat/state/checksum chain",
+  "h11g_gate": {
+    "gate": "H11-G HTP mutable-adapter / zero-order arm",
+    "path": "runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T223147Z_h11g_htp_mutable_adapter/H11-G-htp-mutable-adapter/gate_result.json",
+    "status": "pass_classified_frozen_forward_only"
+  },
+  "htp_role": "H11-G classified HTP as frozen-forward/teacher only; no mutable-section training in H11-H",
+  "objective": "topk_embedding_kl_distillation_v1",
+  "performance_profile": "H11-B baseline-safe profile; no unsafe perf-control promotion",
+  "queue_backend": "ordinary OpenCL command queues; H11-D recordable queues retained as evidence only",
+  "runtime_teacher_service_used": false,
+  "schema_version": "phase11_h11h_combined_choices_v1",
+  "teacher": "RunPod-precomputed full Gemma4 E4B top-k shards already staged on phone",
+  "trainable_scope": "post_layer0_rank4_residual_adapter"
+}

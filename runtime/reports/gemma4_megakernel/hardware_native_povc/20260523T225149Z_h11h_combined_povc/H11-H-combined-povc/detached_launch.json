@@ -1,0 +1,83 @@
+{
+  "arms": {
+    "baseline_eval": {
+      "apply_update": false,
+      "arm": "baseline_eval",
+      "config_name": "h11h_baseline_eval_config.json",
+      "final_checkpoint": "/data/local/tmp/polymath_gemma4_gate/phase11/runs/20260523T225149Z_h11h_combined_povc_baseline_eval/H11-H-combined-povc/iterations/iter_000000/checkpoint",
+      "heartbeat_path": "/data/local/tmp/polymath_gemma4_gate/phase11/h11h_baseline_eval_heartbeat.json",
+      "iterations": 1,
+      "local_report_dir": "runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T225149Z_h11h_combined_povc/H11-H-combined-povc/arms/baseline_eval",
+      "phone_gate_dir": "/data/local/tmp/polymath_gemma4_gate/phase11/runs/20260523T225149Z_h11h_combined_povc_baseline_eval/H11-H-combined-povc",
+      "queue_name": "h11h_baseline_eval_queue.jsonl",
+      "run_id": "20260523T225149Z_h11h_combined_povc_baseline_eval",
+      "schema_version": "phase11_h11h_detached_arm_v1",
+      "state_path": "/data/local/tmp/polymath_gemma4_gate/phase11/h11h_baseline_eval_state.json",
+      "stop_path": "/data/local/tmp/polymath_gemma4_gate/phase11/STOP_h11h_baseline_eval"
+    },
+    "train": {
+      "apply_update": true,
+      "arm": "train",
+      "config_name": "h11h_train_config.json",
+      "final_checkpoint": "/data/local/tmp/polymath_gemma4_gate/phase11/runs/20260523T225149Z_h11h_combined_povc_train/H11-H-combined-povc/iterations/iter_000999/checkpoint",
+      "heartbeat_path": "/data/local/tmp/polymath_gemma4_gate/phase11/h11h_train_heartbeat.json",
+      "iterations": 1000,
+      "local_report_dir": "runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T225149Z_h11h_combined_povc/H11-H-combined-povc/arms/train",
+      "phone_gate_dir": "/data/local/tmp/polymath_gemma4_gate/phase11/runs/20260523T225149Z_h11h_combined_povc_train/H11-H-combined-povc",
+      "queue_name": "h11h_train_queue.jsonl",
+      "run_id": "20260523T225149Z_h11h_combined_povc_train",
+      "schema_version": "phase11_h11h_detached_arm_v1",
+      "state_path": "/data/local/tmp/polymath_gemma4_gate/phase11/h11h_train_state.json",
+      "stop_path": "/data/local/tmp/polymath_gemma4_gate/phase11/STOP_h11h_train"
+    },
+    "trained_eval": {
+      "apply_update": false,
+      "arm": "trained_eval",
+      "config_name": "h11h_trained_eval_config.json",
+      "final_checkpoint": "/data/local/tmp/polymath_gemma4_gate/phase11/runs/20260523T225149Z_h11h_combined_povc_trained_eval/H11-H-combined-povc/iterations/iter_000000/checkpoint",
+      "heartbeat_path": "/data/local/tmp/polymath_gemma4_gate/phase11/h11h_trained_eval_heartbeat.json",
+      "iterations": 1,
+      "local_report_dir": "runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T225149Z_h11h_combined_povc/H11-H-combined-povc/arms/trained_eval",
+      "phone_gate_dir": "/data/local/tmp/polymath_gemma4_gate/phase11/runs/20260523T225149Z_h11h_combined_povc_trained_eval/H11-H-combined-povc",
+      "queue_name": "h11h_trained_eval_queue.jsonl",
+      "run_id": "20260523T225149Z_h11h_combined_povc_trained_eval",
+      "schema_version": "phase11_h11h_detached_arm_v1",
+      "state_path": "/data/local/tmp/polymath_gemma4_gate/phase11/h11h_trained_eval_state.json",
+      "stop_path": "/data/local/tmp/polymath_gemma4_gate/phase11/STOP_h11h_trained_eval"
+    }
+  },
+  "collect_command": "python3 scripts/host/run_phase11_h11h_combined_povc.py --collect-detached --run-id 20260523T225149Z_h11h_combined_povc --iterations 1000",
+  "host_final_falsifier_prelaunch": {
+    "failed_checks": [],
+    "gate_result": {
+      "authority_verdict": "promote_narrow_rank4_two_layer_distillation_adapter_claim",
+      "final_falsifier_report": "runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T225149Z_h11h_combined_povc/H11-H-combined-povc/regressions/g1_g3_g8_falsifier_rerun/falsifier_report.json",
+      "gate": "Phase 9 final falsifier review",
+      "run_id": "20260523T225149Z_h11h_combined_povc_g1_g3_g8_regression_floor",
+      "schema_version": "gemma4_g10_final_gate_result_v1",
+      "status": "pass",
+      "summary": "All G1-G9 authority evidence survived final falsifier review under the narrow rank-4 adapter claim."
+    },
+    "local_report_dir": "runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T225149Z_h11h_combined_povc/H11-H-combined-povc/regressions/g1_g3_g8_falsifier_rerun",
+    "returncode": 0,
+    "schema_version": "phase11_h11h_final_falsifier_rerun_v1",
+    "status": "pass",
+    "stderr_first_2048": "",
+    "stdout_first_2048": "{\"gate\": \"/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T225149Z_h11h_combined_povc/H11-H-combined-povc/regressions/g1_g3_g8_falsifier_rerun/gate_result.json\", \"report\": \"/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T225149Z_h11h_combined_povc/H11-H-combined-povc/regressions/g1_g3_g8_falsifier_rerun/falsifier_report.json\", \"status\": \"pass\"}\n"
+  },
+  "launch_returncode": 0,
+  "launch_stderr": "",
+  "launch_stdout": "",
+  "phone_chain_bootstrap": "/data/local/tmp/polymath_gemma4_gate/phase11/h11h_20260523T225149Z_h11h_combined_povc_chain.bootstrap.log",
+  "phone_chain_events": "/data/local/tmp/polymath_gemma4_gate/phase11/h11h_20260523T225149Z_h11h_combined_povc_chain_events.jsonl",
+  "phone_chain_log": "/data/local/tmp/polymath_gemma4_gate/phase11/h11h_20260523T225149Z_h11h_combined_povc_chain.log",
+  "phone_chain_pid": "7056",
+  "phone_chain_pid_path": "/data/local/tmp/polymath_gemma4_gate/phase11/h11h_20260523T225149Z_h11h_combined_povc_chain.pid",
+  "phone_chain_script": "/data/local/tmp/polymath_gemma4_gate/phase11/h11h_20260523T225149Z_h11h_combined_povc_chain.sh",
+  "phone_chain_state": "/data/local/tmp/polymath_gemma4_gate/phase11/h11h_20260523T225149Z_h11h_combined_povc_chain_state.json",
+  "phone_phase11_root": "/data/local/tmp/polymath_gemma4_gate/phase11",
+  "run_id": "20260523T225149Z_h11h_combined_povc",
+  "schema_version": "phase11_h11h_detached_launch_v1",
+  "started_at_utc": "2026-05-23T22:51:49Z",
+  "status": "launched"
+}

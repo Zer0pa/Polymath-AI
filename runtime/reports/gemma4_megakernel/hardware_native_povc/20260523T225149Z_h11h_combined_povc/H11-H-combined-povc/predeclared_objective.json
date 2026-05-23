@@ -1,0 +1,20 @@
+{
+  "active_wall_floor": 0.5,
+  "capability_objective": {
+    "agreement_guardrail": "heldout student_teacher_top1_agreement does not regress",
+    "heldout_epsilon": 1e-09,
+    "heldout_gate": "heldout loss_topk_kl non-regression versus fixed-adapter control",
+    "mini_metric": "heldout mean_student_teacher_top1_probability improves beyond fixed control",
+    "train_gate": "loss_topk_kl decreases over the train arm"
+  },
+  "declared_at_utc": "2026-05-23T22:51:49Z",
+  "declared_before_phone_training_run": true,
+  "duration_objective": {
+    "minimum_prd_floor": ">=1000 iterations",
+    "train_iterations": 1000,
+    "wall_hours_extension": "not predeclared; stop after 1000 iterations unless safety stop fires"
+  },
+  "regression_gate": "G1/G3/relevant G8 stored floor plus phone smoke reruns must pass",
+  "runtime_topology_gate": "phone_local_queue_no_adb_per_iteration",
+  "schema_version": "phase11_h11h_predeclared_objective_v1"
+}

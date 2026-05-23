@@ -1,0 +1,26 @@
+{
+  "adapter_rank": 4,
+  "apply_update": true,
+  "asset_dir": "/data/local/tmp/polymath_gemma4_gate/streamed_assets/g8_layer01_20260517T071405Z",
+  "disconnect_hold_seconds": 0,
+  "gate_dir_name": "H11-H-combined-povc",
+  "gate_name": "H11-H",
+  "h11h_queue_record_gate_workaround": "H11-F record dispatches the shared top-k queue runner; config gate_name remains H11-H.",
+  "initial_checkpoint": "/data/local/tmp/polymath_gemma4_gate/adapter_training/g5g6_rank4_20260517T040000Z/checkpoint",
+  "iteration_count": 1000,
+  "layer0_pack": "/data/local/tmp/polymath_gemma4_gate/layer_pack/gemma4_e4b_layer0_seq128_v0",
+  "layer1_pack": "/data/local/tmp/polymath_gemma4_gate/layer_pack/gemma4_e4b_layer1_seq128_v0",
+  "learning_rate": 0.01,
+  "marker_wait_seconds": 0,
+  "objective": "topk_embedding_kl",
+  "require_disconnect_marker": false,
+  "run_id": "20260523T225149Z_h11h_combined_povc_train",
+  "sample_every": 1001,
+  "schema_version": "phase11_h11h_config_v1",
+  "teacher_shards": [
+    "/data/local/tmp/polymath_gemma4_gate/phase11/h11f_teacher_shards/train"
+  ],
+  "token_caches": [
+    "/data/local/tmp/polymath_gemma4_gate/hf_stream/20260517T083219Z_phase10_hf_auth_token_bridge_baseline_cache"
+  ]
+}
