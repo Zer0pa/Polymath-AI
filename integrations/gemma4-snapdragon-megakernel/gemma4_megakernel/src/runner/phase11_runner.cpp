@@ -46,7 +46,11 @@ struct QueueRecord {
 
 struct H11AConfig {
   std::string run_id;
+  std::string gate_name = "H11-A";
+  std::string gate_dir_name = "H11-A-daemon";
+  std::string objective = "hidden_mse";
   std::vector<std::string> token_caches;
+  std::vector<std::string> teacher_shards;
   std::string asset_dir;
   std::string layer0_pack;
   std::string layer1_pack;
@@ -58,6 +62,7 @@ struct H11AConfig {
   int disconnect_hold_seconds = 600;
   double learning_rate = 0.01;
   int adapter_rank = 4;
+  bool apply_update = true;
   bool require_disconnect_marker = true;
 };
 
@@ -75,6 +80,7 @@ struct IterationRecord {
   bool sample = false;
   std::string status;
   std::string token_cache;
+  std::string teacher_shard;
   std::string input_checkpoint;
   std::string output_checkpoint;
   std::string phone_output_dir;
@@ -678,7 +684,11 @@ H11AConfig read_h11a_config(const std::string& config_path,
   const std::string json = read_text_file(config_path);
   H11AConfig config;
   config.run_id = json_string_or(json, "run_id", "");
+  config.gate_name = json_string_or(json, "gate_name", config.gate_name);
+  config.gate_dir_name = json_string_or(json, "gate_dir_name", config.gate_dir_name);
+  config.objective = json_string_or(json, "objective", config.objective);
   config.token_caches = json_string_array_value(json, "token_caches");
+  config.teacher_shards = json_string_array_value(json, "teacher_shards");
   config.asset_dir = resolve_path(json_string_or(json, "asset_dir", ""), cwd);
   config.layer0_pack = resolve_path(json_string_or(json, "layer0_pack", ""), cwd);
   config.layer1_pack = resolve_path(json_string_or(json, "layer1_pack", ""), cwd);
@@ -696,14 +706,24 @@ H11AConfig read_h11a_config(const std::string& config_path,
       json_int_or(json, "disconnect_hold_seconds", config.disconnect_hold_seconds);
   config.learning_rate = json_double_or(json, "learning_rate", config.learning_rate);
   config.adapter_rank = json_int_or(json, "adapter_rank", config.adapter_rank);
+  config.apply_update = json_bool_or(json, "apply_update", config.apply_update);
   config.require_disconnect_marker =
       json_bool_or(json, "require_disconnect_marker", config.require_disconnect_marker);
 
   for (std::string& token_cache : config.token_caches) {
     token_cache = resolve_path(token_cache, cwd);
   }
+  for (std::string& teacher_shard : config.teacher_shards) {
+    teacher_shard = resolve_path(teacher_shard, cwd);
+  }
   if (config.token_caches.empty()) {
     throw std::runtime_error("H11-A config requires token_caches");
+  }
+  if (config.objective == "topk_embedding_kl" && config.teacher_shards.empty()) {
+    throw std::runtime_error("topk_embedding_kl objective requires teacher_shards");
+  }
+  if (config.objective != "hidden_mse" && config.objective != "topk_embedding_kl") {
+    throw std::runtime_error("unsupported objective: " + config.objective);
   }
   if (config.asset_dir.empty() || config.layer0_pack.empty() || config.layer1_pack.empty() ||
       config.initial_checkpoint.empty()) {
@@ -787,6 +807,8 @@ void append_iteration_telemetry(const std::string& telemetry_jsonl_path,
       << record.active_training_seconds;
   out << ",\"token_cache\":";
   polymath::gemma4::write_json_string(out, record.token_cache);
+  out << ",\"teacher_shard\":";
+  polymath::gemma4::write_json_string(out, record.teacher_shard);
   out << ",\"input_checkpoint\":";
   polymath::gemma4::write_json_string(out, record.input_checkpoint);
   out << ",\"output_checkpoint\":";
@@ -807,7 +829,8 @@ void write_queue_schema(const std::string& gate_dir) {
       "  \"schema_version\": \"phase11_queue_schema_v1\",\n"
       "  \"record_format\": \"jsonl\",\n"
       "  \"required_fields\": [\"id\", \"gate\", \"config\", \"depends_on\", \"resume\"],\n"
-      "  \"supported_gate_in_this_build\": \"H11-A\",\n"
+      "  \"supported_gates_in_this_build\": [\"H11-A\", \"H11-F\"],\n"
+      "  \"supported_objectives\": [\"hidden_mse\", \"topk_embedding_kl\"],\n"
       "  \"runner_build_id\": \"phase11_runner_h11a_v1_20260523\"\n"
       "}\n");
 }
@@ -862,7 +885,7 @@ void write_static_manifest_entry(std::ostream& out,
 
 void write_daemon_static_artifact_manifest(const std::string& gate_dir,
                                            const H11AConfig& config) {
-  const std::vector<std::pair<std::string, std::string>> artifacts = {
+  std::vector<std::pair<std::string, std::string>> artifacts = {
       {"asset_manifest", join_path(config.asset_dir, "manifest.json")},
       {"embed_tokens", join_path(config.asset_dir, "embed_tokens.bf16.bin")},
       {"ple_projection_norm", join_path(config.asset_dir, "ple_projection_norm.f32.bin")},
@@ -873,6 +896,19 @@ void write_daemon_static_artifact_manifest(const std::string& gate_dir,
       {"layer0_safetensors", join_path(config.layer0_pack, "weights/layer0.safetensors")},
       {"layer1_safetensors", join_path(config.layer1_pack, "weights/layer1.safetensors")},
   };
+  for (std::size_t index = 0; index < config.teacher_shards.size(); ++index) {
+    const std::string prefix = "teacher_shard_" + std::to_string(index) + "_";
+    artifacts.emplace_back(prefix + "manifest",
+                           join_path(config.teacher_shards[index], "manifest.json"));
+    artifacts.emplace_back(prefix + "topk_token_ids",
+                           join_path(config.teacher_shards[index],
+                                     "topk_token_ids.u32.bin"));
+    artifacts.emplace_back(prefix + "topk_probabilities",
+                           join_path(config.teacher_shards[index],
+                                     "topk_probabilities.f32.bin"));
+    artifacts.emplace_back(prefix + "loss_mask",
+                           join_path(config.teacher_shards[index], "loss_mask.u8.bin"));
+  }
 
   std::ostringstream out;
   out << "{\n";
@@ -984,11 +1020,13 @@ void write_timing_breakdown(const std::string& gate_dir,
 
 void write_artifact_manifest(const std::string& gate_dir,
                              const std::string& run_dir,
-                             const GateStats& stats) {
+                             const GateStats& stats,
+                             const H11AConfig& config) {
   std::ostringstream out;
   out << "{\n";
   write_json_string_field(out, "schema_version", "phase11_gate_artifact_manifest_v1", true);
-  write_json_string_field(out, "gate", "H11-A", true);
+  write_json_string_field(out, "gate", config.gate_name, true);
+  write_json_string_field(out, "objective", config.objective, true);
   write_json_string_field(out, "runner_build_id", kRunnerBuildId, true);
   write_json_string_field(out, "run_dir", run_dir, true);
   write_json_string_field(out, "gate_dir", gate_dir, true);
@@ -1050,9 +1088,11 @@ void write_gate_result(const std::string& gate_dir,
   std::ostringstream out;
   out << "{\n";
   write_json_string_field(out, "schema_version", "phase11_h11a_gate_result_v1", true);
-  write_json_string_field(out, "gate", "H11-A", true);
+  write_json_string_field(out, "gate", config.gate_name, true);
   write_json_string_field(out, "runner_build_id", kRunnerBuildId, true);
   write_json_string_field(out, "status", pass ? "pass" : "fail", true);
+  write_json_string_field(out, "objective", config.objective, true);
+  out << "  \"apply_update\": " << (config.apply_update ? "true" : "false") << ",\n";
   out << "  \"iteration_count\": " << stats.records.size() << ",\n";
   out << "  \"required_iteration_count\": " << config.iteration_count << ",\n";
   out << "  \"queue_execution_wall_seconds\": " << std::fixed << std::setprecision(6)
@@ -1167,7 +1207,7 @@ int run_h11a(const RunnerArgs& args,
   std::optional<RunnerState> prior_state = read_runner_state(args.state_path);
 
   RunnerState state;
-  state.gate = "H11-A";
+  state.gate = config.gate_name;
   state.record_id = record.id;
   state.status = "running";
   state.run_id = config.run_id.empty() ? compact_utc_timestamp() + "_h11a_daemon"
@@ -1175,7 +1215,7 @@ int run_h11a(const RunnerArgs& args,
   state.checkpoint_dir = config.initial_checkpoint;
 
   if (prior_state.has_value() && prior_state->record_id == record.id &&
-      prior_state->gate == "H11-A" && prior_state->run_id == state.run_id &&
+      prior_state->gate == config.gate_name && prior_state->run_id == state.run_id &&
       prior_state->status != "completed") {
     state = prior_state.value();
     if (state.checkpoint_dir.empty()) {
@@ -1184,7 +1224,7 @@ int run_h11a(const RunnerArgs& args,
   }
 
   const std::string run_dir = join_path(args.run_root, state.run_id);
-  const std::string gate_dir = join_path(run_dir, "H11-A-daemon");
+  const std::string gate_dir = join_path(run_dir, config.gate_dir_name);
   if (gate_result_passed(gate_dir)) {
     state.status = "completed";
     write_runner_state(args.state_path, state, record);
@@ -1199,16 +1239,17 @@ int run_h11a(const RunnerArgs& args,
   write_daemon_static_artifact_manifest(gate_dir, config);
   write_runner_state(args.state_path, state, record);
 
-  Heartbeat heartbeat(args.heartbeat_path, state.run_id, "H11-A");
+  Heartbeat heartbeat(args.heartbeat_path, state.run_id, config.gate_name);
   heartbeat.start();
   ChecksumChain chain(join_path(run_dir, "checksum_chain.jsonl"), &heartbeat);
-  chain.append_if_exists(join_path(run_dir, "campaign_manifest.json"), "H11-A");
-  chain.append_if_exists(join_path(gate_dir, "queue_schema.json"), "H11-A");
-  chain.append_if_exists(join_path(gate_dir, "daemon_design_note.md"), "H11-A");
-  chain.append_if_exists(join_path(gate_dir, "commands.log"), "H11-A");
-  chain.append_if_exists(join_path(gate_dir, "daemon_static_artifact_manifest.json"), "H11-A");
-  chain.append_if_exists(join_path(gate_dir, "cold_start_probe.json"), "H11-A");
-  chain.append_if_exists(join_path(gate_dir, "one_shot_baseline.json"), "H11-A");
+  chain.append_if_exists(join_path(run_dir, "campaign_manifest.json"), config.gate_name);
+  chain.append_if_exists(join_path(gate_dir, "queue_schema.json"), config.gate_name);
+  chain.append_if_exists(join_path(gate_dir, "daemon_design_note.md"), config.gate_name);
+  chain.append_if_exists(join_path(gate_dir, "commands.log"), config.gate_name);
+  chain.append_if_exists(join_path(gate_dir, "daemon_static_artifact_manifest.json"),
+                         config.gate_name);
+  chain.append_if_exists(join_path(gate_dir, "cold_start_probe.json"), config.gate_name);
+  chain.append_if_exists(join_path(gate_dir, "one_shot_baseline.json"), config.gate_name);
 
   GateStats stats;
   bool checkpoint_chain_ok = true;
@@ -1231,6 +1272,11 @@ int run_h11a(const RunnerArgs& args,
     iteration.status = "running";
     iteration.token_cache =
         config.token_caches[static_cast<std::size_t>(index) % config.token_caches.size()];
+    if (!config.teacher_shards.empty()) {
+      iteration.teacher_shard =
+          config.teacher_shards[static_cast<std::size_t>(index) %
+                                config.teacher_shards.size()];
+    }
     iteration.input_checkpoint = state.checkpoint_dir;
     iteration.phone_output_dir = format_iteration_dir(gate_dir, index);
     iteration.output_checkpoint = join_path(iteration.phone_output_dir, "checkpoint");
@@ -1242,12 +1288,21 @@ int run_h11a(const RunnerArgs& args,
 
     heartbeat.set_step("iteration_" + std::to_string(index));
     const auto iteration_start = std::chrono::steady_clock::now();
-    const polymath::gemma4::Status status =
-        polymath::gemma4::run_opencl_streamed_distill_update_rank(
-            iteration.token_cache, config.asset_dir, config.layer0_pack,
-            config.layer1_pack, state.checkpoint_dir, iteration.phone_output_dir,
-            static_cast<float>(config.learning_rate),
-            static_cast<std::uint32_t>(config.adapter_rank), iteration.sample, false);
+    polymath::gemma4::Status status = polymath::gemma4::Status::ok();
+    if (config.objective == "topk_embedding_kl") {
+      status = polymath::gemma4::run_opencl_streamed_topk_kl_update_rank(
+          iteration.token_cache, config.asset_dir, config.layer0_pack,
+          config.layer1_pack, state.checkpoint_dir, iteration.teacher_shard,
+          iteration.phone_output_dir, static_cast<float>(config.learning_rate),
+          static_cast<std::uint32_t>(config.adapter_rank), config.apply_update,
+          iteration.sample, false);
+    } else {
+      status = polymath::gemma4::run_opencl_streamed_distill_update_rank(
+          iteration.token_cache, config.asset_dir, config.layer0_pack,
+          config.layer1_pack, state.checkpoint_dir, iteration.phone_output_dir,
+          static_cast<float>(config.learning_rate),
+          static_cast<std::uint32_t>(config.adapter_rank), iteration.sample, false);
+    }
     iteration.wall_seconds =
         std::chrono::duration<double>(std::chrono::steady_clock::now() - iteration_start)
             .count();
@@ -1275,15 +1330,20 @@ int run_h11a(const RunnerArgs& args,
       stats.blockers.push_back("checkpoint pre-hash did not match previous post-hash at iteration " +
                                std::to_string(index));
     }
-    if (pre_sha == post_sha) {
+    if (config.apply_update && pre_sha == post_sha) {
       checkpoint_chain_ok = false;
       stats.blockers.push_back("checkpoint unchanged at iteration " + std::to_string(index));
     }
+    if (!config.apply_update && pre_sha != post_sha) {
+      checkpoint_chain_ok = false;
+      stats.blockers.push_back("fixed-adapter control checkpoint changed at iteration " +
+                               std::to_string(index));
+    }
     previous_post_sha = post_sha;
 
-    chain_iteration_artifacts(chain, iteration.phone_output_dir, "H11-A");
+    chain_iteration_artifacts(chain, iteration.phone_output_dir, config.gate_name);
     append_iteration_telemetry(telemetry_jsonl, iteration);
-    chain.append_if_exists(telemetry_jsonl, "H11-A");
+    chain.append_if_exists(telemetry_jsonl, config.gate_name);
     stats.active_training_seconds += iteration.active_training_seconds;
     stats.records.push_back(iteration);
 
@@ -1291,7 +1351,7 @@ int run_h11a(const RunnerArgs& args,
     state.checkpoint_dir = iteration.output_checkpoint;
     state.status = "running";
     write_runner_state(args.state_path, state, record);
-    chain.append_if_exists(args.state_path, "H11-A");
+    chain.append_if_exists(args.state_path, config.gate_name);
   }
 
   stats.queue_wall_seconds =
@@ -1317,12 +1377,12 @@ int run_h11a(const RunnerArgs& args,
                     disconnect_ok, checkpoint_chain_ok);
   write_falsifier_report(gate_dir, args.heartbeat_path, stats, active_wall_ok, disconnect_ok,
                          checkpoint_chain_ok);
-  write_artifact_manifest(gate_dir, run_dir, stats);
-  chain.append_if_exists(join_path(gate_dir, "timing_breakdown.json"), "H11-A");
-  chain.append_if_exists(join_path(gate_dir, "gate_result.json"), "H11-A");
-  chain.append_if_exists(join_path(gate_dir, "blockers.md"), "H11-A");
-  chain.append_if_exists(join_path(gate_dir, "falsifier_report.md"), "H11-A");
-  chain.append_if_exists(join_path(gate_dir, "artifact_manifest.json"), "H11-A");
+  write_artifact_manifest(gate_dir, run_dir, stats, config);
+  chain.append_if_exists(join_path(gate_dir, "timing_breakdown.json"), config.gate_name);
+  chain.append_if_exists(join_path(gate_dir, "gate_result.json"), config.gate_name);
+  chain.append_if_exists(join_path(gate_dir, "blockers.md"), config.gate_name);
+  chain.append_if_exists(join_path(gate_dir, "falsifier_report.md"), config.gate_name);
+  chain.append_if_exists(join_path(gate_dir, "artifact_manifest.json"), config.gate_name);
 
   const std::string gate_result = read_text_file(join_path(gate_dir, "gate_result.json"));
   state.status = json_contains_string(gate_result, "status", "pass") ? "completed" : "failed";
@@ -1336,9 +1396,9 @@ void print_help() {
   std::cout
       << "Usage: phase11_runner --queue QUEUE --run-root DIR --heartbeat FILE --state FILE [--stop-file FILE]\n"
       << "\n"
-      << "Executes Phase 11 phone-local queue records. This build supports H11-A: "
-         "daemonized narrow-lane training with heartbeat, STOP, resume state, "
-         "and checksum chain artifacts.\n";
+      << "Executes Phase 11 phone-local queue records. This build supports H11-A "
+         "hidden-MSE daemon training and H11-F top-k KL objective runs with "
+         "heartbeat, STOP, resume state, and checksum chain artifacts.\n";
 }
 
 std::string require_next(int argc, char** argv, int& index, const std::string& flag) {
@@ -1397,7 +1457,7 @@ int main(int argc, char** argv) {
     ensure_directory(args.run_root);
     const std::vector<QueueRecord> records = read_queue(args.queue_path, cwd);
     for (const QueueRecord& record : records) {
-      if (record.gate != "H11-A") {
+      if (record.gate != "H11-A" && record.gate != "H11-F") {
         throw std::runtime_error("unsupported queue gate in this build: " + record.gate);
       }
       const int result = run_h11a(args, record, cwd);

@@ -1,0 +1,14 @@
+{
+  "agreement_guardrail": "heldout student_teacher_top1_agreement must not regress",
+  "declared_before_phone_training_run": true,
+  "heldout_split": "sustained_g9_20260517T071405Z/cache_001",
+  "mini_capability_metric": "heldout mean_student_teacher_top1_probability improves beyond fixed-adapter control on instruction-format prompt shard",
+  "objective": "conditional top-k KL distillation",
+  "primary_heldout_gate": "heldout loss_topk_kl non-regression versus fixed-adapter control",
+  "primary_train_gate": "train loss_topk_kl decreases over >=100 phone-local updates",
+  "runtime_teacher_service": "forbidden_and_not_used",
+  "schema_version": "phase11_h11f_objective_spec_v1",
+  "student_logits": "phone-local two-layer hidden plus rank-4 adapter projected through tied unscaled embed_tokens rows for teacher top-k ids with final logit softcap 30",
+  "teacher": "RunPod-precomputed full Gemma4 E4B top-k shard",
+  "train_split": "hf_stream/20260517T083219Z_phase10_hf_auth_token_bridge_baseline_cache"
+}

@@ -1,0 +1,29 @@
+{
+  "schema_version": "gemma4_rank_adapter_topk_kl_checkpoint_v1",
+  "objective": "topk_embedding_kl_distillation_v1",
+  "trainable_scope": "post_layer0_rank4_residual_adapter",
+  "rank": 4,
+  "optimizer": "sgd",
+  "learning_rate": 0.0099999998,
+  "applied_update": true,
+  "loss_topk_kl": 1.3055717612,
+  "active_loss_tokens": 788,
+  "student_teacher_top1_agreement": 0.0862944162,
+  "mean_student_teacher_top1_probability": 0.1151061558,
+  "gradient_l2": {"adapter_a": 0.0004506798, "adapter_b": 0.0004223559, "output": 0.0179967310},
+  "checkpoint_delta_l2": {"adapter_a": 0.0000045068, "adapter_b": 0.0000042236},
+  "teacher_shard": {
+    "path": "/data/local/tmp/polymath_gemma4_gate/phase11/h11f_teacher_shards/train",
+    "manifest_sha256": "2f299b8165adf94357020c05b6c4b0eefec488cbfb82c57c7ec68c430f317871",
+    "topk_token_ids_sha256": "75a7cefbcba0215a7ba305711f71728e44a1d2e6ba3cf51dc6199bf97b18bc4e",
+    "topk_probabilities_sha256": "fece99991b1b29a5dd662c09c77bb9102e234adf68b54dfa1098f25a577970a4"
+  },
+  "pre_update": {
+    "adapter_a": {"path": "/data/local/tmp/polymath_gemma4_gate/phase11/runs/20260523T213836Z_h11f_objective_upgrade_train/H11-F-objective-upgrade/iterations/iter_000077/checkpoint/adapter_a.f32.bin", "sha256": "03c9a8de132bf178f6433f307df6f4e3f69d4f4f42199e944679d973e70be547"},
+    "adapter_b": {"path": "/data/local/tmp/polymath_gemma4_gate/phase11/runs/20260523T213836Z_h11f_objective_upgrade_train/H11-F-objective-upgrade/iterations/iter_000077/checkpoint/adapter_b.f32.bin", "sha256": "56f0fa934aeebf7c7882eb31c141bf7428b41c0e98e8aa2c5373bf5f44e68a56"}
+  },
+  "post_update": {
+    "adapter_a": {"path": "/data/local/tmp/polymath_gemma4_gate/phase11/runs/20260523T213836Z_h11f_objective_upgrade_train/H11-F-objective-upgrade/iterations/iter_000078/checkpoint/adapter_a.f32.bin", "sha256": "49fc0cda4fcec79a0d55c952e4af7ccba47a5b00151126ac51902764eb022927"},
+    "adapter_b": {"path": "/data/local/tmp/polymath_gemma4_gate/phase11/runs/20260523T213836Z_h11f_objective_upgrade_train/H11-F-objective-upgrade/iterations/iter_000078/checkpoint/adapter_b.f32.bin", "sha256": "7d20d136d19fd41105d1df88a43b4203477fd0179d5641398ec79418b53a56f5"}
+  }
+}

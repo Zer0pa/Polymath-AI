@@ -1,0 +1,106 @@
+{
+  "heldout": {
+    "files": [
+      {
+        "bytes": 32768,
+        "path": "topk_token_ids.u32.bin",
+        "sha256": "961d893f8f4a9dbfa0f69f9f2f702c95915e088389b060866ab51a471bcddaac"
+      },
+      {
+        "bytes": 32768,
+        "path": "topk_probabilities.f32.bin",
+        "sha256": "f44047f1c7f33ca199a041eabfa8270b86572213f9ead4888b8c6203a4cdb358"
+      },
+      {
+        "bytes": 1024,
+        "path": "loss_mask.u8.bin",
+        "sha256": "d2a697a8f610f817ba3428fe9dbfea2c74689c80d3f27241cb77c4adaeb01eaf"
+      },
+      {
+        "bytes": 4096,
+        "path": "labels.u32.bin",
+        "sha256": "e198c495deca4a5a8d34651c4b29864069c78bbb0568b282427cb5111ae85aa5"
+      }
+    ],
+    "loss_tokens": 833,
+    "metric_predeclared": {
+      "heldout_guardrail": "student_teacher_top1_agreement_non_regression",
+      "heldout_primary": "mean_student_teacher_top1_probability",
+      "train_signal": "loss_topk_kl_decrease"
+    },
+    "model_id": "google/gemma-4-E4B",
+    "objective": "conditional_topk_kl_over_full_teacher_topk",
+    "revision": "7aa32e6889efd6300124851b164f8b364314c3d8",
+    "schema_version": "phase11_h11f_topk_teacher_shard_v1",
+    "sequence_count": 8,
+    "sequence_length": 128,
+    "split": "heldout",
+    "student_scope": "two_layer_phone_runtime_rank4_residual_adapter",
+    "teacher_scope": "full_gemma4_e4b_causal_lm_logits",
+    "token_cache": {
+      "attention_mask_sha256": "df55e15fb09528bd4a53b7301d8b807784398960334b00c8dadf2c857ac8eb2f",
+      "input_ids_sha256": "2d83b3689959ae07397321e64fdaa5ab17b7cfa51dafc33be22985cdb841fda6",
+      "labels_sha256": "e198c495deca4a5a8d34651c4b29864069c78bbb0568b282427cb5111ae85aa5",
+      "loss_mask_sha256": "d2a697a8f610f817ba3428fe9dbfea2c74689c80d3f27241cb77c4adaeb01eaf",
+      "position_ids_sha256": "e8be80f1f8d5a04b70f2a128cecf5991a8a7473aa7bc0d977c7dad539a5b8b22"
+    },
+    "token_count": 1024,
+    "top_k": 8
+  },
+  "phone_paths": {
+    "heldout": "/data/local/tmp/polymath_gemma4_gate/phase11/h11f_teacher_shards/heldout",
+    "train": "/data/local/tmp/polymath_gemma4_gate/phase11/h11f_teacher_shards/train"
+  },
+  "runpod_model": "/workspace/models/gemma4_e4b/snapshot",
+  "runpod_python": "/workspace/Polymath-AI/.venv/bin/python",
+  "runpod_workspace": "/workspace/artifacts/polymath_gemma4/phase11/20260523T213836Z_h11f_objective_upgrade",
+  "schema_version": "phase11_h11f_teacher_shards_manifest_v1",
+  "train": {
+    "files": [
+      {
+        "bytes": 32768,
+        "path": "topk_token_ids.u32.bin",
+        "sha256": "75a7cefbcba0215a7ba305711f71728e44a1d2e6ba3cf51dc6199bf97b18bc4e"
+      },
+      {
+        "bytes": 32768,
+        "path": "topk_probabilities.f32.bin",
+        "sha256": "fece99991b1b29a5dd662c09c77bb9102e234adf68b54dfa1098f25a577970a4"
+      },
+      {
+        "bytes": 1024,
+        "path": "loss_mask.u8.bin",
+        "sha256": "0781625dae3cf088f35fddacf2a2688c1cf03b404327674f0c5229aa5c87d424"
+      },
+      {
+        "bytes": 4096,
+        "path": "labels.u32.bin",
+        "sha256": "e0cbb38fc8a324c5364b7c24aca3e9e2fc64cad95582b7a72b4c96c05021dcf6"
+      }
+    ],
+    "loss_tokens": 788,
+    "metric_predeclared": {
+      "heldout_guardrail": "student_teacher_top1_agreement_non_regression",
+      "heldout_primary": "mean_student_teacher_top1_probability",
+      "train_signal": "loss_topk_kl_decrease"
+    },
+    "model_id": "google/gemma-4-E4B",
+    "objective": "conditional_topk_kl_over_full_teacher_topk",
+    "revision": "7aa32e6889efd6300124851b164f8b364314c3d8",
+    "schema_version": "phase11_h11f_topk_teacher_shard_v1",
+    "sequence_count": 8,
+    "sequence_length": 128,
+    "split": "train",
+    "student_scope": "two_layer_phone_runtime_rank4_residual_adapter",
+    "teacher_scope": "full_gemma4_e4b_causal_lm_logits",
+    "token_cache": {
+      "attention_mask_sha256": "da9b0ff8f430fd2187be7bcecfdff28f97da6288552326545aeb5aa8b6808695",
+      "input_ids_sha256": "bd8c7f8c9f9fbb64bde7ed61f07d934c810a5dd9dbae9d7d66754abe0f4cd264",
+      "labels_sha256": "e0cbb38fc8a324c5364b7c24aca3e9e2fc64cad95582b7a72b4c96c05021dcf6",
+      "loss_mask_sha256": "0781625dae3cf088f35fddacf2a2688c1cf03b404327674f0c5229aa5c87d424",
+      "position_ids_sha256": "f208e25e80ff8c0bc528847c589f835c8af12712ddd19c4889ed0048c6be2926"
+    },
+    "token_count": 1024,
+    "top_k": 8
+  }
+}

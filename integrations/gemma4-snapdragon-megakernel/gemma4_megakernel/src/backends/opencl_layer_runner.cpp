@@ -59,7 +59,10 @@ constexpr std::uint32_t kQueryHeads = 8U;
 constexpr std::uint32_t kKeyValueHeads = 2U;
 constexpr std::uint32_t kHeadDim = 256U;
 constexpr std::uint32_t kAdapterRank = 4U;
+constexpr std::uint32_t kTeacherTopK = 8U;
+constexpr std::uint32_t kVocabSize = 262144U;
 constexpr float kRmsEpsilon = 1.0e-6F;
+constexpr float kFinalLogitSoftcap = 30.0F;
 
 float adapter_scale(std::uint32_t adapter_rank) {
   if (adapter_rank == 0U) {
@@ -955,6 +958,28 @@ __kernel void adapter_output_diff(__global const float* input,
   diff[index] = output - target[index];
 }
 
+__kernel void adapter_output(__global const float* input,
+                             __global const float* z,
+                             __global const float* adapter_b,
+                             __global float* output,
+                             int tokens,
+                             int hidden,
+                             int rank,
+                             float adapter_scale) {
+  const int index = get_global_id(0);
+  const int count = tokens * hidden;
+  if (index >= count) {
+    return;
+  }
+  const int h = index % hidden;
+  const int token = index / hidden;
+  float delta = 0.0f;
+  for (int r = 0; r < rank; ++r) {
+    delta += z[token * rank + r] * adapter_b[r * hidden + h];
+  }
+  output[index] = input[index] + (adapter_scale * delta);
+}
+
 __kernel void adapter_grad_b(__global const float* z,
                              __global const float* diff,
                              __global float* grad_b,
@@ -1043,6 +1068,7 @@ struct KernelSet {
   cl_kernel scale_inplace;
   cl_kernel adapter_forward_z;
   cl_kernel adapter_output_diff;
+  cl_kernel adapter_output;
   cl_kernel adapter_grad_b;
   cl_kernel adapter_hidden_rank_grad;
   cl_kernel adapter_grad_a;
@@ -1061,6 +1087,7 @@ KernelSet create_kernels(ClRuntime& runtime) {
           runtime.kernel("scale_inplace"),
           runtime.kernel("adapter_forward_z"),
           runtime.kernel("adapter_output_diff"),
+          runtime.kernel("adapter_output"),
           runtime.kernel("adapter_grad_b"),
           runtime.kernel("adapter_hidden_rank_grad"),
           runtime.kernel("adapter_grad_a"),
@@ -1213,6 +1240,24 @@ void dispatch_adapter_output_diff(ClRuntime& runtime, cl_kernel kernel, cl_mem i
   runtime.run_1d(kernel, kTokens * kHidden);
 }
 
+void dispatch_adapter_output(ClRuntime& runtime, cl_kernel kernel, cl_mem input,
+                             cl_mem z, cl_mem adapter_b, cl_mem output,
+                             std::uint32_t adapter_rank) {
+  const std::int32_t tokens = static_cast<std::int32_t>(kTokens);
+  const std::int32_t hidden = static_cast<std::int32_t>(kHidden);
+  const std::int32_t rank = static_cast<std::int32_t>(adapter_rank);
+  const float scale = adapter_scale(adapter_rank);
+  runtime.set_arg(kernel, 0U, input);
+  runtime.set_arg(kernel, 1U, z);
+  runtime.set_arg(kernel, 2U, adapter_b);
+  runtime.set_arg(kernel, 3U, output);
+  runtime.set_arg(kernel, 4U, tokens);
+  runtime.set_arg(kernel, 5U, hidden);
+  runtime.set_arg(kernel, 6U, rank);
+  runtime.set_arg(kernel, 7U, scale);
+  runtime.run_1d(kernel, kTokens * kHidden);
+}
+
 void dispatch_adapter_grad_b(ClRuntime& runtime, cl_kernel kernel, cl_mem z,
                              cl_mem diff, cl_mem grad_b, float inv_norm,
                              std::uint32_t adapter_rank) {
@@ -1297,6 +1342,35 @@ struct AdapterStepResult {
   double grad_b_l2;
   double update_a_delta_l2;
   double update_b_delta_l2;
+};
+
+struct TopKTeacherShard {
+  std::vector<std::uint32_t> token_ids;
+  std::vector<float> probabilities;
+  std::vector<std::uint8_t> loss_mask;
+  std::vector<std::uint32_t> labels;
+  std::string manifest_sha256;
+  std::string token_ids_sha256;
+  std::string probabilities_sha256;
+  std::string loss_mask_sha256;
+};
+
+struct TopKObjectiveMetrics {
+  double kl_loss;
+  double objective_elapsed_seconds;
+  std::uint32_t active_tokens;
+  double student_teacher_top1_agreement;
+  double mean_teacher_top1_probability;
+  double mean_student_teacher_top1_probability;
+  double label_in_teacher_topk_rate;
+  double mean_student_label_probability;
+  double grad_output_l2;
+};
+
+struct TopKAdapterStepResult {
+  AdapterStepResult adapter;
+  TopKObjectiveMetrics objective;
+  TopKTeacherShard teacher;
 };
 
 struct TokenHiddenTiming {
@@ -1466,6 +1540,182 @@ double masked_mse_half_loss(const std::vector<float>& diff,
   }
   const double norm = static_cast<double>(active_tokens) * static_cast<double>(kHidden);
   return 0.5 * sum_sq / norm;
+}
+
+std::vector<float> cached_row(Bf16MatrixFile& matrix,
+                              std::unordered_map<std::uint32_t, std::vector<float>>& cache,
+                              std::uint32_t row,
+                              float scale);
+
+TopKTeacherShard read_topk_teacher_shard(const std::string& teacher_shard_dir) {
+  TopKTeacherShard shard;
+  shard.token_ids =
+      read_binary_vector<std::uint32_t>(join_path(teacher_shard_dir, "topk_token_ids.u32.bin"),
+                                        kTokens * kTeacherTopK);
+  shard.probabilities =
+      read_binary_vector<float>(join_path(teacher_shard_dir, "topk_probabilities.f32.bin"),
+                                kTokens * kTeacherTopK);
+  shard.loss_mask =
+      read_binary_vector<std::uint8_t>(join_path(teacher_shard_dir, "loss_mask.u8.bin"),
+                                       kTokens);
+  shard.labels =
+      read_binary_vector<std::uint32_t>(join_path(teacher_shard_dir, "labels.u32.bin"),
+                                        kTokens);
+  shard.manifest_sha256 = sha256_file_hex(join_path(teacher_shard_dir, "manifest.json"));
+  shard.token_ids_sha256 =
+      sha256_file_hex(join_path(teacher_shard_dir, "topk_token_ids.u32.bin"));
+  shard.probabilities_sha256 =
+      sha256_file_hex(join_path(teacher_shard_dir, "topk_probabilities.f32.bin"));
+  shard.loss_mask_sha256 = sha256_file_hex(join_path(teacher_shard_dir, "loss_mask.u8.bin"));
+  return shard;
+}
+
+TopKObjectiveMetrics compute_topk_kl_gradient(
+    const std::vector<float>& student_hidden,
+    const std::string& asset_dir,
+    const TopKTeacherShard& teacher,
+    std::vector<float>& grad_output) {
+  const auto start_time = std::chrono::steady_clock::now();
+  if (student_hidden.size() != (kTokens * kHidden)) {
+    throw std::runtime_error("top-k KL student hidden has invalid element count");
+  }
+  grad_output.assign(kTokens * kHidden, 0.0F);
+  Bf16MatrixFile embeddings(join_path(asset_dir, "embed_tokens.bf16.bin"), kVocabSize,
+                            kHidden);
+  std::unordered_map<std::uint32_t, std::vector<float>> embedding_cache;
+
+  double kl_sum = 0.0;
+  double teacher_top1_prob_sum = 0.0;
+  double student_teacher_top1_prob_sum = 0.0;
+  double student_label_prob_sum = 0.0;
+  std::uint32_t active = 0U;
+  std::uint32_t top1_matches = 0U;
+  std::uint32_t labels_in_topk = 0U;
+  double grad_sq_sum = 0.0;
+
+  for (std::uint32_t token = 0U; token < kTokens; ++token) {
+    if (teacher.loss_mask[token] == 0U) {
+      continue;
+    }
+    ++active;
+    const std::size_t token_base = static_cast<std::size_t>(token) * kHidden;
+    const std::size_t topk_base = static_cast<std::size_t>(token) * kTeacherTopK;
+    std::vector<double> logits(kTeacherTopK, 0.0);
+    std::vector<double> raw_logits(kTeacherTopK, 0.0);
+    std::vector<double> teacher_probs(kTeacherTopK, 0.0);
+    double teacher_sum = 0.0;
+    for (std::uint32_t item = 0U; item < kTeacherTopK; ++item) {
+      const std::uint32_t token_id = teacher.token_ids[topk_base + item];
+      if (token_id >= kVocabSize) {
+        throw std::runtime_error("top-k teacher token id exceeds vocab size");
+      }
+      const std::vector<float> row = cached_row(embeddings, embedding_cache, token_id, 1.0F);
+      double dot = 0.0;
+      for (std::uint32_t hidden = 0U; hidden < kHidden; ++hidden) {
+        dot += static_cast<double>(student_hidden[token_base + hidden]) *
+               static_cast<double>(row[hidden]);
+      }
+      raw_logits[item] = dot;
+      const double capped = std::tanh(dot / static_cast<double>(kFinalLogitSoftcap)) *
+                            static_cast<double>(kFinalLogitSoftcap);
+      logits[item] = capped;
+      const double probability = static_cast<double>(teacher.probabilities[topk_base + item]);
+      if (!std::isfinite(probability) || probability < 0.0) {
+        throw std::runtime_error("top-k teacher probability is invalid");
+      }
+      teacher_probs[item] = probability;
+      teacher_sum += probability;
+    }
+    if (!(teacher_sum > 0.0) || !std::isfinite(teacher_sum)) {
+      throw std::runtime_error("top-k teacher probability row has zero or non-finite mass");
+    }
+    for (double& probability : teacher_probs) {
+      probability /= teacher_sum;
+    }
+
+    const double max_logit = *std::max_element(logits.begin(), logits.end());
+    std::vector<double> student_probs(kTeacherTopK, 0.0);
+    double exp_sum = 0.0;
+    for (std::uint32_t item = 0U; item < kTeacherTopK; ++item) {
+      const double value = std::exp(logits[item] - max_logit);
+      student_probs[item] = value;
+      exp_sum += value;
+    }
+    if (!(exp_sum > 0.0) || !std::isfinite(exp_sum)) {
+      throw std::runtime_error("top-k student softmax has zero or non-finite mass");
+    }
+    std::uint32_t student_top1 = 0U;
+    for (std::uint32_t item = 0U; item < kTeacherTopK; ++item) {
+      student_probs[item] /= exp_sum;
+      if (student_probs[item] > student_probs[student_top1]) {
+        student_top1 = item;
+      }
+      if (teacher_probs[item] > 0.0) {
+        kl_sum += teacher_probs[item] *
+                  (std::log(teacher_probs[item]) -
+                   std::log(std::max(student_probs[item], 1.0e-30)));
+      }
+    }
+    if (student_top1 == 0U) {
+      ++top1_matches;
+    }
+    teacher_top1_prob_sum += teacher_probs[0];
+    student_teacher_top1_prob_sum += student_probs[0];
+
+    const std::uint32_t label = teacher.labels[token];
+    for (std::uint32_t item = 0U; item < kTeacherTopK; ++item) {
+      if (teacher.token_ids[topk_base + item] == label) {
+        ++labels_in_topk;
+        student_label_prob_sum += student_probs[item];
+        break;
+      }
+    }
+
+    for (std::uint32_t item = 0U; item < kTeacherTopK; ++item) {
+      const std::uint32_t token_id = teacher.token_ids[topk_base + item];
+      const std::vector<float> row = cached_row(embeddings, embedding_cache, token_id, 1.0F);
+      const double tanh_value = std::tanh(raw_logits[item] /
+                                         static_cast<double>(kFinalLogitSoftcap));
+      const double softcap_grad = 1.0 - (tanh_value * tanh_value);
+      const double coeff = (student_probs[item] - teacher_probs[item]) * softcap_grad;
+      for (std::uint32_t hidden = 0U; hidden < kHidden; ++hidden) {
+        grad_output[token_base + hidden] += static_cast<float>(coeff * row[hidden]);
+      }
+    }
+  }
+
+  if (active == 0U) {
+    throw std::runtime_error("top-k teacher loss mask has zero active tokens");
+  }
+
+  const float scale_fix = 1.0F / static_cast<float>(active);
+  for (std::uint32_t token = 0U; token < kTokens; ++token) {
+    if (teacher.loss_mask[token] == 0U) {
+      continue;
+    }
+    const std::size_t token_base = static_cast<std::size_t>(token) * kHidden;
+    for (std::uint32_t hidden = 0U; hidden < kHidden; ++hidden) {
+      const float value = grad_output[token_base + hidden] * scale_fix;
+      if (!std::isfinite(value)) {
+        throw std::runtime_error("top-k KL gradient contains a non-finite value");
+      }
+      grad_output[token_base + hidden] = value;
+      grad_sq_sum += static_cast<double>(value) * static_cast<double>(value);
+    }
+  }
+
+  const double elapsed_seconds = elapsed_seconds_since(start_time);
+  return TopKObjectiveMetrics{
+      kl_sum / static_cast<double>(active),
+      elapsed_seconds,
+      active,
+      static_cast<double>(top1_matches) / static_cast<double>(active),
+      teacher_top1_prob_sum / static_cast<double>(active),
+      student_teacher_top1_prob_sum / static_cast<double>(active),
+      static_cast<double>(labels_in_topk) / static_cast<double>(active),
+      labels_in_topk == 0U ? 0.0
+                           : student_label_prob_sum / static_cast<double>(labels_in_topk),
+      std::sqrt(grad_sq_sum)};
 }
 
 std::vector<float> cached_row(Bf16MatrixFile& matrix,
@@ -1976,6 +2226,218 @@ void write_streamed_training_telemetry(const std::string& output_dir,
   file << "}\n";
 }
 
+void write_topk_checkpoint_manifest(const std::string& checkpoint_dir,
+                                    const std::string& teacher_shard_dir,
+                                    const std::string& output_dir,
+                                    const TopKAdapterStepResult& result,
+                                    float learning_rate,
+                                    std::uint32_t adapter_rank) {
+  std::ofstream file(join_path(output_dir, "checkpoint/manifest.json"));
+  if (!file) {
+    throw std::runtime_error("unable to create top-k checkpoint manifest");
+  }
+  file << "{\n";
+  file << "  \"schema_version\": \"gemma4_rank_adapter_topk_kl_checkpoint_v1\",\n";
+  file << "  \"objective\": \"topk_embedding_kl_distillation_v1\",\n";
+  file << "  \"trainable_scope\": ";
+  write_json_string(file, residual_adapter_scope(adapter_rank));
+  file << ",\n";
+  file << "  \"rank\": " << adapter_rank << ",\n";
+  file << "  \"optimizer\": \"sgd\",\n";
+  file << "  \"learning_rate\": " << std::fixed << std::setprecision(10)
+       << learning_rate << ",\n";
+  file << "  \"applied_update\": " << (result.adapter.applied_update ? "true" : "false")
+       << ",\n";
+  file << "  \"loss_topk_kl\": " << std::fixed << std::setprecision(10)
+       << result.objective.kl_loss << ",\n";
+  file << "  \"active_loss_tokens\": " << result.objective.active_tokens << ",\n";
+  file << "  \"student_teacher_top1_agreement\": " << std::fixed
+       << std::setprecision(10) << result.objective.student_teacher_top1_agreement
+       << ",\n";
+  file << "  \"mean_student_teacher_top1_probability\": " << std::fixed
+       << std::setprecision(10)
+       << result.objective.mean_student_teacher_top1_probability << ",\n";
+  file << "  \"gradient_l2\": {\"adapter_a\": " << std::fixed << std::setprecision(10)
+       << result.adapter.grad_a_l2 << ", \"adapter_b\": " << result.adapter.grad_b_l2
+       << ", \"output\": " << result.objective.grad_output_l2 << "},\n";
+  file << "  \"checkpoint_delta_l2\": {\"adapter_a\": " << std::fixed
+       << std::setprecision(10) << result.adapter.update_a_delta_l2
+       << ", \"adapter_b\": " << result.adapter.update_b_delta_l2 << "},\n";
+  file << "  \"teacher_shard\": {\n";
+  file << "    \"path\": ";
+  write_json_string(file, teacher_shard_dir);
+  file << ",\n";
+  file << "    \"manifest_sha256\": ";
+  write_json_string(file, result.teacher.manifest_sha256);
+  file << ",\n";
+  file << "    \"topk_token_ids_sha256\": ";
+  write_json_string(file, result.teacher.token_ids_sha256);
+  file << ",\n";
+  file << "    \"topk_probabilities_sha256\": ";
+  write_json_string(file, result.teacher.probabilities_sha256);
+  file << "\n  },\n";
+  file << "  \"pre_update\": {\n";
+  write_sha_field(file, "adapter_a", join_path(checkpoint_dir, "adapter_a.f32.bin"), true);
+  write_sha_field(file, "adapter_b", join_path(checkpoint_dir, "adapter_b.f32.bin"), false);
+  file << "  },\n";
+  file << "  \"post_update\": {\n";
+  write_sha_field(file, "adapter_a", join_path(output_dir, "checkpoint/adapter_a.f32.bin"), true);
+  write_sha_field(file, "adapter_b", join_path(output_dir, "checkpoint/adapter_b.f32.bin"), false);
+  file << "  }\n";
+  file << "}\n";
+}
+
+void write_topk_replay_manifest(const std::string& token_cache_dir,
+                                const std::string& asset_dir,
+                                const std::string& layer0_pack_dir,
+                                const std::string& layer1_pack_dir,
+                                const std::string& checkpoint_dir,
+                                const std::string& teacher_shard_dir,
+                                const std::string& output_dir,
+                                float learning_rate,
+                                std::uint32_t adapter_rank,
+                                bool apply_update,
+                                bool write_raw_outputs) {
+  std::ofstream file(join_path(output_dir, "replay_manifest.json"));
+  if (!file) {
+    throw std::runtime_error("unable to create top-k replay manifest");
+  }
+  file << "{\n";
+  file << "  \"schema_version\": \"gemma4_streamed_topk_kl_replay_v1\",\n";
+  file << "  \"command\": ";
+  write_json_string(file,
+                    "gemma4_layer_runner --run-h11f-topk-kl-compact TOKEN_CACHE ASSETS PACK0 PACK1 CHECKPOINT TEACHER_SHARD OUT_DIR LR RANK APPLY_UPDATE");
+  file << ",\n";
+  file << "  \"token_cache_dir\": ";
+  write_json_string(file, token_cache_dir);
+  file << ",\n  \"asset_dir\": ";
+  write_json_string(file, asset_dir);
+  file << ",\n  \"layer0_pack_dir\": ";
+  write_json_string(file, layer0_pack_dir);
+  file << ",\n  \"layer1_pack_dir\": ";
+  write_json_string(file, layer1_pack_dir);
+  file << ",\n  \"checkpoint_dir\": ";
+  write_json_string(file, checkpoint_dir);
+  file << ",\n  \"teacher_shard_dir\": ";
+  write_json_string(file, teacher_shard_dir);
+  file << ",\n  \"output_dir\": ";
+  write_json_string(file, output_dir);
+  file << ",\n  \"learning_rate\": " << std::fixed << std::setprecision(10)
+       << learning_rate << ",\n";
+  file << "  \"rank\": " << adapter_rank << ",\n";
+  file << "  \"apply_update\": " << (apply_update ? "true" : "false") << ",\n";
+  file << "  \"raw_outputs_written\": "
+       << (write_raw_outputs ? "true" : "false") << "\n";
+  file << "}\n";
+}
+
+void write_topk_training_telemetry(const std::string& output_dir,
+                                   const std::string& teacher_shard_dir,
+                                   const TokenHiddenInputs& token_inputs,
+                                   const LayerForwardResult& first,
+                                   const LayerForwardResult& second,
+                                   const TopKAdapterStepResult& result,
+                                   float learning_rate,
+                                   std::uint32_t adapter_rank) {
+  std::ofstream file(join_path(output_dir, "telemetry.json"));
+  if (!file) {
+    throw std::runtime_error("unable to create top-k telemetry.json");
+  }
+  file << "{\n";
+  file << "  \"schema_version\": \"gemma4_opencl_streamed_topk_kl_training_v1\",\n";
+  file << "  \"backend\": \"opencl\",\n";
+  file << "  \"token_to_hidden_backend\": \"phone_cpu\",\n";
+  file << "  \"layer_backend\": \"opencl\",\n";
+  file << "  \"adapter_backend\": \"opencl\",\n";
+  file << "  \"objective_backend\": \"phone_cpu_tied_embedding_topk\",\n";
+  file << "  \"model_id\": \"google/gemma-4-E4B\",\n";
+  file << "  \"revision\": \"7aa32e6889efd6300124851b164f8b364314c3d8\",\n";
+  file << "  \"objective\": \"topk_embedding_kl_distillation_v1\",\n";
+  file << "  \"objective_contract\": \"precomputed_full_teacher_topk_to_phone_tied_embedding_student_kl_no_runtime_teacher_service\",\n";
+  file << "  \"teacher_shard_dir\": ";
+  write_json_string(file, teacher_shard_dir);
+  file << ",\n";
+  file << "  \"teacher_manifest_sha256\": ";
+  write_json_string(file, result.teacher.manifest_sha256);
+  file << ",\n";
+  file << "  \"top_k\": " << kTeacherTopK << ",\n";
+  file << "  \"student_logit_head\": \"tied_embed_tokens_unscaled_with_final_logit_softcap_30\",\n";
+  file << "  \"runtime_input_path\": \"token_cache_to_phone_generated_hidden_to_opencl_layers_to_topk_kl_adapter_update\",\n";
+  file << "  \"hidden_state_fixtures_consumed\": [],\n";
+  file << "  \"trainable_scope\": ";
+  write_json_string(file, residual_adapter_scope(adapter_rank));
+  file << ",\n";
+  file << "  \"optimizer\": \"sgd\",\n";
+  file << "  \"case_count\": " << kCases << ",\n";
+  file << "  \"seq\": " << kSequence << ",\n";
+  file << "  \"hidden_size\": " << kHidden << ",\n";
+  file << "  \"rank\": " << adapter_rank << ",\n";
+  file << "  \"learning_rate\": " << std::fixed << std::setprecision(10)
+       << learning_rate << ",\n";
+  file << "  \"active_tokens\": " << result.objective.active_tokens << ",\n";
+  file << "  \"loss_topk_kl\": " << std::fixed << std::setprecision(10)
+       << result.objective.kl_loss << ",\n";
+  file << "  \"student_teacher_top1_agreement\": " << std::fixed
+       << std::setprecision(10) << result.objective.student_teacher_top1_agreement
+       << ",\n";
+  file << "  \"mean_teacher_top1_probability\": " << std::fixed
+       << std::setprecision(10) << result.objective.mean_teacher_top1_probability
+       << ",\n";
+  file << "  \"mean_student_teacher_top1_probability\": " << std::fixed
+       << std::setprecision(10)
+       << result.objective.mean_student_teacher_top1_probability << ",\n";
+  file << "  \"label_in_teacher_topk_rate\": " << std::fixed << std::setprecision(10)
+       << result.objective.label_in_teacher_topk_rate << ",\n";
+  file << "  \"mean_student_label_probability_when_in_topk\": " << std::fixed
+       << std::setprecision(10) << result.objective.mean_student_label_probability
+       << ",\n";
+  file << "  \"gradient_l2\": {\"adapter_a\": " << std::fixed << std::setprecision(10)
+       << result.adapter.grad_a_l2 << ", \"adapter_b\": "
+       << result.adapter.grad_b_l2 << ", \"output\": "
+       << result.objective.grad_output_l2 << "},\n";
+  file << "  \"checkpoint_delta_l2\": {\"adapter_a\": " << std::fixed
+       << std::setprecision(10) << result.adapter.update_a_delta_l2
+       << ", \"adapter_b\": " << result.adapter.update_b_delta_l2 << "},\n";
+  file << "  \"applied_update\": " << (result.adapter.applied_update ? "true" : "false")
+       << ",\n";
+  file << "  \"opencl_libraries\": [";
+  write_json_string(file, first.opencl_library);
+  file << ", ";
+  write_json_string(file, second.opencl_library);
+  file << ", ";
+  write_json_string(file, result.adapter.opencl_library);
+  file << "],\n";
+  file << "  \"token_to_hidden_elapsed_seconds\": " << std::fixed << std::setprecision(6)
+       << token_inputs.elapsed_seconds << ",\n";
+  file << "  \"layer_elapsed_seconds\": [" << std::fixed << std::setprecision(6)
+       << first.elapsed_seconds << ", " << second.elapsed_seconds << "],\n";
+  file << "  \"objective_elapsed_seconds\": " << std::fixed << std::setprecision(6)
+       << result.objective.objective_elapsed_seconds << ",\n";
+  file << "  \"adapter_elapsed_seconds\": " << std::fixed << std::setprecision(6)
+       << result.adapter.elapsed_seconds << ",\n";
+  file << "  \"token_to_hidden_timing\": {\n";
+  file << "    \"read_cache_seconds\": " << std::fixed << std::setprecision(6)
+       << token_inputs.timing.read_cache_seconds << ",\n";
+  file << "    \"open_asset_seconds\": " << std::fixed << std::setprecision(6)
+       << token_inputs.timing.open_asset_seconds << ",\n";
+  file << "    \"embedding_gather_seconds\": " << std::fixed << std::setprecision(6)
+       << token_inputs.timing.embedding_gather_seconds << ",\n";
+  file << "    \"projection_load_seconds\": " << std::fixed << std::setprecision(6)
+       << token_inputs.timing.projection_load_seconds << ",\n";
+  file << "    \"ple_layer0_seconds\": " << std::fixed << std::setprecision(6)
+       << token_inputs.timing.ple_layer0_seconds << ",\n";
+  file << "    \"ple_layer1_seconds\": " << std::fixed << std::setprecision(6)
+       << token_inputs.timing.ple_layer1_seconds << ",\n";
+  file << "    \"unique_token_count\": " << token_inputs.timing.unique_token_count << ",\n";
+  file << "    \"embedding_cache_rows\": " << token_inputs.timing.embedding_cache_rows << ",\n";
+  file << "    \"ple_layer0_cache_rows\": " << token_inputs.timing.ple_layer0_cache_rows << ",\n";
+  file << "    \"ple_layer1_cache_rows\": " << token_inputs.timing.ple_layer1_cache_rows << ",\n";
+  file << "    \"active_tokens\": " << token_inputs.timing.active_tokens << "\n";
+  file << "  },\n";
+  file << "  \"max_rss_kb\": " << max_resident_set_kb() << "\n";
+  file << "}\n";
+}
+
 AdapterStepResult run_adapter_step_from_values(const std::vector<float>& input,
                                                const std::vector<float>& target,
                                                const std::vector<std::uint8_t>& mask,
@@ -2078,6 +2540,108 @@ AdapterStepResult run_adapter_step_from_values(const std::vector<float>& input,
                            grad_b_l2,
                            update_a_delta_l2,
                            update_b_delta_l2};
+}
+
+TopKAdapterStepResult run_adapter_topk_kl_step_from_values(
+    const std::vector<float>& input,
+    const std::string& asset_dir,
+    const std::string& teacher_shard_dir,
+    const std::string& checkpoint_dir,
+    bool apply_update,
+    float learning_rate,
+    std::uint32_t adapter_rank) {
+  const auto start_time = std::chrono::steady_clock::now();
+  if (input.size() != (kTokens * kHidden)) {
+    throw std::runtime_error("top-k adapter step input has invalid hidden element count");
+  }
+  std::vector<float> adapter_a =
+      read_binary_vector<float>(join_path(checkpoint_dir, "adapter_a.f32.bin"),
+                                kHidden * adapter_rank);
+  std::vector<float> adapter_b =
+      read_binary_vector<float>(join_path(checkpoint_dir, "adapter_b.f32.bin"),
+                                adapter_rank * kHidden);
+  const TopKTeacherShard teacher = read_topk_teacher_shard(teacher_shard_dir);
+
+  DynamicLibrary library;
+  OpenClApi api(library.handle());
+  ClRuntime runtime(api);
+  runtime.build_program(opencl_source());
+  const KernelSet kernels = create_kernels(runtime);
+
+  std::vector<float> input_values = input;
+  cl_mem input_buffer = runtime.buffer_from_vector(input_values);
+  cl_mem adapter_a_buffer = runtime.buffer_from_vector(adapter_a);
+  cl_mem adapter_b_buffer = runtime.buffer_from_vector(adapter_b);
+  cl_mem z = runtime.buffer(kTokens * adapter_rank * sizeof(float));
+  cl_mem output = runtime.buffer(kTokens * kHidden * sizeof(float));
+  cl_mem hidden_rank_grad = runtime.buffer(kTokens * adapter_rank * sizeof(float));
+  cl_mem grad_a = runtime.buffer(kHidden * adapter_rank * sizeof(float));
+  cl_mem grad_b = runtime.buffer(adapter_rank * kHidden * sizeof(float));
+
+  dispatch_adapter_forward_z(runtime, kernels.adapter_forward_z, input_buffer,
+                             adapter_a_buffer, z, adapter_rank);
+  dispatch_adapter_output(runtime, kernels.adapter_output, input_buffer, z,
+                          adapter_b_buffer, output, adapter_rank);
+  runtime.finish();
+
+  std::vector<float> output_values(kTokens * kHidden);
+  runtime.read_buffer(output, output_values);
+  std::vector<float> grad_output;
+  const TopKObjectiveMetrics objective =
+      compute_topk_kl_gradient(output_values, asset_dir, teacher, grad_output);
+  ensure_finite_values(grad_output, "topk_kl_grad_output");
+
+  cl_mem grad_output_buffer = runtime.buffer_from_vector(grad_output);
+  dispatch_adapter_grad_b(runtime, kernels.adapter_grad_b, z, grad_output_buffer, grad_b,
+                          1.0F, adapter_rank);
+  dispatch_adapter_hidden_rank_grad(runtime, kernels.adapter_hidden_rank_grad,
+                                    grad_output_buffer, adapter_b_buffer,
+                                    hidden_rank_grad, 1.0F, adapter_rank);
+  dispatch_adapter_grad_a(runtime, kernels.adapter_grad_a, input_buffer,
+                          hidden_rank_grad, grad_a, adapter_rank);
+  if (apply_update) {
+    dispatch_sgd_update(runtime, kernels.sgd_update, adapter_a_buffer, grad_a,
+                        learning_rate, static_cast<std::int32_t>(kHidden * adapter_rank));
+    dispatch_sgd_update(runtime, kernels.sgd_update, adapter_b_buffer, grad_b,
+                        learning_rate, static_cast<std::int32_t>(adapter_rank * kHidden));
+  }
+  runtime.finish();
+
+  std::vector<float> grad_a_values(kHidden * adapter_rank);
+  std::vector<float> grad_b_values(adapter_rank * kHidden);
+  std::vector<float> updated_a_values(kHidden * adapter_rank);
+  std::vector<float> updated_b_values(adapter_rank * kHidden);
+  runtime.read_buffer(grad_a, grad_a_values);
+  runtime.read_buffer(grad_b, grad_b_values);
+  runtime.read_buffer(adapter_a_buffer, updated_a_values);
+  runtime.read_buffer(adapter_b_buffer, updated_b_values);
+  ensure_finite_values(grad_a_values, "topk_kl_adapter_grad_a");
+  ensure_finite_values(grad_b_values, "topk_kl_adapter_grad_b");
+  ensure_finite_values(updated_a_values, "topk_kl_updated_adapter_a");
+  ensure_finite_values(updated_b_values, "topk_kl_updated_adapter_b");
+
+  const double elapsed_seconds =
+      std::chrono::duration<double>(std::chrono::steady_clock::now() - start_time)
+          .count();
+  const double grad_a_l2 = l2_norm(grad_a_values);
+  const double grad_b_l2 = l2_norm(grad_b_values);
+  const double update_a_delta_l2 = l2_delta(adapter_a, updated_a_values);
+  const double update_b_delta_l2 = l2_delta(adapter_b, updated_b_values);
+  AdapterStepResult adapter{std::move(grad_a_values),
+                            std::move(grad_b_values),
+                            std::move(updated_a_values),
+                            std::move(updated_b_values),
+                            library.loaded_path(),
+                            elapsed_seconds,
+                            objective.kl_loss,
+                            objective.active_tokens,
+                            apply_update,
+                            max_resident_set_kb(),
+                            grad_a_l2,
+                            grad_b_l2,
+                            update_a_delta_l2,
+                            update_b_delta_l2};
+  return TopKAdapterStepResult{std::move(adapter), objective, teacher};
 }
 
 AdapterStepResult run_adapter_step_values(const std::string& fixture_dir,
@@ -2437,6 +3001,87 @@ Status run_opencl_streamed_distill_update_rank(const std::string& token_cache_di
                                    learning_rate, write_raw_outputs);
     write_streamed_training_telemetry(output_dir, token_inputs, first, second,
                                       adapter, learning_rate, adapter_rank);
+    return Status::ok();
+  } catch (const std::exception& error) {
+    return Status::invalid(error.what());
+  }
+}
+
+Status run_opencl_streamed_topk_kl_update_rank(const std::string& token_cache_dir,
+                                               const std::string& asset_dir,
+                                               const std::string& layer0_pack_dir,
+                                               const std::string& layer1_pack_dir,
+                                               const std::string& checkpoint_dir,
+                                               const std::string& teacher_shard_dir,
+                                               const std::string& output_dir,
+                                               float learning_rate,
+                                               std::uint32_t adapter_rank,
+                                               bool apply_update,
+                                               bool write_raw_outputs,
+                                               bool hash_static_artifacts) {
+  try {
+    if (apply_update && (!(learning_rate > 0.0F) || !std::isfinite(learning_rate))) {
+      return Status::invalid("learning rate must be finite and positive when applying updates");
+    }
+    if (adapter_rank == 0U) {
+      return Status::invalid("adapter rank must be positive");
+    }
+    ensure_directory(output_dir);
+    ensure_directory(join_path(output_dir, "generated"));
+    ensure_directory(join_path(output_dir, "checkpoint"));
+
+    const TokenHiddenInputs token_inputs =
+        generate_token_hidden_inputs(token_cache_dir, asset_dir);
+    if (write_raw_outputs) {
+      write_binary_vector(join_path(output_dir, "generated/layer_input.f32.bin"),
+                          token_inputs.layer_input);
+      write_binary_vector(join_path(output_dir, "generated/per_layer_input_layer0.f32.bin"),
+                          token_inputs.per_layer0_input);
+      write_binary_vector(join_path(output_dir, "generated/per_layer_input_layer1.f32.bin"),
+                          token_inputs.per_layer1_input);
+    }
+
+    const LayerForwardResult first = run_opencl_layer_values(
+        layer0_pack_dir, &token_inputs.layer_input, &token_inputs.per_layer0_input,
+        &token_inputs.attention_mask, &token_inputs.position_ids);
+    if (write_raw_outputs) {
+      write_binary_vector(join_path(output_dir, "layer0_output.f32.bin"),
+                          first.output_values);
+    }
+
+    const LayerForwardResult second = run_opencl_layer_values(
+        layer1_pack_dir, &first.output_values, &token_inputs.per_layer1_input,
+        &token_inputs.attention_mask, &token_inputs.position_ids);
+    if (write_raw_outputs) {
+      write_binary_vector(join_path(output_dir, "layer1_output.f32.bin"),
+                          second.output_values);
+    }
+
+    const TopKAdapterStepResult result = run_adapter_topk_kl_step_from_values(
+        first.output_values, asset_dir, teacher_shard_dir, checkpoint_dir, apply_update,
+        learning_rate, adapter_rank);
+    if (write_raw_outputs) {
+      write_binary_vector(join_path(output_dir, "adapter_grad_a.f32.bin"),
+                          result.adapter.grad_a);
+      write_binary_vector(join_path(output_dir, "adapter_grad_b.f32.bin"),
+                          result.adapter.grad_b);
+    }
+    write_binary_vector(join_path(output_dir, "checkpoint/adapter_a.f32.bin"),
+                        result.adapter.updated_a);
+    write_binary_vector(join_path(output_dir, "checkpoint/adapter_b.f32.bin"),
+                        result.adapter.updated_b);
+
+    write_topk_checkpoint_manifest(checkpoint_dir, teacher_shard_dir, output_dir,
+                                   result, learning_rate, adapter_rank);
+    write_streamed_artifact_manifest(token_cache_dir, asset_dir, layer0_pack_dir,
+                                     layer1_pack_dir, checkpoint_dir, output_dir,
+                                     write_raw_outputs, hash_static_artifacts);
+    write_topk_replay_manifest(token_cache_dir, asset_dir, layer0_pack_dir,
+                               layer1_pack_dir, checkpoint_dir, teacher_shard_dir,
+                               output_dir, learning_rate, adapter_rank, apply_update,
+                               write_raw_outputs);
+    write_topk_training_telemetry(output_dir, teacher_shard_dir, token_inputs, first,
+                                  second, result, learning_rate, adapter_rank);
     return Status::ok();
   } catch (const std::exception& error) {
     return Status::invalid(error.what());

@@ -1,0 +1,43 @@
+{
+  "control": {
+    "active_tokens": 833,
+    "applied_update": false,
+    "checkpoint_delta_l2": {
+      "adapter_a": 0.0,
+      "adapter_b": 0.0
+    },
+    "gradient_l2": {
+      "adapter_a": 0.0001902435,
+      "adapter_b": 0.0001793858,
+      "output": 0.0159754074
+    },
+    "iteration": 0,
+    "label_in_teacher_topk_rate": 0.7587034814,
+    "loss_topk_kl": 1.1291671114,
+    "mean_student_label_probability_when_in_topk": 0.1241673449,
+    "mean_student_teacher_top1_probability": 0.1137876831,
+    "student_teacher_top1_agreement": 0.093637455
+  },
+  "improved": true,
+  "metric": "heldout mean_student_teacher_top1_probability",
+  "schema_version": "phase11_h11f_mini_eval_report_v1",
+  "trained": {
+    "active_tokens": 833,
+    "applied_update": false,
+    "checkpoint_delta_l2": {
+      "adapter_a": 0.0,
+      "adapter_b": 0.0
+    },
+    "gradient_l2": {
+      "adapter_a": 0.0005425668,
+      "adapter_b": 0.0005711785,
+      "output": 0.0159754057
+    },
+    "iteration": 0,
+    "label_in_teacher_topk_rate": 0.7587034814,
+    "loss_topk_kl": 1.12916688,
+    "mean_student_label_probability_when_in_topk": 0.1241673599,
+    "mean_student_teacher_top1_probability": 0.1137876981,
+    "student_teacher_top1_agreement": 0.093637455
+  }
+}

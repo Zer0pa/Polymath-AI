@@ -23,6 +23,7 @@ void print_help() {
       << "                           [--run-g8-distill TOKEN_CACHE ASSETS PACK0 PACK1 CHECKPOINT OUT_DIR LR]\n"
       << "                           [--run-g8-distill-compact TOKEN_CACHE ASSETS PACK0 PACK1 CHECKPOINT OUT_DIR LR]\n"
       << "                           [--run-g8-distill-compact-rank TOKEN_CACHE ASSETS PACK0 PACK1 CHECKPOINT OUT_DIR LR RANK]\n"
+      << "                           [--run-h11f-topk-kl-compact TOKEN_CACHE ASSETS PACK0 PACK1 CHECKPOINT TEACHER_SHARD OUT_DIR LR RANK APPLY_UPDATE]\n"
       << "                           [--tokenize-pack TOKENIZER_DIR RAW_TEXT OUT_DIR SEQ N URL]\n"
       << "\n"
       << "Current authority gates: Gemma 4 E4B layer forward-only and stack\n"
@@ -194,6 +195,34 @@ int run_g8_distill_rank(int argc, char** argv, int index, bool write_raw_outputs
   return 0;
 }
 
+int run_h11f_topk_kl(int argc, char** argv, int index, bool write_raw_outputs) {
+  if ((index + 10) >= argc) {
+    throw std::invalid_argument(
+        "H11-F top-k KL run requires TOKEN_CACHE, ASSETS, PACK0, PACK1, CHECKPOINT, TEACHER_SHARD, OUT_DIR, LR, RANK, and APPLY_UPDATE");
+  }
+  char* end = nullptr;
+  const float learning_rate = std::strtof(argv[index + 8], &end);
+  if (end == argv[index + 8] || *end != '\0') {
+    throw std::invalid_argument("--run-h11f-topk-kl-compact LR must be a float");
+  }
+  const auto adapter_rank =
+      static_cast<std::uint32_t>(std::stoul(argv[index + 9]));
+  const std::string apply_update_value = argv[index + 10];
+  const bool apply_update =
+      apply_update_value == "1" || apply_update_value == "true" ||
+      apply_update_value == "yes";
+  const polymath::gemma4::Status status =
+      polymath::gemma4::run_opencl_streamed_topk_kl_update_rank(
+          argv[index + 1], argv[index + 2], argv[index + 3], argv[index + 4],
+          argv[index + 5], argv[index + 6], argv[index + 7], learning_rate,
+          adapter_rank, apply_update, write_raw_outputs, false);
+  if (!status.is_ok()) {
+    std::cerr << status.message() << '\n';
+    return 11;
+  }
+  return 0;
+}
+
 }  // namespace
 
 int main(int argc, char** argv) {
@@ -238,6 +267,9 @@ int main(int argc, char** argv) {
       }
       if (argument == "--run-g8-distill-compact-rank") {
         return run_g8_distill_rank(argc, argv, index, false);
+      }
+      if (argument == "--run-h11f-topk-kl-compact") {
+        return run_h11f_topk_kl(argc, argv, index, false);
       }
       if (argument == "--tokenize-pack") {
         return run_tokenize_pack(argc, argv, index);

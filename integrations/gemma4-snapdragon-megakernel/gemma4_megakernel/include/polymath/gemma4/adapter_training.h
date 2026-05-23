@@ -39,6 +39,19 @@ Status run_opencl_streamed_distill_update_rank(const std::string& token_cache_di
                                                bool write_raw_outputs = true,
                                                bool hash_static_artifacts = true);
 
+Status run_opencl_streamed_topk_kl_update_rank(const std::string& token_cache_dir,
+                                               const std::string& asset_dir,
+                                               const std::string& layer0_pack_dir,
+                                               const std::string& layer1_pack_dir,
+                                               const std::string& checkpoint_dir,
+                                               const std::string& teacher_shard_dir,
+                                               const std::string& output_dir,
+                                               float learning_rate,
+                                               std::uint32_t adapter_rank,
+                                               bool apply_update,
+                                               bool write_raw_outputs = true,
+                                               bool hash_static_artifacts = true);
+
 class OpenClAdapterTrainingStepExecutor final : public TrainingStepExecutor {
  public:
   Status run_training_step(const TrainingStepRequest& request) override;

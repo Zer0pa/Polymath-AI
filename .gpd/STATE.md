@@ -19,9 +19,9 @@ any runtime data-path stage?
 **Total Phases:** 12
 **Current Plan:** 1
 **Total Plans in Phase:** 1
-**Status:** H11-A phone-resident daemon passed; H11-B safe performance envelope failed; H11-C bottleneck autopsy passed; H11-D recordable queues passed; H11-E trainable scope sweep failed with rank-4 baseline retained; H11-F objective upgrade next
+**Status:** H11-A phone-resident daemon passed; H11-B safe performance envelope failed; H11-C bottleneck autopsy passed; H11-D recordable queues passed; H11-E trainable scope sweep failed with rank-4 baseline retained; H11-F objective upgrade passed narrowly; H11-G HTP mutable-adapter/zero-order arm next
 **Last Activity:** 2026-05-23
-**Last Activity Description:** Ran H11-E trainable scope sweep on REDMAGIC. Rank-4 baseline completed two phone-local daemon iterations with finite losses and tiny positive loss reduction; rank-16 and rank-32 completed with finite losses and changed checkpoints but no two-iteration loss reduction. Expanded scopes were not promoted, projection LoRA remains blocked, and H11-F proceeds with the rank-4 baseline only.
+**Last Activity Description:** Ran H11-F objective upgrade. RunPod precomputed full Gemma4 E4B top-k teacher shards, pushed them to phone before runtime, then REDMAGIC ran phone-local H11-F train/eval arms with `phase11_runner`. The rank-4 objective path passed narrowly: 100 train iterations reduced top-k KL by `2.43e-7`, held-out KL improved versus fixed-adapter control, and held-out teacher top-1 probability improved by `1.5e-8` with top-1 agreement unchanged. Treat as a narrow objective-signal pass only.
 
 **Progress:** [#########-] 92%
 
@@ -29,9 +29,8 @@ any runtime data-path stage?
 
 - Execute Phase 11 only through phone-resident queue-run experiments with
   authority non-regression gates and artifact hygiene.
-- Sequential hypotheses complete through H11-E; continue H11-F objective
-  upgrade before H11-G HTP mutable-adapter/zero-order arm and H11-H combined
-  POVC run.
+- Sequential hypotheses complete through H11-F; continue H11-G HTP
+  mutable-adapter/zero-order arm before H11-H combined POVC run.
 
 ## Intermediate Results
 
@@ -124,6 +123,16 @@ any runtime data-path stage?
   two-iteration loss reduction, so no expanded rank crossed the promotion gate.
   Projection LoRA across q/o/gate/up projections remains `blocked_not_promoted`
   because layer-internal backward kernels and checkpoint layout are not present.
+- H11-F objective upgrade passed narrowly:
+  `runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T213836Z_h11f_objective_upgrade/H11-F-objective-upgrade/gate_result.json`.
+  Teacher shards were generated on RunPod before phone runtime and pushed to the
+  phone; no runtime teacher service was used. The 100-iteration train arm
+  reduced `loss_topk_kl` from `1.3055719031` to `1.3055716601`
+  (`2.43e-7`). Held-out fixed control had KL `1.1291671114` and teacher top-1
+  probability `0.1137876831`; trained held-out eval had KL `1.12916688` and
+  teacher top-1 probability `0.1137876981`, with top-1 agreement unchanged at
+  `0.093637455`. This promotes only the top-k KL objective path for later
+  Phase 11 gates, not broad capability or benchmark readiness.
 
 ## Open Questions
 
@@ -131,8 +140,8 @@ any runtime data-path stage?
   ADB/USB disconnect, and what resume behavior is needed if it does not.
 - Whether safe fixed performance mode, charge separation, fan state, and OEM
   controls materially improve active/wall without unsafe thermal behavior.
-- Whether H11-F can replace parity-MSE with a predeclared objective that moves a
-  held-out teacher/capability signal while retaining the rank-4 baseline scope.
+- Whether QAIRT mutable sections can become an HTP teacher/frozen-forward or
+  zero-order arm without claiming normal HTP backprop.
 - Whether H11-D recordable queue launch savings remain useful in an end-to-end
   H11-H training sequence after the H11-C residual was already reduced below
   threshold.
@@ -166,6 +175,9 @@ any runtime data-path stage?
 | H11-D recordable queue launch | `1.968636098x` best speedup | 100 no-op/fixed/mutable OpenCL dispatches | passed; mutable output `300 == 300`, property `0x40000000` |
 | H11-E rank-4 loss delta | `1.000000082740371e-10` | two phone-local daemon iterations | retained baseline; loss delta per active second `7.999977622e-12` |
 | H11-E expanded rank loss delta | `0.0` | rank-16 and rank-32 scope trials | failed promotion despite finite losses and changed checkpoints |
+| H11-F train top-k KL delta | `2.429999998998511e-7` | 100 phone-local train iterations | passed narrow objective signal |
+| H11-F held-out top-k KL | `1.1291671114 -> 1.12916688` | fixed-adapter control vs trained held-out eval | non-regression with tiny improvement |
+| H11-F held-out teacher top-1 probability | `0.1137876831 -> 0.1137876981` | instruction-format held-out shard | tiny improvement; top-1 agreement unchanged |
 
 ## Accumulated Context
 
@@ -218,10 +230,9 @@ Full log: `.gpd/DECISIONS.md`
 
 ### Pending Todos
 
-- Execute H11-F next under the H11-A daemon and H11-B baseline-safe fallback:
-  replace parity-MSE with a predeclared capability-relevant objective, run a
-  fixed-adapter control, require held-out non-regression, and do not claim
-  capability movement unless the declared metric improves.
+- Execute H11-G next: verify QAIRT/QNN tooling, updateable tensor declaration,
+  adapter binary updater, and bounded HTP mutable-section or zero-order arm
+  evidence. Do not promote normal HTP backprop without API and parity proof.
 - Preserve H11-A runner topology for later gates; do not return to host-driven
   per-iteration training except as a declared diagnostic fallback.
 - Do not run H11-H or another long endurance job until H11-B through H11-G have
@@ -259,11 +270,13 @@ Full log: `.gpd/DECISIONS.md`
   were finite and mutable but did not reduce loss over two iterations; projection
   LoRA remains blocked until layer-internal backward kernels and checkpoint
   layout exist.
+- H11-F promotes only a narrow top-k KL objective path. The measured held-out
+  improvement is deterministic but tiny; do not describe it as public benchmark
+  readiness, full Gemma4 training, or a broad capability result.
 
 ## Session Continuity
 
 **Last session:** 2026-05-23
-**Stopped at:** H11-E trainable scope sweep failed with rank-4 baseline retained.
-Continue with H11-F objective upgrade under the H11-A runner; do not skip to
-H11-H.
+**Stopped at:** H11-F objective upgrade passed narrowly. Continue with H11-G
+HTP mutable-adapter / zero-order arm; do not skip to H11-H.
 **Resume file:** `.gpd/STATE.md`

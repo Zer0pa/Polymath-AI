@@ -1,13 +1,14 @@
 {
-  "_synced_at": "2026-05-23T21:18:38Z",
+  "_synced_at": "2026-05-23T22:16:51Z",
   "active_calculations": [
     "Execute Phase 11 only through phone-resident queue-run experiments with authority non-regression gates and artifact hygiene.",
-    "Sequential hypotheses complete through H11-E; continue H11-F objective upgrade before H11-G/H11-H."
+    "Sequential hypotheses complete through H11-F; continue H11-G HTP mutable-adapter/zero-order arm before H11-H."
   ],
   "approximations": [],
   "blockers": [
     "Phase 10 six-hour endurance is promoted only for the current rank-4 two-layer phone-native lane. Full Gemma4 training, Hexagon NPU training, public benchmark readiness, and theoretical maximum remain blocked.",
     "H11-E did not promote expanded adapter ranks or projection LoRA. Rank-16 and rank-32 were finite and mutable but showed zero two-iteration loss reduction; projection LoRA remains blocked until layer-internal backward kernels and checkpoint layout exist.",
+    "H11-F top-k KL objective pass is narrow: deterministic held-out movement is positive but tiny, so it does not support public benchmark readiness, broad capability, full Gemma4 training, or stronger scope claims.",
     "GPD phase-add succeeded for Phase 11, but generic GPD state synchronization rewrote .gpd/state.json in a lossy parser format during this PRD-writing task. The machine state was restored and updated via structured JSON; future agents should parse-check .gpd/state.json after GPD CLI state commands."
   ],
   "convention_lock": {
@@ -60,18 +61,19 @@
     "Phase 11 GPD execution plan was scaffolded: .gpd/phases/11-hardware-native-training-povc/11-01-PLAN.md",
     "Phase 11 executor controls were hardened for long-horizon campaign execution: no stopping after intermediate wins, exact pass/fail/blocker cadence after each H11 gate, targeted subagent/falsification decision rules, RunPod alternate SSH, and no minimized-proxy language in HTP probing.",
     "H11-D OpenCL recordable queues passed: runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T205951Z_h11d_recordable_queues/H11-D-recordable-queues/gate_result.json",
-    "H11-E trainable scope sweep failed with rank-4 baseline retained: runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T211427Z_h11e_scope_sweep/H11-E-scope-sweep/gate_result.json; first implementation failure preserved at runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T211134Z_h11e_scope_sweep/H11-E-scope-sweep/gate_result.json"
+    "H11-E trainable scope sweep failed with rank-4 baseline retained: runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T211427Z_h11e_scope_sweep/H11-E-scope-sweep/gate_result.json; first implementation failure preserved at runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T211134Z_h11e_scope_sweep/H11-E-scope-sweep/gate_result.json",
+    "H11-F objective upgrade passed narrowly: runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T213836Z_h11f_objective_upgrade/H11-F-objective-upgrade/gate_result.json"
   ],
   "open_questions": [
     "Whether Android permits the phone-resident runner to continue reliably after ADB/USB disconnect, and what resume behavior is needed if it does not.",
     "Whether safe fixed performance mode, charge separation, fan state, and OEM controls materially improve active/wall without unsafe thermal behavior.",
-    "Whether H11-F can replace parity-MSE with a predeclared objective that moves a held-out teacher/capability signal while retaining the rank-4 baseline scope.",
+    "Whether H11-G can classify QAIRT/HTP mutable sections as frozen-forward, teacher, updateable-section, zero-order, or blocked without claiming normal HTP backprop.",
     "Whether QAIRT mutable sections can become an HTP teacher/frozen-forward or zero-order arm without claiming normal HTP backprop.",
     "Whether H11-D recordable queue launch savings remain useful in an end-to-end H11-H training sequence after the H11-C residual was already reduced below threshold."
   ],
   "pending_todos": [
-    "Continue Phase 11 with H11-F objective upgrade under the H11-A daemon topology and rank-4 baseline scope.",
-    "Do not promote capability movement unless the predeclared objective improves beyond a fixed-adapter control with held-out non-regression.",
+    "Continue Phase 11 with H11-G HTP mutable-adapter / zero-order arm using the supplied RunPod QNN/QAIRT pod details.",
+    "Do not promote normal HTP backprop without API support, mutable-section evidence, and parity proof.",
     "Do not run H11-H or another long endurance job until H11-A through H11-G have pass/fail/blocker artifacts or exact boundary blockers."
   ],
   "performance_metrics": {
@@ -119,7 +121,7 @@
     ]
   },
   "phase11": {
-    "current_gate": "H11-F",
+    "current_gate": "H11-G",
     "h11a": {
       "active_training_seconds": 527.878356,
       "active_wall_ratio": 0.96051948,
@@ -192,6 +194,22 @@
       "rank4_loss_delta_per_active_second": 7.999977621987417e-12,
       "selected_rank": 4,
       "status": "fail_with_rank4_baseline_retained"
+    },
+    "h11f": {
+      "baseline_heldout_kl": 1.1291671114,
+      "baseline_heldout_teacher_top1_probability": 0.1137876831,
+      "gate_result": "runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T213836Z_h11f_objective_upgrade/H11-F-objective-upgrade/gate_result.json",
+      "heldout_teacher_top1_agreement": 0.093637455,
+      "next_gate": "H11-G HTP mutable-adapter / zero-order arm",
+      "objective": "topk_embedding_kl_distillation_v1",
+      "runtime_teacher_service_used": false,
+      "selected_scope": "post_layer0_rank4_residual_adapter",
+      "status": "pass_narrow_objective_signal",
+      "teacher_shard_status": "precomputed_on_runpod_pushed_to_phone_before_runtime",
+      "train_iterations": 100,
+      "train_kl_delta": 2.429999998998511e-7,
+      "trained_heldout_kl": 1.12916688,
+      "trained_heldout_teacher_top1_probability": 0.1137876981
     }
   },
   "position": {
@@ -199,11 +217,11 @@
     "current_phase_name": "Hardware-Native Training POVC",
     "current_plan": 1,
     "last_activity": "2026-05-23",
-    "last_activity_desc": "Ran H11-E trainable scope sweep. Rank-16 and rank-32 were finite and mutable but did not reduce loss over two phone-local daemon iterations, so expanded scopes and projection LoRA were not promoted. Rank-4 baseline is retained for H11-F.",
-    "last_activity_description": "Ran H11-E trainable scope sweep. Rank-16 and rank-32 were finite and mutable but did not reduce loss over two phone-local daemon iterations, so expanded scopes and projection LoRA were not promoted. Rank-4 baseline is retained for H11-F.",
+    "last_activity_desc": "Ran H11-F objective upgrade. RunPod precomputed full Gemma4 E4B top-k teacher shards, the phone ran 100 top-k KL training iterations plus fixed/trained held-out evals, and the gate passed narrowly with tiny positive held-out movement. Continue to H11-G.",
+    "last_activity_description": "Ran H11-F objective upgrade. RunPod precomputed full Gemma4 E4B top-k teacher shards, the phone ran 100 top-k KL training iterations plus fixed/trained held-out evals, and the gate passed narrowly with tiny positive held-out movement. Continue to H11-G.",
     "paused_at": null,
     "progress_percent": 92,
-    "status": "H11-E trainable scope sweep failed with rank-4 baseline retained; H11-F objective upgrade next",
+    "status": "H11-F objective upgrade passed narrowly; H11-G HTP mutable-adapter / zero-order arm next",
     "total_phases": 12,
     "total_plans_in_phase": 1
   },
@@ -690,9 +708,9 @@
   },
   "propagated_uncertainties": [],
   "session": {
-    "last_gate": "H11-D",
+    "last_gate": "H11-F",
     "last_session": "2026-05-23",
     "resume_file": ".gpd/STATE.md",
-    "stopped_at": "H11-D OpenCL recordable queue probe passed; continue with H11-E trainable scope sweep."
+    "stopped_at": "H11-F objective upgrade passed narrowly; continue with H11-G HTP mutable-adapter / zero-order arm."
   }
 }

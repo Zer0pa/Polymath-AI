@@ -1,0 +1,131 @@
+{
+  "fixed_adapter_control": {
+    "arm": "baseline_eval",
+    "first": {
+      "active_tokens": 833,
+      "applied_update": false,
+      "checkpoint_delta_l2": {
+        "adapter_a": 0.0,
+        "adapter_b": 0.0
+      },
+      "gradient_l2": {
+        "adapter_a": 0.0001902435,
+        "adapter_b": 0.0001793858,
+        "output": 0.0159754074
+      },
+      "iteration": 0,
+      "label_in_teacher_topk_rate": 0.7587034814,
+      "loss_topk_kl": 1.1291671114,
+      "mean_student_label_probability_when_in_topk": 0.1241673449,
+      "mean_student_teacher_top1_probability": 0.1137876831,
+      "student_teacher_top1_agreement": 0.093637455
+    },
+    "gate_status": "pass",
+    "iterations": 1,
+    "last": {
+      "active_tokens": 833,
+      "applied_update": false,
+      "checkpoint_delta_l2": {
+        "adapter_a": 0.0,
+        "adapter_b": 0.0
+      },
+      "gradient_l2": {
+        "adapter_a": 0.0001902435,
+        "adapter_b": 0.0001793858,
+        "output": 0.0159754074
+      },
+      "iteration": 0,
+      "label_in_teacher_topk_rate": 0.7587034814,
+      "loss_topk_kl": 1.1291671114,
+      "mean_student_label_probability_when_in_topk": 0.1241673449,
+      "mean_student_teacher_top1_probability": 0.1137876831,
+      "student_teacher_top1_agreement": 0.093637455
+    },
+    "loss_delta": 0.0,
+    "losses": [
+      1.1291671114
+    ],
+    "run": {
+      "apply_update": false,
+      "arm": "baseline_eval",
+      "ended_at_utc": "2026-05-23T21:59:49Z",
+      "final_checkpoint": "/data/local/tmp/polymath_gemma4_gate/phase11/runs/20260523T213836Z_h11f_objective_upgrade_baseline_eval/H11-F-objective-upgrade/iterations/iter_000000/checkpoint",
+      "iterations": 1,
+      "local_report_dir": "runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T213836Z_h11f_objective_upgrade/H11-F-objective-upgrade/arms/baseline_eval",
+      "phone_gate_dir": "/data/local/tmp/polymath_gemma4_gate/phase11/runs/20260523T213836Z_h11f_objective_upgrade_baseline_eval/H11-F-objective-upgrade",
+      "returncode": 0,
+      "run_id": "20260523T213836Z_h11f_objective_upgrade_baseline_eval",
+      "schema_version": "phase11_h11f_arm_run_v1",
+      "started_at_utc": "2026-05-23T21:58:38Z",
+      "stderr_first_4096": "",
+      "stdout_first_4096": ""
+    },
+    "schema_version": "phase11_h11f_arm_summary_v1",
+    "status": "pass"
+  },
+  "schema_version": "phase11_h11f_heldout_report_v1",
+  "trained_adapter": {
+    "arm": "trained_eval",
+    "first": {
+      "active_tokens": 833,
+      "applied_update": false,
+      "checkpoint_delta_l2": {
+        "adapter_a": 0.0,
+        "adapter_b": 0.0
+      },
+      "gradient_l2": {
+        "adapter_a": 0.0005425668,
+        "adapter_b": 0.0005711785,
+        "output": 0.0159754057
+      },
+      "iteration": 0,
+      "label_in_teacher_topk_rate": 0.7587034814,
+      "loss_topk_kl": 1.12916688,
+      "mean_student_label_probability_when_in_topk": 0.1241673599,
+      "mean_student_teacher_top1_probability": 0.1137876981,
+      "student_teacher_top1_agreement": 0.093637455
+    },
+    "gate_status": "pass",
+    "iterations": 1,
+    "last": {
+      "active_tokens": 833,
+      "applied_update": false,
+      "checkpoint_delta_l2": {
+        "adapter_a": 0.0,
+        "adapter_b": 0.0
+      },
+      "gradient_l2": {
+        "adapter_a": 0.0005425668,
+        "adapter_b": 0.0005711785,
+        "output": 0.0159754057
+      },
+      "iteration": 0,
+      "label_in_teacher_topk_rate": 0.7587034814,
+      "loss_topk_kl": 1.12916688,
+      "mean_student_label_probability_when_in_topk": 0.1241673599,
+      "mean_student_teacher_top1_probability": 0.1137876981,
+      "student_teacher_top1_agreement": 0.093637455
+    },
+    "loss_delta": 0.0,
+    "losses": [
+      1.12916688
+    ],
+    "run": {
+      "apply_update": false,
+      "arm": "trained_eval",
+      "ended_at_utc": "2026-05-23T22:16:13Z",
+      "final_checkpoint": "/data/local/tmp/polymath_gemma4_gate/phase11/runs/20260523T213836Z_h11f_objective_upgrade_trained_eval/H11-F-objective-upgrade/iterations/iter_000000/checkpoint",
+      "iterations": 1,
+      "local_report_dir": "runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T213836Z_h11f_objective_upgrade/H11-F-objective-upgrade/arms/trained_eval",
+      "phone_gate_dir": "/data/local/tmp/polymath_gemma4_gate/phase11/runs/20260523T213836Z_h11f_objective_upgrade_trained_eval/H11-F-objective-upgrade",
+      "returncode": 0,
+      "run_id": "20260523T213836Z_h11f_objective_upgrade_trained_eval",
+      "schema_version": "phase11_h11f_arm_run_v1",
+      "started_at_utc": "2026-05-23T22:15:14Z",
+      "stderr_first_4096": "",
+      "stdout_first_4096": ""
+    },
+    "schema_version": "phase11_h11f_arm_summary_v1",
+    "status": "pass"
+  }
+}

@@ -1,0 +1,4 @@
+adb pull phone token caches for teacher-shard generation
+ssh runpod create_h11f_topk_teacher_shard.py --snapshot-dir /workspace/models/gemma4_e4b/snapshot --top-k 8
+adb push precomputed teacher shards to PHONE_PHASE11_ROOT/h11f_teacher_shards/{train,heldout}
+adb shell phase11_runner --queue queue/h11f_<arm>_queue.jsonl --run-root runs --heartbeat ... --state ...
