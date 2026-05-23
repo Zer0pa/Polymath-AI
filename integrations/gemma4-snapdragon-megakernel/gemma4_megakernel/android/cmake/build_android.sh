@@ -23,4 +23,6 @@ cmake -S "${LANE_DIR}" -B "${BUILD_DIR}" \
   -DANDROID_PLATFORM=android-29 \
   -DCMAKE_BUILD_TYPE=Release
 
-cmake --build "${BUILD_DIR}" --target gemma4_layer_runner phase11_runner -- -j"$(getconf _NPROCESSORS_ONLN 2>/dev/null || sysctl -n hw.ncpu)"
+cmake --build "${BUILD_DIR}" \
+  --target gemma4_layer_runner phase11_runner opencl_recordable_queue_probe \
+  -- -j"$(getconf _NPROCESSORS_ONLN 2>/dev/null || sysctl -n hw.ncpu)"

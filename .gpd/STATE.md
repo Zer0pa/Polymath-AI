@@ -19,9 +19,9 @@ any runtime data-path stage?
 **Total Phases:** 12
 **Current Plan:** 1
 **Total Plans in Phase:** 1
-**Status:** H11-A phone-resident daemon passed; H11-B safe performance envelope failed; H11-C bottleneck autopsy passed; H11-D recordable queues next
+**Status:** H11-A phone-resident daemon passed; H11-B safe performance envelope failed; H11-C bottleneck autopsy passed; H11-D recordable queues passed; H11-E trainable scope sweep next
 **Last Activity:** 2026-05-23
-**Last Activity Description:** Ran H11-C bottleneck autopsy under the H11-A daemon. A controlled 30-iteration daemon trial passed with accounted fraction `0.952561994`, residual `0.365645667s/iter`, and active/wall `0.95205868`. The Phase 10 dead-time gap is now attributed to host/process plus repeated static artifact hashing, not GPU compute. Proceed to H11-D recordable queue probe.
+**Last Activity Description:** Ran H11-D OpenCL recordable queue probe on REDMAGIC. Adreno 830 advertises `cl_qcom_recordable_queues`, QCOM recording symbols resolve, `CL_QUEUE_RECORDABLE_QCOM` property `0x40000000` is accepted, and no-op/fixed/mutable recorded sequences match ordinary queue outputs. Best launch speedup was `1.968636098x`; recordable queues are eligible for narrow A/B integration, not a default end-to-end training path yet. Proceed to H11-E trainable scope sweep.
 
 **Progress:** [#########-] 92%
 
@@ -29,10 +29,9 @@ any runtime data-path stage?
 
 - Execute Phase 11 only through phone-resident queue-run experiments with
   authority non-regression gates and artifact hygiene.
-- Sequential hypotheses: H11-A daemon, H11-B performance envelope, H11-C
-  bottleneck autopsy, H11-D OpenCL recordable queues, H11-E trainable scope
-  sweep, H11-F objective upgrade, H11-G HTP mutable-adapter/zero-order arm,
-  H11-H combined POVC run.
+- Sequential hypotheses complete through H11-D; continue H11-E trainable scope
+  sweep before H11-F objective upgrade, H11-G HTP mutable-adapter/zero-order
+  arm, and H11-H combined POVC run.
 
 ## Intermediate Results
 
@@ -107,6 +106,13 @@ any runtime data-path stage?
   residual `0.365645667s/iter`. Phase 10 dead time is explained by
   host/process orchestration and repeated static artifact hashing; the repaired
   daemon path leaves residual below the PRD threshold.
+- H11-D OpenCL recordable queue probe passed:
+  `runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T205951Z_h11d_recordable_queues/H11-D-recordable-queues/gate_result.json`.
+  The selected Adreno 830 driver advertises `cl_qcom_recordable_queues`, accepts
+  recordable queue property `0x40000000`, resolves QCOM recording functions,
+  and passes no-op, fixed-arg, and mutable-arg output comparisons. Recordable
+  queues are eligible for narrow A/B use only; H11-H must still prove any
+  end-to-end relevance.
 
 ## Open Questions
 
@@ -114,10 +120,11 @@ any runtime data-path stage?
   ADB/USB disconnect, and what resume behavior is needed if it does not.
 - Whether safe fixed performance mode, charge separation, fan state, and OEM
   controls materially improve active/wall without unsafe thermal behavior.
-- Whether cl_qcom_recordable_queues is exposed on this Adreno 830 driver and
-  useful after H11-C identifies the real bottleneck.
 - Which expanded DoRA/LoRA scope and objective produces a capability-relevant
   signal beyond the rank-4 parity lane.
+- Whether H11-D recordable queue launch savings remain useful in an end-to-end
+  H11-H training sequence after the H11-C residual was already reduced below
+  threshold.
 - Whether QAIRT mutable sections can become an HTP teacher/frozen-forward or
   zero-order arm without claiming normal HTP backprop.
 
@@ -145,6 +152,7 @@ any runtime data-path stage?
 | H11-A disconnect evidence | `607s` | ADB server hold after marker | passed; runner heartbeat/state/checksum finalized on phone |
 | H11-B throughput delta | `+1.6502977%` | 12-iteration baseline vs fixed-performance/stay-awake profile | failed required `>=15%`; controls reverted |
 | H11-C residual | `0.365645667s/iter` | 30-iteration daemon autopsy | passed; accounted fraction `0.952561994` |
+| H11-D recordable queue launch | `1.968636098x` best speedup | 100 no-op/fixed/mutable OpenCL dispatches | passed; mutable output `300 == 300`, property `0x40000000` |
 
 ## Accumulated Context
 
@@ -197,10 +205,10 @@ Full log: `.gpd/DECISIONS.md`
 
 ### Pending Todos
 
-- Execute H11-D next under the H11-A daemon and H11-B baseline-safe fallback:
-  probe `cl_qcom_recordable_queues` support, function pointers, no-op/fixed/
-  mutable-arg timing, and integrate only if correctness and end-to-end relevance
-  are proven.
+- Execute H11-E next under the H11-A daemon and H11-B baseline-safe fallback:
+  compare the rank-4 post-layer0 baseline against larger meaningful adapter
+  scopes by memory, active time, checkpoint size, finite gradients, replay, and
+  objective/capability signal.
 - Preserve H11-A runner topology for later gates; do not return to host-driven
   per-iteration training except as a declared diagnostic fallback.
 - Do not run H11-H or another long endurance job until H11-B through H11-G have
@@ -231,10 +239,13 @@ Full log: `.gpd/DECISIONS.md`
 - H11-C does not claim all remaining residual is categorized; it passes because
   residual is below `5s/iter` and the dominant Phase 10 dead-time source was
   falsified by repair evidence.
+- H11-D does not claim end-to-end training speedup. It proves OpenCL extension
+  support, mutable-arg correctness, and launch-level benefit; later gates may
+  use recordable queues only through narrow A/B evidence.
 
 ## Session Continuity
 
 **Last session:** 2026-05-23
-**Stopped at:** H11-C bottleneck autopsy passed. Continue with H11-D OpenCL
-recordable queue probe under the H11-A runner; do not skip to H11-H.
+**Stopped at:** H11-D OpenCL recordable queue probe passed. Continue with H11-E
+trainable scope sweep under the H11-A runner; do not skip to H11-H.
 **Resume file:** `.gpd/STATE.md`

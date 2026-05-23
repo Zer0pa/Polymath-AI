@@ -1,8 +1,8 @@
 {
-  "_synced_at": "2026-05-23T20:39:16Z",
+  "_synced_at": "2026-05-23T21:00:33Z",
   "active_calculations": [
     "Execute Phase 11 only through phone-resident queue-run experiments with authority non-regression gates and artifact hygiene.",
-    "Sequential hypotheses: H11-A daemon, H11-B performance envelope, H11-C bottleneck autopsy, H11-D OpenCL recordable queues, H11-E trainable scope sweep, H11-F objective upgrade, H11-G HTP mutable-adapter/zero-order arm, H11-H combined POVC run."
+    "Sequential hypotheses complete through H11-D; continue H11-E trainable scope sweep before H11-F/H11-G/H11-H."
   ],
   "approximations": [],
   "blockers": [
@@ -57,14 +57,15 @@
     "Latest research synthesis reframed the next campaign: docs/research-packs/gemma4-heterogeneous-training-frontier-2026-05-18/08-OPUS-LEVEL-VIEW-AND-POVC.md",
     "Phase 11 authority PRD and execution handoff were written: docs/PRD-HARDWARE-NATIVE-TRAINING-POVC.md, docs/HANDOFF-HARDWARE-NATIVE-TRAINING-POVC-EXECUTOR.md, docs/STARTUP-PROMPT-HARDWARE-NATIVE-TRAINING-POVC.md",
     "Phase 11 GPD execution plan was scaffolded: .gpd/phases/11-hardware-native-training-povc/11-01-PLAN.md",
-    "Phase 11 executor controls were hardened for long-horizon campaign execution: no stopping after intermediate wins, exact pass/fail/blocker cadence after each H11 gate, targeted subagent/falsification decision rules, RunPod alternate SSH, and no minimized-proxy language in HTP probing."
+    "Phase 11 executor controls were hardened for long-horizon campaign execution: no stopping after intermediate wins, exact pass/fail/blocker cadence after each H11 gate, targeted subagent/falsification decision rules, RunPod alternate SSH, and no minimized-proxy language in HTP probing.",
+    "H11-D OpenCL recordable queues passed: runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T205951Z_h11d_recordable_queues/H11-D-recordable-queues/gate_result.json"
   ],
   "open_questions": [
     "Whether Android permits the phone-resident runner to continue reliably after ADB/USB disconnect, and what resume behavior is needed if it does not.",
     "Whether safe fixed performance mode, charge separation, fan state, and OEM controls materially improve active/wall without unsafe thermal behavior.",
-    "Whether cl_qcom_recordable_queues is exposed on this Adreno 830 driver and useful after H11-C identifies the real bottleneck.",
     "Which expanded DoRA/LoRA scope and objective produces a capability-relevant signal beyond the rank-4 parity lane.",
-    "Whether QAIRT mutable sections can become an HTP teacher/frozen-forward or zero-order arm without claiming normal HTP backprop."
+    "Whether QAIRT mutable sections can become an HTP teacher/frozen-forward or zero-order arm without claiming normal HTP backprop.",
+    "Whether H11-D recordable queue launch savings remain useful in an end-to-end H11-H training sequence after the H11-C residual was already reduced below threshold."
   ],
   "pending_todos": [
     "Start the next execution agent with docs/STARTUP-PROMPT-HARDWARE-NATIVE-TRAINING-POVC.md.",
@@ -116,7 +117,7 @@
     ]
   },
   "phase11": {
-    "current_gate": "H11-D",
+    "current_gate": "H11-E",
     "h11a": {
       "active_training_seconds": 527.878356,
       "active_wall_ratio": 0.96051948,
@@ -148,6 +149,23 @@
       "next_gate": "H11-D OpenCL recordable queue probe",
       "phase10_dead_time_seconds_per_iteration": 36.7,
       "residual_per_iteration_seconds": 0.3656456666666668,
+      "status": "pass"
+    },
+    "h11d": {
+      "best_launch_speedup_ratio": 1.968636098,
+      "device": "QUALCOMM Adreno(TM) 830",
+      "driver_version": "OpenCL 3.0 QUALCOMM build: 0800.40 Compiler E031.47.18.30",
+      "failed_attempt_preserved": "runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T205438Z_h11d_recordable_queues/H11-D-recordable-queues/gate_result.json",
+      "fixed_arg_speedup_ratio": 1.093031749,
+      "gate_result": "runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T205951Z_h11d_recordable_queues/H11-D-recordable-queues/gate_result.json",
+      "mutable_arg_output_match": true,
+      "mutable_arg_speedup_ratio": 1.048532727,
+      "next_gate": "H11-E trainable scope sweep",
+      "noop_speedup_ratio": 1.968636098,
+      "prewording_pass_preserved": "runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T205837Z_h11d_recordable_queues/H11-D-recordable-queues/gate_result.json",
+      "recordable_queue_decision": "eligible_for_narrow_sequence_ab_not_default",
+      "recordable_queues_supported": true,
+      "selected_recordable_property": "0x40000000",
       "status": "pass"
     }
   },
@@ -647,8 +665,9 @@
   },
   "propagated_uncertainties": [],
   "session": {
+    "last_gate": "H11-D",
     "last_session": "2026-05-23",
     "resume_file": ".gpd/STATE.md",
-    "stopped_at": "H11-C bottleneck autopsy passed; continue with H11-D OpenCL recordable queue probe under the H11-A runner."
+    "stopped_at": "H11-D OpenCL recordable queue probe passed; continue with H11-E trainable scope sweep."
   }
 }

@@ -1,0 +1,53 @@
+{
+  "schema_version": "phase11_h11d_microbenchmark_v1",
+  "ordinary_queue_mode": "clCreateCommandQueue properties=0",
+  "recorded_queue_mode": "cl_qcom_recordable_queues recording replay",
+  "benchmarks": [
+{
+  "name": "noop_recorded_sequence",
+  "status": "completed",
+  "reason": "",
+  "iterations": 100,
+  "ordinary_wall_seconds": 0.026322031,
+  "recorded_wall_seconds": 0.021391823,
+  "ordinary_dispatch_seconds": 0.00026322031,
+  "recorded_dispatch_seconds": 0.00021391823,
+  "speedup_ratio": 1.230471615,
+  "ordinary_value": 0,
+  "recorded_value": 0,
+  "ordinary_correct": true,
+  "recorded_correct": true
+},
+{
+  "name": "fixed_arg_recorded_add",
+  "status": "completed",
+  "reason": "",
+  "iterations": 100,
+  "ordinary_wall_seconds": 0.029055469,
+  "recorded_wall_seconds": 0.024498177,
+  "ordinary_dispatch_seconds": 0.00029055469,
+  "recorded_dispatch_seconds": 0.00024498177,
+  "speedup_ratio": 1.18602576,
+  "ordinary_value": 100,
+  "recorded_value": 100,
+  "ordinary_correct": true,
+  "recorded_correct": true
+},
+{
+  "name": "mutable_arg_recorded_add",
+  "status": "completed",
+  "reason": "",
+  "iterations": 100,
+  "ordinary_wall_seconds": 0.038316718,
+  "recorded_wall_seconds": 0.023631875,
+  "ordinary_dispatch_seconds": 0.00038316718,
+  "recorded_dispatch_seconds": 0.00023631875,
+  "speedup_ratio": 1.621399825,
+  "ordinary_value": 300,
+  "recorded_value": 300,
+  "ordinary_correct": true,
+  "recorded_correct": true
+}
+  ],
+  "mutable_arg_benchmark_skipped": false
+}

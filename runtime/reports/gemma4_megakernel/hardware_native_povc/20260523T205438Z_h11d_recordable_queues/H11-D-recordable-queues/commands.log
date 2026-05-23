@@ -1,0 +1,3 @@
+adb push opencl_recordable_queue_probe PHONE_PHASE11_ROOT/opencl_recordable_queue_probe
+adb shell PHONE_PROBE --output PHONE_GATE/H11-D-recordable-queues --iterations N
+adb pull PHONE_GATE/H11-D-recordable-queues/{extension_dump,symbol_probe,queue_property_scan,microbenchmark,output_comparison}.json

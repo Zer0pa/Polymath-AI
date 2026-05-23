@@ -1,0 +1,44 @@
+{
+  "schema_version": "phase11_h11d_microbenchmark_v1",
+  "ordinary_queue_mode": "clCreateCommandQueue properties=0",
+  "recorded_queue_mode": "cl_qcom_recordable_queues recording replay",
+  "benchmarks": [
+{
+  "name": "noop_recorded_sequence",
+  "status": "completed",
+  "reason": "",
+  "iterations": 100,
+  "ordinary_wall_seconds": 0.019827084,
+  "recorded_wall_seconds": 0.015498281,
+  "ordinary_dispatch_seconds": 0.00019827084,
+  "recorded_dispatch_seconds": 0.00015498281,
+  "speedup_ratio": 1.279308589,
+  "ordinary_value": 0,
+  "recorded_value": 0,
+  "ordinary_correct": true,
+  "recorded_correct": true
+},
+{
+  "name": "fixed_arg_recorded_add",
+  "status": "completed",
+  "reason": "",
+  "iterations": 100,
+  "ordinary_wall_seconds": 0.022693906,
+  "recorded_wall_seconds": 0.018575052,
+  "ordinary_dispatch_seconds": 0.00022693906,
+  "recorded_dispatch_seconds": 0.00018575052,
+  "speedup_ratio": 1.221741183,
+  "ordinary_value": 100,
+  "recorded_value": 100,
+  "ordinary_correct": true,
+  "recorded_correct": true
+},
+    {
+      "name": "mutable_arg_recorded_add",
+      "status": "skipped",
+      "reason": "public extension header and mutable-update ABI were not available in the checked toolchains; no mutable benchmark was promoted from guesswork",
+      "required_for_promotion": true
+    }
+  ],
+  "mutable_arg_benchmark_skipped": true
+}

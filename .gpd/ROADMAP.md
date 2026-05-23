@@ -19,7 +19,7 @@ phone-resident POVC campaign rather than another host-driven endurance loop.
 | Phone-native training artifact | Phases 4-8 | G8 repaired and Phase 8 sustained objective passed |
 | G10 falsifier survival | Phase 9 | Passed under narrow scope |
 | Hardware-max pipeline search | Phase 10+ | First phone A/B candidate passed; ongoing |
-| Hardware-native training POVC | Phase 11 | H11-A passed; H11-B failed; H11-C passed; H11-D next |
+| Hardware-native training POVC | Phase 11 | H11-A passed; H11-B failed; H11-C passed; H11-D passed; H11-E next |
 
 ## Phases
 
@@ -397,6 +397,12 @@ Plans:
   accounted fraction `0.952561994`; Phase 10 dead time is explained by
   host/process orchestration and repeated static artifact hashing. Evidence:
   `runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T203448Z_h11c_bottleneck_autopsy/H11-C-bottleneck-autopsy/gate_result.json`.
+  H11-D OpenCL recordable queue probe passed on Adreno 830: extension advertised,
+  QCOM symbols resolved, property `0x40000000` accepted, no-op/fixed/mutable
+  output comparisons passed, and best launch speedup was `1.968636098x`.
+  Recordable queues are eligible for narrow A/B integration, not default
+  end-to-end training. Evidence:
+  `runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T205951Z_h11d_recordable_queues/H11-D-recordable-queues/gate_result.json`.
 
 ## Progress
 
@@ -413,4 +419,4 @@ Plans:
 | 8. Sustained Authority Run | 1/1 | Complete | 2026-05-17 |
 | 9. Falsifier Review | 1/1 | Complete | 2026-05-17 |
 | 10. Hardware Max Training Pipeline | 2/ongoing | Six-hour narrow endurance passed; remaining nonclaims blocked | - |
-| 11. Hardware-Native Training POVC | 0/1 | H11-A passed; H11-B failed; H11-C passed; H11-D next | 2026-05-23 |
+| 11. Hardware-Native Training POVC | 0/1 | H11-A passed; H11-B failed; H11-C passed; H11-D passed; H11-E next | 2026-05-23 |
