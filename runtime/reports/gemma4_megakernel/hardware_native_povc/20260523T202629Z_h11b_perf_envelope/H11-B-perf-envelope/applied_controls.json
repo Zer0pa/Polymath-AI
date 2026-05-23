@@ -1,0 +1,36 @@
+{
+  "controls": [
+    {
+      "command": "settings put global low_power 0",
+      "name": "disable_low_power",
+      "returncode": 0,
+      "stderr": "",
+      "stdout": ""
+    },
+    {
+      "command": "svc power stayon usb",
+      "name": "stay_awake_usb",
+      "returncode": 0,
+      "stderr": "",
+      "stdout": ""
+    },
+    {
+      "command": "cmd power set-fixed-performance-mode-enabled true",
+      "name": "fixed_performance_on",
+      "returncode": 0,
+      "stderr": "",
+      "stdout": ""
+    },
+    {
+      "command": "cmd thermalservice headroom 30",
+      "name": "thermal_headroom_probe",
+      "returncode": 0,
+      "stderr": "",
+      "stdout": "Headroom in 30 seconds: 0.39966667\n"
+    },
+    {
+      "name": "original_low_power",
+      "value": "0"
+    }
+  ]
+}

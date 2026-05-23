@@ -1,0 +1,7 @@
+settings put global low_power 0
+svc power stayon usb
+cmd power set-fixed-performance-mode-enabled true
+cmd thermalservice headroom 30
+cmd power set-fixed-performance-mode-enabled false
+settings put global low_power 0
+svc power stayon false

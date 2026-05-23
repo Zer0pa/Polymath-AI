@@ -1,5 +1,5 @@
 {
-  "_synced_at": "2026-05-23T20:20:54Z",
+  "_synced_at": "2026-05-23T20:31:01Z",
   "active_calculations": [
     "Execute Phase 11 only through phone-resident queue-run experiments with authority non-regression gates and artifact hygiene.",
     "Sequential hypotheses: H11-A daemon, H11-B performance envelope, H11-C bottleneck autopsy, H11-D OpenCL recordable queues, H11-E trainable scope sweep, H11-F objective upgrade, H11-G HTP mutable-adapter/zero-order arm, H11-H combined POVC run."
@@ -116,7 +116,7 @@
     ]
   },
   "phase11": {
-    "current_gate": "H11-B",
+    "current_gate": "H11-C",
     "h11a": {
       "active_training_seconds": 527.878356,
       "active_wall_ratio": 0.96051948,
@@ -129,6 +129,16 @@
       "runner_build_id": "phase11_runner_h11a_v1_20260523",
       "runtime_topology": "phone_local_queue_no_adb_per_iteration",
       "status": "pass"
+    },
+    "h11b": {
+      "baseline_active_wall": 0.93996256,
+      "controls_reverted": true,
+      "gate_result": "runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T202629Z_h11b_perf_envelope/H11-B-perf-envelope/gate_result.json",
+      "next_gate": "H11-C bottleneck autopsy",
+      "profile_active_wall": 0.93758804,
+      "selected_profile": "baseline_safe_profile",
+      "status": "fail_with_baseline_fallback",
+      "throughput_improvement_fraction": 0.016502977034836927
     }
   },
   "position": {
@@ -629,6 +639,6 @@
   "session": {
     "last_session": "2026-05-23",
     "resume_file": ".gpd/STATE.md",
-    "stopped_at": "H11-A phone-resident daemon passed; continue with H11-B performance envelope under the H11-A runner."
+    "stopped_at": "H11-B performance envelope failed with baseline-safe fallback; continue with H11-C bottleneck autopsy under the H11-A runner."
   }
 }

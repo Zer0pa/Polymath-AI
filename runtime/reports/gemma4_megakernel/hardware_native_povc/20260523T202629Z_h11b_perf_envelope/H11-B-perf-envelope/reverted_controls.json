@@ -1,0 +1,25 @@
+{
+  "controls": [
+    {
+      "command": "cmd power set-fixed-performance-mode-enabled false",
+      "name": "fixed_performance_off",
+      "returncode": 0,
+      "stderr": "",
+      "stdout": ""
+    },
+    {
+      "command": "settings put global low_power 0",
+      "name": "restore_low_power",
+      "returncode": 0,
+      "stderr": "",
+      "stdout": ""
+    },
+    {
+      "command": "svc power stayon false",
+      "name": "stay_awake_off",
+      "returncode": 0,
+      "stderr": "",
+      "stdout": ""
+    }
+  ]
+}

@@ -19,7 +19,7 @@ phone-resident POVC campaign rather than another host-driven endurance loop.
 | Phone-native training artifact | Phases 4-8 | G8 repaired and Phase 8 sustained objective passed |
 | G10 falsifier survival | Phase 9 | Passed under narrow scope |
 | Hardware-max pipeline search | Phase 10+ | First phone A/B candidate passed; ongoing |
-| Hardware-native training POVC | Phase 11 | H11-A daemon passed; H11-B next |
+| Hardware-native training POVC | Phase 11 | H11-A passed; H11-B failed; H11-C next |
 
 ## Phases
 
@@ -390,6 +390,9 @@ Plans:
   queued iterations, active/wall `0.96051948`, checkpoint chain acceptance, and
   607 seconds of ADB-disconnect evidence. Evidence:
   `runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T200929Z_h11a_daemon/H11-A-daemon/gate_result.json`.
+  H11-B safe performance envelope failed; reversible controls were ineffective
+  and baseline-safe profile carries forward. Evidence:
+  `runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T202629Z_h11b_perf_envelope/H11-B-perf-envelope/gate_result.json`.
 
 ## Progress
 
@@ -406,4 +409,4 @@ Plans:
 | 8. Sustained Authority Run | 1/1 | Complete | 2026-05-17 |
 | 9. Falsifier Review | 1/1 | Complete | 2026-05-17 |
 | 10. Hardware Max Training Pipeline | 2/ongoing | Six-hour narrow endurance passed; remaining nonclaims blocked | - |
-| 11. Hardware-Native Training POVC | 0/1 | H11-A passed; H11-B next | 2026-05-23 |
+| 11. Hardware-Native Training POVC | 0/1 | H11-A passed; H11-B failed; H11-C next | 2026-05-23 |

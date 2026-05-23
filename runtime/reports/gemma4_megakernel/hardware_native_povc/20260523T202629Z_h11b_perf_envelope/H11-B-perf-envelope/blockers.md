@@ -1,0 +1,4 @@
+- baseline safety: one or more cooling devices reported active mitigation
+- profile pre safety: one or more cooling devices reported active mitigation
+- profile post safety: one or more cooling devices reported active mitigation
+- safe controls did not improve daemon throughput or active/wall by >=15%

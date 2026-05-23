@@ -1,0 +1,23 @@
+{
+  "active_wall_improvement_fraction": -0.002526185723822922,
+  "baseline_active_wall": 0.93996256,
+  "baseline_gate_result": "runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T202629Z_h11b_perf_envelope/H11-B-perf-envelope/baseline_daemon/gate_result.json",
+  "baseline_iterations_per_second": 0.14149517598727818,
+  "blockers": [
+    "baseline safety: one or more cooling devices reported active mitigation",
+    "profile pre safety: one or more cooling devices reported active mitigation",
+    "profile post safety: one or more cooling devices reported active mitigation",
+    "safe controls did not improve daemon throughput or active/wall by >=15%"
+  ],
+  "ended_at_utc": "2026-05-23T20:31:01Z",
+  "gate": "H11-B",
+  "profile_active_wall": 0.93758804,
+  "profile_gate_result": "runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T202629Z_h11b_perf_envelope/H11-B-perf-envelope/profile_daemon/gate_result.json",
+  "profile_iterations_per_second": 0.14383026762713644,
+  "reverted_after_probe": true,
+  "schema_version": "phase11_h11b_profile_decision_v1",
+  "selected_profile": "baseline_safe_profile",
+  "started_at_utc": "2026-05-23T20:26:33Z",
+  "status": "fail",
+  "throughput_improvement_fraction": 0.016502977034836927
+}

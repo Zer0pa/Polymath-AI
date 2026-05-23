@@ -19,9 +19,9 @@ any runtime data-path stage?
 **Total Phases:** 12
 **Current Plan:** 1
 **Total Plans in Phase:** 1
-**Status:** H11-A phone-resident daemon passed; H11-B performance envelope next
+**Status:** H11-A phone-resident daemon passed; H11-B safe performance envelope failed; H11-C bottleneck autopsy next
 **Last Activity:** 2026-05-23
-**Last Activity Description:** Implemented and deployed the native `phase11_runner`, repaired per-iteration static-artifact hashing, and passed H11-A on REDMAGIC with 50 phone-local daemon iterations, checkpoint chaining, heartbeat/state/checksum artifacts, and 607 seconds of ADB-disconnect evidence. Active/wall improved from the Phase 10 baseline `0.21328649` to `0.96051948` for daemon queue execution.
+**Last Activity Description:** Ran H11-B safe performance-envelope probe under the passed H11-A daemon. Reversible controls (`low_power=0`, USB stay-awake, fixed-performance mode request) were applied and reverted, but the profile did not improve daemon throughput by the required 15 percent and cooling-device state was nonzero throughout. H11-B is failed with baseline-safe fallback; proceed to H11-C bottleneck autopsy.
 
 **Progress:** [#########-] 92%
 
@@ -95,6 +95,12 @@ any runtime data-path stage?
   The phone executed 50 queued narrow-lane iterations inside one long-lived
   runner process with local queue, heartbeat, STOP/resume state, checksum
   chain, checkpoint continuity, and ADB-disconnect evidence.
+- H11-B safe performance envelope failed:
+  `runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T202629Z_h11b_perf_envelope/H11-B-perf-envelope/gate_result.json`.
+  Reversible controls were accepted/reverted, but profile throughput improved
+  only `0.016502977` and active/wall regressed slightly from `0.93996256` to
+  `0.93758804`; cooling-device state remained nonzero. Baseline-safe profile is
+  carried into H11-C.
 
 ## Open Questions
 
@@ -131,6 +137,7 @@ any runtime data-path stage?
 | Phase 10 dead time | `36.70s/iteration` | 465 iterations | H11-C must explain |
 | H11-A daemon active/wall | `527.878356 / 549.575899 = 0.96051948` | 50 phone-local daemon iterations | passed after static-hash repair |
 | H11-A disconnect evidence | `607s` | ADB server hold after marker | passed; runner heartbeat/state/checksum finalized on phone |
+| H11-B throughput delta | `+1.6502977%` | 12-iteration baseline vs fixed-performance/stay-awake profile | failed required `>=15%`; controls reverted |
 
 ## Accumulated Context
 
@@ -183,9 +190,10 @@ Full log: `.gpd/DECISIONS.md`
 
 ### Pending Todos
 
-- Execute H11-B next under the passed H11-A phone-resident daemon: reversible
-  no-root performance controls, fan/charge-separation observations, thermal,
-  cooling, frequency, KGSL, and safety-stop telemetry.
+- Execute H11-C next under the H11-A daemon and H11-B baseline-safe fallback:
+  instrument one-shot and daemon timing for compute, launch/context, token
+  bridge, checkpoint, manifest/static hashing, validation, storage, host pull,
+  and idle residual.
 - Preserve H11-A runner topology for later gates; do not return to host-driven
   per-iteration training except as a declared diagnostic fallback.
 - Do not run H11-H or another long endurance job until H11-B through H11-G have
@@ -210,10 +218,14 @@ Full log: `.gpd/DECISIONS.md`
 - H11-A does not claim OpenCL context persistence across iterations; the runner
   process persists and removes host per-iteration orchestration. Deeper context,
   queue, launch, and storage accounting remains H11-C/H11-D work.
+- H11-B does not promote fixed-performance or USB stay-awake as a winning
+  profile. Controls were reversible but ineffective; proceed with the baseline
+  profile until H11-C identifies a measured bottleneck.
 
 ## Session Continuity
 
 **Last session:** 2026-05-23
-**Stopped at:** H11-A phone-resident daemon passed. Continue with H11-B
-performance envelope under the H11-A runner; do not skip to H11-H.
+**Stopped at:** H11-B performance envelope failed with baseline-safe fallback.
+Continue with H11-C bottleneck autopsy under the H11-A runner; do not skip to
+H11-H.
 **Resume file:** `.gpd/STATE.md`
