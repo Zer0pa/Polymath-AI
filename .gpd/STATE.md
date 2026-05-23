@@ -19,9 +19,9 @@ any runtime data-path stage?
 **Total Phases:** 12
 **Current Plan:** 1
 **Total Plans in Phase:** 1
-**Status:** H11-A phone-resident daemon passed; H11-B safe performance envelope failed; H11-C bottleneck autopsy next
+**Status:** H11-A phone-resident daemon passed; H11-B safe performance envelope failed; H11-C bottleneck autopsy passed; H11-D recordable queues next
 **Last Activity:** 2026-05-23
-**Last Activity Description:** Ran H11-B safe performance-envelope probe under the passed H11-A daemon. Reversible controls (`low_power=0`, USB stay-awake, fixed-performance mode request) were applied and reverted, but the profile did not improve daemon throughput by the required 15 percent and cooling-device state was nonzero throughout. H11-B is failed with baseline-safe fallback; proceed to H11-C bottleneck autopsy.
+**Last Activity Description:** Ran H11-C bottleneck autopsy under the H11-A daemon. A controlled 30-iteration daemon trial passed with accounted fraction `0.952561994`, residual `0.365645667s/iter`, and active/wall `0.95205868`. The Phase 10 dead-time gap is now attributed to host/process plus repeated static artifact hashing, not GPU compute. Proceed to H11-D recordable queue probe.
 
 **Progress:** [#########-] 92%
 
@@ -101,6 +101,12 @@ any runtime data-path stage?
   only `0.016502977` and active/wall regressed slightly from `0.93996256` to
   `0.93758804`; cooling-device state remained nonzero. Baseline-safe profile is
   carried into H11-C.
+- H11-C bottleneck autopsy passed:
+  `runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T203448Z_h11c_bottleneck_autopsy/H11-C-bottleneck-autopsy/gate_result.json`.
+  A 30-iteration daemon trial accounted for `95.2561994%` of wall time with
+  residual `0.365645667s/iter`. Phase 10 dead time is explained by
+  host/process orchestration and repeated static artifact hashing; the repaired
+  daemon path leaves residual below the PRD threshold.
 
 ## Open Questions
 
@@ -138,6 +144,7 @@ any runtime data-path stage?
 | H11-A daemon active/wall | `527.878356 / 549.575899 = 0.96051948` | 50 phone-local daemon iterations | passed after static-hash repair |
 | H11-A disconnect evidence | `607s` | ADB server hold after marker | passed; runner heartbeat/state/checksum finalized on phone |
 | H11-B throughput delta | `+1.6502977%` | 12-iteration baseline vs fixed-performance/stay-awake profile | failed required `>=15%`; controls reverted |
+| H11-C residual | `0.365645667s/iter` | 30-iteration daemon autopsy | passed; accounted fraction `0.952561994` |
 
 ## Accumulated Context
 
@@ -190,10 +197,10 @@ Full log: `.gpd/DECISIONS.md`
 
 ### Pending Todos
 
-- Execute H11-C next under the H11-A daemon and H11-B baseline-safe fallback:
-  instrument one-shot and daemon timing for compute, launch/context, token
-  bridge, checkpoint, manifest/static hashing, validation, storage, host pull,
-  and idle residual.
+- Execute H11-D next under the H11-A daemon and H11-B baseline-safe fallback:
+  probe `cl_qcom_recordable_queues` support, function pointers, no-op/fixed/
+  mutable-arg timing, and integrate only if correctness and end-to-end relevance
+  are proven.
 - Preserve H11-A runner topology for later gates; do not return to host-driven
   per-iteration training except as a declared diagnostic fallback.
 - Do not run H11-H or another long endurance job until H11-B through H11-G have
@@ -221,11 +228,13 @@ Full log: `.gpd/DECISIONS.md`
 - H11-B does not promote fixed-performance or USB stay-awake as a winning
   profile. Controls were reversible but ineffective; proceed with the baseline
   profile until H11-C identifies a measured bottleneck.
+- H11-C does not claim all remaining residual is categorized; it passes because
+  residual is below `5s/iter` and the dominant Phase 10 dead-time source was
+  falsified by repair evidence.
 
 ## Session Continuity
 
 **Last session:** 2026-05-23
-**Stopped at:** H11-B performance envelope failed with baseline-safe fallback.
-Continue with H11-C bottleneck autopsy under the H11-A runner; do not skip to
-H11-H.
+**Stopped at:** H11-C bottleneck autopsy passed. Continue with H11-D OpenCL
+recordable queue probe under the H11-A runner; do not skip to H11-H.
 **Resume file:** `.gpd/STATE.md`

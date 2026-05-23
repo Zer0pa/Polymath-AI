@@ -1,0 +1,18 @@
+{
+  "accounted_fraction": 0.9525619942553817,
+  "blockers": [],
+  "ended_at_utc": "2026-05-23T20:39:16Z",
+  "gate": "H11-C",
+  "iteration_count": 30,
+  "phase10_gap_explanation": {
+    "dominant_explanation": "Phase 10 dead time was not GPU compute. H11-A pre-repair reproduced a large per-iteration residual from host/process plus repeated static artifact hashing. Hashing static assets once and using the phone-local daemon reduced residual below the H11-C threshold.",
+    "h11a_pre_repair_residual_seconds_per_iteration": 27.967729160000005,
+    "h11a_repaired_residual_seconds_per_iteration": 0.43395085999999994,
+    "h11c_daemon_residual_seconds_per_iteration": 0.3656456666666668,
+    "phase10_dead_time_seconds_per_iteration": 36.7
+  },
+  "residual_per_iteration_seconds": 0.3656456666666668,
+  "schema_version": "phase11_h11c_gate_result_v1",
+  "started_at_utc": "2026-05-23T20:34:48Z",
+  "status": "pass"
+}
