@@ -1,0 +1,12 @@
+{
+  "execution_metadata_pulled": true,
+  "inference_completed": true,
+  "local_execution_metadata": "runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T223147Z_h11g_htp_mutable_adapter/H11-G-htp-mutable-adapter/phone_htp_inference_execution_metadata.yaml",
+  "name": "phone_htp_frozen_forward_inference",
+  "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase11/20260523T223147Z_h11g_htp_mutable_adapter/h11g_htp_inference",
+  "qnn_partition_seen": true,
+  "returncode": 0,
+  "status": "pass",
+  "stderr_tail": "",
+  "stdout_tail": "qnn-net-run pid:2880\nqnn-net-run build version: v2.44.0.260225143659\nqnn-net-run log level is : QNN_LOG_LEVEL_INFO\nProcessing inference input(s):\ninput.bin\nCreating context from binary file: /data/local/tmp/phase1a/qwen_block.qnn.bin\nExecuting Graphs\nFinished Executing Graphs\n---\ntimestamp: 212410954563\ncommand: /data/local/tmp/qairt-2.44/bin/aarch64-android/qnn-net-run --retrieve_context /data/local/tmp/phase1a/qwen_block.qnn.bin --backend /data/local/tmp/qairt-2.44/lib/aarch64-android/libQnnHtp.so --input_list /data/local/tmp/phase1a/input_list.txt --output_dir /data/local/tmp/polymath_gemma4_gate/phase11/20260523T223147Z_h11g_htp_mutable_adapter/h11g_htp_inference --num_inferences 1 --profiling_level basic --log_level info\nexecution_mode: synchronous\ninferences_completed: 1\ngraphs:\n  - graph_name: qnn_partition_0\n    input_tensors:\n    - tensor_name: serving_default_args_0\n      id: 1\n      datatype: QNN_DATATYPE_FLOAT_32\n      dimensions: [1,16,1536]\n    output_tensors:\n    - tensor_name: serving_default_output_0_output\n      id: 102\n      datatype: QNN_DATATYPE_FLOAT_32\n      dimensions: [1,16,1536]\n"
+}

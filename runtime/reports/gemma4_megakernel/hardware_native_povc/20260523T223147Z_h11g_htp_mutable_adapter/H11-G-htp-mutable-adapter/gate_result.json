@@ -1,0 +1,96 @@
+{
+  "authority_device": "FY25013101C8",
+  "blockers": [
+    "Current phone QNN context has zero updateable tensors, so QnnContext_applyBinarySection has no valid Gemma/Qwen section to apply",
+    "RunPod QAIRT Python/x86 LoRA tooling is not fully runnable in the current shell environment"
+  ],
+  "checks": {
+    "phone_context_utility": {
+      "context_blob_size": 93908992,
+      "context_info_pulled": true,
+      "graphs": [
+        {
+          "graph_name": "qnn_partition_0",
+          "num_graph_inputs": 1,
+          "num_graph_outputs": 1,
+          "num_updateable_tensors": 0,
+          "updateable_tensors": []
+        }
+      ],
+      "local_context_info": "runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T223147Z_h11g_htp_mutable_adapter/H11-G-htp-mutable-adapter/phone_context_info.json",
+      "name": "phone_context_binary_utility",
+      "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase11/20260523T223147Z_h11g_htp_mutable_adapter/h11g_context_utility",
+      "returncode": 0,
+      "status": "pass",
+      "stderr_tail": "",
+      "stdout_tail": ""
+    },
+    "phone_htp_inference": {
+      "execution_metadata_pulled": true,
+      "inference_completed": true,
+      "local_execution_metadata": "runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T223147Z_h11g_htp_mutable_adapter/H11-G-htp-mutable-adapter/phone_htp_inference_execution_metadata.yaml",
+      "name": "phone_htp_frozen_forward_inference",
+      "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase11/20260523T223147Z_h11g_htp_mutable_adapter/h11g_htp_inference",
+      "qnn_partition_seen": true,
+      "returncode": 0,
+      "status": "pass",
+      "stderr_tail": "",
+      "stdout_tail": "qnn-net-run pid:2880\nqnn-net-run build version: v2.44.0.260225143659\nqnn-net-run log level is : QNN_LOG_LEVEL_INFO\nProcessing inference input(s):\ninput.bin\nCreating context from binary file: /data/local/tmp/phase1a/qwen_block.qnn.bin\nExecuting Graphs\nFinished Executing Graphs\n---\ntimestamp: 212410954563\ncommand: /data/local/tmp/qairt-2.44/bin/aarch64-android/qnn-net-run --retrieve_context /data/local/tmp/phase1a/qwen_block.qnn.bin --backend /data/local/tmp/qairt-2.44/lib/aarch64-android/libQnnHtp.so --input_list /data/local/tmp/phase1a/input_list.txt --output_dir /data/local/tmp/polymath_gemma4_gate/phase11/20260523T223147Z_h11g_htp_mutable_adapter/h11g_htp_inference --num_inferences 1 --profiling_level basic --log_level info\nexecution_mode: synchronous\ninferences_completed: 1\ngraphs:\n  - graph_name: qnn_partition_0\n    input_tensors:\n    - tensor_name: serving_default_args_0\n      id: 1\n      datatype: QNN_DATATYPE_FLOAT_32\n      dimensions: [1,16,1536]\n    output_tensors:\n    - tensor_name: serving_default_output_0_output\n      id: 102\n      datatype: QNN_DATATYPE_FLOAT_32\n      dimensions: [1,16,1536]\n"
+    },
+    "phone_tool_surface": {
+      "name": "phone_qairt_tool_surface",
+      "returncode": 0,
+      "status": "pass",
+      "stderr_tail": "",
+      "stdout_tail": "=== tool presence ===\nqairt-lora-adapter-bin-updater present\nqnn-context-binary-generator present\nqnn-context-binary-utility present\nqnn-net-run present\nqnn-platform-validator present\n=== qnn-net-run binary_updates help ===\n  [ --model_prefix=<val> ]\n                        Function prefix to use when loading <qnn_model_name.so>.\n                        Default: QnnModel\n  [ --retrieve_context=<val> ]\n                        Path to cached binary from which to load a saved\n                        context from and execute graphs. --retrieve_context and\n                        --model are mutually exclusive. Only one of the options\n                        can be specified at a time.\n  [ --binary_updates=<val> ]\n                        Path to yaml that contains paths to binary updates.\n                        Updates are applied after initial graph execution on\n                        a per graph basis.\n  [ --perf_profile=<val> ]\n                        Specifies perf profile to set. Valid settings are\n                        \"low_balanced\", \"balanced\", \"default\",\"high_performance\",\n                        \"sustained_high_performance\", \"burst\",\"low_power_saver\",\n                        \"power_saver\", \"high_power_saver\", \"custom(for internal use only)\",\n                        \"extreme_power_saver\" and \"system_settings\".\n  [ --config_file=<val> ]\n                        Path to a JSON config file. The config file currently\n                        supports options related to backend extensions and\n                        context priority. Please refer to SDK documentation\n                        for more details.\n  [ --log_level=<val> ] \n                        Specifies max logging level to be set. Valid settings:\n                        \"error\", \"warn\", \"info\" and \"verbose\".\n  [ --duration=<val> ]  Specifies the duration of the graph execution in seconds.\n=== lora updater help ===\nqairt-lora-adapter-bin-updater pid:2831\nlogging initialized\n\nCommand Line Options:\n  [ --help ]            Displays this help message.\n  [ --version ]         Displays version information.\n  [ --modified_adapter_path=<val> ]\n                        The modified adapter safetensor file path.\n  [ --other_adapter_paths=<val> ]\n                        The other adapter safetensor file paths required to update the binaries.\n                        Paths must be provided in comma seperated format.\n                        E.g., <safetensor_path1>,<safetensor_path2>\n  [ --lora_metadata_dlc=<val> ]\n                        Path to the DLC file that contains metadata on Lora tensor transformations.\n  [ --old_adapter_binary_files=<val> ]\n                        The old adapter binary file paths required to create updated binaries.\n                        Paths to the old adapter binary files must be provided in comma separated format.\n                        E.g., <old_adapter_binary_file1>,<old_adapter_binary_file2>\n  [ --output_dir=<val> ]\n                        The directory to save output files to. Defaults to ./output.\n  --backend=<val>       Path to the backend library to be used to update the adapter binaries.\n  [ --log_level=<val> ] \n                        Specifies max logging level to be set. Valid settings:\n                        \"error\", \"warn\", \"info\" and \"verbose\".\n  [ --dump_safetensors ]\n                        Argument to dump the final safetensors.\n  [ --strip_metadata ]  Argument to remove updatable metadata of the adapter binary during the update.\n"
+    },
+    "runpod_api_compile_probe": {
+      "name": "runpod_qnn_apply_api_compile_probe",
+      "returncode": 0,
+      "status": "pass",
+      "stderr_tail": "",
+      "stdout_tail": "section=1 buffer_version=1 mem_type=0 apply_ptr_null=1 get_ptr_null=1 size_ptr_null=1\n"
+    },
+    "runpod_qairt_env_probe": {
+      "name": "runpod_qairt_env_probe",
+      "returncode": 0,
+      "status": "pass",
+      "stderr_tail": "",
+      "stdout_tail": "qairt_root=/workspace/qairt-2.44/qairt/2.44.0.260225\npython=/workspace/Polymath-AI/.venv/bin/python\nqairt_root_exists=0\npython_exists=0\n=== expected host tools ===\nqairt-converter present\nqairt-lora-importer present\nqairt-lora-adapter-bin-updater present\nqnn-context-binary-generator present\nqnn-context-binary-utility present\nqnn-net-run present\n=== expected phone tools in SDK payload ===\nqairt-lora-adapter-bin-updater present\nqnn-context-binary-generator present\nqnn-context-binary-utility present\nqnn-net-run present\nqnn-platform-validator present\n=== apply binary section headers ===\n/workspace/qairt-2.44/qairt/2.44.0.260225/include/QNN/QnnContext.h:565:  QNN_CONTEXT_SECTION_UPDATABLE = 1,\n/workspace/qairt-2.44/qairt/2.44.0.260225/include/QNN/QnnContext.h:568:  QNN_CONTEXT_SECTION_UPDATABLE_WEIGHTS = 2,\n/workspace/qairt-2.44/qairt/2.44.0.260225/include/QNN/QnnContext.h:571:  QNN_CONTEXT_SECTION_UPDATABLE_QUANT_PARAMS = 3,\n/workspace/qairt-2.44/qairt/2.44.0.260225/include/QNN/QnnContext.h:1150: *        depends on the type of section requested. For example, for QNN_CONTEXT_SECTION_UPDATABLE\n/workspace/qairt-2.44/qairt/2.44.0.260225/include/QNN/QnnContext.h:1203: *                    QNN_CONTEXT_SECTION_UPDATABLE the returned binary will contain all of the\n/workspace/qairt-2.44/qairt/2.44.0.260225/include/QNN/QnnContext.h:1205: *                    sections of type QNN_CONTEXT_SECTION_UPDATABLE have Qnn System Context\n/workspace/qairt-2.44/qairt/2.44.0.260225/include/QNN/QnnContext.h:1261: *                    QNN_CONTEXT_SECTION_UPDATABLE the returned binary will contain all of the\n/workspace/qairt-2.44/qairt/2.44.0.260225/include/QNN/QnnContext.h:1287: *       QnnContext_applyBinarySection until QnnContext_free.\n/workspace/qairt-2.44/qairt/2.44.0.260225/include/QNN/QnnContext.h:1290:Qnn_ErrorHandle_t QnnContext_applyBinarySection(Qnn_ContextHandle_t context,\n/workspace/qairt-2.44/qairt/2.44.0.260225/include/QNN/QnnInterface.h:235:typedef Qnn_ErrorHandle_t (*QnnContext_GetBinarySectionSizeFn_t)(\n/workspace/qairt-2.44/qairt/2.44.0.260225/include/QNN/QnnInterface.h:242:typedef Qnn_ErrorHandle_t (*QnnContext_GetBinarySectionFn_t)(\n/workspace/qairt-2.44/qairt/2.44.0.260225/include/QNN/QnnInterface.h:251:/** @brief See QnnContext_applyBinarySection()*/\n/workspace/qairt-2.44/qairt/2.44.0.260225/include/QNN/QnnInterface.h:261:typedef Qnn_ErrorHandle_t (*QnnContext_GetBinarySectionUpdateFn_t)(\n/workspace/qairt-2.44/qairt/2.44.0.260225/include/QNN/QnnInterface.h:585:  QnnContext_GetBinarySectionSizeFn_t         contextGetBinarySectionSize;\n/workspace/qairt-2.44/qairt/2.44.0.260225/include/QNN/QnnInterface.h:586:  QnnContext_GetBinarySectionFn_t             contextGetBinarySection;\n/workspace/qairt-2.44/qairt/2.44.0.260225/include/QNN/QnnInterface.h:587:  QnnContext_ApplyBinarySectionFn_t           contextApplyBinarySection;\n/workspace/qairt-2.44/qairt/2.44.0.260225/include/QNN/QnnInterface.h:595:  QnnContext_GetBinarySectionUpdateFn_t       contextGetBinarySectionUpdate;\n/workspace/qairt-2.44/qairt/2.44.0.260225/include/QNN/QnnInterface.h:662:  NULL, /*contextApplyBinarySection*/ \\\n/workspace/qairt-2.44/qairt/2.44.0.260225/include/QNN/QnnProperty.h:152: *        QnnContext_applyBinarySection() with QNN_CONTEXT_SECTION_UPDATABLE.\n/workspace/qairt-2.44/qairt/2.44.0.260225/include/QNN/QnnProperty.h:184: *        QnnContext_applyBinarySection() with QNN_CONTEXT_SECTION_UPDATABLE_WEIGHTS.\n/workspace/qairt-2.44/qairt/2.44.0.260225/include/QNN/QnnProperty.h:192: *        QnnContext_applyBinarySection() with QNN_CONTEXT_SECTION_UPDATABLE_QUANT_PARAMS.\n=== python imports with QAIRT PYTHONPATH ===\nnumpy: ok 2.4.5\nyaml: ok 6.0.3\npydantic: ERR ModuleNotFoundError: No module named 'pydantic'\nonnx: ERR ModuleNotFoundError: No module named 'onnx'\nqti: ok \nqti.aisw: ok \nqti.aisw.lora: ok \n=== qairt converter lora help ===\nconverter_help_rc=1\n=== qairt lora importer help ===\nTraceback (most recent call last):\n  File \"/workspace/qairt-2.44/qairt/2.44.0.260225/bin/x86_64-linux-clang/qairt-lora-importer\", line 16, in <module>\n    from qti.aisw.lora.lora_importer_app import apply_lora_updates\n  File \"/workspace/qairt-2.44/qairt/2.44.0.260225/lib/python/qti/aisw/lora/lora_importer_app.py\", line 16, in <module>\n    import onnx\nModuleNotFoundError: No module named 'onnx'\nlora_importer_rc=1\n=== x86 lora updater help ===\n/workspace/qairt-2.44/qairt/2.44.0.260225/bin/x86_64-linux-clang/qairt-lora-adapter-bin-updater: error while loading shared libraries: libc++.so.1: cannot open shared object file: No such file or directory\nlora_updater_rc=127\n"
+    }
+  },
+  "classification": {
+    "blockers": [
+      "Current phone QNN context has zero updateable tensors, so QnnContext_applyBinarySection has no valid Gemma/Qwen section to apply",
+      "RunPod QAIRT Python/x86 LoRA tooling is not fully runnable in the current shell environment"
+    ],
+    "classification": "frozen_forward_only_mutable_blocked",
+    "frozen_forward_promoted": true,
+    "mutable_section_promoted": false,
+    "next_for_h11h": "Use HTP only as a frozen-forward/teacher candidate if useful; run H11-H training/update path through the H11-F OpenCL daemon lane unless an updateable context is produced later.",
+    "normal_htp_backprop_promoted": false,
+    "teacher_role_allowed": true,
+    "updateable_tensor_count": 0,
+    "zero_order_promoted": false
+  },
+  "ended_at_utc": "2026-05-23T22:31:59Z",
+  "gate": "H11-G HTP mutable-adapter / zero-order arm",
+  "non_claims": [
+    "No normal HTP backprop, gradient, or optimizer API was executed.",
+    "No QnnContext_applyBinarySection update was applied because the current context has zero updateable tensors.",
+    "No SPSA/MeZO zero-order step was attempted because there was no valid updateable section to perturb."
+  ],
+  "phone_context": "/data/local/tmp/phase1a/qwen_block.qnn.bin",
+  "phone_qairt_root": "/data/local/tmp/qairt-2.44",
+  "promoted_claims": {
+    "htp_frozen_forward_or_teacher": true,
+    "htp_mutable_updateable_section": false,
+    "htp_zero_order_forward_only": false,
+    "normal_htp_backprop": false
+  },
+  "run_id": "20260523T223147Z_h11g_htp_mutable_adapter",
+  "runpod_qairt_root": "/workspace/qairt-2.44/qairt/2.44.0.260225",
+  "schema_version": "gemma4_phase11_h11g_htp_mutable_adapter_v1",
+  "started_at_utc": "2026-05-23T22:31:47Z",
+  "status": "pass_classified_frozen_forward_only"
+}

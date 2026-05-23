@@ -1,0 +1,2 @@
+- Current phone QNN context has zero updateable tensors, so QnnContext_applyBinarySection has no valid Gemma/Qwen section to apply
+- RunPod QAIRT Python/x86 LoRA tooling is not fully runnable in the current shell environment

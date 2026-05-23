@@ -1,8 +1,8 @@
 {
-  "_synced_at": "2026-05-23T22:16:51Z",
+  "_synced_at": "2026-05-23T22:33:01Z",
   "active_calculations": [
     "Execute Phase 11 only through phone-resident queue-run experiments with authority non-regression gates and artifact hygiene.",
-    "Sequential hypotheses complete through H11-F; continue H11-G HTP mutable-adapter/zero-order arm before H11-H."
+    "Sequential hypotheses complete through H11-G; continue H11-H combined POVC using the H11-F OpenCL objective lane, with HTP only as frozen-forward/teacher if useful."
   ],
   "approximations": [],
   "blockers": [
@@ -10,6 +10,9 @@
     "H11-E did not promote expanded adapter ranks or projection LoRA. Rank-16 and rank-32 were finite and mutable but showed zero two-iteration loss reduction; projection LoRA remains blocked until layer-internal backward kernels and checkpoint layout exist.",
     "H11-F top-k KL objective pass is narrow: deterministic held-out movement is positive but tiny, so it does not support public benchmark readiness, broad capability, full Gemma4 training, or stronger scope claims.",
     "GPD phase-add succeeded for Phase 11, but generic GPD state synchronization rewrote .gpd/state.json in a lossy parser format during this PRD-writing task. The machine state was restored and updated via structured JSON; future agents should parse-check .gpd/state.json after GPD CLI state commands."
+  ],
+  "blockers_concerns": [
+    "H11-G does not promote mutable QAIRT sections or HTP zero-order training: the active qwen_block QNN context reports zero updateable tensors, and RunPod x86 LoRA tooling still has onnx/pydantic/libc++.so.1 environment gaps. HTP is frozen-forward/teacher only for H11-H."
   ],
   "convention_lock": {
     "commutation_convention": null,
@@ -62,19 +65,20 @@
     "Phase 11 executor controls were hardened for long-horizon campaign execution: no stopping after intermediate wins, exact pass/fail/blocker cadence after each H11 gate, targeted subagent/falsification decision rules, RunPod alternate SSH, and no minimized-proxy language in HTP probing.",
     "H11-D OpenCL recordable queues passed: runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T205951Z_h11d_recordable_queues/H11-D-recordable-queues/gate_result.json",
     "H11-E trainable scope sweep failed with rank-4 baseline retained: runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T211427Z_h11e_scope_sweep/H11-E-scope-sweep/gate_result.json; first implementation failure preserved at runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T211134Z_h11e_scope_sweep/H11-E-scope-sweep/gate_result.json",
-    "H11-F objective upgrade passed narrowly: runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T213836Z_h11f_objective_upgrade/H11-F-objective-upgrade/gate_result.json"
+    "H11-F objective upgrade passed narrowly: runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T213836Z_h11f_objective_upgrade/H11-F-objective-upgrade/gate_result.json",
+    "H11-G classified HTP as frozen-forward/teacher only: runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T223147Z_h11g_htp_mutable_adapter/H11-G-htp-mutable-adapter/gate_result.json; active qwen_block context has zero updateable tensors, so mutable-section and zero-order paths are not promoted."
   ],
   "open_questions": [
     "Whether Android permits the phone-resident runner to continue reliably after ADB/USB disconnect, and what resume behavior is needed if it does not.",
     "Whether safe fixed performance mode, charge separation, fan state, and OEM controls materially improve active/wall without unsafe thermal behavior.",
     "Whether H11-G can classify QAIRT/HTP mutable sections as frozen-forward, teacher, updateable-section, zero-order, or blocked without claiming normal HTP backprop.",
-    "Whether QAIRT mutable sections can become an HTP teacher/frozen-forward or zero-order arm without claiming normal HTP backprop.",
-    "Whether H11-D recordable queue launch savings remain useful in an end-to-end H11-H training sequence after the H11-C residual was already reduced below threshold."
+    "Whether H11-D recordable queue launch savings remain useful in an end-to-end H11-H training sequence after the H11-C residual was already reduced below threshold.",
+    "Whether the H11-F objective lane, H11-D recordable-queue evidence, and H11-G frozen-forward-only HTP classification combine cleanly in H11-H without G1/G3/relevant G8 regression or overclaiming capability movement."
   ],
   "pending_todos": [
-    "Continue Phase 11 with H11-G HTP mutable-adapter / zero-order arm using the supplied RunPod QNN/QAIRT pod details.",
-    "Do not promote normal HTP backprop without API support, mutable-section evidence, and parity proof.",
-    "Do not run H11-H or another long endurance job until H11-A through H11-G have pass/fail/blocker artifacts or exact boundary blockers."
+    "Execute H11-H combined POVC using the H11-A daemon, H11-B baseline-safe profile, H11-E rank-4 retained scope, H11-F top-k KL objective, and H11-G frozen-forward-only HTP classification.",
+    "Do not promote mutable QAIRT sections, HTP zero-order training, or normal HTP backprop unless a context with updateable tensors is produced and applied on phone with parity proof.",
+    "Do not narrate H11-H as full Gemma4 training or public benchmark readiness unless the authority gate actually proves those claims."
   ],
   "performance_metrics": {
     "rows": [
@@ -121,7 +125,7 @@
     ]
   },
   "phase11": {
-    "current_gate": "H11-G",
+    "current_gate": "H11-H",
     "h11a": {
       "active_training_seconds": 527.878356,
       "active_wall_ratio": 0.96051948,
@@ -207,9 +211,25 @@
       "status": "pass_narrow_objective_signal",
       "teacher_shard_status": "precomputed_on_runpod_pushed_to_phone_before_runtime",
       "train_iterations": 100,
-      "train_kl_delta": 2.429999998998511e-7,
+      "train_kl_delta": 2.429999998998511e-07,
       "trained_heldout_kl": 1.12916688,
       "trained_heldout_teacher_top1_probability": 0.1137876981
+    },
+    "h11g": {
+      "api_compile_probe_status": "pass",
+      "classification": "frozen_forward_only_mutable_blocked",
+      "frozen_forward_promoted": true,
+      "gate_result": "runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T223147Z_h11g_htp_mutable_adapter/H11-G-htp-mutable-adapter/gate_result.json",
+      "htp_inference_completed": true,
+      "mutable_section_promoted": false,
+      "next_gate": "H11-H combined POVC run",
+      "normal_htp_backprop_promoted": false,
+      "phone_context": "/data/local/tmp/phase1a/qwen_block.qnn.bin",
+      "runpod_qairt_root": "/workspace/qairt-2.44/qairt/2.44.0.260225",
+      "status": "pass_classified_frozen_forward_only",
+      "teacher_role_allowed": true,
+      "updateable_tensor_count": 0,
+      "zero_order_promoted": false
     }
   },
   "position": {
@@ -217,11 +237,11 @@
     "current_phase_name": "Hardware-Native Training POVC",
     "current_plan": 1,
     "last_activity": "2026-05-23",
-    "last_activity_desc": "Ran H11-F objective upgrade. RunPod precomputed full Gemma4 E4B top-k teacher shards, the phone ran 100 top-k KL training iterations plus fixed/trained held-out evals, and the gate passed narrowly with tiny positive held-out movement. Continue to H11-G.",
-    "last_activity_description": "Ran H11-F objective upgrade. RunPod precomputed full Gemma4 E4B top-k teacher shards, the phone ran 100 top-k KL training iterations plus fixed/trained held-out evals, and the gate passed narrowly with tiny positive held-out movement. Continue to H11-G.",
+    "last_activity_desc": "Ran H11-G. Phone QAIRT 2.44 HTP inference completed, RunPod compiled the QNN apply-binary-section API probe, and phone context utility showed zero updateable tensors in the active context; HTP is frozen-forward/teacher only for H11-H.",
+    "last_activity_description": "Ran H11-G. Phone QAIRT 2.44 HTP inference completed, RunPod compiled the QNN apply-binary-section API probe, and phone context utility showed zero updateable tensors in the active context; HTP is frozen-forward/teacher only for H11-H.",
     "paused_at": null,
     "progress_percent": 92,
-    "status": "H11-F objective upgrade passed narrowly; H11-G HTP mutable-adapter / zero-order arm next",
+    "status": "H11-G classified HTP frozen-forward/teacher only; H11-H combined POVC next",
     "total_phases": 12,
     "total_plans_in_phase": 1
   },
@@ -708,9 +728,9 @@
   },
   "propagated_uncertainties": [],
   "session": {
-    "last_gate": "H11-F",
+    "last_gate": "H11-G",
     "last_session": "2026-05-23",
     "resume_file": ".gpd/STATE.md",
-    "stopped_at": "H11-F objective upgrade passed narrowly; continue with H11-G HTP mutable-adapter / zero-order arm."
+    "stopped_at": "H11-G classified HTP as frozen-forward/teacher only; continue with H11-H combined POVC."
   }
 }

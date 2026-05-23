@@ -19,7 +19,7 @@ phone-resident POVC campaign rather than another host-driven endurance loop.
 | Phone-native training artifact | Phases 4-8 | G8 repaired and Phase 8 sustained objective passed |
 | G10 falsifier survival | Phase 9 | Passed under narrow scope |
 | Hardware-max pipeline search | Phase 10+ | First phone A/B candidate passed; ongoing |
-| Hardware-native training POVC | Phase 11 | H11-A passed; H11-B failed; H11-C passed; H11-D passed; H11-E failed with rank-4 baseline retained; H11-F passed narrowly; H11-G next |
+| Hardware-native training POVC | Phase 11 | H11-A passed; H11-B failed; H11-C passed; H11-D passed; H11-E failed with rank-4 baseline retained; H11-F passed narrowly; H11-G classified HTP frozen-forward-only; H11-H next |
 
 ## Phases
 
@@ -415,6 +415,11 @@ Plans:
   improved versus fixed-adapter control by tiny deterministic amounts, with
   top-1 agreement unchanged. Evidence:
   `runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T213836Z_h11f_objective_upgrade/H11-F-objective-upgrade/gate_result.json`.
+  H11-G classified HTP as frozen-forward/teacher only. RunPod QAIRT 2.44 exposes
+  and compiles the QNN apply-binary-section API, and the phone reran HTP
+  inference successfully, but the active context reports zero updateable tensors;
+  no mutable section or zero-order path is promoted. Evidence:
+  `runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T223147Z_h11g_htp_mutable_adapter/H11-G-htp-mutable-adapter/gate_result.json`.
 
 ## Progress
 
@@ -431,4 +436,4 @@ Plans:
 | 8. Sustained Authority Run | 1/1 | Complete | 2026-05-17 |
 | 9. Falsifier Review | 1/1 | Complete | 2026-05-17 |
 | 10. Hardware Max Training Pipeline | 2/ongoing | Six-hour narrow endurance passed; remaining nonclaims blocked | - |
-| 11. Hardware-Native Training POVC | 0/1 | H11-A passed; H11-B failed; H11-C passed; H11-D passed; H11-E failed with rank-4 baseline retained; H11-F passed narrowly; H11-G next | 2026-05-23 |
+| 11. Hardware-Native Training POVC | 0/1 | H11-A passed; H11-B failed; H11-C passed; H11-D passed; H11-E failed with rank-4 baseline retained; H11-F passed narrowly; H11-G classified HTP frozen-forward-only; H11-H next | 2026-05-23 |

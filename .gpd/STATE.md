@@ -19,9 +19,9 @@ any runtime data-path stage?
 **Total Phases:** 12
 **Current Plan:** 1
 **Total Plans in Phase:** 1
-**Status:** H11-A phone-resident daemon passed; H11-B safe performance envelope failed; H11-C bottleneck autopsy passed; H11-D recordable queues passed; H11-E trainable scope sweep failed with rank-4 baseline retained; H11-F objective upgrade passed narrowly; H11-G HTP mutable-adapter/zero-order arm next
+**Status:** H11-A phone-resident daemon passed; H11-B safe performance envelope failed; H11-C bottleneck autopsy passed; H11-D recordable queues passed; H11-E trainable scope sweep failed with rank-4 baseline retained; H11-F objective upgrade passed narrowly; H11-G classified HTP as frozen-forward/teacher only with mutable-section and zero-order blocked; H11-H combined POVC next
 **Last Activity:** 2026-05-23
-**Last Activity Description:** Ran H11-F objective upgrade. RunPod precomputed full Gemma4 E4B top-k teacher shards, pushed them to phone before runtime, then REDMAGIC ran phone-local H11-F train/eval arms with `phase11_runner`. The rank-4 objective path passed narrowly: 100 train iterations reduced top-k KL by `2.43e-7`, held-out KL improved versus fixed-adapter control, and held-out teacher top-1 probability improved by `1.5e-8` with top-1 agreement unchanged. Treat as a narrow objective-signal pass only.
+**Last Activity Description:** Ran H11-G HTP mutable-adapter / zero-order arm. REDMAGIC reran QAIRT 2.44 HTP frozen-forward inference successfully, RunPod compiled a QNN apply-binary-section API probe, and phone `qnn-context-binary-utility` showed the active `qwen_block.qnn.bin` context has `numUpdateableTensors = 0`. HTP is classified only as frozen-forward/teacher for H11-H; mutable-section and SPSA/MeZO zero-order claims are blocked.
 
 **Progress:** [#########-] 92%
 
@@ -29,8 +29,9 @@ any runtime data-path stage?
 
 - Execute Phase 11 only through phone-resident queue-run experiments with
   authority non-regression gates and artifact hygiene.
-- Sequential hypotheses complete through H11-F; continue H11-G HTP
-  mutable-adapter/zero-order arm before H11-H combined POVC run.
+- Sequential hypotheses complete through H11-G; continue H11-H combined POVC
+  using the H11-F OpenCL objective lane, with HTP only as a frozen-forward or
+  teacher candidate if it is useful.
 
 ## Intermediate Results
 
@@ -133,6 +134,15 @@ any runtime data-path stage?
   teacher top-1 probability `0.1137876981`, with top-1 agreement unchanged at
   `0.093637455`. This promotes only the top-k KL objective path for later
   Phase 11 gates, not broad capability or benchmark readiness.
+- H11-G HTP mutable-adapter / zero-order arm classified HTP as
+  frozen-forward/teacher only:
+  `runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T223147Z_h11g_htp_mutable_adapter/H11-G-htp-mutable-adapter/gate_result.json`.
+  Phone QAIRT 2.44 `qnn-net-run` completed one HTP inference on
+  `qwen_block.qnn.bin`, and RunPod compiled a QNN apply-binary-section API probe
+  against QAIRT 2.44 headers. However, phone `qnn-context-binary-utility`
+  reported `numUpdateableTensors = 0` for the active context, so there was no
+  valid section to apply and no legitimate SPSA/MeZO perturbation target.
+  Mutable-section, zero-order, and normal HTP backprop claims remain blocked.
 
 ## Open Questions
 
@@ -140,13 +150,12 @@ any runtime data-path stage?
   ADB/USB disconnect, and what resume behavior is needed if it does not.
 - Whether safe fixed performance mode, charge separation, fan state, and OEM
   controls materially improve active/wall without unsafe thermal behavior.
-- Whether QAIRT mutable sections can become an HTP teacher/frozen-forward or
-  zero-order arm without claiming normal HTP backprop.
 - Whether H11-D recordable queue launch savings remain useful in an end-to-end
   H11-H training sequence after the H11-C residual was already reduced below
   threshold.
-- Whether QAIRT mutable sections can become an HTP teacher/frozen-forward or
-  zero-order arm without claiming normal HTP backprop.
+- Whether the H11-F objective lane, H11-D recordable-queue evidence, and
+  H11-G frozen-forward-only HTP classification combine cleanly in H11-H without
+  regressing G1/G3/relevant G8 or overstating capability movement.
 
 ## Performance Metrics
 
@@ -178,6 +187,8 @@ any runtime data-path stage?
 | H11-F train top-k KL delta | `2.429999998998511e-7` | 100 phone-local train iterations | passed narrow objective signal |
 | H11-F held-out top-k KL | `1.1291671114 -> 1.12916688` | fixed-adapter control vs trained held-out eval | non-regression with tiny improvement |
 | H11-F held-out teacher top-1 probability | `0.1137876831 -> 0.1137876981` | instruction-format held-out shard | tiny improvement; top-1 agreement unchanged |
+| H11-G active QNN updateable tensors | `0` | `qwen_block.qnn.bin` via phone `qnn-context-binary-utility` | mutable-section and zero-order blocked |
+| H11-G HTP inference | `1` completed inference | phone QAIRT 2.44 `qnn-net-run` on `qnn_partition_0` | frozen-forward/teacher role only |
 
 ## Accumulated Context
 
@@ -230,9 +241,10 @@ Full log: `.gpd/DECISIONS.md`
 
 ### Pending Todos
 
-- Execute H11-G next: verify QAIRT/QNN tooling, updateable tensor declaration,
-  adapter binary updater, and bounded HTP mutable-section or zero-order arm
-  evidence. Do not promote normal HTP backprop without API and parity proof.
+- Execute H11-H next: combine the H11-A daemon, H11-B baseline-safe profile,
+  H11-D recordable-queue evidence only if it is predeclared and measured,
+  H11-E rank-4 retained scope, H11-F top-k KL objective, and H11-G
+  frozen-forward-only HTP classification into one phone-native POVC run.
 - Preserve H11-A runner topology for later gates; do not return to host-driven
   per-iteration training except as a declared diagnostic fallback.
 - Do not run H11-H or another long endurance job until H11-B through H11-G have
@@ -273,10 +285,17 @@ Full log: `.gpd/DECISIONS.md`
 - H11-F promotes only a narrow top-k KL objective path. The measured held-out
   improvement is deterministic but tiny; do not describe it as public benchmark
   readiness, full Gemma4 training, or a broad capability result.
+- H11-G does not promote mutable QAIRT sections or HTP zero-order training. The
+  active QNN context has zero updateable tensors, and RunPod x86 LoRA tooling is
+  not fully runnable in the current shell environment (`onnx`/`pydantic` and
+  `libc++.so.1` gaps). HTP may only be used as frozen-forward/teacher evidence
+  unless a later context is compiled with updateable tensors and applied on
+  phone.
 
 ## Session Continuity
 
 **Last session:** 2026-05-23
-**Stopped at:** H11-F objective upgrade passed narrowly. Continue with H11-G
-HTP mutable-adapter / zero-order arm; do not skip to H11-H.
+**Stopped at:** H11-G classified HTP as frozen-forward/teacher only; mutable
+QAIRT section and zero-order paths are blocked for the active context. Continue
+with H11-H combined POVC.
 **Resume file:** `.gpd/STATE.md`

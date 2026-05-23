@@ -1,0 +1,17 @@
+---
+timestamp: 212410954563
+command: /data/local/tmp/qairt-2.44/bin/aarch64-android/qnn-net-run --retrieve_context /data/local/tmp/phase1a/qwen_block.qnn.bin --backend /data/local/tmp/qairt-2.44/lib/aarch64-android/libQnnHtp.so --input_list /data/local/tmp/phase1a/input_list.txt --output_dir /data/local/tmp/polymath_gemma4_gate/phase11/20260523T223147Z_h11g_htp_mutable_adapter/h11g_htp_inference --num_inferences 1 --profiling_level basic --log_level info
+execution_mode: synchronous
+inferences_completed: 1
+graphs:
+  - graph_name: qnn_partition_0
+    input_tensors:
+    - tensor_name: serving_default_args_0
+      id: 1
+      datatype: QNN_DATATYPE_FLOAT_32
+      dimensions: [1,16,1536]
+    output_tensors:
+    - tensor_name: serving_default_output_0_output
+      id: 102
+      datatype: QNN_DATATYPE_FLOAT_32
+      dimensions: [1,16,1536]

@@ -1,0 +1,14 @@
+{
+  "blockers": [
+    "Current phone QNN context has zero updateable tensors, so QnnContext_applyBinarySection has no valid Gemma/Qwen section to apply",
+    "RunPod QAIRT Python/x86 LoRA tooling is not fully runnable in the current shell environment"
+  ],
+  "classification": "frozen_forward_only_mutable_blocked",
+  "frozen_forward_promoted": true,
+  "mutable_section_promoted": false,
+  "next_for_h11h": "Use HTP only as a frozen-forward/teacher candidate if useful; run H11-H training/update path through the H11-F OpenCL daemon lane unless an updateable context is produced later.",
+  "normal_htp_backprop_promoted": false,
+  "teacher_role_allowed": true,
+  "updateable_tensor_count": 0,
+  "zero_order_promoted": false
+}
