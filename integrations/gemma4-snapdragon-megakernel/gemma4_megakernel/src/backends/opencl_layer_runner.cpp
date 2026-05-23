@@ -1659,13 +1659,29 @@ void write_sha_field(std::ofstream& file,
   file << "\n";
 }
 
+void write_static_reference_field(std::ofstream& file,
+                                  const std::string& name,
+                                  const std::string& path,
+                                  bool comma) {
+  file << "    ";
+  write_json_string(file, name);
+  file << ": {\"path\": ";
+  write_json_string(file, path);
+  file << ", \"sha256_policy\": \"recorded_once_by_phase11_daemon_static_manifest\"}";
+  if (comma) {
+    file << ",";
+  }
+  file << "\n";
+}
+
 void write_streamed_artifact_manifest(const std::string& token_cache_dir,
                                       const std::string& asset_dir,
                                       const std::string& layer0_pack_dir,
                                       const std::string& layer1_pack_dir,
                                       const std::string& checkpoint_dir,
                                       const std::string& output_dir,
-                                      bool include_runtime_outputs) {
+                                      bool include_runtime_outputs,
+                                      bool hash_static_artifacts) {
   std::ofstream file(join_path(output_dir, "artifact_manifest.json"));
   if (!file) {
     throw std::runtime_error("unable to create streamed artifact manifest");
@@ -1684,27 +1700,46 @@ void write_streamed_artifact_manifest(const std::string& token_cache_dir,
   write_sha_field(file, "position_ids", join_path(token_cache_dir, "position_ids.u32.bin"), false);
   file << "  },\n";
   file << "  \"frozen_token_assets\": {\n";
-  write_sha_field(file, "asset_manifest", join_path(asset_dir, "manifest.json"), true);
-  write_sha_field(file, "embed_tokens", join_path(asset_dir, "embed_tokens.bf16.bin"), true);
-  write_sha_field(file, "ple_projection_norm", join_path(asset_dir, "ple_projection_norm.f32.bin"), true);
-  write_sha_field(file, "ple_token_layer0", join_path(asset_dir, "ple_token_layer0.bf16.bin"), true);
-  write_sha_field(file, "ple_token_layer1", join_path(asset_dir, "ple_token_layer1.bf16.bin"), true);
-  write_sha_field(file, "ple_projection_layer0", join_path(asset_dir, "ple_projection_layer0.bf16.bin"), true);
-  write_sha_field(file, "ple_projection_layer1", join_path(asset_dir, "ple_projection_layer1.bf16.bin"), false);
+  if (hash_static_artifacts) {
+    write_sha_field(file, "asset_manifest", join_path(asset_dir, "manifest.json"), true);
+    write_sha_field(file, "embed_tokens", join_path(asset_dir, "embed_tokens.bf16.bin"), true);
+    write_sha_field(file, "ple_projection_norm", join_path(asset_dir, "ple_projection_norm.f32.bin"), true);
+    write_sha_field(file, "ple_token_layer0", join_path(asset_dir, "ple_token_layer0.bf16.bin"), true);
+    write_sha_field(file, "ple_token_layer1", join_path(asset_dir, "ple_token_layer1.bf16.bin"), true);
+    write_sha_field(file, "ple_projection_layer0", join_path(asset_dir, "ple_projection_layer0.bf16.bin"), true);
+    write_sha_field(file, "ple_projection_layer1", join_path(asset_dir, "ple_projection_layer1.bf16.bin"), false);
+  } else {
+    write_static_reference_field(file, "asset_manifest", join_path(asset_dir, "manifest.json"), true);
+    write_static_reference_field(file, "embed_tokens", join_path(asset_dir, "embed_tokens.bf16.bin"), true);
+    write_static_reference_field(file, "ple_projection_norm", join_path(asset_dir, "ple_projection_norm.f32.bin"), true);
+    write_static_reference_field(file, "ple_token_layer0", join_path(asset_dir, "ple_token_layer0.bf16.bin"), true);
+    write_static_reference_field(file, "ple_token_layer1", join_path(asset_dir, "ple_token_layer1.bf16.bin"), true);
+    write_static_reference_field(file, "ple_projection_layer0", join_path(asset_dir, "ple_projection_layer0.bf16.bin"), true);
+    write_static_reference_field(file, "ple_projection_layer1", join_path(asset_dir, "ple_projection_layer1.bf16.bin"), false);
+  }
   file << "  },\n";
   file << "  \"frozen_layer_weights_pre_post\": {\n";
   const std::string layer0 = join_path(layer0_pack_dir, "weights/layer0.safetensors");
   const std::string layer1 = join_path(layer1_pack_dir, "weights/layer1.safetensors");
-  file << "    \"layer0\": {\"pre_sha256\": ";
-  write_json_string(file, sha256_file_hex(layer0));
-  file << ", \"post_sha256\": ";
-  write_json_string(file, sha256_file_hex(layer0));
-  file << "},\n";
-  file << "    \"layer1\": {\"pre_sha256\": ";
-  write_json_string(file, sha256_file_hex(layer1));
-  file << ", \"post_sha256\": ";
-  write_json_string(file, sha256_file_hex(layer1));
-  file << "}\n";
+  if (hash_static_artifacts) {
+    file << "    \"layer0\": {\"pre_sha256\": ";
+    write_json_string(file, sha256_file_hex(layer0));
+    file << ", \"post_sha256\": ";
+    write_json_string(file, sha256_file_hex(layer0));
+    file << "},\n";
+    file << "    \"layer1\": {\"pre_sha256\": ";
+    write_json_string(file, sha256_file_hex(layer1));
+    file << ", \"post_sha256\": ";
+    write_json_string(file, sha256_file_hex(layer1));
+    file << "}\n";
+  } else {
+    file << "    \"layer0\": {\"path\": ";
+    write_json_string(file, layer0);
+    file << ", \"sha256_policy\": \"recorded_once_by_phase11_daemon_static_manifest\"},\n";
+    file << "    \"layer1\": {\"path\": ";
+    write_json_string(file, layer1);
+    file << ", \"sha256_policy\": \"recorded_once_by_phase11_daemon_static_manifest\"}\n";
+  }
   file << "  },\n";
   file << "  \"trainable_checkpoint_pre_post\": {\n";
   write_sha_field(file, "adapter_a_pre", join_path(checkpoint_dir, "adapter_a.f32.bin"), true);
@@ -2229,7 +2264,8 @@ Status run_opencl_streamed_distill_update(const std::string& token_cache_dir,
                                           const std::string& checkpoint_dir,
                                           const std::string& output_dir,
                                           float learning_rate,
-                                          bool write_raw_outputs) {
+                                          bool write_raw_outputs,
+                                          bool hash_static_artifacts) {
   try {
     if (!(learning_rate > 0.0F) || !std::isfinite(learning_rate)) {
       return Status::invalid("learning rate must be finite and positive");
@@ -2281,7 +2317,7 @@ Status run_opencl_streamed_distill_update(const std::string& token_cache_dir,
                                        learning_rate);
     write_streamed_artifact_manifest(token_cache_dir, asset_dir, layer0_pack_dir,
                                      layer1_pack_dir, checkpoint_dir, output_dir,
-                                     write_raw_outputs);
+                                     write_raw_outputs, hash_static_artifacts);
     write_streamed_replay_manifest(token_cache_dir, asset_dir, layer0_pack_dir,
                                    layer1_pack_dir, checkpoint_dir, output_dir,
                                    learning_rate, write_raw_outputs);

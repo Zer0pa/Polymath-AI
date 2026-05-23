@@ -10,28 +10,29 @@ See: `.gpd/PROJECT.md` (updated 2026-05-17)
 **Core research question:** Can Polymath-AI execute and validate a real Gemma 4
 training run natively on REDMAGIC SM8750 without substituting Mac or RunPod for
 any runtime data-path stage?
-**Current focus:** Phase 10: Hardware-max training pipeline search after G10 final falsifier pass
+**Current focus:** Phase 11: Hardware-native training POVC execution campaign
 
 ## Current Position
 
-**Current Phase:** 10
-**Current Phase Name:** Hardware Max Training Pipeline
-**Total Phases:** 11
-**Current Plan:** 2
-**Total Plans in Phase:** ongoing
-**Status:** Plan 10-02 mixed: six-hour endurance promoted; remaining non-claims blocked
-**Last Activity:** 2026-05-17
-**Last Activity Description:** Phase 10 ran the six-hour phone endurance gate for the current rank-4 two-layer lane and passed it; QNN/HTP training, full Gemma4 training, public benchmark readiness, and theoretical maximum gates remain failed or blocked.
+**Current Phase:** 11
+**Current Phase Name:** Hardware-Native Training POVC
+**Total Phases:** 12
+**Current Plan:** 1
+**Total Plans in Phase:** 1
+**Status:** H11-A phone-resident daemon passed; H11-B performance envelope next
+**Last Activity:** 2026-05-23
+**Last Activity Description:** Implemented and deployed the native `phase11_runner`, repaired per-iteration static-artifact hashing, and passed H11-A on REDMAGIC with 50 phone-local daemon iterations, checkpoint chaining, heartbeat/state/checksum artifacts, and 607 seconds of ADB-disconnect evidence. Active/wall improved from the Phase 10 baseline `0.21328649` to `0.96051948` for daemon queue execution.
 
-**Progress:** [█████████░] 92%
+**Progress:** [#########-] 92%
 
 ## Active Calculations
 
-- Continue Phase 10 hardware-max candidates only through phone training A/B
-  reports and authority non-regression gates.
-- Next likely candidates: remaining token bridge work to OpenCL/Vulkan, thermal
-  telemetry/cadence, layer-kernel profiling, and QNN/ExecuTorch islands only
-  after equal-correctness proof.
+- Execute Phase 11 only through phone-resident queue-run experiments with
+  authority non-regression gates and artifact hygiene.
+- Sequential hypotheses: H11-A daemon, H11-B performance envelope, H11-C
+  bottleneck autopsy, H11-D OpenCL recordable queues, H11-E trainable scope
+  sweep, H11-F objective upgrade, H11-G HTP mutable-adapter/zero-order arm,
+  H11-H combined POVC run.
 
 ## Intermediate Results
 
@@ -71,15 +72,42 @@ any runtime data-path stage?
   resolved; full Gemma4 training, Hexagon NPU training, public benchmark
   readiness, and theoretical maximum remain blocked:
   `runtime/reports/gemma4_megakernel/hardware_max/20260517T214000Z_phase10_nonclaim_gate/gate_result.json`.
+- Latest research synthesis reframed the next campaign:
+  `docs/research-packs/gemma4-heterogeneous-training-frontier-2026-05-18/08-OPUS-LEVEL-VIEW-AND-POVC.md`.
+- Phase 11 authority PRD and execution handoff were written:
+  `docs/PRD-HARDWARE-NATIVE-TRAINING-POVC.md`,
+  `docs/HANDOFF-HARDWARE-NATIVE-TRAINING-POVC-EXECUTOR.md`, and
+  `docs/STARTUP-PROMPT-HARDWARE-NATIVE-TRAINING-POVC.md`.
+- Phase 11 GPD execution plan was scaffolded:
+  `.gpd/phases/11-hardware-native-training-povc/11-01-PLAN.md`.
+- Phase 11 executor controls were hardened for long-horizon campaign execution:
+  no stopping after intermediate wins, exact pass/fail/blocker cadence after
+  each H11 gate, targeted subagent/falsification decision rules, RunPod
+  alternate SSH, and no minimized-proxy language in HTP probing.
+- H11-A initially failed because the daemon still paid a repeated static
+  artifact hashing tax inside every compact iteration:
+  `runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T193156Z_h11a_daemon/H11-A-daemon/gate_result.json`.
+  The failure was preserved, then repaired by hashing static assets once in
+  `daemon_static_artifact_manifest.json` and referencing those hashes from
+  compact daemon iteration manifests.
+- H11-A phone-resident daemon passed:
+  `runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T200929Z_h11a_daemon/H11-A-daemon/gate_result.json`.
+  The phone executed 50 queued narrow-lane iterations inside one long-lived
+  runner process with local queue, heartbeat, STOP/resume state, checksum
+  chain, checkpoint continuity, and ADB-disconnect evidence.
 
 ## Open Questions
 
-- Whether the remaining token bridge should move first to OpenCL or Vulkan, and
-  what equal-correctness bridge parity gate is sufficient before training A/B.
-- Whether OpenCL remains the first training backend or Vulkan earns the route
-  after equal correctness evidence.
-- How to add thermal headroom telemetry without turning cadence changes into a
-  proxy win.
+- Whether Android permits the phone-resident runner to continue reliably after
+  ADB/USB disconnect, and what resume behavior is needed if it does not.
+- Whether safe fixed performance mode, charge separation, fan state, and OEM
+  controls materially improve active/wall without unsafe thermal behavior.
+- Whether cl_qcom_recordable_queues is exposed on this Adreno 830 driver and
+  useful after H11-C identifies the real bottleneck.
+- Which expanded DoRA/LoRA scope and objective produces a capability-relevant
+  signal beyond the rank-4 parity lane.
+- Whether QAIRT mutable sections can become an HTP teacher/frozen-forward or
+  zero-order arm without claiming normal HTP backprop.
 
 ## Performance Metrics
 
@@ -99,6 +127,10 @@ any runtime data-path stage?
 | Phase 10 baseline token bridge | `4.232976s` | 796 active tokens, 285 unique token IDs | HF-auth phone training run |
 | Phase 10 projected PLE cache | `0.667287s` | token-to-hidden bridge | `6.343561316195281x` speedup, all parity gates pass |
 | Phase 10 six-hour endurance | `21692.164205625013s` | 465 chained phone training iterations | sampled parity pass; max thermal status `0` |
+| Phase 10 active/wall | `4626.645587 / 21692.164205625013 = 21.3%` | current narrow lane | suspected host orchestration plus OEM mitigation |
+| Phase 10 dead time | `36.70s/iteration` | 465 iterations | H11-C must explain |
+| H11-A daemon active/wall | `527.878356 / 549.575899 = 0.96051948` | 50 phone-local daemon iterations | passed after static-hash repair |
+| H11-A disconnect evidence | `607s` | ADB server hold after marker | passed; runner heartbeat/state/checksum finalized on phone |
 
 ## Accumulated Context
 
@@ -115,6 +147,8 @@ Full log: `.gpd/DECISIONS.md`
 - Phase 0: Treat G1 as regression floor only.
 - Phase 7: Repaired G8 promotion is valid only because training consumes
   phone-packed token IDs plus immutable Gemma assets, not host hidden fixtures.
+- Phase 11: Documentation is only a control artifact; execution progress begins
+  only when H11 gate artifacts are produced by phone experiments.
 
 ### Active Approximations
 
@@ -149,8 +183,13 @@ Full log: `.gpd/DECISIONS.md`
 
 ### Pending Todos
 
-- Execute the next Phase 10 hardware-max candidate only after defining its
-  authority gate and expected falsifier.
+- Execute H11-B next under the passed H11-A phone-resident daemon: reversible
+  no-root performance controls, fan/charge-separation observations, thermal,
+  cooling, frequency, KGSL, and safety-stop telemetry.
+- Preserve H11-A runner topology for later gates; do not return to host-driven
+  per-iteration training except as a declared diagnostic fallback.
+- Do not run H11-H or another long endurance job until H11-B through H11-G have
+  pass/fail/blocker artifacts or exact boundary blockers.
 
 ### Blockers/Concerns
 
@@ -164,10 +203,17 @@ Full log: `.gpd/DECISIONS.md`
 - Phase 10 promotes projected PLE caching and six-hour wall-clock endurance for
   the current narrow route only. It is not Hexagon NPU training, full Gemma4
   training, public benchmark readiness, or theoretical maximum reached.
+- GPD phase-add succeeded for Phase 11, but generic GPD state synchronization
+  rewrote `.gpd/state.json` in a lossy parser format during this PRD-writing
+  task. The machine state was restored and updated via structured JSON; future
+  agents should parse-check `.gpd/state.json` after GPD CLI state commands.
+- H11-A does not claim OpenCL context persistence across iterations; the runner
+  process persists and removes host per-iteration orchestration. Deeper context,
+  queue, launch, and storage accounting remains H11-C/H11-D work.
 
 ## Session Continuity
 
-**Last session:** 2026-05-17
-**Stopped at:** Phase 10 plan 10-02 mixed gate result: six-hour endurance
-accepted for the narrow current lane; remaining non-claims stay blocked.
+**Last session:** 2026-05-23
+**Stopped at:** H11-A phone-resident daemon passed. Continue with H11-B
+performance envelope under the H11-A runner; do not skip to H11-H.
 **Resume file:** `.gpd/STATE.md`

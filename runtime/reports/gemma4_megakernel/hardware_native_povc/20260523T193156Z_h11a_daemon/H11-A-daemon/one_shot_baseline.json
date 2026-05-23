@@ -1,0 +1,60 @@
+{
+  "active_training_seconds": 5.965494,
+  "active_wall_ratio": 0.3217463539152089,
+  "command_shape": "gemma4_layer_runner --run-g8-distill-compact TOKEN_CACHE ASSETS PACK0 PACK1 CHECKPOINT OUT_DIR LR",
+  "ended_at_utc": "2026-05-23T19:32:15Z",
+  "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase11/runs/20260523T193156Z_h11a_daemon/H11-A-daemon/one_shot_baseline_output",
+  "phone_runner": "/data/local/tmp/polymath_gemma4_gate/gemma4_layer_runner_phase10_compact",
+  "returncode": 0,
+  "schema_version": "phase11_h11a_one_shot_baseline_v1",
+  "started_at_utc": "2026-05-23T19:31:57Z",
+  "stderr_first_4096": "",
+  "stdout_first_4096": "",
+  "telemetry": {
+    "active_tokens": 796,
+    "adapter_backend": "opencl",
+    "adapter_elapsed_seconds": 0.282514,
+    "applied_update": true,
+    "backend": "opencl",
+    "case_count": 8,
+    "hidden_size": 2560,
+    "hidden_state_fixtures_consumed": [],
+    "layer_backend": "opencl",
+    "layer_elapsed_seconds": [
+      2.619297,
+      2.78468
+    ],
+    "learning_rate": 0.0099999998,
+    "loss_half_mse": 1.6465152695,
+    "max_rss_kb": 2177672,
+    "model_id": "google/gemma-4-E4B",
+    "opencl_libraries": [
+      "libOpenCL.so",
+      "libOpenCL.so",
+      "libOpenCL.so"
+    ],
+    "optimizer": "sgd",
+    "rank": 4,
+    "revision": "7aa32e6889efd6300124851b164f8b364314c3d8",
+    "runtime_input_path": "token_cache_to_phone_generated_hidden_to_opencl_layers_to_adapter_update",
+    "schema_version": "gemma4_opencl_streamed_distill_training_v1",
+    "seq": 128,
+    "token_to_hidden_backend": "phone_cpu",
+    "token_to_hidden_elapsed_seconds": 0.279003,
+    "token_to_hidden_timing": {
+      "active_tokens": 796,
+      "embedding_cache_rows": 285,
+      "embedding_gather_seconds": 0.006251,
+      "open_asset_seconds": 3.9e-05,
+      "ple_layer0_cache_rows": 285,
+      "ple_layer0_seconds": 0.135781,
+      "ple_layer1_cache_rows": 285,
+      "ple_layer1_seconds": 0.132196,
+      "projection_load_seconds": 0.002793,
+      "read_cache_seconds": 0.001943,
+      "unique_token_count": 285
+    },
+    "trainable_scope": "post_layer0_rank4_residual_adapter"
+  },
+  "wall_seconds": 18.5409839999993
+}

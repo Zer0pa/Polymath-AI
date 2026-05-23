@@ -1,0 +1,1407 @@
+#include <sys/stat.h>
+#include <sys/statvfs.h>
+#include <unistd.h>
+
+#include <atomic>
+#include <cerrno>
+#include <chrono>
+#include <cstdint>
+#include <cstdlib>
+#include <ctime>
+#include <fstream>
+#include <iomanip>
+#include <iostream>
+#include <mutex>
+#include <optional>
+#include <sstream>
+#include <stdexcept>
+#include <string>
+#include <thread>
+#include <utility>
+#include <vector>
+
+#include "polymath/gemma4/adapter_training.h"
+#include "polymath/gemma4/json_writer.h"
+#include "polymath/gemma4/sha256.h"
+
+namespace {
+
+constexpr const char* kRunnerBuildId = "phase11_runner_h11a_v1_20260523";
+constexpr double kPhase10ActiveWallBaseline = 4626.645587 / 21692.164205625013;
+
+struct RunnerArgs {
+  std::string queue_path;
+  std::string run_root;
+  std::string heartbeat_path;
+  std::string state_path;
+  std::string stop_file = "STOP";
+};
+
+struct QueueRecord {
+  std::string id;
+  std::string gate;
+  std::string config_path;
+  std::string resume;
+};
+
+struct H11AConfig {
+  std::string run_id;
+  std::vector<std::string> token_caches;
+  std::string asset_dir;
+  std::string layer0_pack;
+  std::string layer1_pack;
+  std::string initial_checkpoint;
+  std::string disconnect_marker_path = "disconnect_evidence.json";
+  int iteration_count = 50;
+  int sample_every = 25;
+  int marker_wait_seconds = 1800;
+  int disconnect_hold_seconds = 600;
+  double learning_rate = 0.01;
+  bool require_disconnect_marker = true;
+};
+
+struct RunnerState {
+  std::string run_id;
+  std::string record_id;
+  std::string gate;
+  std::string checkpoint_dir;
+  std::string status;
+  int next_iteration = 0;
+};
+
+struct IterationRecord {
+  int index = 0;
+  bool sample = false;
+  std::string status;
+  std::string token_cache;
+  std::string input_checkpoint;
+  std::string output_checkpoint;
+  std::string phone_output_dir;
+  std::string blocker;
+  double wall_seconds = 0.0;
+  double active_training_seconds = 0.0;
+};
+
+struct GateStats {
+  std::vector<IterationRecord> records;
+  std::vector<std::string> blockers;
+  double queue_wall_seconds = 0.0;
+  double active_training_seconds = 0.0;
+  double disconnect_wait_seconds = 0.0;
+  bool stopped = false;
+  bool disconnect_marker_seen = false;
+};
+
+std::string read_text_file(const std::string& path) {
+  std::ifstream file(path);
+  if (!file) {
+    throw std::runtime_error("unable to read file: " + path);
+  }
+  return std::string((std::istreambuf_iterator<char>(file)),
+                     std::istreambuf_iterator<char>());
+}
+
+bool path_exists(const std::string& path) {
+  struct stat info {};
+  return ::stat(path.c_str(), &info) == 0;
+}
+
+std::uint64_t file_size_bytes(const std::string& path) {
+  struct stat info {};
+  if (::stat(path.c_str(), &info) != 0) {
+    throw std::runtime_error("stat failed for: " + path);
+  }
+  return static_cast<std::uint64_t>(info.st_size);
+}
+
+std::string dirname_of(const std::string& path) {
+  const std::size_t slash = path.find_last_of('/');
+  if (slash == std::string::npos) {
+    return ".";
+  }
+  if (slash == 0U) {
+    return "/";
+  }
+  return path.substr(0, slash);
+}
+
+std::string join_path(const std::string& left, const std::string& right) {
+  if (left.empty() || right.empty()) {
+    return left.empty() ? right : left;
+  }
+  if (right.front() == '/') {
+    return right;
+  }
+  if (left.back() == '/') {
+    return left + right;
+  }
+  return left + "/" + right;
+}
+
+void ensure_directory(const std::string& path) {
+  if (path.empty()) {
+    return;
+  }
+
+  std::string current;
+  for (char character : path) {
+    current.push_back(character);
+    if (character != '/') {
+      continue;
+    }
+    if (current.size() <= 1U) {
+      continue;
+    }
+    if (::mkdir(current.c_str(), 0755) != 0 && errno != EEXIST) {
+      throw std::runtime_error("mkdir failed for: " + current);
+    }
+  }
+  if (::mkdir(path.c_str(), 0755) != 0 && errno != EEXIST) {
+    throw std::runtime_error("mkdir failed for: " + path);
+  }
+}
+
+void write_text_file_atomic(const std::string& path, const std::string& text) {
+  ensure_directory(dirname_of(path));
+  const std::string temp_path =
+      path + ".tmp." + std::to_string(static_cast<long long>(::getpid()));
+  {
+    std::ofstream file(temp_path);
+    if (!file) {
+      throw std::runtime_error("unable to write temp file: " + temp_path);
+    }
+    file << text;
+  }
+  if (::rename(temp_path.c_str(), path.c_str()) != 0) {
+    throw std::runtime_error("rename failed for: " + path);
+  }
+}
+
+void append_text_file(const std::string& path, const std::string& text) {
+  ensure_directory(dirname_of(path));
+  std::ofstream file(path, std::ios::app);
+  if (!file) {
+    throw std::runtime_error("unable to append file: " + path);
+  }
+  file << text;
+}
+
+std::string utc_timestamp() {
+  const std::time_t now = std::time(nullptr);
+  std::tm tm {};
+  gmtime_r(&now, &tm);
+  char buffer[32] = {};
+  std::strftime(buffer, sizeof(buffer), "%Y-%m-%dT%H:%M:%SZ", &tm);
+  return std::string(buffer);
+}
+
+std::string compact_utc_timestamp() {
+  const std::time_t now = std::time(nullptr);
+  std::tm tm {};
+  gmtime_r(&now, &tm);
+  char buffer[32] = {};
+  std::strftime(buffer, sizeof(buffer), "%Y%m%dT%H%M%SZ", &tm);
+  return std::string(buffer);
+}
+
+std::string current_working_directory() {
+  std::vector<char> buffer(4096U, '\0');
+  if (::getcwd(buffer.data(), buffer.size()) == nullptr) {
+    throw std::runtime_error("getcwd failed");
+  }
+  return std::string(buffer.data());
+}
+
+std::string resolve_path(const std::string& path, const std::string& cwd) {
+  if (path.empty() || path.front() == '/') {
+    return path;
+  }
+  return join_path(cwd, path);
+}
+
+std::size_t find_key_colon(const std::string& json, const std::string& key) {
+  const std::string token = "\"" + key + "\"";
+  const std::size_t key_pos = json.find(token);
+  if (key_pos == std::string::npos) {
+    return std::string::npos;
+  }
+  return json.find(':', key_pos + token.size());
+}
+
+std::size_t skip_spaces(const std::string& text, std::size_t pos) {
+  while (pos < text.size()) {
+    const char c = text[pos];
+    if (c != ' ' && c != '\n' && c != '\r' && c != '\t') {
+      break;
+    }
+    ++pos;
+  }
+  return pos;
+}
+
+std::optional<std::string> json_string_value(const std::string& json,
+                                             const std::string& key) {
+  const std::size_t colon = find_key_colon(json, key);
+  if (colon == std::string::npos) {
+    return std::nullopt;
+  }
+  std::size_t pos = skip_spaces(json, colon + 1U);
+  if (pos >= json.size() || json[pos] != '"') {
+    return std::nullopt;
+  }
+  ++pos;
+  std::string value;
+  while (pos < json.size()) {
+    const char c = json[pos++];
+    if (c == '"') {
+      return value;
+    }
+    if (c != '\\' || pos >= json.size()) {
+      value.push_back(c);
+      continue;
+    }
+    const char escaped = json[pos++];
+    if (escaped == 'n') {
+      value.push_back('\n');
+    } else if (escaped == 'r') {
+      value.push_back('\r');
+    } else if (escaped == 't') {
+      value.push_back('\t');
+    } else {
+      value.push_back(escaped);
+    }
+  }
+  return std::nullopt;
+}
+
+std::optional<double> json_number_value(const std::string& json,
+                                        const std::string& key) {
+  const std::size_t colon = find_key_colon(json, key);
+  if (colon == std::string::npos) {
+    return std::nullopt;
+  }
+  const std::size_t pos = skip_spaces(json, colon + 1U);
+  if (pos >= json.size()) {
+    return std::nullopt;
+  }
+  char* end = nullptr;
+  const double value = std::strtod(json.c_str() + pos, &end);
+  if (end == json.c_str() + pos) {
+    return std::nullopt;
+  }
+  return value;
+}
+
+std::optional<bool> json_bool_value(const std::string& json,
+                                    const std::string& key) {
+  const std::size_t colon = find_key_colon(json, key);
+  if (colon == std::string::npos) {
+    return std::nullopt;
+  }
+  const std::size_t pos = skip_spaces(json, colon + 1U);
+  if (json.compare(pos, 4U, "true") == 0) {
+    return true;
+  }
+  if (json.compare(pos, 5U, "false") == 0) {
+    return false;
+  }
+  return std::nullopt;
+}
+
+std::vector<std::string> json_string_array_value(const std::string& json,
+                                                 const std::string& key) {
+  std::vector<std::string> values;
+  const std::size_t colon = find_key_colon(json, key);
+  if (colon == std::string::npos) {
+    return values;
+  }
+  std::size_t pos = skip_spaces(json, colon + 1U);
+  if (pos >= json.size() || json[pos] != '[') {
+    return values;
+  }
+  ++pos;
+  while (pos < json.size()) {
+    pos = skip_spaces(json, pos);
+    if (pos >= json.size() || json[pos] == ']') {
+      break;
+    }
+    if (json[pos] != '"') {
+      ++pos;
+      continue;
+    }
+    ++pos;
+    std::string value;
+    while (pos < json.size()) {
+      const char c = json[pos++];
+      if (c == '"') {
+        values.push_back(value);
+        break;
+      }
+      if (c != '\\' || pos >= json.size()) {
+        value.push_back(c);
+        continue;
+      }
+      const char escaped = json[pos++];
+      value.push_back(escaped == 'n' ? '\n' : escaped);
+    }
+  }
+  return values;
+}
+
+std::vector<double> json_number_array_value(const std::string& json,
+                                            const std::string& key) {
+  std::vector<double> values;
+  const std::size_t colon = find_key_colon(json, key);
+  if (colon == std::string::npos) {
+    return values;
+  }
+  std::size_t pos = skip_spaces(json, colon + 1U);
+  if (pos >= json.size() || json[pos] != '[') {
+    return values;
+  }
+  ++pos;
+  while (pos < json.size()) {
+    pos = skip_spaces(json, pos);
+    if (pos >= json.size() || json[pos] == ']') {
+      break;
+    }
+    char* end = nullptr;
+    const double value = std::strtod(json.c_str() + pos, &end);
+    if (end == json.c_str() + pos) {
+      ++pos;
+      continue;
+    }
+    values.push_back(value);
+    pos = static_cast<std::size_t>(end - json.c_str());
+  }
+  return values;
+}
+
+bool json_contains_string(const std::string& json,
+                          const std::string& key,
+                          const std::string& expected) {
+  const std::optional<std::string> value = json_string_value(json, key);
+  return value.has_value() && value.value() == expected;
+}
+
+int json_int_or(const std::string& json, const std::string& key, int fallback) {
+  const std::optional<double> value = json_number_value(json, key);
+  return value.has_value() ? static_cast<int>(value.value()) : fallback;
+}
+
+double json_double_or(const std::string& json,
+                      const std::string& key,
+                      double fallback) {
+  const std::optional<double> value = json_number_value(json, key);
+  return value.has_value() ? value.value() : fallback;
+}
+
+bool json_bool_or(const std::string& json, const std::string& key, bool fallback) {
+  const std::optional<bool> value = json_bool_value(json, key);
+  return value.has_value() ? value.value() : fallback;
+}
+
+std::string json_string_or(const std::string& json,
+                           const std::string& key,
+                           const std::string& fallback) {
+  const std::optional<std::string> value = json_string_value(json, key);
+  return value.has_value() ? value.value() : fallback;
+}
+
+void write_json_string_field(std::ostream& stream,
+                             const std::string& name,
+                             const std::string& value,
+                             bool comma) {
+  stream << "  ";
+  polymath::gemma4::write_json_string(stream, name);
+  stream << ": ";
+  polymath::gemma4::write_json_string(stream, value);
+  if (comma) {
+    stream << ',';
+  }
+  stream << '\n';
+}
+
+std::string format_iteration_dir(const std::string& gate_dir, int index) {
+  std::ostringstream name;
+  name << "iterations/iter_" << std::setw(6) << std::setfill('0') << index;
+  return join_path(gate_dir, name.str());
+}
+
+bool should_sample_iteration(int index, int total, int sample_every) {
+  if (index == 0 || index + 1 == total) {
+    return true;
+  }
+  return sample_every > 0 && (index % sample_every) == 0;
+}
+
+long current_rss_kb() {
+  std::ifstream file("/proc/self/status");
+  std::string key;
+  while (file >> key) {
+    if (key == "VmRSS:") {
+      long value = -1L;
+      file >> value;
+      return value;
+    }
+    std::string rest;
+    std::getline(file, rest);
+  }
+  return -1L;
+}
+
+std::uint64_t storage_free_bytes(const std::string& path) {
+  struct statvfs info {};
+  if (::statvfs(path.c_str(), &info) != 0) {
+    return 0U;
+  }
+  return static_cast<std::uint64_t>(info.f_bavail) *
+         static_cast<std::uint64_t>(info.f_frsize);
+}
+
+std::string read_first_existing(const std::vector<std::string>& paths) {
+  for (const std::string& path : paths) {
+    std::ifstream file(path);
+    if (!file) {
+      continue;
+    }
+    std::string text;
+    std::getline(file, text);
+    return text;
+  }
+  return "unavailable";
+}
+
+std::string thermal_summary_json() {
+  const std::string battery_temp = read_first_existing({
+      "/sys/class/power_supply/battery/temp",
+      "/sys/class/power_supply/bms/temp",
+  });
+  const std::string skin_temp = read_first_existing({
+      "/sys/class/thermal/thermal_zone0/temp",
+      "/sys/class/thermal/thermal_zone1/temp",
+  });
+  std::ostringstream out;
+  out << "{\"battery_temp_raw\":";
+  polymath::gemma4::write_json_string(out, battery_temp);
+  out << ",\"sample_zone0_or_1_raw\":";
+  polymath::gemma4::write_json_string(out, skin_temp);
+  out << "}";
+  return out.str();
+}
+
+class Heartbeat {
+ public:
+  Heartbeat(std::string heartbeat_path, std::string run_id, std::string gate)
+      : heartbeat_path_(std::move(heartbeat_path)),
+        run_id_(std::move(run_id)),
+        gate_(std::move(gate)),
+        storage_path_(dirname_of(heartbeat_path_)),
+        started_at_(std::chrono::steady_clock::now()) {}
+
+  void start() {
+    running_.store(true);
+    worker_ = std::thread([this]() { loop(); });
+  }
+
+  void stop() {
+    running_.store(false);
+    if (worker_.joinable()) {
+      worker_.join();
+    }
+    write_once();
+  }
+
+  void set_step(const std::string& step) {
+    std::lock_guard<std::mutex> lock(mutex_);
+    step_ = step;
+  }
+
+  void set_last_artifact(const std::string& path, const std::string& chain_hash) {
+    std::lock_guard<std::mutex> lock(mutex_);
+    last_artifact_path_ = path;
+    last_artifact_chain_hash_ = chain_hash;
+  }
+
+ private:
+  void loop() {
+    while (running_.load()) {
+      try {
+        write_once();
+      } catch (const std::exception&) {
+      }
+      for (int tick = 0; tick < 10 && running_.load(); ++tick) {
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+      }
+    }
+  }
+
+  void write_once() {
+    std::string step;
+    std::string last_path;
+    std::string last_hash;
+    {
+      std::lock_guard<std::mutex> lock(mutex_);
+      step = step_;
+      last_path = last_artifact_path_;
+      last_hash = last_artifact_chain_hash_;
+    }
+
+    const double monotonic_seconds =
+        std::chrono::duration<double>(std::chrono::steady_clock::now() - started_at_)
+            .count();
+    std::ostringstream out;
+    out << "{\n";
+    write_json_string_field(out, "schema_version", "phase11_runner_heartbeat_v1", true);
+    write_json_string_field(out, "runner_build_id", kRunnerBuildId, true);
+    write_json_string_field(out, "run_id", run_id_, true);
+    write_json_string_field(out, "gate", gate_, true);
+    write_json_string_field(out, "step", step, true);
+    out << "  \"pid\": " << static_cast<long long>(::getpid()) << ",\n";
+    out << "  \"monotonic_seconds\": " << std::fixed << std::setprecision(3)
+        << monotonic_seconds << ",\n";
+    out << "  \"storage_free_bytes\": " << storage_free_bytes(storage_path_) << ",\n";
+    out << "  \"rss_kb\": " << current_rss_kb() << ",\n";
+    out << "  \"thermal_summary\": " << thermal_summary_json() << ",\n";
+    write_json_string_field(out, "last_artifact_path", last_path, true);
+    write_json_string_field(out, "last_artifact_chain_hash", last_hash, true);
+    write_json_string_field(out, "updated_at_utc", utc_timestamp(), false);
+    out << "}\n";
+    write_text_file_atomic(heartbeat_path_, out.str());
+  }
+
+  std::string heartbeat_path_;
+  std::string run_id_;
+  std::string gate_;
+  std::string storage_path_;
+  std::chrono::steady_clock::time_point started_at_;
+  std::atomic<bool> running_ = false;
+  std::thread worker_;
+  std::mutex mutex_;
+  std::string step_ = "starting";
+  std::string last_artifact_path_;
+  std::string last_artifact_chain_hash_;
+};
+
+class ChecksumChain {
+ public:
+  ChecksumChain(std::string chain_path, Heartbeat* heartbeat)
+      : chain_path_(std::move(chain_path)), heartbeat_(heartbeat) {
+    ensure_directory(dirname_of(chain_path_));
+    if (!path_exists(chain_path_)) {
+      return;
+    }
+    std::ifstream file(chain_path_);
+    std::string line;
+    while (std::getline(file, line)) {
+      const std::optional<std::string> hash = json_string_value(line, "chain_hash");
+      if (hash.has_value()) {
+        previous_hash_ = hash.value();
+      }
+    }
+  }
+
+  void append_if_exists(const std::string& artifact_path, const std::string& gate) {
+    if (!path_exists(artifact_path)) {
+      return;
+    }
+    const std::string artifact_sha = polymath::gemma4::sha256_file_hex(artifact_path);
+    const std::uint64_t bytes = file_size_bytes(artifact_path);
+    const std::string timestamp = utc_timestamp();
+    const std::string payload = previous_hash_ + "\n" + artifact_path + "\n" +
+                                artifact_sha + "\n" + std::to_string(bytes) + "\n" +
+                                timestamp + "\n" + gate + "\n" + kRunnerBuildId;
+    const std::string chain_hash = polymath::gemma4::sha256_text_hex(payload);
+
+    std::ostringstream out;
+    out << "{";
+    out << "\"schema_version\":\"phase11_checksum_record_v1\",";
+    out << "\"timestamp_utc\":";
+    polymath::gemma4::write_json_string(out, timestamp);
+    out << ",\"gate\":";
+    polymath::gemma4::write_json_string(out, gate);
+    out << ",\"runner_build_id\":";
+    polymath::gemma4::write_json_string(out, kRunnerBuildId);
+    out << ",\"artifact_path\":";
+    polymath::gemma4::write_json_string(out, artifact_path);
+    out << ",\"sha256\":";
+    polymath::gemma4::write_json_string(out, artifact_sha);
+    out << ",\"byte_count\":" << bytes;
+    out << ",\"previous_chain_hash\":";
+    polymath::gemma4::write_json_string(out, previous_hash_);
+    out << ",\"chain_hash\":";
+    polymath::gemma4::write_json_string(out, chain_hash);
+    out << "}\n";
+    append_text_file(chain_path_, out.str());
+    previous_hash_ = chain_hash;
+    if (heartbeat_ != nullptr) {
+      heartbeat_->set_last_artifact(artifact_path, chain_hash);
+    }
+  }
+
+  const std::string& previous_hash() const { return previous_hash_; }
+
+ private:
+  std::string chain_path_;
+  Heartbeat* heartbeat_ = nullptr;
+  std::string previous_hash_ = "GENESIS";
+};
+
+std::vector<QueueRecord> read_queue(const std::string& queue_path,
+                                    const std::string& cwd) {
+  std::ifstream file(queue_path);
+  if (!file) {
+    throw std::runtime_error("unable to open queue: " + queue_path);
+  }
+  std::vector<QueueRecord> records;
+  std::string line;
+  while (std::getline(file, line)) {
+    if (line.find_first_not_of(" \t\r\n") == std::string::npos) {
+      continue;
+    }
+    QueueRecord record;
+    record.id = json_string_or(line, "id", "");
+    record.gate = json_string_or(line, "gate", "");
+    record.config_path = resolve_path(json_string_or(line, "config", ""), cwd);
+    record.resume = json_string_or(line, "resume", "auto");
+    if (record.id.empty() || record.gate.empty() || record.config_path.empty()) {
+      throw std::runtime_error("invalid queue record: " + line);
+    }
+    records.push_back(record);
+  }
+  return records;
+}
+
+H11AConfig read_h11a_config(const std::string& config_path,
+                            const std::string& cwd) {
+  const std::string json = read_text_file(config_path);
+  H11AConfig config;
+  config.run_id = json_string_or(json, "run_id", "");
+  config.token_caches = json_string_array_value(json, "token_caches");
+  config.asset_dir = resolve_path(json_string_or(json, "asset_dir", ""), cwd);
+  config.layer0_pack = resolve_path(json_string_or(json, "layer0_pack", ""), cwd);
+  config.layer1_pack = resolve_path(json_string_or(json, "layer1_pack", ""), cwd);
+  config.initial_checkpoint =
+      resolve_path(json_string_or(json, "initial_checkpoint", ""), cwd);
+  config.disconnect_marker_path =
+      resolve_path(json_string_or(json, "disconnect_marker_path",
+                                  config.disconnect_marker_path),
+                   cwd);
+  config.iteration_count = json_int_or(json, "iteration_count", config.iteration_count);
+  config.sample_every = json_int_or(json, "sample_every", config.sample_every);
+  config.marker_wait_seconds =
+      json_int_or(json, "marker_wait_seconds", config.marker_wait_seconds);
+  config.disconnect_hold_seconds =
+      json_int_or(json, "disconnect_hold_seconds", config.disconnect_hold_seconds);
+  config.learning_rate = json_double_or(json, "learning_rate", config.learning_rate);
+  config.require_disconnect_marker =
+      json_bool_or(json, "require_disconnect_marker", config.require_disconnect_marker);
+
+  for (std::string& token_cache : config.token_caches) {
+    token_cache = resolve_path(token_cache, cwd);
+  }
+  if (config.token_caches.empty()) {
+    throw std::runtime_error("H11-A config requires token_caches");
+  }
+  if (config.asset_dir.empty() || config.layer0_pack.empty() || config.layer1_pack.empty() ||
+      config.initial_checkpoint.empty()) {
+    throw std::runtime_error("H11-A config has empty asset, pack, or checkpoint path");
+  }
+  if (config.iteration_count <= 0) {
+    throw std::runtime_error("H11-A iteration_count must be positive");
+  }
+  return config;
+}
+
+std::optional<RunnerState> read_runner_state(const std::string& state_path) {
+  if (!path_exists(state_path)) {
+    return std::nullopt;
+  }
+  const std::string json = read_text_file(state_path);
+  RunnerState state;
+  state.run_id = json_string_or(json, "run_id", "");
+  state.record_id = json_string_or(json, "record_id", "");
+  state.gate = json_string_or(json, "gate", "");
+  state.checkpoint_dir = json_string_or(json, "checkpoint_dir", "");
+  state.status = json_string_or(json, "status", "");
+  state.next_iteration = json_int_or(json, "next_iteration", 0);
+  return state;
+}
+
+void write_runner_state(const std::string& state_path,
+                        const RunnerState& state,
+                        const QueueRecord& record) {
+  std::ostringstream out;
+  out << "{\n";
+  write_json_string_field(out, "schema_version", "phase11_runner_state_v1", true);
+  write_json_string_field(out, "runner_build_id", kRunnerBuildId, true);
+  write_json_string_field(out, "run_id", state.run_id, true);
+  write_json_string_field(out, "record_id", record.id, true);
+  write_json_string_field(out, "gate", state.gate, true);
+  write_json_string_field(out, "status", state.status, true);
+  out << "  \"next_iteration\": " << state.next_iteration << ",\n";
+  write_json_string_field(out, "checkpoint_dir", state.checkpoint_dir, true);
+  write_json_string_field(out, "updated_at_utc", utc_timestamp(), false);
+  out << "}\n";
+  write_text_file_atomic(state_path, out.str());
+}
+
+double active_training_seconds_from_telemetry(const std::string& telemetry_path) {
+  const std::string json = read_text_file(telemetry_path);
+  double active = json_double_or(json, "token_to_hidden_elapsed_seconds", 0.0);
+  active += json_double_or(json, "adapter_elapsed_seconds", 0.0);
+  const std::vector<double> layer_seconds =
+      json_number_array_value(json, "layer_elapsed_seconds");
+  for (const double value : layer_seconds) {
+    active += value;
+  }
+  return active;
+}
+
+std::pair<std::string, std::string> checkpoint_pair_sha(const std::string& checkpoint_dir) {
+  return {
+      polymath::gemma4::sha256_file_hex(join_path(checkpoint_dir, "adapter_a.f32.bin")),
+      polymath::gemma4::sha256_file_hex(join_path(checkpoint_dir, "adapter_b.f32.bin")),
+  };
+}
+
+void append_iteration_telemetry(const std::string& telemetry_jsonl_path,
+                                const IterationRecord& record) {
+  std::ostringstream out;
+  out << "{";
+  out << "\"schema_version\":\"phase11_h11a_iteration_telemetry_v1\",";
+  out << "\"timestamp_utc\":";
+  polymath::gemma4::write_json_string(out, utc_timestamp());
+  out << ",\"iteration\":" << record.index;
+  out << ",\"status\":";
+  polymath::gemma4::write_json_string(out, record.status);
+  out << ",\"sample\":" << (record.sample ? "true" : "false");
+  out << ",\"wall_seconds\":" << std::fixed << std::setprecision(6)
+      << record.wall_seconds;
+  out << ",\"active_training_seconds\":" << std::fixed << std::setprecision(6)
+      << record.active_training_seconds;
+  out << ",\"token_cache\":";
+  polymath::gemma4::write_json_string(out, record.token_cache);
+  out << ",\"input_checkpoint\":";
+  polymath::gemma4::write_json_string(out, record.input_checkpoint);
+  out << ",\"output_checkpoint\":";
+  polymath::gemma4::write_json_string(out, record.output_checkpoint);
+  out << ",\"phone_output_dir\":";
+  polymath::gemma4::write_json_string(out, record.phone_output_dir);
+  out << ",\"blocker\":";
+  polymath::gemma4::write_json_string(out, record.blocker);
+  out << "}\n";
+  append_text_file(telemetry_jsonl_path, out.str());
+}
+
+void write_queue_schema(const std::string& gate_dir) {
+  const std::string path = join_path(gate_dir, "queue_schema.json");
+  write_text_file_atomic(
+      path,
+      "{\n"
+      "  \"schema_version\": \"phase11_queue_schema_v1\",\n"
+      "  \"record_format\": \"jsonl\",\n"
+      "  \"required_fields\": [\"id\", \"gate\", \"config\", \"depends_on\", \"resume\"],\n"
+      "  \"supported_gate_in_this_build\": \"H11-A\",\n"
+      "  \"runner_build_id\": \"phase11_runner_h11a_v1_20260523\"\n"
+      "}\n");
+}
+
+void write_daemon_design_note(const std::string& gate_dir) {
+  write_text_file_atomic(
+      join_path(gate_dir, "daemon_design_note.md"),
+      "# H11-A Daemon Design Note\n\n"
+      "- `phase11_runner` starts once from ADB and then reads the phone-local JSONL queue.\n"
+      "- H11-A iterations run inside one long-lived process; ADB does not issue per-iteration commands.\n"
+      "- `runner_state.json` is rewritten after each completed checkpoint boundary so a restart can resume from the last output checkpoint.\n"
+      "- `heartbeat.json` is emitted by a native heartbeat thread every 10 seconds during work and disconnect hold.\n"
+      "- `STOP` is honored before each iteration and during disconnect hold.\n"
+      "- `checksum_chain.jsonl` lives under the run directory and chains small JSON artifacts plus adapter checkpoint payload hashes.\n"
+      "- Existing one-shot `gemma4_layer_runner --run-g8-distill[-compact]` behavior remains untouched as the diagnostic fallback.\n"
+      "- This H11-A build removes host process restart per iteration; deeper OpenCL context reuse remains measurable in H11-C/H11-D.\n");
+}
+
+void write_commands_log(const std::string& gate_dir, const RunnerArgs& args) {
+  std::ostringstream out;
+  out << "Sanitized command shape:\n";
+  out << "cd /data/local/tmp/polymath_gemma4_gate/phase11\n";
+  out << "nohup ./phase11_runner --queue " << args.queue_path
+      << " --run-root " << args.run_root << " --heartbeat " << args.heartbeat_path
+      << " --state " << args.state_path << " > runner.log 2>&1 &\n\n";
+  out << "The queue and config contain only phone-local paths. No token values, SDK "
+         "binaries, model weights, or raw tensor payloads are printed here.\n";
+  write_text_file_atomic(join_path(gate_dir, "commands.log"), out.str());
+}
+
+void write_static_manifest_entry(std::ostream& out,
+                                 const std::string& name,
+                                 const std::string& path,
+                                 bool comma) {
+  out << "    {\"name\": ";
+  polymath::gemma4::write_json_string(out, name);
+  out << ", \"path\": ";
+  polymath::gemma4::write_json_string(out, path);
+  if (path_exists(path)) {
+    out << ", \"sha256\": ";
+    polymath::gemma4::write_json_string(out, polymath::gemma4::sha256_file_hex(path));
+    out << ", \"byte_count\": " << file_size_bytes(path);
+  } else {
+    out << ", \"status\": \"missing\"";
+  }
+  out << "}";
+  if (comma) {
+    out << ',';
+  }
+  out << "\n";
+}
+
+void write_daemon_static_artifact_manifest(const std::string& gate_dir,
+                                           const H11AConfig& config) {
+  const std::vector<std::pair<std::string, std::string>> artifacts = {
+      {"asset_manifest", join_path(config.asset_dir, "manifest.json")},
+      {"embed_tokens", join_path(config.asset_dir, "embed_tokens.bf16.bin")},
+      {"ple_projection_norm", join_path(config.asset_dir, "ple_projection_norm.f32.bin")},
+      {"ple_token_layer0", join_path(config.asset_dir, "ple_token_layer0.bf16.bin")},
+      {"ple_token_layer1", join_path(config.asset_dir, "ple_token_layer1.bf16.bin")},
+      {"ple_projection_layer0", join_path(config.asset_dir, "ple_projection_layer0.bf16.bin")},
+      {"ple_projection_layer1", join_path(config.asset_dir, "ple_projection_layer1.bf16.bin")},
+      {"layer0_safetensors", join_path(config.layer0_pack, "weights/layer0.safetensors")},
+      {"layer1_safetensors", join_path(config.layer1_pack, "weights/layer1.safetensors")},
+  };
+
+  std::ostringstream out;
+  out << "{\n";
+  write_json_string_field(out, "schema_version", "phase11_h11a_static_artifact_manifest_v1", true);
+  write_json_string_field(out, "runner_build_id", kRunnerBuildId, true);
+  write_json_string_field(out, "created_at_utc", utc_timestamp(), true);
+  out << "  \"artifacts\": [\n";
+  for (std::size_t index = 0; index < artifacts.size(); ++index) {
+    write_static_manifest_entry(out, artifacts[index].first, artifacts[index].second,
+                                index + 1U != artifacts.size());
+  }
+  out << "  ]\n";
+  out << "}\n";
+  write_text_file_atomic(join_path(gate_dir, "daemon_static_artifact_manifest.json"),
+                         out.str());
+}
+
+void write_campaign_manifest(const std::string& run_dir,
+                             const std::string& queue_path,
+                             const std::string& config_path) {
+  std::ostringstream out;
+  out << "{\n";
+  write_json_string_field(out, "schema_version", "phase11_campaign_manifest_v1", true);
+  write_json_string_field(out, "runner_build_id", kRunnerBuildId, true);
+  write_json_string_field(out, "queue_path", queue_path, true);
+  write_json_string_field(out, "h11a_config_path", config_path, true);
+  write_json_string_field(out, "run_dir", run_dir, true);
+  write_json_string_field(out, "created_at_utc", utc_timestamp(), false);
+  out << "}\n";
+  write_text_file_atomic(join_path(run_dir, "campaign_manifest.json"), out.str());
+}
+
+void write_blockers_md(const std::string& gate_dir, const std::vector<std::string>& blockers) {
+  std::ostringstream out;
+  if (blockers.empty()) {
+    out << "- None for H11-A.\n";
+  } else {
+    for (const std::string& blocker : blockers) {
+      out << "- " << blocker << "\n";
+    }
+  }
+  write_text_file_atomic(join_path(gate_dir, "blockers.md"), out.str());
+}
+
+void write_falsifier_report(const std::string& gate_dir,
+                            const std::string& heartbeat_path,
+                            const GateStats& stats,
+                            bool active_wall_ok,
+                            bool disconnect_ok,
+                            bool checkpoint_chain_ok) {
+  std::ostringstream out;
+  out << "# H11-A Falsifier Report\n\n";
+  out << "- hidden ADB iteration driver: pass, the queue is phone-local and one "
+         "daemon invocation runs all iterations.\n";
+  out << "- process restart per step: pass for the runner process; OpenCL internal "
+         "context reuse remains explicitly unclaimed until H11-C/H11-D timing.\n";
+  out << "- missing heartbeat: "
+      << (path_exists(heartbeat_path) ? "pass" : "fail")
+      << ".\n";
+  out << "- overwritten artifacts: pass, iteration output dirs are unique and "
+         "state resumes from checkpoint boundaries.\n";
+  out << "- host-side minibatch serving: pass, token caches are phone-local paths.\n";
+  out << "- stale checkpoint input: " << (checkpoint_chain_ok ? "pass" : "fail")
+      << ".\n";
+  out << "- active/wall gate: " << (active_wall_ok ? "pass" : "fail") << ".\n";
+  out << "- disconnect survival gate: " << (disconnect_ok ? "pass" : "fail")
+      << ".\n";
+  if (!stats.blockers.empty()) {
+    out << "\n## Blockers\n";
+    for (const std::string& blocker : stats.blockers) {
+      out << "- " << blocker << "\n";
+    }
+  }
+  write_text_file_atomic(join_path(gate_dir, "falsifier_report.md"), out.str());
+}
+
+void write_timing_breakdown(const std::string& gate_dir,
+                            const GateStats& stats,
+                            double active_wall_ratio) {
+  std::ostringstream out;
+  out << "{\n";
+  write_json_string_field(out, "schema_version", "phase11_h11a_timing_breakdown_v1", true);
+  out << "  \"queue_execution_wall_seconds\": " << std::fixed << std::setprecision(6)
+      << stats.queue_wall_seconds << ",\n";
+  out << "  \"active_training_seconds\": " << std::fixed << std::setprecision(6)
+      << stats.active_training_seconds << ",\n";
+  out << "  \"active_wall_ratio\": " << std::fixed << std::setprecision(8)
+      << active_wall_ratio << ",\n";
+  out << "  \"disconnect_wait_seconds\": " << std::fixed << std::setprecision(6)
+      << stats.disconnect_wait_seconds << ",\n";
+  out << "  \"iteration_count\": " << stats.records.size() << ",\n";
+  out << "  \"iterations\": [\n";
+  for (std::size_t index = 0; index < stats.records.size(); ++index) {
+    const IterationRecord& record = stats.records[index];
+    out << "    {\"iteration\": " << record.index << ", \"wall_seconds\": "
+        << std::fixed << std::setprecision(6) << record.wall_seconds
+        << ", \"active_training_seconds\": " << std::fixed << std::setprecision(6)
+        << record.active_training_seconds << ", \"sample\": "
+        << (record.sample ? "true" : "false") << "}";
+    if (index + 1U != stats.records.size()) {
+      out << ',';
+    }
+    out << "\n";
+  }
+  out << "  ]\n";
+  out << "}\n";
+  write_text_file_atomic(join_path(gate_dir, "timing_breakdown.json"), out.str());
+}
+
+void write_artifact_manifest(const std::string& gate_dir,
+                             const std::string& run_dir,
+                             const GateStats& stats) {
+  std::ostringstream out;
+  out << "{\n";
+  write_json_string_field(out, "schema_version", "phase11_gate_artifact_manifest_v1", true);
+  write_json_string_field(out, "gate", "H11-A", true);
+  write_json_string_field(out, "runner_build_id", kRunnerBuildId, true);
+  write_json_string_field(out, "run_dir", run_dir, true);
+  write_json_string_field(out, "gate_dir", gate_dir, true);
+  out << "  \"iteration_count\": " << stats.records.size() << ",\n";
+  out << "  \"git_allowed_artifacts\": [\n";
+  const std::vector<std::string> artifacts = {
+      "daemon_design_note.md", "queue_schema.json", "commands.log",
+      "daemon_static_artifact_manifest.json",
+      "cold_start_probe.json", "one_shot_baseline.json",
+      "telemetry.jsonl",       "timing_breakdown.json", "blockers.md",
+      "falsifier_report.md",   "gate_result.json"};
+  for (std::size_t index = 0; index < artifacts.size(); ++index) {
+    const std::string artifact_path = join_path(gate_dir, artifacts[index]);
+    out << "    {\"path\": ";
+    polymath::gemma4::write_json_string(out, artifact_path);
+    if (path_exists(artifact_path)) {
+      out << ", \"sha256\": ";
+      polymath::gemma4::write_json_string(out,
+                                          polymath::gemma4::sha256_file_hex(artifact_path));
+      out << ", \"byte_count\": " << file_size_bytes(artifact_path);
+    }
+    out << "}";
+    if (index + 1U != artifacts.size()) {
+      out << ',';
+    }
+    out << "\n";
+  }
+  out << "  ],\n";
+  write_json_string_field(out, "phone_checksum_chain", join_path(run_dir, "checksum_chain.jsonl"), false);
+  out << "}\n";
+  write_text_file_atomic(join_path(gate_dir, "artifact_manifest.json"), out.str());
+}
+
+void write_gate_result(const std::string& gate_dir,
+                       const GateStats& stats,
+                       const H11AConfig& config,
+                       double active_wall_ratio,
+                       bool active_wall_ok,
+                       bool disconnect_ok,
+                       bool checkpoint_chain_ok) {
+  std::vector<std::string> blockers = stats.blockers;
+  if (static_cast<int>(stats.records.size()) < config.iteration_count) {
+    blockers.push_back("completed fewer than configured H11-A iterations");
+  }
+  if (!active_wall_ok) {
+    blockers.push_back("active/wall did not reach >=0.50 or >=2x Phase 10 baseline");
+  }
+  if (!disconnect_ok) {
+    blockers.push_back("disconnect marker/hold evidence did not satisfy H11-A");
+  }
+  if (!checkpoint_chain_ok) {
+    blockers.push_back("checkpoint chain validation failed");
+  }
+  if (stats.stopped) {
+    blockers.push_back("STOP file observed before gate completion");
+  }
+
+  const bool pass = blockers.empty();
+  std::ostringstream out;
+  out << "{\n";
+  write_json_string_field(out, "schema_version", "phase11_h11a_gate_result_v1", true);
+  write_json_string_field(out, "gate", "H11-A", true);
+  write_json_string_field(out, "runner_build_id", kRunnerBuildId, true);
+  write_json_string_field(out, "status", pass ? "pass" : "fail", true);
+  out << "  \"iteration_count\": " << stats.records.size() << ",\n";
+  out << "  \"required_iteration_count\": " << config.iteration_count << ",\n";
+  out << "  \"queue_execution_wall_seconds\": " << std::fixed << std::setprecision(6)
+      << stats.queue_wall_seconds << ",\n";
+  out << "  \"active_training_seconds\": " << std::fixed << std::setprecision(6)
+      << stats.active_training_seconds << ",\n";
+  out << "  \"active_wall_ratio\": " << std::fixed << std::setprecision(8)
+      << active_wall_ratio << ",\n";
+  out << "  \"phase10_active_wall_baseline\": " << std::fixed << std::setprecision(8)
+      << kPhase10ActiveWallBaseline << ",\n";
+  out << "  \"active_wall_acceptance\": " << (active_wall_ok ? "true" : "false")
+      << ",\n";
+  out << "  \"disconnect_marker_seen\": "
+      << (stats.disconnect_marker_seen ? "true" : "false") << ",\n";
+  out << "  \"disconnect_hold_seconds\": " << std::fixed << std::setprecision(6)
+      << stats.disconnect_wait_seconds << ",\n";
+  out << "  \"disconnect_acceptance\": " << (disconnect_ok ? "true" : "false")
+      << ",\n";
+  out << "  \"checkpoint_chain_acceptance\": "
+      << (checkpoint_chain_ok ? "true" : "false") << ",\n";
+  out << "  \"runtime_topology\": \"phone_local_queue_no_adb_per_iteration\",\n";
+  out << "  \"one_shot_fallback_preserved\": true,\n";
+  out << "  \"blockers\": [";
+  for (std::size_t index = 0; index < blockers.size(); ++index) {
+    if (index != 0U) {
+      out << ", ";
+    }
+    polymath::gemma4::write_json_string(out, blockers[index]);
+  }
+  out << "],\n";
+  write_json_string_field(out, "ended_at_utc", utc_timestamp(), false);
+  out << "}\n";
+  write_text_file_atomic(join_path(gate_dir, "gate_result.json"), out.str());
+  write_blockers_md(gate_dir, blockers);
+}
+
+void chain_iteration_artifacts(ChecksumChain& chain,
+                               const std::string& output_dir,
+                               const std::string& gate) {
+  chain.append_if_exists(join_path(output_dir, "telemetry.json"), gate);
+  chain.append_if_exists(join_path(output_dir, "artifact_manifest.json"), gate);
+  chain.append_if_exists(join_path(output_dir, "replay_manifest.json"), gate);
+  chain.append_if_exists(join_path(output_dir, "checkpoint/manifest.json"), gate);
+  chain.append_if_exists(join_path(output_dir, "checkpoint/adapter_a.f32.bin"), gate);
+  chain.append_if_exists(join_path(output_dir, "checkpoint/adapter_b.f32.bin"), gate);
+}
+
+bool gate_result_passed(const std::string& gate_dir) {
+  const std::string gate_result = join_path(gate_dir, "gate_result.json");
+  return path_exists(gate_result) && json_contains_string(read_text_file(gate_result), "status", "pass");
+}
+
+void wait_for_disconnect_marker(const H11AConfig& config,
+                                const RunnerArgs& args,
+                                GateStats& stats,
+                                Heartbeat& heartbeat,
+                                ChecksumChain& chain) {
+  if (!config.require_disconnect_marker) {
+    return;
+  }
+
+  heartbeat.set_step("waiting_for_disconnect_marker");
+  const auto wait_start = std::chrono::steady_clock::now();
+  while (!path_exists(config.disconnect_marker_path)) {
+    if (path_exists(args.stop_file)) {
+      stats.stopped = true;
+      stats.blockers.push_back("STOP file observed while waiting for disconnect marker");
+      return;
+    }
+    const double waited =
+        std::chrono::duration<double>(std::chrono::steady_clock::now() - wait_start)
+            .count();
+    if (waited >= static_cast<double>(config.marker_wait_seconds)) {
+      stats.blockers.push_back("disconnect evidence marker was not created before timeout");
+      return;
+    }
+    std::this_thread::sleep_for(std::chrono::seconds(5));
+  }
+
+  stats.disconnect_marker_seen = true;
+  chain.append_if_exists(config.disconnect_marker_path, "H11-A");
+  heartbeat.set_step("disconnect_hold");
+  const auto hold_start = std::chrono::steady_clock::now();
+  while (true) {
+    if (path_exists(args.stop_file)) {
+      stats.stopped = true;
+      stats.blockers.push_back("STOP file observed during disconnect hold");
+      return;
+    }
+    struct stat info {};
+    if (::stat(config.disconnect_marker_path.c_str(), &info) != 0) {
+      stats.blockers.push_back("disconnect evidence marker disappeared during hold");
+      return;
+    }
+    const double marker_age = std::difftime(std::time(nullptr), info.st_mtime);
+    if (marker_age >= static_cast<double>(config.disconnect_hold_seconds)) {
+      const double local_hold_seconds =
+          std::chrono::duration<double>(std::chrono::steady_clock::now() - hold_start)
+              .count();
+      stats.disconnect_wait_seconds =
+          marker_age > local_hold_seconds ? marker_age : local_hold_seconds;
+      return;
+    }
+    std::this_thread::sleep_for(std::chrono::seconds(5));
+  }
+}
+
+int run_h11a(const RunnerArgs& args,
+             const QueueRecord& record,
+             const std::string& cwd) {
+  H11AConfig config = read_h11a_config(record.config_path, cwd);
+  std::optional<RunnerState> prior_state = read_runner_state(args.state_path);
+
+  RunnerState state;
+  state.gate = "H11-A";
+  state.record_id = record.id;
+  state.status = "running";
+  state.run_id = config.run_id.empty() ? compact_utc_timestamp() + "_h11a_daemon"
+                                       : config.run_id;
+  state.checkpoint_dir = config.initial_checkpoint;
+
+  if (prior_state.has_value() && prior_state->record_id == record.id &&
+      prior_state->gate == "H11-A" && prior_state->run_id == state.run_id &&
+      prior_state->status != "completed") {
+    state = prior_state.value();
+    if (state.checkpoint_dir.empty()) {
+      state.checkpoint_dir = config.initial_checkpoint;
+    }
+  }
+
+  const std::string run_dir = join_path(args.run_root, state.run_id);
+  const std::string gate_dir = join_path(run_dir, "H11-A-daemon");
+  if (gate_result_passed(gate_dir)) {
+    state.status = "completed";
+    write_runner_state(args.state_path, state, record);
+    return 0;
+  }
+
+  ensure_directory(join_path(gate_dir, "iterations"));
+  write_campaign_manifest(run_dir, args.queue_path, record.config_path);
+  write_queue_schema(gate_dir);
+  write_daemon_design_note(gate_dir);
+  write_commands_log(gate_dir, args);
+  write_daemon_static_artifact_manifest(gate_dir, config);
+  write_runner_state(args.state_path, state, record);
+
+  Heartbeat heartbeat(args.heartbeat_path, state.run_id, "H11-A");
+  heartbeat.start();
+  ChecksumChain chain(join_path(run_dir, "checksum_chain.jsonl"), &heartbeat);
+  chain.append_if_exists(join_path(run_dir, "campaign_manifest.json"), "H11-A");
+  chain.append_if_exists(join_path(gate_dir, "queue_schema.json"), "H11-A");
+  chain.append_if_exists(join_path(gate_dir, "daemon_design_note.md"), "H11-A");
+  chain.append_if_exists(join_path(gate_dir, "commands.log"), "H11-A");
+  chain.append_if_exists(join_path(gate_dir, "daemon_static_artifact_manifest.json"), "H11-A");
+  chain.append_if_exists(join_path(gate_dir, "cold_start_probe.json"), "H11-A");
+  chain.append_if_exists(join_path(gate_dir, "one_shot_baseline.json"), "H11-A");
+
+  GateStats stats;
+  bool checkpoint_chain_ok = true;
+  std::optional<std::pair<std::string, std::string>> previous_post_sha;
+  const std::string telemetry_jsonl = join_path(gate_dir, "telemetry.jsonl");
+  const auto queue_start = std::chrono::steady_clock::now();
+
+  for (int index = state.next_iteration; index < config.iteration_count; ++index) {
+    if (path_exists(args.stop_file)) {
+      stats.stopped = true;
+      stats.blockers.push_back("STOP file observed before iteration " +
+                               std::to_string(index));
+      break;
+    }
+
+    IterationRecord iteration;
+    iteration.index = index;
+    iteration.sample = should_sample_iteration(index, config.iteration_count,
+                                               config.sample_every);
+    iteration.status = "running";
+    iteration.token_cache =
+        config.token_caches[static_cast<std::size_t>(index) % config.token_caches.size()];
+    iteration.input_checkpoint = state.checkpoint_dir;
+    iteration.phone_output_dir = format_iteration_dir(gate_dir, index);
+    iteration.output_checkpoint = join_path(iteration.phone_output_dir, "checkpoint");
+
+    if (path_exists(iteration.phone_output_dir)) {
+      iteration.phone_output_dir += "_resume_" + compact_utc_timestamp();
+      iteration.output_checkpoint = join_path(iteration.phone_output_dir, "checkpoint");
+    }
+
+    heartbeat.set_step("iteration_" + std::to_string(index));
+    const auto iteration_start = std::chrono::steady_clock::now();
+    const polymath::gemma4::Status status =
+        polymath::gemma4::run_opencl_streamed_distill_update(
+            iteration.token_cache, config.asset_dir, config.layer0_pack,
+            config.layer1_pack, state.checkpoint_dir, iteration.phone_output_dir,
+            static_cast<float>(config.learning_rate), iteration.sample, false);
+    iteration.wall_seconds =
+        std::chrono::duration<double>(std::chrono::steady_clock::now() - iteration_start)
+            .count();
+
+    if (!status.is_ok()) {
+      iteration.status = "fail";
+      iteration.blocker = status.message();
+      stats.blockers.push_back("iteration " + std::to_string(index) + " failed: " +
+                               status.message());
+      append_iteration_telemetry(telemetry_jsonl, iteration);
+      stats.records.push_back(iteration);
+      break;
+    }
+
+    iteration.status = "pass";
+    iteration.active_training_seconds =
+        active_training_seconds_from_telemetry(join_path(iteration.phone_output_dir,
+                                                        "telemetry.json"));
+    const std::pair<std::string, std::string> pre_sha =
+        checkpoint_pair_sha(state.checkpoint_dir);
+    const std::pair<std::string, std::string> post_sha =
+        checkpoint_pair_sha(iteration.output_checkpoint);
+    if (previous_post_sha.has_value() && pre_sha != previous_post_sha.value()) {
+      checkpoint_chain_ok = false;
+      stats.blockers.push_back("checkpoint pre-hash did not match previous post-hash at iteration " +
+                               std::to_string(index));
+    }
+    if (pre_sha == post_sha) {
+      checkpoint_chain_ok = false;
+      stats.blockers.push_back("checkpoint unchanged at iteration " + std::to_string(index));
+    }
+    previous_post_sha = post_sha;
+
+    chain_iteration_artifacts(chain, iteration.phone_output_dir, "H11-A");
+    append_iteration_telemetry(telemetry_jsonl, iteration);
+    chain.append_if_exists(telemetry_jsonl, "H11-A");
+    stats.active_training_seconds += iteration.active_training_seconds;
+    stats.records.push_back(iteration);
+
+    state.next_iteration = index + 1;
+    state.checkpoint_dir = iteration.output_checkpoint;
+    state.status = "running";
+    write_runner_state(args.state_path, state, record);
+    chain.append_if_exists(args.state_path, "H11-A");
+  }
+
+  stats.queue_wall_seconds =
+      std::chrono::duration<double>(std::chrono::steady_clock::now() - queue_start)
+          .count();
+  wait_for_disconnect_marker(config, args, stats, heartbeat, chain);
+
+  const double active_wall_ratio =
+      stats.queue_wall_seconds > 0.0
+          ? stats.active_training_seconds / stats.queue_wall_seconds
+          : 0.0;
+  const bool active_wall_ok =
+      active_wall_ratio >= 0.50 ||
+      active_wall_ratio >= (2.0 * kPhase10ActiveWallBaseline);
+  const bool disconnect_ok =
+      !config.require_disconnect_marker ||
+      (stats.disconnect_marker_seen &&
+       stats.disconnect_wait_seconds >= static_cast<double>(config.disconnect_hold_seconds) -
+                                            5.0);
+
+  write_timing_breakdown(gate_dir, stats, active_wall_ratio);
+  write_gate_result(gate_dir, stats, config, active_wall_ratio, active_wall_ok,
+                    disconnect_ok, checkpoint_chain_ok);
+  write_falsifier_report(gate_dir, args.heartbeat_path, stats, active_wall_ok, disconnect_ok,
+                         checkpoint_chain_ok);
+  write_artifact_manifest(gate_dir, run_dir, stats);
+  chain.append_if_exists(join_path(gate_dir, "timing_breakdown.json"), "H11-A");
+  chain.append_if_exists(join_path(gate_dir, "gate_result.json"), "H11-A");
+  chain.append_if_exists(join_path(gate_dir, "blockers.md"), "H11-A");
+  chain.append_if_exists(join_path(gate_dir, "falsifier_report.md"), "H11-A");
+  chain.append_if_exists(join_path(gate_dir, "artifact_manifest.json"), "H11-A");
+
+  const std::string gate_result = read_text_file(join_path(gate_dir, "gate_result.json"));
+  state.status = json_contains_string(gate_result, "status", "pass") ? "completed" : "failed";
+  write_runner_state(args.state_path, state, record);
+  heartbeat.set_step(state.status);
+  heartbeat.stop();
+  return state.status == "completed" ? 0 : 1;
+}
+
+void print_help() {
+  std::cout
+      << "Usage: phase11_runner --queue QUEUE --run-root DIR --heartbeat FILE --state FILE [--stop-file FILE]\n"
+      << "\n"
+      << "Executes Phase 11 phone-local queue records. This build supports H11-A: "
+         "daemonized narrow-lane training with heartbeat, STOP, resume state, "
+         "and checksum chain artifacts.\n";
+}
+
+std::string require_next(int argc, char** argv, int& index, const std::string& flag) {
+  if ((index + 1) >= argc) {
+    throw std::invalid_argument(flag + " requires a value");
+  }
+  ++index;
+  return argv[index];
+}
+
+RunnerArgs parse_args(int argc, char** argv) {
+  RunnerArgs args;
+  for (int index = 1; index < argc; ++index) {
+    const std::string arg = argv[index];
+    if (arg == "--help") {
+      print_help();
+      std::exit(0);
+    }
+    if (arg == "--queue") {
+      args.queue_path = require_next(argc, argv, index, arg);
+    } else if (arg == "--run-root") {
+      args.run_root = require_next(argc, argv, index, arg);
+    } else if (arg == "--heartbeat") {
+      args.heartbeat_path = require_next(argc, argv, index, arg);
+    } else if (arg == "--state") {
+      args.state_path = require_next(argc, argv, index, arg);
+    } else if (arg == "--stop-file") {
+      args.stop_file = require_next(argc, argv, index, arg);
+    } else {
+      throw std::invalid_argument("unknown argument: " + arg);
+    }
+  }
+  if (args.queue_path.empty() || args.run_root.empty() || args.heartbeat_path.empty() ||
+      args.state_path.empty()) {
+    throw std::invalid_argument("--queue, --run-root, --heartbeat, and --state are required");
+  }
+  return args;
+}
+
+}  // namespace
+
+int main(int argc, char** argv) {
+  try {
+    if (argc == 1) {
+      print_help();
+      return 0;
+    }
+    RunnerArgs args = parse_args(argc, argv);
+    const std::string cwd = current_working_directory();
+    args.queue_path = resolve_path(args.queue_path, cwd);
+    args.run_root = resolve_path(args.run_root, cwd);
+    args.heartbeat_path = resolve_path(args.heartbeat_path, cwd);
+    args.state_path = resolve_path(args.state_path, cwd);
+    args.stop_file = resolve_path(args.stop_file, cwd);
+
+    ensure_directory(args.run_root);
+    const std::vector<QueueRecord> records = read_queue(args.queue_path, cwd);
+    for (const QueueRecord& record : records) {
+      if (record.gate != "H11-A") {
+        throw std::runtime_error("unsupported queue gate in this build: " + record.gate);
+      }
+      const int result = run_h11a(args, record, cwd);
+      if (result != 0) {
+        return result;
+      }
+    }
+    return 0;
+  } catch (const std::exception& error) {
+    std::cerr << "phase11_runner failed: " << error.what() << '\n';
+    return 2;
+  }
+}

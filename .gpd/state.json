@@ -1,11 +1,13 @@
 {
+  "_synced_at": "2026-05-23T20:20:54Z",
   "active_calculations": [
-    "Continue Phase 10 hardware-max candidates through actual REDMAGIC phone training A/B gates.",
-    "Next candidates: token bridge OpenCL/Vulkan migration, thermal headroom cadence, layer-kernel profiling, and QNN/ExecuTorch islands only if a training-update path is discovered and equal-correctness proof is available."
+    "Execute Phase 11 only through phone-resident queue-run experiments with authority non-regression gates and artifact hygiene.",
+    "Sequential hypotheses: H11-A daemon, H11-B performance envelope, H11-C bottleneck autopsy, H11-D OpenCL recordable queues, H11-E trainable scope sweep, H11-F objective upgrade, H11-G HTP mutable-adapter/zero-order arm, H11-H combined POVC run."
   ],
   "approximations": [],
   "blockers": [
-    "Phase 10 six-hour endurance is promoted only for the current rank-4 two-layer phone-native lane. Full Gemma4 training, Hexagon NPU training, public benchmark readiness, and theoretical maximum remain blocked."
+    "Phase 10 six-hour endurance is promoted only for the current rank-4 two-layer phone-native lane. Full Gemma4 training, Hexagon NPU training, public benchmark readiness, and theoretical maximum remain blocked.",
+    "GPD phase-add succeeded for Phase 11, but generic GPD state synchronization rewrote .gpd/state.json in a lossy parser format during this PRD-writing task. The machine state was restored and updated via structured JSON; future agents should parse-check .gpd/state.json after GPD CLI state commands."
   ],
   "convention_lock": {
     "commutation_convention": null,
@@ -28,7 +30,13 @@
     "state_normalization": null,
     "time_ordering": null
   },
-  "decisions": [],
+  "decisions": [
+    {
+      "phase": "11",
+      "rationale": "Prevents documentation-as-progress and preserves the authority metric.",
+      "summary": "Phase 11 documentation is only a control artifact; execution progress begins only when H11 gate artifacts are produced by phone experiments."
+    }
+  ],
   "intermediate_results": [
     "G1 preserved as regression floor: runtime/reports/gemma4_megakernel/parity/20260516_e4b_layer0_opencl_gate/gate_result.json",
     "G2 import/regression passed: runtime/reports/gemma4_megakernel/import_and_regression/20260517T030510Z_g2_import_regression/gate_result.json",
@@ -45,15 +53,23 @@
     "Phase 10 projected PLE cache passed and promoted for the narrow current training path: runtime/reports/gemma4_megakernel/hardware_max/20260517T084203Z_phase10_projected_ple_cache/gate_result.json",
     "Phase 10 six-hour endurance passed for the current rank-4 two-layer phone training path: runtime/reports/gemma4_megakernel/hardware_max/20260517T153500Z_phase10_six_hour_endurance/gate_result.json",
     "Phase 10 QNN/HTP probe passed platform and inference checks but failed the Hexagon training promotion gate: runtime/reports/gemma4_megakernel/hardware_max/20260517T213600Z_phase10_qnn_htp_probe/gate_result.json",
-    "Phase 10 non-claim summary remains failed overall: only six-hour endurance is resolved; full Gemma4 training, Hexagon NPU training, public benchmark readiness, and theoretical maximum remain blocked: runtime/reports/gemma4_megakernel/hardware_max/20260517T214000Z_phase10_nonclaim_gate/gate_result.json"
+    "Phase 10 non-claim summary remains failed overall: only six-hour endurance is resolved; full Gemma4 training, Hexagon NPU training, public benchmark readiness, and theoretical maximum remain blocked: runtime/reports/gemma4_megakernel/hardware_max/20260517T214000Z_phase10_nonclaim_gate/gate_result.json",
+    "Latest research synthesis reframed the next campaign: docs/research-packs/gemma4-heterogeneous-training-frontier-2026-05-18/08-OPUS-LEVEL-VIEW-AND-POVC.md",
+    "Phase 11 authority PRD and execution handoff were written: docs/PRD-HARDWARE-NATIVE-TRAINING-POVC.md, docs/HANDOFF-HARDWARE-NATIVE-TRAINING-POVC-EXECUTOR.md, docs/STARTUP-PROMPT-HARDWARE-NATIVE-TRAINING-POVC.md",
+    "Phase 11 GPD execution plan was scaffolded: .gpd/phases/11-hardware-native-training-povc/11-01-PLAN.md",
+    "Phase 11 executor controls were hardened for long-horizon campaign execution: no stopping after intermediate wins, exact pass/fail/blocker cadence after each H11 gate, targeted subagent/falsification decision rules, RunPod alternate SSH, and no minimized-proxy language in HTP probing."
   ],
   "open_questions": [
-    "Whether the remaining token bridge should move first to OpenCL or Vulkan, and what equal-correctness bridge parity gate is sufficient before training A/B.",
-    "Whether OpenCL remains the first training backend or Vulkan earns the route after equal correctness evidence.",
-    "How to add thermal headroom telemetry without turning cadence changes into a proxy win."
+    "Whether Android permits the phone-resident runner to continue reliably after ADB/USB disconnect, and what resume behavior is needed if it does not.",
+    "Whether safe fixed performance mode, charge separation, fan state, and OEM controls materially improve active/wall without unsafe thermal behavior.",
+    "Whether cl_qcom_recordable_queues is exposed on this Adreno 830 driver and useful after H11-C identifies the real bottleneck.",
+    "Which expanded DoRA/LoRA scope and objective produces a capability-relevant signal beyond the rank-4 parity lane.",
+    "Whether QAIRT mutable sections can become an HTP teacher/frozen-forward or zero-order arm without claiming normal HTP backprop."
   ],
   "pending_todos": [
-    "Execute the next Phase 10 hardware-max candidate only after defining its authority gate and expected falsifier."
+    "Start the next execution agent with docs/STARTUP-PROMPT-HARDWARE-NATIVE-TRAINING-POVC.md.",
+    "Execute H11-A first: phone-resident daemon, local queue, heartbeat, checksum chain, STOP file, and resume behavior.",
+    "Do not run H11-H or another long endurance job until H11-A through H11-G have pass/fail/blocker artifacts or exact boundary blockers."
   ],
   "performance_metrics": {
     "rows": [
@@ -86,21 +102,47 @@
         "context": "465 chained phone training iterations; sampled parity pass; max thermal status 0",
         "label": "Phase 10 six-hour endurance",
         "value": "21692.164205625013s"
+      },
+      {
+        "context": "current narrow lane; suspected host orchestration plus OEM mitigation",
+        "label": "Phase 10 active/wall",
+        "value": "4626.645587 / 21692.164205625013 = 21.3%"
+      },
+      {
+        "context": "465 iterations; H11-C must explain",
+        "label": "Phase 10 dead time",
+        "value": "36.70s/iteration"
       }
     ]
   },
+  "phase11": {
+    "current_gate": "H11-B",
+    "h11a": {
+      "active_training_seconds": 527.878356,
+      "active_wall_ratio": 0.96051948,
+      "disconnect_hold_seconds": 607.0,
+      "failed_attempt_preserved": "runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T193156Z_h11a_daemon/H11-A-daemon/gate_result.json",
+      "gate_result": "runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T200929Z_h11a_daemon/H11-A-daemon/gate_result.json",
+      "iteration_count": 50,
+      "next_gate": "H11-B performance envelope",
+      "queue_execution_wall_seconds": 549.575899,
+      "runner_build_id": "phase11_runner_h11a_v1_20260523",
+      "runtime_topology": "phone_local_queue_no_adb_per_iteration",
+      "status": "pass"
+    }
+  },
   "position": {
-    "current_phase": "10",
-    "current_phase_name": "Hardware Max Training Pipeline",
-    "current_plan": 2,
-    "last_activity": "2026-05-17",
-    "last_activity_desc": "Phase 10 ran the six-hour phone endurance gate for the current rank-4 two-layer lane and passed it; QNN/HTP training, full Gemma4 training, public benchmark readiness, and theoretical maximum gates remain failed or blocked.",
-    "last_activity_description": "Phase 10 ran the six-hour phone endurance gate for the current rank-4 two-layer lane and passed it; QNN/HTP training, full Gemma4 training, public benchmark readiness, and theoretical maximum gates remain failed or blocked.",
+    "current_phase": "11",
+    "current_phase_name": "Hardware-Native Training POVC",
+    "current_plan": 1,
+    "last_activity": "2026-05-23",
+    "last_activity_desc": "Hardened the Phase 11 control artifacts for long-horizon execution: added RunPod alternate SSH, explicit campaign cadence, no-intermediate-report stopping rules, subagent/falsification decision rules, safe device handling, and removed minimized-proxy language from HTP probing. No phone experiments or training runs were executed.",
+    "last_activity_description": "Hardened the Phase 11 control artifacts for long-horizon execution: added RunPod alternate SSH, explicit campaign cadence, no-intermediate-report stopping rules, subagent/falsification decision rules, safe device handling, and removed minimized-proxy language from HTP probing. No phone experiments or training runs were executed.",
     "paused_at": null,
     "progress_percent": 92,
-    "status": "Plan 10-02 mixed: six-hour endurance promoted; remaining non-claims blocked",
-    "total_phases": 11,
-    "total_plans_in_phase": "ongoing"
+    "status": "Phase 11 PRD, handoff, startup prompt, and GPD plan hardened; execution not started",
+    "total_phases": 12,
+    "total_plans_in_phase": 1
   },
   "project_contract": {
     "acceptance_tests": [
@@ -580,13 +622,13 @@
   },
   "project_reference": {
     "core_research_question": "Can Polymath-AI execute and validate a real Gemma 4 training run natively on REDMAGIC SM8750 without substituting Mac or RunPod for any runtime data-path stage?",
-    "current_focus": "Phase 7: Integrated Training blocked under falsification",
+    "current_focus": "Phase 11: Hardware-native training POVC execution campaign",
     "project_md_updated": "2026-05-17"
   },
   "propagated_uncertainties": [],
   "session": {
-    "last_session": "2026-05-17",
+    "last_session": "2026-05-23",
     "resume_file": ".gpd/STATE.md",
-    "stopped_at": "Phase 8 sustained authority objective passed; next work is Phase 9 final falsifier review."
+    "stopped_at": "H11-A phone-resident daemon passed; continue with H11-B performance envelope under the H11-A runner."
   }
 }

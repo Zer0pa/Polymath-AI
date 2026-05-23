@@ -43,14 +43,8 @@ void store_be64(std::vector<std::uint8_t>& data, std::uint64_t value) {
 
 }  // namespace
 
-std::string sha256_file_hex(const std::string& path) {
-  std::ifstream file(path, std::ios::binary);
-  if (!file) {
-    throw std::runtime_error("failed to open for sha256: " + path);
-  }
-
-  std::vector<std::uint8_t> data((std::istreambuf_iterator<char>(file)),
-                                 std::istreambuf_iterator<char>());
+std::string sha256_bytes_hex(const std::vector<std::uint8_t>& bytes) {
+  std::vector<std::uint8_t> data = bytes;
   const std::uint64_t bit_length = static_cast<std::uint64_t>(data.size()) * 8U;
   data.push_back(0x80U);
   while ((data.size() % 64U) != 56U) {
@@ -122,6 +116,21 @@ std::string sha256_file_hex(const std::string& path) {
     output << std::setw(8) << word;
   }
   return output.str();
+}
+
+std::string sha256_text_hex(const std::string& text) {
+  return sha256_bytes_hex(std::vector<std::uint8_t>(text.begin(), text.end()));
+}
+
+std::string sha256_file_hex(const std::string& path) {
+  std::ifstream file(path, std::ios::binary);
+  if (!file) {
+    throw std::runtime_error("failed to open for sha256: " + path);
+  }
+
+  const std::vector<std::uint8_t> data((std::istreambuf_iterator<char>(file)),
+                                       std::istreambuf_iterator<char>());
+  return sha256_bytes_hex(data);
 }
 
 }  // namespace polymath::gemma4

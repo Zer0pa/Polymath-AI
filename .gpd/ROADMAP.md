@@ -7,6 +7,8 @@ forward parity, executor architecture, backward path, optimizer update,
 phone-native HF streaming/tokenization/packing, integrated training, sustained
 authority run, and falsifier review. G1 remains a permanent regression floor;
 the terminal acceptance gate is a phone-native checkpoint or adapter artifact.
+Phase 11 converts the latest hardware research synthesis into a sequential
+phone-resident POVC campaign rather than another host-driven endurance loop.
 
 ## Contract Overview
 
@@ -17,6 +19,7 @@ the terminal acceptance gate is a phone-native checkpoint or adapter artifact.
 | Phone-native training artifact | Phases 4-8 | G8 repaired and Phase 8 sustained objective passed |
 | G10 falsifier survival | Phase 9 | Passed under narrow scope |
 | Hardware-max pipeline search | Phase 10+ | First phone A/B candidate passed; ongoing |
+| Hardware-native training POVC | Phase 11 | H11-A daemon passed; H11-B next |
 
 ## Phases
 
@@ -43,6 +46,10 @@ the terminal acceptance gate is a phone-native checkpoint or adapter artifact.
 - [ ] **Phase 10: Hardware Max Training Pipeline** - Test and integrate only
   performance candidates that improve measured phone training runs without
   regressing authority metrics.
+- [ ] **Phase 11: Hardware-Native Training POVC** - Run a sequential
+  phone-resident experiment campaign for daemonization, performance envelope,
+  bottleneck autopsy, recordable queues, trainable scope, objective upgrade,
+  QAIRT/HTP mutable sections, and combined POVC.
 
 ## Phase Details
 
@@ -338,6 +345,51 @@ Plans:
   `0.667287s` while token cache, bridge tensors, layer outputs, adapter update,
   checkpoint, and artifact-hygiene gates stayed green. Evidence:
   `runtime/reports/gemma4_megakernel/hardware_max/20260517T084203Z_phase10_projected_ple_cache/gate_result.json`.
+- [x] 10-02: Run six-hour endurance and remaining non-claim gates.
+  **Outcome:** mixed. Six-hour endurance passed for the narrow rank-4 two-layer
+  lane; Hexagon NPU training, full Gemma4 training, public benchmark readiness,
+  and theoretical maximum remain blocked. Evidence:
+  `.gpd/phases/10-hardware-max-training-pipeline/10-02-SUMMARY.md`.
+
+### Phase 11: Hardware-Native Training POVC
+
+**Goal:** Execute a phone-resident sequential POVC campaign that removes host
+per-iteration orchestration, explains the Phase 10 dead time, tests safe device
+performance controls, probes OpenCL recordable queues, lifts trainable scope,
+replaces parity-MSE with a capability-relevant objective, classifies QAIRT/HTP
+mutable-section use, and combines the winning choices into one phone-native
+run.
+**Depends on:** Phase 10.
+**Requirements:** Phase 11 PRD contract in
+`docs/PRD-HARDWARE-NATIVE-TRAINING-POVC.md`.
+**Contract Coverage:**
+- Advances: hardware-native training POVC for REDMAGIC/SM8750.
+- Deliverables: phone queue runner, per-gate JSON reports, manifests, checksum
+  chain, artifacts outside git where required, and falsifier report.
+- Anchor coverage: G1/G3/G8/G9/Phase 10 evidence, research pack
+  `08-OPUS-LEVEL-VIEW-AND-POVC.md`, QAIRT 2.44 mutable-section findings.
+- Forbidden proxies: documentation-as-progress, host-driven per-iteration loop,
+  throughput-only win, HTP inference sold as training, bigger adapter sold as
+  capability without metric movement.
+**Success Criteria** (what must be TRUE):
+
+1. H11-A through H11-H each emit pass/fail/blocker artifacts.
+2. ADB starts/inspects/pulls; it does not drive every training iteration after
+   H11-A except as a documented fallback blocker.
+3. Any promoted claim preserves G1/G3 and relevant G8 authority regressions.
+4. The combined POVC emits replayable checkpoint or adapter manifests and a
+   falsifier report with no unresolved critical issue.
+
+**Plans:** 1 plan
+
+Plans:
+
+- [ ] 11-01: Execute Hardware-Native Training POVC campaign.
+  **Plan:** `.gpd/phases/11-hardware-native-training-povc/11-01-PLAN.md`.
+  **Current outcome:** H11-A phone-resident daemon passed with 50 phone-local
+  queued iterations, active/wall `0.96051948`, checkpoint chain acceptance, and
+  607 seconds of ADB-disconnect evidence. Evidence:
+  `runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T200929Z_h11a_daemon/H11-A-daemon/gate_result.json`.
 
 ## Progress
 
@@ -353,4 +405,5 @@ Plans:
 | 7. Integrated Training | 1/2 | Complete after repaired G8 | 2026-05-17 |
 | 8. Sustained Authority Run | 1/1 | Complete | 2026-05-17 |
 | 9. Falsifier Review | 1/1 | Complete | 2026-05-17 |
-| 10. Hardware Max Training Pipeline | 1/ongoing | First candidate complete; next candidates deferred | - |
+| 10. Hardware Max Training Pipeline | 2/ongoing | Six-hour narrow endurance passed; remaining nonclaims blocked | - |
+| 11. Hardware-Native Training POVC | 0/1 | H11-A passed; H11-B next | 2026-05-23 |

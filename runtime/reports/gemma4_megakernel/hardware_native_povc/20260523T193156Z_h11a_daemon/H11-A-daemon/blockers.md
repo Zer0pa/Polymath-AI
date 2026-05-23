@@ -1,0 +1,2 @@
+- active/wall did not reach >=0.50 or >=2x Phase 10 baseline
+- disconnect marker/hold evidence did not satisfy H11-A

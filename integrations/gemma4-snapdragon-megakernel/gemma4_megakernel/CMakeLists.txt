@@ -48,18 +48,31 @@ target_link_libraries(gemma4_layer_runner PRIVATE gemma4_megakernel_core)
 target_compile_features(gemma4_layer_runner PRIVATE cxx_std_17)
 set_target_properties(gemma4_layer_runner PROPERTIES CXX_EXTENSIONS OFF)
 
+add_executable(phase11_runner
+  src/runner/phase11_runner.cpp
+)
+
+target_link_libraries(phase11_runner PRIVATE gemma4_megakernel_core)
+target_compile_features(phase11_runner PRIVATE cxx_std_17)
+set_target_properties(phase11_runner PROPERTIES CXX_EXTENSIONS OFF)
+
 if(MSVC)
   target_compile_options(gemma4_layer_runner PRIVATE /W4)
+  target_compile_options(phase11_runner PRIVATE /W4)
   if(GEMMA4_MEGAKERNEL_WARNINGS_AS_ERRORS)
     target_compile_options(gemma4_layer_runner PRIVATE /WX)
+    target_compile_options(phase11_runner PRIVATE /WX)
   endif()
 else()
   target_compile_options(gemma4_layer_runner PRIVATE -Wall -Wextra -Wpedantic)
+  target_compile_options(phase11_runner PRIVATE -Wall -Wextra -Wpedantic)
   if(GEMMA4_MEGAKERNEL_WARNINGS_AS_ERRORS)
     target_compile_options(gemma4_layer_runner PRIVATE -Werror)
+    target_compile_options(phase11_runner PRIVATE -Werror)
   endif()
 endif()
 
 enable_testing()
 add_test(NAME gemma4_runner_help COMMAND gemma4_layer_runner --help)
 add_test(NAME gemma4_runner_probe COMMAND gemma4_layer_runner --probe)
+add_test(NAME phase11_runner_help COMMAND phase11_runner --help)
