@@ -1,4 +1,2 @@
 python3 scripts/host/run_phase11_h11h_combined_povc.py --iterations 1000
-adb push phase11_runner and gemma4_layer_runner to PHONE_PHASE11_ROOT
-adb push h11h_<run_id>_chain.sh to PHONE_PHASE11_ROOT
-adb shell 'nohup sh PHONE_PHASE11_ROOT/h11h_<run_id>_chain.sh > ... 2>&1 < /dev/null &'
+python3 scripts/host/run_phase11_h11h_combined_povc.py --collect-detached --run-id 20260523T225149Z_h11h_combined_povc --iterations 1000

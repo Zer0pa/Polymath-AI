@@ -1,0 +1,243 @@
+{
+  "fixed_adapter_control": {
+    "arm": "baseline_eval",
+    "first": {
+      "active_tokens": 833,
+      "adapter_elapsed_seconds": 0.686829,
+      "applied_update": false,
+      "checkpoint_delta_l2": {
+        "adapter_a": 0.0,
+        "adapter_b": 0.0
+      },
+      "gradient_l2": {
+        "adapter_a": 0.0001902435,
+        "adapter_b": 0.0001793858,
+        "output": 0.0159754074
+      },
+      "iteration": 0,
+      "label_in_teacher_topk_rate": 0.7587034814,
+      "layer_elapsed_seconds": [
+        5.527555,
+        5.483215
+      ],
+      "loss_topk_kl": 1.1291671114,
+      "mean_student_label_probability_when_in_topk": 0.1241673449,
+      "mean_student_teacher_top1_probability": 0.1137876831,
+      "mean_teacher_top1_probability": 0.5339909922,
+      "objective_elapsed_seconds": 0.137081,
+      "student_teacher_top1_agreement": 0.093637455,
+      "token_to_hidden_elapsed_seconds": 1.429626
+    },
+    "gate": {
+      "active_training_seconds": 13.127225,
+      "active_wall_acceptance": true,
+      "active_wall_ratio": 0.89391872,
+      "apply_update": false,
+      "blockers": [],
+      "checkpoint_chain_acceptance": true,
+      "disconnect_acceptance": true,
+      "disconnect_hold_seconds": 0.0,
+      "disconnect_marker_seen": false,
+      "ended_at_utc": "2026-05-23T22:53:35Z",
+      "gate": "H11-H",
+      "iteration_count": 1,
+      "objective": "topk_embedding_kl",
+      "one_shot_fallback_preserved": true,
+      "phase10_active_wall_baseline": 0.21328649,
+      "queue_execution_wall_seconds": 14.685032,
+      "required_iteration_count": 1,
+      "runner_build_id": "phase11_runner_h11a_v1_20260523",
+      "runtime_topology": "phone_local_queue_no_adb_per_iteration",
+      "schema_version": "phase11_h11a_gate_result_v1",
+      "status": "pass"
+    },
+    "gate_status": "pass",
+    "iterations": 1,
+    "last": {
+      "active_tokens": 833,
+      "adapter_elapsed_seconds": 0.686829,
+      "applied_update": false,
+      "checkpoint_delta_l2": {
+        "adapter_a": 0.0,
+        "adapter_b": 0.0
+      },
+      "gradient_l2": {
+        "adapter_a": 0.0001902435,
+        "adapter_b": 0.0001793858,
+        "output": 0.0159754074
+      },
+      "iteration": 0,
+      "label_in_teacher_topk_rate": 0.7587034814,
+      "layer_elapsed_seconds": [
+        5.527555,
+        5.483215
+      ],
+      "loss_topk_kl": 1.1291671114,
+      "mean_student_label_probability_when_in_topk": 0.1241673449,
+      "mean_student_teacher_top1_probability": 0.1137876831,
+      "mean_teacher_top1_probability": 0.5339909922,
+      "objective_elapsed_seconds": 0.137081,
+      "student_teacher_top1_agreement": 0.093637455,
+      "token_to_hidden_elapsed_seconds": 1.429626
+    },
+    "loss_delta": 0.0,
+    "losses": [
+      1.1291671114
+    ],
+    "required_iterations": 1,
+    "run": {
+      "apply_update": false,
+      "arm": "baseline_eval",
+      "ended_at_utc": "2026-05-24T09:36:47Z",
+      "final_checkpoint": "/data/local/tmp/polymath_gemma4_gate/phase11/runs/20260523T225149Z_h11h_combined_povc_baseline_eval/H11-H-combined-povc/iterations/iter_000000/checkpoint",
+      "iterations": 1,
+      "local_report_dir": "runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T225149Z_h11h_combined_povc/H11-H-combined-povc/arms/baseline_eval",
+      "phone_gate_dir": "/data/local/tmp/polymath_gemma4_gate/phase11/runs/20260523T225149Z_h11h_combined_povc_baseline_eval/H11-H-combined-povc",
+      "returncode": 0,
+      "run_id": "20260523T225149Z_h11h_combined_povc_baseline_eval",
+      "schema_version": "phase11_h11h_arm_run_v1",
+      "started_at_utc": null,
+      "stderr_first_4096": "",
+      "stdout_first_4096": ""
+    },
+    "schema_version": "phase11_h11h_arm_summary_v1",
+    "status": "pass",
+    "timing": {
+      "active_training_seconds": 13.127225,
+      "active_wall_ratio": 0.89391872,
+      "disconnect_wait_seconds": 0.0,
+      "iteration_count": 1,
+      "iterations": [
+        {
+          "active_training_seconds": 13.127225,
+          "iteration": 0,
+          "sample": true,
+          "wall_seconds": 14.676824
+        }
+      ],
+      "queue_execution_wall_seconds": 14.685032,
+      "schema_version": "phase11_h11a_timing_breakdown_v1"
+    }
+  },
+  "schema_version": "phase11_h11h_heldout_report_v1",
+  "trained_adapter": {
+    "arm": "trained_eval",
+    "first": {
+      "active_tokens": 833,
+      "adapter_elapsed_seconds": 0.695148,
+      "applied_update": false,
+      "checkpoint_delta_l2": {
+        "adapter_a": 0.0,
+        "adapter_b": 0.0
+      },
+      "gradient_l2": {
+        "adapter_a": 0.0730540921,
+        "adapter_b": 0.2276946062,
+        "output": 0.0134479811
+      },
+      "iteration": 0,
+      "label_in_teacher_topk_rate": 0.7587034814,
+      "layer_elapsed_seconds": [
+        5.566293,
+        5.526954
+      ],
+      "loss_topk_kl": 0.789237074,
+      "mean_student_label_probability_when_in_topk": 0.165935488,
+      "mean_student_teacher_top1_probability": 0.1619087441,
+      "mean_teacher_top1_probability": 0.5339909922,
+      "objective_elapsed_seconds": 0.13767,
+      "student_teacher_top1_agreement": 0.2328931573,
+      "token_to_hidden_elapsed_seconds": 1.430836
+    },
+    "gate": {
+      "active_training_seconds": 13.219231,
+      "active_wall_acceptance": true,
+      "active_wall_ratio": 0.89414361,
+      "apply_update": false,
+      "blockers": [],
+      "checkpoint_chain_acceptance": true,
+      "disconnect_acceptance": true,
+      "disconnect_hold_seconds": 0.0,
+      "disconnect_marker_seen": false,
+      "ended_at_utc": "2026-05-24T08:54:34Z",
+      "gate": "H11-H",
+      "iteration_count": 1,
+      "objective": "topk_embedding_kl",
+      "one_shot_fallback_preserved": true,
+      "phase10_active_wall_baseline": 0.21328649,
+      "queue_execution_wall_seconds": 14.784237,
+      "required_iteration_count": 1,
+      "runner_build_id": "phase11_runner_h11a_v1_20260523",
+      "runtime_topology": "phone_local_queue_no_adb_per_iteration",
+      "schema_version": "phase11_h11a_gate_result_v1",
+      "status": "pass"
+    },
+    "gate_status": "pass",
+    "iterations": 1,
+    "last": {
+      "active_tokens": 833,
+      "adapter_elapsed_seconds": 0.695148,
+      "applied_update": false,
+      "checkpoint_delta_l2": {
+        "adapter_a": 0.0,
+        "adapter_b": 0.0
+      },
+      "gradient_l2": {
+        "adapter_a": 0.0730540921,
+        "adapter_b": 0.2276946062,
+        "output": 0.0134479811
+      },
+      "iteration": 0,
+      "label_in_teacher_topk_rate": 0.7587034814,
+      "layer_elapsed_seconds": [
+        5.566293,
+        5.526954
+      ],
+      "loss_topk_kl": 0.789237074,
+      "mean_student_label_probability_when_in_topk": 0.165935488,
+      "mean_student_teacher_top1_probability": 0.1619087441,
+      "mean_teacher_top1_probability": 0.5339909922,
+      "objective_elapsed_seconds": 0.13767,
+      "student_teacher_top1_agreement": 0.2328931573,
+      "token_to_hidden_elapsed_seconds": 1.430836
+    },
+    "loss_delta": 0.0,
+    "losses": [
+      0.789237074
+    ],
+    "required_iterations": 1,
+    "run": {
+      "apply_update": false,
+      "arm": "trained_eval",
+      "ended_at_utc": "2026-05-24T09:39:05Z",
+      "final_checkpoint": "/data/local/tmp/polymath_gemma4_gate/phase11/runs/20260523T225149Z_h11h_combined_povc_trained_eval/H11-H-combined-povc/iterations/iter_000000/checkpoint",
+      "iterations": 1,
+      "local_report_dir": "runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T225149Z_h11h_combined_povc/H11-H-combined-povc/arms/trained_eval",
+      "phone_gate_dir": "/data/local/tmp/polymath_gemma4_gate/phase11/runs/20260523T225149Z_h11h_combined_povc_trained_eval/H11-H-combined-povc",
+      "returncode": 0,
+      "run_id": "20260523T225149Z_h11h_combined_povc_trained_eval",
+      "schema_version": "phase11_h11h_arm_run_v1",
+      "started_at_utc": null,
+      "stderr_first_4096": "",
+      "stdout_first_4096": ""
+    },
+    "schema_version": "phase11_h11h_arm_summary_v1",
+    "status": "pass",
+    "timing": {
+      "active_training_seconds": 13.219231,
+      "active_wall_ratio": 0.89414361,
+      "disconnect_wait_seconds": 0.0,
+      "iteration_count": 1,
+      "iterations": [
+        {
+          "active_training_seconds": 13.219231,
+          "iteration": 0,
+          "sample": true,
+          "wall_seconds": 14.775998
+        }
+      ],
+      "queue_execution_wall_seconds": 14.784237,
+      "schema_version": "phase11_h11a_timing_breakdown_v1"
+    }
+  }
+}

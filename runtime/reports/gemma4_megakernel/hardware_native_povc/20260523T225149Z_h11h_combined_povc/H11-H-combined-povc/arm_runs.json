@@ -1,0 +1,50 @@
+{
+  "runs": [
+    {
+      "apply_update": false,
+      "arm": "baseline_eval",
+      "ended_at_utc": "2026-05-24T09:36:47Z",
+      "final_checkpoint": "/data/local/tmp/polymath_gemma4_gate/phase11/runs/20260523T225149Z_h11h_combined_povc_baseline_eval/H11-H-combined-povc/iterations/iter_000000/checkpoint",
+      "iterations": 1,
+      "local_report_dir": "runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T225149Z_h11h_combined_povc/H11-H-combined-povc/arms/baseline_eval",
+      "phone_gate_dir": "/data/local/tmp/polymath_gemma4_gate/phase11/runs/20260523T225149Z_h11h_combined_povc_baseline_eval/H11-H-combined-povc",
+      "returncode": 0,
+      "run_id": "20260523T225149Z_h11h_combined_povc_baseline_eval",
+      "schema_version": "phase11_h11h_arm_run_v1",
+      "started_at_utc": null,
+      "stderr_first_4096": "",
+      "stdout_first_4096": ""
+    },
+    {
+      "apply_update": true,
+      "arm": "train",
+      "ended_at_utc": "2026-05-24T09:39:04Z",
+      "final_checkpoint": "/data/local/tmp/polymath_gemma4_gate/phase11/runs/20260523T225149Z_h11h_combined_povc_train/H11-H-combined-povc/iterations/iter_000999/checkpoint",
+      "iterations": 1000,
+      "local_report_dir": "runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T225149Z_h11h_combined_povc/H11-H-combined-povc/arms/train",
+      "phone_gate_dir": "/data/local/tmp/polymath_gemma4_gate/phase11/runs/20260523T225149Z_h11h_combined_povc_train/H11-H-combined-povc",
+      "returncode": 0,
+      "run_id": "20260523T225149Z_h11h_combined_povc_train",
+      "schema_version": "phase11_h11h_arm_run_v1",
+      "started_at_utc": null,
+      "stderr_first_4096": "",
+      "stdout_first_4096": ""
+    },
+    {
+      "apply_update": false,
+      "arm": "trained_eval",
+      "ended_at_utc": "2026-05-24T09:39:05Z",
+      "final_checkpoint": "/data/local/tmp/polymath_gemma4_gate/phase11/runs/20260523T225149Z_h11h_combined_povc_trained_eval/H11-H-combined-povc/iterations/iter_000000/checkpoint",
+      "iterations": 1,
+      "local_report_dir": "runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T225149Z_h11h_combined_povc/H11-H-combined-povc/arms/trained_eval",
+      "phone_gate_dir": "/data/local/tmp/polymath_gemma4_gate/phase11/runs/20260523T225149Z_h11h_combined_povc_trained_eval/H11-H-combined-povc",
+      "returncode": 0,
+      "run_id": "20260523T225149Z_h11h_combined_povc_trained_eval",
+      "schema_version": "phase11_h11h_arm_run_v1",
+      "started_at_utc": null,
+      "stderr_first_4096": "",
+      "stdout_first_4096": ""
+    }
+  ],
+  "schema_version": "phase11_h11h_arm_runs_v1"
+}

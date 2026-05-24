@@ -1,0 +1,16 @@
+{
+  "schema_version": "gemma4_opencl_two_layer_stack_telemetry_v1",
+  "backend": "opencl",
+  "model_id": "google/gemma-4-E4B",
+  "revision": "7aa32e6889efd6300124851b164f8b364314c3d8",
+  "layer_indices": [0, 1],
+  "case_count": 8,
+  "seq": 128,
+  "hidden_size": 2560,
+  "kernel_contract": "two_sequential_layer_forward_real_weights_no_cpu_fallback",
+  "opencl_libraries": ["libOpenCL.so", "libOpenCL.so"],
+  "layer_elapsed_seconds": [5.472851, 5.442868],
+  "layer_max_rss_kb": [809836, 819804],
+  "elapsed_seconds": 10.915719,
+  "max_rss_kb": 819804
+}

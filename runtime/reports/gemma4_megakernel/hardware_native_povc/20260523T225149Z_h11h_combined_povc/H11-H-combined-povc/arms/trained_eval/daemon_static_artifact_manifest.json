@@ -1,0 +1,20 @@
+{
+  "schema_version": "phase11_h11a_static_artifact_manifest_v1",
+  "runner_build_id": "phase11_runner_h11a_v1_20260523",
+  "created_at_utc": "2026-05-24T08:53:22Z",
+  "artifacts": [
+    {"name": "asset_manifest", "path": "/data/local/tmp/polymath_gemma4_gate/streamed_assets/g8_layer01_20260517T071405Z/manifest.json", "sha256": "67337904a7dcde04fe412285b86a80e015e8e7c86be8c345817b18ab0c4df12a", "byte_count": 2520},
+    {"name": "embed_tokens", "path": "/data/local/tmp/polymath_gemma4_gate/streamed_assets/g8_layer01_20260517T071405Z/embed_tokens.bf16.bin", "sha256": "99b376de6be8aec439365a8896f82a933450a09246c39dbcfd11bb29cab025e0", "byte_count": 1342177280},
+    {"name": "ple_projection_norm", "path": "/data/local/tmp/polymath_gemma4_gate/streamed_assets/g8_layer01_20260517T071405Z/ple_projection_norm.f32.bin", "sha256": "abc8df8293ce1b3171da040c1dca811d813bcf752605737225cc8161c09c18ad", "byte_count": 1024},
+    {"name": "ple_token_layer0", "path": "/data/local/tmp/polymath_gemma4_gate/streamed_assets/g8_layer01_20260517T071405Z/ple_token_layer0.bf16.bin", "sha256": "d1e8c57de005b4db6803ead99e70938114fb388496df2d931be3468fe3581586", "byte_count": 134217728},
+    {"name": "ple_token_layer1", "path": "/data/local/tmp/polymath_gemma4_gate/streamed_assets/g8_layer01_20260517T071405Z/ple_token_layer1.bf16.bin", "sha256": "4450d51e0532f70758584690799156b89ef6d174074b63e734182bb383e7f51f", "byte_count": 134217728},
+    {"name": "ple_projection_layer0", "path": "/data/local/tmp/polymath_gemma4_gate/streamed_assets/g8_layer01_20260517T071405Z/ple_projection_layer0.bf16.bin", "sha256": "9875e44943a98616e2da7b293680fbb34199d88b22d822aea76d57fc9c800070", "byte_count": 1310720},
+    {"name": "ple_projection_layer1", "path": "/data/local/tmp/polymath_gemma4_gate/streamed_assets/g8_layer01_20260517T071405Z/ple_projection_layer1.bf16.bin", "sha256": "8d71b84fd506a976c484dd33cb3557f21b465d3ae198043bdadfffa505e0385a", "byte_count": 1310720},
+    {"name": "layer0_safetensors", "path": "/data/local/tmp/polymath_gemma4_gate/layer_pack/gemma4_e4b_layer0_seq128_v0/weights/layer0.safetensors", "sha256": "d3efd61621310d5578a3653d2f9a989614b6287667b4984720d42dcc8f75fc36", "byte_count": 186150522},
+    {"name": "layer1_safetensors", "path": "/data/local/tmp/polymath_gemma4_gate/layer_pack/gemma4_e4b_layer1_seq128_v0/weights/layer1.safetensors", "sha256": "ce1b559f77c3f76efceb1df0c25896a90b0ed31380c6930f46f2d1b4c6a0cd19", "byte_count": 186150522},
+    {"name": "teacher_shard_0_manifest", "path": "/data/local/tmp/polymath_gemma4_gate/phase11/h11f_teacher_shards/heldout/manifest.json", "sha256": "47dc213a29bef40bf859fd55bb33dba56f235c410ff0d8deca0e777cbb4dabd5", "byte_count": 1808},
+    {"name": "teacher_shard_0_topk_token_ids", "path": "/data/local/tmp/polymath_gemma4_gate/phase11/h11f_teacher_shards/heldout/topk_token_ids.u32.bin", "sha256": "961d893f8f4a9dbfa0f69f9f2f702c95915e088389b060866ab51a471bcddaac", "byte_count": 32768},
+    {"name": "teacher_shard_0_topk_probabilities", "path": "/data/local/tmp/polymath_gemma4_gate/phase11/h11f_teacher_shards/heldout/topk_probabilities.f32.bin", "sha256": "f44047f1c7f33ca199a041eabfa8270b86572213f9ead4888b8c6203a4cdb358", "byte_count": 32768},
+    {"name": "teacher_shard_0_loss_mask", "path": "/data/local/tmp/polymath_gemma4_gate/phase11/h11f_teacher_shards/heldout/loss_mask.u8.bin", "sha256": "d2a697a8f610f817ba3428fe9dbfea2c74689c80d3f27241cb77c4adaeb01eaf", "byte_count": 1024}
+  ]
+}

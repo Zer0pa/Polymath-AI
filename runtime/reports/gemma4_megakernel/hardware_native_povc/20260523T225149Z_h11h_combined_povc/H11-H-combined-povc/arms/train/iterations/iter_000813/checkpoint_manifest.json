@@ -1,0 +1,29 @@
+{
+  "schema_version": "gemma4_rank_adapter_topk_kl_checkpoint_v1",
+  "objective": "topk_embedding_kl_distillation_v1",
+  "trainable_scope": "post_layer0_rank4_residual_adapter",
+  "rank": 4,
+  "optimizer": "sgd",
+  "learning_rate": 0.0099999998,
+  "applied_update": true,
+  "loss_topk_kl": 1.0173896940,
+  "active_loss_tokens": 788,
+  "student_teacher_top1_agreement": 0.2055837563,
+  "mean_student_teacher_top1_probability": 0.1501947026,
+  "gradient_l2": {"adapter_a": 0.1446213101, "adapter_b": 0.2146134531, "output": 0.0160470220},
+  "checkpoint_delta_l2": {"adapter_a": 0.0014462131, "adapter_b": 0.0021461350},
+  "teacher_shard": {
+    "path": "/data/local/tmp/polymath_gemma4_gate/phase11/h11f_teacher_shards/train",
+    "manifest_sha256": "2f299b8165adf94357020c05b6c4b0eefec488cbfb82c57c7ec68c430f317871",
+    "topk_token_ids_sha256": "75a7cefbcba0215a7ba305711f71728e44a1d2e6ba3cf51dc6199bf97b18bc4e",
+    "topk_probabilities_sha256": "fece99991b1b29a5dd662c09c77bb9102e234adf68b54dfa1098f25a577970a4"
+  },
+  "pre_update": {
+    "adapter_a": {"path": "/data/local/tmp/polymath_gemma4_gate/phase11/runs/20260523T225149Z_h11h_combined_povc_train/H11-H-combined-povc/iterations/iter_000812/checkpoint/adapter_a.f32.bin", "sha256": "2c21ecabcd3d557ca0e3bc667bbecd77334402a3ab3d22748b6827571dcf9725"},
+    "adapter_b": {"path": "/data/local/tmp/polymath_gemma4_gate/phase11/runs/20260523T225149Z_h11h_combined_povc_train/H11-H-combined-povc/iterations/iter_000812/checkpoint/adapter_b.f32.bin", "sha256": "aa96637fc0c27c19e75145bf6535777f0e35e12c7b8bc0ea1dd97037a5d1df42"}
+  },
+  "post_update": {
+    "adapter_a": {"path": "/data/local/tmp/polymath_gemma4_gate/phase11/runs/20260523T225149Z_h11h_combined_povc_train/H11-H-combined-povc/iterations/iter_000813/checkpoint/adapter_a.f32.bin", "sha256": "ae7bbbd787deaa174e993a7b1eb87b77ccca755ef30a803022b35ebed5e10ce6"},
+    "adapter_b": {"path": "/data/local/tmp/polymath_gemma4_gate/phase11/runs/20260523T225149Z_h11h_combined_povc_train/H11-H-combined-povc/iterations/iter_000813/checkpoint/adapter_b.f32.bin", "sha256": "e2545c4c2cb0aba372ab0f0effb28604c96b03f3b2f28e48241be649b553446a"}
+  }
+}

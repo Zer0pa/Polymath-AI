@@ -1,0 +1,5 @@
+Sanitized command shape:
+cd /data/local/tmp/polymath_gemma4_gate/phase11
+nohup ./phase11_runner --queue /data/local/tmp/polymath_gemma4_gate/phase11/queue/h11h_trained_eval_queue.jsonl --run-root /data/local/tmp/polymath_gemma4_gate/phase11/runs --heartbeat /data/local/tmp/polymath_gemma4_gate/phase11/h11h_trained_eval_heartbeat.json --state /data/local/tmp/polymath_gemma4_gate/phase11/h11h_trained_eval_state.json > runner.log 2>&1 &
+
+The queue and config contain only phone-local paths. No token values, SDK binaries, model weights, or raw tensor payloads are printed here.

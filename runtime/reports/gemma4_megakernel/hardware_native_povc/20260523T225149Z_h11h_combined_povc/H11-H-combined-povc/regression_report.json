@@ -1,0 +1,104 @@
+{
+  "authority_gates_rechecked": {
+    "g1_layer0_opencl": {
+      "gate": null,
+      "path": "runtime/reports/gemma4_megakernel/parity/20260516_e4b_layer0_opencl_gate/gate_result.json",
+      "status": "pass"
+    },
+    "g3_two_layer_opencl": {
+      "gate": "G3 - Forward Expansion",
+      "path": "runtime/reports/gemma4_megakernel/forward_stack/20260517T032829Z_g3_two_layer_opencl/gate_result.json",
+      "status": "pass"
+    },
+    "g8_streamed_corpus_repaired": {
+      "gate": "G8",
+      "path": "runtime/reports/gemma4_megakernel/integrated_training/20260517T071405Z_g8_streamed_corpus_repaired/gate_result.json",
+      "status": "pass"
+    }
+  },
+  "g1_g3_g8_falsifier_floor_rerun": {
+    "failed_checks": [],
+    "gate_result": {
+      "authority_verdict": "promote_narrow_rank4_two_layer_distillation_adapter_claim",
+      "final_falsifier_report": "runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T225149Z_h11h_combined_povc/H11-H-combined-povc/regressions/g1_g3_g8_falsifier_rerun/falsifier_report.json",
+      "gate": "Phase 9 final falsifier review",
+      "run_id": "20260523T225149Z_h11h_combined_povc_g1_g3_g8_regression_floor",
+      "schema_version": "gemma4_g10_final_gate_result_v1",
+      "status": "pass",
+      "summary": "All G1-G9 authority evidence survived final falsifier review under the narrow rank-4 adapter claim."
+    },
+    "local_report_dir": "runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T225149Z_h11h_combined_povc/H11-H-combined-povc/regressions/g1_g3_g8_falsifier_rerun",
+    "returncode": 0,
+    "schema_version": "phase11_h11h_final_falsifier_rerun_v1",
+    "status": "pass",
+    "stderr_first_2048": "",
+    "stdout_first_2048": "{\"gate\": \"/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T225149Z_h11h_combined_povc/H11-H-combined-povc/regressions/g1_g3_g8_falsifier_rerun/gate_result.json\", \"report\": \"/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T225149Z_h11h_combined_povc/H11-H-combined-povc/regressions/g1_g3_g8_falsifier_rerun/falsifier_report.json\", \"status\": \"pass\"}\n"
+  },
+  "phone_smoke_reruns": {
+    "phone_regression_root": "/data/local/tmp/polymath_gemma4_gate/phase11/runs/20260523T225149Z_h11h_combined_povc_phone_regressions",
+    "schema_version": "phase11_h11h_phone_regression_smokes_v1",
+    "status": "pass",
+    "tests": [
+      {
+        "name": "g1_layer0_opencl_smoke",
+        "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase11/runs/20260523T225149Z_h11h_combined_povc_phone_regressions/g1_layer0_opencl_smoke",
+        "pulled_artifacts": [
+          "runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T225149Z_h11h_combined_povc/H11-H-combined-povc/regressions/phone_smokes/g1_layer0_opencl_smoke/telemetry.json"
+        ],
+        "status": "pass",
+        "telemetry_summary": {
+          "adapter_backend": null,
+          "backend": "opencl",
+          "elapsed_seconds": 5.497336,
+          "layer_backend": null,
+          "loss_after": null,
+          "loss_before": null,
+          "objective": null,
+          "schema_version": "gemma4_opencl_layer_forward_telemetry_v1"
+        }
+      },
+      {
+        "name": "g3_two_layer_opencl_stack_smoke",
+        "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase11/runs/20260523T225149Z_h11h_combined_povc_phone_regressions/g3_two_layer_opencl_stack_smoke",
+        "pulled_artifacts": [
+          "runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T225149Z_h11h_combined_povc/H11-H-combined-povc/regressions/phone_smokes/g3_two_layer_opencl_stack_smoke/telemetry.json"
+        ],
+        "status": "pass",
+        "telemetry_summary": {
+          "adapter_backend": null,
+          "backend": "opencl",
+          "elapsed_seconds": 10.915719,
+          "layer_backend": null,
+          "loss_after": null,
+          "loss_before": null,
+          "objective": null,
+          "schema_version": "gemma4_opencl_two_layer_stack_telemetry_v1"
+        }
+      },
+      {
+        "name": "g8_rank4_distill_compact_smoke",
+        "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase11/runs/20260523T225149Z_h11h_combined_povc_phone_regressions/g8_rank4_distill_compact_smoke",
+        "pulled_artifacts": [
+          "runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T225149Z_h11h_combined_povc/H11-H-combined-povc/regressions/phone_smokes/g8_rank4_distill_compact_smoke/telemetry.json",
+          "runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T225149Z_h11h_combined_povc/H11-H-combined-povc/regressions/phone_smokes/g8_rank4_distill_compact_smoke/artifact_manifest.json",
+          "runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T225149Z_h11h_combined_povc/H11-H-combined-povc/regressions/phone_smokes/g8_rank4_distill_compact_smoke/replay_manifest.json",
+          "runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T225149Z_h11h_combined_povc/H11-H-combined-povc/regressions/phone_smokes/g8_rank4_distill_compact_smoke/checkpoint_manifest.json"
+        ],
+        "status": "pass",
+        "telemetry_summary": {
+          "adapter_backend": "opencl",
+          "backend": "opencl",
+          "elapsed_seconds": null,
+          "layer_backend": "opencl",
+          "loss_after": null,
+          "loss_before": null,
+          "objective": null,
+          "schema_version": "gemma4_opencl_streamed_distill_training_v1"
+        }
+      }
+    ]
+  },
+  "run_id": "20260523T225149Z_h11h_combined_povc",
+  "schema_version": "phase11_h11h_regression_report_v1",
+  "status": "pass"
+}

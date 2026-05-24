@@ -1,0 +1,15 @@
+{
+  "schema_version": "gemma4_streamed_topk_kl_replay_v1",
+  "command": "gemma4_layer_runner --run-h11f-topk-kl-compact TOKEN_CACHE ASSETS PACK0 PACK1 CHECKPOINT TEACHER_SHARD OUT_DIR LR RANK APPLY_UPDATE",
+  "token_cache_dir": "/data/local/tmp/polymath_gemma4_gate/hf_stream/20260517T083219Z_phase10_hf_auth_token_bridge_baseline_cache",
+  "asset_dir": "/data/local/tmp/polymath_gemma4_gate/streamed_assets/g8_layer01_20260517T071405Z",
+  "layer0_pack_dir": "/data/local/tmp/polymath_gemma4_gate/layer_pack/gemma4_e4b_layer0_seq128_v0",
+  "layer1_pack_dir": "/data/local/tmp/polymath_gemma4_gate/layer_pack/gemma4_e4b_layer1_seq128_v0",
+  "checkpoint_dir": "/data/local/tmp/polymath_gemma4_gate/phase11/runs/20260523T225149Z_h11h_combined_povc_train/H11-H-combined-povc/iterations/iter_000587/checkpoint",
+  "teacher_shard_dir": "/data/local/tmp/polymath_gemma4_gate/phase11/h11f_teacher_shards/train",
+  "output_dir": "/data/local/tmp/polymath_gemma4_gate/phase11/runs/20260523T225149Z_h11h_combined_povc_train/H11-H-combined-povc/iterations/iter_000588",
+  "learning_rate": 0.0099999998,
+  "rank": 4,
+  "apply_update": true,
+  "raw_outputs_written": false
+}

@@ -1,0 +1,12 @@
+{
+  "schema_version": "gemma4_streamed_distill_replay_v1",
+  "command": "gemma4_layer_runner --run-g8-distill-compact TOKEN_CACHE ASSETS PACK0 PACK1 CHECKPOINT OUT_DIR LR",
+  "token_cache_dir": "/data/local/tmp/polymath_gemma4_gate/hf_stream/20260517T083219Z_phase10_hf_auth_token_bridge_baseline_cache",
+  "asset_dir": "/data/local/tmp/polymath_gemma4_gate/streamed_assets/g8_layer01_20260517T071405Z",
+  "layer0_pack_dir": "/data/local/tmp/polymath_gemma4_gate/layer_pack/gemma4_e4b_layer0_seq128_v0",
+  "layer1_pack_dir": "/data/local/tmp/polymath_gemma4_gate/layer_pack/gemma4_e4b_layer1_seq128_v0",
+  "checkpoint_dir": "/data/local/tmp/polymath_gemma4_gate/adapter_training/g5g6_rank4_20260517T040000Z/checkpoint",
+  "output_dir": "/data/local/tmp/polymath_gemma4_gate/phase11/runs/20260523T225149Z_h11h_combined_povc_phone_regressions/g8_rank4_distill_compact_smoke",
+  "learning_rate": 0.0099999998,
+  "raw_outputs_written": false
+}
