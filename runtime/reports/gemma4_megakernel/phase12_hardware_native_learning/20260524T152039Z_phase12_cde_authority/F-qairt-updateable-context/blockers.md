@@ -1,0 +1,2 @@
+- QAIRT 2.41/2.43/2.44 x86 LoRA updater/importer binaries require GLIBC_2.32 through GLIBC_2.35; current RunPod image is Ubuntu 20.04 / GLIBC 2.31
+- ADB currently lists no FY25013101C8 device, so QnnContext_applyBinarySection cannot be proved or falsified on phone in this turn

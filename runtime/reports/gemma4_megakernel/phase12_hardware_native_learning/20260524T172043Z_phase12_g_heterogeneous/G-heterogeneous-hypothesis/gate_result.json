@@ -1,0 +1,132 @@
+{
+  "adreno_training_island": {
+    "rank16": {
+      "active_training_seconds": 107.609151,
+      "active_wall_ratio": 0.93540383,
+      "heldout_loss_baseline": 1.1291671353,
+      "heldout_loss_trained": 1.0005755997,
+      "heldout_metric_baseline": 0.1137876804,
+      "heldout_metric_trained": 0.1233203377,
+      "train_loss_first": 1.3055719223,
+      "train_loss_last": 1.0735761042,
+      "wall_seconds": 115.040315
+    },
+    "rank32": {
+      "active_training_seconds": 100.460072,
+      "heldout_loss_baseline": 1.1291671388,
+      "heldout_loss_trained": 1.0026539894,
+      "heldout_metric_baseline": 0.1137876801,
+      "heldout_metric_trained": 0.1230970988,
+      "wall_seconds": 107.188335
+    },
+    "selected_rank": 16,
+    "source_gate": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/phase12_cde_gate_result.json",
+    "status": "pass_residual_adreno_opencl_training"
+  },
+  "artifact_manifest": [
+    {
+      "path": "htp_frozen_forward/execution_metadata.yaml",
+      "sha256": "a9c1cd2722ea33fd2e6c59e24f02fcafeb73c26adfd4d8731d491e3dd7e0a67a",
+      "size_bytes": 851
+    },
+    {
+      "path": "htp_frozen_forward/htp_stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "htp_frozen_forward/htp_stdout.log",
+      "sha256": "75c36c2bbb241659e76a4bb9af358c14fc13ef6793a5625a3a7bab55a580e4fb",
+      "size_bytes": 278
+    },
+    {
+      "path": "htp_frozen_forward/profile_view.err",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "htp_frozen_forward/profile_view.txt",
+      "sha256": "e4e40c7490c5aab93b5ee1166129e4a987a22b0cdf822c75bd68d1394b83ec27",
+      "size_bytes": 2562
+    },
+    {
+      "path": "htp_frozen_forward/qnn-profiling-data_0.log",
+      "sha256": "0a261d472baa991cb2292757efc754887d8231a53bdec7b4d249eb0c29f1ebba",
+      "size_bytes": 1612
+    },
+    {
+      "path": "htp_frozen_forward/summary.txt",
+      "sha256": "11f2fbd62ac1e5b725cd37ce889c458f9c862c573def5a30ac77343e28fbc058",
+      "size_bytes": 778
+    }
+  ],
+  "cpu_scheduler_and_tokenizer": {
+    "loss_tokens": 1621,
+    "phone_cache": "/data/local/tmp/polymath_gemma4_gate/phase12/token_caches/20260524T152039Z_phase12_cde_authority_train_seq16",
+    "runtime_boundary": "phone_cpp_tokenizer_pack_no_host_minibatch_serving",
+    "sequence_count": 16,
+    "source_gate": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/phase12_cde_gate_result.json",
+    "status": "pass"
+  },
+  "ended_at_utc": "2026-05-24T17:22:26Z",
+  "gate": "G",
+  "heldout_signal": {
+    "rank16_loss_improved": true,
+    "rank16_metric_improved": true,
+    "source": "Adreno C/D/E gate only, not attributable to HTP"
+  },
+  "htp_frozen_forward_island": {
+    "accelerator_execute_excluding_wait_us": 4530,
+    "accelerator_execute_us": 7409,
+    "context": "/data/local/tmp/phase1a/qwen_block.qnn.bin",
+    "context_bytes": 93913088,
+    "graph_name": "qnn_partition_0",
+    "hvx_threads": 6,
+    "inferences_completed": true,
+    "input_bytes": 98304,
+    "input_shape": [
+      1,
+      16,
+      1536
+    ],
+    "load_binary_rpc_us": 9194,
+    "output_bytes": 98304,
+    "output_shape": [
+      1,
+      16,
+      1536
+    ],
+    "phone_root": "/data/local/tmp/polymath_gemma4_gate/phase12/gate_g/20260524T172043Z_phase12_g_heterogeneous",
+    "qnn_execute_us": 33978,
+    "rpc_execute_us": 8197,
+    "status": "pass_execution_only"
+  },
+  "hypothesis": "A phone-local scheduler can combine CPU tokenization/scheduling, Adreno residual-adapter training, and an HTP frozen-forward island into a useful Gemma4 hardware-native learning loop.",
+  "nonclaims": [
+    "No HTP output was consumed by the Gemma Adreno training loop.",
+    "The HTP frozen-forward artifact is Qwen random-init and hidden-size 1536, not Gemma4 hidden-size 2560.",
+    "The heldout improvement belongs to the Adreno/OpenCL residual training path only.",
+    "No updateable HTP island or HTP backprop was proven."
+  ],
+  "promoted_claims": {
+    "htp_teacher_for_gemma4_training": false,
+    "htp_updateable_or_backprop_training": false,
+    "phone_adreno_opencl_residual_training_with_heldout_signal": true,
+    "phone_cpu_tokenizer_cache_path": true,
+    "phone_htp_frozen_forward_executes_qwen_random_context": true,
+    "true_integrated_heterogeneous_learning_loop": false
+  },
+  "run_id": "20260524T172043Z_phase12_g_heterogeneous",
+  "schema_version": "phase12_gate_g_heterogeneous_hypothesis_v1",
+  "status": "falsified_htp_not_usable_for_gemma_learning_path",
+  "transfer_and_correctness": {
+    "actual_htp_to_adreno_bridge_used": false,
+    "gemma_hidden_size": 2560,
+    "host_minibatch_serving": false,
+    "htp_model_correctness_for_gemma_teacher": "fail_random_init_qwen_context_nonclaim",
+    "htp_output_hidden_size": 1536,
+    "htp_to_adreno_tensor_compatibility": "fail_shape_and_model_mismatch",
+    "measured_transfer_payload_if_bridge_existed_bytes": 98304,
+    "phone_local_execution": true
+  }
+}

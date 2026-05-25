@@ -1,0 +1,14 @@
+{
+  "schema_version": "gemma4_opencl_layer_forward_telemetry_v1",
+  "backend": "opencl",
+  "model_id": "google/gemma-4-E4B",
+  "revision": "7aa32e6889efd6300124851b164f8b364314c3d8",
+  "layer_index": 0,
+  "case_count": 8,
+  "seq": 128,
+  "hidden_size": 2560,
+  "kernel_contract": "full_layer_forward_real_weights_no_cpu_fallback",
+  "opencl_library": "libOpenCL.so",
+  "elapsed_seconds": 5.782198,
+  "max_rss_kb": 813248
+}

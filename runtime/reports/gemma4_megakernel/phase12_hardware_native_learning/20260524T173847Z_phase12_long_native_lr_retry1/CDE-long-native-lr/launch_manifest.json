@@ -1,0 +1,50 @@
+{
+  "launched_at_utc": "2026-05-24T17:38:48.958091+00:00",
+  "phone_done": "/data/local/tmp/polymath_gemma4_gate/phase12/20260524T173847Z_phase12_long_native_lr_retry1_done.json",
+  "phone_log": "/data/local/tmp/polymath_gemma4_gate/phase12/20260524T173847Z_phase12_long_native_lr_retry1_phone_sequential.log",
+  "phone_script": "/data/local/tmp/polymath_gemma4_gate/phase12/queue/20260524T173847Z_phase12_long_native_lr_retry1_phone_sequential.sh",
+  "pid_stdout": "32499",
+  "records": [
+    {
+      "arm": "lr3e4_cont24",
+      "config": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T173847Z_phase12_long_native_lr_retry1/CDE-long-native-lr/control/20260524T173847Z_phase12_long_native_lr_retry1_lr3e4_cont24_train_config.json",
+      "final_checkpoint": "/data/local/tmp/polymath_gemma4_gate/phase12/runs/20260524T173847Z_phase12_long_native_lr_retry1_lr3e4_cont24_train/Phase12-long-native-lr/iterations/iter_000023/checkpoint",
+      "kind": "train",
+      "phone_heartbeat": "/data/local/tmp/polymath_gemma4_gate/phase12/20260524T173847Z_phase12_long_native_lr_retry1_lr3e4_cont24_train_heartbeat.json",
+      "phone_state": "/data/local/tmp/polymath_gemma4_gate/phase12/20260524T173847Z_phase12_long_native_lr_retry1_lr3e4_cont24_train_state.json",
+      "queue": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T173847Z_phase12_long_native_lr_retry1/CDE-long-native-lr/control/20260524T173847Z_phase12_long_native_lr_retry1_lr3e4_cont24_train_queue.jsonl",
+      "run_id": "20260524T173847Z_phase12_long_native_lr_retry1_lr3e4_cont24_train"
+    },
+    {
+      "arm": "lr3e4_cont24",
+      "config": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T173847Z_phase12_long_native_lr_retry1/CDE-long-native-lr/control/20260524T173847Z_phase12_long_native_lr_retry1_lr3e4_cont24_eval_config.json",
+      "kind": "eval",
+      "phone_heartbeat": "/data/local/tmp/polymath_gemma4_gate/phase12/20260524T173847Z_phase12_long_native_lr_retry1_lr3e4_cont24_eval_heartbeat.json",
+      "phone_state": "/data/local/tmp/polymath_gemma4_gate/phase12/20260524T173847Z_phase12_long_native_lr_retry1_lr3e4_cont24_eval_state.json",
+      "queue": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T173847Z_phase12_long_native_lr_retry1/CDE-long-native-lr/control/20260524T173847Z_phase12_long_native_lr_retry1_lr3e4_cont24_eval_queue.jsonl",
+      "run_id": "20260524T173847Z_phase12_long_native_lr_retry1_lr3e4_cont24_eval"
+    },
+    {
+      "arm": "lr1e4_cont24",
+      "config": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T173847Z_phase12_long_native_lr_retry1/CDE-long-native-lr/control/20260524T173847Z_phase12_long_native_lr_retry1_lr1e4_cont24_train_config.json",
+      "final_checkpoint": "/data/local/tmp/polymath_gemma4_gate/phase12/runs/20260524T173847Z_phase12_long_native_lr_retry1_lr1e4_cont24_train/Phase12-long-native-lr/iterations/iter_000023/checkpoint",
+      "kind": "train",
+      "phone_heartbeat": "/data/local/tmp/polymath_gemma4_gate/phase12/20260524T173847Z_phase12_long_native_lr_retry1_lr1e4_cont24_train_heartbeat.json",
+      "phone_state": "/data/local/tmp/polymath_gemma4_gate/phase12/20260524T173847Z_phase12_long_native_lr_retry1_lr1e4_cont24_train_state.json",
+      "queue": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T173847Z_phase12_long_native_lr_retry1/CDE-long-native-lr/control/20260524T173847Z_phase12_long_native_lr_retry1_lr1e4_cont24_train_queue.jsonl",
+      "run_id": "20260524T173847Z_phase12_long_native_lr_retry1_lr1e4_cont24_train"
+    },
+    {
+      "arm": "lr1e4_cont24",
+      "config": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T173847Z_phase12_long_native_lr_retry1/CDE-long-native-lr/control/20260524T173847Z_phase12_long_native_lr_retry1_lr1e4_cont24_eval_config.json",
+      "kind": "eval",
+      "phone_heartbeat": "/data/local/tmp/polymath_gemma4_gate/phase12/20260524T173847Z_phase12_long_native_lr_retry1_lr1e4_cont24_eval_heartbeat.json",
+      "phone_state": "/data/local/tmp/polymath_gemma4_gate/phase12/20260524T173847Z_phase12_long_native_lr_retry1_lr1e4_cont24_eval_state.json",
+      "queue": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T173847Z_phase12_long_native_lr_retry1/CDE-long-native-lr/control/20260524T173847Z_phase12_long_native_lr_retry1_lr1e4_cont24_eval_queue.jsonl",
+      "run_id": "20260524T173847Z_phase12_long_native_lr_retry1_lr1e4_cont24_eval"
+    }
+  ],
+  "run_id": "20260524T173847Z_phase12_long_native_lr_retry1",
+  "schema_version": "phase12_long_native_lr_launch_v1",
+  "source_cde_result": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/phase12_cde_gate_result.json"
+}

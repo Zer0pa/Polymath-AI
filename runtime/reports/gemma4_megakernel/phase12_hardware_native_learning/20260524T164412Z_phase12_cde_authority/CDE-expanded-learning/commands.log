@@ -1,0 +1,3 @@
+adb shell gemma4_layer_runner --tokenize-pack PHONE_TOKENIZER PHONE_RAW_CSV PHONE_PHASE12_CACHE 128 N SOURCE_URL
+ssh RunPod create_h11f_topk_teacher_shard.py --token-cache EXPANDED_CACHE --out TEACHER_SHARD
+adb shell phase11_runner --queue queue/phase12_rankN_<arm>_queue.jsonl --run-root runs --heartbeat ... --state ...

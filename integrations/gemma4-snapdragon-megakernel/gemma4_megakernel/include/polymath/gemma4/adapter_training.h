@@ -9,6 +9,16 @@
 
 namespace polymath::gemma4 {
 
+struct AdapterOptimizerConfig {
+  std::string optimizer = "sgd";
+  float learning_rate = 0.01F;
+  float weight_decay = 0.0F;
+  float beta1 = 0.9F;
+  float beta2 = 0.999F;
+  float epsilon = 1.0e-8F;
+  float grad_clip_l2 = 0.0F;
+};
+
 Status run_opencl_adapter_gradient_step(const std::string& fixture_dir,
                                         const std::string& checkpoint_dir,
                                         const std::string& output_dir);
@@ -51,6 +61,34 @@ Status run_opencl_streamed_topk_kl_update_rank(const std::string& token_cache_di
                                                bool apply_update,
                                                bool write_raw_outputs = true,
                                                bool hash_static_artifacts = true);
+
+Status run_opencl_streamed_topk_kl_layer1_update_rank(
+    const std::string& token_cache_dir,
+    const std::string& asset_dir,
+    const std::string& layer0_pack_dir,
+    const std::string& layer1_pack_dir,
+    const std::string& checkpoint_dir,
+    const std::string& teacher_shard_dir,
+    const std::string& output_dir,
+    float learning_rate,
+    std::uint32_t adapter_rank,
+    bool apply_update,
+    bool write_raw_outputs = true,
+    bool hash_static_artifacts = true);
+
+Status run_opencl_streamed_topk_kl_update_rank_optimizer(
+    const std::string& token_cache_dir,
+    const std::string& asset_dir,
+    const std::string& layer0_pack_dir,
+    const std::string& layer1_pack_dir,
+    const std::string& checkpoint_dir,
+    const std::string& teacher_shard_dir,
+    const std::string& output_dir,
+    const AdapterOptimizerConfig& optimizer,
+    std::uint32_t adapter_rank,
+    bool apply_update,
+    bool write_raw_outputs = true,
+    bool hash_static_artifacts = true);
 
 class OpenClAdapterTrainingStepExecutor final : public TrainingStepExecutor {
  public:

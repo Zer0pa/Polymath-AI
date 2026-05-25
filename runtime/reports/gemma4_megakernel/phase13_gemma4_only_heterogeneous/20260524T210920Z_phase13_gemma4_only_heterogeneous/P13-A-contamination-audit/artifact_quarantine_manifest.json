@@ -1,0 +1,13 @@
+{
+  "forbidden_for_promoted_gemma_keys": [
+    "heterogeneous_g",
+    "qairt_f"
+  ],
+  "gemma_valid_narrow_keys": [
+    "cde",
+    "gradient_parity",
+    "long_native_lr",
+    "preflight"
+  ],
+  "negative_tool_surface_rule": "Qwen/random-init/hidden-size-1536 HTP artifacts may be referenced only as negative tool-surface probes and cannot feed Gemma training, teacher generation, evaluation, or heterogeneous promotion."
+}

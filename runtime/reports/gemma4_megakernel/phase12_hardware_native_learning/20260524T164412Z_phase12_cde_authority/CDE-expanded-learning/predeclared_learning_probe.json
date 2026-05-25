@@ -1,0 +1,25 @@
+{
+  "agreement_guardrail": "heldout student_teacher_top1_agreement non-regression",
+  "declared_at_utc": "2026-05-24T16:44:12Z",
+  "declared_before_phone_training_run": true,
+  "grad_clip_l2": 1.0,
+  "heldout_primary": "loss_topk_kl non-regression versus fixed control",
+  "learning_rate": 0.001,
+  "mini_metric": "heldout mean_student_teacher_top1_probability improves beyond fixed control",
+  "nonclaims": [
+    "full Gemma4 training",
+    "HTP backprop",
+    "multi-site adapter training",
+    "benchmark readiness",
+    "broad capability"
+  ],
+  "objective": "topk_embedding_kl_distillation_v1",
+  "optimizer": "adamw",
+  "ranks": [
+    16,
+    32
+  ],
+  "schema_version": "phase12_cde_predeclared_learning_probe_v1",
+  "train_sequences": 16,
+  "weight_decay": 0.01
+}

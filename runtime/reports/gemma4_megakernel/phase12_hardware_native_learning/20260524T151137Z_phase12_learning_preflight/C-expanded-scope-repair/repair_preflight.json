@@ -1,0 +1,33 @@
+{
+  "adb": {
+    "phone_visible": false,
+    "returncode": 0,
+    "stderr": "",
+    "stdout": "List of devices attached\nFY25013101C8           device usb:1-1 product:NX789J-EEA model:NX789J device:NX789J transport_id:4\n\n"
+  },
+  "authority_run_plan": {
+    "first_trial": "rank16 top-k KL, AdamW, grad_clip_l2=1.0, 8-20 phone-local queued updates",
+    "promotion_rule": "finite gradients/checkpoints, no authority regression, heldout mini metric beats fixed control",
+    "second_trial": "rank32 top-k KL, AdamW, grad_clip_l2=1.0, identical cache/order"
+  },
+  "code_checks": {
+    "backend_adamw_clip_state": {
+      "adamw": true,
+      "combined_gradient_l2": true,
+      "grad_clip_l2": true,
+      "optimizer_state": true
+    },
+    "header_optimizer_config": {
+      "AdapterOptimizerConfig": true
+    },
+    "host_phase11_runner_exists": true,
+    "runner_config_parse": {
+      "grad_clip_l2": true,
+      "optimizer": true,
+      "run_opencl_streamed_topk_kl_update_rank_optimizer": true,
+      "weight_decay": true
+    }
+  },
+  "host_build_binary": "build/gemma4_megakernel_host/phase11_runner",
+  "schema_version": "phase12_gate_c_repair_preflight_v1"
+}

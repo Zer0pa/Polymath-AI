@@ -1,0 +1,86 @@
+{
+  "created_at_utc": "2026-05-24T17:50:57.005292+00:00",
+  "gate_status": {
+    "A_h11h_audit": "pass",
+    "B_compact_artifact_strategy": "pass",
+    "C_expanded_scope_training": "pass_residual_expanded_scope_with_single_parameter_fd_parity_and_long_lr_continuation",
+    "D_phone_native_hf_cache": "pass",
+    "E_heldout_learning_signal": "pass",
+    "F_qairt_updateable_context": "falsified_no_valid_updateable_context_for_phone_apply",
+    "G_heterogeneous_hypothesis": "falsified_htp_not_usable_for_gemma_learning_path",
+    "H_exact_claims_only": "pass"
+  },
+  "h11h_audit": {
+    "exact_boundary": "H11-H is a narrow combined POVC artifact, not a broad training or benchmark claim",
+    "h11h_status": "pass",
+    "source_gate_result": "runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T225149Z_h11h_combined_povc/H11-H-combined-povc/gate_result.json",
+    "status": "pass"
+  },
+  "metrics": {
+    "gradient_fd": [
+      {
+        "analytic_gradient": 0.02265859581530094,
+        "finite_difference_gradient": 0.022658590000002032,
+        "index": 10032,
+        "relative_error": 2.566486889340826e-07,
+        "tensor": "adapter_a"
+      },
+      {
+        "analytic_gradient": -0.003061519470065832,
+        "finite_difference_gradient": -0.003061524999992127,
+        "index": 1931,
+        "relative_error": 1.8062685371513564e-06,
+        "tensor": "adapter_b"
+      }
+    ],
+    "rank16_8_step": {
+      "heldout_kl_fixed": 1.1291671353,
+      "heldout_kl_trained": 1.0005755997,
+      "heldout_mini_fixed": 0.1137876804,
+      "heldout_mini_trained": 0.1233203377,
+      "train_loss_first": 1.3055719223,
+      "train_loss_last": 1.0735761042
+    },
+    "rank16_lr3e4_cont24": {
+      "active_wall_ratio": 0.9673381,
+      "heldout_agreement": 0.2244897959,
+      "heldout_kl": 0.8207082971,
+      "heldout_mini": 0.1625584151,
+      "queue_wall_seconds": 145.999888,
+      "train_loss_delta": 0.3261357423
+    }
+  },
+  "nonclaims": [
+    "full Gemma4 training",
+    "multi-site adapter training",
+    "full-gradient parity",
+    "HTP backprop",
+    "successful QnnContext_applyBinarySection on phone",
+    "updateable QNN context for Gemma training",
+    "integrated heterogeneous Gemma learning",
+    "benchmark readiness",
+    "broad capability improvement",
+    "new corpus scale beyond the 16-sequence HF-derived Phase 12 cache"
+  ],
+  "primary_artifacts": {
+    "cde": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/phase12_cde_gate_result.json",
+    "gradient_parity": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T173501Z_phase12_c_gradient_parity/C-gradient-parity/gate_result.json",
+    "heterogeneous_g": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T172043Z_phase12_g_heterogeneous/G-heterogeneous-hypothesis/gate_result.json",
+    "long_native_lr": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T173847Z_phase12_long_native_lr_retry1/CDE-long-native-lr/gate_result.json",
+    "preflight": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T151216Z_phase12_learning_preflight/phase12_gate_status.json",
+    "qairt_f": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T171733Z_phase12_f_qairt_updateable_context/F-qairt-updateable-context/gate_result.json"
+  },
+  "promoted_claims": [
+    "H11-H artifact hygiene passed and Phase 12 reports keep raw tensor/checkpoint payloads out of git-facing report directories.",
+    "A compact-artifact strategy is implemented for long runs: reports pull JSON telemetry/manifests/checksum chains only, while raw f32/u32/u8/qnn/dlc payloads stay on phone, RunPod, or temporary directories.",
+    "The current trainable scope supports rank-16 and rank-32 post-layer0 residual adapters with AdamW, weight decay, gradient clipping, optimizer-state checkpointing, and phone-local queue execution.",
+    "Phone-native C++ tokenizer/cache path created or reused a 16-sequence HF-derived corpus cache on the REDMAGIC SM8750 with no host minibatch serving during training.",
+    "Rank-16 residual top-k KL training improved heldout KL from 1.1291671353 fixed control to 1.0005755997 after 8 iterations, with mini metric 0.1137876804 to 0.1233203377.",
+    "A disconnect-safe phone-local sequential continuation selected LR 3e-4: heldout KL improved from the 8-step reference 1.0005755997 to 0.8207082971, mini metric from 0.1233203377 to 0.1625584151, and agreement from 0.1140456182 to 0.2244897959.",
+    "Single high-gradient adapter_a and adapter_b finite-difference probes matched phone-produced top-k KL gradients with relative errors below 2e-6 for the residual adapter path.",
+    "QAIRT host tooling was repaired enough to run converter/importer/updater help and generate attempted updateable DLC/context artifacts, but current updateable context generation was falsified before phone applyBinarySection proof.",
+    "A measured HTP frozen-forward context run exists, but the integrated heterogeneous Gemma learning path was falsified because the available HTP context is incompatible with Gemma hidden size and training island."
+  ],
+  "schema_version": "phase12_final_exact_claims_v1",
+  "status": "completed_with_residual_learning_pass_and_falsified_nonclaims"
+}

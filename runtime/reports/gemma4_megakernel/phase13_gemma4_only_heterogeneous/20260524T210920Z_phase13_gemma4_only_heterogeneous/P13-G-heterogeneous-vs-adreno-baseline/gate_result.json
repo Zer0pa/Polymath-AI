@@ -1,0 +1,45 @@
+{
+  "authority_device": "FY25013101C8",
+  "blockers": [
+    "HTP output is not consumed by the Gemma training loop",
+    "No heldout movement is attributable to the HTP candidate",
+    "No measured HTP-to-Adreno bridge exists inside the optimizer/objective path"
+  ],
+  "candidate_comparison": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-G-heterogeneous-vs-adreno-baseline/candidate_comparison.json",
+  "ended_at_utc": "2026-05-24T22:58:21Z",
+  "gate": "P13-G heterogeneous candidate versus Adreno baseline",
+  "heterogeneous_hypothesis_passed": false,
+  "model_id": "google/gemma-4-E4B",
+  "nonclaims": [
+    "The P13-F/P13-G HTP context is an execution-only ReLU tensor island, not a teacher, backward pass, optimizer, or trainable HTP graph.",
+    "No HTP output is consumed by the Gemma training loop.",
+    "No heldout improvement is attributed to HTP.",
+    "P13-H must not promote heterogeneous learning unless a later artifact connects HTP tensors to the objective and beats the baseline."
+  ],
+  "promoted_claims": {
+    "gemma_hidden2560_htp_context_executed_on_phone": true,
+    "gemma_hidden2560_htp_relu_correct": true,
+    "htp_backprop": false,
+    "htp_output_consumed_by_training_loop": false,
+    "integrated_heterogeneous_gemma_learning": false,
+    "phone_adreno_opencl_residual_training_with_heldout_signal": true,
+    "phone_cpu_tokenization_available": true
+  },
+  "revision": "7aa32e6889efd6300124851b164f8b364314c3d8",
+  "schema_version": "phase13_p13g_heterogeneous_vs_adreno_baseline_v1",
+  "selected_path_for_p13h": {
+    "excluded_htp_role": "execution_only_relu_hidden_tensor_island_not_consumed_by_training",
+    "fallback_source_gate": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T173847Z_phase12_long_native_lr_retry1/CDE-long-native-lr/gate_result.json",
+    "hidden_size": 2560,
+    "learning_rate": 0.0003,
+    "model_id": "google/gemma-4-E4B",
+    "optimizer": "adamw",
+    "revision": "7aa32e6889efd6300124851b164f8b364314c3d8",
+    "runtime_topology": "phone_cpu_tokenization_and_hidden_cache_plus_adreno_opencl_residual_adapter_training",
+    "selected_reason": "only candidate with phone-local heldout improvement and no authority regression",
+    "source": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-G-heterogeneous-vs-adreno-baseline/gate_result.json",
+    "trainable_scope": "post_layer0_rank16_residual_adapter"
+  },
+  "started_at_utc": "2026-05-24T22:58:12Z",
+  "status": "fallback_adreno_only"
+}

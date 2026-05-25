@@ -1,0 +1,414 @@
+{
+  "adapter_site": "post_layer1",
+  "base_record": {
+    "checkpoint_delta_l2_local": {
+      "adapter_a": 5.299215060869015e-06,
+      "adapter_b": 1.075943693667679e-05
+    },
+    "inferred_gradient_l2": {
+      "adapter_a": 5.299215060873092e-05,
+      "adapter_b": 0.00010759436931313586
+    },
+    "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13e/layer1_base_update",
+    "telemetry": {
+      "active_tokens": 788,
+      "adapter_backend": "opencl",
+      "adapter_elapsed_seconds": 0.455218,
+      "adapter_input_source": "layer1_output",
+      "adapter_site": "post_layer1",
+      "applied_update": true,
+      "backend": "opencl",
+      "case_count": 8,
+      "checkpoint_delta_l2": {
+        "adapter_a": 5.2992e-06,
+        "adapter_b": 1.07594e-05
+      },
+      "combined_gradient_l2": 0.0001199363,
+      "fixture_usage": "none",
+      "gradient_clip_l2": 0.0,
+      "gradient_clip_scale": 1.0,
+      "gradient_l2": {
+        "adapter_a": 5.29922e-05,
+        "adapter_b": 0.0001075944,
+        "output": 0.0190484971
+      },
+      "hidden_size": 2560,
+      "hidden_state_fixtures_consumed": [],
+      "kernel_lineage_class": "residual_adapter_opencl_training",
+      "label_in_teacher_topk_rate": 0.8058375635,
+      "layer_backend": "opencl",
+      "layer_elapsed_seconds": [
+        5.126882,
+        5.018175
+      ],
+      "learning_rate": 0.1000000015,
+      "loss_topk_kl": 1.6853245453,
+      "max_rss_kb": 835240,
+      "mean_student_label_probability_when_in_topk": 0.1183387356,
+      "mean_student_teacher_top1_probability": 0.1149882746,
+      "mean_teacher_top1_probability": 0.6068120957,
+      "megakernel_claim": false,
+      "model_id": "google/gemma-4-E4B",
+      "objective": "topk_embedding_kl_distillation_v1",
+      "objective_backend": "phone_cpu_tied_embedding_topk",
+      "objective_contract": "precomputed_full_teacher_topk_to_phone_tied_embedding_student_kl_no_runtime_teacher_service",
+      "objective_elapsed_seconds": 0.087045,
+      "opencl_libraries": [
+        "libOpenCL.so",
+        "libOpenCL.so",
+        "libOpenCL.so"
+      ],
+      "optimizer": "sgd",
+      "optimizer_backend": "phone_cpu_after_opencl_gradients",
+      "optimizer_step": 1,
+      "rank": 16,
+      "revision": "7aa32e6889efd6300124851b164f8b364314c3d8",
+      "runtime_backend": "phone_cpu_token_to_hidden_plus_opencl_layers_and_adapter",
+      "runtime_input_path": "token_cache_to_phone_generated_hidden_to_opencl_layers_to_topk_kl_adapter_update",
+      "schema_version": "gemma4_opencl_streamed_topk_kl_training_v1",
+      "seq": 128,
+      "student_logit_head": "tied_embed_tokens_unscaled_with_final_logit_softcap_30",
+      "student_teacher_top1_agreement": 0.1040609137,
+      "teacher_manifest_sha256": "867b5ad0a7ce68878ce7c5d762131dfb0d3407a63882fb9218524c979ead5448",
+      "teacher_provenance": "runpod_precomputed_full_gemma4_topk_before_phone_runtime",
+      "teacher_shard_dir": "/data/local/tmp/polymath_gemma4_gate/phase12/teacher_shards/20260524T164412Z_phase12_cde_authority_train_shard00",
+      "token_to_hidden_backend": "phone_cpu",
+      "token_to_hidden_elapsed_seconds": 0.711264,
+      "token_to_hidden_timing": {
+        "active_tokens": 796,
+        "embedding_cache_rows": 285,
+        "embedding_gather_seconds": 0.007557,
+        "open_asset_seconds": 4.4e-05,
+        "ple_layer0_cache_rows": 285,
+        "ple_layer0_seconds": 0.3258,
+        "ple_layer1_cache_rows": 285,
+        "ple_layer1_seconds": 0.373435,
+        "projection_load_seconds": 0.004347,
+        "read_cache_seconds": 8.1e-05,
+        "unique_token_count": 285
+      },
+      "top_k": 8,
+      "trainable_scope": "post_layer1_rank16_residual_adapter",
+      "weight_decay": 0.0
+    }
+  },
+  "created_at_utc": "2026-05-24T22:26:54Z",
+  "fail_count": 0,
+  "memory_budget_kb": 2500000,
+  "model_id": "google/gemma-4-E4B",
+  "pass_count": 8,
+  "phone_gate_root": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13e",
+  "probe_count": 8,
+  "probe_results": [
+    {
+      "absolute_error": 0.0,
+      "analytic_gradient_from_phone_sgd_delta": 0.0,
+      "epsilon": 0.01,
+      "evals": {
+        "minus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-E-layer1-adapter-site/evals/probe_000_minus/telemetry.json",
+          "loss_topk_kl": 1.6853245453,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13e/fd_evals/probe_000_minus"
+        },
+        "plus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-E-layer1-adapter-site/evals/probe_000_plus/telemetry.json",
+          "loss_topk_kl": 1.6853245453,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13e/fd_evals/probe_000_plus"
+        }
+      },
+      "finite_difference_gradient": 0.0,
+      "index": 12278,
+      "ordinal": 0,
+      "passed": true,
+      "relative_error": 0.0,
+      "sign_match": true,
+      "sign_required": false,
+      "tensor": "adapter_a"
+    },
+    {
+      "absolute_error": 1.621650369543204e-08,
+      "analytic_gradient_from_phone_sgd_delta": 3.7834979593753815e-09,
+      "epsilon": 0.01,
+      "evals": {
+        "minus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-E-layer1-adapter-site/evals/probe_001_minus/telemetry.json",
+          "loss_topk_kl": 1.6853245451,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13e/fd_evals/probe_001_minus"
+        },
+        "plus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-E-layer1-adapter-site/evals/probe_001_plus/telemetry.json",
+          "loss_topk_kl": 1.6853245455,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13e/fd_evals/probe_001_plus"
+        }
+      },
+      "finite_difference_gradient": 2.000000165480742e-08,
+      "index": 13905,
+      "ordinal": 1,
+      "passed": true,
+      "relative_error": 4.286114032451923,
+      "sign_match": true,
+      "sign_required": false,
+      "tensor": "adapter_a"
+    },
+    {
+      "absolute_error": 2.99250113577898e-08,
+      "analytic_gradient_from_phone_sgd_delta": 5.0749804358929396e-09,
+      "epsilon": 0.01,
+      "evals": {
+        "minus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-E-layer1-adapter-site/evals/probe_002_minus/telemetry.json",
+          "loss_topk_kl": 1.6853245451,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13e/fd_evals/probe_002_minus"
+        },
+        "plus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-E-layer1-adapter-site/evals/probe_002_plus/telemetry.json",
+          "loss_topk_kl": 1.6853245458,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13e/fd_evals/probe_002_plus"
+        }
+      },
+      "finite_difference_gradient": 3.499999179368274e-08,
+      "index": 14819,
+      "ordinal": 2,
+      "passed": true,
+      "relative_error": 5.896576693408378,
+      "sign_match": true,
+      "sign_required": false,
+      "tensor": "adapter_a"
+    },
+    {
+      "absolute_error": 8.162821529822395e-09,
+      "analytic_gradient_from_phone_sgd_delta": 1.837179297581315e-09,
+      "epsilon": 0.01,
+      "evals": {
+        "minus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-E-layer1-adapter-site/evals/probe_003_minus/telemetry.json",
+          "loss_topk_kl": 1.6853245452,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13e/fd_evals/probe_003_minus"
+        },
+        "plus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-E-layer1-adapter-site/evals/probe_003_plus/telemetry.json",
+          "loss_topk_kl": 1.6853245454,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13e/fd_evals/probe_003_plus"
+        }
+      },
+      "finite_difference_gradient": 1.000000082740371e-08,
+      "index": 25987,
+      "ordinal": 3,
+      "passed": true,
+      "relative_error": 4.443127320544554,
+      "sign_match": true,
+      "sign_required": false,
+      "tensor": "adapter_a"
+    },
+    {
+      "absolute_error": 1.4897660882695618e-09,
+      "analytic_gradient_from_phone_sgd_delta": -4.351022653281689e-08,
+      "epsilon": 0.01,
+      "evals": {
+        "minus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-E-layer1-adapter-site/evals/probe_004_minus/telemetry.json",
+          "loss_topk_kl": 1.6853245457,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13e/fd_evals/probe_004_minus"
+        },
+        "plus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-E-layer1-adapter-site/evals/probe_004_plus/telemetry.json",
+          "loss_topk_kl": 1.6853245448,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13e/fd_evals/probe_004_plus"
+        }
+      },
+      "finite_difference_gradient": -4.499999262108645e-08,
+      "index": 386,
+      "ordinal": 4,
+      "passed": true,
+      "relative_error": 0.034239446837766516,
+      "sign_match": true,
+      "sign_required": false,
+      "tensor": "adapter_b"
+    },
+    {
+      "absolute_error": 6.973173150015555e-10,
+      "analytic_gradient_from_phone_sgd_delta": -2.9302674064979328e-08,
+      "epsilon": 0.01,
+      "evals": {
+        "minus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-E-layer1-adapter-site/evals/probe_005_minus/telemetry.json",
+          "loss_topk_kl": 1.6853245456,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13e/fd_evals/probe_005_minus"
+        },
+        "plus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-E-layer1-adapter-site/evals/probe_005_plus/telemetry.json",
+          "loss_topk_kl": 1.685324545,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13e/fd_evals/probe_005_plus"
+        }
+      },
+      "finite_difference_gradient": -2.9999991379980884e-08,
+      "index": 11016,
+      "ordinal": 5,
+      "passed": true,
+      "relative_error": 0.023797053929455,
+      "sign_match": true,
+      "sign_required": false,
+      "tensor": "adapter_b"
+    },
+    {
+      "absolute_error": 9.32171229095502e-10,
+      "analytic_gradient_from_phone_sgd_delta": 5.906782263309651e-08,
+      "epsilon": 0.01,
+      "evals": {
+        "minus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-E-layer1-adapter-site/evals/probe_006_minus/telemetry.json",
+          "loss_topk_kl": 1.6853245447,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13e/fd_evals/probe_006_minus"
+        },
+        "plus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-E-layer1-adapter-site/evals/probe_006_plus/telemetry.json",
+          "loss_topk_kl": 1.6853245459,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13e/fd_evals/probe_006_plus"
+        }
+      },
+      "finite_difference_gradient": 5.999999386219201e-08,
+      "index": 20811,
+      "ordinal": 6,
+      "passed": true,
+      "relative_error": 0.015781371100907885,
+      "sign_match": true,
+      "sign_required": false,
+      "tensor": "adapter_b"
+    },
+    {
+      "absolute_error": 9.368581466162595e-10,
+      "analytic_gradient_from_phone_sgd_delta": 1.9593686317875836e-07,
+      "epsilon": 0.01,
+      "evals": {
+        "minus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-E-layer1-adapter-site/evals/probe_007_minus/telemetry.json",
+          "loss_topk_kl": 1.6853245433,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13e/fd_evals/probe_007_minus"
+        },
+        "plus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-E-layer1-adapter-site/evals/probe_007_plus/telemetry.json",
+          "loss_topk_kl": 1.6853245472,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13e/fd_evals/probe_007_plus"
+        }
+      },
+      "finite_difference_gradient": 1.950000050321421e-07,
+      "index": 37325,
+      "ordinal": 7,
+      "passed": true,
+      "relative_error": 0.004781428728710122,
+      "sign_match": true,
+      "sign_required": false,
+      "tensor": "adapter_b"
+    }
+  ],
+  "rank": 16,
+  "regression_summary": {
+    "phone_regression_root": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13e/regressions",
+    "schema_version": "phase13_p13e_phone_regression_smokes_v1",
+    "status": "pass",
+    "tests": [
+      {
+        "ended_at_utc": "2026-05-24T22:25:42Z",
+        "name": "g1_layer0_opencl_smoke",
+        "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13e/regressions/g1_layer0_opencl_smoke",
+        "pulled_artifacts": [
+          "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-E-layer1-adapter-site/regressions/phone_smokes/g1_layer0_opencl_smoke/telemetry.json"
+        ],
+        "returncode": 0,
+        "started_at_utc": "2026-05-24T22:25:35Z",
+        "status": "pass",
+        "telemetry_summary": {
+          "adapter_backend": null,
+          "backend": "opencl",
+          "layer_backend": null,
+          "loss_half_mse": null,
+          "loss_topk_kl": null,
+          "max_rss_kb": 813248,
+          "model_id": "google/gemma-4-E4B",
+          "revision": "7aa32e6889efd6300124851b164f8b364314c3d8",
+          "schema_version": "gemma4_opencl_layer_forward_telemetry_v1",
+          "trainable_scope": null
+        }
+      },
+      {
+        "ended_at_utc": "2026-05-24T22:25:59Z",
+        "name": "g3_two_layer_opencl_stack_smoke",
+        "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13e/regressions/g3_two_layer_opencl_stack_smoke",
+        "pulled_artifacts": [
+          "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-E-layer1-adapter-site/regressions/phone_smokes/g3_two_layer_opencl_stack_smoke/telemetry.json"
+        ],
+        "returncode": 0,
+        "started_at_utc": "2026-05-24T22:25:42Z",
+        "status": "pass",
+        "telemetry_summary": {
+          "adapter_backend": null,
+          "backend": "opencl",
+          "layer_backend": null,
+          "loss_half_mse": null,
+          "loss_topk_kl": null,
+          "max_rss_kb": 823376,
+          "model_id": "google/gemma-4-E4B",
+          "revision": "7aa32e6889efd6300124851b164f8b364314c3d8",
+          "schema_version": "gemma4_opencl_two_layer_stack_telemetry_v1",
+          "trainable_scope": null
+        }
+      },
+      {
+        "ended_at_utc": "2026-05-24T22:26:31Z",
+        "name": "g8_rank4_distill_compact_smoke",
+        "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13e/regressions/g8_rank4_distill_compact_smoke",
+        "pulled_artifacts": [
+          "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-E-layer1-adapter-site/regressions/phone_smokes/g8_rank4_distill_compact_smoke/telemetry.json",
+          "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-E-layer1-adapter-site/regressions/phone_smokes/g8_rank4_distill_compact_smoke/artifact_manifest.json",
+          "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-E-layer1-adapter-site/regressions/phone_smokes/g8_rank4_distill_compact_smoke/replay_manifest.json",
+          "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-E-layer1-adapter-site/regressions/phone_smokes/g8_rank4_distill_compact_smoke/checkpoint_manifest.json"
+        ],
+        "returncode": 0,
+        "started_at_utc": "2026-05-24T22:25:59Z",
+        "status": "pass",
+        "telemetry_summary": {
+          "adapter_backend": "opencl",
+          "backend": "opencl",
+          "layer_backend": "opencl",
+          "loss_half_mse": 1.6465152695,
+          "loss_topk_kl": null,
+          "max_rss_kb": 834780,
+          "model_id": "google/gemma-4-E4B",
+          "revision": "7aa32e6889efd6300124851b164f8b364314c3d8",
+          "schema_version": "gemma4_opencl_streamed_distill_training_v1",
+          "trainable_scope": "post_layer0_rank4_residual_adapter"
+        }
+      },
+      {
+        "ended_at_utc": "2026-05-24T22:26:53Z",
+        "name": "post_layer0_topk_regression_smoke",
+        "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13e/regressions/post_layer0_topk_regression_smoke",
+        "pulled_artifacts": [
+          "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-E-layer1-adapter-site/regressions/phone_smokes/post_layer0_topk_regression_smoke/telemetry.json",
+          "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-E-layer1-adapter-site/regressions/phone_smokes/post_layer0_topk_regression_smoke/replay_manifest.json",
+          "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-E-layer1-adapter-site/regressions/phone_smokes/post_layer0_topk_regression_smoke/checkpoint_manifest.json"
+        ],
+        "returncode": 0,
+        "started_at_utc": "2026-05-24T22:26:31Z",
+        "status": "pass",
+        "telemetry_summary": {
+          "adapter_backend": "opencl",
+          "backend": "opencl",
+          "layer_backend": "opencl",
+          "loss_half_mse": null,
+          "loss_topk_kl": 1.3055719223,
+          "max_rss_kb": 835112,
+          "model_id": "google/gemma-4-E4B",
+          "revision": "7aa32e6889efd6300124851b164f8b364314c3d8",
+          "schema_version": "gemma4_opencl_streamed_topk_kl_training_v1",
+          "trainable_scope": "post_layer0_rank16_residual_adapter"
+        }
+      }
+    ]
+  },
+  "revision": "7aa32e6889efd6300124851b164f8b364314c3d8",
+  "run_id": "20260524T210920Z_phase13_gemma4_only_heterogeneous",
+  "schema_version": "phase13_p13e_layer1_adapter_summary_v1",
+  "source_commit": "53ba9b93cf37cc25fae40cb9d3c7490ad9d0b55f",
+  "source_tree_dirty": true
+}

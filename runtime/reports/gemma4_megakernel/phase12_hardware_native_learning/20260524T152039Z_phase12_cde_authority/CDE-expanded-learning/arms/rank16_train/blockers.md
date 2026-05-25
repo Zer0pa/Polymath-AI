@@ -1,0 +1,3 @@
+- iteration 0 failed: /data/local/tmp/polymath_gemma4_gate/phase12/token_caches/20260524T152039Z_phase12_cde_authority_train_seq16/input_ids.u32.bin has 8192 bytes; expected 4096
+- completed fewer than configured H11-A iterations
+- active/wall did not reach >=0.50 or >=2x Phase 10 baseline

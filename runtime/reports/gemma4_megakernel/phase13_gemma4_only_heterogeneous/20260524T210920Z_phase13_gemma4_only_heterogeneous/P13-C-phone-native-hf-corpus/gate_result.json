@@ -1,0 +1,36 @@
+{
+  "blockers": [],
+  "dataset_id": "databricks/databricks-dolly-15k",
+  "dataset_revision": "bdd27f4d94b9c1f951818a7da7fd7aeea5dbff1a",
+  "declared_license": "cc-by-sa-3.0",
+  "ended_at_utc": "2026-05-24T21:47:43Z",
+  "gate": "P13-C-phone-native-hf-corpus-scale",
+  "heldout_loss_tokens": 80911,
+  "heldout_sequence_count": 1024,
+  "host_minibatch_serving": false,
+  "model_id": "google/gemma-4-E4B",
+  "nonclaims": [
+    "P13-C does not claim learning improvement.",
+    "P13-C does not claim 65536 train sequences; selected dataset has 15010 rows and repetition was rejected.",
+    "P13-C does not claim full-line Dolly JSONL tokenization; phone-side line compaction was used before native tokenization.",
+    "P13-C does not claim heterogeneous or HTP training."
+  ],
+  "phone_gate_root": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13c",
+  "phone_native_streaming": true,
+  "phone_native_tokenization": true,
+  "phone_side_line_compaction_chars": 384,
+  "promoted_claims": [
+    "Phone-native HF stream and Gemma tokenizer cache floor met at 8192/1024 seq128.",
+    "RunPod Transformers tokenizer parity passed for 3 train spot rows."
+  ],
+  "raw_token_payloads_promoted": false,
+  "revision": "7aa32e6889efd6300124851b164f8b364314c3d8",
+  "run_id": "20260524T210920Z_phase13_gemma4_only_heterogeneous",
+  "runpod_transformers_parity_status": "pass",
+  "schema_version": "phase13_p13c_gate_result_v1",
+  "started_at_utc": "2026-05-24T21:47:43Z",
+  "status": "pass",
+  "tokenizer": "native_cpp_bpe_from_tokenizer_json_tables",
+  "train_loss_tokens": 639371,
+  "train_sequence_count": 8192
+}

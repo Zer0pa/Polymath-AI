@@ -1,0 +1,42 @@
+{
+  "schema_version": "gemma4_rank_adapter_topk_kl_checkpoint_v1",
+  "objective": "topk_embedding_kl_distillation_v1",
+  "trainable_scope": "post_layer0_rank32_residual_adapter",
+  "rank": 32,
+  "optimizer": "adamw",
+  "optimizer_backend": "phone_cpu_after_opencl_gradients",
+  "learning_rate": 0.0010000000,
+  "optimizer_step": 2,
+  "weight_decay": 0.0099999998,
+  "gradient_clip_l2": 1.0000000000,
+  "gradient_clip_scale": 1.0000000000,
+  "combined_gradient_l2": 0.0233124593,
+  "applied_update": true,
+  "loss_topk_kl": 1.1721433519,
+  "active_loss_tokens": 833,
+  "student_teacher_top1_agreement": 0.1008403361,
+  "mean_student_teacher_top1_probability": 0.1142501850,
+  "gradient_l2": {"adapter_a": 0.0225929678, "adapter_b": 0.0057470483, "output": 0.0162925708},
+  "checkpoint_delta_l2": {"adapter_a": 0.2111802558, "adapter_b": 0.1855786886},
+  "teacher_shard": {
+    "path": "/data/local/tmp/polymath_gemma4_gate/phase12/teacher_shards/20260524T164412Z_phase12_cde_authority_train_shard01",
+    "manifest_sha256": "ff05236c80f202ebb1b89f9fcc8bb3e2f439dbc38c1202d4cceedc0fe2e11286",
+    "topk_token_ids_sha256": "b1c0614be2f37f4efa4d2ce194857f4f8112a5239b5f69c792396e72afab0479",
+    "topk_probabilities_sha256": "114d990c9b417f8e873019f5ff220d3eaec9c19e729aa3f72f1c4543422337e5"
+  },
+  "pre_update": {
+    "adapter_a": {"path": "/data/local/tmp/polymath_gemma4_gate/phase12/runs/20260524T164412Z_phase12_cde_authority_rank32_train/Phase12-CDE-learning/iterations/iter_000000/checkpoint/adapter_a.f32.bin", "sha256": "caa1f280b917ddbdffba410374e0cb2ca22fc14aeb6114e26987b7e92c63e101"},
+    "adapter_b": {"path": "/data/local/tmp/polymath_gemma4_gate/phase12/runs/20260524T164412Z_phase12_cde_authority_rank32_train/Phase12-CDE-learning/iterations/iter_000000/checkpoint/adapter_b.f32.bin", "sha256": "8df91d9af87d21341f9aecad77558b7e44c86cf152637245dc85f2b54155de0b"}
+  },
+  "post_update": {
+    "adapter_a": {"path": "/data/local/tmp/polymath_gemma4_gate/phase12/runs/20260524T164412Z_phase12_cde_authority_rank32_train/Phase12-CDE-learning/iterations/iter_000001/checkpoint/adapter_a.f32.bin", "sha256": "b24f759cc06982f4aec71ece632aaa2801c036e31544a9e16694216412e5dcc8"},
+    "adapter_b": {"path": "/data/local/tmp/polymath_gemma4_gate/phase12/runs/20260524T164412Z_phase12_cde_authority_rank32_train/Phase12-CDE-learning/iterations/iter_000001/checkpoint/adapter_b.f32.bin", "sha256": "6cff81873e0d43aa8dc65843f440652e7d8824938c3851d19cb4888901e6640a"}
+  },
+  "optimizer_state": {
+    "step": {"path": "/data/local/tmp/polymath_gemma4_gate/phase12/runs/20260524T164412Z_phase12_cde_authority_rank32_train/Phase12-CDE-learning/iterations/iter_000001/checkpoint/optimizer_state/step.txt", "sha256": "53c234e5e8472b6ac51c1ae1cab3fe06fad053beb8ebfd8977b010655bfdd3c3"},
+    "adapter_a_m": {"path": "/data/local/tmp/polymath_gemma4_gate/phase12/runs/20260524T164412Z_phase12_cde_authority_rank32_train/Phase12-CDE-learning/iterations/iter_000001/checkpoint/optimizer_state/adapter_a_m.f32.bin", "sha256": "5c3b531d158800126104c780dd69ffbe51b557933fc038d40d1e3383c197eb20"},
+    "adapter_a_v": {"path": "/data/local/tmp/polymath_gemma4_gate/phase12/runs/20260524T164412Z_phase12_cde_authority_rank32_train/Phase12-CDE-learning/iterations/iter_000001/checkpoint/optimizer_state/adapter_a_v.f32.bin", "sha256": "1246adb1c9c2669d2399add33cbc72a04a669d9f6199bdb176223efde11d8b38"},
+    "adapter_b_m": {"path": "/data/local/tmp/polymath_gemma4_gate/phase12/runs/20260524T164412Z_phase12_cde_authority_rank32_train/Phase12-CDE-learning/iterations/iter_000001/checkpoint/optimizer_state/adapter_b_m.f32.bin", "sha256": "339a8327f3064eed19d70f8c6e35d02ea0882130d3166c73fc816d919c775b04"},
+    "adapter_b_v": {"path": "/data/local/tmp/polymath_gemma4_gate/phase12/runs/20260524T164412Z_phase12_cde_authority_rank32_train/Phase12-CDE-learning/iterations/iter_000001/checkpoint/optimizer_state/adapter_b_v.f32.bin", "sha256": "5d86ed29ac921cfdae2f5f551283a4de338c240c808162c9cde42044c49bad0a"}
+  }
+}

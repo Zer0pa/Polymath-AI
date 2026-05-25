@@ -1,0 +1,35 @@
+{
+  "authority_device": "FY25013101C8",
+  "blockers": [],
+  "context_role": "gemma_hidden2560_htp_tensor_island",
+  "ended_at_utc": "2026-05-24T22:51:21Z",
+  "gate": "P13-F Gemma-compatible HTP artifact or hard falsification",
+  "gemma_source_tensor": "/data/local/tmp/polymath_gemma4_gate/layer_pack/gemma4_e4b_layer0_seq128_v0/reference/layer_output.f32.bin",
+  "hidden_size": 2560,
+  "model_id": "google/gemma-4-E4B",
+  "nonclaims": [
+    "The HTP context is a Gemma-compatible hidden tensor island only; it is not full Gemma4 training.",
+    "No HTP backward, optimizer, updateable section, or QnnContext_applyBinarySection path is promoted.",
+    "No Qwen, random-init, or hidden-size-1536 artifact is used in this promoted P13-F gate.",
+    "P13-G must still decide whether any heterogeneous path beats the Adreno/OpenCL training baseline."
+  ],
+  "phone_htp_attempts_summary": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-F-gemma-compatible-htp-context/phone_htp_attempts_summary.json",
+  "phone_model_deploy_manifest": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-F-gemma-compatible-htp-context/phone_model_deploy_manifest.json",
+  "phone_qairt_root": "/data/local/tmp/qairt-2.44",
+  "promoted_claims": {
+    "gemma_hidden2560_htp_context_executed_on_phone": true,
+    "heterogeneous_learning": false,
+    "htp_backprop": false,
+    "htp_output_consumed_by_training_loop": false,
+    "qnn_context_apply_binary_section_executed": false
+  },
+  "remote_model_build_manifest": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-F-gemma-compatible-htp-context/remote_model_build_manifest.json",
+  "revision": "7aa32e6889efd6300124851b164f8b364314c3d8",
+  "runpod_ndk_root": "/workspace/android-ndk-r28b",
+  "runpod_qairt_root": "/workspace/qairt-2.44/qairt/2.44.0.260225",
+  "schema_version": "phase13_p13f_gemma_compatible_htp_context_v1",
+  "selected_valid_attempt": "relu",
+  "sequence_length": 16,
+  "started_at_utc": "2026-05-24T22:49:57Z",
+  "status": "pass"
+}

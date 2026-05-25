@@ -1,0 +1,34 @@
+{
+  "bad_rejection_returncode": 2,
+  "blockers": [],
+  "ended_at_utc": "2026-05-24T21:25:00Z",
+  "gate": "P13-B-identity-kernel-lineage",
+  "identity_fields_required": [
+    "model_id",
+    "model_revision",
+    "hidden_size",
+    "runner_binary_sha256",
+    "source_commit",
+    "kernel_lineage_class",
+    "runtime_backend",
+    "trainable_scope",
+    "teacher_provenance",
+    "hidden_state_fixtures_consumed"
+  ],
+  "kernel_lineage_class": "residual_adapter_opencl_training",
+  "nonclaims": [
+    "P13-B smoke does not promote corpus-scale learning.",
+    "P13-B smoke does not promote heterogeneous HTP training.",
+    "P13-B smoke does not promote a long-run learning result."
+  ],
+  "phone_gate_root": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13b",
+  "promoted_claims": [
+    "Phase 13 runner rejects non-Gemma/hidden-size-mismatched config before phone training.",
+    "Valid phone smoke emits Gemma identity and residual_adapter_opencl_training lineage telemetry."
+  ],
+  "run_id": "20260524T210920Z_phase13_gemma4_only_heterogeneous",
+  "schema_version": "phase13_p13b_gate_result_v1",
+  "started_at_utc": "2026-05-24T21:25:00Z",
+  "status": "pass",
+  "valid_smoke_returncode": 0
+}

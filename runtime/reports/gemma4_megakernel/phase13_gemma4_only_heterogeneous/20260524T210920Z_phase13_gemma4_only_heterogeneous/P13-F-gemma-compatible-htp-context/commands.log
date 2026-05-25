@@ -1,0 +1,46 @@
+{
+  "commands": [
+    {
+      "name": "phone_qnn_context_binary_generator_help",
+      "returncode": 0,
+      "stderr_first_4096": "\nCommand Line Options:\n  [ --help ]            Displays this help message.\n  [ --version ]         Displays version information.\n  [ --model=<val> ]     Path to the <qnn_model_name.so> file containing a QNN network.\n                        To create a context binary with multiple graphs, use comma-separated list of model.so files. The syntax is \n                        <qnn_model_name_1.so>,<qnn_model_name_2.so>\n  --backend=<val>       Path to a QNN backend .so library to create the context binary.\n  [ --binary_file=<val> ]\n                        Name of the binary file to save the context binary to with .bin file extension. \n                        If not provided, no backend binary is created.\n                        If absolute path is provided, binary is saved in this path.\n                        Else binary is saved in the same path as --output_dir option.\n  [ --model_prefix=<val> ]\n                        Function prefix to use when loading <qnn_model_name.so> file\n                        containing a QNN network. Default: QnnModel.\n  [ --output_dir=<val> ]\n                        The directory to save output to. Defaults to ./output.\n  [ --op_packages=<val> ]\n                        Provide a comma separated list of op packages \n                        and interface providers to register. The syntax is:\n                        op_package_path:interface_provider[,op_package_path:interface_provider...]\n  [ --config_file=<val> ]\n                        Path to a JSON config file. The config file currently\n                        supports options related to backend extensions and\n                        context priority. Please refer to SDK documentation\n                        for more details.\n  [ --data_format_config=<val> ]\n                        Path to a JSON config file, specifying the\n                        data formats of certain tensors. Please refer\n                        to SDK documentation for more details.\n  [ --set_output_tensors=<val> ]\n                        Provide a comma-separated list of intermediate output tensor names, for which the outputs\n                        will be written in addition to final graph output tensors.\n                        Note that options --enable_intermediate_outputs and --set_output_tensors\n                        are mutually exclusive. Only one of the options can be specified at a time.\n                        The syntax is: graphName0:tensorName0,tensorName1;graphName1:tensorName0,tensorName1\n                        In case of a single graph, its name is not necessary and a list of comma separated tensor\n                        names can be provided, e.g.: tensorName0,tensorName1.\n                        The same format can be provided in a .txt file.\n  [ --enable_intermediate_outputs ]\n                        Enable all intermediate nodes to be output along with\n                        default outputs in the saved context.\n                        Note that options --enable_intermediate_outputs and --set_output_tensors\n                        are mutually exclusive. Only one of the options can be specified at a time.\n  [ --save_backend_op_mapping ]\n                        Generate bottom mapping (chrometrace.json) from schematic bins and embed into DLC.\n                        Requires libQnnHtpOptraceProfilingReader.so in current directory or LD_LIBRARY_PATH/PATH.\n                        The generated chrometrace files will be saved as <graphName>_bottom_mapping.json.\n  [ --backend_binary=<val> ]\n                        Name of the binary file to save a backend-specific context binary to with .bin file extension. \n                        If not provided, no backend binary is created.\n                        If absolute path is provided, binary is saved in this path.\n                        Else binary is saved in the same path as --output_dir option.\n  [ --profiling_level=<val> ]\n                        Enable profiling. Valid Values:\n                          1. basic:    captures execution and init time.\n                          2. detailed: in addition t",
+      "stdout_first_4096": "qnn-context-binary-generator pid:7372\n"
+    },
+    {
+      "name": "runpod_build_android_qnn_gemma_hidden2560_models",
+      "returncode": 0,
+      "stderr_first_4096": "",
+      "stdout_first_4096": "77a34d3f03b17709f3f6473f37cb7795314e51fa3e5e652b5c37d53cfd05c754  /workspace/artifacts/polymath_gemma4/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13f_gemma_hidden2560_htp/out/libc++_shared.so\n9df61686c43a59289042b4a8fc2183b7e999dcbe0dce05c0f5a88f973c945d71  /workspace/artifacts/polymath_gemma4/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13f_gemma_hidden2560_htp/out/libgemma_hidden2560_identity_add.so\nf48750265f96778eb2d8935d61ef6e9c1f9e983a72b70aedd32e59c3fe07e5f2  /workspace/artifacts/polymath_gemma4/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13f_gemma_hidden2560_htp/out/libgemma_hidden2560_relu.so\ne779c3bbac4fa209eedb475c675cce103720a6b9f1e0d4c07c50e382ccfb3c5e  /workspace/artifacts/polymath_gemma4/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13f_gemma_hidden2560_htp/gemma_hidden2560_identity.cpp\nd7ae999100afd8447ba57ba36d3d869544d38000648e309afa2b8be9445124d8  /workspace/artifacts/polymath_gemma4/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13f_gemma_hidden2560_htp/gemma_hidden2560_relu.cpp\n6cdd259c8ecbe61fbc369f3293c1961541386954a223b17a37899d7fd9ad42da  /workspace/artifacts/polymath_gemma4/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13f_gemma_hidden2560_htp/obj/binary/gemma_hidden_zero.raw\n/workspace/artifacts/polymath_gemma4/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13f_gemma_hidden2560_htp/out/libc++_shared.so:                    ELF 64-bit LSB shared object, ARM aarch64, version 1 (SYSV), dynamically linked, BuildID[sha1]=725db191d65be59dc18ddb3238f9e749442844a4, with debug_info, not stripped\n/workspace/artifacts/polymath_gemma4/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13f_gemma_hidden2560_htp/out/libgemma_hidden2560_identity_add.so: ELF 64-bit LSB shared object, ARM aarch64, version 1 (SYSV), dynamically linked, not stripped\n/workspace/artifacts/polymath_gemma4/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13f_gemma_hidden2560_htp/out/libgemma_hidden2560_relu.so:         ELF 64-bit LSB shared object, ARM aarch64, version 1 (SYSV), dynamically linked, not stripped\n"
+    },
+    {
+      "name": "phone_prepare_p13f_model_dir",
+      "returncode": 0,
+      "stderr_first_4096": "",
+      "stdout_first_4096": ""
+    },
+    {
+      "name": "phone_chmod_and_hash_p13f_models",
+      "returncode": 0,
+      "stderr_first_4096": "",
+      "stdout_first_4096": "77a34d3f03b17709f3f6473f37cb7795314e51fa3e5e652b5c37d53cfd05c754  /data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13f/models/libc++_shared.so\n9df61686c43a59289042b4a8fc2183b7e999dcbe0dce05c0f5a88f973c945d71  /data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13f/models/libgemma_hidden2560_identity_add.so\nf48750265f96778eb2d8935d61ef6e9c1f9e983a72b70aedd32e59c3fe07e5f2  /data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13f/models/libgemma_hidden2560_relu.so\n"
+    },
+    {
+      "name": "phone_prepare_gemma_hidden2560_input",
+      "returncode": 0,
+      "stderr_first_4096": "",
+      "stdout_first_4096": ""
+    },
+    {
+      "name": "phone_p13f_htp_attempt_identity_add",
+      "returncode": 0,
+      "stderr_first_4096": "",
+      "stdout_first_4096": "{\"variant\":\"identity_add\",\"context_rc\":9,\"utility_rc\":99,\"run_rc\":99,\"byte_exact_rc\":99,\"context\":\"/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13f/htp/identity_add/context/gemma_hidden2560_identity_add.qnn.bin\",\"output_raw\":\"\"}\n"
+    },
+    {
+      "name": "phone_p13f_htp_attempt_relu",
+      "returncode": 0,
+      "stderr_first_4096": "",
+      "stdout_first_4096": "{\"variant\":\"relu\",\"context_rc\":0,\"utility_rc\":0,\"run_rc\":0,\"byte_exact_rc\":1,\"context\":\"/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13f/htp/relu/context/gemma_hidden2560_relu.qnn.bin\",\"output_raw\":\"/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13f/htp/relu/run/Result_0/gemma_hidden_relu_out.raw\"}\n"
+    }
+  ]
+}

@@ -1,0 +1,157 @@
+{
+  "blockers": [
+    "phone thermal safety threshold crossed during P13-H",
+    "5000-update train arm did not pass",
+    "train arm completed fewer than 5000 updates",
+    "heldout_full_baseline gate did not pass",
+    "heldout_full_baseline evaluated fewer than 128 heldout shards",
+    "heldout_full_trained gate did not pass",
+    "heldout_full_trained evaluated fewer than 128 heldout shards",
+    "full heldout identity/provenance telemetry mismatch",
+    "full heldout label-contrastive KL did not improve",
+    "full heldout mean student teacher-top1 probability did not improve",
+    "full heldout top1 agreement regressed"
+  ],
+  "created_at_utc": "2026-05-25T12:03:37Z",
+  "gate": "P13-I exact claims and next branch decision",
+  "next_branch_decision": {
+    "must_not_do": [
+      "Do not promote the P13-F HTP ReLU island as heterogeneous training.",
+      "Do not replace full heldout movement with train-loss movement.",
+      "Do not call the residual-adapter OpenCL lane a fused megakernel."
+    ],
+    "rationale": "The authority heldout gate failed or is incomplete; repair objective/data/optimizer evidence before widening claims.",
+    "schema_version": "phase13_next_branch_decision_v1",
+    "selected": "phase14_repair_scaled_heldout_learning_before_new_hardware_claims"
+  },
+  "nonclaims": [
+    "No full Gemma4 model training is claimed; the trainable scope is residual adapters.",
+    "No full-Gemma teacher top-k distillation is claimed for P13-H; it used the declared label-contrastive fallback objective.",
+    "No HTP training, HTP backprop, or HTP-to-Adreno optimizer bridge is claimed.",
+    "No broad benchmark, product capability, or public benchmark readiness claim is made.",
+    "No fused megakernel claim is made; kernel lineage remains residual_adapter_opencl_training for the P13-H run."
+  ],
+  "p13h_adjudication": {
+    "baseline_full_heldout": {
+      "active_tokens": 0,
+      "gate_active_training_seconds": null,
+      "gate_active_wall_ratio": null,
+      "gate_status": null,
+      "gate_wall_seconds": null,
+      "hidden_sizes": [],
+      "iteration_count": 0,
+      "label_in_teacher_topk_rate": null,
+      "loss_topk_kl": null,
+      "mean_student_label_probability_when_in_topk": null,
+      "mean_student_teacher_top1_probability": null,
+      "model_ids": [],
+      "objective_values": [],
+      "schema_version": "phase13_p13h_eval_aggregate_v1",
+      "student_teacher_top1_agreement": null,
+      "teacher_provenance_values": [],
+      "telemetry_files": []
+    },
+    "blockers": [
+      "phone thermal safety threshold crossed during P13-H",
+      "5000-update train arm did not pass",
+      "train arm completed fewer than 5000 updates",
+      "heldout_full_baseline gate did not pass",
+      "heldout_full_baseline evaluated fewer than 128 heldout shards",
+      "heldout_full_trained gate did not pass",
+      "heldout_full_trained evaluated fewer than 128 heldout shards",
+      "full heldout identity/provenance telemetry mismatch",
+      "full heldout label-contrastive KL did not improve",
+      "full heldout mean student teacher-top1 probability did not improve",
+      "full heldout top1 agreement regressed"
+    ],
+    "checks": {
+      "agreement_nonregress": false,
+      "full_heldout_shards": false,
+      "identity_and_provenance_exact": false,
+      "loss_improved": false,
+      "mini_metric_improved": false
+    },
+    "deltas": {
+      "loss_topk_kl": null,
+      "mean_student_teacher_top1_probability": null,
+      "student_teacher_top1_agreement": null
+    },
+    "detached_run_id": "20260524T210920Z_phase13_gemma4_only_heterogeneous_p13h_20260524T232423Z",
+    "full_heldout_run_id": "20260524T210920Z_phase13_gemma4_only_heterogeneous_p13h_20260524T232423Z_fullheldout",
+    "safety": {
+      "logs": {
+        "full_heldout": {
+          "max_battery_tenth_c": 320,
+          "max_zone_millideg_c": 130048,
+          "max_zone_type": "alps-therm",
+          "path": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-H-overnight-phone-local-long-run/collection/chain/full_heldout_safety.jsonl",
+          "sample_count": 75,
+          "threshold_event_count": 1
+        },
+        "original": {
+          "max_battery_tenth_c": 320,
+          "max_zone_millideg_c": 95000,
+          "max_zone_type": "cpu-1-0-1",
+          "path": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-H-overnight-phone-local-long-run/collection/chain/original_safety.jsonl",
+          "sample_count": 109,
+          "threshold_event_count": 1
+        }
+      },
+      "max_battery_tenth_c": 320,
+      "max_zone_millideg_c": 130048,
+      "max_zone_type": "alps-therm",
+      "schema_version": "phase13_p13h_safety_summary_v1",
+      "threshold_crossed": true,
+      "threshold_events": [
+        {
+          "battery_tenth_c": 310,
+          "log": "original",
+          "max_zone_millideg_c": 95000,
+          "max_zone_type": "cpu-1-0-1",
+          "ts": 1779668491
+        },
+        {
+          "battery_tenth_c": 310,
+          "log": "full_heldout",
+          "max_zone_millideg_c": 130048,
+          "max_zone_type": "alps-therm",
+          "ts": 1779667938
+        }
+      ]
+    },
+    "schema_version": "phase13_p13h_adjudication_v1",
+    "status": "fail",
+    "train_active_wall_ratio": 0.93883344,
+    "train_updates": 1742,
+    "trained_full_heldout": {
+      "active_tokens": 0,
+      "gate_active_training_seconds": null,
+      "gate_active_wall_ratio": null,
+      "gate_status": null,
+      "gate_wall_seconds": null,
+      "hidden_sizes": [],
+      "iteration_count": 0,
+      "label_in_teacher_topk_rate": null,
+      "loss_topk_kl": null,
+      "mean_student_label_probability_when_in_topk": null,
+      "mean_student_teacher_top1_probability": null,
+      "model_ids": [],
+      "objective_values": [],
+      "schema_version": "phase13_p13h_eval_aggregate_v1",
+      "student_teacher_top1_agreement": null,
+      "teacher_provenance_values": [],
+      "telemetry_files": []
+    }
+  },
+  "p13h_gate_result": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-H-overnight-phone-local-long-run/gate_result.json",
+  "p13h_status": "fail",
+  "promoted_claims": [
+    "P13-A through P13-D passed: contamination quarantine, identity/kernel-lineage telemetry, scaled phone-native P13-C corpus cache, and 64/64 expanded gradient parity.",
+    "P13-E added a Gemma hidden-size-2560 post-layer1 rank-16 residual adapter site with phone forward/backward/update evidence.",
+    "P13-F produced a Gemma hidden-size-2560 HTP ReLU tensor-island context that runs on phone, but it is execution-only.",
+    "P13-G selected the Adreno/OpenCL residual adapter fallback because the HTP tensor island is not consumed by the Gemma training loop.",
+    "P13-H completed enough artifact collection for adjudication, but the full-heldout acceptance gate did not pass."
+  ],
+  "schema_version": "phase13_p13i_exact_claims_v1",
+  "status": "pass_exact_claims_written"
+}

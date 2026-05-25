@@ -1,0 +1,679 @@
+{
+  "blockers": [],
+  "gate": "C",
+  "memory_budget": [
+    {
+      "adamw_state_bytes": 655360,
+      "adapter_checkpoint_bytes": 327680,
+      "adapter_parameter_count": 81920,
+      "max_rss_kb": 3938268,
+      "rank": 16
+    },
+    {
+      "adamw_state_bytes": 1310720,
+      "adapter_checkpoint_bytes": 655360,
+      "adapter_parameter_count": 163840,
+      "max_rss_kb": 3938276,
+      "rank": 32
+    }
+  ],
+  "nonclaims": [
+    "multi-site adapter training remains blocked; current backward path is post-layer0 residual only",
+    "independent analytical gradient parity for top-k KL is not yet proven beyond finite phone gradients/checkpoint movement"
+  ],
+  "optimizer_repair": {
+    "adamw_state_policy": "phone_checkpoint_optimizer_state_manifest_hashes_only",
+    "grad_clip_l2": 1.0,
+    "optimizer": "adamw",
+    "weight_decay": 0.01
+  },
+  "rank_results": [
+    {
+      "blockers": [],
+      "fixed_adapter_control": {
+        "arm": "baseline_eval",
+        "checkpoint_changed": false,
+        "finite_losses": true,
+        "first": {
+          "active_tokens": 833,
+          "applied_update": false,
+          "checkpoint_delta_l2": {
+            "adapter_a": 0.0,
+            "adapter_b": 0.0
+          },
+          "combined_gradient_l2": 6.80415e-05,
+          "grad_clip_l2": null,
+          "grad_clip_scale": null,
+          "gradient_l2": {
+            "adapter_a": 4.75609e-05,
+            "adapter_b": 4.86581e-05,
+            "output": 0.0159754076
+          },
+          "iteration": 0,
+          "label_in_teacher_topk_rate": 0.7587034814,
+          "loss_topk_kl": 1.1291671353,
+          "max_rss_kb": 3937980,
+          "mean_student_teacher_top1_probability": 0.1137876804,
+          "optimizer": "adamw",
+          "optimizer_step": 0,
+          "student_teacher_top1_agreement": 0.093637455
+        },
+        "gate": {
+          "active_training_seconds": 13.52244,
+          "active_wall_acceptance": true,
+          "active_wall_ratio": 0.88948254,
+          "apply_update": false,
+          "blockers": [],
+          "checkpoint_chain_acceptance": true,
+          "disconnect_acceptance": true,
+          "disconnect_hold_seconds": 0.0,
+          "disconnect_marker_seen": false,
+          "ended_at_utc": "2026-05-24T16:45:43Z",
+          "gate": "Phase12-CDE",
+          "iteration_count": 1,
+          "objective": "topk_embedding_kl",
+          "one_shot_fallback_preserved": true,
+          "phase10_active_wall_baseline": 0.21328649,
+          "queue_execution_wall_seconds": 15.202592,
+          "required_iteration_count": 1,
+          "runner_build_id": "phase11_runner_h11a_v1_20260523",
+          "runtime_topology": "phone_local_queue_no_adb_per_iteration",
+          "schema_version": "phase11_h11a_gate_result_v1",
+          "status": "pass"
+        },
+        "gate_status": "pass",
+        "iterations": 1,
+        "last": {
+          "active_tokens": 833,
+          "applied_update": false,
+          "checkpoint_delta_l2": {
+            "adapter_a": 0.0,
+            "adapter_b": 0.0
+          },
+          "combined_gradient_l2": 6.80415e-05,
+          "grad_clip_l2": null,
+          "grad_clip_scale": null,
+          "gradient_l2": {
+            "adapter_a": 4.75609e-05,
+            "adapter_b": 4.86581e-05,
+            "output": 0.0159754076
+          },
+          "iteration": 0,
+          "label_in_teacher_topk_rate": 0.7587034814,
+          "loss_topk_kl": 1.1291671353,
+          "max_rss_kb": 3937980,
+          "mean_student_teacher_top1_probability": 0.1137876804,
+          "optimizer": "adamw",
+          "optimizer_step": 0,
+          "student_teacher_top1_agreement": 0.093637455
+        },
+        "loss_delta": 0.0,
+        "losses": [
+          1.1291671353
+        ],
+        "max_rss_kb": 3937980,
+        "rank": 16,
+        "required_iterations": 1,
+        "run": {
+          "apply_update": false,
+          "arm": "baseline_eval",
+          "ended_at_utc": "2026-05-24T16:45:46Z",
+          "final_checkpoint": "/data/local/tmp/polymath_gemma4_gate/phase12/runs/20260524T164412Z_phase12_cde_authority_rank16_baseline_eval/Phase12-CDE-learning/iterations/iter_000000/checkpoint",
+          "iterations": 1,
+          "local_report_dir": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank16_baseline_eval",
+          "phone_gate_dir": "/data/local/tmp/polymath_gemma4_gate/phase12/runs/20260524T164412Z_phase12_cde_authority_rank16_baseline_eval/Phase12-CDE-learning",
+          "rank": 16,
+          "returncode": 0,
+          "run_id": "20260524T164412Z_phase12_cde_authority_rank16_baseline_eval",
+          "schema_version": "phase12_cde_arm_run_v1",
+          "started_at_utc": "2026-05-24T16:44:29Z",
+          "stderr_first_4096": "",
+          "stdout_first_4096": ""
+        },
+        "schema_version": "phase12_cde_arm_summary_v1",
+        "status": "pass"
+      },
+      "rank": 16,
+      "schema_version": "phase12_cde_rank_result_v1",
+      "status": "pass",
+      "train": {
+        "arm": "train",
+        "checkpoint_changed": true,
+        "finite_losses": true,
+        "first": {
+          "active_tokens": 788,
+          "applied_update": true,
+          "checkpoint_delta_l2": {
+            "adapter_a": 0.0858642758,
+            "adapter_b": 0.1626499813
+          },
+          "combined_gradient_l2": 7.27318e-05,
+          "grad_clip_l2": null,
+          "grad_clip_scale": null,
+          "gradient_l2": {
+            "adapter_a": 5.71828e-05,
+            "adapter_b": 4.4945e-05,
+            "output": 0.0179967321
+          },
+          "iteration": 0,
+          "label_in_teacher_topk_rate": 0.8058375635,
+          "loss_topk_kl": 1.3055719223,
+          "max_rss_kb": 3938204,
+          "mean_student_teacher_top1_probability": 0.1151061448,
+          "optimizer": "adamw",
+          "optimizer_step": 1,
+          "student_teacher_top1_agreement": 0.0862944162
+        },
+        "gate": {
+          "active_training_seconds": 107.609151,
+          "active_wall_acceptance": true,
+          "active_wall_ratio": 0.93540383,
+          "apply_update": true,
+          "blockers": [],
+          "checkpoint_chain_acceptance": true,
+          "disconnect_acceptance": true,
+          "disconnect_hold_seconds": 0.0,
+          "disconnect_marker_seen": false,
+          "ended_at_utc": "2026-05-24T16:48:40Z",
+          "gate": "Phase12-CDE",
+          "iteration_count": 8,
+          "objective": "topk_embedding_kl",
+          "one_shot_fallback_preserved": true,
+          "phase10_active_wall_baseline": 0.21328649,
+          "queue_execution_wall_seconds": 115.040315,
+          "required_iteration_count": 8,
+          "runner_build_id": "phase11_runner_h11a_v1_20260523",
+          "runtime_topology": "phone_local_queue_no_adb_per_iteration",
+          "schema_version": "phase11_h11a_gate_result_v1",
+          "status": "pass"
+        },
+        "gate_status": "pass",
+        "iterations": 8,
+        "last": {
+          "active_tokens": 833,
+          "applied_update": true,
+          "checkpoint_delta_l2": {
+            "adapter_a": 0.1850698921,
+            "adapter_b": 0.1710509807
+          },
+          "combined_gradient_l2": 0.2336183888,
+          "grad_clip_l2": null,
+          "grad_clip_scale": null,
+          "gradient_l2": {
+            "adapter_a": 0.2061110081,
+            "adapter_b": 0.1099809253,
+            "output": 0.0156304262
+          },
+          "iteration": 7,
+          "label_in_teacher_topk_rate": 0.7719087635,
+          "loss_topk_kl": 1.0735761042,
+          "max_rss_kb": 3938204,
+          "mean_student_teacher_top1_probability": 0.1211412065,
+          "optimizer": "adamw",
+          "optimizer_step": 8,
+          "student_teacher_top1_agreement": 0.1176470588
+        },
+        "loss_delta": 0.23199581809999992,
+        "losses": [
+          1.3055719223,
+          1.1719044488,
+          1.3009770354,
+          1.1590224455,
+          1.2803629927,
+          1.1265678438,
+          1.2403450184,
+          1.0735761042
+        ],
+        "max_rss_kb": 3938204,
+        "rank": 16,
+        "required_iterations": 8,
+        "run": {
+          "apply_update": true,
+          "arm": "train",
+          "ended_at_utc": "2026-05-24T16:48:45Z",
+          "final_checkpoint": "/data/local/tmp/polymath_gemma4_gate/phase12/runs/20260524T164412Z_phase12_cde_authority_rank16_train/Phase12-CDE-learning/iterations/iter_000007/checkpoint",
+          "iterations": 8,
+          "local_report_dir": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank16_train",
+          "phone_gate_dir": "/data/local/tmp/polymath_gemma4_gate/phase12/runs/20260524T164412Z_phase12_cde_authority_rank16_train/Phase12-CDE-learning",
+          "rank": 16,
+          "returncode": 0,
+          "run_id": "20260524T164412Z_phase12_cde_authority_rank16_train",
+          "schema_version": "phase12_cde_arm_run_v1",
+          "started_at_utc": "2026-05-24T16:45:47Z",
+          "stderr_first_4096": "",
+          "stdout_first_4096": ""
+        },
+        "schema_version": "phase12_cde_arm_summary_v1",
+        "status": "pass"
+      },
+      "trained_heldout": {
+        "arm": "trained_eval",
+        "checkpoint_changed": false,
+        "finite_losses": true,
+        "first": {
+          "active_tokens": 833,
+          "applied_update": false,
+          "checkpoint_delta_l2": {
+            "adapter_a": 0.0,
+            "adapter_b": 0.0
+          },
+          "combined_gradient_l2": 0.2443907102,
+          "grad_clip_l2": null,
+          "grad_clip_scale": null,
+          "gradient_l2": {
+            "adapter_a": 0.2148629553,
+            "adapter_b": 0.116450546,
+            "output": 0.0150965299
+          },
+          "iteration": 0,
+          "label_in_teacher_topk_rate": 0.7587034814,
+          "loss_topk_kl": 1.0005755997,
+          "max_rss_kb": 3938268,
+          "mean_student_teacher_top1_probability": 0.1233203377,
+          "optimizer": "adamw",
+          "optimizer_step": 0,
+          "student_teacher_top1_agreement": 0.1140456182
+        },
+        "gate": {
+          "active_training_seconds": 13.490167,
+          "active_wall_acceptance": true,
+          "active_wall_ratio": 0.88971348,
+          "apply_update": false,
+          "blockers": [],
+          "checkpoint_chain_acceptance": true,
+          "disconnect_acceptance": true,
+          "disconnect_hold_seconds": 0.0,
+          "disconnect_marker_seen": false,
+          "ended_at_utc": "2026-05-24T16:49:59Z",
+          "gate": "Phase12-CDE",
+          "iteration_count": 1,
+          "objective": "topk_embedding_kl",
+          "one_shot_fallback_preserved": true,
+          "phase10_active_wall_baseline": 0.21328649,
+          "queue_execution_wall_seconds": 15.162372,
+          "required_iteration_count": 1,
+          "runner_build_id": "phase11_runner_h11a_v1_20260523",
+          "runtime_topology": "phone_local_queue_no_adb_per_iteration",
+          "schema_version": "phase11_h11a_gate_result_v1",
+          "status": "pass"
+        },
+        "gate_status": "pass",
+        "iterations": 1,
+        "last": {
+          "active_tokens": 833,
+          "applied_update": false,
+          "checkpoint_delta_l2": {
+            "adapter_a": 0.0,
+            "adapter_b": 0.0
+          },
+          "combined_gradient_l2": 0.2443907102,
+          "grad_clip_l2": null,
+          "grad_clip_scale": null,
+          "gradient_l2": {
+            "adapter_a": 0.2148629553,
+            "adapter_b": 0.116450546,
+            "output": 0.0150965299
+          },
+          "iteration": 0,
+          "label_in_teacher_topk_rate": 0.7587034814,
+          "loss_topk_kl": 1.0005755997,
+          "max_rss_kb": 3938268,
+          "mean_student_teacher_top1_probability": 0.1233203377,
+          "optimizer": "adamw",
+          "optimizer_step": 0,
+          "student_teacher_top1_agreement": 0.1140456182
+        },
+        "loss_delta": 0.0,
+        "losses": [
+          1.0005755997
+        ],
+        "max_rss_kb": 3938268,
+        "rank": 16,
+        "required_iterations": 1,
+        "run": {
+          "apply_update": false,
+          "arm": "trained_eval",
+          "ended_at_utc": "2026-05-24T16:50:03Z",
+          "final_checkpoint": "/data/local/tmp/polymath_gemma4_gate/phase12/runs/20260524T164412Z_phase12_cde_authority_rank16_trained_eval/Phase12-CDE-learning/iterations/iter_000000/checkpoint",
+          "iterations": 1,
+          "local_report_dir": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank16_trained_eval",
+          "phone_gate_dir": "/data/local/tmp/polymath_gemma4_gate/phase12/runs/20260524T164412Z_phase12_cde_authority_rank16_trained_eval/Phase12-CDE-learning",
+          "rank": 16,
+          "returncode": 0,
+          "run_id": "20260524T164412Z_phase12_cde_authority_rank16_trained_eval",
+          "schema_version": "phase12_cde_arm_run_v1",
+          "started_at_utc": "2026-05-24T16:48:45Z",
+          "stderr_first_4096": "",
+          "stdout_first_4096": ""
+        },
+        "schema_version": "phase12_cde_arm_summary_v1",
+        "status": "pass"
+      }
+    },
+    {
+      "blockers": [],
+      "fixed_adapter_control": {
+        "arm": "baseline_eval",
+        "checkpoint_changed": false,
+        "finite_losses": true,
+        "first": {
+          "active_tokens": 833,
+          "applied_update": false,
+          "checkpoint_delta_l2": {
+            "adapter_a": 0.0,
+            "adapter_b": 0.0
+          },
+          "combined_gradient_l2": 3.61608e-05,
+          "grad_clip_l2": null,
+          "grad_clip_scale": null,
+          "gradient_l2": {
+            "adapter_a": 2.37804e-05,
+            "adapter_b": 2.72414e-05,
+            "output": 0.0159754076
+          },
+          "iteration": 0,
+          "label_in_teacher_topk_rate": 0.7587034814,
+          "loss_topk_kl": 1.1291671388,
+          "max_rss_kb": 3938276,
+          "mean_student_teacher_top1_probability": 0.1137876801,
+          "optimizer": "adamw",
+          "optimizer_step": 0,
+          "student_teacher_top1_agreement": 0.093637455
+        },
+        "gate": {
+          "active_training_seconds": 13.627166,
+          "active_wall_acceptance": true,
+          "active_wall_ratio": 0.88704056,
+          "apply_update": false,
+          "blockers": [],
+          "checkpoint_chain_acceptance": true,
+          "disconnect_acceptance": true,
+          "disconnect_hold_seconds": 0.0,
+          "disconnect_marker_seen": false,
+          "ended_at_utc": "2026-05-24T16:51:17Z",
+          "gate": "Phase12-CDE",
+          "iteration_count": 1,
+          "objective": "topk_embedding_kl",
+          "one_shot_fallback_preserved": true,
+          "phase10_active_wall_baseline": 0.21328649,
+          "queue_execution_wall_seconds": 15.362506,
+          "required_iteration_count": 1,
+          "runner_build_id": "phase11_runner_h11a_v1_20260523",
+          "runtime_topology": "phone_local_queue_no_adb_per_iteration",
+          "schema_version": "phase11_h11a_gate_result_v1",
+          "status": "pass"
+        },
+        "gate_status": "pass",
+        "iterations": 1,
+        "last": {
+          "active_tokens": 833,
+          "applied_update": false,
+          "checkpoint_delta_l2": {
+            "adapter_a": 0.0,
+            "adapter_b": 0.0
+          },
+          "combined_gradient_l2": 3.61608e-05,
+          "grad_clip_l2": null,
+          "grad_clip_scale": null,
+          "gradient_l2": {
+            "adapter_a": 2.37804e-05,
+            "adapter_b": 2.72414e-05,
+            "output": 0.0159754076
+          },
+          "iteration": 0,
+          "label_in_teacher_topk_rate": 0.7587034814,
+          "loss_topk_kl": 1.1291671388,
+          "max_rss_kb": 3938276,
+          "mean_student_teacher_top1_probability": 0.1137876801,
+          "optimizer": "adamw",
+          "optimizer_step": 0,
+          "student_teacher_top1_agreement": 0.093637455
+        },
+        "loss_delta": 0.0,
+        "losses": [
+          1.1291671388
+        ],
+        "max_rss_kb": 3938276,
+        "rank": 32,
+        "required_iterations": 1,
+        "run": {
+          "apply_update": false,
+          "arm": "baseline_eval",
+          "ended_at_utc": "2026-05-24T16:51:22Z",
+          "final_checkpoint": "/data/local/tmp/polymath_gemma4_gate/phase12/runs/20260524T164412Z_phase12_cde_authority_rank32_baseline_eval/Phase12-CDE-learning/iterations/iter_000000/checkpoint",
+          "iterations": 1,
+          "local_report_dir": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank32_baseline_eval",
+          "phone_gate_dir": "/data/local/tmp/polymath_gemma4_gate/phase12/runs/20260524T164412Z_phase12_cde_authority_rank32_baseline_eval/Phase12-CDE-learning",
+          "rank": 32,
+          "returncode": 0,
+          "run_id": "20260524T164412Z_phase12_cde_authority_rank32_baseline_eval",
+          "schema_version": "phase12_cde_arm_run_v1",
+          "started_at_utc": "2026-05-24T16:50:03Z",
+          "stderr_first_4096": "",
+          "stdout_first_4096": ""
+        },
+        "schema_version": "phase12_cde_arm_summary_v1",
+        "status": "pass"
+      },
+      "rank": 32,
+      "schema_version": "phase12_cde_rank_result_v1",
+      "status": "pass",
+      "train": {
+        "arm": "train",
+        "checkpoint_changed": true,
+        "finite_losses": true,
+        "first": {
+          "active_tokens": 788,
+          "applied_update": true,
+          "checkpoint_delta_l2": {
+            "adapter_a": 0.0786970146,
+            "adapter_b": 0.1994683469
+          },
+          "combined_gradient_l2": 3.7984e-05,
+          "grad_clip_l2": null,
+          "grad_clip_scale": null,
+          "gradient_l2": {
+            "adapter_a": 2.85914e-05,
+            "adapter_b": 2.50064e-05,
+            "output": 0.0179967321
+          },
+          "iteration": 0,
+          "label_in_teacher_topk_rate": 0.8058375635,
+          "loss_topk_kl": 1.3055719254,
+          "max_rss_kb": 3938272,
+          "mean_student_teacher_top1_probability": 0.1151061445,
+          "optimizer": "adamw",
+          "optimizer_step": 1,
+          "student_teacher_top1_agreement": 0.0862944162
+        },
+        "gate": {
+          "active_training_seconds": 100.460072,
+          "active_wall_acceptance": true,
+          "active_wall_ratio": 0.93722953,
+          "apply_update": true,
+          "blockers": [],
+          "checkpoint_chain_acceptance": true,
+          "disconnect_acceptance": true,
+          "disconnect_hold_seconds": 0.0,
+          "disconnect_marker_seen": false,
+          "ended_at_utc": "2026-05-24T16:54:07Z",
+          "gate": "Phase12-CDE",
+          "iteration_count": 8,
+          "objective": "topk_embedding_kl",
+          "one_shot_fallback_preserved": true,
+          "phase10_active_wall_baseline": 0.21328649,
+          "queue_execution_wall_seconds": 107.188335,
+          "required_iteration_count": 8,
+          "runner_build_id": "phase11_runner_h11a_v1_20260523",
+          "runtime_topology": "phone_local_queue_no_adb_per_iteration",
+          "schema_version": "phase11_h11a_gate_result_v1",
+          "status": "pass"
+        },
+        "gate_status": "pass",
+        "iterations": 8,
+        "last": {
+          "active_tokens": 833,
+          "applied_update": true,
+          "checkpoint_delta_l2": {
+            "adapter_a": 0.2626876748,
+            "adapter_b": 0.244658029
+          },
+          "combined_gradient_l2": 0.1634627743,
+          "grad_clip_l2": null,
+          "grad_clip_scale": null,
+          "gradient_l2": {
+            "adapter_a": 0.143835716,
+            "adapter_b": 0.0776618658,
+            "output": 0.0156480885
+          },
+          "iteration": 7,
+          "label_in_teacher_topk_rate": 0.7719087635,
+          "loss_topk_kl": 1.0759621747,
+          "max_rss_kb": 3938272,
+          "mean_student_teacher_top1_probability": 0.120925428,
+          "optimizer": "adamw",
+          "optimizer_step": 8,
+          "student_teacher_top1_agreement": 0.1164465786
+        },
+        "loss_delta": 0.2296097506999999,
+        "losses": [
+          1.3055719254,
+          1.1721433519,
+          1.3017703625,
+          1.1603971455,
+          1.2820195788,
+          1.1287634647,
+          1.2424652271,
+          1.0759621747
+        ],
+        "max_rss_kb": 3938272,
+        "rank": 32,
+        "required_iterations": 8,
+        "run": {
+          "apply_update": true,
+          "arm": "train",
+          "ended_at_utc": "2026-05-24T16:54:18Z",
+          "final_checkpoint": "/data/local/tmp/polymath_gemma4_gate/phase12/runs/20260524T164412Z_phase12_cde_authority_rank32_train/Phase12-CDE-learning/iterations/iter_000007/checkpoint",
+          "iterations": 8,
+          "local_report_dir": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank32_train",
+          "phone_gate_dir": "/data/local/tmp/polymath_gemma4_gate/phase12/runs/20260524T164412Z_phase12_cde_authority_rank32_train/Phase12-CDE-learning",
+          "rank": 32,
+          "returncode": 0,
+          "run_id": "20260524T164412Z_phase12_cde_authority_rank32_train",
+          "schema_version": "phase12_cde_arm_run_v1",
+          "started_at_utc": "2026-05-24T16:51:22Z",
+          "stderr_first_4096": "",
+          "stdout_first_4096": ""
+        },
+        "schema_version": "phase12_cde_arm_summary_v1",
+        "status": "pass"
+      },
+      "trained_heldout": {
+        "arm": "trained_eval",
+        "checkpoint_changed": false,
+        "finite_losses": true,
+        "first": {
+          "active_tokens": 833,
+          "applied_update": false,
+          "checkpoint_delta_l2": {
+            "adapter_a": 0.0,
+            "adapter_b": 0.0
+          },
+          "combined_gradient_l2": 0.1719623588,
+          "grad_clip_l2": null,
+          "grad_clip_scale": null,
+          "gradient_l2": {
+            "adapter_a": 0.1508793631,
+            "adapter_b": 0.0825013372,
+            "output": 0.0151127748
+          },
+          "iteration": 0,
+          "label_in_teacher_topk_rate": 0.7587034814,
+          "loss_topk_kl": 1.0026539894,
+          "max_rss_kb": 3937748,
+          "mean_student_teacher_top1_probability": 0.1230970988,
+          "optimizer": "adamw",
+          "optimizer_step": 0,
+          "student_teacher_top1_agreement": 0.1116446579
+        },
+        "gate": {
+          "active_training_seconds": 6.249152,
+          "active_wall_acceptance": true,
+          "active_wall_ratio": 0.89398225,
+          "apply_update": false,
+          "blockers": [],
+          "checkpoint_chain_acceptance": true,
+          "disconnect_acceptance": true,
+          "disconnect_hold_seconds": 0.0,
+          "disconnect_marker_seen": false,
+          "ended_at_utc": "2026-05-24T16:54:41Z",
+          "gate": "Phase12-CDE",
+          "iteration_count": 1,
+          "objective": "topk_embedding_kl",
+          "one_shot_fallback_preserved": true,
+          "phase10_active_wall_baseline": 0.21328649,
+          "queue_execution_wall_seconds": 6.990242,
+          "required_iteration_count": 1,
+          "runner_build_id": "phase11_runner_h11a_v1_20260523",
+          "runtime_topology": "phone_local_queue_no_adb_per_iteration",
+          "schema_version": "phase11_h11a_gate_result_v1",
+          "status": "pass"
+        },
+        "gate_status": "pass",
+        "iterations": 1,
+        "last": {
+          "active_tokens": 833,
+          "applied_update": false,
+          "checkpoint_delta_l2": {
+            "adapter_a": 0.0,
+            "adapter_b": 0.0
+          },
+          "combined_gradient_l2": 0.1719623588,
+          "grad_clip_l2": null,
+          "grad_clip_scale": null,
+          "gradient_l2": {
+            "adapter_a": 0.1508793631,
+            "adapter_b": 0.0825013372,
+            "output": 0.0151127748
+          },
+          "iteration": 0,
+          "label_in_teacher_topk_rate": 0.7587034814,
+          "loss_topk_kl": 1.0026539894,
+          "max_rss_kb": 3937748,
+          "mean_student_teacher_top1_probability": 0.1230970988,
+          "optimizer": "adamw",
+          "optimizer_step": 0,
+          "student_teacher_top1_agreement": 0.1116446579
+        },
+        "loss_delta": 0.0,
+        "losses": [
+          1.0026539894
+        ],
+        "max_rss_kb": 3937748,
+        "rank": 32,
+        "required_iterations": 1,
+        "run": {
+          "apply_update": false,
+          "arm": "trained_eval",
+          "ended_at_utc": "2026-05-24T16:54:44Z",
+          "final_checkpoint": "/data/local/tmp/polymath_gemma4_gate/phase12/runs/20260524T164412Z_phase12_cde_authority_rank32_trained_eval/Phase12-CDE-learning/iterations/iter_000000/checkpoint",
+          "iterations": 1,
+          "local_report_dir": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank32_trained_eval",
+          "phone_gate_dir": "/data/local/tmp/polymath_gemma4_gate/phase12/runs/20260524T164412Z_phase12_cde_authority_rank32_trained_eval/Phase12-CDE-learning",
+          "rank": 32,
+          "returncode": 0,
+          "run_id": "20260524T164412Z_phase12_cde_authority_rank32_trained_eval",
+          "schema_version": "phase12_cde_arm_run_v1",
+          "started_at_utc": "2026-05-24T16:54:19Z",
+          "stderr_first_4096": "",
+          "stdout_first_4096": ""
+        },
+        "schema_version": "phase12_cde_arm_summary_v1",
+        "status": "pass"
+      }
+    }
+  ],
+  "schema_version": "phase12_gate_c_expanded_scope_result_v1",
+  "selected_residual_rank": 16,
+  "status": "pass_residual_expanded_scope"
+}

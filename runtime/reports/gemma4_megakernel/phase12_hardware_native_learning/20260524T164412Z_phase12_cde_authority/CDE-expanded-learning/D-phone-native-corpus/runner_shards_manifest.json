@@ -1,0 +1,200 @@
+{
+  "reason": "current OpenCL runner is compiled for 8 cases; expanded 16-sequence cache is split into two queue shards",
+  "schema_version": "phase12_runner_shards_manifest_v1",
+  "shards": [
+    {
+      "cache_manifest": {
+        "attention_mask_sha256": "da9b0ff8f430fd2187be7bcecfdff28f97da6288552326545aeb5aa8b6808695",
+        "input_ids_sha256": "bd8c7f8c9f9fbb64bde7ed61f07d934c810a5dd9dbae9d7d66754abe0f4cd264",
+        "labels_sha256": "e0cbb38fc8a324c5364b7c24aca3e9e2fc64cad95582b7a72b4c96c05021dcf6",
+        "loss_mask_sha256": "0781625dae3cf088f35fddacf2a2688c1cf03b404327674f0c5229aa5c87d424",
+        "position_ids_sha256": "f208e25e80ff8c0bc528847c589f835c8af12712ddd19c4889ed0048c6be2926",
+        "schema_version": "phase12_split_phone_token_pack_v1",
+        "selected_text_sha256": "0e5725947a16f8c543bec92ab93ba9ec860eac88943288dba99f489827696fe9",
+        "sequence_count": 8,
+        "sequence_length": 128,
+        "shard_index": 0,
+        "source_expanded_manifest": {
+          "attention_mask_sha256": "0ef6abb39a66aa53b6e7182f60e1b1aab22cae8ad938ca8bacc02148e56b9698",
+          "input_ids_sha256": "b9eec1c7d8327564a311b2b855ab6192407497d93c3e4b80ca191e7dde233718",
+          "labels_sha256": "763274c2eed6a2324a34c872876a5fb0ec6cbe366384d4919e11d1f8ee0bd2b8",
+          "loss_mask_sha256": "c2f769cb75c174ef3dc74a8cb7042f921d2a41d64f59de02bb63ccd9c66eb8bb",
+          "loss_tokens": 1621,
+          "merges_sha256": "6c99efe1bfe6b70092d531cad0a57278182652a2380aa5fb33e99d4e4eeb905f",
+          "model_id": "google/gemma-4-E4B",
+          "non_pad_tokens": 1637,
+          "position_ids_sha256": "888aeb2da2fafbc2df6481375e723e3945c61de752556e241a9783f5d3060ee7",
+          "raw_text_sha256": "8b806afa40326533700ad0d4cbf8b4cdd629870ba3061524df3536f1787a5e2b",
+          "revision": "7aa32e6889efd6300124851b164f8b364314c3d8",
+          "schema_version": "gemma4_phone_token_pack_v1",
+          "selected_text_sha256": "5fcd6f2a10432c3ca729b8a02d2a6e311fb4c57bcc345bb0d5bc2a7ee9b70ed1",
+          "sequence_count": 16,
+          "sequence_length": 128,
+          "source_url": "https://huggingface.co/datasets/fka/awesome-chatgpt-prompts/resolve/main/prompts.csv",
+          "tokenizer": "native_cpp_bpe_from_tokenizer_json_tables",
+          "vocab_sha256": "0e43bafc96037bed92fabea31282eb10ad094ec921748a58f6be10dbf9796f74"
+        },
+        "tokenizer": "native_cpp_bpe_from_tokenizer_json_tables"
+      },
+      "phone_cache": "/data/local/tmp/polymath_gemma4_gate/phase12/token_caches/20260524T164412Z_phase12_cde_authority_train_shard00",
+      "phone_teacher": "/data/local/tmp/polymath_gemma4_gate/phase12/teacher_shards/20260524T164412Z_phase12_cde_authority_train_shard00",
+      "shard_index": 0,
+      "teacher_manifest": {
+        "labels_sha256": "e0cbb38fc8a324c5364b7c24aca3e9e2fc64cad95582b7a72b4c96c05021dcf6",
+        "loss_mask_sha256": "0781625dae3cf088f35fddacf2a2688c1cf03b404327674f0c5229aa5c87d424",
+        "schema_version": "phase12_split_topk_teacher_shard_v1",
+        "sequence_count": 8,
+        "sequence_length": 128,
+        "shard_index": 0,
+        "source_expanded_manifest": {
+          "files": [
+            {
+              "bytes": 65536,
+              "path": "topk_token_ids.u32.bin",
+              "sha256": "d076f86b076341082084f7b680041aa8448a39bb48f27b6eac6541385d3989ca"
+            },
+            {
+              "bytes": 65536,
+              "path": "topk_probabilities.f32.bin",
+              "sha256": "3ad7e2287bd254f9f5a7217ac58d23bd7ac954a51c46a160bbd0a2f6b3c2613b"
+            },
+            {
+              "bytes": 2048,
+              "path": "loss_mask.u8.bin",
+              "sha256": "c2f769cb75c174ef3dc74a8cb7042f921d2a41d64f59de02bb63ccd9c66eb8bb"
+            },
+            {
+              "bytes": 8192,
+              "path": "labels.u32.bin",
+              "sha256": "763274c2eed6a2324a34c872876a5fb0ec6cbe366384d4919e11d1f8ee0bd2b8"
+            }
+          ],
+          "loss_tokens": 1621,
+          "metric_predeclared": {
+            "heldout_guardrail": "student_teacher_top1_agreement_non_regression",
+            "heldout_primary": "mean_student_teacher_top1_probability",
+            "train_signal": "loss_topk_kl_decrease"
+          },
+          "model_id": "google/gemma-4-E4B",
+          "objective": "conditional_topk_kl_over_full_teacher_topk",
+          "revision": "7aa32e6889efd6300124851b164f8b364314c3d8",
+          "schema_version": "phase11_h11f_topk_teacher_shard_v1",
+          "sequence_count": 16,
+          "sequence_length": 128,
+          "split": "phase12_expanded_train",
+          "student_scope": "two_layer_phone_runtime_rank4_residual_adapter",
+          "teacher_scope": "full_gemma4_e4b_causal_lm_logits",
+          "token_cache": {
+            "attention_mask_sha256": "0ef6abb39a66aa53b6e7182f60e1b1aab22cae8ad938ca8bacc02148e56b9698",
+            "input_ids_sha256": "b9eec1c7d8327564a311b2b855ab6192407497d93c3e4b80ca191e7dde233718",
+            "labels_sha256": "763274c2eed6a2324a34c872876a5fb0ec6cbe366384d4919e11d1f8ee0bd2b8",
+            "loss_mask_sha256": "c2f769cb75c174ef3dc74a8cb7042f921d2a41d64f59de02bb63ccd9c66eb8bb",
+            "position_ids_sha256": "888aeb2da2fafbc2df6481375e723e3945c61de752556e241a9783f5d3060ee7"
+          },
+          "token_count": 2048,
+          "top_k": 8
+        },
+        "top_k": 8,
+        "topk_probabilities_sha256": "fece99991b1b29a5dd662c09c77bb9102e234adf68b54dfa1098f25a577970a4",
+        "topk_token_ids_sha256": "75a7cefbcba0215a7ba305711f71728e44a1d2e6ba3cf51dc6199bf97b18bc4e"
+      }
+    },
+    {
+      "cache_manifest": {
+        "attention_mask_sha256": "cf5214c0db06a6b5a8eaf5a374a8e9a69bea971ad91e20b34185bda081c8cdd5",
+        "input_ids_sha256": "6ceb4aec7679c5a43b67a0526542995d03a2f2dd3d10c7da98de6baa2b991106",
+        "labels_sha256": "48f5c2f02a0eea1709d23eaea680a9f152419e407243d80ea51a45c447ec6381",
+        "loss_mask_sha256": "bfb279ac80cda8b9332afc694418bd5a3fdcc66f6c2484ccb1a2f043fa29cb57",
+        "position_ids_sha256": "cfa4876c1b3cbb27aa9ad6c7af83f9cf833a1bd612c67ef2da7fe88994807445",
+        "schema_version": "phase12_split_phone_token_pack_v1",
+        "selected_text_sha256": "cc8206bbd3a26bb81518331ce0216357d797550572c8738788f62800f07183c2",
+        "sequence_count": 8,
+        "sequence_length": 128,
+        "shard_index": 1,
+        "source_expanded_manifest": {
+          "attention_mask_sha256": "0ef6abb39a66aa53b6e7182f60e1b1aab22cae8ad938ca8bacc02148e56b9698",
+          "input_ids_sha256": "b9eec1c7d8327564a311b2b855ab6192407497d93c3e4b80ca191e7dde233718",
+          "labels_sha256": "763274c2eed6a2324a34c872876a5fb0ec6cbe366384d4919e11d1f8ee0bd2b8",
+          "loss_mask_sha256": "c2f769cb75c174ef3dc74a8cb7042f921d2a41d64f59de02bb63ccd9c66eb8bb",
+          "loss_tokens": 1621,
+          "merges_sha256": "6c99efe1bfe6b70092d531cad0a57278182652a2380aa5fb33e99d4e4eeb905f",
+          "model_id": "google/gemma-4-E4B",
+          "non_pad_tokens": 1637,
+          "position_ids_sha256": "888aeb2da2fafbc2df6481375e723e3945c61de752556e241a9783f5d3060ee7",
+          "raw_text_sha256": "8b806afa40326533700ad0d4cbf8b4cdd629870ba3061524df3536f1787a5e2b",
+          "revision": "7aa32e6889efd6300124851b164f8b364314c3d8",
+          "schema_version": "gemma4_phone_token_pack_v1",
+          "selected_text_sha256": "5fcd6f2a10432c3ca729b8a02d2a6e311fb4c57bcc345bb0d5bc2a7ee9b70ed1",
+          "sequence_count": 16,
+          "sequence_length": 128,
+          "source_url": "https://huggingface.co/datasets/fka/awesome-chatgpt-prompts/resolve/main/prompts.csv",
+          "tokenizer": "native_cpp_bpe_from_tokenizer_json_tables",
+          "vocab_sha256": "0e43bafc96037bed92fabea31282eb10ad094ec921748a58f6be10dbf9796f74"
+        },
+        "tokenizer": "native_cpp_bpe_from_tokenizer_json_tables"
+      },
+      "phone_cache": "/data/local/tmp/polymath_gemma4_gate/phase12/token_caches/20260524T164412Z_phase12_cde_authority_train_shard01",
+      "phone_teacher": "/data/local/tmp/polymath_gemma4_gate/phase12/teacher_shards/20260524T164412Z_phase12_cde_authority_train_shard01",
+      "shard_index": 1,
+      "teacher_manifest": {
+        "labels_sha256": "48f5c2f02a0eea1709d23eaea680a9f152419e407243d80ea51a45c447ec6381",
+        "loss_mask_sha256": "bfb279ac80cda8b9332afc694418bd5a3fdcc66f6c2484ccb1a2f043fa29cb57",
+        "schema_version": "phase12_split_topk_teacher_shard_v1",
+        "sequence_count": 8,
+        "sequence_length": 128,
+        "shard_index": 1,
+        "source_expanded_manifest": {
+          "files": [
+            {
+              "bytes": 65536,
+              "path": "topk_token_ids.u32.bin",
+              "sha256": "d076f86b076341082084f7b680041aa8448a39bb48f27b6eac6541385d3989ca"
+            },
+            {
+              "bytes": 65536,
+              "path": "topk_probabilities.f32.bin",
+              "sha256": "3ad7e2287bd254f9f5a7217ac58d23bd7ac954a51c46a160bbd0a2f6b3c2613b"
+            },
+            {
+              "bytes": 2048,
+              "path": "loss_mask.u8.bin",
+              "sha256": "c2f769cb75c174ef3dc74a8cb7042f921d2a41d64f59de02bb63ccd9c66eb8bb"
+            },
+            {
+              "bytes": 8192,
+              "path": "labels.u32.bin",
+              "sha256": "763274c2eed6a2324a34c872876a5fb0ec6cbe366384d4919e11d1f8ee0bd2b8"
+            }
+          ],
+          "loss_tokens": 1621,
+          "metric_predeclared": {
+            "heldout_guardrail": "student_teacher_top1_agreement_non_regression",
+            "heldout_primary": "mean_student_teacher_top1_probability",
+            "train_signal": "loss_topk_kl_decrease"
+          },
+          "model_id": "google/gemma-4-E4B",
+          "objective": "conditional_topk_kl_over_full_teacher_topk",
+          "revision": "7aa32e6889efd6300124851b164f8b364314c3d8",
+          "schema_version": "phase11_h11f_topk_teacher_shard_v1",
+          "sequence_count": 16,
+          "sequence_length": 128,
+          "split": "phase12_expanded_train",
+          "student_scope": "two_layer_phone_runtime_rank4_residual_adapter",
+          "teacher_scope": "full_gemma4_e4b_causal_lm_logits",
+          "token_cache": {
+            "attention_mask_sha256": "0ef6abb39a66aa53b6e7182f60e1b1aab22cae8ad938ca8bacc02148e56b9698",
+            "input_ids_sha256": "b9eec1c7d8327564a311b2b855ab6192407497d93c3e4b80ca191e7dde233718",
+            "labels_sha256": "763274c2eed6a2324a34c872876a5fb0ec6cbe366384d4919e11d1f8ee0bd2b8",
+            "loss_mask_sha256": "c2f769cb75c174ef3dc74a8cb7042f921d2a41d64f59de02bb63ccd9c66eb8bb",
+            "position_ids_sha256": "888aeb2da2fafbc2df6481375e723e3945c61de752556e241a9783f5d3060ee7"
+          },
+          "token_count": 2048,
+          "top_k": 8
+        },
+        "top_k": 8,
+        "topk_probabilities_sha256": "114d990c9b417f8e873019f5ff220d3eaec9c19e729aa3f72f1c4543422337e5",
+        "topk_token_ids_sha256": "b1c0614be2f37f4efa4d2ce194857f4f8112a5239b5f69c792396e72afab0479"
+      }
+    }
+  ]
+}

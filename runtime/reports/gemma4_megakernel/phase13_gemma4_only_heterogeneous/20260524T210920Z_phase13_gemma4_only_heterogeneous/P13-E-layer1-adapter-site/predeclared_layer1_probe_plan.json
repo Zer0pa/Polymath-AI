@@ -1,0 +1,55 @@
+{
+  "adapter_site": "post_layer1",
+  "declared_at_utc": "2026-05-24T22:21:56Z",
+  "epsilon": 0.01,
+  "pass_rule": {
+    "absolute_error_max": 5e-05,
+    "relative_error_max": 0.25,
+    "sign_required_when_abs_analytic_gradient_gte": 1e-05
+  },
+  "probes": [
+    {
+      "epsilon": 0.01,
+      "index": 12278,
+      "tensor": "adapter_a"
+    },
+    {
+      "epsilon": 0.01,
+      "index": 13905,
+      "tensor": "adapter_a"
+    },
+    {
+      "epsilon": 0.01,
+      "index": 14819,
+      "tensor": "adapter_a"
+    },
+    {
+      "epsilon": 0.01,
+      "index": 25987,
+      "tensor": "adapter_a"
+    },
+    {
+      "epsilon": 0.01,
+      "index": 386,
+      "tensor": "adapter_b"
+    },
+    {
+      "epsilon": 0.01,
+      "index": 11016,
+      "tensor": "adapter_b"
+    },
+    {
+      "epsilon": 0.01,
+      "index": 20811,
+      "tensor": "adapter_b"
+    },
+    {
+      "epsilon": 0.01,
+      "index": 37325,
+      "tensor": "adapter_b"
+    }
+  ],
+  "rank": 16,
+  "schema_version": "phase13_p13e_layer1_probe_plan_v1",
+  "seed": 13005
+}

@@ -1,0 +1,452 @@
+{
+  "adjudication": {
+    "heterogeneous_pass": false,
+    "selected_for_p13h": {
+      "excluded_htp_role": "execution_only_relu_hidden_tensor_island_not_consumed_by_training",
+      "fallback_source_gate": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T173847Z_phase12_long_native_lr_retry1/CDE-long-native-lr/gate_result.json",
+      "hidden_size": 2560,
+      "learning_rate": 0.0003,
+      "model_id": "google/gemma-4-E4B",
+      "optimizer": "adamw",
+      "revision": "7aa32e6889efd6300124851b164f8b364314c3d8",
+      "runtime_topology": "phone_cpu_tokenization_and_hidden_cache_plus_adreno_opencl_residual_adapter_training",
+      "selected_reason": "only candidate with phone-local heldout improvement and no authority regression",
+      "source": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-G-heterogeneous-vs-adreno-baseline/gate_result.json",
+      "trainable_scope": "post_layer0_rank16_residual_adapter"
+    },
+    "throughput_observation": "HTP ReLU inference is fast on a 1x16x2560 tensor, but throughput is not the authority metric and cannot replace heldout movement in the Gemma training loop.",
+    "why_htp_not_promoted": [
+      "HTP output is not consumed by the Gemma training loop",
+      "No heldout movement is attributable to the HTP candidate",
+      "No measured HTP-to-Adreno bridge exists inside the optimizer/objective path"
+    ]
+  },
+  "adreno_opencl_baseline": {
+    "active_tokens": 833,
+    "active_training_seconds": 141.231255,
+    "active_wall_ratio": 0.9673381,
+    "claims": [
+      "rank-16 post-layer0 residual adapter continuation from the 8-step checkpoint improved heldout top-k KL and predeclared mini metric under phone-local sequential execution"
+    ],
+    "heldout_delta_vs_8_step": {
+      "loss_topk_kl": 0.17986730260000006,
+      "mean_student_teacher_top1_probability": 0.03923807739999999,
+      "student_teacher_top1_agreement": 0.1104441777
+    },
+    "heldout_loss_delta_per_active_token": 0.0002159271339735895,
+    "heldout_loss_topk_kl": 0.8207082971,
+    "heldout_mean_student_teacher_top1_probability": 0.1625584151,
+    "heldout_student_teacher_top1_agreement": 0.2244897959,
+    "iterations": 24,
+    "optimizer": "adamw",
+    "queue_execution_wall_seconds": 145.999888,
+    "runtime_topology": "phone-local sequential nohup script; no host minibatch serving; host only collected compact JSON artifacts after completion",
+    "selected_arm": "lr3e4_cont24",
+    "selected_learning_rate": 0.0003,
+    "source_gate": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T173847Z_phase12_long_native_lr_retry1/CDE-long-native-lr/gate_result.json",
+    "status": "pass_adreno_opencl_training_baseline",
+    "trainable_scope": "post_layer0_rank16_residual_adapter"
+  },
+  "gemma_hidden2560_htp_candidate": {
+    "battery_after": {
+      "ac_powered": true,
+      "charge_counter": 4624000,
+      "charging_policy": 0,
+      "charging_state": 0,
+      "current_battery_service_state": "",
+      "dock_powered": false,
+      "health": 2,
+      "level": 80,
+      "max_charging_current": 3000000,
+      "max_charging_voltage": 5000000,
+      "path": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-G-heterogeneous-vs-adreno-baseline/phone_htp_relu_benchmark/battery_after.txt",
+      "present": true,
+      "scale": 100,
+      "status": 2,
+      "technology": "Li-ion",
+      "temperature": 220,
+      "temperature_c": 22.0,
+      "usb_powered": false,
+      "voltage": 8265,
+      "wireless_powered": false
+    },
+    "battery_before": {
+      "ac_powered": true,
+      "charge_counter": 4624000,
+      "charging_policy": 0,
+      "charging_state": 0,
+      "current_battery_service_state": "",
+      "dock_powered": false,
+      "health": 2,
+      "level": 80,
+      "max_charging_current": 3000000,
+      "max_charging_voltage": 5000000,
+      "path": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-G-heterogeneous-vs-adreno-baseline/phone_htp_relu_benchmark/battery_before.txt",
+      "present": true,
+      "scale": 100,
+      "status": 2,
+      "technology": "Li-ion",
+      "temperature": 220,
+      "temperature_c": 22.0,
+      "usb_powered": false,
+      "voltage": 8265,
+      "wireless_powered": false
+    },
+    "consumed_by_gemma_training_loop": false,
+    "context": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13f/htp/relu/context/gemma_hidden2560_relu.qnn.bin",
+    "context_graphs": [
+      {
+        "info": {
+          "endOpIndex": 0,
+          "graphBlobInfo": {
+            "info": {
+              "htpDlbc": 0,
+              "numHvxThreads": 6,
+              "optimizationLevel": 0,
+              "spillFillBufferSize": 0,
+              "vtcmSize": 4
+            },
+            "version": "QNN_SYSTEM_CONTEXT_HTP_GRAPH_INFO_BLOB_VERSION_V1"
+          },
+          "graphBlobInfoSize": 112,
+          "graphBlobInfoV2": {
+            "constSize": 8192,
+            "ddrTensorSize": 0,
+            "ioTensorSize": 327680,
+            "isSafeShareIO": 0,
+            "nativeKChannelSize": 256,
+            "nativeVChannelSize": 64,
+            "opDataSize": 11776,
+            "sharedWeightsSize": 0,
+            "version": "QNN_SYSTEM_CONTEXT_HTP_GRAPH_INFO_BLOB_VERSION_V2"
+          },
+          "graphInputs": [
+            {
+              "info": {
+                "dataFormat": "QNN_TENSOR_DATA_FORMAT_FLAT_BUFFER",
+                "dataType": "QNN_DATATYPE_FLOAT_32",
+                "dimensions": [
+                  1,
+                  16,
+                  2560
+                ],
+                "id": 1,
+                "memType": "QNN_TENSORMEMTYPE_RAW",
+                "name": "gemma_hidden_input",
+                "quantizeParams": {
+                  "definition": "QNN_DEFINITION_UNDEFINED",
+                  "quantizationEncoding": "QNN_QUANTIZATION_ENCODING_UNDEFINED"
+                },
+                "rank": 3,
+                "type": "QNN_TENSOR_TYPE_APP_WRITE"
+              },
+              "version": "QNN_TENSOR_VERSION_1"
+            }
+          ],
+          "graphName": "gemma_hidden2560_relu",
+          "graphOutputs": [
+            {
+              "info": {
+                "dataFormat": "QNN_TENSOR_DATA_FORMAT_FLAT_BUFFER",
+                "dataType": "QNN_DATATYPE_FLOAT_32",
+                "dimensions": [
+                  1,
+                  16,
+                  2560
+                ],
+                "id": 2,
+                "memType": "QNN_TENSORMEMTYPE_RAW",
+                "name": "gemma_hidden_relu_out",
+                "quantizeParams": {
+                  "definition": "QNN_DEFINITION_UNDEFINED",
+                  "quantizationEncoding": "QNN_QUANTIZATION_ENCODING_UNDEFINED"
+                },
+                "rank": 3,
+                "type": "QNN_TENSOR_TYPE_APP_READ"
+              },
+              "version": "QNN_TENSOR_VERSION_1"
+            }
+          ],
+          "numGraphInputs": 1,
+          "numGraphOutputs": 1,
+          "numUpdateableTensors": 0,
+          "startOpIndex": 0,
+          "updateableTensors": []
+        },
+        "version": "QNN_SYSTEM_CONTEXT_GRAPH_INFO_VERSION_3"
+      }
+    ],
+    "correctness": {
+      "float_count": 40960,
+      "input_path": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-G-heterogeneous-vs-adreno-baseline/phone_htp_relu_benchmark/input_gemma_layer0_first16_hidden.f32.bin",
+      "input_sha256": "c55390a717f1e00697f605ce14d1b9c31b6631955519bdf2b26afcdc010b9e57",
+      "max_abs_error": 0.0,
+      "max_output_abs": 5.65625,
+      "mismatch_count": 0,
+      "negative_input_count": 20400,
+      "output_path": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-G-heterogeneous-vs-adreno-baseline/phone_htp_relu_benchmark/run_0/Result_0/gemma_hidden_relu_out.raw",
+      "output_sha256": "70aaa78e00d4ae0ad2c5318e89cefaf4b96129ddb282bb22fe4c35b8c8b44bbd",
+      "positive_input_count": 20544,
+      "status": "pass"
+    },
+    "heldout_movement_attributable_to_htp": null,
+    "input_bytes": 163840,
+    "input_shape": [
+      1,
+      16,
+      2560
+    ],
+    "local_benchmark_dir": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-G-heterogeneous-vs-adreno-baseline/phone_htp_relu_benchmark",
+    "mean_accelerator_execute_excluding_wait_us": 443.3333333333333,
+    "mean_netrun_execute_us": 4190.333333333333,
+    "mean_shell_wall_ms": 216.77956600000002,
+    "model_id": "google/gemma-4-E4B",
+    "output_bytes": 163840,
+    "phone_benchmark_root": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13g/htp_relu_benchmark",
+    "profile_summaries": [
+      {
+        "accelerator_execute_excluding_wait_us": 453.0,
+        "accelerator_execute_us": 3268.0,
+        "hvx_threads": 6,
+        "ips": 216.731689,
+        "netrun_execute_us": 4178.0,
+        "path": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-G-heterogeneous-vs-adreno-baseline/phone_htp_relu_benchmark/run_0/profile_view.csv",
+        "qnn_execute_us": 4164.0,
+        "rpc_execute_us": 3953.0,
+        "status": "parsed"
+      },
+      {
+        "accelerator_execute_excluding_wait_us": 434.0,
+        "accelerator_execute_us": 3304.0,
+        "hvx_threads": 6,
+        "ips": 215.007523,
+        "netrun_execute_us": 4204.0,
+        "path": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-G-heterogeneous-vs-adreno-baseline/phone_htp_relu_benchmark/run_1/profile_view.csv",
+        "qnn_execute_us": 4190.0,
+        "rpc_execute_us": 3996.0,
+        "status": "parsed"
+      },
+      {
+        "accelerator_execute_excluding_wait_us": 443.0,
+        "accelerator_execute_us": 3298.0,
+        "hvx_threads": 6,
+        "ips": 215.796295,
+        "netrun_execute_us": 4189.0,
+        "path": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-G-heterogeneous-vs-adreno-baseline/phone_htp_relu_benchmark/run_2/profile_view.csv",
+        "qnn_execute_us": 4177.0,
+        "rpc_execute_us": 3988.0,
+        "status": "parsed"
+      }
+    ],
+    "revision": "7aa32e6889efd6300124851b164f8b364314c3d8",
+    "selected_p13f_attempt": "relu",
+    "source_gate": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-F-gemma-compatible-htp-context/gate_result.json",
+    "status": "pass_execution_only",
+    "thermal_after": {
+      "interesting_hottest": [
+        {
+          "temp_c": 27.0,
+          "temp_millideg_c": 27000,
+          "type": "cpu-0-4-1",
+          "zone": "/sys/class/thermal/thermal_zone19"
+        },
+        {
+          "temp_c": 26.6,
+          "temp_millideg_c": 26600,
+          "type": "cpu-0-2-1",
+          "zone": "/sys/class/thermal/thermal_zone12"
+        },
+        {
+          "temp_c": 26.6,
+          "temp_millideg_c": 26600,
+          "type": "cpu-0-3-0",
+          "zone": "/sys/class/thermal/thermal_zone14"
+        },
+        {
+          "temp_c": 26.6,
+          "temp_millideg_c": 26600,
+          "type": "cpu-0-3-1",
+          "zone": "/sys/class/thermal/thermal_zone16"
+        },
+        {
+          "temp_c": 26.6,
+          "temp_millideg_c": 26600,
+          "type": "cpu-0-4-0",
+          "zone": "/sys/class/thermal/thermal_zone18"
+        },
+        {
+          "temp_c": 26.6,
+          "temp_millideg_c": 26600,
+          "type": "cpu-0-5-1",
+          "zone": "/sys/class/thermal/thermal_zone21"
+        },
+        {
+          "temp_c": 26.6,
+          "temp_millideg_c": 26600,
+          "type": "cpuss-0-0",
+          "zone": "/sys/class/thermal/thermal_zone22"
+        },
+        {
+          "temp_c": 26.6,
+          "temp_millideg_c": 26600,
+          "type": "cpuss-0-1",
+          "zone": "/sys/class/thermal/thermal_zone23"
+        },
+        {
+          "temp_c": 26.2,
+          "temp_millideg_c": 26200,
+          "type": "cpu-0-2-0",
+          "zone": "/sys/class/thermal/thermal_zone10"
+        },
+        {
+          "temp_c": 26.2,
+          "temp_millideg_c": 26200,
+          "type": "cpu-0-0-0",
+          "zone": "/sys/class/thermal/thermal_zone2"
+        },
+        {
+          "temp_c": 26.2,
+          "temp_millideg_c": 26200,
+          "type": "cpu-0-5-0",
+          "zone": "/sys/class/thermal/thermal_zone20"
+        },
+        {
+          "temp_c": 26.2,
+          "temp_millideg_c": 26200,
+          "type": "cpu-0-0-1",
+          "zone": "/sys/class/thermal/thermal_zone4"
+        }
+      ],
+      "path": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-G-heterogeneous-vs-adreno-baseline/phone_htp_relu_benchmark/thermal_after.txt",
+      "zone_count": 83
+    },
+    "thermal_before": {
+      "interesting_hottest": [
+        {
+          "temp_c": 26.2,
+          "temp_millideg_c": 26200,
+          "type": "cpu-0-0-1",
+          "zone": "/sys/class/thermal/thermal_zone4"
+        },
+        {
+          "temp_c": 25.4,
+          "temp_millideg_c": 25400,
+          "type": "cpu-0-2-0",
+          "zone": "/sys/class/thermal/thermal_zone10"
+        },
+        {
+          "temp_c": 25.4,
+          "temp_millideg_c": 25400,
+          "type": "cpu-0-2-1",
+          "zone": "/sys/class/thermal/thermal_zone12"
+        },
+        {
+          "temp_c": 25.4,
+          "temp_millideg_c": 25400,
+          "type": "cpu-0-3-0",
+          "zone": "/sys/class/thermal/thermal_zone14"
+        },
+        {
+          "temp_c": 25.4,
+          "temp_millideg_c": 25400,
+          "type": "cpu-0-3-1",
+          "zone": "/sys/class/thermal/thermal_zone16"
+        },
+        {
+          "temp_c": 25.4,
+          "temp_millideg_c": 25400,
+          "type": "cpu-0-4-0",
+          "zone": "/sys/class/thermal/thermal_zone18"
+        },
+        {
+          "temp_c": 25.4,
+          "temp_millideg_c": 25400,
+          "type": "cpu-0-0-0",
+          "zone": "/sys/class/thermal/thermal_zone2"
+        },
+        {
+          "temp_c": 25.4,
+          "temp_millideg_c": 25400,
+          "type": "cpu-0-5-1",
+          "zone": "/sys/class/thermal/thermal_zone21"
+        },
+        {
+          "temp_c": 25.4,
+          "temp_millideg_c": 25400,
+          "type": "cpuss-0-0",
+          "zone": "/sys/class/thermal/thermal_zone22"
+        },
+        {
+          "temp_c": 25.4,
+          "temp_millideg_c": 25400,
+          "type": "cpuss-0-1",
+          "zone": "/sys/class/thermal/thermal_zone23"
+        },
+        {
+          "temp_c": 25.4,
+          "temp_millideg_c": 25400,
+          "type": "cpu-0-1-0",
+          "zone": "/sys/class/thermal/thermal_zone6"
+        },
+        {
+          "temp_c": 25.1,
+          "temp_millideg_c": 25100,
+          "type": "cpu-0-4-1",
+          "zone": "/sys/class/thermal/thermal_zone19"
+        }
+      ],
+      "path": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-G-heterogeneous-vs-adreno-baseline/phone_htp_relu_benchmark/thermal_before.txt",
+      "zone_count": 83
+    },
+    "transfer_payload_bytes_if_bridged": 327680,
+    "wall_times": [
+      {
+        "end_ns": 1779663495094495523,
+        "iteration": 0,
+        "returncode": 0,
+        "start_ns": 1779663494877282085,
+        "wall_ms": 217.213438,
+        "wall_ns": 217213438
+      },
+      {
+        "end_ns": 1779663495345669898,
+        "iteration": 1,
+        "returncode": 0,
+        "start_ns": 1779663495132434429,
+        "wall_ms": 213.235469,
+        "wall_ns": 213235469
+      },
+      {
+        "end_ns": 1779663495605913439,
+        "iteration": 2,
+        "returncode": 0,
+        "start_ns": 1779663495386023648,
+        "wall_ms": 219.889791,
+        "wall_ns": 219889791
+      }
+    ]
+  },
+  "phase12_non_gemma_heterogeneous_reference": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T172043Z_phase12_g_heterogeneous/G-heterogeneous-hypothesis/gate_result.json",
+  "post_layer1_adreno_candidate": {
+    "active_tokens": 788,
+    "adapter_elapsed_seconds": 0.455218,
+    "adapter_site": "post_layer1",
+    "finite_difference_pass_count": 8,
+    "finite_difference_probe_count": 8,
+    "heldout_movement": null,
+    "layer_elapsed_seconds": [
+      5.126882,
+      5.018175
+    ],
+    "loss_topk_kl_single_train_batch": 1.6853245453,
+    "objective_elapsed_seconds": 0.087045,
+    "rank": 16,
+    "regression_smokes_status": "pass",
+    "selection_reason": "not selected for P13-H because it has correctness evidence but no heldout improvement yet",
+    "source_gate": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-E-layer1-adapter-site/gate_result.json",
+    "status": "pass_correctness_smoke_no_heldout_selection",
+    "trainable_scope": "post_layer1_rank16_residual_adapter"
+  },
+  "predeclared_authority_metric": "heldout_topk_kl_improvement_per_active_token_without_authority_regression",
+  "schema_version": "phase13_p13g_candidate_comparison_v1"
+}

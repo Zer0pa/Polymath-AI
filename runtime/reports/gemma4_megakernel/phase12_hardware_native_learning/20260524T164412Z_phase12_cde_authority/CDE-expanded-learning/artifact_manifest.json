@@ -1,0 +1,777 @@
+{
+  "forbidden_payload_artifacts": [],
+  "git_allowed_artifacts": [
+    {
+      "bytes": 1545,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/C-expanded-scope-repair/expanded_checkpoint_manifests.json",
+      "sha256": "1643fbf6c06ec89512a2fdaf513d9e0d27662502a92dfbea0741ea33d07bebbb"
+    },
+    {
+      "bytes": 318,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/C-expanded-scope-repair/falsifier_report.md",
+      "sha256": "782f94d00b9236faac85204c2852c2db151ee44e6a628f4dcfc2ad88d753d6f6"
+    },
+    {
+      "bytes": 25886,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/C-expanded-scope-repair/gate_result.json",
+      "sha256": "04c9076caf9010590f90a6f5abd3de2afe75f7f54d670659122ae1982435edae"
+    },
+    {
+      "bytes": 2299,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/D-phone-native-corpus/expanded_teacher_manifest.json",
+      "sha256": "813609213e574d1dae0dfafa6d7c101d893143c097ae68171fab0004ec76062f"
+    },
+    {
+      "bytes": 1221,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/D-phone-native-corpus/expanded_train_cache_manifest.json",
+      "sha256": "185615360f780b9cb1a932827103e70939bac1590c0d1a66a25cdee45e130aa0"
+    },
+    {
+      "bytes": 200,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/D-phone-native-corpus/falsifier_report.md",
+      "sha256": "4e2f8f3dfdcfe36b632d5992f14c1984e14487a649a08438dd5bb797a3fcc709"
+    },
+    {
+      "bytes": 815,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/D-phone-native-corpus/gate_result.json",
+      "sha256": "fe43da939e441d06c83f2b95e2e9ccf93fa21c6823c443a771d6bdc9b01e4efb"
+    },
+    {
+      "bytes": 10990,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/D-phone-native-corpus/runner_shards_manifest.json",
+      "sha256": "286c201032a3e5faeedb985c42fa8714cbd59624ffb16fdb078d8843ad6a4d95"
+    },
+    {
+      "bytes": 152,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/E-heldout-mini-metric/falsifier_report.md",
+      "sha256": "4ee18e91d099c09160114193d026cf887cb6ae5214ae1aa126adfafa24c3585f"
+    },
+    {
+      "bytes": 12027,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/E-heldout-mini-metric/gate_result.json",
+      "sha256": "62f5f6726adc90f029c39062940aac3cb7fe59014f9812344ba08ec9dfe784bb"
+    },
+    {
+      "bytes": 5704,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arm_runs.json",
+      "sha256": "38c91dce5b40568fed21013138bd8ff3f8f1ab976161400c684f8e559d35a18b"
+    },
+    {
+      "bytes": 23310,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arm_summaries.json",
+      "sha256": "bc0b1a63f952e54cf252a89fd8b271daf485c86c8663fd49acc5edbaecd0b358"
+    },
+    {
+      "bytes": 18,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank16_baseline_eval/blockers.md",
+      "sha256": "ee4fdb8861ac7bab6c097f9c84b15b4ad03622daef22f9a07a9ffba479b69eda"
+    },
+    {
+      "bytes": 509,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank16_baseline_eval/campaign_manifest.json",
+      "sha256": "b3bd9f78b7909d921ee5a0ff914e13773d88bb319d9fa30eb1832a84b8801e9f"
+    },
+    {
+      "bytes": 10668,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank16_baseline_eval/checksum_chain.jsonl",
+      "sha256": "0a094b10f0ae874ed0efffdabe10bca9ad4b01fb45b8bb58f31008b662277f4b"
+    },
+    {
+      "bytes": 1235,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank16_baseline_eval/control/phase12_rank16_baseline_eval_config.json",
+      "sha256": "f851da39ae3ab077fa5cb8fbf74ea29d976e0c78b59cd9bd6714c3f2ded7904b"
+    },
+    {
+      "bytes": 198,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank16_baseline_eval/control/phase12_rank16_baseline_eval_queue.jsonl",
+      "sha256": "9652edc10e67e70d6b3f703ba269298f89428d02c8d6141c687400e7780ccc44"
+    },
+    {
+      "bytes": 3465,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank16_baseline_eval/daemon_static_artifact_manifest.json",
+      "sha256": "f91c7b3a76a6504046daa594c74e581f86e65d048c522a1d8507c8c38c08a921"
+    },
+    {
+      "bytes": 579,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank16_baseline_eval/falsifier_report.md",
+      "sha256": "e9b803af42fb381ba55ea4516e17ec9966eb47c8db22665c1371240ef9a17c6c"
+    },
+    {
+      "bytes": 782,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank16_baseline_eval/gate_result.json",
+      "sha256": "cda6e283fad96ff8dafd075bdf6faad32fbe1a4e1ad9c3801ca3192e11e9c96a"
+    },
+    {
+      "bytes": 741,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank16_baseline_eval/heartbeat.json",
+      "sha256": "5bab24544ca7abbd4c62a38fd69d8cc018062fe49e29ef0eb8778febb4fe1b93"
+    },
+    {
+      "bytes": 2398,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank16_baseline_eval/iterations/iter_000000/checkpoint_manifest.json",
+      "sha256": "15877f597ab408fcab869cf4d0851c028f1001d170c40b40793209b9744999e0"
+    },
+    {
+      "bytes": 1114,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank16_baseline_eval/iterations/iter_000000/replay_manifest.json",
+      "sha256": "cf0a32176c85e1fa17e1191b093646684782e728eb9da7e1536458f002638718"
+    },
+    {
+      "bytes": 2589,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank16_baseline_eval/iterations/iter_000000/telemetry.json",
+      "sha256": "1e840cfcf7d087a1284188764de42f6079099e58ad1357dfc4e4cb337294bed0"
+    },
+    {
+      "bytes": 367,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank16_baseline_eval/queue_schema.json",
+      "sha256": "495f3395ec63bdc1bf3387f77a4b5c4b9ee5c978ab034048d0d8623a3404ad91"
+    },
+    {
+      "bytes": 533,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank16_baseline_eval/runner_state.json",
+      "sha256": "4fa30acc6cc243b3f44a5a705a07af6a7a646e5d738958a9d8334e06eb30b4d7"
+    },
+    {
+      "bytes": 889,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank16_baseline_eval/telemetry.jsonl",
+      "sha256": "210b76cde0a9bf487923213b1b7a0425768290d3e8335f55f5a4dc4b5b9c32b9"
+    },
+    {
+      "bytes": 367,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank16_baseline_eval/timing_breakdown.json",
+      "sha256": "36ab27b3b033c686b7ff1065a0cb742c2870d9a666a13851b873bffe43385377"
+    },
+    {
+      "bytes": 18,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank16_train/blockers.md",
+      "sha256": "ee4fdb8861ac7bab6c097f9c84b15b4ad03622daef22f9a07a9ffba479b69eda"
+    },
+    {
+      "bytes": 485,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank16_train/campaign_manifest.json",
+      "sha256": "881a032e8a5d6dc3be26df4b9a7824398dcb8972f5495c56f4c2b19160ac00d9"
+    },
+    {
+      "bytes": 43880,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank16_train/checksum_chain.jsonl",
+      "sha256": "726720f13589ad5027bcb3b924787e4bd045aeb5f7a8c18bddf6578474f67f5c"
+    },
+    {
+      "bytes": 1540,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank16_train/control/phase12_rank16_train_config.json",
+      "sha256": "7a33ecd95bfbf7ee4952a6a229439109b49824e8d84ed94092a4d1e3129ac1fb"
+    },
+    {
+      "bytes": 182,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank16_train/control/phase12_rank16_train_queue.jsonl",
+      "sha256": "fb3b8b1eaf77a64e523834c260b8f8ed85aea83d549ad8f78b5a959a317f4fc3"
+    },
+    {
+      "bytes": 4781,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank16_train/daemon_static_artifact_manifest.json",
+      "sha256": "368043bf68474131521ae7b41a730b1663c8578a8b5d30d31032f671debc6cd7"
+    },
+    {
+      "bytes": 579,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank16_train/falsifier_report.md",
+      "sha256": "e9b803af42fb381ba55ea4516e17ec9966eb47c8db22665c1371240ef9a17c6c"
+    },
+    {
+      "bytes": 783,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank16_train/gate_result.json",
+      "sha256": "5e22a55a9fef303a832ffaa3ecd712b0484bbfdf07b22554685f52df7c4f6c90"
+    },
+    {
+      "bytes": 726,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank16_train/heartbeat.json",
+      "sha256": "dc8079d5d52ddc4569727abd5341ea58e783f071725a4695e6e4f7364ccc93a3"
+    },
+    {
+      "bytes": 3897,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank16_train/iterations/iter_000000/checkpoint_manifest.json",
+      "sha256": "bfcf2df66e9a3018bbcd74b7f8929aff44e7bb5281d1ab4635214d34496eb222"
+    },
+    {
+      "bytes": 1179,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank16_train/iterations/iter_000000/replay_manifest.json",
+      "sha256": "174567bcaabbe11199499761bd3380c57118fe63bcfa02d98aa18cc17dc0b953"
+    },
+    {
+      "bytes": 2628,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank16_train/iterations/iter_000000/telemetry.json",
+      "sha256": "ae8fd88118b27987c5b4d1694af1d083a90eee21128f5917952177652303ee25"
+    },
+    {
+      "bytes": 3995,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank16_train/iterations/iter_000001/checkpoint_manifest.json",
+      "sha256": "f0a16669f3c8c696e8f4e4b8e908aeaade2e1b5820c7082016b524cbe02aa562"
+    },
+    {
+      "bytes": 1229,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank16_train/iterations/iter_000001/replay_manifest.json",
+      "sha256": "8ad39383b8a843845ca5549f6799b8625be5c0997588243b44bc8d8e8cba5740"
+    },
+    {
+      "bytes": 2628,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank16_train/iterations/iter_000001/telemetry.json",
+      "sha256": "41174ff22104d7b0c3b7036ed0d0fecbfb1df4a5e482e010b5989587f72a071e"
+    },
+    {
+      "bytes": 3995,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank16_train/iterations/iter_000002/checkpoint_manifest.json",
+      "sha256": "31bbf52bbcf83a47d1d81f9fda73ee932b335f47dbcb97ddfdb61f52868c201c"
+    },
+    {
+      "bytes": 1229,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank16_train/iterations/iter_000002/replay_manifest.json",
+      "sha256": "950ca639d47d8648bf53ed89b24e1b4bcf69956c8069e4801af05211a04e8a03"
+    },
+    {
+      "bytes": 2628,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank16_train/iterations/iter_000002/telemetry.json",
+      "sha256": "b91d04ca856f5b48f6ea587302015b324b5d64c37e5e501a2ada519e24127986"
+    },
+    {
+      "bytes": 3995,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank16_train/iterations/iter_000003/checkpoint_manifest.json",
+      "sha256": "601ecf12f757e53f3ae9e07c1ed2626e7f3bda011f01db2d8bd9db1276123e91"
+    },
+    {
+      "bytes": 1229,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank16_train/iterations/iter_000003/replay_manifest.json",
+      "sha256": "007f3222894cba759ec7f33b835f01bb64d3630116ab17d155ed70e2f666e42a"
+    },
+    {
+      "bytes": 2628,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank16_train/iterations/iter_000003/telemetry.json",
+      "sha256": "37c4b8aefb6bb7756d372ebdfc0a302c13aab24eee2d61065f7d6d1b7da5d61b"
+    },
+    {
+      "bytes": 3995,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank16_train/iterations/iter_000004/checkpoint_manifest.json",
+      "sha256": "a09495b4a847bb9cb0ec643eeca9fab60525360bdf8047ce6c0099fa5714c615"
+    },
+    {
+      "bytes": 1229,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank16_train/iterations/iter_000004/replay_manifest.json",
+      "sha256": "c6d7aeaa43d503cb0219b28e8c693e6561eec8f91055f5c3cc705839c3ac7a47"
+    },
+    {
+      "bytes": 2628,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank16_train/iterations/iter_000004/telemetry.json",
+      "sha256": "5194b959b10dc63d5d4cd065c5aad4b2c02bb5ca935a3c4b6623f9ef5ddf5862"
+    },
+    {
+      "bytes": 3995,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank16_train/iterations/iter_000005/checkpoint_manifest.json",
+      "sha256": "69726fe862fb654d76c25e9d5245a209f781e67a49578aedaeabc3f6d6c3a117"
+    },
+    {
+      "bytes": 1229,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank16_train/iterations/iter_000005/replay_manifest.json",
+      "sha256": "1291e1bc0b3083ece5381db3e416e6b1f13821e4b9315206e1a7b61e0189f8c2"
+    },
+    {
+      "bytes": 2628,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank16_train/iterations/iter_000005/telemetry.json",
+      "sha256": "d0107ed58252bc392361b1d2d895b2a570381a9ce5c4e7742455285afde5c1df"
+    },
+    {
+      "bytes": 3995,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank16_train/iterations/iter_000006/checkpoint_manifest.json",
+      "sha256": "b662a35190c7a923c1026777f30353e1a3f1dc974ca75082b2503a9d35191a60"
+    },
+    {
+      "bytes": 1229,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank16_train/iterations/iter_000006/replay_manifest.json",
+      "sha256": "ea77c3df07ac93fa8f761ba05f9c40113b91236ad9b267aef13c33f4e53684d0"
+    },
+    {
+      "bytes": 2628,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank16_train/iterations/iter_000006/telemetry.json",
+      "sha256": "a040cc0945fcbf613c9710e85d981d50384569e56fbe287b7fcc5710fb7c0c02"
+    },
+    {
+      "bytes": 3995,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank16_train/iterations/iter_000007/checkpoint_manifest.json",
+      "sha256": "c7535951c2c645d78622a9e39a298340fd8caff0c1d364cb672eda2b8c104d52"
+    },
+    {
+      "bytes": 1228,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank16_train/iterations/iter_000007/replay_manifest.json",
+      "sha256": "51ee8630db2eca183bf6dba16adb41fb839ef9dbcf29b51fa22b8656e88a6b3e"
+    },
+    {
+      "bytes": 2628,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank16_train/iterations/iter_000007/telemetry.json",
+      "sha256": "7a5fbc69c7afaceba517c164d186bd311cbadb11ada407416e06b334b86b81e3"
+    },
+    {
+      "bytes": 367,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank16_train/queue_schema.json",
+      "sha256": "495f3395ec63bdc1bf3387f77a4b5c4b9ee5c978ab034048d0d8623a3404ad91"
+    },
+    {
+      "bytes": 509,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank16_train/runner_state.json",
+      "sha256": "d43edee1cc052489a2492f954f36e95daa9ead935b7b5ed1a8227ab8dd04b93b"
+    },
+    {
+      "bytes": 7925,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank16_train/telemetry.jsonl",
+      "sha256": "f6d38b2ef93dd9b43ab19eeaf51588c67117715166b3133d31306bfcebcbc8b9"
+    },
+    {
+      "bytes": 1096,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank16_train/timing_breakdown.json",
+      "sha256": "f0c880b220720db92f85aac23a5de9ff375af6de5c4ef3bf8d930a2a7ba80b49"
+    },
+    {
+      "bytes": 18,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank16_trained_eval/blockers.md",
+      "sha256": "ee4fdb8861ac7bab6c097f9c84b15b4ad03622daef22f9a07a9ffba479b69eda"
+    },
+    {
+      "bytes": 506,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank16_trained_eval/campaign_manifest.json",
+      "sha256": "898303813e2b7ea4c753dfa2d546a415ef304159d87cb786509c484cc310b44c"
+    },
+    {
+      "bytes": 10650,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank16_trained_eval/checksum_chain.jsonl",
+      "sha256": "76769db5d9fafdc2a0fbc6249e88d009e33104bb85e37e02b626e033e66d754e"
+    },
+    {
+      "bytes": 1283,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank16_trained_eval/control/phase12_rank16_trained_eval_config.json",
+      "sha256": "61cd8b2b23b5bed77b69c20ad79be469fb0b15813891d51b8c60c88dbe1d0def"
+    },
+    {
+      "bytes": 196,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank16_trained_eval/control/phase12_rank16_trained_eval_queue.jsonl",
+      "sha256": "dfa617908039a93c584c1d14365c88916e90b7f016969edbd3f809d9983ccf3d"
+    },
+    {
+      "bytes": 3465,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank16_trained_eval/daemon_static_artifact_manifest.json",
+      "sha256": "fedf7874e1d9ab1094084db2b18fbbaca62ff9baf7d233c1ec2785a552cb6cf0"
+    },
+    {
+      "bytes": 579,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank16_trained_eval/falsifier_report.md",
+      "sha256": "e9b803af42fb381ba55ea4516e17ec9966eb47c8db22665c1371240ef9a17c6c"
+    },
+    {
+      "bytes": 782,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank16_trained_eval/gate_result.json",
+      "sha256": "e9660d921e6232d8c6e8cf946a619f136d7997ddc3999bfc700e9eba6c2a6d14"
+    },
+    {
+      "bytes": 739,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank16_trained_eval/heartbeat.json",
+      "sha256": "dbcb15815ef8fa54cb1f5c92679b1410583f345590032dfc2bf70fde8df074a1"
+    },
+    {
+      "bytes": 2494,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank16_trained_eval/iterations/iter_000000/checkpoint_manifest.json",
+      "sha256": "2c5d585b694567ec2b58667062d97b771abe97e8bbbc04fbe5e72dda2fd53c7f"
+    },
+    {
+      "bytes": 1162,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank16_trained_eval/iterations/iter_000000/replay_manifest.json",
+      "sha256": "1b71b1502b071791fd53e537e7bea8f3a366a4798e0656fa80868b036549d93b"
+    },
+    {
+      "bytes": 2589,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank16_trained_eval/iterations/iter_000000/telemetry.json",
+      "sha256": "1353d454d446c6cc4353144fd48235a538c1f468e7f35d8ba787db31a90b9952"
+    },
+    {
+      "bytes": 367,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank16_trained_eval/queue_schema.json",
+      "sha256": "495f3395ec63bdc1bf3387f77a4b5c4b9ee5c978ab034048d0d8623a3404ad91"
+    },
+    {
+      "bytes": 530,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank16_trained_eval/runner_state.json",
+      "sha256": "5b4301a5eb5378f326754647d7fc1a30c1cbe1e08c7461d221a520c67cca08a3"
+    },
+    {
+      "bytes": 936,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank16_trained_eval/telemetry.jsonl",
+      "sha256": "80ad6b1e754a5c2711e1b1ce8b6b965da6bc30d91f808cfb424ef883dc38c745"
+    },
+    {
+      "bytes": 367,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank16_trained_eval/timing_breakdown.json",
+      "sha256": "f80c4fcd03ba1ef8c81f10ee6bfeb5d89274450796c1eaf6e32c166afb1381fe"
+    },
+    {
+      "bytes": 18,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank32_baseline_eval/blockers.md",
+      "sha256": "ee4fdb8861ac7bab6c097f9c84b15b4ad03622daef22f9a07a9ffba479b69eda"
+    },
+    {
+      "bytes": 509,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank32_baseline_eval/campaign_manifest.json",
+      "sha256": "28fcab5ecab6616b607b13ece712f3e8f32732c6aaf010ecf85990df91d82ebb"
+    },
+    {
+      "bytes": 10668,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank32_baseline_eval/checksum_chain.jsonl",
+      "sha256": "f9401dd29382a4c26497f90bbe41dd2c80a4799c82933cb30b0b3a19ffb0aef1"
+    },
+    {
+      "bytes": 1235,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank32_baseline_eval/control/phase12_rank32_baseline_eval_config.json",
+      "sha256": "98dd2eb53e77dc6387f185d286cec7437681530b1ea763c8a0a295235198ecb2"
+    },
+    {
+      "bytes": 198,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank32_baseline_eval/control/phase12_rank32_baseline_eval_queue.jsonl",
+      "sha256": "8ce496704bce2e48b9519e66288a9265519a61b559d70701c6ebc8c50792b3ff"
+    },
+    {
+      "bytes": 3465,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank32_baseline_eval/daemon_static_artifact_manifest.json",
+      "sha256": "665bb5ddc234884827a4b80cd0e5a3e7ac099f3e9db0e708873523dadaf31fcb"
+    },
+    {
+      "bytes": 579,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank32_baseline_eval/falsifier_report.md",
+      "sha256": "e9b803af42fb381ba55ea4516e17ec9966eb47c8db22665c1371240ef9a17c6c"
+    },
+    {
+      "bytes": 782,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank32_baseline_eval/gate_result.json",
+      "sha256": "fcc19f1b07105c9d0a32a74cd4747e6d81dbba3b32764557f3e303b2f3d120e2"
+    },
+    {
+      "bytes": 741,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank32_baseline_eval/heartbeat.json",
+      "sha256": "c80166ae1b38a7305e92017c2c2f9c8e3f8cd0d8a2a26727748ead20bd4937da"
+    },
+    {
+      "bytes": 2398,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank32_baseline_eval/iterations/iter_000000/checkpoint_manifest.json",
+      "sha256": "45affb777e20336b2eb13b05e8d41aae02fa72dc34f3be2b685148dcf1bfac40"
+    },
+    {
+      "bytes": 1114,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank32_baseline_eval/iterations/iter_000000/replay_manifest.json",
+      "sha256": "f910eaab68b94ede7f4b55492d7ac76d4225f000f8a0cd3d3c156470de22f97f"
+    },
+    {
+      "bytes": 2589,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank32_baseline_eval/iterations/iter_000000/telemetry.json",
+      "sha256": "c9b57dc77988426c65f23647e58bd0b520ec3f9fd0460be3c92f3b24991f9330"
+    },
+    {
+      "bytes": 367,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank32_baseline_eval/queue_schema.json",
+      "sha256": "495f3395ec63bdc1bf3387f77a4b5c4b9ee5c978ab034048d0d8623a3404ad91"
+    },
+    {
+      "bytes": 533,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank32_baseline_eval/runner_state.json",
+      "sha256": "589c1c86ed4f541de55e6fc2fa2458225f5b07e4843babba8f3841479dff54f0"
+    },
+    {
+      "bytes": 889,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank32_baseline_eval/telemetry.jsonl",
+      "sha256": "8a49825603f50f1c91082c500fe633d808eb56b409561a7103c46c3e492bada4"
+    },
+    {
+      "bytes": 367,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank32_baseline_eval/timing_breakdown.json",
+      "sha256": "85dbef4217b84e5480573369d62c4d56f76e7294b1bd1ee5f1f121a1e04590e0"
+    },
+    {
+      "bytes": 18,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank32_train/blockers.md",
+      "sha256": "ee4fdb8861ac7bab6c097f9c84b15b4ad03622daef22f9a07a9ffba479b69eda"
+    },
+    {
+      "bytes": 485,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank32_train/campaign_manifest.json",
+      "sha256": "d7545aa67f5608e401096930c79ec41b3f10c46bcf81bc6963c4dcabb06c19d3"
+    },
+    {
+      "bytes": 43880,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank32_train/checksum_chain.jsonl",
+      "sha256": "9d46da703def4f56d7ea04a2d2a8e5b24cba0a4e925c36c339973f5cb59b8c8d"
+    },
+    {
+      "bytes": 1540,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank32_train/control/phase12_rank32_train_config.json",
+      "sha256": "95744a99401ed5d0088eceb1a0295f39952c9bf60df4bdcad4f622b102f36f60"
+    },
+    {
+      "bytes": 182,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank32_train/control/phase12_rank32_train_queue.jsonl",
+      "sha256": "b11b87d82249fd9de38dd599a30a6b1a7130799f138671ac23fbee30d3ff38e3"
+    },
+    {
+      "bytes": 4781,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank32_train/daemon_static_artifact_manifest.json",
+      "sha256": "a690891f0a64df9f3fffc10c1fe61ae252319ab3f79a705693b53ad114870915"
+    },
+    {
+      "bytes": 579,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank32_train/falsifier_report.md",
+      "sha256": "e9b803af42fb381ba55ea4516e17ec9966eb47c8db22665c1371240ef9a17c6c"
+    },
+    {
+      "bytes": 783,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank32_train/gate_result.json",
+      "sha256": "6868913c1c06cbffba3fa35db0a19ad0633ea5eedec58945d82c819dab12b7c3"
+    },
+    {
+      "bytes": 726,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank32_train/heartbeat.json",
+      "sha256": "e2cb6caf9d3811791985156f0ad25602fb419b2151fc7b9442ec346c971d9bee"
+    },
+    {
+      "bytes": 3897,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank32_train/iterations/iter_000000/checkpoint_manifest.json",
+      "sha256": "04534f240aaa88d449695660a13980cfea31cee84a3467b628f8243e6e4fe6c0"
+    },
+    {
+      "bytes": 1179,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank32_train/iterations/iter_000000/replay_manifest.json",
+      "sha256": "f1f9b74ac23ea3687b583f14635fb0b5df93b65784f8c0775f5beb818a6a150f"
+    },
+    {
+      "bytes": 2628,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank32_train/iterations/iter_000000/telemetry.json",
+      "sha256": "022c80c54f6dcb3949b36b9f6164019499e40507eda419b4b0bed2d9fdbb55e8"
+    },
+    {
+      "bytes": 3995,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank32_train/iterations/iter_000001/checkpoint_manifest.json",
+      "sha256": "896f907cedf0db82426df600a097b1941cc7a175ae45f6beee5c87b1a51cc39b"
+    },
+    {
+      "bytes": 1229,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank32_train/iterations/iter_000001/replay_manifest.json",
+      "sha256": "83250f99c4b1bfa5d12ef5d9b78667428cecd01d5319d61da26743c83ed17456"
+    },
+    {
+      "bytes": 2628,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank32_train/iterations/iter_000001/telemetry.json",
+      "sha256": "75d299f8bef48d9a7c2d5f3bd592ef833e93f36c7b1395b446ad8314ed41b4ab"
+    },
+    {
+      "bytes": 3995,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank32_train/iterations/iter_000002/checkpoint_manifest.json",
+      "sha256": "b461618f0428704030bddba3e45e68fd4646a903c72d96f09a085a7dbba4b27a"
+    },
+    {
+      "bytes": 1229,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank32_train/iterations/iter_000002/replay_manifest.json",
+      "sha256": "19abd83705d0772c42399d800e11f47403c63d13df9992ddf3493cbce83d9981"
+    },
+    {
+      "bytes": 2628,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank32_train/iterations/iter_000002/telemetry.json",
+      "sha256": "382cadf92598e18ba12f38a203ee01573fdab6fb355d3d2e78c03bb5240b755f"
+    },
+    {
+      "bytes": 3995,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank32_train/iterations/iter_000003/checkpoint_manifest.json",
+      "sha256": "96aebaefc07f67d318d6d21585159e0d1f06aa5b1d9b8e24f125d4d04504bb39"
+    },
+    {
+      "bytes": 1229,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank32_train/iterations/iter_000003/replay_manifest.json",
+      "sha256": "dd44dfb3a2933cd30ca0631c9d00bd479e4575ef9b8fc3bf6eebb1d53d52c3f6"
+    },
+    {
+      "bytes": 2628,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank32_train/iterations/iter_000003/telemetry.json",
+      "sha256": "fc8e450fc4e26641a98785a697e5503a88c51820d33873a1cf00e107ed0089fd"
+    },
+    {
+      "bytes": 3995,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank32_train/iterations/iter_000004/checkpoint_manifest.json",
+      "sha256": "f4b075a216384f86baefb3cb670fd60255a4ddc6210596906de57ad3af08e543"
+    },
+    {
+      "bytes": 1229,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank32_train/iterations/iter_000004/replay_manifest.json",
+      "sha256": "a0d26d8d101132a2b6990fa71bf45f235c16cade5f17cb305e0cc51be7a8c9c0"
+    },
+    {
+      "bytes": 2628,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank32_train/iterations/iter_000004/telemetry.json",
+      "sha256": "4d75aeb8294c95d008526e7255e62f31e63b01a067bc101f662c6e1503889d28"
+    },
+    {
+      "bytes": 3995,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank32_train/iterations/iter_000005/checkpoint_manifest.json",
+      "sha256": "55b0bdc9caba83ad233a5188f7e6e0ff963719708f2ade83249a0c3a461f0fc9"
+    },
+    {
+      "bytes": 1229,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank32_train/iterations/iter_000005/replay_manifest.json",
+      "sha256": "6bdb6dd237b3d33941d109ebf2a0ec18b1ab573045ddf5b3dc70859f185f87ca"
+    },
+    {
+      "bytes": 2628,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank32_train/iterations/iter_000005/telemetry.json",
+      "sha256": "17c6fda21c1ecdd88186846710ea405de1dc3ecee14630d36d4f80df7d6ee43f"
+    },
+    {
+      "bytes": 3995,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank32_train/iterations/iter_000006/checkpoint_manifest.json",
+      "sha256": "21058c8e50717e6207a88d31755d0ce7b622bc6c9bd047866a5ee0e8ea1a2b47"
+    },
+    {
+      "bytes": 1229,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank32_train/iterations/iter_000006/replay_manifest.json",
+      "sha256": "1921228243bb7fe6a0e37c50d46ca07897f0ea35214226ebbdbdd602eca9caa6"
+    },
+    {
+      "bytes": 2628,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank32_train/iterations/iter_000006/telemetry.json",
+      "sha256": "0dfb5dc3c86683cebfd3071962b01cff3eeaa099ce16adb6824c77d1ff1083a5"
+    },
+    {
+      "bytes": 3995,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank32_train/iterations/iter_000007/checkpoint_manifest.json",
+      "sha256": "af78af24bb3980fd039e8c4860c5b8a609e9b7bf7a5d2381b765c82d5c254edf"
+    },
+    {
+      "bytes": 1228,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank32_train/iterations/iter_000007/replay_manifest.json",
+      "sha256": "33687a9e9263ef2893142a3c25f074b3aa66f0057ee67100d18eb5957cba74c2"
+    },
+    {
+      "bytes": 2628,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank32_train/iterations/iter_000007/telemetry.json",
+      "sha256": "9fd738a932851316b5c562c0f8368c9276a68471ae231d6a74964d8b85295cd8"
+    },
+    {
+      "bytes": 367,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank32_train/queue_schema.json",
+      "sha256": "495f3395ec63bdc1bf3387f77a4b5c4b9ee5c978ab034048d0d8623a3404ad91"
+    },
+    {
+      "bytes": 509,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank32_train/runner_state.json",
+      "sha256": "dc9545c7aedb00ad48a4a7d1c84ee3dd9e4ebc9c45801c8cadab1963efd006dc"
+    },
+    {
+      "bytes": 7923,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank32_train/telemetry.jsonl",
+      "sha256": "8549776a9e42b6754aa0736c184fa85814534673a2a685d3770a2cb662234a08"
+    },
+    {
+      "bytes": 1094,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank32_train/timing_breakdown.json",
+      "sha256": "0ab6392541cdf5f003d9156293cb0b2814abff762852b32d598df93c2f847105"
+    },
+    {
+      "bytes": 18,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank32_trained_eval/blockers.md",
+      "sha256": "ee4fdb8861ac7bab6c097f9c84b15b4ad03622daef22f9a07a9ffba479b69eda"
+    },
+    {
+      "bytes": 506,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank32_trained_eval/campaign_manifest.json",
+      "sha256": "c2fc2056160a9511e29cbb1e3a9ebdc68374e0b5ebdebce7c5a225f29a97141a"
+    },
+    {
+      "bytes": 10650,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank32_trained_eval/checksum_chain.jsonl",
+      "sha256": "f408a39517434fd2fcec1dcf0c7f1e73245ad7bf513a03c347d50a35f5facf80"
+    },
+    {
+      "bytes": 1283,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank32_trained_eval/control/phase12_rank32_trained_eval_config.json",
+      "sha256": "dead09aac391bcc71a04ee885aa1ef4c29868b494db11df3c498b4d191592234"
+    },
+    {
+      "bytes": 196,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank32_trained_eval/control/phase12_rank32_trained_eval_queue.jsonl",
+      "sha256": "e642c89013cd36a7c01dc5d4819c829391e16ca7ec2c0ec00bc108191541a135"
+    },
+    {
+      "bytes": 3465,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank32_trained_eval/daemon_static_artifact_manifest.json",
+      "sha256": "38edac2961e6125450161af818c33de18f148852175b92f3061489ca52a8bab8"
+    },
+    {
+      "bytes": 579,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank32_trained_eval/falsifier_report.md",
+      "sha256": "e9b803af42fb381ba55ea4516e17ec9966eb47c8db22665c1371240ef9a17c6c"
+    },
+    {
+      "bytes": 780,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank32_trained_eval/gate_result.json",
+      "sha256": "653beb69c005a7edc99cf777f702401b7c4bfa67e66ebf7348765dcca39e5e69"
+    },
+    {
+      "bytes": 738,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank32_trained_eval/heartbeat.json",
+      "sha256": "a2c67d3717fb7af26a63acd8b70f21c0c66dd6e78e7979356ce9406936267ebd"
+    },
+    {
+      "bytes": 2494,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank32_trained_eval/iterations/iter_000000/checkpoint_manifest.json",
+      "sha256": "0af3892b5338adff7f1ddfdaa623dbd570e0cbd7e3134355cc2a2a12de8b15a0"
+    },
+    {
+      "bytes": 1162,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank32_trained_eval/iterations/iter_000000/replay_manifest.json",
+      "sha256": "e831ed0138a135dcdd64ec507fb3618388b9a815079a0f8ec18831237bf10625"
+    },
+    {
+      "bytes": 2589,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank32_trained_eval/iterations/iter_000000/telemetry.json",
+      "sha256": "7d8d65a12c9436011d27f76ce6df7a5e9441d5464891cee078a45b68678e8dbc"
+    },
+    {
+      "bytes": 367,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank32_trained_eval/queue_schema.json",
+      "sha256": "495f3395ec63bdc1bf3387f77a4b5c4b9ee5c978ab034048d0d8623a3404ad91"
+    },
+    {
+      "bytes": 530,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank32_trained_eval/runner_state.json",
+      "sha256": "b15ec00eaa6e600ed47e2643c024ef4fe9a71bb32f5a2ccf52879a6533c9b54a"
+    },
+    {
+      "bytes": 934,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank32_trained_eval/telemetry.jsonl",
+      "sha256": "132f225b9fd408d42344365f7e521bd093b466eacad95b091e037f5f7472bea2"
+    },
+    {
+      "bytes": 363,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/arms/rank32_trained_eval/timing_breakdown.json",
+      "sha256": "a83c5dcae5e8ad10e3a35f3616474fa68930155b8ce18b95f15ffbfb6c3c976c"
+    },
+    {
+      "bytes": 48,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/blockers.md",
+      "sha256": "ed860970abcb27b1351e27370fae962c14abec334c090b84e7eb7744b2eecd38"
+    },
+    {
+      "bytes": 322,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/commands.log",
+      "sha256": "3f7208770dbd6bf1fafe2d89e93945d4bca718b1dba5644e3fb09d4eab1a3145"
+    },
+    {
+      "bytes": 41255,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/phase12_cde_gate_result.json",
+      "sha256": "f644b79de1a481f3f6693f5d57ce403cbd5190020d057fd9de8c803f4c81d3b0"
+    },
+    {
+      "bytes": 772,
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/predeclared_learning_probe.json",
+      "sha256": "202450c97a10ff8683c57f66e18343647234533c16637d24dc7122bbc63b5cad"
+    }
+  ],
+  "report_dir": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning",
+  "schema_version": "phase12_cde_artifact_manifest_v1"
+}

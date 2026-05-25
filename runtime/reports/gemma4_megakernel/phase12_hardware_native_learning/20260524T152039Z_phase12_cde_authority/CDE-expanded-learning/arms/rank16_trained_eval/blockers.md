@@ -1,0 +1,2 @@
+- iteration 0 failed: unable to open /data/local/tmp/polymath_gemma4_gate/phase12/runs/20260524T152039Z_phase12_cde_authority_rank16_train/Phase12-CDE-learning/iterations/iter_000007/checkpoint/adapter_a.f32.bin
+- active/wall did not reach >=0.50 or >=2x Phase 10 baseline

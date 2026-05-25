@@ -1,0 +1,42 @@
+{
+  "schema_version": "gemma4_rank_adapter_topk_kl_checkpoint_v1",
+  "objective": "topk_embedding_kl_distillation_v1",
+  "trainable_scope": "post_layer0_rank16_residual_adapter",
+  "rank": 16,
+  "optimizer": "adamw",
+  "optimizer_backend": "phone_cpu_after_opencl_gradients",
+  "learning_rate": 0.0001000000,
+  "optimizer_step": 9,
+  "weight_decay": 0.0099999998,
+  "gradient_clip_l2": 1.0000000000,
+  "gradient_clip_scale": 1.0000000000,
+  "combined_gradient_l2": 0.2296455594,
+  "applied_update": true,
+  "loss_topk_kl": 1.1837520898,
+  "active_loss_tokens": 788,
+  "student_teacher_top1_agreement": 0.1129441624,
+  "mean_student_teacher_top1_probability": 0.1240645178,
+  "gradient_l2": {"adapter_a": 0.2023600076, "adapter_b": 0.1085703010, "output": 0.0172098750},
+  "checkpoint_delta_l2": {"adapter_a": 0.0189397625, "adapter_b": 0.0175393268},
+  "teacher_shard": {
+    "path": "/data/local/tmp/polymath_gemma4_gate/phase12/teacher_shards/20260524T164412Z_phase12_cde_authority_train_shard00",
+    "manifest_sha256": "867b5ad0a7ce68878ce7c5d762131dfb0d3407a63882fb9218524c979ead5448",
+    "topk_token_ids_sha256": "75a7cefbcba0215a7ba305711f71728e44a1d2e6ba3cf51dc6199bf97b18bc4e",
+    "topk_probabilities_sha256": "fece99991b1b29a5dd662c09c77bb9102e234adf68b54dfa1098f25a577970a4"
+  },
+  "pre_update": {
+    "adapter_a": {"path": "/data/local/tmp/polymath_gemma4_gate/phase12/runs/20260524T164412Z_phase12_cde_authority_rank16_train/Phase12-CDE-learning/iterations/iter_000007/checkpoint/adapter_a.f32.bin", "sha256": "ab0ec25d38d3cd97d9e65a30bbdde225061149a3e5b53be56fc426098ee19094"},
+    "adapter_b": {"path": "/data/local/tmp/polymath_gemma4_gate/phase12/runs/20260524T164412Z_phase12_cde_authority_rank16_train/Phase12-CDE-learning/iterations/iter_000007/checkpoint/adapter_b.f32.bin", "sha256": "62a0665ed73ffcc629edbc4a728b5a1cfbeec759116cadbf4ba52ca182a27fcf"}
+  },
+  "post_update": {
+    "adapter_a": {"path": "/data/local/tmp/polymath_gemma4_gate/phase12/runs/20260524T173847Z_phase12_long_native_lr_retry1_lr1e4_cont24_train/Phase12-long-native-lr/iterations/iter_000000/checkpoint/adapter_a.f32.bin", "sha256": "de0e0ef8dca9528765019e87f75c5b6ec395beeaf848cedb97e685a69016b180"},
+    "adapter_b": {"path": "/data/local/tmp/polymath_gemma4_gate/phase12/runs/20260524T173847Z_phase12_long_native_lr_retry1_lr1e4_cont24_train/Phase12-long-native-lr/iterations/iter_000000/checkpoint/adapter_b.f32.bin", "sha256": "a1d9db4f22f31f8903d92b920103ae04443e160e492b653b0dd62f006ac85eee"}
+  },
+  "optimizer_state": {
+    "step": {"path": "/data/local/tmp/polymath_gemma4_gate/phase12/runs/20260524T173847Z_phase12_long_native_lr_retry1_lr1e4_cont24_train/Phase12-long-native-lr/iterations/iter_000000/checkpoint/optimizer_state/step.txt", "sha256": "2e6d31a5983a91251bfae5aefa1c0a19d8ba3cf601d0e8a706b4cfa9661a6b8a"},
+    "adapter_a_m": {"path": "/data/local/tmp/polymath_gemma4_gate/phase12/runs/20260524T173847Z_phase12_long_native_lr_retry1_lr1e4_cont24_train/Phase12-long-native-lr/iterations/iter_000000/checkpoint/optimizer_state/adapter_a_m.f32.bin", "sha256": "30a4529a10502e1fc4ff3c6d882bf3e1150f2a86d92b2f8998fa6438896ad797"},
+    "adapter_a_v": {"path": "/data/local/tmp/polymath_gemma4_gate/phase12/runs/20260524T173847Z_phase12_long_native_lr_retry1_lr1e4_cont24_train/Phase12-long-native-lr/iterations/iter_000000/checkpoint/optimizer_state/adapter_a_v.f32.bin", "sha256": "c0b9a2bc635f0f5262ed41b693ec64e461b438b0813ba02759816c24015317c8"},
+    "adapter_b_m": {"path": "/data/local/tmp/polymath_gemma4_gate/phase12/runs/20260524T173847Z_phase12_long_native_lr_retry1_lr1e4_cont24_train/Phase12-long-native-lr/iterations/iter_000000/checkpoint/optimizer_state/adapter_b_m.f32.bin", "sha256": "a590da2255f452bb2285970b7df7591d0c4378ca37b4e560e80bde5c1bed8417"},
+    "adapter_b_v": {"path": "/data/local/tmp/polymath_gemma4_gate/phase12/runs/20260524T173847Z_phase12_long_native_lr_retry1_lr1e4_cont24_train/Phase12-long-native-lr/iterations/iter_000000/checkpoint/optimizer_state/adapter_b_v.f32.bin", "sha256": "32adf5cd1a6ba63d76ff63635b1b48f069bf1831660c0d37def8905d932e53fd"}
+  }
+}

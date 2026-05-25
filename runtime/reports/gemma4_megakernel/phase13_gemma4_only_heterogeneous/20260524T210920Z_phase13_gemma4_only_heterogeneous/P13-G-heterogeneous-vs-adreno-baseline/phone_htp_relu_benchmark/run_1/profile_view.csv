@@ -1,0 +1,24 @@
+input log file location, /data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13g/htp_relu_benchmark/run_1/qnn-profiling-data_0.log
+qnn-profile-viewer version, v2.44.0.260225143659
+qnn-net-run version, v2.44.0.260225143659
+Backend version, v2.44.0.260225143659
+Msg Timestamp, Message, Time, Unit of Measurement, Timing Source, Event Level, Event Identifier
+267952615366,INIT,6214,US,NETRUN,ROOT,null
+267952615366,INIT,2797,US,BACKEND,ROOT,RPC (load binary) time
+267952615366,INIT,2495,US,BACKEND,ROOT,QNN accelerator (load binary) time
+267952615366,INIT,2159,US,BACKEND,ROOT,Accelerator (load binary) time
+267952615366,INIT,6193,US,BACKEND,ROOT,QNN (load binary) time
+0,COMPOSE GRAPHS,0,US,NETRUN,ROOT,null
+267952644891,DE-INIT,16590,US,NETRUN,ROOT,null
+267952644891,DE-INIT,5270,US,BACKEND,ROOT,RPC (deinit) time
+267952644891,DE-INIT,4518,US,BACKEND,ROOT,QNN Accelerator (deinit) time
+267952644891,DE-INIT,4466,US,BACKEND,ROOT,Accelerator (deinit) time
+267952644891,DE-INIT,16577,US,BACKEND,ROOT,QNN (deinit) time
+267952620384,EXECUTE,4204,US,NETRUN,ROOT,Graph 0: gemma_hidden2560_relu
+267952620384,EXECUTE,6,COUNT,BACKEND,ROOT,Number of HVX threads used
+267952620384,EXECUTE,3996,US,BACKEND,ROOT,RPC (execute) time
+267952620384,EXECUTE,3381,US,BACKEND,ROOT,QNN accelerator (execute) time
+267952620384,EXECUTE,3304,US,BACKEND,ROOT,Accelerator (execute) time
+267952620384,EXECUTE,434,US,BACKEND,ROOT,Accelerator (execute excluding wait) time
+267952620384,EXECUTE,4190,US,BACKEND,ROOT,QNN (execute) time
+267952628132,EXECUTE IPS,215.007523,INF/SEC,NETRUN,ROOT,null

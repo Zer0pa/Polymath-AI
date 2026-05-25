@@ -1,0 +1,35 @@
+{
+  "ended_at_utc": "2026-05-24T15:11:38Z",
+  "gates": [
+    {
+      "blockers": [],
+      "gate": "A",
+      "report_dir": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T151137Z_phase12_learning_preflight/A-h11h-audit",
+      "status": "pass"
+    },
+    {
+      "blockers": [],
+      "gate": "B",
+      "report_dir": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T151137Z_phase12_learning_preflight/B-compact-artifacts",
+      "status": "pass"
+    },
+    {
+      "blockers": [
+        "ADB does not list authority phone FY25013101C8; expanded-scope authority run cannot start"
+      ],
+      "gate": "C",
+      "report_dir": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T151137Z_phase12_learning_preflight/C-expanded-scope-repair",
+      "status": "blocked_phone_transport_after_repair_build_passed"
+    }
+  ],
+  "nonclaims": [
+    "full Gemma4 training",
+    "HTP backprop",
+    "public benchmark readiness",
+    "broad capability"
+  ],
+  "schema_version": "phase12_learning_preflight_status_v1",
+  "started_at_utc": "2026-05-24T15:11:37Z",
+  "status": "blocked",
+  "stop_reason": "ADB does not list authority phone FY25013101C8; expanded-scope authority run cannot start"
+}

@@ -1,0 +1,180 @@
+DUMP OF SERVICE package:
+      cn.nubia.gamelauncher.action.GAME_MANAGER:
+        202cd1 cn.nubia.gamelauncher/.activity.AppAddActivity filter 600f336
+          Action: "cn.nubia.gamelauncher.action.GAME_MANAGER"
+      cn.nubia.gamecenter.settings.action.GAME_CENTER_MANUAL_DETAIL:
+        259e279 cn.nubia.gamelauncher/cn.nubia.gamecenter.settings.recordSettings.GameManualActivity filter 5dc7bbe
+          Action: "cn.nubia.gamecenter.settings.action.GAME_CENTER_MANUAL_DETAIL"
+        ddf88c5 cn.nubia.gamelauncher/cn.nubia.resourcelibrary.ResourceLibraryActivity filter 137721a
+      cn.nubia.gamecenter.settings.action.GAME_CENTER_RADMAGICTIME_DETAIL:
+        23efec3 cn.nubia.gamelauncher/cn.nubia.gamecenter.settings.records.activity.RecordsActivity filter 4441340
+          Action: "cn.nubia.gamecenter.settings.action.GAME_CENTER_RADMAGICTIME_DETAIL"
+        424e055 cn.nubia.gamelauncher/.activity.GameSpaceActivity filter 6cb9a6a
+        5b93b5b cn.nubia.gamelauncher/.activity.HostModeGameSpace filter 3562ff8
+        a463237 cn.nubia.gamelauncher/.activity.LargeGameActivity filter ba53a4
+      cn.nubia.gamecenter.settings.action.GAME_CENTER_RECORD_DETAIL:
+        c230b7d cn.nubia.gamelauncher/cn.nubia.gamecenter.settings.recordSettings.GameRecordActivity filter 81a2a72
+          Action: "cn.nubia.gamecenter.settings.action.GAME_CENTER_RECORD_DETAIL"
+      cn.nubia.gamecenter.settings.action.GAME_REFRESH_RATE:
+        28d2d35 cn.nubia.gamelauncher/cn.nubia.gamecenter.settings.basic.GameRefreshRateActivity filter 5e095ca
+          Action: "cn.nubia.gamecenter.settings.action.GAME_REFRESH_RATE"
+      cn.nubia.gamecenter.settings.action.GAME_CHICKEN_MODE:
+        f88c41f cn.nubia.gamelauncher/cn.nubia.gamecenter.settings.basic.GameChickenModeActivity filter 7f7236c
+          Action: "cn.nubia.gamecenter.settings.action.GAME_CHICKEN_MODE"
+        7baa509 cn.nubia.gamelauncher/cn.nubia.plug.PlugUnitActivity filter 6b7330e
+      cn.nubia.gamelauncher.upgrade:
+        9a9c50d cn.nubia.gamelauncher/.activity.UpgradeDialogActivity filter c610cc2
+          Action: "cn.nubia.gamelauncher.upgrade"
+        863312f cn.nubia.gamelauncher/cn.nubia.chatassistant.customchat.ChatAssistantSettingsActivity filter 492733c
+        37bb14b cn.nubia.gamelauncher/cn.nubia.tgk.TgkFilePickActivity filter 6b18728
+      cn.nubia.gamelauncher.action.START_HELPER:
+        741bad3 cn.nubia.gamelauncher/.aimhelper.AimHelperPermissionDialogActivity filter 1b0610
+          Action: "cn.nubia.gamelauncher.action.START_HELPER"
+      cn.nubia.gamecenter.settings.action.GAME_CARRER:
+        521727 cn.nubia.gamelauncher/cn.nubia.gamecenter.settings.GameCarrerActivity filter 52bedd4
+          Action: "cn.nubia.gamecenter.settings.action.GAME_CARRER"
+      cn.nubia.gamecenter.settings.action.GAME_CENTER:
+        1b4ec41 cn.nubia.gamelauncher/cn.nubia.gamecenter.settings.GameCenterActivity filter 54a95e6
+          Action: "cn.nubia.gamecenter.settings.action.GAME_CENTER"
+Receiver Resolver Table:
+        d5a3507 cn.nubia.gamelauncher/cn.nubia.gamecenter.settings.barrageMessage.PackageChangeReceiver filter 5fae634
+          Action: "android.intent.action.PACKAGE_ADDED"
+        d5a3507 cn.nubia.gamelauncher/cn.nubia.gamecenter.settings.barrageMessage.PackageChangeReceiver filter e300c5d
+        3d3b12b cn.nubia.gamelauncher/cn.nubia.gamecenter.settings.net.WifiStateChangedReceiver filter 35fb988
+        3d3b12b cn.nubia.gamelauncher/cn.nubia.gamecenter.settings.net.WifiStateChangedReceiver filter 35fb988
+        1cd1eb3 cn.nubia.gamelauncher/.broadcast.GameEventReceiver filter 522cc70
+      cn.nubia.gamelauncher.action.START_SIGHTASSIST:
+        7067b1 cn.nubia.gamelauncher/.aimhelper.StartSightAssistReceiver filter 35a4496
+          Action: "cn.nubia.gamelauncher.action.START_SIGHTASSIST"
+        27f833b cn.nubia.gamelauncher/.receiver.BuryReceiver filter 4e90a58
+        2e4cda5 cn.nubia.gamelauncher/cn.nubia.settings.owlsysaciton.OwlSysCvReceiver filter 4b2057a
+      cn.nubia.action.GAME_MODE:
+        1799f21 cn.nubia.gamelauncher/cn.nubia.gamecenter.settings.applearning.AppLearningReceiver filter 3caff46
+          Action: "cn.nubia.action.GAME_MODE"
+      cn.zte.gamefloat.powerpanel.action.FOREGROUND_GAME_CHANGE:
+        970f30f cn.nubia.gamelauncher/cn.nubia.gamepanel.GameForegroundChangeReceiver filter bc03f9c
+          Action: "cn.zte.gamefloat.powerpanel.action.FOREGROUND_GAME_CHANGE"
+      cn.nubia.gamelauncher.action.TOP_STACK_GAME_CHANGE:
+        591817 cn.nubia.gamelauncher/.receiver.TopGameReceiver filter 4107404
+          Action: "cn.nubia.gamelauncher.action.TOP_STACK_GAME_CHANGE"
+        d72cded cn.nubia.gamelauncher/.receiver.TopGameReceiver filter 6ee1422
+          Action: "cn.nubia.gamelauncher.action.TOP_STACK_GAME_CHANGE"
+        1cd1eb3 cn.nubia.gamelauncher/.broadcast.GameEventReceiver filter 522cc70
+      cn.nubia.gamelauncher.action.GAME_LIFE_CYCLE_CHANGED:
+        8bb5be9 cn.nubia.gamelauncher/.broadcast.GameLifeCycleChangeReceiver filter cfd506e
+          Action: "cn.nubia.gamelauncher.action.GAME_LIFE_CYCLE_CHANGED"
+        1799f21 cn.nubia.gamelauncher/cn.nubia.gamecenter.settings.applearning.AppLearningReceiver filter 3caff46
+          Action: "cn.nubia.action.GAME_MODE"
+        27f833b cn.nubia.gamelauncher/.receiver.BuryReceiver filter 4e90a58
+Service Resolver Table:
+      cn.nubia.game.GameBroadcastService:
+        814b11e cn.nubia.gamelauncher/.broadcast.GameEventService$GameBroadcastService filter 9fabdff
+          Action: "cn.nubia.game.GameBroadcastService"
+      cn.nubia.gamelauncher.action.delay_close_aim_helper_for_package:
+        17a31a0 cn.nubia.gamelauncher/.aimhelper.AimService filter de61159
+          Action: "cn.nubia.gamelauncher.action.delay_close_aim_helper_for_package"
+          Action: "cn.nubia.gamelauncher.action.START_HELPER"
+      cn.nubia.gamepad.startGamepadService:
+        e3e4464 cn.nubia.gamelauncher/cn.nubia.gamepad.GamepadService filter 2b1c6cd
+          Action: "cn.nubia.gamepad.startGamepadService"
+      cn.nubia.tgk.TGKSERVICE:
+        6f7c5f6 cn.nubia.gamelauncher/cn.nubia.tgk.TgkService filter 8146df7
+          Action: "cn.nubia.tgk.TGKSERVICE"
+      cn.nubia.gamepanel.POWERPANELSERVICE:
+        63894b8 cn.nubia.gamelauncher/cn.nubia.gamepanel.PowerPanelService filter 1b79291
+          Action: "cn.nubia.gamepanel.POWERPANELSERVICE"
+      cn.nubia.startGameEventService:
+        7e0c7cc cn.nubia.gamelauncher/.broadcast.GameEventService filter b5d6a15
+          Action: "cn.nubia.startGameEventService"
+      cn.nubia.gamelauncher.action.START_HELPER:
+        17a31a0 cn.nubia.gamelauncher/.aimhelper.AimService filter de61159
+          Action: "cn.nubia.gamelauncher.action.delay_close_aim_helper_for_package"
+          Action: "cn.nubia.gamelauncher.action.START_HELPER"
+      cn.nubia.chatassistant.VOICEASSISTANTSERVICE:
+        e56c12a cn.nubia.gamelauncher/cn.nubia.chatassistant.ChatAssistantService filter a473b1b
+          Action: "cn.nubia.chatassistant.VOICEASSISTANTSERVICE"
+Provider Resolver Table:
+      cn.nubia.owlsystem.ACTION_SETTINGS_PROVIDER:
+        b27c9d2 cn.nubia.gamelauncher/cn.nubia.gamecenter.settings.OwlSettingsProvider filter 9db1aa3
+          Action: "cn.nubia.owlsystem.ACTION_SETTINGS_PROVIDER"
+Permissions:
+  Permission [cn.nubia.gamelauncher.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION] (966d7ed):
+    sourcePackage=cn.nubia.gamelauncher
+    perm=PermissionInfo{8a3552e cn.nubia.gamelauncher.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION}
+Permissions:
+  Permission [cn.nubia.tgk.permission.FILE_PROVIDER] (4e25622):
+    sourcePackage=cn.nubia.gamelauncher
+    perm=PermissionInfo{52e6e26 cn.nubia.tgk.permission.FILE_PROVIDER}
+Registered ContentProviders:
+  cn.nubia.gamelauncher/cn.nubia.globalsearch.GlobalSearchProvider:
+    Provider{88fd231 cn.nubia.gamelauncher/cn.nubia.globalsearch.GlobalSearchProvider}
+  cn.nubia.gamelauncher/cn.nubia.tgk.data.TgkDataProvider:
+    Provider{30d9669 cn.nubia.gamelauncher/cn.nubia.tgk.data.TgkDataProvider}
+  cn.nubia.gamelauncher/androidx.startup.InitializationProvider:
+    Provider{c653d27 cn.nubia.gamelauncher/androidx.startup.InitializationProvider}
+  cn.nubia.gamelauncher/cn.nubia.resourcelibrary.ResourceLibProvider:
+    Provider{9f1dbce cn.nubia.gamelauncher/cn.nubia.resourcelibrary.ResourceLibProvider}
+  cn.nubia.gamelauncher/.db.AppAddProvider:
+    Provider{269b661 cn.nubia.gamelauncher/.db.AppAddProvider}
+  cn.nubia.gamelauncher/cn.nubia.tgk.data.FileProvider:
+    Provider{52a579d cn.nubia.gamelauncher/cn.nubia.tgk.data.FileProvider}
+  cn.nubia.gamelauncher/cn.nubia.gamecenter.settings.OwlSettingsProvider:
+    Provider{b27c9d2 cn.nubia.gamelauncher/cn.nubia.gamecenter.settings.OwlSettingsProvider}
+  cn.nubia.gamelauncher/.upgrade.UpgradeFileProvider:
+    Provider{e1c4070 cn.nubia.gamelauncher/.upgrade.UpgradeFileProvider}
+  cn.nubia.gamelauncher/cn.nubia.gamecenter.settings.GameCenterFileProvider:
+    Provider{729d243 cn.nubia.gamelauncher/cn.nubia.gamecenter.settings.GameCenterFileProvider}
+  cn.nubia.gamelauncher/cn.nubia.gamecenter.settings.recordsdb.RedMagicTimeProvider:
+    Provider{a89374a cn.nubia.gamelauncher/cn.nubia.gamecenter.settings.recordsdb.RedMagicTimeProvider}
+  cn.nubia.gamelauncher/cn.nubia.chatassistant.db.ChatAssistantContentProvider:
+    Provider{59bbee5 cn.nubia.gamelauncher/cn.nubia.chatassistant.db.ChatAssistantContentProvider}
+ContentProvider Authorities:
+  [cn.nubia.tgk.data.TgkDataProvider]:
+    Provider{30d9669 cn.nubia.gamelauncher/cn.nubia.tgk.data.TgkDataProvider}
+      applicationInfo=ApplicationInfo{ae938b3 cn.nubia.gamelauncher}
+  [cn.nubia.globalsearch.globalsearchprovider]:
+    Provider{88fd231 cn.nubia.gamelauncher/cn.nubia.globalsearch.GlobalSearchProvider}
+      applicationInfo=ApplicationInfo{205de70 cn.nubia.gamelauncher}
+  [cn.nubia.tgk.data.fileprovider]:
+    Provider{52a579d cn.nubia.gamelauncher/cn.nubia.tgk.data.FileProvider}
+      applicationInfo=ApplicationInfo{e605e9 cn.nubia.gamelauncher}
+  [cn.nubia.gamecenter.settings.fileProvider]:
+    Provider{729d243 cn.nubia.gamelauncher/cn.nubia.gamecenter.settings.GameCenterFileProvider}
+      applicationInfo=ApplicationInfo{2f3b26e cn.nubia.gamelauncher}
+  [cn.nubia.gamelauncher.db.AppAddProvider]:
+    Provider{269b661 cn.nubia.gamelauncher/.db.AppAddProvider}
+      applicationInfo=ApplicationInfo{134ad0f cn.nubia.gamelauncher}
+    Provider{59bbee5 cn.nubia.gamelauncher/cn.nubia.chatassistant.db.ChatAssistantContentProvider}
+      applicationInfo=ApplicationInfo{8c2719c cn.nubia.gamelauncher}
+  [cn.nubia.gamecenter.settings.OwlSettingsProvider]:
+    Provider{b27c9d2 cn.nubia.gamelauncher/cn.nubia.gamecenter.settings.OwlSettingsProvider}
+      applicationInfo=ApplicationInfo{41017a5 cn.nubia.gamelauncher}
+  [cn.nubia.gamelauncher.androidx-startup]:
+    Provider{c653d27 cn.nubia.gamelauncher/androidx.startup.InitializationProvider}
+      applicationInfo=ApplicationInfo{ac877a cn.nubia.gamelauncher}
+  [cn.nubia.gamelauncher.resourcelib.FileProvider]:
+    Provider{9f1dbce cn.nubia.gamelauncher/cn.nubia.resourcelibrary.ResourceLibProvider}
+      applicationInfo=ApplicationInfo{d190b2b cn.nubia.gamelauncher}
+  [cn.nubia.gamelauncher.FileProvider]:
+    Provider{e1c4070 cn.nubia.gamelauncher/.upgrade.UpgradeFileProvider}
+      applicationInfo=ApplicationInfo{3530b88 cn.nubia.gamelauncher}
+  [cn.nubia.gamecenter.settings.recordsdb.RedMagicTimeProvider]:
+    Provider{a89374a cn.nubia.gamelauncher/cn.nubia.gamecenter.settings.recordsdb.RedMagicTimeProvider}
+      applicationInfo=ApplicationInfo{b0f8921 cn.nubia.gamelauncher}
+  [cn.nubia.gamelauncher]
+  Package [cn.nubia.gamelauncher] (9de19aa):
+    pkg=Package{5036b4b cn.nubia.gamelauncher}
+    codePath=/system/priv-app/GameSpace
+    resourcePath=/system/priv-app/GameSpace
+    legacyNativeLibraryDir=/system/priv-app/GameSpace/lib
+    queriesPackages=[com.zte.streamgame]
+    signatures=PackageSignatures{427b928 version:3, signatures:[add92ee6], past signatures:[]}
+    installPermissionsFixed=false
+    declared permissions:
+      cn.nubia.tgk.permission.FILE_PROVIDER: prot=signature|privileged
+      cn.nubia.gamelauncher.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION: prot=signature
+    requested permissions:
+      android.permission.REAL_GET_TASKS
+      android.permission.WRITE_SETTINGS
+      com.tencent.inlab.tcsystem.permission.SOLARCORE_RECEIVER
+      com.android.launcher2.permission.READ_SETTINGS

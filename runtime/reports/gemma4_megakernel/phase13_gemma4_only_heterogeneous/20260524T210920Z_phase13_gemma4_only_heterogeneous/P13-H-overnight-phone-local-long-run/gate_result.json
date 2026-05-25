@@ -1,0 +1,166 @@
+{
+  "acceptance_heldout_scope": "128 heldout shards x 8 sequences, evaluated baseline and trained checkpoints after the 5000-update phone-local train chain",
+  "adjudication": {
+    "baseline_full_heldout": {
+      "active_tokens": 0,
+      "gate_active_training_seconds": null,
+      "gate_active_wall_ratio": null,
+      "gate_status": null,
+      "gate_wall_seconds": null,
+      "hidden_sizes": [],
+      "iteration_count": 0,
+      "label_in_teacher_topk_rate": null,
+      "loss_topk_kl": null,
+      "mean_student_label_probability_when_in_topk": null,
+      "mean_student_teacher_top1_probability": null,
+      "model_ids": [],
+      "objective_values": [],
+      "schema_version": "phase13_p13h_eval_aggregate_v1",
+      "student_teacher_top1_agreement": null,
+      "teacher_provenance_values": [],
+      "telemetry_files": []
+    },
+    "blockers": [
+      "phone thermal safety threshold crossed during P13-H",
+      "5000-update train arm did not pass",
+      "train arm completed fewer than 5000 updates",
+      "heldout_full_baseline gate did not pass",
+      "heldout_full_baseline evaluated fewer than 128 heldout shards",
+      "heldout_full_trained gate did not pass",
+      "heldout_full_trained evaluated fewer than 128 heldout shards",
+      "full heldout identity/provenance telemetry mismatch",
+      "full heldout label-contrastive KL did not improve",
+      "full heldout mean student teacher-top1 probability did not improve",
+      "full heldout top1 agreement regressed"
+    ],
+    "checks": {
+      "agreement_nonregress": false,
+      "full_heldout_shards": false,
+      "identity_and_provenance_exact": false,
+      "loss_improved": false,
+      "mini_metric_improved": false
+    },
+    "deltas": {
+      "loss_topk_kl": null,
+      "mean_student_teacher_top1_probability": null,
+      "student_teacher_top1_agreement": null
+    },
+    "detached_run_id": "20260524T210920Z_phase13_gemma4_only_heterogeneous_p13h_20260524T232423Z",
+    "full_heldout_run_id": "20260524T210920Z_phase13_gemma4_only_heterogeneous_p13h_20260524T232423Z_fullheldout",
+    "safety": {
+      "logs": {
+        "full_heldout": {
+          "max_battery_tenth_c": 320,
+          "max_zone_millideg_c": 130048,
+          "max_zone_type": "alps-therm",
+          "path": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-H-overnight-phone-local-long-run/collection/chain/full_heldout_safety.jsonl",
+          "sample_count": 75,
+          "threshold_event_count": 1
+        },
+        "original": {
+          "max_battery_tenth_c": 320,
+          "max_zone_millideg_c": 95000,
+          "max_zone_type": "cpu-1-0-1",
+          "path": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-H-overnight-phone-local-long-run/collection/chain/original_safety.jsonl",
+          "sample_count": 109,
+          "threshold_event_count": 1
+        }
+      },
+      "max_battery_tenth_c": 320,
+      "max_zone_millideg_c": 130048,
+      "max_zone_type": "alps-therm",
+      "schema_version": "phase13_p13h_safety_summary_v1",
+      "threshold_crossed": true,
+      "threshold_events": [
+        {
+          "battery_tenth_c": 310,
+          "log": "original",
+          "max_zone_millideg_c": 95000,
+          "max_zone_type": "cpu-1-0-1",
+          "ts": 1779668491
+        },
+        {
+          "battery_tenth_c": 310,
+          "log": "full_heldout",
+          "max_zone_millideg_c": 130048,
+          "max_zone_type": "alps-therm",
+          "ts": 1779667938
+        }
+      ]
+    },
+    "schema_version": "phase13_p13h_adjudication_v1",
+    "status": "fail",
+    "train_active_wall_ratio": 0.93883344,
+    "train_updates": 1742,
+    "trained_full_heldout": {
+      "active_tokens": 0,
+      "gate_active_training_seconds": null,
+      "gate_active_wall_ratio": null,
+      "gate_status": null,
+      "gate_wall_seconds": null,
+      "hidden_sizes": [],
+      "iteration_count": 0,
+      "label_in_teacher_topk_rate": null,
+      "loss_topk_kl": null,
+      "mean_student_label_probability_when_in_topk": null,
+      "mean_student_teacher_top1_probability": null,
+      "model_ids": [],
+      "objective_values": [],
+      "schema_version": "phase13_p13h_eval_aggregate_v1",
+      "student_teacher_top1_agreement": null,
+      "teacher_provenance_values": [],
+      "telemetry_files": []
+    }
+  },
+  "authority_device": "FY25013101C8",
+  "blockers": [
+    "phone thermal safety threshold crossed during P13-H",
+    "5000-update train arm did not pass",
+    "train arm completed fewer than 5000 updates",
+    "heldout_full_baseline gate did not pass",
+    "heldout_full_baseline evaluated fewer than 128 heldout shards",
+    "heldout_full_trained gate did not pass",
+    "heldout_full_trained evaluated fewer than 128 heldout shards",
+    "full heldout identity/provenance telemetry mismatch",
+    "full heldout label-contrastive KL did not improve",
+    "full heldout mean student teacher-top1 probability did not improve",
+    "full heldout top1 agreement regressed"
+  ],
+  "collection": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-H-overnight-phone-local-long-run/collection",
+  "detached_launch": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-H-overnight-phone-local-long-run/detached_launch.json",
+  "ended_at_utc": "2026-05-25T12:03:37Z",
+  "full_heldout_attachment": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-H-overnight-phone-local-long-run/full_heldout_chain/attach_manifest.json",
+  "full_heldout_attachment_status": "launched",
+  "gate": "P13-H overnight phone-local long run",
+  "model_id": "google/gemma-4-E4B",
+  "nonclaims": [
+    "P13-H launch does not yet prove completion or heldout improvement; collection is required.",
+    "The label-contrastive objective is not full Gemma teacher distillation.",
+    "No HTP output is consumed by this training loop.",
+    "P13-H is not promotable until the full-heldout attachment completes and improves versus baseline."
+  ],
+  "objective": "label_contrastive_topk_kl_v1",
+  "objective_contract": "p13c_label_onehot_topk_over_phone_native_corpus_labels_no_runtime_teacher_service",
+  "objective_preflight": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-H-overnight-phone-local-long-run/objective_preflight.json",
+  "phone_chain_events": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13h/p13h_20260524T210920Z_phase13_gemma4_only_heterogeneous_p13h_20260524T232423Z_chain_events.jsonl",
+  "phone_chain_pid": "15119",
+  "phone_chain_state": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13h/p13h_20260524T210920Z_phase13_gemma4_only_heterogeneous_p13h_20260524T232423Z_chain_state.json",
+  "promoted_claims": {
+    "full_gemma_teacher_topk_used": false,
+    "htp_training": false,
+    "label_contrastive_fallback_objective": true,
+    "phone_local_chain_launched": true,
+    "scaled_p13c_heldout_cache_used": true,
+    "scaled_p13c_train_cache_used": true
+  },
+  "revision": "7aa32e6889efd6300124851b164f8b364314c3d8",
+  "run_id": "20260524T210920Z_phase13_gemma4_only_heterogeneous_p13h_20260524T232423Z",
+  "schema_version": "phase13_p13h_phone_local_long_run_v1",
+  "selected_learning_rate": 0.0003,
+  "selected_trainable_scope": "post_layer0_rank16_residual_adapter",
+  "shard_package_manifest": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-H-overnight-phone-local-long-run/shard_package_manifest.json",
+  "started_at_utc": "2026-05-24T23:24:23Z",
+  "status": "fail",
+  "teacher_provenance": "phone_native_p13c_labels_to_host_deterministic_onehot_topk_precompute",
+  "train_iterations": 5000
+}

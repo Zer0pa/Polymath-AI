@@ -7,8 +7,16 @@ forward parity, executor architecture, backward path, optimizer update,
 phone-native HF streaming/tokenization/packing, integrated training, sustained
 authority run, and falsifier review. G1 remains a permanent regression floor;
 the terminal acceptance gate is a phone-native checkpoint or adapter artifact.
-Phase 11 converts the latest hardware research synthesis into a sequential
+Phase 11 converted the latest hardware research synthesis into a sequential
 phone-resident POVC campaign rather than another host-driven endurance loop.
+Phase 12 repaired the expanded residual-adapter path but also exposed a serious
+contamination risk: Qwen/random-init HTP artifacts are invalid for Gemma
+heterogeneous claims. Phase 13 completed the Gemma-only correction campaign but
+failed the terminal long-run heldout gate: P13-H stopped after `1742 / 5000`
+updates under thermal safety, full-heldout baseline/trained evals did not pass,
+and no heldout KL improvement is promoted. Phase 14 repairs control-plane
+truth, artifact hygiene, full-heldout evaluation, and objective quality before
+any new hardware claim or long phone-local run.
 
 ## Contract Overview
 
@@ -19,7 +27,10 @@ phone-resident POVC campaign rather than another host-driven endurance loop.
 | Phone-native training artifact | Phases 4-8 | G8 repaired and Phase 8 sustained objective passed |
 | G10 falsifier survival | Phase 9 | Passed under narrow scope |
 | Hardware-max pipeline search | Phase 10+ | First phone A/B candidate passed; ongoing |
-| Hardware-native training POVC | Phase 11 | H11-A passed; H11-B failed; H11-C passed; H11-D passed; H11-E failed with rank-4 baseline retained; H11-F passed narrowly; H11-G classified HTP frozen-forward-only; H11-H next |
+| Hardware-native training POVC | Phase 11 | Complete under exact narrow H11-H claim |
+| Expanded residual learning | Phase 12 | Complete with residual rank-16/rank-32 learning pass and falsified HTP/Gemma heterogeneous nonclaims |
+| Gemma-only heterogeneous corpus-scale correction | Phase 13 | Completed with terminal P13-H failure and P13-I exact claims |
+| Scaled heldout/objective repair | Phase 14 | Active cleanup and repair lane before new hardware claims |
 
 ## Phases
 
@@ -46,10 +57,23 @@ phone-resident POVC campaign rather than another host-driven endurance loop.
 - [ ] **Phase 10: Hardware Max Training Pipeline** - Test and integrate only
   performance candidates that improve measured phone training runs without
   regressing authority metrics.
-- [ ] **Phase 11: Hardware-Native Training POVC** - Run a sequential
+- [x] **Phase 11: Hardware-Native Training POVC** - Run a sequential
   phone-resident experiment campaign for daemonization, performance envelope,
   bottleneck autopsy, recordable queues, trainable scope, objective upgrade,
   QAIRT/HTP mutable sections, and combined POVC.
+- [x] **Phase 12: Hardware-Native Learning Correction** - Repair expanded
+  residual-adapter learning, preserve compact artifact strategy, and falsify
+  current QAIRT/HTP heterogeneous nonclaims without broadening claims.
+- [x] **Phase 13: Gemma4-Only Heterogeneous Corpus-Scale Training** - Enforce
+  Gemma-only artifact identity, scale phone-native HF corpus, expand gradient
+  and multi-site evidence, and prove or falsify a Gemma-compatible
+  heterogeneous path before any overnight long run. P13-H failed; P13-I exact
+  claims selected Phase 14.
+- [ ] **Phase 14: Repair Scaled Heldout Learning Before New Hardware Claims** -
+  Clean worktree/control-plane drift, quarantine forbidden artifacts, reconcile
+  Mac/phone/RunPod/GPD state, repair full-heldout evaluator and objective path,
+  then prove a short thermally bounded phone-local heldout improvement before
+  any segmented long run.
 
 ## Phase Details
 
@@ -436,4 +460,7 @@ Plans:
 | 8. Sustained Authority Run | 1/1 | Complete | 2026-05-17 |
 | 9. Falsifier Review | 1/1 | Complete | 2026-05-17 |
 | 10. Hardware Max Training Pipeline | 2/ongoing | Six-hour narrow endurance passed; remaining nonclaims blocked | - |
-| 11. Hardware-Native Training POVC | 0/1 | H11-A passed; H11-B failed; H11-C passed; H11-D passed; H11-E failed with rank-4 baseline retained; H11-F passed narrowly; H11-G classified HTP frozen-forward-only; H11-H next | 2026-05-23 |
+| 11. Hardware-Native Training POVC | 1/1 | H11-H completed under exact narrow POVC claim; no broad/full/benchmark claim | 2026-05-23 |
+| 12. Hardware-Native Learning Correction | 1/1 | Residual rank-16/rank-32 learning passed narrowly; Qwen/random-init HTP contamination boundary recorded | 2026-05-24 |
+| 13. Gemma4-Only Heterogeneous Corpus-Scale Training | 1/1 | P13-A through P13-G produced narrow artifacts; P13-H failed; P13-I exact claims written | 2026-05-25 |
+| 14. Repair Scaled Heldout Learning Before New Hardware Claims | 0/1 | P14-0 through P14-2 passed without training; P14-3/P14-4/P14-5 repair next | - |

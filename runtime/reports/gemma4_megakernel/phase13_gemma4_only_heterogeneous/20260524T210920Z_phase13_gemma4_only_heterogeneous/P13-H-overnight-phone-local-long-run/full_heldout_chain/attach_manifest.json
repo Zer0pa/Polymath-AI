@@ -1,0 +1,63 @@
+{
+  "arms": {
+    "heldout_full_baseline": {
+      "arm": "heldout_full_baseline",
+      "checkpoint": "/data/local/tmp/polymath_gemma4_gate/phase12/runs/20260524T173847Z_phase12_long_native_lr_retry1_lr3e4_cont24_train/Phase12-long-native-lr/iterations/iter_000023/checkpoint",
+      "config_name": "p13h_heldout_full_baseline_config.json",
+      "heartbeat_path": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13h/p13h_heldout_full_baseline_heartbeat.json",
+      "iterations": 128,
+      "local_config": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-H-overnight-phone-local-long-run/full_heldout_chain/control/p13h_heldout_full_baseline_config.json",
+      "local_queue": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-H-overnight-phone-local-long-run/full_heldout_chain/control/p13h_heldout_full_baseline_queue.jsonl",
+      "phone_gate_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13h/runs/20260524T210920Z_phase13_gemma4_only_heterogeneous_p13h_20260524T232423Z_fullheldout_heldout_full_baseline/P13-H-overnight-phone-local-long-run",
+      "queue_name": "p13h_heldout_full_baseline_queue.jsonl",
+      "run_id": "20260524T210920Z_phase13_gemma4_only_heterogeneous_p13h_20260524T232423Z_fullheldout_heldout_full_baseline",
+      "state_path": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13h/p13h_heldout_full_baseline_state.json",
+      "stop_path": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13h/STOP_p13h_heldout_full_baseline"
+    },
+    "heldout_full_trained": {
+      "arm": "heldout_full_trained",
+      "checkpoint": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13h/runs/20260524T210920Z_phase13_gemma4_only_heterogeneous_p13h_20260524T232423Z_train/P13-H-overnight-phone-local-long-run/iterations/iter_004999/checkpoint",
+      "config_name": "p13h_heldout_full_trained_config.json",
+      "heartbeat_path": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13h/p13h_heldout_full_trained_heartbeat.json",
+      "iterations": 128,
+      "local_config": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-H-overnight-phone-local-long-run/full_heldout_chain/control/p13h_heldout_full_trained_config.json",
+      "local_queue": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-H-overnight-phone-local-long-run/full_heldout_chain/control/p13h_heldout_full_trained_queue.jsonl",
+      "phone_gate_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13h/runs/20260524T210920Z_phase13_gemma4_only_heterogeneous_p13h_20260524T232423Z_fullheldout_heldout_full_trained/P13-H-overnight-phone-local-long-run",
+      "queue_name": "p13h_heldout_full_trained_queue.jsonl",
+      "run_id": "20260524T210920Z_phase13_gemma4_only_heterogeneous_p13h_20260524T232423Z_fullheldout_heldout_full_trained",
+      "state_path": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13h/p13h_heldout_full_trained_state.json",
+      "stop_path": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13h/STOP_p13h_heldout_full_trained"
+    }
+  },
+  "attach_run_id": "20260524T210920Z_phase13_gemma4_only_heterogeneous_p13h_20260524T232423Z_fullheldout",
+  "base_run_id": "20260524T210920Z_phase13_gemma4_only_heterogeneous_p13h_20260524T232423Z",
+  "commands": [
+    {
+      "name": "phone_prepare_queue_dir",
+      "returncode": 0,
+      "stderr_first_4096": "",
+      "stdout_first_4096": ""
+    }
+  ],
+  "created_at_utc": "2026-05-24T23:33:37Z",
+  "heldout_shard_count": 128,
+  "launch": {
+    "launch_returncode": 0,
+    "launch_stderr": "",
+    "launch_stdout": "",
+    "phone_chain_bootstrap": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13h/p13h_20260524T210920Z_phase13_gemma4_only_heterogeneous_p13h_20260524T232423Z_fullheldout_full_heldout_chain.bootstrap.log",
+    "phone_chain_events": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13h/p13h_20260524T210920Z_phase13_gemma4_only_heterogeneous_p13h_20260524T232423Z_fullheldout_full_heldout_chain_events.jsonl",
+    "phone_chain_log": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13h/p13h_20260524T210920Z_phase13_gemma4_only_heterogeneous_p13h_20260524T232423Z_fullheldout_full_heldout_chain.log",
+    "phone_chain_pid": "21082",
+    "phone_chain_pid_path": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13h/p13h_20260524T210920Z_phase13_gemma4_only_heterogeneous_p13h_20260524T232423Z_fullheldout_full_heldout_chain.pid",
+    "phone_chain_script": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13h/p13h_20260524T210920Z_phase13_gemma4_only_heterogeneous_p13h_20260524T232423Z_fullheldout_full_heldout_chain.sh",
+    "phone_chain_state": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13h/p13h_20260524T210920Z_phase13_gemma4_only_heterogeneous_p13h_20260524T232423Z_fullheldout_full_heldout_chain_state.json",
+    "schema_version": "phase13_p13h_full_heldout_detached_launch_v1",
+    "status": "launched"
+  },
+  "objective": "label_contrastive_topk_kl_v1",
+  "objective_contract": "p13c_label_onehot_topk_over_phone_native_corpus_labels_no_runtime_teacher_service",
+  "schema_version": "phase13_p13h_full_heldout_attachment_v1",
+  "status": "launched",
+  "train_final_checkpoint": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13h/runs/20260524T210920Z_phase13_gemma4_only_heterogeneous_p13h_20260524T232423Z_train/P13-H-overnight-phone-local-long-run/iterations/iter_004999/checkpoint"
+}

@@ -1,0 +1,11 @@
+- phone thermal safety threshold crossed during P13-H
+- 5000-update train arm did not pass
+- train arm completed fewer than 5000 updates
+- heldout_full_baseline gate did not pass
+- heldout_full_baseline evaluated fewer than 128 heldout shards
+- heldout_full_trained gate did not pass
+- heldout_full_trained evaluated fewer than 128 heldout shards
+- full heldout identity/provenance telemetry mismatch
+- full heldout label-contrastive KL did not improve
+- full heldout mean student teacher-top1 probability did not improve
+- full heldout top1 agreement regressed

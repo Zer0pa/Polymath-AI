@@ -1,0 +1,35 @@
+{
+  "adapter_site": "post_layer1",
+  "blockers": [],
+  "checkpoint_delta_l2": {
+    "adapter_a": 5.2992e-06,
+    "adapter_b": 1.07594e-05
+  },
+  "combined_gradient_l2": 0.0001199363,
+  "ended_at_utc": "2026-05-24T22:27:02Z",
+  "finite_difference_pass_count": 8,
+  "finite_difference_probe_count": 8,
+  "gate": "P13-E-layer1-adapter-site",
+  "loss_topk_kl": 1.6853245453,
+  "max_rss_kb": 835240,
+  "model_id": "google/gemma-4-E4B",
+  "nonclaims": [
+    "P13-E does not prove simultaneous two-site training.",
+    "P13-E does not prove the layer1 site improves heldout quality.",
+    "P13-E does not validate HTP backprop or heterogeneous training."
+  ],
+  "phone_gate_root": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13e",
+  "promoted_claims": [
+    "A second Gemma-compatible post-layer1 rank16 residual adapter site ran phone-side forward/backward/update.",
+    "Post-layer1 site passed 8 sampled finite-difference gradient checks.",
+    "G1/G3/G8/post-layer0 smoke paths passed with the patched runner."
+  ],
+  "rank": 16,
+  "regression_smokes_status": "pass",
+  "revision": "7aa32e6889efd6300124851b164f8b364314c3d8",
+  "run_id": "20260524T210920Z_phase13_gemma4_only_heterogeneous",
+  "schema_version": "phase13_p13e_gate_result_v1",
+  "started_at_utc": "2026-05-24T22:27:02Z",
+  "status": "pass",
+  "trainable_scope": "post_layer1_rank16_residual_adapter"
+}

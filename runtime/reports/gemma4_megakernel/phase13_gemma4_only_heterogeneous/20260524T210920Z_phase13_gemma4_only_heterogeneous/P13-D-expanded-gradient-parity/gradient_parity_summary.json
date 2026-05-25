@@ -1,0 +1,2041 @@
+{
+  "base_records": [
+    {
+      "base_checkpoint_sha256": {
+        "adapter_a": "6bf8fa876ff9e963c9569d37fe0b9e07498fb62aaa42520f04a967b11121d583",
+        "adapter_b": "1614013358ceb93a1ba79fcad1e1198b617b5394ca0e515e190467cbb91b33c4"
+      },
+      "base_loss_topk_kl": 1.3055719223,
+      "base_phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/base_grad/rank16_init_iter0",
+      "checkpoint": "/data/local/tmp/polymath_gemma4_gate/phase12/checkpoints/20260524T164412Z_phase12_cde_authority_rank16_init",
+      "gradient_l2_abs_delta": {
+        "adapter_a": 4.8408026854596456e-12,
+        "adapter_b": 4.030032830750407e-11
+      },
+      "inferred_from_sgd_delta_gradient_l2": {
+        "adapter_a": 5.718279515919731e-05,
+        "adapter_b": 4.494495969967169e-05
+      },
+      "phase12_iteration": "init_before_iter_000000",
+      "rank": 16,
+      "source": "rank16_init_iter0",
+      "telemetry_gradient_l2": {
+        "adapter_a": 5.71828e-05,
+        "adapter_b": 4.4945e-05
+      }
+    },
+    {
+      "base_checkpoint_sha256": {
+        "adapter_a": "ab0ec25d38d3cd97d9e65a30bbdde225061149a3e5b53be56fc426098ee19094",
+        "adapter_b": "62a0665ed73ffcc629edbc4a728b5a1cfbeec759116cadbf4ba52ca182a27fcf"
+      },
+      "base_loss_topk_kl": 1.1837520898,
+      "base_phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/base_grad/rank16_final_iter7",
+      "checkpoint": "/data/local/tmp/polymath_gemma4_gate/phase12/runs/20260524T164412Z_phase12_cde_authority_rank16_train/Phase12-CDE-learning/iterations/iter_000007/checkpoint",
+      "gradient_l2_abs_delta": {
+        "adapter_a": 3.5099918249681394e-09,
+        "adapter_b": 2.9264421996799683e-09
+      },
+      "inferred_from_sgd_delta_gradient_l2": {
+        "adapter_a": 0.20236001110999183,
+        "adapter_b": 0.1085703039264422
+      },
+      "phase12_iteration": "iter_000007",
+      "rank": 16,
+      "source": "rank16_final_iter7",
+      "telemetry_gradient_l2": {
+        "adapter_a": 0.2023600076,
+        "adapter_b": 0.108570301
+      }
+    },
+    {
+      "base_checkpoint_sha256": {
+        "adapter_a": "19f90974287e422ca2e45fded95aa6857fd93284d5e20a6250facad9d751c325",
+        "adapter_b": "f9d912884df8a1d03a986ba72234a7fe56cff4824ad7ea49fe0f1ad222bc88d1"
+      },
+      "base_loss_topk_kl": 1.3055719254,
+      "base_phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/base_grad/rank32_init_iter0",
+      "checkpoint": "/data/local/tmp/polymath_gemma4_gate/phase12/checkpoints/20260524T164412Z_phase12_cde_authority_rank32_init",
+      "gradient_l2_abs_delta": {
+        "adapter_a": 5.9850224209674445e-12,
+        "adapter_b": 2.4751839998866628e-11
+      },
+      "inferred_from_sgd_delta_gradient_l2": {
+        "adapter_a": 2.8591394014977578e-05,
+        "adapter_b": 2.5006375248160003e-05
+      },
+      "phase12_iteration": "init_before_iter_000000",
+      "rank": 32,
+      "source": "rank32_init_iter0",
+      "telemetry_gradient_l2": {
+        "adapter_a": 2.85914e-05,
+        "adapter_b": 2.50064e-05
+      }
+    },
+    {
+      "base_checkpoint_sha256": {
+        "adapter_a": "0924613d5c9559bf497af2d3e08912645b22ed7c6cc051bd0a2b02387754d894",
+        "adapter_b": "42f13fa19f0f66b7e27cdbd2d0caa4e60d8e34840eb49308edfc9d08c30e8578"
+      },
+      "base_loss_topk_kl": 1.1855904002,
+      "base_phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/base_grad/rank32_final_iter7",
+      "checkpoint": "/data/local/tmp/polymath_gemma4_gate/phase12/runs/20260524T164412Z_phase12_cde_authority_rank32_train/Phase12-CDE-learning/iterations/iter_000007/checkpoint",
+      "gradient_l2_abs_delta": {
+        "adapter_a": 6.962038001656623e-09,
+        "adapter_b": 3.508518836570218e-09
+      },
+      "inferred_from_sgd_delta_gradient_l2": {
+        "adapter_a": 0.142359184262038,
+        "adapter_b": 0.07690968700851884
+      },
+      "phase12_iteration": "iter_000007",
+      "rank": 32,
+      "source": "rank32_final_iter7",
+      "telemetry_gradient_l2": {
+        "adapter_a": 0.1423591773,
+        "adapter_b": 0.0769096835
+      }
+    }
+  ],
+  "created_at_utc": "2026-05-24T22:13:05Z",
+  "fail_count": 0,
+  "max_absolute_error": 6.733842150552505e-08,
+  "max_relative_error": 1.0,
+  "method": "phone_finite_difference_vs_phone_sgd_checkpoint_delta_gradient",
+  "model_id": "google/gemma-4-E4B",
+  "pass_count": 64,
+  "phone_gate_root": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d",
+  "probe_count": 64,
+  "probe_results": [
+    {
+      "absolute_error": 0.0,
+      "analytic_gradient_from_phone_sgd_delta": 0.0,
+      "epsilon": 0.01,
+      "evals": {
+        "minus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_000_minus/telemetry.json",
+          "loss_topk_kl": 1.3055719223,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_000_minus",
+          "returncode": 0
+        },
+        "plus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_000_plus/telemetry.json",
+          "loss_topk_kl": 1.3055719223,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_000_plus",
+          "returncode": 0
+        }
+      },
+      "finite_difference_gradient": 0.0,
+      "index": 1349,
+      "ordinal": 0,
+      "passed": true,
+      "rank": 16,
+      "relative_error": 0.0,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "sign_match": true,
+      "sign_required": false,
+      "source": "rank16_init_iter0",
+      "tensor": "adapter_a"
+    },
+    {
+      "absolute_error": 0.0,
+      "analytic_gradient_from_phone_sgd_delta": 0.0,
+      "epsilon": 0.01,
+      "evals": {
+        "minus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_001_minus/telemetry.json",
+          "loss_topk_kl": 1.3055719223,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_001_minus",
+          "returncode": 0
+        },
+        "plus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_001_plus/telemetry.json",
+          "loss_topk_kl": 1.3055719223,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_001_plus",
+          "returncode": 0
+        }
+      },
+      "finite_difference_gradient": 0.0,
+      "index": 2363,
+      "ordinal": 1,
+      "passed": true,
+      "rank": 16,
+      "relative_error": 0.0,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "sign_match": true,
+      "sign_required": false,
+      "source": "rank16_init_iter0",
+      "tensor": "adapter_a"
+    },
+    {
+      "absolute_error": 0.0,
+      "analytic_gradient_from_phone_sgd_delta": 0.0,
+      "epsilon": 0.01,
+      "evals": {
+        "minus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_002_minus/telemetry.json",
+          "loss_topk_kl": 1.3055719223,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_002_minus",
+          "returncode": 0
+        },
+        "plus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_002_plus/telemetry.json",
+          "loss_topk_kl": 1.3055719223,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_002_plus",
+          "returncode": 0
+        }
+      },
+      "finite_difference_gradient": 0.0,
+      "index": 6198,
+      "ordinal": 2,
+      "passed": true,
+      "rank": 16,
+      "relative_error": 0.0,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "sign_match": true,
+      "sign_required": false,
+      "source": "rank16_init_iter0",
+      "tensor": "adapter_a"
+    },
+    {
+      "absolute_error": 0.0,
+      "analytic_gradient_from_phone_sgd_delta": 0.0,
+      "epsilon": 0.01,
+      "evals": {
+        "minus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_003_minus/telemetry.json",
+          "loss_topk_kl": 1.3055719223,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_003_minus",
+          "returncode": 0
+        },
+        "plus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_003_plus/telemetry.json",
+          "loss_topk_kl": 1.3055719223,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_003_plus",
+          "returncode": 0
+        }
+      },
+      "finite_difference_gradient": 0.0,
+      "index": 13576,
+      "ordinal": 3,
+      "passed": true,
+      "rank": 16,
+      "relative_error": 0.0,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "sign_match": true,
+      "sign_required": false,
+      "source": "rank16_init_iter0",
+      "tensor": "adapter_a"
+    },
+    {
+      "absolute_error": 0.0,
+      "analytic_gradient_from_phone_sgd_delta": 0.0,
+      "epsilon": 0.01,
+      "evals": {
+        "minus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_004_minus/telemetry.json",
+          "loss_topk_kl": 1.3055719223,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_004_minus",
+          "returncode": 0
+        },
+        "plus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_004_plus/telemetry.json",
+          "loss_topk_kl": 1.3055719223,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_004_plus",
+          "returncode": 0
+        }
+      },
+      "finite_difference_gradient": 0.0,
+      "index": 15516,
+      "ordinal": 4,
+      "passed": true,
+      "rank": 16,
+      "relative_error": 0.0,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "sign_match": true,
+      "sign_required": false,
+      "source": "rank16_init_iter0",
+      "tensor": "adapter_a"
+    },
+    {
+      "absolute_error": 0.0,
+      "analytic_gradient_from_phone_sgd_delta": 0.0,
+      "epsilon": 0.01,
+      "evals": {
+        "minus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_005_minus/telemetry.json",
+          "loss_topk_kl": 1.3055719223,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_005_minus",
+          "returncode": 0
+        },
+        "plus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_005_plus/telemetry.json",
+          "loss_topk_kl": 1.3055719223,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_005_plus",
+          "returncode": 0
+        }
+      },
+      "finite_difference_gradient": 0.0,
+      "index": 25279,
+      "ordinal": 5,
+      "passed": true,
+      "rank": 16,
+      "relative_error": 0.0,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "sign_match": true,
+      "sign_required": false,
+      "source": "rank16_init_iter0",
+      "tensor": "adapter_a"
+    },
+    {
+      "absolute_error": 0.0,
+      "analytic_gradient_from_phone_sgd_delta": 0.0,
+      "epsilon": 0.01,
+      "evals": {
+        "minus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_006_minus/telemetry.json",
+          "loss_topk_kl": 1.3055719223,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_006_minus",
+          "returncode": 0
+        },
+        "plus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_006_plus/telemetry.json",
+          "loss_topk_kl": 1.3055719223,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_006_plus",
+          "returncode": 0
+        }
+      },
+      "finite_difference_gradient": 0.0,
+      "index": 31134,
+      "ordinal": 6,
+      "passed": true,
+      "rank": 16,
+      "relative_error": 0.0,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "sign_match": true,
+      "sign_required": false,
+      "source": "rank16_init_iter0",
+      "tensor": "adapter_a"
+    },
+    {
+      "absolute_error": 0.0,
+      "analytic_gradient_from_phone_sgd_delta": 0.0,
+      "epsilon": 0.01,
+      "evals": {
+        "minus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_007_minus/telemetry.json",
+          "loss_topk_kl": 1.3055719223,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_007_minus",
+          "returncode": 0
+        },
+        "plus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_007_plus/telemetry.json",
+          "loss_topk_kl": 1.3055719223,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_007_plus",
+          "returncode": 0
+        }
+      },
+      "finite_difference_gradient": 0.0,
+      "index": 37662,
+      "ordinal": 7,
+      "passed": true,
+      "rank": 16,
+      "relative_error": 0.0,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "sign_match": true,
+      "sign_required": false,
+      "source": "rank16_init_iter0",
+      "tensor": "adapter_a"
+    },
+    {
+      "absolute_error": 1.7374590655094835e-09,
+      "analytic_gradient_from_phone_sgd_delta": -1.8673745216801763e-07,
+      "epsilon": 0.01,
+      "evals": {
+        "minus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_008_minus/telemetry.json",
+          "loss_topk_kl": 1.3055719242,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_008_minus",
+          "returncode": 0
+        },
+        "plus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_008_plus/telemetry.json",
+          "loss_topk_kl": 1.3055719205,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_008_plus",
+          "returncode": 0
+        }
+      },
+      "finite_difference_gradient": -1.8499999310250814e-07,
+      "index": 3170,
+      "ordinal": 8,
+      "passed": true,
+      "rank": 16,
+      "relative_error": 0.009304288161467465,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "sign_match": true,
+      "sign_required": false,
+      "source": "rank16_init_iter0",
+      "tensor": "adapter_b"
+    },
+    {
+      "absolute_error": 1.832849427785277e-09,
+      "analytic_gradient_from_phone_sgd_delta": 1.9683284335769713e-07,
+      "epsilon": 0.01,
+      "evals": {
+        "minus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_009_minus/telemetry.json",
+          "loss_topk_kl": 1.3055719204,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_009_minus",
+          "returncode": 0
+        },
+        "plus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_009_plus/telemetry.json",
+          "loss_topk_kl": 1.3055719243,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_009_plus",
+          "returncode": 0
+        }
+      },
+      "finite_difference_gradient": 1.9499999392991185e-07,
+      "index": 6997,
+      "ordinal": 9,
+      "passed": true,
+      "rank": 16,
+      "relative_error": 0.009311705285151557,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "sign_match": true,
+      "sign_required": false,
+      "source": "rank16_init_iter0",
+      "tensor": "adapter_b"
+    },
+    {
+      "absolute_error": 6.930100937552197e-10,
+      "analytic_gradient_from_phone_sgd_delta": 4.5693013817071915e-08,
+      "epsilon": 0.01,
+      "evals": {
+        "minus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_010_minus/telemetry.json",
+          "loss_topk_kl": 1.3055719219,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_010_minus",
+          "returncode": 0
+        },
+        "plus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_010_plus/telemetry.json",
+          "loss_topk_kl": 1.3055719228,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_010_plus",
+          "returncode": 0
+        }
+      },
+      "finite_difference_gradient": 4.5000003723316695e-08,
+      "index": 7691,
+      "ordinal": 10,
+      "passed": true,
+      "rank": 16,
+      "relative_error": 0.01516665318968949,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "sign_match": true,
+      "sign_required": false,
+      "source": "rank16_init_iter0",
+      "tensor": "adapter_b"
+    },
+    {
+      "absolute_error": 7.683347291731479e-10,
+      "analytic_gradient_from_phone_sgd_delta": -6.576834010729726e-08,
+      "epsilon": 0.01,
+      "evals": {
+        "minus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_011_minus/telemetry.json",
+          "loss_topk_kl": 1.305571923,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_011_minus",
+          "returncode": 0
+        },
+        "plus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_011_plus/telemetry.json",
+          "loss_topk_kl": 1.3055719217,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_011_plus",
+          "returncode": 0
+        }
+      },
+      "finite_difference_gradient": -6.500000537812411e-08,
+      "index": 26732,
+      "ordinal": 11,
+      "passed": true,
+      "rank": 16,
+      "relative_error": 0.011682440638149815,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "sign_match": true,
+      "sign_required": false,
+      "source": "rank16_init_iter0",
+      "tensor": "adapter_b"
+    },
+    {
+      "absolute_error": 1.136115757027767e-09,
+      "analytic_gradient_from_phone_sgd_delta": -1.136115757027767e-09,
+      "epsilon": 0.01,
+      "evals": {
+        "minus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_012_minus/telemetry.json",
+          "loss_topk_kl": 1.3055719223,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_012_minus",
+          "returncode": 0
+        },
+        "plus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_012_plus/telemetry.json",
+          "loss_topk_kl": 1.3055719223,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_012_plus",
+          "returncode": 0
+        }
+      },
+      "finite_difference_gradient": 0.0,
+      "index": 30715,
+      "ordinal": 12,
+      "passed": true,
+      "rank": 16,
+      "relative_error": 1.0,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "sign_match": false,
+      "sign_required": false,
+      "source": "rank16_init_iter0",
+      "tensor": "adapter_b"
+    },
+    {
+      "absolute_error": 3.9090997105972747e-10,
+      "analytic_gradient_from_phone_sgd_delta": 3.903909089331137e-07,
+      "epsilon": 0.01,
+      "evals": {
+        "minus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_013_minus/telemetry.json",
+          "loss_topk_kl": 1.3055719184,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_013_minus",
+          "returncode": 0
+        },
+        "plus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_013_plus/telemetry.json",
+          "loss_topk_kl": 1.3055719262,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_013_plus",
+          "returncode": 0
+        }
+      },
+      "finite_difference_gradient": 3.8999999896205395e-07,
+      "index": 31866,
+      "ordinal": 13,
+      "passed": true,
+      "rank": 16,
+      "relative_error": 0.0010013295958351907,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "sign_match": true,
+      "sign_required": false,
+      "source": "rank16_init_iter0",
+      "tensor": "adapter_b"
+    },
+    {
+      "absolute_error": 6.195577384460194e-11,
+      "analytic_gradient_from_phone_sgd_delta": -3.006195825605573e-08,
+      "epsilon": 0.01,
+      "evals": {
+        "minus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_014_minus/telemetry.json",
+          "loss_topk_kl": 1.3055719226,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_014_minus",
+          "returncode": 0
+        },
+        "plus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_014_plus/telemetry.json",
+          "loss_topk_kl": 1.305571922,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_014_plus",
+          "returncode": 0
+        }
+      },
+      "finite_difference_gradient": -3.000000248221113e-08,
+      "index": 35357,
+      "ordinal": 14,
+      "passed": true,
+      "rank": 16,
+      "relative_error": 0.0020609360613466176,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "sign_match": true,
+      "sign_required": false,
+      "source": "rank16_init_iter0",
+      "tensor": "adapter_b"
+    },
+    {
+      "absolute_error": 3.1995011084973157e-09,
+      "analytic_gradient_from_phone_sgd_delta": -2.3199502763304736e-08,
+      "epsilon": 0.01,
+      "evals": {
+        "minus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_015_minus/telemetry.json",
+          "loss_topk_kl": 1.3055719225,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_015_minus",
+          "returncode": 0
+        },
+        "plus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_015_plus/telemetry.json",
+          "loss_topk_kl": 1.3055719221,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_015_plus",
+          "returncode": 0
+        }
+      },
+      "finite_difference_gradient": -2.000000165480742e-08,
+      "index": 39814,
+      "ordinal": 15,
+      "passed": true,
+      "rank": 16,
+      "relative_error": 0.13791248636406342,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "sign_match": true,
+      "sign_required": false,
+      "source": "rank16_init_iter0",
+      "tensor": "adapter_b"
+    },
+    {
+      "absolute_error": 2.7077757813742664e-08,
+      "analytic_gradient_from_phone_sgd_delta": -7.80029222369194e-05,
+      "epsilon": 0.01,
+      "evals": {
+        "minus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_016_minus/telemetry.json",
+          "loss_topk_kl": 1.18375287,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_016_minus",
+          "returncode": 0
+        },
+        "plus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_016_plus/telemetry.json",
+          "loss_topk_kl": 1.1837513094,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_016_plus",
+          "returncode": 0
+        }
+      },
+      "finite_difference_gradient": -7.802999999473315e-05,
+      "index": 549,
+      "ordinal": 16,
+      "passed": true,
+      "rank": 16,
+      "relative_error": 0.0003471377358337807,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "sign_match": true,
+      "sign_required": true,
+      "source": "rank16_final_iter7",
+      "tensor": "adapter_a"
+    },
+    {
+      "absolute_error": 2.1404606975750085e-08,
+      "analytic_gradient_from_phone_sgd_delta": -0.00023902859538793564,
+      "epsilon": 0.01,
+      "evals": {
+        "minus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_017_minus/telemetry.json",
+          "loss_topk_kl": 1.1837544803,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_017_minus",
+          "returncode": 0
+        },
+        "plus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_017_plus/telemetry.json",
+          "loss_topk_kl": 1.1837496993,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_017_plus",
+          "returncode": 0
+        }
+      },
+      "finite_difference_gradient": -0.0002390499999949114,
+      "index": 1643,
+      "ordinal": 17,
+      "passed": true,
+      "rank": 16,
+      "relative_error": 8.95483109082037e-05,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "sign_match": true,
+      "sign_required": true,
+      "source": "rank16_final_iter7",
+      "tensor": "adapter_a"
+    },
+    {
+      "absolute_error": 1.0942799999469344e-08,
+      "analytic_gradient_from_phone_sgd_delta": 8.334405720233917e-05,
+      "epsilon": 0.01,
+      "evals": {
+        "minus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_018_minus/telemetry.json",
+          "loss_topk_kl": 1.1837512567,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_018_minus",
+          "returncode": 0
+        },
+        "plus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_018_plus/telemetry.json",
+          "loss_topk_kl": 1.1837529238,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_018_plus",
+          "returncode": 0
+        }
+      },
+      "finite_difference_gradient": 8.335500000233864e-05,
+      "index": 2783,
+      "ordinal": 18,
+      "passed": true,
+      "rank": 16,
+      "relative_error": 0.00013129670388979116,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "sign_match": true,
+      "sign_required": true,
+      "source": "rank16_final_iter7",
+      "tensor": "adapter_a"
+    },
+    {
+      "absolute_error": 4.4923644804129026e-08,
+      "analytic_gradient_from_phone_sgd_delta": 3.430992364883423e-05,
+      "epsilon": 0.01,
+      "evals": {
+        "minus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_019_minus/telemetry.json",
+          "loss_topk_kl": 1.1837517476,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_019_minus",
+          "returncode": 0
+        },
+        "plus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_019_plus/telemetry.json",
+          "loss_topk_kl": 1.1837524329,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_019_plus",
+          "returncode": 0
+        }
+      },
+      "finite_difference_gradient": 3.42650000040301e-05,
+      "index": 5974,
+      "ordinal": 19,
+      "passed": true,
+      "rank": 16,
+      "relative_error": 0.0013093484341127476,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "sign_match": true,
+      "sign_required": true,
+      "source": "rank16_final_iter7",
+      "tensor": "adapter_a"
+    },
+    {
+      "absolute_error": 2.134034504663873e-08,
+      "analytic_gradient_from_phone_sgd_delta": -2.161134034395218e-05,
+      "epsilon": 0.01,
+      "evals": {
+        "minus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_020_minus/telemetry.json",
+          "loss_topk_kl": 1.1837523062,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_020_minus",
+          "returncode": 0
+        },
+        "plus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_020_plus/telemetry.json",
+          "loss_topk_kl": 1.1837518744,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_020_plus",
+          "returncode": 0
+        }
+      },
+      "finite_difference_gradient": -2.158999999890554e-05,
+      "index": 23211,
+      "ordinal": 20,
+      "passed": true,
+      "rank": 16,
+      "relative_error": 0.0009874605048553,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "sign_match": true,
+      "sign_required": true,
+      "source": "rank16_final_iter7",
+      "tensor": "adapter_a"
+    },
+    {
+      "absolute_error": 2.6695206045701525e-08,
+      "analytic_gradient_from_phone_sgd_delta": 0.00035680830478668213,
+      "epsilon": 0.01,
+      "evals": {
+        "minus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_021_minus/telemetry.json",
+          "loss_topk_kl": 1.1837485216,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_021_minus",
+          "returncode": 0
+        },
+        "plus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_021_plus/telemetry.json",
+          "loss_topk_kl": 1.1837556583,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_021_plus",
+          "returncode": 0
+        }
+      },
+      "finite_difference_gradient": 0.00035683499999272783,
+      "index": 24127,
+      "ordinal": 21,
+      "passed": true,
+      "rank": 16,
+      "relative_error": 7.481666118074593e-05,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "sign_match": true,
+      "sign_required": true,
+      "source": "rank16_final_iter7",
+      "tensor": "adapter_a"
+    },
+    {
+      "absolute_error": 6.733842150552505e-08,
+      "analytic_gradient_from_phone_sgd_delta": 0.0005922373384237289,
+      "epsilon": 0.01,
+      "evals": {
+        "minus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_022_minus/telemetry.json",
+          "loss_topk_kl": 1.1837461686,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_022_minus",
+          "returncode": 0
+        },
+        "plus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_022_plus/telemetry.json",
+          "loss_topk_kl": 1.183758012,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_022_plus",
+          "returncode": 0
+        }
+      },
+      "finite_difference_gradient": 0.0005921700000022234,
+      "index": 24169,
+      "ordinal": 22,
+      "passed": true,
+      "rank": 16,
+      "relative_error": 0.00011370174951270352,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "sign_match": true,
+      "sign_required": true,
+      "source": "rank16_final_iter7",
+      "tensor": "adapter_a"
+    },
+    {
+      "absolute_error": 1.402545413142775e-08,
+      "analytic_gradient_from_phone_sgd_delta": 9.511597454547882e-05,
+      "epsilon": 0.01,
+      "evals": {
+        "minus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_023_minus/telemetry.json",
+          "loss_topk_kl": 1.1837511386,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_023_minus",
+          "returncode": 0
+        },
+        "plus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_023_plus/telemetry.json",
+          "loss_topk_kl": 1.1837530412,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_023_plus",
+          "returncode": 0
+        }
+      },
+      "finite_difference_gradient": 9.512999999961025e-05,
+      "index": 33207,
+      "ordinal": 23,
+      "passed": true,
+      "rank": 16,
+      "relative_error": 0.0001474563468276468,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "sign_match": true,
+      "sign_required": true,
+      "source": "rank16_final_iter7",
+      "tensor": "adapter_a"
+    },
+    {
+      "absolute_error": 3.934474968048107e-10,
+      "analytic_gradient_from_phone_sgd_delta": 0.00036356039345264435,
+      "epsilon": 0.01,
+      "evals": {
+        "minus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_024_minus/telemetry.json",
+          "loss_topk_kl": 1.1837484553,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_024_minus",
+          "returncode": 0
+        },
+        "plus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_024_plus/telemetry.json",
+          "loss_topk_kl": 1.1837557265,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_024_plus",
+          "returncode": 0
+        }
+      },
+      "finite_difference_gradient": 0.00036356000000514754,
+      "index": 2790,
+      "ordinal": 24,
+      "passed": true,
+      "rank": 16,
+      "relative_error": 1.0822067086800514e-06,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "sign_match": true,
+      "sign_required": true,
+      "source": "rank16_final_iter7",
+      "tensor": "adapter_b"
+    },
+    {
+      "absolute_error": 2.7974689231768934e-09,
+      "analytic_gradient_from_phone_sgd_delta": -0.0002420227974653244,
+      "epsilon": 0.01,
+      "evals": {
+        "minus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_025_minus/telemetry.json",
+          "loss_topk_kl": 1.1837545101,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_025_minus",
+          "returncode": 0
+        },
+        "plus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_025_plus/telemetry.json",
+          "loss_topk_kl": 1.1837496697,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_025_plus",
+          "returncode": 0
+        }
+      },
+      "finite_difference_gradient": -0.00024201999999640122,
+      "index": 6177,
+      "ordinal": 25,
+      "passed": true,
+      "rank": 16,
+      "relative_error": 1.1558700058318672e-05,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "sign_match": true,
+      "sign_required": true,
+      "source": "rank16_final_iter7",
+      "tensor": "adapter_b"
+    },
+    {
+      "absolute_error": 4.2537418032395635e-09,
+      "analytic_gradient_from_phone_sgd_delta": -0.0004195142537355423,
+      "epsilon": 0.01,
+      "evals": {
+        "minus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_026_minus/telemetry.json",
+          "loss_topk_kl": 1.1837562862,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_026_minus",
+          "returncode": 0
+        },
+        "plus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_026_plus/telemetry.json",
+          "loss_topk_kl": 1.183747896,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_026_plus",
+          "returncode": 0
+        }
+      },
+      "finite_difference_gradient": -0.00041950999999373906,
+      "index": 10084,
+      "ordinal": 26,
+      "passed": true,
+      "rank": 16,
+      "relative_error": 1.0139683611134416e-05,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "sign_match": true,
+      "sign_required": true,
+      "source": "rank16_final_iter7",
+      "tensor": "adapter_b"
+    },
+    {
+      "absolute_error": 3.833755535254113e-10,
+      "analytic_gradient_from_phone_sgd_delta": -0.00010156538337469101,
+      "epsilon": 0.01,
+      "evals": {
+        "minus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_027_minus/telemetry.json",
+          "loss_topk_kl": 1.1837531069,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_027_minus",
+          "returncode": 0
+        },
+        "plus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_027_plus/telemetry.json",
+          "loss_topk_kl": 1.1837510756,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_027_plus",
+          "returncode": 0
+        }
+      },
+      "finite_difference_gradient": -0.00010156499999913748,
+      "index": 13775,
+      "ordinal": 27,
+      "passed": true,
+      "rank": 16,
+      "relative_error": 3.7746675174855327e-06,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "sign_match": true,
+      "sign_required": true,
+      "source": "rank16_final_iter7",
+      "tensor": "adapter_b"
+    },
+    {
+      "absolute_error": 1.2914624925031148e-09,
+      "analytic_gradient_from_phone_sgd_delta": -0.00020037870854139328,
+      "epsilon": 0.01,
+      "evals": {
+        "minus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_028_minus/telemetry.json",
+          "loss_topk_kl": 1.183754095,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_028_minus",
+          "returncode": 0
+        },
+        "plus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_028_plus/telemetry.json",
+          "loss_topk_kl": 1.1837500874,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_028_plus",
+          "returncode": 0
+        }
+      },
+      "finite_difference_gradient": -0.00020038000000388578,
+      "index": 25634,
+      "ordinal": 28,
+      "passed": true,
+      "rank": 16,
+      "relative_error": 6.4451083745573236e-06,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "sign_match": true,
+      "sign_required": true,
+      "source": "rank16_final_iter7",
+      "tensor": "adapter_b"
+    },
+    {
+      "absolute_error": 3.3259839327115515e-10,
+      "analytic_gradient_from_phone_sgd_delta": 5.820533260703087e-05,
+      "epsilon": 0.01,
+      "evals": {
+        "minus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_029_minus/telemetry.json",
+          "loss_topk_kl": 1.1837515088,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_029_minus",
+          "returncode": 0
+        },
+        "plus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_029_plus/telemetry.json",
+          "loss_topk_kl": 1.1837526729,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_029_plus",
+          "returncode": 0
+        }
+      },
+      "finite_difference_gradient": 5.82050000086376e-05,
+      "index": 27038,
+      "ordinal": 29,
+      "passed": true,
+      "rank": 16,
+      "relative_error": 5.7142254562252806e-06,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "sign_match": true,
+      "sign_required": true,
+      "source": "rank16_final_iter7",
+      "tensor": "adapter_b"
+    },
+    {
+      "absolute_error": 9.577738602217778e-10,
+      "analytic_gradient_from_phone_sgd_delta": -0.0004773540422320366,
+      "epsilon": 0.01,
+      "evals": {
+        "minus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_030_minus/telemetry.json",
+          "loss_topk_kl": 1.1837568642,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_030_minus",
+          "returncode": 0
+        },
+        "plus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_030_plus/telemetry.json",
+          "loss_topk_kl": 1.1837473171,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_030_plus",
+          "returncode": 0
+        }
+      },
+      "finite_difference_gradient": -0.0004773550000058968,
+      "index": 38497,
+      "ordinal": 30,
+      "passed": true,
+      "rank": 16,
+      "relative_error": 2.0064224359416115e-06,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "sign_match": true,
+      "sign_required": true,
+      "source": "rank16_final_iter7",
+      "tensor": "adapter_b"
+    },
+    {
+      "absolute_error": 1.7989165712606336e-09,
+      "analytic_gradient_from_phone_sgd_delta": 0.00016745179891586304,
+      "epsilon": 0.01,
+      "evals": {
+        "minus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_031_minus/telemetry.json",
+          "loss_topk_kl": 1.183750417,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_031_minus",
+          "returncode": 0
+        },
+        "plus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_031_plus/telemetry.json",
+          "loss_topk_kl": 1.183753766,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_031_plus",
+          "returncode": 0
+        }
+      },
+      "finite_difference_gradient": 0.00016744999999929178,
+      "index": 38594,
+      "ordinal": 31,
+      "passed": true,
+      "rank": 16,
+      "relative_error": 1.0742891882364954e-05,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "sign_match": true,
+      "sign_required": true,
+      "source": "rank16_final_iter7",
+      "tensor": "adapter_b"
+    },
+    {
+      "absolute_error": 0.0,
+      "analytic_gradient_from_phone_sgd_delta": 0.0,
+      "epsilon": 0.01,
+      "evals": {
+        "minus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_032_minus/telemetry.json",
+          "loss_topk_kl": 1.3055719254,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_032_minus",
+          "returncode": 0
+        },
+        "plus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_032_plus/telemetry.json",
+          "loss_topk_kl": 1.3055719254,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_032_plus",
+          "returncode": 0
+        }
+      },
+      "finite_difference_gradient": 0.0,
+      "index": 13522,
+      "ordinal": 32,
+      "passed": true,
+      "rank": 32,
+      "relative_error": 0.0,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "sign_match": true,
+      "sign_required": false,
+      "source": "rank32_init_iter0",
+      "tensor": "adapter_a"
+    },
+    {
+      "absolute_error": 0.0,
+      "analytic_gradient_from_phone_sgd_delta": 0.0,
+      "epsilon": 0.01,
+      "evals": {
+        "minus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_033_minus/telemetry.json",
+          "loss_topk_kl": 1.3055719254,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_033_minus",
+          "returncode": 0
+        },
+        "plus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_033_plus/telemetry.json",
+          "loss_topk_kl": 1.3055719254,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_033_plus",
+          "returncode": 0
+        }
+      },
+      "finite_difference_gradient": 0.0,
+      "index": 15249,
+      "ordinal": 33,
+      "passed": true,
+      "rank": 32,
+      "relative_error": 0.0,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "sign_match": true,
+      "sign_required": false,
+      "source": "rank32_init_iter0",
+      "tensor": "adapter_a"
+    },
+    {
+      "absolute_error": 0.0,
+      "analytic_gradient_from_phone_sgd_delta": 0.0,
+      "epsilon": 0.01,
+      "evals": {
+        "minus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_034_minus/telemetry.json",
+          "loss_topk_kl": 1.3055719254,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_034_minus",
+          "returncode": 0
+        },
+        "plus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_034_plus/telemetry.json",
+          "loss_topk_kl": 1.3055719254,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_034_plus",
+          "returncode": 0
+        }
+      },
+      "finite_difference_gradient": 0.0,
+      "index": 16203,
+      "ordinal": 34,
+      "passed": true,
+      "rank": 32,
+      "relative_error": 0.0,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "sign_match": true,
+      "sign_required": false,
+      "source": "rank32_init_iter0",
+      "tensor": "adapter_a"
+    },
+    {
+      "absolute_error": 0.0,
+      "analytic_gradient_from_phone_sgd_delta": 0.0,
+      "epsilon": 0.01,
+      "evals": {
+        "minus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_035_minus/telemetry.json",
+          "loss_topk_kl": 1.3055719254,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_035_minus",
+          "returncode": 0
+        },
+        "plus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_035_plus/telemetry.json",
+          "loss_topk_kl": 1.3055719254,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_035_plus",
+          "returncode": 0
+        }
+      },
+      "finite_difference_gradient": 0.0,
+      "index": 50775,
+      "ordinal": 35,
+      "passed": true,
+      "rank": 32,
+      "relative_error": 0.0,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "sign_match": true,
+      "sign_required": false,
+      "source": "rank32_init_iter0",
+      "tensor": "adapter_a"
+    },
+    {
+      "absolute_error": 0.0,
+      "analytic_gradient_from_phone_sgd_delta": 0.0,
+      "epsilon": 0.01,
+      "evals": {
+        "minus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_036_minus/telemetry.json",
+          "loss_topk_kl": 1.3055719254,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_036_minus",
+          "returncode": 0
+        },
+        "plus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_036_plus/telemetry.json",
+          "loss_topk_kl": 1.3055719254,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_036_plus",
+          "returncode": 0
+        }
+      },
+      "finite_difference_gradient": 0.0,
+      "index": 51827,
+      "ordinal": 36,
+      "passed": true,
+      "rank": 32,
+      "relative_error": 0.0,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "sign_match": true,
+      "sign_required": false,
+      "source": "rank32_init_iter0",
+      "tensor": "adapter_a"
+    },
+    {
+      "absolute_error": 0.0,
+      "analytic_gradient_from_phone_sgd_delta": 0.0,
+      "epsilon": 0.01,
+      "evals": {
+        "minus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_037_minus/telemetry.json",
+          "loss_topk_kl": 1.3055719254,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_037_minus",
+          "returncode": 0
+        },
+        "plus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_037_plus/telemetry.json",
+          "loss_topk_kl": 1.3055719254,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_037_plus",
+          "returncode": 0
+        }
+      },
+      "finite_difference_gradient": 0.0,
+      "index": 53612,
+      "ordinal": 37,
+      "passed": true,
+      "rank": 32,
+      "relative_error": 0.0,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "sign_match": true,
+      "sign_required": false,
+      "source": "rank32_init_iter0",
+      "tensor": "adapter_a"
+    },
+    {
+      "absolute_error": 9.124980770991442e-09,
+      "analytic_gradient_from_phone_sgd_delta": 2.508750185370445e-07,
+      "epsilon": 0.01,
+      "evals": {
+        "minus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_038_minus/telemetry.json",
+          "loss_topk_kl": 1.3055719224,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_038_minus",
+          "returncode": 0
+        },
+        "plus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_038_plus/telemetry.json",
+          "loss_topk_kl": 1.3055719276,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_038_plus",
+          "returncode": 0
+        }
+      },
+      "finite_difference_gradient": 2.5999999930803597e-07,
+      "index": 73091,
+      "ordinal": 38,
+      "passed": true,
+      "rank": 32,
+      "relative_error": 0.03637261623019685,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "sign_match": true,
+      "sign_required": false,
+      "source": "rank32_init_iter0",
+      "tensor": "adapter_a"
+    },
+    {
+      "absolute_error": 0.0,
+      "analytic_gradient_from_phone_sgd_delta": 0.0,
+      "epsilon": 0.01,
+      "evals": {
+        "minus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_039_minus/telemetry.json",
+          "loss_topk_kl": 1.3055719254,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_039_minus",
+          "returncode": 0
+        },
+        "plus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_039_plus/telemetry.json",
+          "loss_topk_kl": 1.3055719254,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_039_plus",
+          "returncode": 0
+        }
+      },
+      "finite_difference_gradient": 0.0,
+      "index": 80011,
+      "ordinal": 39,
+      "passed": true,
+      "rank": 32,
+      "relative_error": 0.0,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "sign_match": true,
+      "sign_required": false,
+      "source": "rank32_init_iter0",
+      "tensor": "adapter_a"
+    },
+    {
+      "absolute_error": 2.1091750568302814e-09,
+      "analytic_gradient_from_phone_sgd_delta": -8.210918167605996e-08,
+      "epsilon": 0.01,
+      "evals": {
+        "minus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_040_minus/telemetry.json",
+          "loss_topk_kl": 1.3055719262,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_040_minus",
+          "returncode": 0
+        },
+        "plus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_040_plus/telemetry.json",
+          "loss_topk_kl": 1.3055719246,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_040_plus",
+          "returncode": 0
+        }
+      },
+      "finite_difference_gradient": -8.000000661922968e-08,
+      "index": 6393,
+      "ordinal": 40,
+      "passed": true,
+      "rank": 32,
+      "relative_error": 0.025687444616747896,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "sign_match": true,
+      "sign_required": false,
+      "source": "rank32_init_iter0",
+      "tensor": "adapter_b"
+    },
+    {
+      "absolute_error": 2.4768098683125572e-09,
+      "analytic_gradient_from_phone_sgd_delta": 1.2523191372793008e-08,
+      "epsilon": 0.01,
+      "evals": {
+        "minus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_041_minus/telemetry.json",
+          "loss_topk_kl": 1.3055719253,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_041_minus",
+          "returncode": 0
+        },
+        "plus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_041_plus/telemetry.json",
+          "loss_topk_kl": 1.3055719256,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_041_plus",
+          "returncode": 0
+        }
+      },
+      "finite_difference_gradient": 1.5000001241105565e-08,
+      "index": 17817,
+      "ordinal": 41,
+      "passed": true,
+      "rank": 32,
+      "relative_error": 0.19777785027652756,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "sign_match": true,
+      "sign_required": false,
+      "source": "rank32_init_iter0",
+      "tensor": "adapter_b"
+    },
+    {
+      "absolute_error": 2.0637349607000033e-09,
+      "analytic_gradient_from_phone_sgd_delta": 2.0637349607000033e-09,
+      "epsilon": 0.01,
+      "evals": {
+        "minus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_042_minus/telemetry.json",
+          "loss_topk_kl": 1.3055719254,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_042_minus",
+          "returncode": 0
+        },
+        "plus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_042_plus/telemetry.json",
+          "loss_topk_kl": 1.3055719254,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_042_plus",
+          "returncode": 0
+        }
+      },
+      "finite_difference_gradient": 0.0,
+      "index": 20796,
+      "ordinal": 42,
+      "passed": true,
+      "rank": 32,
+      "relative_error": 1.0,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "sign_match": false,
+      "sign_required": false,
+      "source": "rank32_init_iter0",
+      "tensor": "adapter_b"
+    },
+    {
+      "absolute_error": 1.1779093256336637e-09,
+      "analytic_gradient_from_phone_sgd_delta": -8.117791594486334e-08,
+      "epsilon": 0.01,
+      "evals": {
+        "minus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_043_minus/telemetry.json",
+          "loss_topk_kl": 1.3055719262,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_043_minus",
+          "returncode": 0
+        },
+        "plus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_043_plus/telemetry.json",
+          "loss_topk_kl": 1.3055719246,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_043_plus",
+          "returncode": 0
+        }
+      },
+      "finite_difference_gradient": -8.000000661922968e-08,
+      "index": 33248,
+      "ordinal": 43,
+      "passed": true,
+      "rank": 32,
+      "relative_error": 0.014510218843677985,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "sign_match": true,
+      "sign_required": false,
+      "source": "rank32_init_iter0",
+      "tensor": "adapter_b"
+    },
+    {
+      "absolute_error": 1.5067058711792924e-11,
+      "analytic_gradient_from_phone_sgd_delta": 1.5015068299817358e-08,
+      "epsilon": 0.01,
+      "evals": {
+        "minus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_044_minus/telemetry.json",
+          "loss_topk_kl": 1.3055719253,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_044_minus",
+          "returncode": 0
+        },
+        "plus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_044_plus/telemetry.json",
+          "loss_topk_kl": 1.3055719256,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_044_plus",
+          "returncode": 0
+        }
+      },
+      "finite_difference_gradient": 1.5000001241105565e-08,
+      "index": 38932,
+      "ordinal": 44,
+      "passed": true,
+      "rank": 32,
+      "relative_error": 0.0010034625491497898,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "sign_match": true,
+      "sign_required": false,
+      "source": "rank32_init_iter0",
+      "tensor": "adapter_b"
+    },
+    {
+      "absolute_error": 1.6126744384337144e-10,
+      "analytic_gradient_from_phone_sgd_delta": 9.838733383560339e-09,
+      "epsilon": 0.01,
+      "evals": {
+        "minus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_045_minus/telemetry.json",
+          "loss_topk_kl": 1.3055719253,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_045_minus",
+          "returncode": 0
+        },
+        "plus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_045_plus/telemetry.json",
+          "loss_topk_kl": 1.3055719255,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_045_plus",
+          "returncode": 0
+        }
+      },
+      "finite_difference_gradient": 1.000000082740371e-08,
+      "index": 53460,
+      "ordinal": 45,
+      "passed": true,
+      "rank": 32,
+      "relative_error": 0.01639107774917808,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "sign_match": true,
+      "sign_required": false,
+      "source": "rank32_init_iter0",
+      "tensor": "adapter_b"
+    },
+    {
+      "absolute_error": 2.293567558098175e-09,
+      "analytic_gradient_from_phone_sgd_delta": 1.3270643250962166e-07,
+      "epsilon": 0.01,
+      "evals": {
+        "minus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_046_minus/telemetry.json",
+          "loss_topk_kl": 1.3055719241,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_046_minus",
+          "returncode": 0
+        },
+        "plus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_046_plus/telemetry.json",
+          "loss_topk_kl": 1.3055719268,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_046_plus",
+          "returncode": 0
+        }
+      },
+      "finite_difference_gradient": 1.3500000006771984e-07,
+      "index": 59572,
+      "ordinal": 46,
+      "passed": true,
+      "rank": 32,
+      "relative_error": 0.017283017218716085,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "sign_match": true,
+      "sign_required": false,
+      "source": "rank32_init_iter0",
+      "tensor": "adapter_b"
+    },
+    {
+      "absolute_error": 7.249242872653383e-10,
+      "analytic_gradient_from_phone_sgd_delta": -7.249242872653383e-10,
+      "epsilon": 0.01,
+      "evals": {
+        "minus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_047_minus/telemetry.json",
+          "loss_topk_kl": 1.3055719254,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_047_minus",
+          "returncode": 0
+        },
+        "plus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_047_plus/telemetry.json",
+          "loss_topk_kl": 1.3055719254,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_047_plus",
+          "returncode": 0
+        }
+      },
+      "finite_difference_gradient": 0.0,
+      "index": 66659,
+      "ordinal": 47,
+      "passed": true,
+      "rank": 32,
+      "relative_error": 1.0,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "sign_match": false,
+      "sign_required": false,
+      "source": "rank32_init_iter0",
+      "tensor": "adapter_b"
+    },
+    {
+      "absolute_error": 4.4461809789453355e-08,
+      "analytic_gradient_from_phone_sgd_delta": -3.016553819179535e-05,
+      "epsilon": 0.01,
+      "evals": {
+        "minus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_048_minus/telemetry.json",
+          "loss_topk_kl": 1.1855907027,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_048_minus",
+          "returncode": 0
+        },
+        "plus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_048_plus/telemetry.json",
+          "loss_topk_kl": 1.1855900985,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_048_plus",
+          "returncode": 0
+        }
+      },
+      "finite_difference_gradient": -3.0210000001584802e-05,
+      "index": 5020,
+      "ordinal": 48,
+      "passed": true,
+      "rank": 32,
+      "relative_error": 0.0014739272843985398,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "sign_match": true,
+      "sign_required": true,
+      "source": "rank32_final_iter7",
+      "tensor": "adapter_a"
+    },
+    {
+      "absolute_error": 1.1248761921933692e-08,
+      "analytic_gradient_from_phone_sgd_delta": 1.1187512427568436e-06,
+      "epsilon": 0.01,
+      "evals": {
+        "minus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_049_minus/telemetry.json",
+          "loss_topk_kl": 1.1855903888,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_049_minus",
+          "returncode": 0
+        },
+        "plus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_049_plus/telemetry.json",
+          "loss_topk_kl": 1.1855904114,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_049_plus",
+          "returncode": 0
+        }
+      },
+      "finite_difference_gradient": 1.1300000046787773e-06,
+      "index": 8994,
+      "ordinal": 49,
+      "passed": true,
+      "rank": 32,
+      "relative_error": 0.010054748090571344,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "sign_match": true,
+      "sign_required": false,
+      "source": "rank32_final_iter7",
+      "tensor": "adapter_a"
+    },
+    {
+      "absolute_error": 3.956005079075453e-08,
+      "analytic_gradient_from_phone_sgd_delta": -8.224043995141983e-05,
+      "epsilon": 0.01,
+      "evals": {
+        "minus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_050_minus/telemetry.json",
+          "loss_topk_kl": 1.1855912228,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_050_minus",
+          "returncode": 0
+        },
+        "plus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_050_plus/telemetry.json",
+          "loss_topk_kl": 1.1855895772,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_050_plus",
+          "returncode": 0
+        }
+      },
+      "finite_difference_gradient": -8.228000000221058e-05,
+      "index": 17680,
+      "ordinal": 50,
+      "passed": true,
+      "rank": 32,
+      "relative_error": 0.00048102917268101934,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "sign_match": true,
+      "sign_required": true,
+      "source": "rank32_final_iter7",
+      "tensor": "adapter_a"
+    },
+    {
+      "absolute_error": 4.871063552513988e-08,
+      "analytic_gradient_from_phone_sgd_delta": 2.2561289370059967e-05,
+      "epsilon": 0.01,
+      "evals": {
+        "minus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_051_minus/telemetry.json",
+          "loss_topk_kl": 1.1855901746,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_051_minus",
+          "returncode": 0
+        },
+        "plus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_051_plus/telemetry.json",
+          "loss_topk_kl": 1.1855906268,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_051_plus",
+          "returncode": 0
+        }
+      },
+      "finite_difference_gradient": 2.2610000005585107e-05,
+      "index": 22444,
+      "ordinal": 51,
+      "passed": true,
+      "rank": 32,
+      "relative_error": 0.002159035980885981,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "sign_match": true,
+      "sign_required": true,
+      "source": "rank32_final_iter7",
+      "tensor": "adapter_a"
+    },
+    {
+      "absolute_error": 2.96347502093397e-08,
+      "analytic_gradient_from_phone_sgd_delta": 0.00023792963474988937,
+      "epsilon": 0.01,
+      "evals": {
+        "minus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_052_minus/telemetry.json",
+          "loss_topk_kl": 1.1855880217,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_052_minus",
+          "returncode": 0
+        },
+        "plus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_052_plus/telemetry.json",
+          "loss_topk_kl": 1.1855927797,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_052_plus",
+          "returncode": 0
+        }
+      },
+      "finite_difference_gradient": 0.00023789999999968003,
+      "index": 56128,
+      "ordinal": 52,
+      "passed": true,
+      "rank": 32,
+      "relative_error": 0.000124552581440692,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "sign_match": true,
+      "sign_required": true,
+      "source": "rank32_final_iter7",
+      "tensor": "adapter_a"
+    },
+    {
+      "absolute_error": 4.2695493807087814e-08,
+      "analytic_gradient_from_phone_sgd_delta": 2.3762695491313934e-05,
+      "epsilon": 0.01,
+      "evals": {
+        "minus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_053_minus/telemetry.json",
+          "loss_topk_kl": 1.1855901632,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_053_minus",
+          "returncode": 0
+        },
+        "plus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_053_plus/telemetry.json",
+          "loss_topk_kl": 1.1855906376,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_053_plus",
+          "returncode": 0
+        }
+      },
+      "finite_difference_gradient": 2.3719999997506847e-05,
+      "index": 57557,
+      "ordinal": 53,
+      "passed": true,
+      "rank": 32,
+      "relative_error": 0.001796744557985623,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "sign_match": true,
+      "sign_required": true,
+      "source": "rank32_final_iter7",
+      "tensor": "adapter_a"
+    },
+    {
+      "absolute_error": 2.374751506550865e-08,
+      "analytic_gradient_from_phone_sgd_delta": -0.00063357874751091,
+      "epsilon": 0.01,
+      "evals": {
+        "minus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_054_minus/telemetry.json",
+          "loss_topk_kl": 1.1855967365,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_054_minus",
+          "returncode": 0
+        },
+        "plus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_054_plus/telemetry.json",
+          "loss_topk_kl": 1.1855840654,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_054_plus",
+          "returncode": 0
+        }
+      },
+      "finite_difference_gradient": -0.0006335549999958445,
+      "index": 65995,
+      "ordinal": 54,
+      "passed": true,
+      "rank": 32,
+      "relative_error": 3.748155246495184e-05,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "sign_match": true,
+      "sign_required": true,
+      "source": "rank32_final_iter7",
+      "tensor": "adapter_a"
+    },
+    {
+      "absolute_error": 4.2817849266185704e-08,
+      "analytic_gradient_from_phone_sgd_delta": -1.5972182154655457e-05,
+      "epsilon": 0.01,
+      "evals": {
+        "minus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_055_minus/telemetry.json",
+          "loss_topk_kl": 1.1855905602,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_055_minus",
+          "returncode": 0
+        },
+        "plus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_055_plus/telemetry.json",
+          "loss_topk_kl": 1.1855902399,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_055_plus",
+          "returncode": 0
+        }
+      },
+      "finite_difference_gradient": -1.6015000003921642e-05,
+      "index": 74451,
+      "ordinal": 55,
+      "passed": true,
+      "rank": 32,
+      "relative_error": 0.002680776418124274,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "sign_match": true,
+      "sign_required": true,
+      "source": "rank32_final_iter7",
+      "tensor": "adapter_a"
+    },
+    {
+      "absolute_error": 3.9976466581492787e-10,
+      "analytic_gradient_from_phone_sgd_delta": 0.0001350603997707367,
+      "epsilon": 0.01,
+      "evals": {
+        "minus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_056_minus/telemetry.json",
+          "loss_topk_kl": 1.1855890499,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_056_minus",
+          "returncode": 0
+        },
+        "plus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_056_plus/telemetry.json",
+          "loss_topk_kl": 1.1855917511,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_056_plus",
+          "returncode": 0
+        }
+      },
+      "finite_difference_gradient": 0.00013506000000607088,
+      "index": 8898,
+      "ordinal": 56,
+      "passed": true,
+      "rank": 32,
+      "relative_error": 2.9598954726442633e-06,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "sign_match": true,
+      "sign_required": true,
+      "source": "rank32_final_iter7",
+      "tensor": "adapter_b"
+    },
+    {
+      "absolute_error": 1.8669443768715155e-09,
+      "analytic_gradient_from_phone_sgd_delta": -0.0003973068669438362,
+      "epsilon": 0.01,
+      "evals": {
+        "minus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_057_minus/telemetry.json",
+          "loss_topk_kl": 1.1855943736,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_057_minus",
+          "returncode": 0
+        },
+        "plus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_057_plus/telemetry.json",
+          "loss_topk_kl": 1.1855864275,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_057_plus",
+          "returncode": 0
+        }
+      },
+      "finite_difference_gradient": -0.00039730499999945934,
+      "index": 16926,
+      "ordinal": 57,
+      "passed": true,
+      "rank": 32,
+      "relative_error": 4.6989985127426174e-06,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "sign_match": true,
+      "sign_required": true,
+      "source": "rank32_final_iter7",
+      "tensor": "adapter_b"
+    },
+    {
+      "absolute_error": 1.856099718366977e-09,
+      "analytic_gradient_from_phone_sgd_delta": -9.488314390182495e-05,
+      "epsilon": 0.01,
+      "evals": {
+        "minus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_058_minus/telemetry.json",
+          "loss_topk_kl": 1.1855913494,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_058_minus",
+          "returncode": 0
+        },
+        "plus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_058_plus/telemetry.json",
+          "loss_topk_kl": 1.1855894517,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_058_plus",
+          "returncode": 0
+        }
+      },
+      "finite_difference_gradient": -9.488500000154332e-05,
+      "index": 21214,
+      "ordinal": 58,
+      "passed": true,
+      "rank": 32,
+      "relative_error": 1.9561954231696546e-05,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "sign_match": true,
+      "sign_required": true,
+      "source": "rank32_final_iter7",
+      "tensor": "adapter_b"
+    },
+    {
+      "absolute_error": 2.917572849980843e-09,
+      "analytic_gradient_from_phone_sgd_delta": 6.210291758179665e-05,
+      "epsilon": 0.01,
+      "evals": {
+        "minus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_059_minus/telemetry.json",
+          "loss_topk_kl": 1.1855897799,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_059_minus",
+          "returncode": 0
+        },
+        "plus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_059_plus/telemetry.json",
+          "loss_topk_kl": 1.1855910219,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_059_plus",
+          "returncode": 0
+        }
+      },
+      "finite_difference_gradient": 6.210000000894667e-05,
+      "index": 35198,
+      "ordinal": 59,
+      "passed": true,
+      "rank": 32,
+      "relative_error": 4.69796422388379e-05,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "sign_match": true,
+      "sign_required": true,
+      "source": "rank32_final_iter7",
+      "tensor": "adapter_b"
+    },
+    {
+      "absolute_error": 2.9332536399806486e-09,
+      "analytic_gradient_from_phone_sgd_delta": -0.0006521120667457581,
+      "epsilon": 0.01,
+      "evals": {
+        "minus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_060_minus/telemetry.json",
+          "loss_topk_kl": 1.1855969217,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_060_minus",
+          "returncode": 0
+        },
+        "plus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_060_plus/telemetry.json",
+          "loss_topk_kl": 1.1855838794,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_060_plus",
+          "returncode": 0
+        }
+      },
+      "finite_difference_gradient": -0.000652114999999398,
+      "index": 62710,
+      "ordinal": 60,
+      "passed": true,
+      "rank": 32,
+      "relative_error": 4.4980821388852625e-06,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "sign_match": true,
+      "sign_required": true,
+      "source": "rank32_final_iter7",
+      "tensor": "adapter_b"
+    },
+    {
+      "absolute_error": 3.12437631322382e-09,
+      "analytic_gradient_from_phone_sgd_delta": 0.00039579812437295914,
+      "epsilon": 0.01,
+      "evals": {
+        "minus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_061_minus/telemetry.json",
+          "loss_topk_kl": 1.1855864425,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_061_minus",
+          "returncode": 0
+        },
+        "plus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_061_plus/telemetry.json",
+          "loss_topk_kl": 1.1855943584,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_061_plus",
+          "returncode": 0
+        }
+      },
+      "finite_difference_gradient": 0.0003957949999966459,
+      "index": 64731,
+      "ordinal": 61,
+      "passed": true,
+      "rank": 32,
+      "relative_error": 7.893863363232444e-06,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "sign_match": true,
+      "sign_required": true,
+      "source": "rank32_final_iter7",
+      "tensor": "adapter_b"
+    },
+    {
+      "absolute_error": 1.5944445763693693e-09,
+      "analytic_gradient_from_phone_sgd_delta": 0.00021333340555429459,
+      "epsilon": 0.01,
+      "evals": {
+        "minus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_062_minus/telemetry.json",
+          "loss_topk_kl": 1.1855882671,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_062_minus",
+          "returncode": 0
+        },
+        "plus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_062_plus/telemetry.json",
+          "loss_topk_kl": 1.1855925338,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_062_plus",
+          "returncode": 0
+        }
+      },
+      "finite_difference_gradient": 0.00021333499999887096,
+      "index": 73405,
+      "ordinal": 62,
+      "passed": true,
+      "rank": 32,
+      "relative_error": 7.473956421529932e-06,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "sign_match": true,
+      "sign_required": true,
+      "source": "rank32_final_iter7",
+      "tensor": "adapter_b"
+    },
+    {
+      "absolute_error": 6.0957461300859e-10,
+      "analytic_gradient_from_phone_sgd_delta": 8.619390428066254e-06,
+      "epsilon": 0.01,
+      "evals": {
+        "minus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_063_minus/telemetry.json",
+          "loss_topk_kl": 1.1855903143,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_063_minus",
+          "returncode": 0
+        },
+        "plus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/evals/probe_063_plus/telemetry.json",
+          "loss_topk_kl": 1.1855904867,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d/fd_evals/probe_063_plus",
+          "returncode": 0
+        }
+      },
+      "finite_difference_gradient": 8.620000002679262e-06,
+      "index": 76224,
+      "ordinal": 63,
+      "passed": true,
+      "rank": 32,
+      "relative_error": 7.07213135425108e-05,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "sign_match": true,
+      "sign_required": false,
+      "source": "rank32_final_iter7",
+      "tensor": "adapter_b"
+    }
+  ],
+  "rank_coverage": [
+    16,
+    32
+  ],
+  "revision": "7aa32e6889efd6300124851b164f8b364314c3d8",
+  "run_id": "20260524T210920Z_phase13_gemma4_only_heterogeneous",
+  "schema_version": "phase13_p13d_gradient_parity_summary_v1",
+  "source_commit": "53ba9b93cf37cc25fae40cb9d3c7490ad9d0b55f",
+  "source_state_count": 4,
+  "source_tree_dirty": true
+}

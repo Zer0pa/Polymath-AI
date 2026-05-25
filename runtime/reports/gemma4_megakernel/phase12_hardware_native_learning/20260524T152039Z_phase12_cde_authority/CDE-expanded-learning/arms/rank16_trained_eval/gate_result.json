@@ -1,0 +1,23 @@
+{
+  "schema_version": "phase11_h11a_gate_result_v1",
+  "gate": "Phase12-CDE",
+  "runner_build_id": "phase11_runner_h11a_v1_20260523",
+  "status": "fail",
+  "objective": "topk_embedding_kl",
+  "apply_update": false,
+  "iteration_count": 1,
+  "required_iteration_count": 1,
+  "queue_execution_wall_seconds": 13.361400,
+  "active_training_seconds": 0.000000,
+  "active_wall_ratio": 0.00000000,
+  "phase10_active_wall_baseline": 0.21328649,
+  "active_wall_acceptance": false,
+  "disconnect_marker_seen": false,
+  "disconnect_hold_seconds": 0.000000,
+  "disconnect_acceptance": true,
+  "checkpoint_chain_acceptance": true,
+  "runtime_topology": "phone_local_queue_no_adb_per_iteration",
+  "one_shot_fallback_preserved": true,
+  "blockers": ["iteration 0 failed: unable to open /data/local/tmp/polymath_gemma4_gate/phase12/runs/20260524T152039Z_phase12_cde_authority_rank16_train/Phase12-CDE-learning/iterations/iter_000007/checkpoint/adapter_a.f32.bin", "active/wall did not reach >=0.50 or >=2x Phase 10 baseline"],
+  "ended_at_utc": "2026-05-24T15:41:53Z"
+}

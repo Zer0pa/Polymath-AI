@@ -1,0 +1,10 @@
+{
+  "schema_version": "phase13_queue_schema_v1",
+  "record_format": "jsonl",
+  "required_fields": ["id", "gate", "config", "depends_on", "resume"],
+  "required_identity_config_fields": ["model_id", "model_revision", "hidden_size", "source_commit", "kernel_lineage_class", "runtime_backend", "teacher_provenance", "hidden_state_fixtures_consumed"],
+  "supported_gates_in_this_build": ["H11-A", "H11-F"],
+  "supported_objectives": ["hidden_mse", "topk_embedding_kl"],
+  "supported_optimizers": ["sgd", "adamw"],
+  "runner_build_id": "phase13_runner_identity_v1_20260524"
+}

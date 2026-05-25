@@ -1,0 +1,33 @@
+{
+  "arms": [
+    {
+      "learning_rate": 0.0003,
+      "name": "lr3e4_cont24"
+    },
+    {
+      "learning_rate": 0.0001,
+      "name": "lr1e4_cont24"
+    }
+  ],
+  "base_checkpoint": "/data/local/tmp/polymath_gemma4_gate/phase12/runs/20260524T164412Z_phase12_cde_authority_rank16_train/Phase12-CDE-learning/iterations/iter_000007/checkpoint",
+  "declared_at_utc": "2026-05-24T17:37:25.552030+00:00",
+  "iterations_per_arm": 24,
+  "nonclaims": [
+    "new corpus scale",
+    "multi-site adapter",
+    "full Gemma4 training",
+    "HTP backprop",
+    "benchmark readiness"
+  ],
+  "pass_rule": "select an arm only if final heldout top-k KL does not exceed the 8-step reference, mean_student_teacher_top1_probability does not regress, and agreement does not regress by more than 0.002 absolute",
+  "primary_reference": {
+    "loss_topk_kl": 1.0005755997,
+    "mean_student_teacher_top1_probability": 0.1233203377,
+    "name": "rank16_8_step_heldout",
+    "student_teacher_top1_agreement": 0.1140456182
+  },
+  "rank": 16,
+  "runtime_topology": "phone-local shell script runs train/eval queues sequentially; host may disconnect after launch",
+  "schema_version": "phase12_long_native_lr_predeclare_v1",
+  "source_cde_result": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/phase12_cde_gate_result.json"
+}

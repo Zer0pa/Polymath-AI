@@ -1,0 +1,150 @@
+{
+  "checkpoint_manifest": {
+    "active_loss_tokens": 596,
+    "adapter_site": "post_layer0",
+    "applied_update": false,
+    "checkpoint_delta_l2": {
+      "adapter_a": 0.0,
+      "adapter_b": 0.0
+    },
+    "combined_gradient_l2": 0.4639108434,
+    "gradient_clip_l2": 0.0,
+    "gradient_clip_scale": 1.0,
+    "gradient_l2": {
+      "adapter_a": 0.1688648196,
+      "adapter_b": 0.4320855741,
+      "output": 0.0321242987
+    },
+    "learning_rate": 0.0,
+    "loss_topk_kl": 1.9959086212,
+    "mean_student_teacher_top1_probability": 0.1757317151,
+    "objective": "label_contrastive_topk_kl_v1",
+    "objective_contract": "p13c_label_onehot_topk_over_phone_native_corpus_labels_no_runtime_teacher_service",
+    "optimizer": "sgd",
+    "optimizer_backend": "phone_cpu_after_opencl_gradients",
+    "optimizer_state": {
+      "status": "not_updated"
+    },
+    "optimizer_step": 0,
+    "post_update": {
+      "adapter_a": {
+        "path": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13h/preflight/objective_one_shot/checkpoint/adapter_a.f32.bin",
+        "sha256": "022bbe96a89539f41bc6479269272a3e30123a8126a9a31e8da839e47450eb0d"
+      },
+      "adapter_b": {
+        "path": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13h/preflight/objective_one_shot/checkpoint/adapter_b.f32.bin",
+        "sha256": "ee2eecf9560fcb3d1e991d4f89c0cc6a826509c248d8ae598db9af4a9f3bb604"
+      }
+    },
+    "pre_update": {
+      "adapter_a": {
+        "path": "/data/local/tmp/polymath_gemma4_gate/phase12/runs/20260524T173847Z_phase12_long_native_lr_retry1_lr3e4_cont24_train/Phase12-long-native-lr/iterations/iter_000023/checkpoint/adapter_a.f32.bin",
+        "sha256": "022bbe96a89539f41bc6479269272a3e30123a8126a9a31e8da839e47450eb0d"
+      },
+      "adapter_b": {
+        "path": "/data/local/tmp/polymath_gemma4_gate/phase12/runs/20260524T173847Z_phase12_long_native_lr_retry1_lr3e4_cont24_train/Phase12-long-native-lr/iterations/iter_000023/checkpoint/adapter_b.f32.bin",
+        "sha256": "ee2eecf9560fcb3d1e991d4f89c0cc6a826509c248d8ae598db9af4a9f3bb604"
+      }
+    },
+    "rank": 16,
+    "schema_version": "gemma4_rank_adapter_topk_kl_checkpoint_v1",
+    "student_teacher_top1_agreement": 0.1812080537,
+    "teacher_provenance": "phone_native_p13c_labels_to_host_deterministic_onehot_topk_precompute",
+    "teacher_shard": {
+      "manifest_schema_version": "phase13_p13h_label_contrastive_topk_teacher_v1",
+      "manifest_sha256": "63805e8f2f5f2b8ab1c0f8753c7654460798bd94be66fff357f8c5e5896d1f74",
+      "path": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13h/shards/train/teacher_shards/shard_0000",
+      "teacher_scope": "p13c_next_token_label_onehot_plus_deterministic_negatives",
+      "topk_probabilities_sha256": "6c28aeed155249e7440fba7bcf35325f2520aaef79d66cedaded3f19133f4528",
+      "topk_token_ids_sha256": "d47c85a73b1094060f121ea89acb878361ef5ce23840fbede71ac7ca346f0ba9"
+    },
+    "trainable_scope": "post_layer0_rank16_residual_adapter",
+    "weight_decay": 0.0
+  },
+  "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13h/preflight/objective_one_shot",
+  "returncode": 0,
+  "schema_version": "phase13_p13h_objective_preflight_v1",
+  "status": "pass",
+  "telemetry": {
+    "active_tokens": 596,
+    "adapter_backend": "opencl",
+    "adapter_elapsed_seconds": 0.756863,
+    "adapter_input_source": "layer0_output",
+    "adapter_site": "post_layer0",
+    "applied_update": false,
+    "backend": "opencl",
+    "case_count": 8,
+    "checkpoint_delta_l2": {
+      "adapter_a": 0.0,
+      "adapter_b": 0.0
+    },
+    "combined_gradient_l2": 0.4639108434,
+    "fixture_usage": "none",
+    "gradient_clip_l2": 0.0,
+    "gradient_clip_scale": 1.0,
+    "gradient_l2": {
+      "adapter_a": 0.1688648196,
+      "adapter_b": 0.4320855741,
+      "output": 0.0321242987
+    },
+    "hidden_size": 2560,
+    "hidden_state_fixtures_consumed": [],
+    "kernel_lineage_class": "residual_adapter_opencl_training",
+    "label_in_teacher_topk_rate": 1.0,
+    "layer_backend": "opencl",
+    "layer_elapsed_seconds": [
+      6.682591,
+      5.791898
+    ],
+    "learning_rate": 0.0,
+    "loss_topk_kl": 1.9959086212,
+    "max_rss_kb": 831204,
+    "mean_student_label_probability_when_in_topk": 0.1757317151,
+    "mean_student_teacher_top1_probability": 0.1757317151,
+    "mean_teacher_top1_probability": 1.0,
+    "megakernel_claim": false,
+    "model_id": "google/gemma-4-E4B",
+    "objective": "label_contrastive_topk_kl_v1",
+    "objective_backend": "phone_cpu_tied_embedding_topk",
+    "objective_contract": "p13c_label_onehot_topk_over_phone_native_corpus_labels_no_runtime_teacher_service",
+    "objective_elapsed_seconds": 0.140833,
+    "opencl_libraries": [
+      "libOpenCL.so",
+      "libOpenCL.so",
+      "libOpenCL.so"
+    ],
+    "optimizer": "sgd",
+    "optimizer_backend": "phone_cpu_after_opencl_gradients",
+    "optimizer_step": 0,
+    "rank": 16,
+    "revision": "7aa32e6889efd6300124851b164f8b364314c3d8",
+    "runtime_backend": "phone_cpu_token_to_hidden_plus_opencl_layers_and_adapter",
+    "runtime_input_path": "token_cache_to_phone_generated_hidden_to_opencl_layers_to_topk_kl_adapter_update",
+    "schema_version": "gemma4_opencl_streamed_topk_kl_training_v1",
+    "seq": 128,
+    "student_logit_head": "tied_embed_tokens_unscaled_with_final_logit_softcap_30",
+    "student_teacher_top1_agreement": 0.1812080537,
+    "teacher_manifest_sha256": "63805e8f2f5f2b8ab1c0f8753c7654460798bd94be66fff357f8c5e5896d1f74",
+    "teacher_provenance": "phone_native_p13c_labels_to_host_deterministic_onehot_topk_precompute",
+    "teacher_scope": "p13c_next_token_label_onehot_plus_deterministic_negatives",
+    "teacher_shard_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13h/shards/train/teacher_shards/shard_0000",
+    "token_to_hidden_backend": "phone_cpu",
+    "token_to_hidden_elapsed_seconds": 1.093175,
+    "token_to_hidden_timing": {
+      "active_tokens": 604,
+      "embedding_cache_rows": 255,
+      "embedding_gather_seconds": 0.025282,
+      "open_asset_seconds": 7.9e-05,
+      "ple_layer0_cache_rows": 255,
+      "ple_layer0_seconds": 0.531645,
+      "ple_layer1_cache_rows": 255,
+      "ple_layer1_seconds": 0.527612,
+      "projection_load_seconds": 0.008298,
+      "read_cache_seconds": 0.000258,
+      "unique_token_count": 255
+    },
+    "top_k": 8,
+    "trainable_scope": "post_layer0_rank16_residual_adapter",
+    "weight_decay": 0.0
+  }
+}

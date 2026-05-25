@@ -1,0 +1,24 @@
+# P14-0 Sanitized Commands
+
+cd "/Users/Zer0pa/Polymat AI/Polymath-AI"
+git status --short --branch
+git diff --stat
+adb devices -l
+ssh -o BatchMode=yes -o ConnectTimeout=15 root@38.80.152.147 -p 31002 -i ~/.ssh/id_ed25519 'cd /workspace/Polymath-AI && git status --short --branch'
+rg --files runtime/reports integrations scripts docs .gpd | rg '\.(raw|bin|safetensors|pt|pth|npy|npz|gguf|dlc)$'
+find runtime/reports integrations scripts docs .gpd -type f '(' -name '*.raw' -o -name '*.bin' -o -name '*.safetensors' -o -name '*.pt' -o -name '*.pth' -o -name '*.npy' -o -name '*.npz' -o -name '*.gguf' -o -name '*.dlc' ')' -print
+find runtime/reports integrations scripts docs .gpd -type d '(' -name node_modules -o -name .venv -o -name venv -o -name build -o -name __pycache__ -o -name .pytest_cache ')' -print
+shasum -a 256 <forbidden payloads>
+mv <forbidden payloads and build caches> "/Users/Zer0pa/Polymat AI/.artifact_quarantine/Polymath-AI/20260525T164328Z_phase14_p14_0/<relative path>"
+adb -s FY25013101C8 shell getprop ro.product.model
+adb -s FY25013101C8 shell getprop ro.product.device
+adb -s FY25013101C8 shell getprop ro.build.fingerprint
+adb -s FY25013101C8 shell "ps -A | grep -E 'phase11_runner|gemma4_layer_runner|p13h|polymath_gemma4_gate' || true"
+adb -s FY25013101C8 shell dumpsys battery
+adb -s FY25013101C8 shell 'for z in /sys/class/thermal/thermal_zone*; do printf "%s " "$(basename "$z")"; cat "$z/type" 2>/dev/null | tr "\n" " "; cat "$z/temp" 2>/dev/null; done'
+adb -s FY25013101C8 shell "df -h /data/local/tmp; cat /proc/meminfo | head -n 12"
+adb -s FY25013101C8 shell "pm list packages | grep -Ei 'game|redmagic|nubia|space|boost|zone' || true"
+adb -s FY25013101C8 shell "dumpsys package cn.nubia.gamelauncher | grep -E 'Activity|MAIN|LAUNCHER|packageName|versionName' | head -n 80"
+adb -s FY25013101C8 shell "dumpsys package cn.nubia.gameassist | grep -E 'Activity|MAIN|LAUNCHER|packageName|versionName' | head -n 80"
+adb -s FY25013101C8 shell "dumpsys package cn.nubia.fan | grep -E 'Activity|MAIN|LAUNCHER|packageName|versionName' | head -n 80"
+jq empty .gpd/state.json

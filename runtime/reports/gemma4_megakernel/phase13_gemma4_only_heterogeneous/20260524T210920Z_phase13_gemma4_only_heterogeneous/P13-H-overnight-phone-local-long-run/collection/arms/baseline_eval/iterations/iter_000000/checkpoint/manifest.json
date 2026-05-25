@@ -1,0 +1,41 @@
+{
+  "schema_version": "gemma4_rank_adapter_topk_kl_checkpoint_v1",
+  "objective": "label_contrastive_topk_kl_v1",
+  "objective_contract": "p13c_label_onehot_topk_over_phone_native_corpus_labels_no_runtime_teacher_service",
+  "teacher_provenance": "phone_native_p13c_labels_to_host_deterministic_onehot_topk_precompute",
+  "adapter_site": "post_layer0",
+  "trainable_scope": "post_layer0_rank16_residual_adapter",
+  "rank": 16,
+  "optimizer": "adamw",
+  "optimizer_backend": "phone_cpu_after_opencl_gradients",
+  "learning_rate": 0.0000000000,
+  "optimizer_step": 0,
+  "weight_decay": 0.0099999998,
+  "gradient_clip_l2": 1.0000000000,
+  "gradient_clip_scale": 1.0000000000,
+  "combined_gradient_l2": 0.5366080455,
+  "applied_update": false,
+  "loss_topk_kl": 2.0060571108,
+  "active_loss_tokens": 552,
+  "student_teacher_top1_agreement": 0.2155797101,
+  "mean_student_teacher_top1_probability": 0.1781673628,
+  "gradient_l2": {"adapter_a": 0.2028539118, "adapter_b": 0.4967881691, "output": 0.0340141045},
+  "checkpoint_delta_l2": {"adapter_a": 0.0000000000, "adapter_b": 0.0000000000},
+  "teacher_shard": {
+    "path": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13h/shards/heldout/teacher_shards/shard_0000",
+    "manifest_schema_version": "phase13_p13h_label_contrastive_topk_teacher_v1",
+    "teacher_scope": "p13c_next_token_label_onehot_plus_deterministic_negatives",
+    "manifest_sha256": "0795ccdbd686f5b2bc20e6511d1838d7eb2cffa92406848d254f3bf1bfd8ae5f",
+    "topk_token_ids_sha256": "43b42d025e79e6ba6475deb8dfdeee489f46af6483d09b6943acc5338a2c58f0",
+    "topk_probabilities_sha256": "6c28aeed155249e7440fba7bcf35325f2520aaef79d66cedaded3f19133f4528"
+  },
+  "pre_update": {
+    "adapter_a": {"path": "/data/local/tmp/polymath_gemma4_gate/phase12/runs/20260524T173847Z_phase12_long_native_lr_retry1_lr3e4_cont24_train/Phase12-long-native-lr/iterations/iter_000023/checkpoint/adapter_a.f32.bin", "sha256": "022bbe96a89539f41bc6479269272a3e30123a8126a9a31e8da839e47450eb0d"},
+    "adapter_b": {"path": "/data/local/tmp/polymath_gemma4_gate/phase12/runs/20260524T173847Z_phase12_long_native_lr_retry1_lr3e4_cont24_train/Phase12-long-native-lr/iterations/iter_000023/checkpoint/adapter_b.f32.bin", "sha256": "ee2eecf9560fcb3d1e991d4f89c0cc6a826509c248d8ae598db9af4a9f3bb604"}
+  },
+  "post_update": {
+    "adapter_a": {"path": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13h/runs/20260524T210920Z_phase13_gemma4_only_heterogeneous_p13h_20260524T232423Z_baseline_eval/P13-H-overnight-phone-local-long-run/iterations/iter_000000/checkpoint/adapter_a.f32.bin", "sha256": "022bbe96a89539f41bc6479269272a3e30123a8126a9a31e8da839e47450eb0d"},
+    "adapter_b": {"path": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13h/runs/20260524T210920Z_phase13_gemma4_only_heterogeneous_p13h_20260524T232423Z_baseline_eval/P13-H-overnight-phone-local-long-run/iterations/iter_000000/checkpoint/adapter_b.f32.bin", "sha256": "ee2eecf9560fcb3d1e991d4f89c0cc6a826509c248d8ae598db9af4a9f3bb604"}
+  },
+  "optimizer_state": {"status": "not_updated"}
+}

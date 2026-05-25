@@ -1,0 +1,57 @@
+{
+  "schema_version": "phase14_p14_0_artifact_manifest_v1",
+  "created_at_utc": "2026-05-25T16:43:28Z",
+  "gate": "P14-0 worktree and control-plane cleanup",
+  "report_root": "runtime/reports/gemma4_megakernel/phase14_drift_cleanup/20260525T164328Z_phase14_drift_cleanup/P14-0-worktree-control-plane-cleanup",
+  "quarantine_root": "/Users/Zer0pa/Polymat AI/.artifact_quarantine/Polymath-AI/20260525T164328Z_phase14_p14_0",
+  "primary_artifacts": [
+    "gate_result.json",
+    "blockers.md",
+    "falsifier_report.md",
+    "commands.log",
+    "worktree_classification.tsv",
+    "worktree_classification_summary.tsv",
+    "worktree_unresolved_or_forbidden.tsv",
+    "forbidden_payloads_before_quarantine.txt",
+    "forbidden_payloads_after_quarantine.txt",
+    "build_cache_dirs_before_quarantine.txt",
+    "build_cache_dirs_after_quarantine.txt",
+    "quarantine_sha256_before.txt",
+    "quarantine_sha256_after.txt",
+    "quarantine_sizes_before.txt",
+    "quarantine_dirs_before.txt",
+    "runpod_primary_status.txt",
+    "adb_devices.txt",
+    "phone_stale_process_probe.txt",
+    "phone_battery_baseline.txt",
+    "phone_thermal_zones_baseline.txt",
+    "phone_storage_mem_baseline.txt",
+    "phone_game_zone_package_probe.txt",
+    "phone_game_zone_activity_probe.txt",
+    "compact_checksum_manifest.txt"
+  ],
+  "quarantined_payloads": [
+    {
+      "repo_path": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-G-heterogeneous-vs-adreno-baseline/phone_htp_relu_benchmark/input_gemma_layer0_first16_hidden.f32.bin",
+      "sha256": "c55390a717f1e00697f605ce14d1b9c31b6631955519bdf2b26afcdc010b9e57"
+    },
+    {
+      "repo_path": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-G-heterogeneous-vs-adreno-baseline/phone_htp_relu_benchmark/run_0/Result_0/gemma_hidden_relu_out.raw",
+      "sha256": "70aaa78e00d4ae0ad2c5318e89cefaf4b96129ddb282bb22fe4c35b8c8b44bbd"
+    },
+    {
+      "repo_path": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-G-heterogeneous-vs-adreno-baseline/phone_htp_relu_benchmark/run_1/Result_0/gemma_hidden_relu_out.raw",
+      "sha256": "70aaa78e00d4ae0ad2c5318e89cefaf4b96129ddb282bb22fe4c35b8c8b44bbd"
+    },
+    {
+      "repo_path": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-G-heterogeneous-vs-adreno-baseline/phone_htp_relu_benchmark/run_2/Result_0/gemma_hidden_relu_out.raw",
+      "sha256": "70aaa78e00d4ae0ad2c5318e89cefaf4b96129ddb282bb22fe4c35b8c8b44bbd"
+    }
+  ],
+  "quarantined_disposable_dirs": [
+    "integrations/gemma4-snapdragon-megakernel/build",
+    "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/compare_outputs/__pycache__",
+    "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/__pycache__",
+    "scripts/host/__pycache__"
+  ]
+}

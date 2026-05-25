@@ -1,0 +1,560 @@
+{
+  "base_learning_rate_for_phone_sgd_gradient_inference": 0.1,
+  "coordinate_count": 64,
+  "declared_at_utc": "2026-05-24T21:56:43Z",
+  "epsilon": 0.01,
+  "nonclaims": [
+    "This is sampled residual-adapter parity, not full-gradient proof.",
+    "This does not validate a second trainable site.",
+    "This does not validate HTP backprop."
+  ],
+  "pass_rule": {
+    "absolute_error_max": 5e-05,
+    "minimum_pass_count": 64,
+    "relative_error_max": 0.25,
+    "sign_required_when_abs_analytic_gradient_gte": 1e-05
+  },
+  "probes": [
+    {
+      "epsilon": 0.01,
+      "index": 1349,
+      "rank": 16,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "source": "rank16_init_iter0",
+      "tensor": "adapter_a"
+    },
+    {
+      "epsilon": 0.01,
+      "index": 2363,
+      "rank": 16,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "source": "rank16_init_iter0",
+      "tensor": "adapter_a"
+    },
+    {
+      "epsilon": 0.01,
+      "index": 6198,
+      "rank": 16,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "source": "rank16_init_iter0",
+      "tensor": "adapter_a"
+    },
+    {
+      "epsilon": 0.01,
+      "index": 13576,
+      "rank": 16,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "source": "rank16_init_iter0",
+      "tensor": "adapter_a"
+    },
+    {
+      "epsilon": 0.01,
+      "index": 15516,
+      "rank": 16,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "source": "rank16_init_iter0",
+      "tensor": "adapter_a"
+    },
+    {
+      "epsilon": 0.01,
+      "index": 25279,
+      "rank": 16,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "source": "rank16_init_iter0",
+      "tensor": "adapter_a"
+    },
+    {
+      "epsilon": 0.01,
+      "index": 31134,
+      "rank": 16,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "source": "rank16_init_iter0",
+      "tensor": "adapter_a"
+    },
+    {
+      "epsilon": 0.01,
+      "index": 37662,
+      "rank": 16,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "source": "rank16_init_iter0",
+      "tensor": "adapter_a"
+    },
+    {
+      "epsilon": 0.01,
+      "index": 3170,
+      "rank": 16,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "source": "rank16_init_iter0",
+      "tensor": "adapter_b"
+    },
+    {
+      "epsilon": 0.01,
+      "index": 6997,
+      "rank": 16,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "source": "rank16_init_iter0",
+      "tensor": "adapter_b"
+    },
+    {
+      "epsilon": 0.01,
+      "index": 7691,
+      "rank": 16,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "source": "rank16_init_iter0",
+      "tensor": "adapter_b"
+    },
+    {
+      "epsilon": 0.01,
+      "index": 26732,
+      "rank": 16,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "source": "rank16_init_iter0",
+      "tensor": "adapter_b"
+    },
+    {
+      "epsilon": 0.01,
+      "index": 30715,
+      "rank": 16,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "source": "rank16_init_iter0",
+      "tensor": "adapter_b"
+    },
+    {
+      "epsilon": 0.01,
+      "index": 31866,
+      "rank": 16,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "source": "rank16_init_iter0",
+      "tensor": "adapter_b"
+    },
+    {
+      "epsilon": 0.01,
+      "index": 35357,
+      "rank": 16,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "source": "rank16_init_iter0",
+      "tensor": "adapter_b"
+    },
+    {
+      "epsilon": 0.01,
+      "index": 39814,
+      "rank": 16,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "source": "rank16_init_iter0",
+      "tensor": "adapter_b"
+    },
+    {
+      "epsilon": 0.01,
+      "index": 549,
+      "rank": 16,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "source": "rank16_final_iter7",
+      "tensor": "adapter_a"
+    },
+    {
+      "epsilon": 0.01,
+      "index": 1643,
+      "rank": 16,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "source": "rank16_final_iter7",
+      "tensor": "adapter_a"
+    },
+    {
+      "epsilon": 0.01,
+      "index": 2783,
+      "rank": 16,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "source": "rank16_final_iter7",
+      "tensor": "adapter_a"
+    },
+    {
+      "epsilon": 0.01,
+      "index": 5974,
+      "rank": 16,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "source": "rank16_final_iter7",
+      "tensor": "adapter_a"
+    },
+    {
+      "epsilon": 0.01,
+      "index": 23211,
+      "rank": 16,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "source": "rank16_final_iter7",
+      "tensor": "adapter_a"
+    },
+    {
+      "epsilon": 0.01,
+      "index": 24127,
+      "rank": 16,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "source": "rank16_final_iter7",
+      "tensor": "adapter_a"
+    },
+    {
+      "epsilon": 0.01,
+      "index": 24169,
+      "rank": 16,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "source": "rank16_final_iter7",
+      "tensor": "adapter_a"
+    },
+    {
+      "epsilon": 0.01,
+      "index": 33207,
+      "rank": 16,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "source": "rank16_final_iter7",
+      "tensor": "adapter_a"
+    },
+    {
+      "epsilon": 0.01,
+      "index": 2790,
+      "rank": 16,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "source": "rank16_final_iter7",
+      "tensor": "adapter_b"
+    },
+    {
+      "epsilon": 0.01,
+      "index": 6177,
+      "rank": 16,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "source": "rank16_final_iter7",
+      "tensor": "adapter_b"
+    },
+    {
+      "epsilon": 0.01,
+      "index": 10084,
+      "rank": 16,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "source": "rank16_final_iter7",
+      "tensor": "adapter_b"
+    },
+    {
+      "epsilon": 0.01,
+      "index": 13775,
+      "rank": 16,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "source": "rank16_final_iter7",
+      "tensor": "adapter_b"
+    },
+    {
+      "epsilon": 0.01,
+      "index": 25634,
+      "rank": 16,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "source": "rank16_final_iter7",
+      "tensor": "adapter_b"
+    },
+    {
+      "epsilon": 0.01,
+      "index": 27038,
+      "rank": 16,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "source": "rank16_final_iter7",
+      "tensor": "adapter_b"
+    },
+    {
+      "epsilon": 0.01,
+      "index": 38497,
+      "rank": 16,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "source": "rank16_final_iter7",
+      "tensor": "adapter_b"
+    },
+    {
+      "epsilon": 0.01,
+      "index": 38594,
+      "rank": 16,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "source": "rank16_final_iter7",
+      "tensor": "adapter_b"
+    },
+    {
+      "epsilon": 0.01,
+      "index": 13522,
+      "rank": 32,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "source": "rank32_init_iter0",
+      "tensor": "adapter_a"
+    },
+    {
+      "epsilon": 0.01,
+      "index": 15249,
+      "rank": 32,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "source": "rank32_init_iter0",
+      "tensor": "adapter_a"
+    },
+    {
+      "epsilon": 0.01,
+      "index": 16203,
+      "rank": 32,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "source": "rank32_init_iter0",
+      "tensor": "adapter_a"
+    },
+    {
+      "epsilon": 0.01,
+      "index": 50775,
+      "rank": 32,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "source": "rank32_init_iter0",
+      "tensor": "adapter_a"
+    },
+    {
+      "epsilon": 0.01,
+      "index": 51827,
+      "rank": 32,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "source": "rank32_init_iter0",
+      "tensor": "adapter_a"
+    },
+    {
+      "epsilon": 0.01,
+      "index": 53612,
+      "rank": 32,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "source": "rank32_init_iter0",
+      "tensor": "adapter_a"
+    },
+    {
+      "epsilon": 0.01,
+      "index": 73091,
+      "rank": 32,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "source": "rank32_init_iter0",
+      "tensor": "adapter_a"
+    },
+    {
+      "epsilon": 0.01,
+      "index": 80011,
+      "rank": 32,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "source": "rank32_init_iter0",
+      "tensor": "adapter_a"
+    },
+    {
+      "epsilon": 0.01,
+      "index": 6393,
+      "rank": 32,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "source": "rank32_init_iter0",
+      "tensor": "adapter_b"
+    },
+    {
+      "epsilon": 0.01,
+      "index": 17817,
+      "rank": 32,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "source": "rank32_init_iter0",
+      "tensor": "adapter_b"
+    },
+    {
+      "epsilon": 0.01,
+      "index": 20796,
+      "rank": 32,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "source": "rank32_init_iter0",
+      "tensor": "adapter_b"
+    },
+    {
+      "epsilon": 0.01,
+      "index": 33248,
+      "rank": 32,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "source": "rank32_init_iter0",
+      "tensor": "adapter_b"
+    },
+    {
+      "epsilon": 0.01,
+      "index": 38932,
+      "rank": 32,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "source": "rank32_init_iter0",
+      "tensor": "adapter_b"
+    },
+    {
+      "epsilon": 0.01,
+      "index": 53460,
+      "rank": 32,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "source": "rank32_init_iter0",
+      "tensor": "adapter_b"
+    },
+    {
+      "epsilon": 0.01,
+      "index": 59572,
+      "rank": 32,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "source": "rank32_init_iter0",
+      "tensor": "adapter_b"
+    },
+    {
+      "epsilon": 0.01,
+      "index": 66659,
+      "rank": 32,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "source": "rank32_init_iter0",
+      "tensor": "adapter_b"
+    },
+    {
+      "epsilon": 0.01,
+      "index": 5020,
+      "rank": 32,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "source": "rank32_final_iter7",
+      "tensor": "adapter_a"
+    },
+    {
+      "epsilon": 0.01,
+      "index": 8994,
+      "rank": 32,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "source": "rank32_final_iter7",
+      "tensor": "adapter_a"
+    },
+    {
+      "epsilon": 0.01,
+      "index": 17680,
+      "rank": 32,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "source": "rank32_final_iter7",
+      "tensor": "adapter_a"
+    },
+    {
+      "epsilon": 0.01,
+      "index": 22444,
+      "rank": 32,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "source": "rank32_final_iter7",
+      "tensor": "adapter_a"
+    },
+    {
+      "epsilon": 0.01,
+      "index": 56128,
+      "rank": 32,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "source": "rank32_final_iter7",
+      "tensor": "adapter_a"
+    },
+    {
+      "epsilon": 0.01,
+      "index": 57557,
+      "rank": 32,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "source": "rank32_final_iter7",
+      "tensor": "adapter_a"
+    },
+    {
+      "epsilon": 0.01,
+      "index": 65995,
+      "rank": 32,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "source": "rank32_final_iter7",
+      "tensor": "adapter_a"
+    },
+    {
+      "epsilon": 0.01,
+      "index": 74451,
+      "rank": 32,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "source": "rank32_final_iter7",
+      "tensor": "adapter_a"
+    },
+    {
+      "epsilon": 0.01,
+      "index": 8898,
+      "rank": 32,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "source": "rank32_final_iter7",
+      "tensor": "adapter_b"
+    },
+    {
+      "epsilon": 0.01,
+      "index": 16926,
+      "rank": 32,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "source": "rank32_final_iter7",
+      "tensor": "adapter_b"
+    },
+    {
+      "epsilon": 0.01,
+      "index": 21214,
+      "rank": 32,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "source": "rank32_final_iter7",
+      "tensor": "adapter_b"
+    },
+    {
+      "epsilon": 0.01,
+      "index": 35198,
+      "rank": 32,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "source": "rank32_final_iter7",
+      "tensor": "adapter_b"
+    },
+    {
+      "epsilon": 0.01,
+      "index": 62710,
+      "rank": 32,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "source": "rank32_final_iter7",
+      "tensor": "adapter_b"
+    },
+    {
+      "epsilon": 0.01,
+      "index": 64731,
+      "rank": 32,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "source": "rank32_final_iter7",
+      "tensor": "adapter_b"
+    },
+    {
+      "epsilon": 0.01,
+      "index": 73405,
+      "rank": 32,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "source": "rank32_final_iter7",
+      "tensor": "adapter_b"
+    },
+    {
+      "epsilon": 0.01,
+      "index": 76224,
+      "rank": 32,
+      "selection_policy": "seeded_uniform_without_replacement_over_flat_tensor",
+      "source": "rank32_final_iter7",
+      "tensor": "adapter_b"
+    }
+  ],
+  "schema_version": "phase13_p13d_predeclared_gradient_probe_plan_v1",
+  "seed": 13004,
+  "selection_policy": "For each source state, select 8 adapter_a and 8 adapter_b flat indices with seeded uniform sampling independent of gradient magnitude.",
+  "source_states": [
+    {
+      "checkpoint": "phase12/checkpoints/20260524T164412Z_phase12_cde_authority_rank16_init",
+      "name": "rank16_init_iter0",
+      "phase12_iteration": "init_before_iter_000000",
+      "rank": 16
+    },
+    {
+      "checkpoint": "phase12/runs/20260524T164412Z_phase12_cde_authority_rank16_train/Phase12-CDE-learning/iterations/iter_000007/checkpoint",
+      "name": "rank16_final_iter7",
+      "phase12_iteration": "iter_000007",
+      "rank": 16
+    },
+    {
+      "checkpoint": "phase12/checkpoints/20260524T164412Z_phase12_cde_authority_rank32_init",
+      "name": "rank32_init_iter0",
+      "phase12_iteration": "init_before_iter_000000",
+      "rank": 32
+    },
+    {
+      "checkpoint": "phase12/runs/20260524T164412Z_phase12_cde_authority_rank32_train/Phase12-CDE-learning/iterations/iter_000007/checkpoint",
+      "name": "rank32_final_iter7",
+      "phase12_iteration": "iter_000007",
+      "rank": 32
+    }
+  ]
+}

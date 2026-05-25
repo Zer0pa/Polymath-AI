@@ -1,0 +1,93 @@
+{
+  "artifact_hygiene": {
+    "forbidden_payload_files_found_under_phase12_reports": [],
+    "status": "pass"
+  },
+  "authority_device": "REDMAGIC NX789J / SM8750 / FY25013101C8",
+  "gates": {
+    "A": {
+      "claim": "H11-H audited for exact promoted claim and nonclaims.",
+      "status": "pass"
+    },
+    "B": {
+      "claim": "Compact artifact strategy established; payloads stay on phone/RunPod, reports keep hashes/manifests.",
+      "status": "pass"
+    },
+    "C": {
+      "claim": "Rank-16 and rank-32 residual adapter training ran on phone OpenCL with AdamW/clipping telemetry and finite checkpoint movement.",
+      "nonclaims": [
+        "multi-site adapter training remains blocked; current backward path is post-layer0 residual only",
+        "independent analytical gradient parity for top-k KL is not yet proven beyond finite phone gradients/checkpoint movement"
+      ],
+      "status": "pass_residual_expanded_scope"
+    },
+    "D": {
+      "claim": "16-sequence HF-streamed corpus cache exists on phone via native C++ tokenizer path; no host minibatch serving.",
+      "status": "pass"
+    },
+    "E": {
+      "claim": "Heldout top-k KL and predeclared mini metric improved for selected rank-16 residual adapter.",
+      "status": "pass"
+    },
+    "F": {
+      "claim": "QAIRT host env repaired; updateable DLC conversion attempted/succeeded, but valid updateable QNN context and phone applyBinarySection were not achieved.",
+      "status": "falsified_no_valid_updateable_context_for_phone_apply"
+    },
+    "G": {
+      "claim": "Phone HTP frozen-forward Qwen context executes, but integrated heterogeneous Gemma learning loop is falsified by model/shape/correctness mismatch.",
+      "status": "falsified_htp_not_usable_for_gemma_learning_path"
+    },
+    "H": {
+      "claim": "Claims are restricted to evidence in this status file; full Gemma4 training, HTP backprop, benchmark readiness, and broad capability remain nonclaims.",
+      "status": "exact_claims_only"
+    }
+  },
+  "generated_at_utc": "2026-05-24T17:24:20Z",
+  "nonclaims": [
+    "Directly marking existing TFLite constants as updateable is falsified for this Qwen block on HTP/CPU context generation.",
+    "HTP backprop",
+    "No HTP mutable/updateable training claim.",
+    "No HTP output was consumed by the Gemma Adreno training loop.",
+    "No QnnContext_applyBinarySection call was executed on the phone.",
+    "No analytical gradient parity proof claim.",
+    "No benchmark readiness claim.",
+    "No full Gemma4 training claim.",
+    "No multi-site adapter training claim.",
+    "No updateable HTP island or HTP backprop was proven.",
+    "No valid updateable QNN context was generated.",
+    "The HTP frozen-forward artifact is Qwen random-init and hidden-size 1536, not Gemma4 hidden-size 2560.",
+    "The Qwen source artifact uses random-init weights and cannot support language-model correctness claims.",
+    "The heldout improvement belongs to the Adreno/OpenCL residual training path only.",
+    "benchmark readiness",
+    "broad capability",
+    "full Gemma4 training",
+    "multi-site adapter training"
+  ],
+  "overall_status": "partial_pass_learning_question_attacked_with_falsifications",
+  "rank32_observation": {
+    "heldout_loss_baseline": 1.1291671388,
+    "heldout_loss_trained": 1.0026539894,
+    "heldout_metric_baseline": 0.1137876801,
+    "heldout_metric_trained": 0.1230970988,
+    "status": "pass"
+  },
+  "run_id": "20260524T172420Z_phase12_exact_claims",
+  "schema_version": "phase12_exact_claims_status_v1",
+  "selected_learning_result": {
+    "active_training_seconds": 107.609151,
+    "heldout_loss_baseline": 1.1291671353,
+    "heldout_loss_trained": 1.0005755997,
+    "heldout_metric_baseline": 0.1137876804,
+    "heldout_metric_trained": 0.1233203377,
+    "rank": 16,
+    "train_loss_first": 1.3055719223,
+    "train_loss_last": 1.0735761042,
+    "wall_seconds": 115.040315
+  },
+  "source_reports": {
+    "A_B_C_preflight": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T151216Z_phase12_learning_preflight/phase12_gate_status.json",
+    "C_D_E_authority": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/phase12_cde_gate_result.json",
+    "F_qairt_updateable": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T171733Z_phase12_f_qairt_updateable_context/F-qairt-updateable-context/gate_result.json",
+    "G_heterogeneous": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T172043Z_phase12_g_heterogeneous/G-heterogeneous-hypothesis/gate_result.json"
+  }
+}

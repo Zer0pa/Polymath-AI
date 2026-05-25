@@ -26,7 +26,14 @@
 
 namespace {
 
-constexpr const char* kRunnerBuildId = "phase11_runner_h11a_v1_20260523";
+constexpr const char* kRunnerBuildId = "phase13_runner_identity_v1_20260524";
+constexpr const char* kExpectedModelId = "google/gemma-4-E4B";
+constexpr const char* kExpectedModelRevision = "7aa32e6889efd6300124851b164f8b364314c3d8";
+constexpr int kExpectedHiddenSize = 2560;
+constexpr const char* kKernelLineageClass = "residual_adapter_opencl_training";
+constexpr const char* kRuntimeBackend = "phone_cpu_token_to_hidden_plus_opencl_layers_and_adapter";
+constexpr const char* kTeacherProvenance =
+    "runpod_precomputed_full_gemma4_topk_before_phone_runtime";
 constexpr double kPhase10ActiveWallBaseline = 4626.645587 / 21692.164205625013;
 
 struct RunnerArgs {
@@ -61,9 +68,23 @@ struct H11AConfig {
   int marker_wait_seconds = 1800;
   int disconnect_hold_seconds = 600;
   double learning_rate = 0.01;
+  std::string optimizer = "sgd";
+  double weight_decay = 0.0;
+  double beta1 = 0.9;
+  double beta2 = 0.999;
+  double optimizer_epsilon = 1.0e-8;
+  double grad_clip_l2 = 0.0;
   int adapter_rank = 4;
   bool apply_update = true;
   bool require_disconnect_marker = true;
+  std::string model_id = kExpectedModelId;
+  std::string model_revision = kExpectedModelRevision;
+  int hidden_size = kExpectedHiddenSize;
+  std::string source_commit = "unknown";
+  std::string kernel_lineage_class = kKernelLineageClass;
+  std::string runtime_backend = kRuntimeBackend;
+  std::string teacher_provenance = kTeacherProvenance;
+  bool hidden_state_fixtures_consumed = false;
 };
 
 struct RunnerState {
@@ -219,11 +240,55 @@ std::string current_working_directory() {
   return std::string(buffer.data());
 }
 
+std::string self_executable_path() {
+  std::vector<char> buffer(4096U, '\0');
+  const ssize_t count = ::readlink("/proc/self/exe", buffer.data(), buffer.size() - 1U);
+  if (count <= 0) {
+    return "unavailable";
+  }
+  return std::string(buffer.data(), static_cast<std::size_t>(count));
+}
+
+std::string self_executable_sha256() {
+  const std::string path = self_executable_path();
+  if (path == "unavailable") {
+    return path;
+  }
+  try {
+    return polymath::gemma4::sha256_file_hex(path);
+  } catch (const std::exception& error) {
+    return std::string("unavailable:") + error.what();
+  }
+}
+
 std::string resolve_path(const std::string& path, const std::string& cwd) {
   if (path.empty() || path.front() == '/') {
     return path;
   }
   return join_path(cwd, path);
+}
+
+std::string lower_ascii(std::string value) {
+  for (char& c : value) {
+    if (c >= 'A' && c <= 'Z') {
+      c = static_cast<char>(c - 'A' + 'a');
+    }
+  }
+  return value;
+}
+
+bool contains_forbidden_identity_marker(const std::string& value) {
+  const std::string lower = lower_ascii(value);
+  return lower.find("qwen") != std::string::npos ||
+         lower.find("smollm") != std::string::npos ||
+         lower.find("random-init") != std::string::npos ||
+         lower.find("random_init") != std::string::npos ||
+         lower.find("hidden-size-1536") != std::string::npos ||
+         lower.find("hidden_size_1536") != std::string::npos;
+}
+
+std::string residual_adapter_scope(int adapter_rank) {
+  return "post_layer0_rank" + std::to_string(adapter_rank) + "_residual_adapter";
 }
 
 std::size_t find_key_colon(const std::string& json, const std::string& key) {
@@ -424,6 +489,28 @@ void write_json_string_field(std::ostream& stream,
   stream << ": ";
   polymath::gemma4::write_json_string(stream, value);
   if (comma) {
+    stream << ',';
+  }
+  stream << '\n';
+}
+
+void write_identity_fields(std::ostream& stream,
+                           const H11AConfig& config,
+                           bool trailing_comma) {
+  write_json_string_field(stream, "model_id", config.model_id, true);
+  write_json_string_field(stream, "model_revision", config.model_revision, true);
+  stream << "  \"hidden_size\": " << config.hidden_size << ",\n";
+  write_json_string_field(stream, "source_commit", config.source_commit, true);
+  write_json_string_field(stream, "runner_binary_path", self_executable_path(), true);
+  write_json_string_field(stream, "runner_binary_sha256", self_executable_sha256(), true);
+  write_json_string_field(stream, "kernel_lineage_class", config.kernel_lineage_class, true);
+  write_json_string_field(stream, "runtime_backend", config.runtime_backend, true);
+  write_json_string_field(stream, "trainable_scope",
+                          residual_adapter_scope(config.adapter_rank), true);
+  write_json_string_field(stream, "teacher_provenance", config.teacher_provenance, true);
+  stream << "  \"hidden_state_fixtures_consumed\": "
+         << (config.hidden_state_fixtures_consumed ? "true" : "false");
+  if (trailing_comma) {
     stream << ',';
   }
   stream << '\n';
@@ -705,10 +792,29 @@ H11AConfig read_h11a_config(const std::string& config_path,
   config.disconnect_hold_seconds =
       json_int_or(json, "disconnect_hold_seconds", config.disconnect_hold_seconds);
   config.learning_rate = json_double_or(json, "learning_rate", config.learning_rate);
+  config.optimizer = json_string_or(json, "optimizer", config.optimizer);
+  config.weight_decay = json_double_or(json, "weight_decay", config.weight_decay);
+  config.beta1 = json_double_or(json, "beta1", config.beta1);
+  config.beta2 = json_double_or(json, "beta2", config.beta2);
+  config.optimizer_epsilon =
+      json_double_or(json, "optimizer_epsilon", config.optimizer_epsilon);
+  config.grad_clip_l2 = json_double_or(json, "grad_clip_l2", config.grad_clip_l2);
   config.adapter_rank = json_int_or(json, "adapter_rank", config.adapter_rank);
   config.apply_update = json_bool_or(json, "apply_update", config.apply_update);
   config.require_disconnect_marker =
       json_bool_or(json, "require_disconnect_marker", config.require_disconnect_marker);
+  config.model_id = json_string_or(json, "model_id", config.model_id);
+  config.model_revision = json_string_or(json, "model_revision", config.model_revision);
+  config.hidden_size = json_int_or(json, "hidden_size", config.hidden_size);
+  config.source_commit = json_string_or(json, "source_commit", config.source_commit);
+  config.kernel_lineage_class =
+      json_string_or(json, "kernel_lineage_class", config.kernel_lineage_class);
+  config.runtime_backend = json_string_or(json, "runtime_backend", config.runtime_backend);
+  config.teacher_provenance =
+      json_string_or(json, "teacher_provenance", config.teacher_provenance);
+  config.hidden_state_fixtures_consumed =
+      json_bool_or(json, "hidden_state_fixtures_consumed",
+                   config.hidden_state_fixtures_consumed);
 
   for (std::string& token_cache : config.token_caches) {
     token_cache = resolve_path(token_cache, cwd);
@@ -734,6 +840,31 @@ H11AConfig read_h11a_config(const std::string& config_path,
   }
   if (config.adapter_rank <= 0) {
     throw std::runtime_error("H11-A adapter_rank must be positive");
+  }
+  if (config.optimizer != "sgd" && config.optimizer != "adamw") {
+    throw std::runtime_error("unsupported optimizer: " + config.optimizer);
+  }
+  if (config.model_id != kExpectedModelId) {
+    throw std::runtime_error("Gemma identity mismatch: model_id=" + config.model_id);
+  }
+  if (config.model_revision != kExpectedModelRevision) {
+    throw std::runtime_error("Gemma identity mismatch: model_revision=" +
+                             config.model_revision);
+  }
+  if (config.hidden_size != kExpectedHiddenSize) {
+    throw std::runtime_error("Gemma identity mismatch: hidden_size=" +
+                             std::to_string(config.hidden_size));
+  }
+  if (config.kernel_lineage_class != kKernelLineageClass) {
+    throw std::runtime_error("unsupported kernel_lineage_class: " +
+                             config.kernel_lineage_class);
+  }
+  if (config.hidden_state_fixtures_consumed) {
+    throw std::runtime_error("hidden-state fixtures are forbidden for this runner path");
+  }
+  if (contains_forbidden_identity_marker(config.teacher_provenance) ||
+      contains_forbidden_identity_marker(config.runtime_backend)) {
+    throw std::runtime_error("non-Gemma marker found in runtime identity metadata");
   }
   return config;
 }
@@ -791,6 +922,7 @@ std::pair<std::string, std::string> checkpoint_pair_sha(const std::string& check
 }
 
 void append_iteration_telemetry(const std::string& telemetry_jsonl_path,
+                                const H11AConfig& config,
                                 const IterationRecord& record) {
   std::ostringstream out;
   out << "{";
@@ -817,22 +949,46 @@ void append_iteration_telemetry(const std::string& telemetry_jsonl_path,
   polymath::gemma4::write_json_string(out, record.phone_output_dir);
   out << ",\"blocker\":";
   polymath::gemma4::write_json_string(out, record.blocker);
+  out << ",\"model_id\":";
+  polymath::gemma4::write_json_string(out, config.model_id);
+  out << ",\"model_revision\":";
+  polymath::gemma4::write_json_string(out, config.model_revision);
+  out << ",\"hidden_size\":" << config.hidden_size;
+  out << ",\"source_commit\":";
+  polymath::gemma4::write_json_string(out, config.source_commit);
+  out << ",\"runner_binary_sha256\":";
+  polymath::gemma4::write_json_string(out, self_executable_sha256());
+  out << ",\"kernel_lineage_class\":";
+  polymath::gemma4::write_json_string(out, config.kernel_lineage_class);
+  out << ",\"runtime_backend\":";
+  polymath::gemma4::write_json_string(out, config.runtime_backend);
+  out << ",\"trainable_scope\":";
+  polymath::gemma4::write_json_string(out, residual_adapter_scope(config.adapter_rank));
+  out << ",\"teacher_provenance\":";
+  polymath::gemma4::write_json_string(out, config.teacher_provenance);
+  out << ",\"hidden_state_fixtures_consumed\":"
+      << (config.hidden_state_fixtures_consumed ? "true" : "false");
   out << "}\n";
   append_text_file(telemetry_jsonl_path, out.str());
 }
 
 void write_queue_schema(const std::string& gate_dir) {
   const std::string path = join_path(gate_dir, "queue_schema.json");
-  write_text_file_atomic(
-      path,
-      "{\n"
-      "  \"schema_version\": \"phase11_queue_schema_v1\",\n"
-      "  \"record_format\": \"jsonl\",\n"
-      "  \"required_fields\": [\"id\", \"gate\", \"config\", \"depends_on\", \"resume\"],\n"
-      "  \"supported_gates_in_this_build\": [\"H11-A\", \"H11-F\"],\n"
-      "  \"supported_objectives\": [\"hidden_mse\", \"topk_embedding_kl\"],\n"
-      "  \"runner_build_id\": \"phase11_runner_h11a_v1_20260523\"\n"
-      "}\n");
+  std::ostringstream out;
+  out << "{\n"
+      << "  \"schema_version\": \"phase13_queue_schema_v1\",\n"
+      << "  \"record_format\": \"jsonl\",\n"
+      << "  \"required_fields\": [\"id\", \"gate\", \"config\", \"depends_on\", \"resume\"],\n"
+      << "  \"required_identity_config_fields\": [\"model_id\", \"model_revision\", "
+         "\"hidden_size\", \"source_commit\", \"kernel_lineage_class\", "
+         "\"runtime_backend\", \"teacher_provenance\", "
+         "\"hidden_state_fixtures_consumed\"],\n"
+      << "  \"supported_gates_in_this_build\": [\"H11-A\", \"H11-F\"],\n"
+      << "  \"supported_objectives\": [\"hidden_mse\", \"topk_embedding_kl\"],\n"
+      << "  \"supported_optimizers\": [\"sgd\", \"adamw\"],\n";
+  write_json_string_field(out, "runner_build_id", kRunnerBuildId, false);
+  out << "}\n";
+  write_text_file_atomic(path, out.str());
 }
 
 void write_daemon_design_note(const std::string& gate_dir) {
@@ -912,9 +1068,10 @@ void write_daemon_static_artifact_manifest(const std::string& gate_dir,
 
   std::ostringstream out;
   out << "{\n";
-  write_json_string_field(out, "schema_version", "phase11_h11a_static_artifact_manifest_v1", true);
+  write_json_string_field(out, "schema_version", "phase13_static_artifact_manifest_v1", true);
   write_json_string_field(out, "runner_build_id", kRunnerBuildId, true);
   write_json_string_field(out, "created_at_utc", utc_timestamp(), true);
+  write_identity_fields(out, config, true);
   out << "  \"artifacts\": [\n";
   for (std::size_t index = 0; index < artifacts.size(); ++index) {
     write_static_manifest_entry(out, artifacts[index].first, artifacts[index].second,
@@ -1024,12 +1181,13 @@ void write_artifact_manifest(const std::string& gate_dir,
                              const H11AConfig& config) {
   std::ostringstream out;
   out << "{\n";
-  write_json_string_field(out, "schema_version", "phase11_gate_artifact_manifest_v1", true);
+  write_json_string_field(out, "schema_version", "phase13_gate_artifact_manifest_v1", true);
   write_json_string_field(out, "gate", config.gate_name, true);
   write_json_string_field(out, "objective", config.objective, true);
   write_json_string_field(out, "runner_build_id", kRunnerBuildId, true);
   write_json_string_field(out, "run_dir", run_dir, true);
   write_json_string_field(out, "gate_dir", gate_dir, true);
+  write_identity_fields(out, config, true);
   out << "  \"iteration_count\": " << stats.records.size() << ",\n";
   out << "  \"git_allowed_artifacts\": [\n";
   const std::vector<std::string> artifacts = {
@@ -1092,6 +1250,7 @@ void write_gate_result(const std::string& gate_dir,
   write_json_string_field(out, "runner_build_id", kRunnerBuildId, true);
   write_json_string_field(out, "status", pass ? "pass" : "fail", true);
   write_json_string_field(out, "objective", config.objective, true);
+  write_identity_fields(out, config, true);
   out << "  \"apply_update\": " << (config.apply_update ? "true" : "false") << ",\n";
   out << "  \"iteration_count\": " << stats.records.size() << ",\n";
   out << "  \"required_iteration_count\": " << config.iteration_count << ",\n";
@@ -1290,10 +1449,18 @@ int run_h11a(const RunnerArgs& args,
     const auto iteration_start = std::chrono::steady_clock::now();
     polymath::gemma4::Status status = polymath::gemma4::Status::ok();
     if (config.objective == "topk_embedding_kl") {
-      status = polymath::gemma4::run_opencl_streamed_topk_kl_update_rank(
+      polymath::gemma4::AdapterOptimizerConfig optimizer;
+      optimizer.optimizer = config.optimizer;
+      optimizer.learning_rate = static_cast<float>(config.learning_rate);
+      optimizer.weight_decay = static_cast<float>(config.weight_decay);
+      optimizer.beta1 = static_cast<float>(config.beta1);
+      optimizer.beta2 = static_cast<float>(config.beta2);
+      optimizer.epsilon = static_cast<float>(config.optimizer_epsilon);
+      optimizer.grad_clip_l2 = static_cast<float>(config.grad_clip_l2);
+      status = polymath::gemma4::run_opencl_streamed_topk_kl_update_rank_optimizer(
           iteration.token_cache, config.asset_dir, config.layer0_pack,
           config.layer1_pack, state.checkpoint_dir, iteration.teacher_shard,
-          iteration.phone_output_dir, static_cast<float>(config.learning_rate),
+          iteration.phone_output_dir, optimizer,
           static_cast<std::uint32_t>(config.adapter_rank), config.apply_update,
           iteration.sample, false);
     } else {
@@ -1312,7 +1479,7 @@ int run_h11a(const RunnerArgs& args,
       iteration.blocker = status.message();
       stats.blockers.push_back("iteration " + std::to_string(index) + " failed: " +
                                status.message());
-      append_iteration_telemetry(telemetry_jsonl, iteration);
+      append_iteration_telemetry(telemetry_jsonl, config, iteration);
       stats.records.push_back(iteration);
       break;
     }
@@ -1342,7 +1509,7 @@ int run_h11a(const RunnerArgs& args,
     previous_post_sha = post_sha;
 
     chain_iteration_artifacts(chain, iteration.phone_output_dir, config.gate_name);
-    append_iteration_telemetry(telemetry_jsonl, iteration);
+    append_iteration_telemetry(telemetry_jsonl, config, iteration);
     chain.append_if_exists(telemetry_jsonl, config.gate_name);
     stats.active_training_seconds += iteration.active_training_seconds;
     stats.records.push_back(iteration);
@@ -1398,7 +1565,8 @@ void print_help() {
       << "\n"
       << "Executes Phase 11 phone-local queue records. This build supports H11-A "
          "hidden-MSE daemon training and H11-F top-k KL objective runs with "
-         "heartbeat, STOP, resume state, and checksum chain artifacts.\n";
+         "heartbeat, STOP, resume state, checksum chain artifacts, and Phase 13 "
+         "Gemma identity/kernel-lineage validation.\n";
 }
 
 std::string require_next(int argc, char** argv, int& index, const std::string& flag) {

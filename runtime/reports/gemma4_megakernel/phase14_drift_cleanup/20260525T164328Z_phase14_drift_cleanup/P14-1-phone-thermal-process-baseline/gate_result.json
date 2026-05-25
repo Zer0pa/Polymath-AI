@@ -1,0 +1,87 @@
+{
+  "schema_version": "phase14_p14_1_phone_baseline_v1",
+  "gate": "P14-1 phone reconnection, thermal baseline, and stale-process check",
+  "status": "pass_baseline_no_training_launched",
+  "created_at_utc": "2026-05-25T16:58:00Z",
+  "authority_device": "FY25013101C8",
+  "training_launched": false,
+  "adb": {
+    "status": "device_visible",
+    "devices_file": "runtime/reports/gemma4_megakernel/phase14_drift_cleanup/20260525T164328Z_phase14_drift_cleanup/P14-1-phone-thermal-process-baseline/adb_devices.txt"
+  },
+  "stale_process_check": {
+    "status": "pass",
+    "matched_processes": 0,
+    "probe_file": "runtime/reports/gemma4_megakernel/phase14_drift_cleanup/20260525T164328Z_phase14_drift_cleanup/P14-1-phone-thermal-process-baseline/stale_process_probe.txt"
+  },
+  "thermal": {
+    "thermalservice_file": "runtime/reports/gemma4_megakernel/phase14_drift_cleanup/20260525T164328Z_phase14_drift_cleanup/P14-1-phone-thermal-process-baseline/thermalservice.txt",
+    "thermal_zones_file": "runtime/reports/gemma4_megakernel/phase14_drift_cleanup/20260525T164328Z_phase14_drift_cleanup/P14-1-phone-thermal-process-baseline/thermal_zones.txt",
+    "cooling_devices_file": "runtime/reports/gemma4_megakernel/phase14_drift_cleanup/20260525T164328Z_phase14_drift_cleanup/P14-1-phone-thermal-process-baseline/cooling_devices.txt",
+    "thermal_status": 0,
+    "battery_temp_c": 28.0,
+    "skin_temp_c_hal": 32.423,
+    "thermal_hal_ready": true,
+    "notes": [
+      "Thermal service reports status 0.",
+      "Thermalservice cached CPU/GPU values include stale high readings, but current HAL temperatures are in the low-to-mid 30 C range and battery is 28 C.",
+      "Cooling device battery state is nonzero while AC powered; treat as baseline telemetry, not a performance win."
+    ]
+  },
+  "storage_memory": {
+    "file": "runtime/reports/gemma4_megakernel/phase14_drift_cleanup/20260525T164328Z_phase14_drift_cleanup/P14-1-phone-thermal-process-baseline/storage_mem.txt",
+    "data_available": "681G",
+    "mem_available_kb": 13897388
+  },
+  "reversible_settings": {
+    "snapshot_file": "runtime/reports/gemma4_megakernel/phase14_drift_cleanup/20260525T164328Z_phase14_drift_cleanup/P14-1-phone-thermal-process-baseline/reversible_settings_snapshot.txt",
+    "low_power": 0,
+    "stay_on_while_plugged_in": 0,
+    "screen_off_timeout_ms": 1800000,
+    "airplane_mode_on": 0,
+    "wifi_on": 1,
+    "changed_by_p14_1": false
+  },
+  "redmagic_game_zone": {
+    "package_probe": "runtime/reports/gemma4_megakernel/phase14_drift_cleanup/20260525T164328Z_phase14_drift_cleanup/P14-1-phone-thermal-process-baseline/game_zone_package_probe.txt",
+    "interface_probe": "runtime/reports/gemma4_megakernel/phase14_drift_cleanup/20260525T164328Z_phase14_drift_cleanup/P14-1-phone-thermal-process-baseline/gamelauncher_interface_probe.txt",
+    "candidate_packages": [
+      "cn.nubia.gamelauncher",
+      "cn.nubia.gameassist",
+      "cn.nubia.fan",
+      "com.termux"
+    ],
+    "assessment": "ADB-launched native binaries under /data/local/tmp are not Android launcher apps and should not be assumed to receive Game Zone treatment. A user-mediated Termux/Game Space route may be feasible, but it requires a no-training validation before authority use.",
+    "activation_attempted": false
+  },
+  "safety_policy": {
+    "external_cooling": "reject_fridge_freezer_ice_condensation_adjacent_methods",
+    "pre_run_requirements": [
+      "thermalservice status must be 0",
+      "no stale phase11_runner, gemma4_layer_runner, p13h, or polymath_gemma4_gate process",
+      "battery temperature must be below 35 C",
+      "skin temperature must be below 40 C",
+      "storage free space must remain above 20G",
+      "RunPod must not serve runtime data path"
+    ],
+    "segment_stop_conditions": [
+      "Android thermal status becomes nonzero",
+      "battery temperature reaches 38 C",
+      "skin temperature reaches 45 C",
+      "any CPU/GPU/NSP/socd zone reaches 85 C",
+      "alps-therm becomes valid and reaches 85 C",
+      "training/eval fails full-heldout identity or provenance telemetry"
+    ],
+    "cooldown_rule": "after each segment, wait until thermalservice status is 0 and battery/skin/CPU/GPU/NSP readings return near baseline before continuing",
+    "long_run_rule": "long training remains blocked until P14-4, P14-5, and P14-6 pass"
+  },
+  "blockers": [],
+  "carry_forward_blockers": [
+    "P14-2 compact manifest repair remains open.",
+    "P14-3 RunPod reconciliation remains open.",
+    "P14-4 independent full-heldout evaluator repair remains open.",
+    "P14-5 objective repair remains open.",
+    "P14-6 short heldout proof must pass before any long run."
+  ],
+  "next_gate": "P14-2 artifact quarantine and compact manifest repair, then P14-4 heldout evaluator repair"
+}

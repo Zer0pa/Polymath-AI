@@ -1,0 +1,52 @@
+{
+  "artifacts": [
+    {
+      "allowed_for_promoted_gemma_gate": true,
+      "classification": "gemma_valid_narrow_residual_learning_evidence",
+      "exists": true,
+      "key": "cde",
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/phase12_cde_gate_result.json",
+      "reason": "Gemma4 E4B residual adapter evidence; may seed P13 only within its narrow post-layer0 scope."
+    },
+    {
+      "allowed_for_promoted_gemma_gate": true,
+      "classification": "gemma_valid_narrow_residual_learning_evidence",
+      "exists": true,
+      "key": "gradient_parity",
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T173501Z_phase12_c_gradient_parity/C-gradient-parity/gate_result.json",
+      "reason": "Gemma4 E4B residual adapter evidence; may seed P13 only within its narrow post-layer0 scope."
+    },
+    {
+      "allowed_for_promoted_gemma_gate": false,
+      "classification": "negative_tool_surface_probe_forbidden_for_promoted_gemma_gate",
+      "exists": true,
+      "key": "heterogeneous_g",
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T172043Z_phase12_g_heterogeneous/G-heterogeneous-hypothesis/gate_result.json",
+      "reason": "Non-Gemma/Qwen/random-init/hidden-size-mismatched HTP evidence; quarantine only."
+    },
+    {
+      "allowed_for_promoted_gemma_gate": true,
+      "classification": "gemma_valid_narrow_residual_learning_evidence",
+      "exists": true,
+      "key": "long_native_lr",
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T173847Z_phase12_long_native_lr_retry1/CDE-long-native-lr/gate_result.json",
+      "reason": "Gemma4 E4B residual adapter evidence; may seed P13 only within its narrow post-layer0 scope."
+    },
+    {
+      "allowed_for_promoted_gemma_gate": true,
+      "classification": "control_preflight_not_learning_evidence",
+      "exists": true,
+      "key": "preflight",
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T151216Z_phase12_learning_preflight/phase12_gate_status.json",
+      "reason": "Control-plane preflight and compact-artifact evidence only."
+    },
+    {
+      "allowed_for_promoted_gemma_gate": false,
+      "classification": "negative_tool_surface_probe_forbidden_for_promoted_gemma_gate",
+      "exists": true,
+      "key": "qairt_f",
+      "path": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T171733Z_phase12_f_qairt_updateable_context/F-qairt-updateable-context/gate_result.json",
+      "reason": "Non-Gemma/Qwen/random-init/hidden-size-mismatched HTP evidence; quarantine only."
+    }
+  ]
+}

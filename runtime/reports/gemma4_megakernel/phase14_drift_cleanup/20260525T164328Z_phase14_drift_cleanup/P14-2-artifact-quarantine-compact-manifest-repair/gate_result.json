@@ -1,0 +1,52 @@
+{
+  "schema_version": "phase14_p14_2_artifact_quarantine_v1",
+  "gate": "P14-2 artifact quarantine and compact manifest repair",
+  "status": "pass_compact_manifest_repaired_no_payloads",
+  "created_at_utc": "2026-05-25T17:08:00Z",
+  "training_launched": false,
+  "quarantine_root": "/Users/Zer0pa/Polymat AI/.artifact_quarantine/Polymath-AI/20260525T164328Z_phase14_p14_0",
+  "payloads_quarantined": [
+    {
+      "original_path": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-G-heterogeneous-vs-adreno-baseline/phone_htp_relu_benchmark/input_gemma_layer0_first16_hidden.f32.bin",
+      "bytes": 163840,
+      "sha256": "c55390a717f1e00697f605ce14d1b9c31b6631955519bdf2b26afcdc010b9e57"
+    },
+    {
+      "original_path": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-G-heterogeneous-vs-adreno-baseline/phone_htp_relu_benchmark/run_0/Result_0/gemma_hidden_relu_out.raw",
+      "bytes": 163840,
+      "sha256": "70aaa78e00d4ae0ad2c5318e89cefaf4b96129ddb282bb22fe4c35b8c8b44bbd"
+    },
+    {
+      "original_path": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-G-heterogeneous-vs-adreno-baseline/phone_htp_relu_benchmark/run_1/Result_0/gemma_hidden_relu_out.raw",
+      "bytes": 163840,
+      "sha256": "70aaa78e00d4ae0ad2c5318e89cefaf4b96129ddb282bb22fe4c35b8c8b44bbd"
+    },
+    {
+      "original_path": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-G-heterogeneous-vs-adreno-baseline/phone_htp_relu_benchmark/run_2/Result_0/gemma_hidden_relu_out.raw",
+      "bytes": 163840,
+      "sha256": "70aaa78e00d4ae0ad2c5318e89cefaf4b96129ddb282bb22fe4c35b8c8b44bbd"
+    }
+  ],
+  "repaired_manifests": [
+    {
+      "path": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-G-heterogeneous-vs-adreno-baseline/artifact_manifest.json",
+      "repair": "removed forbidden payloads from artifacts array and added forbidden_payloads_quarantined metadata"
+    }
+  ],
+  "post_repair_scans": {
+    "strict_find_forbidden_payloads": "no_matches",
+    "manifest_artifacts_forbidden_extension_count": 0
+  },
+  "blockers": [],
+  "carry_forward_blockers": [
+    "P14-3 RunPod reconciliation remains open.",
+    "P14-4 full-heldout evaluator repair remains open.",
+    "P14-5 objective repair remains open."
+  ],
+  "nonclaims": [
+    "P14-2 does not promote P13-G HTP as training.",
+    "P14-2 does not repair heldout evaluation or objective quality.",
+    "P14-2 does not launch or validate any training run."
+  ],
+  "next_gate": "P14-3 state reconciliation and P14-4 full-heldout evaluator repair"
+}

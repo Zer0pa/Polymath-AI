@@ -1,0 +1,36 @@
+{
+  "schema_version": "gemma4_rank_adapter_topk_kl_checkpoint_v1",
+  "objective": "topk_embedding_kl_distillation_v1",
+  "trainable_scope": "post_layer0_rank16_residual_adapter",
+  "rank": 16,
+  "optimizer": "adamw",
+  "optimizer_backend": "phone_cpu_after_opencl_gradients",
+  "learning_rate": 0.0000000000,
+  "optimizer_step": 0,
+  "weight_decay": 0.0099999998,
+  "gradient_clip_l2": 1.0000000000,
+  "gradient_clip_scale": 1.0000000000,
+  "combined_gradient_l2": 0.2443907102,
+  "applied_update": false,
+  "loss_topk_kl": 1.0005755997,
+  "active_loss_tokens": 833,
+  "student_teacher_top1_agreement": 0.1140456182,
+  "mean_student_teacher_top1_probability": 0.1233203377,
+  "gradient_l2": {"adapter_a": 0.2148629553, "adapter_b": 0.1164505460, "output": 0.0150965299},
+  "checkpoint_delta_l2": {"adapter_a": 0.0000000000, "adapter_b": 0.0000000000},
+  "teacher_shard": {
+    "path": "/data/local/tmp/polymath_gemma4_gate/phase11/h11f_teacher_shards/heldout",
+    "manifest_sha256": "47dc213a29bef40bf859fd55bb33dba56f235c410ff0d8deca0e777cbb4dabd5",
+    "topk_token_ids_sha256": "961d893f8f4a9dbfa0f69f9f2f702c95915e088389b060866ab51a471bcddaac",
+    "topk_probabilities_sha256": "f44047f1c7f33ca199a041eabfa8270b86572213f9ead4888b8c6203a4cdb358"
+  },
+  "pre_update": {
+    "adapter_a": {"path": "/data/local/tmp/polymath_gemma4_gate/phase12/runs/20260524T164412Z_phase12_cde_authority_rank16_train/Phase12-CDE-learning/iterations/iter_000007/checkpoint/adapter_a.f32.bin", "sha256": "ab0ec25d38d3cd97d9e65a30bbdde225061149a3e5b53be56fc426098ee19094"},
+    "adapter_b": {"path": "/data/local/tmp/polymath_gemma4_gate/phase12/runs/20260524T164412Z_phase12_cde_authority_rank16_train/Phase12-CDE-learning/iterations/iter_000007/checkpoint/adapter_b.f32.bin", "sha256": "62a0665ed73ffcc629edbc4a728b5a1cfbeec759116cadbf4ba52ca182a27fcf"}
+  },
+  "post_update": {
+    "adapter_a": {"path": "/data/local/tmp/polymath_gemma4_gate/phase12/runs/20260524T164412Z_phase12_cde_authority_rank16_trained_eval/Phase12-CDE-learning/iterations/iter_000000/checkpoint/adapter_a.f32.bin", "sha256": "ab0ec25d38d3cd97d9e65a30bbdde225061149a3e5b53be56fc426098ee19094"},
+    "adapter_b": {"path": "/data/local/tmp/polymath_gemma4_gate/phase12/runs/20260524T164412Z_phase12_cde_authority_rank16_trained_eval/Phase12-CDE-learning/iterations/iter_000000/checkpoint/adapter_b.f32.bin", "sha256": "62a0665ed73ffcc629edbc4a728b5a1cfbeec759116cadbf4ba52ca182a27fcf"}
+  },
+  "optimizer_state": {"status": "not_updated"}
+}

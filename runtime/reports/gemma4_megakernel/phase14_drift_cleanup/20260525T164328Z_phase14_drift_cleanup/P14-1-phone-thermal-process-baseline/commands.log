@@ -1,0 +1,13 @@
+# P14-1 Sanitized Commands
+
+adb devices -l
+adb -s FY25013101C8 shell "ps -A | grep -E 'phase11_runner|gemma4_layer_runner|p13h|polymath_gemma4_gate' || true"
+adb -s FY25013101C8 shell dumpsys thermalservice
+adb -s FY25013101C8 shell 'for z in /sys/class/thermal/thermal_zone*; do printf "%s " "$(basename "$z")"; cat "$z/type" 2>/dev/null | tr "\n" " "; cat "$z/temp" 2>/dev/null; done'
+adb -s FY25013101C8 shell 'for c in /sys/class/thermal/cooling_device*; do printf "%s " "$(basename "$c")"; cat "$c/type" 2>/dev/null | tr "\n" " "; printf "state="; cat "$c/cur_state" 2>/dev/null; done'
+adb -s FY25013101C8 shell dumpsys battery
+adb -s FY25013101C8 shell "df -h /data/local/tmp; cat /proc/meminfo | head -n 12"
+adb -s FY25013101C8 shell "settings get global low_power; settings get global stay_on_while_plugged_in; settings get system screen_off_timeout; settings get global airplane_mode_on; settings get global wifi_on"
+adb -s FY25013101C8 shell "pm list packages | grep -Ei 'game|redmagic|nubia|space|boost|zone' || true"
+adb -s FY25013101C8 shell "pm list packages | grep -Ei 'termux|shell|terminal|polymath|codex|python|runner' || true"
+adb -s FY25013101C8 shell "cmd package dump cn.nubia.gamelauncher | grep -Ei 'permission|provider|receiver|service|game|add|database|content' | head -n 180"

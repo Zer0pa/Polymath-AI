@@ -1,0 +1,19 @@
+{
+  "dataset_api_url": "https://huggingface.co/api/datasets/databricks/databricks-dolly-15k",
+  "dataset_card_url": "https://huggingface.co/datasets/databricks/databricks-dolly-15k",
+  "dataset_file": "databricks-dolly-15k.jsonl",
+  "dataset_id": "databricks/databricks-dolly-15k",
+  "dataset_revision": "bdd27f4d94b9c1f951818a7da7fd7aeea5dbff1a",
+  "declared_license": "cc-by-sa-3.0",
+  "declared_rows": 15010,
+  "last_modified_utc": "2023-06-30T18:34:13.000Z",
+  "license_note": "Hugging Face dataset card declares cc-by-sa-3.0 and permits academic/commercial use under CC BY-SA 3.0.",
+  "phone_side_line_compaction": {
+    "enabled": true,
+    "max_chars_per_line": 384,
+    "reason": "The C++ tokenizer truncates to seq128 after BPE, so phone-side cut removes text that cannot enter the cache while keeping streaming and tokenization on-device."
+  },
+  "schema_version": "phase13_p13c_source_provenance_v1",
+  "source_summary": "Databricks Dolly 15k instruction-following JSONL corpus on Hugging Face.",
+  "source_url": "https://huggingface.co/datasets/databricks/databricks-dolly-15k/resolve/bdd27f4d94b9c1f951818a7da7fd7aeea5dbff1a/databricks-dolly-15k.jsonl"
+}

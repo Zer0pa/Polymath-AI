@@ -1,0 +1,165 @@
+{
+  "attempts": [
+    {
+      "byte_exact_identity": false,
+      "byte_exact_rc": 99,
+      "completed": true,
+      "context_generated": false,
+      "context_graphs": [],
+      "context_rc": 9,
+      "output_raw_phone_path": "",
+      "output_sha256sums": "",
+      "output_sizes": "",
+      "phone_context": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13f/htp/identity_add/context/gemma_hidden2560_identity_add.qnn.bin",
+      "phone_htp_run_completed": false,
+      "phone_model": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13f/models/libgemma_hidden2560_identity_add.so",
+      "phone_variant_root": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13f/htp/identity_add",
+      "pulled": {
+        "attempt_summary": true,
+        "context_info": false,
+        "context_stderr": true,
+        "context_stdout": true,
+        "execution_metadata": false,
+        "loader_inputs": true,
+        "output_sha256sums": false,
+        "output_sizes": false,
+        "run_stderr": false,
+        "run_stdout": false,
+        "utility_stderr": false,
+        "utility_stdout": false
+      },
+      "run_rc": 99,
+      "utility_rc": 99,
+      "variant": "identity_add"
+    },
+    {
+      "byte_exact_identity": false,
+      "byte_exact_rc": 1,
+      "completed": true,
+      "context_generated": true,
+      "context_graphs": [
+        {
+          "info": {
+            "endOpIndex": 0,
+            "graphBlobInfo": {
+              "info": {
+                "htpDlbc": 0,
+                "numHvxThreads": 6,
+                "optimizationLevel": 0,
+                "spillFillBufferSize": 0,
+                "vtcmSize": 4
+              },
+              "version": "QNN_SYSTEM_CONTEXT_HTP_GRAPH_INFO_BLOB_VERSION_V1"
+            },
+            "graphBlobInfoSize": 112,
+            "graphBlobInfoV2": {
+              "constSize": 8192,
+              "ddrTensorSize": 0,
+              "ioTensorSize": 327680,
+              "isSafeShareIO": 0,
+              "nativeKChannelSize": 256,
+              "nativeVChannelSize": 64,
+              "opDataSize": 11776,
+              "sharedWeightsSize": 0,
+              "version": "QNN_SYSTEM_CONTEXT_HTP_GRAPH_INFO_BLOB_VERSION_V2"
+            },
+            "graphInputs": [
+              {
+                "info": {
+                  "dataFormat": "QNN_TENSOR_DATA_FORMAT_FLAT_BUFFER",
+                  "dataType": "QNN_DATATYPE_FLOAT_32",
+                  "dimensions": [
+                    1,
+                    16,
+                    2560
+                  ],
+                  "id": 1,
+                  "memType": "QNN_TENSORMEMTYPE_RAW",
+                  "name": "gemma_hidden_input",
+                  "quantizeParams": {
+                    "definition": "QNN_DEFINITION_UNDEFINED",
+                    "quantizationEncoding": "QNN_QUANTIZATION_ENCODING_UNDEFINED"
+                  },
+                  "rank": 3,
+                  "type": "QNN_TENSOR_TYPE_APP_WRITE"
+                },
+                "version": "QNN_TENSOR_VERSION_1"
+              }
+            ],
+            "graphName": "gemma_hidden2560_relu",
+            "graphOutputs": [
+              {
+                "info": {
+                  "dataFormat": "QNN_TENSOR_DATA_FORMAT_FLAT_BUFFER",
+                  "dataType": "QNN_DATATYPE_FLOAT_32",
+                  "dimensions": [
+                    1,
+                    16,
+                    2560
+                  ],
+                  "id": 2,
+                  "memType": "QNN_TENSORMEMTYPE_RAW",
+                  "name": "gemma_hidden_relu_out",
+                  "quantizeParams": {
+                    "definition": "QNN_DEFINITION_UNDEFINED",
+                    "quantizationEncoding": "QNN_QUANTIZATION_ENCODING_UNDEFINED"
+                  },
+                  "rank": 3,
+                  "type": "QNN_TENSOR_TYPE_APP_READ"
+                },
+                "version": "QNN_TENSOR_VERSION_1"
+              }
+            ],
+            "numGraphInputs": 1,
+            "numGraphOutputs": 1,
+            "numUpdateableTensors": 0,
+            "startOpIndex": 0,
+            "updateableTensors": []
+          },
+          "version": "QNN_SYSTEM_CONTEXT_GRAPH_INFO_VERSION_3"
+        }
+      ],
+      "context_rc": 0,
+      "output_raw_phone_path": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13f/htp/relu/run/Result_0/gemma_hidden_relu_out.raw",
+      "output_sha256sums": "c55390a717f1e00697f605ce14d1b9c31b6631955519bdf2b26afcdc010b9e57  /data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13f/htp/gemma_layer0_first16_hidden.f32.bin\n70aaa78e00d4ae0ad2c5318e89cefaf4b96129ddb282bb22fe4c35b8c8b44bbd  /data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13f/htp/relu/run/Result_0/gemma_hidden_relu_out.raw\n",
+      "output_sizes": " 163840 /data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13f/htp/gemma_layer0_first16_hidden.f32.bin\n 163840 /data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13f/htp/relu/run/Result_0/gemma_hidden_relu_out.raw\n 327680 total\n",
+      "phone_context": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13f/htp/relu/context/gemma_hidden2560_relu.qnn.bin",
+      "phone_htp_run_completed": true,
+      "phone_model": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13f/models/libgemma_hidden2560_relu.so",
+      "phone_variant_root": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13f/htp/relu",
+      "pulled": {
+        "attempt_summary": true,
+        "context_info": true,
+        "context_stderr": true,
+        "context_stdout": true,
+        "execution_metadata": true,
+        "loader_inputs": true,
+        "output_sha256sums": true,
+        "output_sizes": true,
+        "run_stderr": true,
+        "run_stdout": true,
+        "utility_stderr": true,
+        "utility_stdout": true
+      },
+      "run_rc": 0,
+      "utility_rc": 0,
+      "variant": "relu"
+    }
+  ],
+  "input_bytes": 163840,
+  "input_manifest_pulled": {
+    "dd_log": true,
+    "input_sha256sums": true,
+    "input_sizes": true
+  },
+  "input_shape": [
+    1,
+    16,
+    2560
+  ],
+  "phone_htp_root": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13f/htp",
+  "schema_version": "phase13_p13f_phone_htp_attempts_v1",
+  "selected_valid_attempt": "relu",
+  "source_tensor": "/data/local/tmp/polymath_gemma4_gate/layer_pack/gemma4_e4b_layer0_seq128_v0/reference/layer_output.f32.bin",
+  "status": "pass"
+}

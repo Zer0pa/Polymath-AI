@@ -1,0 +1,71 @@
+{
+  "schema_version": "phase14_p14_0_control_plane_cleanup_v1",
+  "gate": "P14-0 worktree and control-plane cleanup",
+  "status": "pass_cleanup_no_training_launched",
+  "created_at_utc": "2026-05-25T16:43:28Z",
+  "authority_device": "FY25013101C8",
+  "training_launched": false,
+  "mac": {
+    "repo": "/Users/Zer0pa/Polymat AI/Polymath-AI",
+    "branch": "gemma4-megakernel-native-training",
+    "head_file": "runtime/reports/gemma4_megakernel/phase14_drift_cleanup/20260525T164328Z_phase14_drift_cleanup/P14-0-worktree-control-plane-cleanup/mac_head.txt",
+    "dirty_worktree_classified": true,
+    "worktree_classification": "runtime/reports/gemma4_megakernel/phase14_drift_cleanup/20260525T164328Z_phase14_drift_cleanup/P14-0-worktree-control-plane-cleanup/worktree_classification.tsv",
+    "unresolved_or_forbidden_classification_entries": 0
+  },
+  "phone": {
+    "adb_devices": "runtime/reports/gemma4_megakernel/phase14_drift_cleanup/20260525T164328Z_phase14_drift_cleanup/P14-0-worktree-control-plane-cleanup/adb_devices.txt",
+    "model": "NX789J",
+    "device": "NX789J",
+    "build_fingerprint_file": "runtime/reports/gemma4_megakernel/phase14_drift_cleanup/20260525T164328Z_phase14_drift_cleanup/P14-0-worktree-control-plane-cleanup/phone_build_fingerprint.txt",
+    "stale_process_probe": "runtime/reports/gemma4_megakernel/phase14_drift_cleanup/20260525T164328Z_phase14_drift_cleanup/P14-0-worktree-control-plane-cleanup/phone_stale_process_probe.txt",
+    "stale_processes_found": false,
+    "battery_baseline": "runtime/reports/gemma4_megakernel/phase14_drift_cleanup/20260525T164328Z_phase14_drift_cleanup/P14-0-worktree-control-plane-cleanup/phone_battery_baseline.txt",
+    "thermal_zones_baseline": "runtime/reports/gemma4_megakernel/phase14_drift_cleanup/20260525T164328Z_phase14_drift_cleanup/P14-0-worktree-control-plane-cleanup/phone_thermal_zones_baseline.txt",
+    "storage_mem_baseline": "runtime/reports/gemma4_megakernel/phase14_drift_cleanup/20260525T164328Z_phase14_drift_cleanup/P14-0-worktree-control-plane-cleanup/phone_storage_mem_baseline.txt",
+    "game_zone_package_probe": "runtime/reports/gemma4_megakernel/phase14_drift_cleanup/20260525T164328Z_phase14_drift_cleanup/P14-0-worktree-control-plane-cleanup/phone_game_zone_package_probe.txt",
+    "game_zone_activity_probe": "runtime/reports/gemma4_megakernel/phase14_drift_cleanup/20260525T164328Z_phase14_drift_cleanup/P14-0-worktree-control-plane-cleanup/phone_game_zone_activity_probe.txt",
+    "game_zone_activation_attempted": false
+  },
+  "runpod": {
+    "primary_status": "runtime/reports/gemma4_megakernel/phase14_drift_cleanup/20260525T164328Z_phase14_drift_cleanup/P14-0-worktree-control-plane-cleanup/runpod_primary_status.txt",
+    "observed_branch": "linux/phase0g-qairt-v2.43",
+    "expected_branch": "gemma4-megakernel-native-training",
+    "status": "quarantined_stale_not_phase14_authority",
+    "allowed_until_p14_3": "do_not_use_as_build_or_reference_oracle_for_phase14_without_reconciliation"
+  },
+  "artifact_hygiene": {
+    "mandated_rg_forbidden_scan_after_quarantine": "no_matches",
+    "strict_find_forbidden_scan_after_quarantine": "runtime/reports/gemma4_megakernel/phase14_drift_cleanup/20260525T164328Z_phase14_drift_cleanup/P14-0-worktree-control-plane-cleanup/forbidden_payloads_after_quarantine.txt",
+    "build_cache_scan_after_quarantine": "runtime/reports/gemma4_megakernel/phase14_drift_cleanup/20260525T164328Z_phase14_drift_cleanup/P14-0-worktree-control-plane-cleanup/build_cache_dirs_after_quarantine.txt",
+    "quarantine_root": "/Users/Zer0pa/Polymat AI/.artifact_quarantine/Polymath-AI/20260525T164328Z_phase14_p14_0",
+    "quarantined_forbidden_payload_count": 4,
+    "quarantined_build_cache_dir_count": 4,
+    "compact_manifest_repair_deferred_to": "P14-2"
+  },
+  "gpd_reconciliation": {
+    "updated": [
+      ".gpd/STATE.md",
+      ".gpd/state.json",
+      ".gpd/ROADMAP.md",
+      ".gpd/runlog.jsonl"
+    ],
+    "phase13_truth": "P13-A through P13-G produced narrow artifacts; P13-H failed; P13-I exact claims selected Phase 14.",
+    "phase14_selected": "phase14_repair_scaled_heldout_learning_before_new_hardware_claims"
+  },
+  "blockers": [],
+  "carry_forward_blockers": [
+    "P14-1 thermal/process baseline must be accepted before any run.",
+    "P14-2 compact manifest repair still must remove forbidden payload references from promoted compact evidence.",
+    "P14-3 must reconcile or rebuild RunPod on the expected branch before RunPod is used.",
+    "P14-4/P14-5 heldout evaluator and objective repair remain incomplete."
+  ],
+  "nonclaims": [
+    "P14-0 does not prove heldout learning.",
+    "P14-0 does not repair the P13-H objective.",
+    "P14-0 does not promote HTP training or a fused megakernel.",
+    "P14-0 did not activate RedMagic Game Zone or fan controls.",
+    "No fridge, freezer, ice, or condensation-adjacent cooling is approved."
+  ],
+  "next_gate": "P14-1 phone reconnection, thermal baseline, stale-process check, and reversible safety policy"
+}

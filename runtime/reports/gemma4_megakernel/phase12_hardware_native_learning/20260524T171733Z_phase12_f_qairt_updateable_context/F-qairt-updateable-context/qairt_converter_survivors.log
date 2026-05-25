@@ -1,0 +1,42 @@
+2026-05-24 17:13:27,786 - 278 - INFO - INFO_INITIALIZATION_SUCCESS: 
+2026-05-24 17:13:31,593 - 283 - WARNING - --desired_input_shape and -d are deprecated. Use --source_model_input_shape or -s for achieving this functionality
+2026-05-24 17:13:31,909 - 256 - INFO - Using injective.cpu for strided_slice based on highest priority (10)
+2026-05-24 17:13:31,941 - 256 - INFO - Using injective.cpu for strided_slice based on highest priority (10)
+2026-05-24 17:13:31,969 - 256 - INFO - Using injective.cpu for maximum based on highest priority (10)
+2026-05-24 17:13:32,003 - 256 - INFO - Using concatenate.cpu for concatenate based on highest priority (10)
+2026-05-24 17:13:32,030 - 256 - INFO - Using injective.cpu for strided_slice based on highest priority (10)
+2026-05-24 17:13:32,061 - 256 - INFO - Using concatenate.cpu for concatenate based on highest priority (10)
+2026-05-24 17:13:32,095 - 256 - INFO - Using injective.cpu for strided_slice based on highest priority (10)
+2026-05-24 17:13:32,122 - 256 - INFO - Using injective.cpu for strided_slice based on highest priority (10)
+2026-05-24 17:13:32,151 - 256 - INFO - Using injective.cpu for maximum based on highest priority (10)
+2026-05-24 17:13:32,186 - 256 - INFO - Using concatenate.cpu for concatenate based on highest priority (10)
+2026-05-24 17:13:32,215 - 256 - INFO - Using injective.cpu for strided_slice based on highest priority (10)
+2026-05-24 17:13:32,248 - 256 - INFO - Using concatenate.cpu for concatenate based on highest priority (10)
+2026-05-24 17:13:32,290 - 256 - INFO - Using injective.cpu for strided_slice based on highest priority (10)
+2026-05-24 17:13:32,320 - 256 - INFO - Using injective.cpu for strided_slice based on highest priority (10)
+2026-05-24 17:13:32,353 - 256 - INFO - Using concatenate.cpu for concatenate based on highest priority (10)
+2026-05-24 17:13:32,401 - 256 - INFO - Using injective.cpu for strided_slice based on highest priority (10)
+2026-05-24 17:13:32,430 - 256 - INFO - Using injective.cpu for strided_slice based on highest priority (10)
+2026-05-24 17:13:32,459 - 256 - INFO - Using injective.cpu for maximum based on highest priority (10)
+2026-05-24 17:13:32,495 - 256 - INFO - Using concatenate.cpu for concatenate based on highest priority (10)
+2026-05-24 17:13:32,524 - 256 - INFO - Using injective.cpu for strided_slice based on highest priority (10)
+2026-05-24 17:13:32,556 - 256 - INFO - Using concatenate.cpu for concatenate based on highest priority (10)
+2026-05-24 17:13:32,591 - 256 - INFO - Using injective.cpu for strided_slice based on highest priority (10)
+2026-05-24 17:13:32,620 - 256 - INFO - Using injective.cpu for strided_slice based on highest priority (10)
+2026-05-24 17:13:32,650 - 256 - INFO - Using injective.cpu for maximum based on highest priority (10)
+2026-05-24 17:13:32,685 - 256 - INFO - Using concatenate.cpu for concatenate based on highest priority (10)
+2026-05-24 17:13:32,715 - 256 - INFO - Using injective.cpu for strided_slice based on highest priority (10)
+2026-05-24 17:13:32,747 - 256 - INFO - Using concatenate.cpu for concatenate based on highest priority (10)
+2026-05-24 17:13:32,789 - 256 - INFO - Using injective.cpu for strided_slice based on highest priority (10)
+2026-05-24 17:13:32,817 - 256 - INFO - Using injective.cpu for strided_slice based on highest priority (10)
+2026-05-24 17:13:32,850 - 256 - INFO - Using concatenate.cpu for concatenate based on highest priority (10)
+2026-05-24 17:13:33,202 - 283 - WARNING - origin const name __main__._make_block_tracewrap.<locals>._Wrap/transformers.models.qwen2.modeling_qwen2.Qwen2DecoderLayer_layer/transformers.models.qwen2.modeling_qwen2.Qwen2Attention_self_attn/torch.nn.modules.linear.Linear_q_proj; is not valid, change it to elementwise_sum_1_const_bias
+2026-05-24 17:13:33,228 - 283 - WARNING - origin const name __main__._make_block_tracewrap.<locals>._Wrap/transformers.models.qwen2.modeling_qwen2.Qwen2DecoderLayer_layer/transformers.models.qwen2.modeling_qwen2.Qwen2Attention_self_attn/torch.nn.modules.linear.Linear_k_proj; is not valid, change it to elementwise_sum_3_const_bias
+2026-05-24 17:13:33,273 - 283 - WARNING - origin const name __main__._make_block_tracewrap.<locals>._Wrap/transformers.models.qwen2.modeling_qwen2.Qwen2DecoderLayer_layer/transformers.models.qwen2.modeling_qwen2.Qwen2Attention_self_attn/torch.nn.modules.linear.Linear_v_proj; is not valid, change it to elementwise_sum_6_const_bias
+2026-05-24 17:13:33,378 - 283 - WARNING - Unused Input nodes found: []
+2026-05-24 17:13:33,692 - 278 - INFO - All tensors from /workspace/Polymath-AI/runtime/reports/gemma4_megakernel/phase12_remote/20260524T170746Z_gate_f_qwen_updateable/lora_weight_list_survivors.txt were found in the graph.
+reEvalMacsParams: Re-evaluated graph statistics after IrOptimizer optimization passes:
+reEvalMacsParams: Total MACs: 47509764
+reEvalMacsParams: Total Params Count: 46815744
+2026-05-24 17:13:35,676 - 278 - INFO - INFO_WRITE_SUCCESS: 
+2026-05-24 17:13:35,676 - 278 - INFO - INFO_CONVERSION_SUCCESS: Conversion completed successfully

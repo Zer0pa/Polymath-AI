@@ -1,0 +1,33 @@
+{
+  "adapter_rank": 16,
+  "apply_update": true,
+  "asset_dir": "/data/local/tmp/polymath_gemma4_gate/streamed_assets/g8_layer01_20260517T071405Z",
+  "beta1": 0.9,
+  "beta2": 0.999,
+  "disconnect_hold_seconds": 0,
+  "gate_dir_name": "Phase12-long-native-lr",
+  "gate_name": "Phase12-long-native-lr",
+  "grad_clip_l2": 1.0,
+  "initial_checkpoint": "/data/local/tmp/polymath_gemma4_gate/phase12/runs/20260524T164412Z_phase12_cde_authority_rank16_train/Phase12-CDE-learning/iterations/iter_000007/checkpoint",
+  "iteration_count": 24,
+  "layer0_pack": "/data/local/tmp/polymath_gemma4_gate/layer_pack/gemma4_e4b_layer0_seq128_v0",
+  "layer1_pack": "/data/local/tmp/polymath_gemma4_gate/layer_pack/gemma4_e4b_layer1_seq128_v0",
+  "learning_rate": 0.0001,
+  "marker_wait_seconds": 0,
+  "objective": "topk_embedding_kl",
+  "optimizer": "adamw",
+  "optimizer_epsilon": 1e-08,
+  "require_disconnect_marker": false,
+  "run_id": "20260524T173847Z_phase12_long_native_lr_retry1_lr1e4_cont24_train",
+  "sample_every": 25,
+  "schema_version": "phase12_long_native_lr_arm_config_v1",
+  "teacher_shards": [
+    "/data/local/tmp/polymath_gemma4_gate/phase12/teacher_shards/20260524T164412Z_phase12_cde_authority_train_shard00",
+    "/data/local/tmp/polymath_gemma4_gate/phase12/teacher_shards/20260524T164412Z_phase12_cde_authority_train_shard01"
+  ],
+  "token_caches": [
+    "/data/local/tmp/polymath_gemma4_gate/phase12/token_caches/20260524T164412Z_phase12_cde_authority_train_shard00",
+    "/data/local/tmp/polymath_gemma4_gate/phase12/token_caches/20260524T164412Z_phase12_cde_authority_train_shard01"
+  ],
+  "weight_decay": 0.01
+}

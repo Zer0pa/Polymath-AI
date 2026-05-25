@@ -1,0 +1,38 @@
+{
+  "adapter_rank": 16,
+  "apply_update": false,
+  "asset_dir": "/data/local/tmp/polymath_gemma4_gate/streamed_assets/g8_layer01_20260517T071405Z",
+  "disconnect_hold_seconds": 0,
+  "gate_dir_name": "P13-B-identity-smoke",
+  "gate_name": "P13-B",
+  "grad_clip_l2": 1.0,
+  "hidden_size": 2560,
+  "hidden_state_fixtures_consumed": false,
+  "initial_checkpoint": "/data/local/tmp/polymath_gemma4_gate/phase12/runs/20260524T164412Z_phase12_cde_authority_rank16_train/Phase12-CDE-learning/iterations/iter_000007/checkpoint",
+  "iteration_count": 1,
+  "kernel_lineage_class": "residual_adapter_opencl_training",
+  "layer0_pack": "/data/local/tmp/polymath_gemma4_gate/layer_pack/gemma4_e4b_layer0_seq128_v0",
+  "layer1_pack": "/data/local/tmp/polymath_gemma4_gate/layer_pack/gemma4_e4b_layer1_seq128_v0",
+  "learning_rate": 0.0,
+  "marker_wait_seconds": 0,
+  "model_id": "google/gemma-4-E4B",
+  "model_revision": "7aa32e6889efd6300124851b164f8b364314c3d8",
+  "objective": "topk_embedding_kl",
+  "optimizer": "adamw",
+  "phone_gate_root": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13b",
+  "require_disconnect_marker": false,
+  "run_id": "20260524T210920Z_phase13_gemma4_only_heterogeneous_p13b_good",
+  "runtime_backend": "phone_cpu_token_to_hidden_plus_opencl_layers_and_adapter",
+  "sample_every": 99,
+  "schema_version": "phase13_p13b_identity_smoke_config_v1",
+  "source_commit": "53ba9b93cf37cc25fae40cb9d3c7490ad9d0b55f",
+  "source_tree_dirty": true,
+  "teacher_provenance": "runpod_precomputed_full_gemma4_topk_before_phone_runtime",
+  "teacher_shards": [
+    "/data/local/tmp/polymath_gemma4_gate/phase12/teacher_shards/20260524T164412Z_phase12_cde_authority_train_shard00"
+  ],
+  "token_caches": [
+    "/data/local/tmp/polymath_gemma4_gate/phase12/token_caches/20260524T164412Z_phase12_cde_authority_train_shard00"
+  ],
+  "weight_decay": 0.01
+}

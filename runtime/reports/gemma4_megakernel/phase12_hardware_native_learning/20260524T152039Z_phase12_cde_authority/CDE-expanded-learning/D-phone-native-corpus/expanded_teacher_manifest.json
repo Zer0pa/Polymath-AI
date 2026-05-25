@@ -1,0 +1,54 @@
+{
+  "manifest": {
+    "files": [
+      {
+        "bytes": 65536,
+        "path": "topk_token_ids.u32.bin",
+        "sha256": "d076f86b076341082084f7b680041aa8448a39bb48f27b6eac6541385d3989ca"
+      },
+      {
+        "bytes": 65536,
+        "path": "topk_probabilities.f32.bin",
+        "sha256": "3ad7e2287bd254f9f5a7217ac58d23bd7ac954a51c46a160bbd0a2f6b3c2613b"
+      },
+      {
+        "bytes": 2048,
+        "path": "loss_mask.u8.bin",
+        "sha256": "c2f769cb75c174ef3dc74a8cb7042f921d2a41d64f59de02bb63ccd9c66eb8bb"
+      },
+      {
+        "bytes": 8192,
+        "path": "labels.u32.bin",
+        "sha256": "763274c2eed6a2324a34c872876a5fb0ec6cbe366384d4919e11d1f8ee0bd2b8"
+      }
+    ],
+    "loss_tokens": 1621,
+    "metric_predeclared": {
+      "heldout_guardrail": "student_teacher_top1_agreement_non_regression",
+      "heldout_primary": "mean_student_teacher_top1_probability",
+      "train_signal": "loss_topk_kl_decrease"
+    },
+    "model_id": "google/gemma-4-E4B",
+    "objective": "conditional_topk_kl_over_full_teacher_topk",
+    "revision": "7aa32e6889efd6300124851b164f8b364314c3d8",
+    "schema_version": "phase11_h11f_topk_teacher_shard_v1",
+    "sequence_count": 16,
+    "sequence_length": 128,
+    "split": "phase12_expanded_train",
+    "student_scope": "two_layer_phone_runtime_rank4_residual_adapter",
+    "teacher_scope": "full_gemma4_e4b_causal_lm_logits",
+    "token_cache": {
+      "attention_mask_sha256": "0ef6abb39a66aa53b6e7182f60e1b1aab22cae8ad938ca8bacc02148e56b9698",
+      "input_ids_sha256": "b9eec1c7d8327564a311b2b855ab6192407497d93c3e4b80ca191e7dde233718",
+      "labels_sha256": "763274c2eed6a2324a34c872876a5fb0ec6cbe366384d4919e11d1f8ee0bd2b8",
+      "loss_mask_sha256": "c2f769cb75c174ef3dc74a8cb7042f921d2a41d64f59de02bb63ccd9c66eb8bb",
+      "position_ids_sha256": "888aeb2da2fafbc2df6481375e723e3945c61de752556e241a9783f5d3060ee7"
+    },
+    "token_count": 2048,
+    "top_k": 8
+  },
+  "phone_teacher_shard": "/data/local/tmp/polymath_gemma4_gate/phase12/teacher_shards/20260524T152039Z_phase12_cde_authority_expanded_train",
+  "runtime_teacher_service_used": false,
+  "schema_version": "phase12_expanded_teacher_manifest_v1",
+  "teacher_generation": "RunPod_precomputed_full_Gemma4_topk_before_phone_training_runtime"
+}

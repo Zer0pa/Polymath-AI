@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <chrono>
+#include <cctype>
 #include <cstdint>
 #include <cstring>
 #include <cmath>
@@ -71,8 +72,22 @@ float adapter_scale(std::uint32_t adapter_rank) {
   return 1.0F / static_cast<float>(adapter_rank);
 }
 
-std::string residual_adapter_scope(std::uint32_t adapter_rank) {
-  return "post_layer0_rank" + std::to_string(adapter_rank) + "_residual_adapter";
+std::string residual_adapter_scope(std::uint32_t adapter_rank,
+                                   const std::string& adapter_site = "post_layer0") {
+  if (adapter_site != "post_layer0" && adapter_site != "post_layer1") {
+    throw std::runtime_error("unsupported residual adapter site: " + adapter_site);
+  }
+  return adapter_site + "_rank" + std::to_string(adapter_rank) + "_residual_adapter";
+}
+
+std::string residual_adapter_input_source(const std::string& adapter_site) {
+  if (adapter_site == "post_layer0") {
+    return "layer0_output";
+  }
+  if (adapter_site == "post_layer1") {
+    return "layer1_output";
+  }
+  throw std::runtime_error("unsupported residual adapter site: " + adapter_site);
 }
 
 template <typename Function>
@@ -411,6 +426,11 @@ void ensure_directory(const std::string& path) {
   }
 }
 
+bool path_exists(const std::string& path) {
+  struct stat info {};
+  return stat(path.c_str(), &info) == 0;
+}
+
 std::vector<std::uint8_t> read_bytes(const std::string& path) {
   std::ifstream file(path, std::ios::binary);
   if (!file) {
@@ -440,6 +460,51 @@ std::string read_text_file(const std::string& path) {
   std::ostringstream buffer;
   buffer << file.rdbuf();
   return buffer.str();
+}
+
+std::string json_string_field_or(const std::string& json, const std::string& key,
+                                 const std::string& fallback) {
+  const std::string token = "\"" + key + "\"";
+  std::size_t pos = json.find(token);
+  if (pos == std::string::npos) {
+    return fallback;
+  }
+  pos = json.find(':', pos + token.size());
+  if (pos == std::string::npos) {
+    return fallback;
+  }
+  ++pos;
+  while (pos < json.size() &&
+         (json[pos] == ' ' || json[pos] == '\n' || json[pos] == '\r' ||
+          json[pos] == '\t')) {
+    ++pos;
+  }
+  if (pos >= json.size() || json[pos] != '"') {
+    return fallback;
+  }
+  ++pos;
+  std::string value;
+  while (pos < json.size()) {
+    const char c = json[pos++];
+    if (c == '"') {
+      return value;
+    }
+    if (c != '\\' || pos >= json.size()) {
+      value.push_back(c);
+      continue;
+    }
+    const char escaped = json[pos++];
+    if (escaped == 'n') {
+      value.push_back('\n');
+    } else if (escaped == 'r') {
+      value.push_back('\r');
+    } else if (escaped == 't') {
+      value.push_back('\t');
+    } else {
+      value.push_back(escaped);
+    }
+  }
+  return fallback;
 }
 
 template <typename T>
@@ -1310,8 +1375,9 @@ void dispatch_adapter_grad_a(ClRuntime& runtime, cl_kernel kernel, cl_mem input,
   runtime.run_1d(kernel, kHidden * adapter_rank);
 }
 
-void dispatch_sgd_update(ClRuntime& runtime, cl_kernel kernel, cl_mem values,
-                         cl_mem gradient, float learning_rate, std::int32_t count) {
+[[maybe_unused]] void dispatch_sgd_update(ClRuntime& runtime, cl_kernel kernel,
+                                          cl_mem values, cl_mem gradient,
+                                          float learning_rate, std::int32_t count) {
   runtime.set_arg(kernel, 0U, values);
   runtime.set_arg(kernel, 1U, gradient);
   runtime.set_arg(kernel, 2U, learning_rate);
@@ -1332,7 +1398,12 @@ struct AdapterStepResult {
   std::vector<float> grad_b;
   std::vector<float> updated_a;
   std::vector<float> updated_b;
+  std::vector<float> optimizer_a_m;
+  std::vector<float> optimizer_a_v;
+  std::vector<float> optimizer_b_m;
+  std::vector<float> optimizer_b_v;
   std::string opencl_library;
+  std::string optimizer;
   double elapsed_seconds;
   double loss;
   std::uint32_t active_tokens;
@@ -1340,8 +1411,23 @@ struct AdapterStepResult {
   long max_rss_kb;
   double grad_a_l2;
   double grad_b_l2;
+  double combined_grad_l2;
+  double grad_clip_l2;
+  double grad_clip_scale;
+  double weight_decay;
+  std::uint64_t optimizer_step;
   double update_a_delta_l2;
   double update_b_delta_l2;
+};
+
+struct TopKTeacherManifestMetadata {
+  std::string schema_version = "unknown";
+  std::string telemetry_objective = "topk_embedding_kl_distillation_v1";
+  std::string objective_contract =
+      "precomputed_full_teacher_topk_to_phone_tied_embedding_student_kl_no_runtime_teacher_service";
+  std::string teacher_provenance =
+      "runpod_precomputed_full_gemma4_topk_before_phone_runtime";
+  std::string teacher_scope = "full_gemma4_e4b_causal_lm_logits";
 };
 
 struct TopKTeacherShard {
@@ -1353,6 +1439,7 @@ struct TopKTeacherShard {
   std::string token_ids_sha256;
   std::string probabilities_sha256;
   std::string loss_mask_sha256;
+  TopKTeacherManifestMetadata metadata;
 };
 
 struct TopKObjectiveMetrics {
@@ -1438,6 +1525,189 @@ double l2_delta(const std::vector<float>& before, const std::vector<float>& afte
     sum_sq += delta * delta;
   }
   return std::sqrt(sum_sq);
+}
+
+std::string normalize_optimizer_name(std::string optimizer) {
+  for (char& character : optimizer) {
+    character = static_cast<char>(
+        std::tolower(static_cast<unsigned char>(character)));
+  }
+  if (optimizer.empty()) {
+    return "sgd";
+  }
+  if (optimizer != "sgd" && optimizer != "adamw") {
+    throw std::runtime_error("unsupported optimizer: " + optimizer);
+  }
+  return optimizer;
+}
+
+double combined_l2_norm(const std::vector<float>& first,
+                        const std::vector<float>& second) {
+  double sum_sq = 0.0;
+  for (const float value : first) {
+    const double x = static_cast<double>(value);
+    sum_sq += x * x;
+  }
+  for (const float value : second) {
+    const double x = static_cast<double>(value);
+    sum_sq += x * x;
+  }
+  return std::sqrt(sum_sq);
+}
+
+float gradient_clip_scale(const AdapterOptimizerConfig& config,
+                          double combined_grad_l2) {
+  if (!(config.grad_clip_l2 > 0.0F) || !(combined_grad_l2 > 0.0)) {
+    return 1.0F;
+  }
+  if (combined_grad_l2 <= static_cast<double>(config.grad_clip_l2)) {
+    return 1.0F;
+  }
+  return static_cast<float>(static_cast<double>(config.grad_clip_l2) /
+                            combined_grad_l2);
+}
+
+std::vector<float> read_optional_float_vector(const std::string& path,
+                                              std::size_t expected_count) {
+  if (!path_exists(path)) {
+    return std::vector<float>(expected_count, 0.0F);
+  }
+  return read_binary_vector<float>(path, expected_count);
+}
+
+std::uint64_t read_optimizer_step(const std::string& checkpoint_dir) {
+  const std::string step_path = join_path(checkpoint_dir, "optimizer_state/step.txt");
+  if (!path_exists(step_path)) {
+    return 0U;
+  }
+  const std::string text = read_text_file(step_path);
+  try {
+    return static_cast<std::uint64_t>(std::stoull(text));
+  } catch (const std::exception&) {
+    throw std::runtime_error("invalid optimizer step in " + step_path);
+  }
+}
+
+void write_optimizer_step(const std::string& checkpoint_dir, std::uint64_t step) {
+  const std::string state_dir = join_path(checkpoint_dir, "optimizer_state");
+  ensure_directory(state_dir);
+  std::ofstream file(join_path(state_dir, "step.txt"));
+  if (!file) {
+    throw std::runtime_error("unable to write optimizer step");
+  }
+  file << step << "\n";
+}
+
+struct OptimizerApplyResult {
+  std::vector<float> updated_a;
+  std::vector<float> updated_b;
+  std::vector<float> a_m;
+  std::vector<float> a_v;
+  std::vector<float> b_m;
+  std::vector<float> b_v;
+  std::uint64_t step = 0U;
+  double combined_grad_l2 = 0.0;
+  double grad_clip_scale = 1.0;
+};
+
+void apply_sgd_to_vector(const std::vector<float>& values,
+                         const std::vector<float>& gradient,
+                         const AdapterOptimizerConfig& config,
+                         float clip_scale,
+                         std::vector<float>& updated) {
+  updated.resize(values.size());
+  for (std::size_t index = 0; index < values.size(); ++index) {
+    const float grad = gradient[index] * clip_scale;
+    updated[index] =
+        values[index] - config.learning_rate *
+                            (grad + (config.weight_decay * values[index]));
+  }
+}
+
+void apply_adamw_to_vector(const std::vector<float>& values,
+                           const std::vector<float>& gradient,
+                           const AdapterOptimizerConfig& config,
+                           float clip_scale,
+                           std::uint64_t step,
+                           std::vector<float>& m,
+                           std::vector<float>& v,
+                           std::vector<float>& updated) {
+  if (m.size() != values.size() || v.size() != values.size()) {
+    throw std::runtime_error("AdamW optimizer state size mismatch");
+  }
+  updated.resize(values.size());
+  const double beta1 = static_cast<double>(config.beta1);
+  const double beta2 = static_cast<double>(config.beta2);
+  const double one_minus_beta1_pow = 1.0 - std::pow(beta1, static_cast<double>(step));
+  const double one_minus_beta2_pow = 1.0 - std::pow(beta2, static_cast<double>(step));
+  if (!(one_minus_beta1_pow > 0.0) || !(one_minus_beta2_pow > 0.0)) {
+    throw std::runtime_error("invalid AdamW bias correction");
+  }
+  for (std::size_t index = 0; index < values.size(); ++index) {
+    const float grad = gradient[index] * clip_scale;
+    m[index] = config.beta1 * m[index] + (1.0F - config.beta1) * grad;
+    v[index] = config.beta2 * v[index] + (1.0F - config.beta2) * grad * grad;
+    const double m_hat = static_cast<double>(m[index]) / one_minus_beta1_pow;
+    const double v_hat = static_cast<double>(v[index]) / one_minus_beta2_pow;
+    const double adam_step =
+        m_hat / (std::sqrt(v_hat) + static_cast<double>(config.epsilon));
+    const double decoupled_decay =
+        static_cast<double>(config.weight_decay) * static_cast<double>(values[index]);
+    updated[index] = static_cast<float>(
+        static_cast<double>(values[index]) -
+        static_cast<double>(config.learning_rate) * (adam_step + decoupled_decay));
+  }
+}
+
+OptimizerApplyResult apply_optimizer_on_phone_cpu(
+    const std::vector<float>& adapter_a,
+    const std::vector<float>& adapter_b,
+    const std::vector<float>& grad_a,
+    const std::vector<float>& grad_b,
+    const std::string& checkpoint_dir,
+    bool apply_update,
+    const AdapterOptimizerConfig& requested_config) {
+  AdapterOptimizerConfig config = requested_config;
+  config.optimizer = normalize_optimizer_name(config.optimizer);
+  OptimizerApplyResult result;
+  result.updated_a = adapter_a;
+  result.updated_b = adapter_b;
+  result.combined_grad_l2 = combined_l2_norm(grad_a, grad_b);
+  const float clip_scale = gradient_clip_scale(config, result.combined_grad_l2);
+  result.grad_clip_scale = clip_scale;
+  if (!apply_update) {
+    return result;
+  }
+  if (!(config.learning_rate > 0.0F) || !std::isfinite(config.learning_rate)) {
+    throw std::runtime_error("learning rate must be finite and positive when applying updates");
+  }
+  if (config.optimizer == "sgd") {
+    result.step = read_optimizer_step(checkpoint_dir) + 1U;
+    apply_sgd_to_vector(adapter_a, grad_a, config, clip_scale, result.updated_a);
+    apply_sgd_to_vector(adapter_b, grad_b, config, clip_scale, result.updated_b);
+    return result;
+  }
+
+  if (!(config.beta1 > 0.0F && config.beta1 < 1.0F) ||
+      !(config.beta2 > 0.0F && config.beta2 < 1.0F) ||
+      !(config.epsilon > 0.0F) || !std::isfinite(config.epsilon)) {
+    throw std::runtime_error("invalid AdamW beta or epsilon");
+  }
+  result.step = read_optimizer_step(checkpoint_dir) + 1U;
+  const std::string state_dir = join_path(checkpoint_dir, "optimizer_state");
+  result.a_m = read_optional_float_vector(join_path(state_dir, "adapter_a_m.f32.bin"),
+                                          adapter_a.size());
+  result.a_v = read_optional_float_vector(join_path(state_dir, "adapter_a_v.f32.bin"),
+                                          adapter_a.size());
+  result.b_m = read_optional_float_vector(join_path(state_dir, "adapter_b_m.f32.bin"),
+                                          adapter_b.size());
+  result.b_v = read_optional_float_vector(join_path(state_dir, "adapter_b_v.f32.bin"),
+                                          adapter_b.size());
+  apply_adamw_to_vector(adapter_a, grad_a, config, clip_scale, result.step, result.a_m,
+                        result.a_v, result.updated_a);
+  apply_adamw_to_vector(adapter_b, grad_b, config, clip_scale, result.step, result.b_m,
+                        result.b_v, result.updated_b);
+  return result;
 }
 
 std::size_t unique_token_count(std::vector<std::uint32_t> values) {
@@ -1547,8 +1817,26 @@ std::vector<float> cached_row(Bf16MatrixFile& matrix,
                               std::uint32_t row,
                               float scale);
 
+TopKTeacherManifestMetadata read_topk_teacher_manifest_metadata(
+    const std::string& teacher_shard_dir) {
+  const std::string manifest = read_text_file(join_path(teacher_shard_dir, "manifest.json"));
+  TopKTeacherManifestMetadata metadata;
+  metadata.schema_version =
+      json_string_field_or(manifest, "schema_version", metadata.schema_version);
+  metadata.telemetry_objective =
+      json_string_field_or(manifest, "telemetry_objective", metadata.telemetry_objective);
+  metadata.objective_contract =
+      json_string_field_or(manifest, "objective_contract", metadata.objective_contract);
+  metadata.teacher_provenance =
+      json_string_field_or(manifest, "teacher_provenance", metadata.teacher_provenance);
+  metadata.teacher_scope =
+      json_string_field_or(manifest, "teacher_scope", metadata.teacher_scope);
+  return metadata;
+}
+
 TopKTeacherShard read_topk_teacher_shard(const std::string& teacher_shard_dir) {
   TopKTeacherShard shard;
+  shard.metadata = read_topk_teacher_manifest_metadata(teacher_shard_dir);
   shard.token_ids =
       read_binary_vector<std::uint32_t>(join_path(teacher_shard_dir, "topk_token_ids.u32.bin"),
                                         kTokens * kTeacherTopK);
@@ -1877,6 +2165,11 @@ TokenHiddenInputs generate_token_hidden_inputs(const std::string& token_cache_di
                            max_resident_set_kb()};
 }
 
+void write_optimizer_metadata(std::ofstream& file,
+                              const AdapterStepResult& result,
+                              float learning_rate,
+                              bool trailing_comma);
+
 void write_adapter_telemetry(const std::string& output_dir,
                              const std::string& checkpoint_dir,
                              const AdapterStepResult& result,
@@ -1911,8 +2204,7 @@ void write_adapter_telemetry(const std::string& output_dir,
   file << "  \"loss_half_mse\": " << std::fixed << std::setprecision(10)
        << result.loss << ",\n";
   file << "  \"applied_update\": " << (result.applied_update ? "true" : "false") << ",\n";
-  file << "  \"learning_rate\": " << std::fixed << std::setprecision(10)
-       << learning_rate << ",\n";
+  write_optimizer_metadata(file, result, learning_rate, true);
   file << "  \"gradient_l2\": {\"adapter_a\": " << std::fixed << std::setprecision(10)
        << result.grad_a_l2 << ", \"adapter_b\": " << result.grad_b_l2 << "},\n";
   file << "  \"checkpoint_delta_l2\": {\"adapter_a\": " << std::fixed
@@ -1969,6 +2261,82 @@ void write_sha_field(std::ofstream& file,
   file << "\n";
 }
 
+void write_optimizer_state_files(const std::string& checkpoint_dir,
+                                 const AdapterStepResult& result) {
+  if (!result.applied_update) {
+    return;
+  }
+  write_optimizer_step(checkpoint_dir, result.optimizer_step);
+  if (result.optimizer != "adamw") {
+    return;
+  }
+  const std::string state_dir = join_path(checkpoint_dir, "optimizer_state");
+  ensure_directory(state_dir);
+  write_binary_vector(join_path(state_dir, "adapter_a_m.f32.bin"),
+                      result.optimizer_a_m);
+  write_binary_vector(join_path(state_dir, "adapter_a_v.f32.bin"),
+                      result.optimizer_a_v);
+  write_binary_vector(join_path(state_dir, "adapter_b_m.f32.bin"),
+                      result.optimizer_b_m);
+  write_binary_vector(join_path(state_dir, "adapter_b_v.f32.bin"),
+                      result.optimizer_b_v);
+}
+
+void write_optimizer_metadata(std::ofstream& file,
+                              const AdapterStepResult& result,
+                              float learning_rate,
+                              bool trailing_comma) {
+  file << "  \"optimizer\": ";
+  write_json_string(file, result.optimizer);
+  file << ",\n";
+  file << "  \"optimizer_backend\": \"phone_cpu_after_opencl_gradients\",\n";
+  file << "  \"learning_rate\": " << std::fixed << std::setprecision(10)
+       << learning_rate << ",\n";
+  file << "  \"optimizer_step\": " << result.optimizer_step << ",\n";
+  file << "  \"weight_decay\": " << std::fixed << std::setprecision(10)
+       << result.weight_decay << ",\n";
+  file << "  \"gradient_clip_l2\": " << std::fixed << std::setprecision(10)
+       << result.grad_clip_l2 << ",\n";
+  file << "  \"gradient_clip_scale\": " << std::fixed << std::setprecision(10)
+       << result.grad_clip_scale << ",\n";
+  file << "  \"combined_gradient_l2\": " << std::fixed << std::setprecision(10)
+       << result.combined_grad_l2;
+  if (trailing_comma) {
+    file << ",";
+  }
+  file << "\n";
+}
+
+void write_optimizer_state_manifest_fields(std::ofstream& file,
+                                           const std::string& checkpoint_dir,
+                                           const AdapterStepResult& result,
+                                           bool trailing_comma) {
+  file << "  \"optimizer_state\": ";
+  if (!result.applied_update) {
+    file << "{\"status\": \"not_updated\"}";
+  } else {
+    const std::string state_dir = join_path(checkpoint_dir, "optimizer_state");
+    file << "{\n";
+    write_sha_field(file, "step", join_path(state_dir, "step.txt"),
+                    result.optimizer == "adamw");
+    if (result.optimizer == "adamw") {
+      write_sha_field(file, "adapter_a_m", join_path(state_dir, "adapter_a_m.f32.bin"),
+                      true);
+      write_sha_field(file, "adapter_a_v", join_path(state_dir, "adapter_a_v.f32.bin"),
+                      true);
+      write_sha_field(file, "adapter_b_m", join_path(state_dir, "adapter_b_m.f32.bin"),
+                      true);
+      write_sha_field(file, "adapter_b_v", join_path(state_dir, "adapter_b_v.f32.bin"),
+                      false);
+    }
+    file << "  }";
+  }
+  if (trailing_comma) {
+    file << ",";
+  }
+  file << "\n";
+}
+
 void write_static_reference_field(std::ofstream& file,
                                   const std::string& name,
                                   const std::string& path,
@@ -2000,6 +2368,10 @@ void write_streamed_artifact_manifest(const std::string& token_cache_dir,
   const std::string generated_dir = join_path(output_dir, "generated");
   file << "{\n";
   file << "  \"schema_version\": \"gemma4_streamed_distill_artifacts_v1\",\n";
+  file << "  \"model_id\": \"google/gemma-4-E4B\",\n";
+  file << "  \"revision\": \"7aa32e6889efd6300124851b164f8b364314c3d8\",\n";
+  file << "  \"hidden_size\": " << kHidden << ",\n";
+  file << "  \"kernel_lineage_class\": \"residual_adapter_opencl_training\",\n";
   file << "  \"authority_contract\": \"input_ids_to_phone_generated_hidden_to_opencl_layers_to_adapter_update\",\n";
   file << "  \"hidden_state_fixtures_consumed\": [],\n";
   file << "  \"token_cache\": {\n";
@@ -2090,9 +2462,7 @@ void write_streamed_checkpoint_manifest(const std::string& checkpoint_dir,
   write_json_string(file, residual_adapter_scope(adapter_rank));
   file << ",\n";
   file << "  \"rank\": " << adapter_rank << ",\n";
-  file << "  \"optimizer\": \"sgd\",\n";
-  file << "  \"learning_rate\": " << std::fixed << std::setprecision(10)
-       << learning_rate << ",\n";
+  write_optimizer_metadata(file, result, learning_rate, true);
   file << "  \"loss_half_mse\": " << std::fixed << std::setprecision(10)
        << result.loss << ",\n";
   file << "  \"gradient_l2\": {\"adapter_a\": " << std::fixed << std::setprecision(10)
@@ -2108,7 +2478,9 @@ void write_streamed_checkpoint_manifest(const std::string& checkpoint_dir,
   file << "  \"post_update\": {\n";
   write_sha_field(file, "adapter_a", join_path(output_dir, "checkpoint/adapter_a.f32.bin"), true);
   write_sha_field(file, "adapter_b", join_path(output_dir, "checkpoint/adapter_b.f32.bin"), false);
-  file << "  }\n";
+  file << "  },\n";
+  write_optimizer_state_manifest_fields(file, join_path(output_dir, "checkpoint"),
+                                        result, false);
   file << "}\n";
 }
 
@@ -2126,6 +2498,11 @@ void write_streamed_replay_manifest(const std::string& token_cache_dir,
   }
   file << "{\n";
   file << "  \"schema_version\": \"gemma4_streamed_distill_replay_v1\",\n";
+  file << "  \"model_id\": \"google/gemma-4-E4B\",\n";
+  file << "  \"revision\": \"7aa32e6889efd6300124851b164f8b364314c3d8\",\n";
+  file << "  \"hidden_size\": " << kHidden << ",\n";
+  file << "  \"kernel_lineage_class\": \"residual_adapter_opencl_training\",\n";
+  file << "  \"hidden_state_fixtures_consumed\": [],\n";
   file << "  \"command\": ";
   write_json_string(file, write_raw_outputs
                               ? "gemma4_layer_runner --run-g8-distill TOKEN_CACHE ASSETS PACK0 PACK1 CHECKPOINT OUT_DIR LR"
@@ -2169,18 +2546,20 @@ void write_streamed_training_telemetry(const std::string& output_dir,
   file << "  \"adapter_backend\": \"opencl\",\n";
   file << "  \"model_id\": \"google/gemma-4-E4B\",\n";
   file << "  \"revision\": \"7aa32e6889efd6300124851b164f8b364314c3d8\",\n";
+  file << "  \"kernel_lineage_class\": \"residual_adapter_opencl_training\",\n";
+  file << "  \"runtime_backend\": \"phone_cpu_token_to_hidden_plus_opencl_layers_and_adapter\",\n";
   file << "  \"runtime_input_path\": \"token_cache_to_phone_generated_hidden_to_opencl_layers_to_adapter_update\",\n";
   file << "  \"hidden_state_fixtures_consumed\": [],\n";
+  file << "  \"fixture_usage\": \"none\",\n";
+  file << "  \"megakernel_claim\": false,\n";
   file << "  \"trainable_scope\": ";
   write_json_string(file, residual_adapter_scope(adapter_rank));
   file << ",\n";
-  file << "  \"optimizer\": \"sgd\",\n";
+  write_optimizer_metadata(file, adapter, learning_rate, true);
   file << "  \"case_count\": " << kCases << ",\n";
   file << "  \"seq\": " << kSequence << ",\n";
   file << "  \"hidden_size\": " << kHidden << ",\n";
   file << "  \"rank\": " << adapter_rank << ",\n";
-  file << "  \"learning_rate\": " << std::fixed << std::setprecision(10)
-       << learning_rate << ",\n";
   file << "  \"active_tokens\": " << adapter.active_tokens << ",\n";
   file << "  \"loss_half_mse\": " << std::fixed << std::setprecision(10)
        << adapter.loss << ",\n";
@@ -2231,21 +2610,31 @@ void write_topk_checkpoint_manifest(const std::string& checkpoint_dir,
                                     const std::string& output_dir,
                                     const TopKAdapterStepResult& result,
                                     float learning_rate,
-                                    std::uint32_t adapter_rank) {
+                                    std::uint32_t adapter_rank,
+                                    const std::string& adapter_site) {
   std::ofstream file(join_path(output_dir, "checkpoint/manifest.json"));
   if (!file) {
     throw std::runtime_error("unable to create top-k checkpoint manifest");
   }
   file << "{\n";
   file << "  \"schema_version\": \"gemma4_rank_adapter_topk_kl_checkpoint_v1\",\n";
-  file << "  \"objective\": \"topk_embedding_kl_distillation_v1\",\n";
+  file << "  \"objective\": ";
+  write_json_string(file, result.teacher.metadata.telemetry_objective);
+  file << ",\n";
+  file << "  \"objective_contract\": ";
+  write_json_string(file, result.teacher.metadata.objective_contract);
+  file << ",\n";
+  file << "  \"teacher_provenance\": ";
+  write_json_string(file, result.teacher.metadata.teacher_provenance);
+  file << ",\n";
+  file << "  \"adapter_site\": ";
+  write_json_string(file, adapter_site);
+  file << ",\n";
   file << "  \"trainable_scope\": ";
-  write_json_string(file, residual_adapter_scope(adapter_rank));
+  write_json_string(file, residual_adapter_scope(adapter_rank, adapter_site));
   file << ",\n";
   file << "  \"rank\": " << adapter_rank << ",\n";
-  file << "  \"optimizer\": \"sgd\",\n";
-  file << "  \"learning_rate\": " << std::fixed << std::setprecision(10)
-       << learning_rate << ",\n";
+  write_optimizer_metadata(file, result.adapter, learning_rate, true);
   file << "  \"applied_update\": " << (result.adapter.applied_update ? "true" : "false")
        << ",\n";
   file << "  \"loss_topk_kl\": " << std::fixed << std::setprecision(10)
@@ -2267,6 +2656,12 @@ void write_topk_checkpoint_manifest(const std::string& checkpoint_dir,
   file << "    \"path\": ";
   write_json_string(file, teacher_shard_dir);
   file << ",\n";
+  file << "    \"manifest_schema_version\": ";
+  write_json_string(file, result.teacher.metadata.schema_version);
+  file << ",\n";
+  file << "    \"teacher_scope\": ";
+  write_json_string(file, result.teacher.metadata.teacher_scope);
+  file << ",\n";
   file << "    \"manifest_sha256\": ";
   write_json_string(file, result.teacher.manifest_sha256);
   file << ",\n";
@@ -2283,7 +2678,9 @@ void write_topk_checkpoint_manifest(const std::string& checkpoint_dir,
   file << "  \"post_update\": {\n";
   write_sha_field(file, "adapter_a", join_path(output_dir, "checkpoint/adapter_a.f32.bin"), true);
   write_sha_field(file, "adapter_b", join_path(output_dir, "checkpoint/adapter_b.f32.bin"), false);
-  file << "  }\n";
+  file << "  },\n";
+  write_optimizer_state_manifest_fields(file, join_path(output_dir, "checkpoint"),
+                                        result.adapter, false);
   file << "}\n";
 }
 
@@ -2297,13 +2694,39 @@ void write_topk_replay_manifest(const std::string& token_cache_dir,
                                 float learning_rate,
                                 std::uint32_t adapter_rank,
                                 bool apply_update,
-                                bool write_raw_outputs) {
+                                bool write_raw_outputs,
+                                const std::string& adapter_site) {
   std::ofstream file(join_path(output_dir, "replay_manifest.json"));
   if (!file) {
     throw std::runtime_error("unable to create top-k replay manifest");
   }
   file << "{\n";
   file << "  \"schema_version\": \"gemma4_streamed_topk_kl_replay_v1\",\n";
+  file << "  \"model_id\": \"google/gemma-4-E4B\",\n";
+  file << "  \"revision\": \"7aa32e6889efd6300124851b164f8b364314c3d8\",\n";
+  file << "  \"hidden_size\": " << kHidden << ",\n";
+  file << "  \"kernel_lineage_class\": \"residual_adapter_opencl_training\",\n";
+  file << "  \"adapter_site\": ";
+  write_json_string(file, adapter_site);
+  file << ",\n";
+  file << "  \"adapter_input_source\": ";
+  write_json_string(file, residual_adapter_input_source(adapter_site));
+  file << ",\n";
+  file << "  \"hidden_state_fixtures_consumed\": [],\n";
+  const TopKTeacherManifestMetadata teacher_metadata =
+      read_topk_teacher_manifest_metadata(teacher_shard_dir);
+  file << "  \"objective\": ";
+  write_json_string(file, teacher_metadata.telemetry_objective);
+  file << ",\n";
+  file << "  \"objective_contract\": ";
+  write_json_string(file, teacher_metadata.objective_contract);
+  file << ",\n";
+  file << "  \"teacher_provenance\": ";
+  write_json_string(file, teacher_metadata.teacher_provenance);
+  file << ",\n";
+  file << "  \"teacher_scope\": ";
+  write_json_string(file, teacher_metadata.teacher_scope);
+  file << ",\n";
   file << "  \"command\": ";
   write_json_string(file,
                     "gemma4_layer_runner --run-h11f-topk-kl-compact TOKEN_CACHE ASSETS PACK0 PACK1 CHECKPOINT TEACHER_SHARD OUT_DIR LR RANK APPLY_UPDATE");
@@ -2338,7 +2761,8 @@ void write_topk_training_telemetry(const std::string& output_dir,
                                    const LayerForwardResult& second,
                                    const TopKAdapterStepResult& result,
                                    float learning_rate,
-                                   std::uint32_t adapter_rank) {
+                                   std::uint32_t adapter_rank,
+                                   const std::string& adapter_site) {
   std::ofstream file(join_path(output_dir, "telemetry.json"));
   if (!file) {
     throw std::runtime_error("unable to create top-k telemetry.json");
@@ -2352,8 +2776,26 @@ void write_topk_training_telemetry(const std::string& output_dir,
   file << "  \"objective_backend\": \"phone_cpu_tied_embedding_topk\",\n";
   file << "  \"model_id\": \"google/gemma-4-E4B\",\n";
   file << "  \"revision\": \"7aa32e6889efd6300124851b164f8b364314c3d8\",\n";
-  file << "  \"objective\": \"topk_embedding_kl_distillation_v1\",\n";
-  file << "  \"objective_contract\": \"precomputed_full_teacher_topk_to_phone_tied_embedding_student_kl_no_runtime_teacher_service\",\n";
+  file << "  \"kernel_lineage_class\": \"residual_adapter_opencl_training\",\n";
+  file << "  \"runtime_backend\": \"phone_cpu_token_to_hidden_plus_opencl_layers_and_adapter\",\n";
+  file << "  \"adapter_site\": ";
+  write_json_string(file, adapter_site);
+  file << ",\n";
+  file << "  \"adapter_input_source\": ";
+  write_json_string(file, residual_adapter_input_source(adapter_site));
+  file << ",\n";
+  file << "  \"objective\": ";
+  write_json_string(file, result.teacher.metadata.telemetry_objective);
+  file << ",\n";
+  file << "  \"objective_contract\": ";
+  write_json_string(file, result.teacher.metadata.objective_contract);
+  file << ",\n";
+  file << "  \"teacher_provenance\": ";
+  write_json_string(file, result.teacher.metadata.teacher_provenance);
+  file << ",\n";
+  file << "  \"teacher_scope\": ";
+  write_json_string(file, result.teacher.metadata.teacher_scope);
+  file << ",\n";
   file << "  \"teacher_shard_dir\": ";
   write_json_string(file, teacher_shard_dir);
   file << ",\n";
@@ -2364,16 +2806,16 @@ void write_topk_training_telemetry(const std::string& output_dir,
   file << "  \"student_logit_head\": \"tied_embed_tokens_unscaled_with_final_logit_softcap_30\",\n";
   file << "  \"runtime_input_path\": \"token_cache_to_phone_generated_hidden_to_opencl_layers_to_topk_kl_adapter_update\",\n";
   file << "  \"hidden_state_fixtures_consumed\": [],\n";
+  file << "  \"fixture_usage\": \"none\",\n";
+  file << "  \"megakernel_claim\": false,\n";
   file << "  \"trainable_scope\": ";
-  write_json_string(file, residual_adapter_scope(adapter_rank));
+  write_json_string(file, residual_adapter_scope(adapter_rank, adapter_site));
   file << ",\n";
-  file << "  \"optimizer\": \"sgd\",\n";
+  write_optimizer_metadata(file, result.adapter, learning_rate, true);
   file << "  \"case_count\": " << kCases << ",\n";
   file << "  \"seq\": " << kSequence << ",\n";
   file << "  \"hidden_size\": " << kHidden << ",\n";
   file << "  \"rank\": " << adapter_rank << ",\n";
-  file << "  \"learning_rate\": " << std::fixed << std::setprecision(10)
-       << learning_rate << ",\n";
   file << "  \"active_tokens\": " << result.objective.active_tokens << ",\n";
   file << "  \"loss_topk_kl\": " << std::fixed << std::setprecision(10)
        << result.objective.kl_loss << ",\n";
@@ -2444,7 +2886,8 @@ AdapterStepResult run_adapter_step_from_values(const std::vector<float>& input,
                                                const std::string& checkpoint_dir,
                                                bool apply_update,
                                                float learning_rate,
-                                               std::uint32_t adapter_rank) {
+                                               std::uint32_t adapter_rank,
+                                               const AdapterOptimizerConfig& optimizer_config) {
   const auto start_time = std::chrono::steady_clock::now();
   if (input.size() != (kTokens * kHidden) || target.size() != (kTokens * kHidden)) {
     throw std::runtime_error("adapter step input or target has invalid hidden element count");
@@ -2495,28 +2938,24 @@ AdapterStepResult run_adapter_step_from_values(const std::vector<float>& input,
                                     adapter_rank);
   dispatch_adapter_grad_a(runtime, kernels.adapter_grad_a, input_buffer,
                           hidden_rank_grad, grad_a, adapter_rank);
-  if (apply_update) {
-    dispatch_sgd_update(runtime, kernels.sgd_update, adapter_a_buffer, grad_a,
-                        learning_rate, static_cast<std::int32_t>(kHidden * adapter_rank));
-    dispatch_sgd_update(runtime, kernels.sgd_update, adapter_b_buffer, grad_b,
-                        learning_rate, static_cast<std::int32_t>(adapter_rank * kHidden));
-  }
   runtime.finish();
 
   std::vector<float> diff_values(kTokens * kHidden);
   std::vector<float> grad_a_values(kHidden * adapter_rank);
   std::vector<float> grad_b_values(adapter_rank * kHidden);
-  std::vector<float> updated_a_values(kHidden * adapter_rank);
-  std::vector<float> updated_b_values(adapter_rank * kHidden);
   runtime.read_buffer(diff, diff_values);
   runtime.read_buffer(grad_a, grad_a_values);
   runtime.read_buffer(grad_b, grad_b_values);
-  runtime.read_buffer(adapter_a_buffer, updated_a_values);
-  runtime.read_buffer(adapter_b_buffer, updated_b_values);
   ensure_finite_values(grad_a_values, "adapter_grad_a");
   ensure_finite_values(grad_b_values, "adapter_grad_b");
-  ensure_finite_values(updated_a_values, "updated_adapter_a");
-  ensure_finite_values(updated_b_values, "updated_adapter_b");
+  AdapterOptimizerConfig effective_optimizer = optimizer_config;
+  effective_optimizer.learning_rate = learning_rate;
+  effective_optimizer.optimizer = normalize_optimizer_name(effective_optimizer.optimizer);
+  const OptimizerApplyResult optimizer = apply_optimizer_on_phone_cpu(
+      adapter_a, adapter_b, grad_a_values, grad_b_values, checkpoint_dir, apply_update,
+      effective_optimizer);
+  ensure_finite_values(optimizer.updated_a, "updated_adapter_a");
+  ensure_finite_values(optimizer.updated_b, "updated_adapter_b");
 
   const auto end_time = std::chrono::steady_clock::now();
   const double elapsed_seconds =
@@ -2524,13 +2963,18 @@ AdapterStepResult run_adapter_step_from_values(const std::vector<float>& input,
   const double loss = masked_mse_half_loss(diff_values, mask, active_tokens);
   const double grad_a_l2 = l2_norm(grad_a_values);
   const double grad_b_l2 = l2_norm(grad_b_values);
-  const double update_a_delta_l2 = l2_delta(adapter_a, updated_a_values);
-  const double update_b_delta_l2 = l2_delta(adapter_b, updated_b_values);
+  const double update_a_delta_l2 = l2_delta(adapter_a, optimizer.updated_a);
+  const double update_b_delta_l2 = l2_delta(adapter_b, optimizer.updated_b);
   return AdapterStepResult{std::move(grad_a_values),
                            std::move(grad_b_values),
-                           std::move(updated_a_values),
-                           std::move(updated_b_values),
+                           std::move(optimizer.updated_a),
+                           std::move(optimizer.updated_b),
+                           std::move(optimizer.a_m),
+                           std::move(optimizer.a_v),
+                           std::move(optimizer.b_m),
+                           std::move(optimizer.b_v),
                            library.loaded_path(),
+                           effective_optimizer.optimizer,
                            elapsed_seconds,
                            loss,
                            active_tokens,
@@ -2538,6 +2982,11 @@ AdapterStepResult run_adapter_step_from_values(const std::vector<float>& input,
                            max_resident_set_kb(),
                            grad_a_l2,
                            grad_b_l2,
+                           optimizer.combined_grad_l2,
+                           effective_optimizer.grad_clip_l2,
+                           optimizer.grad_clip_scale,
+                           effective_optimizer.weight_decay,
+                           optimizer.step,
                            update_a_delta_l2,
                            update_b_delta_l2};
 }
@@ -2549,7 +2998,8 @@ TopKAdapterStepResult run_adapter_topk_kl_step_from_values(
     const std::string& checkpoint_dir,
     bool apply_update,
     float learning_rate,
-    std::uint32_t adapter_rank) {
+    std::uint32_t adapter_rank,
+    const AdapterOptimizerConfig& optimizer_config) {
   const auto start_time = std::chrono::steady_clock::now();
   if (input.size() != (kTokens * kHidden)) {
     throw std::runtime_error("top-k adapter step input has invalid hidden element count");
@@ -2599,39 +3049,40 @@ TopKAdapterStepResult run_adapter_topk_kl_step_from_values(
                                     hidden_rank_grad, 1.0F, adapter_rank);
   dispatch_adapter_grad_a(runtime, kernels.adapter_grad_a, input_buffer,
                           hidden_rank_grad, grad_a, adapter_rank);
-  if (apply_update) {
-    dispatch_sgd_update(runtime, kernels.sgd_update, adapter_a_buffer, grad_a,
-                        learning_rate, static_cast<std::int32_t>(kHidden * adapter_rank));
-    dispatch_sgd_update(runtime, kernels.sgd_update, adapter_b_buffer, grad_b,
-                        learning_rate, static_cast<std::int32_t>(adapter_rank * kHidden));
-  }
   runtime.finish();
 
   std::vector<float> grad_a_values(kHidden * adapter_rank);
   std::vector<float> grad_b_values(adapter_rank * kHidden);
-  std::vector<float> updated_a_values(kHidden * adapter_rank);
-  std::vector<float> updated_b_values(adapter_rank * kHidden);
   runtime.read_buffer(grad_a, grad_a_values);
   runtime.read_buffer(grad_b, grad_b_values);
-  runtime.read_buffer(adapter_a_buffer, updated_a_values);
-  runtime.read_buffer(adapter_b_buffer, updated_b_values);
   ensure_finite_values(grad_a_values, "topk_kl_adapter_grad_a");
   ensure_finite_values(grad_b_values, "topk_kl_adapter_grad_b");
-  ensure_finite_values(updated_a_values, "topk_kl_updated_adapter_a");
-  ensure_finite_values(updated_b_values, "topk_kl_updated_adapter_b");
+  AdapterOptimizerConfig effective_optimizer = optimizer_config;
+  effective_optimizer.learning_rate = learning_rate;
+  effective_optimizer.optimizer = normalize_optimizer_name(effective_optimizer.optimizer);
+  const OptimizerApplyResult optimizer = apply_optimizer_on_phone_cpu(
+      adapter_a, adapter_b, grad_a_values, grad_b_values, checkpoint_dir, apply_update,
+      effective_optimizer);
+  ensure_finite_values(optimizer.updated_a, "topk_kl_updated_adapter_a");
+  ensure_finite_values(optimizer.updated_b, "topk_kl_updated_adapter_b");
 
   const double elapsed_seconds =
       std::chrono::duration<double>(std::chrono::steady_clock::now() - start_time)
           .count();
   const double grad_a_l2 = l2_norm(grad_a_values);
   const double grad_b_l2 = l2_norm(grad_b_values);
-  const double update_a_delta_l2 = l2_delta(adapter_a, updated_a_values);
-  const double update_b_delta_l2 = l2_delta(adapter_b, updated_b_values);
+  const double update_a_delta_l2 = l2_delta(adapter_a, optimizer.updated_a);
+  const double update_b_delta_l2 = l2_delta(adapter_b, optimizer.updated_b);
   AdapterStepResult adapter{std::move(grad_a_values),
                             std::move(grad_b_values),
-                            std::move(updated_a_values),
-                            std::move(updated_b_values),
+                            std::move(optimizer.updated_a),
+                            std::move(optimizer.updated_b),
+                            std::move(optimizer.a_m),
+                            std::move(optimizer.a_v),
+                            std::move(optimizer.b_m),
+                            std::move(optimizer.b_v),
                             library.loaded_path(),
+                            effective_optimizer.optimizer,
                             elapsed_seconds,
                             objective.kl_loss,
                             objective.active_tokens,
@@ -2639,6 +3090,11 @@ TopKAdapterStepResult run_adapter_topk_kl_step_from_values(
                             max_resident_set_kb(),
                             grad_a_l2,
                             grad_b_l2,
+                            optimizer.combined_grad_l2,
+                            effective_optimizer.grad_clip_l2,
+                            optimizer.grad_clip_scale,
+                            effective_optimizer.weight_decay,
+                            optimizer.step,
                             update_a_delta_l2,
                             update_b_delta_l2};
   return TopKAdapterStepResult{std::move(adapter), objective, teacher};
@@ -2648,7 +3104,9 @@ AdapterStepResult run_adapter_step_values(const std::string& fixture_dir,
                                           const std::string& checkpoint_dir,
                                           bool apply_update,
                                           float learning_rate,
-                                          std::uint32_t adapter_rank) {
+                                          std::uint32_t adapter_rank,
+                                          const AdapterOptimizerConfig& optimizer_config =
+                                              AdapterOptimizerConfig{}) {
   std::vector<float> input =
       read_binary_vector<float>(join_path(fixture_dir, "input/layer0_output.f32.bin"),
                                 kTokens * kHidden);
@@ -2659,7 +3117,7 @@ AdapterStepResult run_adapter_step_values(const std::string& fixture_dir,
       read_binary_vector<std::uint8_t>(join_path(fixture_dir, "input/attention_mask.u8.bin"),
                                        kTokens);
   return run_adapter_step_from_values(input, target, mask, checkpoint_dir, apply_update,
-                                      learning_rate, adapter_rank);
+                                      learning_rate, adapter_rank, optimizer_config);
 }
 
 LayerForwardResult run_opencl_layer_values(const std::string& pack_dir,
@@ -2909,6 +3367,7 @@ Status run_opencl_adapter_sgd_update(const std::string& fixture_dir,
                         result.updated_a);
     write_binary_vector(join_path(output_dir, "checkpoint/adapter_b.f32.bin"),
                         result.updated_b);
+    write_optimizer_state_files(join_path(output_dir, "checkpoint"), result);
     write_adapter_telemetry(output_dir, checkpoint_dir, result, learning_rate,
                             kAdapterRank);
     return Status::ok();
@@ -2981,7 +3440,7 @@ Status run_opencl_streamed_distill_update_rank(const std::string& token_cache_di
 
     const AdapterStepResult adapter = run_adapter_step_from_values(
         first.output_values, second.output_values, token_inputs.attention_mask,
-        checkpoint_dir, true, learning_rate, adapter_rank);
+        checkpoint_dir, true, learning_rate, adapter_rank, AdapterOptimizerConfig{});
     if (write_raw_outputs) {
       write_binary_vector(join_path(output_dir, "adapter_grad_a.f32.bin"), adapter.grad_a);
       write_binary_vector(join_path(output_dir, "adapter_grad_b.f32.bin"), adapter.grad_b);
@@ -2990,6 +3449,7 @@ Status run_opencl_streamed_distill_update_rank(const std::string& token_cache_di
                         adapter.updated_a);
     write_binary_vector(join_path(output_dir, "checkpoint/adapter_b.f32.bin"),
                         adapter.updated_b);
+    write_optimizer_state_files(join_path(output_dir, "checkpoint"), adapter);
 
     write_streamed_checkpoint_manifest(checkpoint_dir, output_dir, adapter,
                                        learning_rate, adapter_rank);
@@ -3019,10 +3479,50 @@ Status run_opencl_streamed_topk_kl_update_rank(const std::string& token_cache_di
                                                bool apply_update,
                                                bool write_raw_outputs,
                                                bool hash_static_artifacts) {
+  AdapterOptimizerConfig optimizer;
+  optimizer.optimizer = "sgd";
+  optimizer.learning_rate = learning_rate;
+  return run_opencl_streamed_topk_kl_update_rank_optimizer(
+      token_cache_dir, asset_dir, layer0_pack_dir, layer1_pack_dir, checkpoint_dir,
+      teacher_shard_dir, output_dir, optimizer, adapter_rank, apply_update,
+      write_raw_outputs, hash_static_artifacts);
+}
+
+Status run_opencl_streamed_topk_kl_layer1_update_rank(
+    const std::string& token_cache_dir,
+    const std::string& asset_dir,
+    const std::string& layer0_pack_dir,
+    const std::string& layer1_pack_dir,
+    const std::string& checkpoint_dir,
+    const std::string& teacher_shard_dir,
+    const std::string& output_dir,
+    float learning_rate,
+    std::uint32_t adapter_rank,
+    bool apply_update,
+    bool write_raw_outputs,
+    bool hash_static_artifacts);
+
+Status run_opencl_streamed_topk_kl_update_rank_optimizer_for_site(
+    const std::string& token_cache_dir,
+    const std::string& asset_dir,
+    const std::string& layer0_pack_dir,
+    const std::string& layer1_pack_dir,
+    const std::string& checkpoint_dir,
+    const std::string& teacher_shard_dir,
+    const std::string& output_dir,
+    const AdapterOptimizerConfig& optimizer,
+    std::uint32_t adapter_rank,
+    bool apply_update,
+    bool write_raw_outputs,
+    bool hash_static_artifacts,
+    const std::string& adapter_site) {
   try {
-    if (apply_update && (!(learning_rate > 0.0F) || !std::isfinite(learning_rate))) {
+    (void)residual_adapter_input_source(adapter_site);
+    if (apply_update &&
+        (!(optimizer.learning_rate > 0.0F) || !std::isfinite(optimizer.learning_rate))) {
       return Status::invalid("learning rate must be finite and positive when applying updates");
     }
+    const std::string optimizer_name = normalize_optimizer_name(optimizer.optimizer);
     if (adapter_rank == 0U) {
       return Status::invalid("adapter rank must be positive");
     }
@@ -3057,9 +3557,11 @@ Status run_opencl_streamed_topk_kl_update_rank(const std::string& token_cache_di
                           second.output_values);
     }
 
+    const std::vector<float>& adapter_input =
+        adapter_site == "post_layer1" ? second.output_values : first.output_values;
     const TopKAdapterStepResult result = run_adapter_topk_kl_step_from_values(
-        first.output_values, asset_dir, teacher_shard_dir, checkpoint_dir, apply_update,
-        learning_rate, adapter_rank);
+        adapter_input, asset_dir, teacher_shard_dir, checkpoint_dir, apply_update,
+        optimizer.learning_rate, adapter_rank, optimizer);
     if (write_raw_outputs) {
       write_binary_vector(join_path(output_dir, "adapter_grad_a.f32.bin"),
                           result.adapter.grad_a);
@@ -3070,22 +3572,67 @@ Status run_opencl_streamed_topk_kl_update_rank(const std::string& token_cache_di
                         result.adapter.updated_a);
     write_binary_vector(join_path(output_dir, "checkpoint/adapter_b.f32.bin"),
                         result.adapter.updated_b);
+    write_optimizer_state_files(join_path(output_dir, "checkpoint"), result.adapter);
 
     write_topk_checkpoint_manifest(checkpoint_dir, teacher_shard_dir, output_dir,
-                                   result, learning_rate, adapter_rank);
+                                   result, optimizer.learning_rate, adapter_rank,
+                                   adapter_site);
     write_streamed_artifact_manifest(token_cache_dir, asset_dir, layer0_pack_dir,
                                      layer1_pack_dir, checkpoint_dir, output_dir,
                                      write_raw_outputs, hash_static_artifacts);
     write_topk_replay_manifest(token_cache_dir, asset_dir, layer0_pack_dir,
                                layer1_pack_dir, checkpoint_dir, teacher_shard_dir,
-                               output_dir, learning_rate, adapter_rank, apply_update,
-                               write_raw_outputs);
+                               output_dir, optimizer.learning_rate, adapter_rank, apply_update,
+                               write_raw_outputs, adapter_site);
     write_topk_training_telemetry(output_dir, teacher_shard_dir, token_inputs, first,
-                                  second, result, learning_rate, adapter_rank);
+                                  second, result, optimizer.learning_rate, adapter_rank,
+                                  adapter_site);
+    (void)optimizer_name;
     return Status::ok();
   } catch (const std::exception& error) {
     return Status::invalid(error.what());
   }
+}
+
+Status run_opencl_streamed_topk_kl_update_rank_optimizer(
+    const std::string& token_cache_dir,
+    const std::string& asset_dir,
+    const std::string& layer0_pack_dir,
+    const std::string& layer1_pack_dir,
+    const std::string& checkpoint_dir,
+    const std::string& teacher_shard_dir,
+    const std::string& output_dir,
+    const AdapterOptimizerConfig& optimizer,
+    std::uint32_t adapter_rank,
+    bool apply_update,
+    bool write_raw_outputs,
+    bool hash_static_artifacts) {
+  return run_opencl_streamed_topk_kl_update_rank_optimizer_for_site(
+      token_cache_dir, asset_dir, layer0_pack_dir, layer1_pack_dir, checkpoint_dir,
+      teacher_shard_dir, output_dir, optimizer, adapter_rank, apply_update,
+      write_raw_outputs, hash_static_artifacts, "post_layer0");
+}
+
+Status run_opencl_streamed_topk_kl_layer1_update_rank(
+    const std::string& token_cache_dir,
+    const std::string& asset_dir,
+    const std::string& layer0_pack_dir,
+    const std::string& layer1_pack_dir,
+    const std::string& checkpoint_dir,
+    const std::string& teacher_shard_dir,
+    const std::string& output_dir,
+    float learning_rate,
+    std::uint32_t adapter_rank,
+    bool apply_update,
+    bool write_raw_outputs,
+    bool hash_static_artifacts) {
+  AdapterOptimizerConfig optimizer;
+  optimizer.optimizer = "sgd";
+  optimizer.learning_rate = learning_rate;
+  return run_opencl_streamed_topk_kl_update_rank_optimizer_for_site(
+      token_cache_dir, asset_dir, layer0_pack_dir, layer1_pack_dir, checkpoint_dir,
+      teacher_shard_dir, output_dir, optimizer, adapter_rank, apply_update,
+      write_raw_outputs, hash_static_artifacts, "post_layer1");
 }
 
 Status OpenClAdapterTrainingStepExecutor::run_training_step(

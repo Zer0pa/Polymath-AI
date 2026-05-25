@@ -1,0 +1,36 @@
+{
+  "artifact_hygiene": {
+    "file_count": 3084,
+    "forbidden_local_payloads": [],
+    "total_bytes": 13492667
+  },
+  "checks": {
+    "checkpoint_manifest_points_to_phone": true,
+    "exact_authority_verdict": true,
+    "h11h_status_pass": true,
+    "htp_not_training_claim": true,
+    "no_runtime_teacher_service": true,
+    "objective_topk_kl_only": true,
+    "ordinary_opencl_not_recordable_claim": true,
+    "phone_checkpoint_payloads_not_pulled": true,
+    "phone_queue_topology": true,
+    "predeclared_before_run": true,
+    "selected_scope_rank4_only": true
+  },
+  "gate": "A",
+  "h11h_gate": "runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T225149Z_h11h_combined_povc/H11-H-combined-povc/gate_result.json",
+  "nonclaims_preserved": [
+    "full Gemma4 training",
+    "HTP backprop",
+    "public benchmark readiness",
+    "broad capability"
+  ],
+  "promoted_claim": {
+    "authority_verdict": "promote_exact_h11h_phone_native_rank4_topk_kl_povc_claim",
+    "objective": "topk_embedding_kl_distillation_v1",
+    "runtime_topology": "phone_local_queue_no_adb_per_iteration",
+    "selected_scope": "post_layer0_rank4_residual_adapter"
+  },
+  "schema_version": "phase12_gate_a_h11h_audit_v1",
+  "status": "pass"
+}

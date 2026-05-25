@@ -1,0 +1,49 @@
+{
+  "created_at_utc": "2026-05-24T21:09:25Z",
+  "current_gate": "P13-I",
+  "current_strongest_valid_fallback": {
+    "excluded_htp_role": "execution_only_relu_hidden_tensor_island_not_consumed_by_training",
+    "fallback_source_gate": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T173847Z_phase12_long_native_lr_retry1/CDE-long-native-lr/gate_result.json",
+    "hidden_size": 2560,
+    "learning_rate": 0.0003,
+    "model_id": "google/gemma-4-E4B",
+    "optimizer": "adamw",
+    "revision": "7aa32e6889efd6300124851b164f8b364314c3d8",
+    "runtime_topology": "phone_cpu_tokenization_and_hidden_cache_plus_adreno_opencl_residual_adapter_training",
+    "selected_reason": "only candidate with phone-local heldout improvement and no authority regression",
+    "source": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-G-heterogeneous-vs-adreno-baseline/gate_result.json",
+    "trainable_scope": "post_layer0_rank16_residual_adapter"
+  },
+  "gate_status": {
+    "P13-A": "pass",
+    "P13-B": "pass",
+    "P13-C": "pass",
+    "P13-D": "pass",
+    "P13-E": "pass",
+    "P13-F": "pass",
+    "P13-G": "fallback_adreno_only",
+    "P13-H": "fail",
+    "P13-I": "pass_exact_claims_written"
+  },
+  "latest_gate_result": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-I-exact-claims-and-next-branch/gate_result.json",
+  "nonclaims": [
+    "full Gemma4 training",
+    "multi-site adapter training",
+    "full-gradient parity",
+    "HTP backprop",
+    "successful QnnContext_applyBinarySection on phone",
+    "integrated heterogeneous Gemma learning",
+    "benchmark readiness",
+    "corpus-scale learning beyond Phase 12 smoke-scale cache",
+    "HTP output consumed by Gemma training loop"
+  ],
+  "phase13_complete": true,
+  "primary_artifacts": {
+    "P13-H": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-H-overnight-phone-local-long-run/gate_result.json",
+    "P13-I": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-I-exact-claims-and-next-branch/gate_result.json"
+  },
+  "run_id": "20260524T210920Z_phase13_gemma4_only_heterogeneous",
+  "schema_version": "phase13_gate_status_v1",
+  "state_repair": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-A-contamination-audit/state_repair_completed.json",
+  "updated_at_utc": "2026-05-25T12:03:37Z"
+}

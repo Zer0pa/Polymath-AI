@@ -1,0 +1,3 @@
+- STOP file observed before iteration 1742
+- completed fewer than configured H11-A iterations
+- STOP file observed before gate completion

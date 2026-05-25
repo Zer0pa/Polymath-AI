@@ -1,0 +1,42 @@
+{
+  "schema_version": "gemma4_rank_adapter_topk_kl_checkpoint_v1",
+  "objective": "topk_embedding_kl_distillation_v1",
+  "trainable_scope": "post_layer0_rank16_residual_adapter",
+  "rank": 16,
+  "optimizer": "adamw",
+  "optimizer_backend": "phone_cpu_after_opencl_gradients",
+  "learning_rate": 0.0003000000,
+  "optimizer_step": 32,
+  "weight_decay": 0.0099999998,
+  "gradient_clip_l2": 1.0000000000,
+  "gradient_clip_scale": 1.0000000000,
+  "combined_gradient_l2": 0.0886285192,
+  "applied_update": true,
+  "loss_topk_kl": 0.8576163475,
+  "active_loss_tokens": 833,
+  "student_teacher_top1_agreement": 0.2196878752,
+  "mean_student_teacher_top1_probability": 0.1611198644,
+  "gradient_l2": {"adapter_a": 0.0153849633, "adapter_b": 0.0872829727, "output": 0.0139215729},
+  "checkpoint_delta_l2": {"adapter_a": 0.0352037201, "adapter_b": 0.0450668646},
+  "teacher_shard": {
+    "path": "/data/local/tmp/polymath_gemma4_gate/phase12/teacher_shards/20260524T164412Z_phase12_cde_authority_train_shard01",
+    "manifest_sha256": "ff05236c80f202ebb1b89f9fcc8bb3e2f439dbc38c1202d4cceedc0fe2e11286",
+    "topk_token_ids_sha256": "b1c0614be2f37f4efa4d2ce194857f4f8112a5239b5f69c792396e72afab0479",
+    "topk_probabilities_sha256": "114d990c9b417f8e873019f5ff220d3eaec9c19e729aa3f72f1c4543422337e5"
+  },
+  "pre_update": {
+    "adapter_a": {"path": "/data/local/tmp/polymath_gemma4_gate/phase12/runs/20260524T173847Z_phase12_long_native_lr_retry1_lr3e4_cont24_train/Phase12-long-native-lr/iterations/iter_000022/checkpoint/adapter_a.f32.bin", "sha256": "6f1e281c07966e284871375113804fcc00a103016a5cf0d01caa9c34187e6596"},
+    "adapter_b": {"path": "/data/local/tmp/polymath_gemma4_gate/phase12/runs/20260524T173847Z_phase12_long_native_lr_retry1_lr3e4_cont24_train/Phase12-long-native-lr/iterations/iter_000022/checkpoint/adapter_b.f32.bin", "sha256": "94229eebe7b8d3f7b31ff0f249536ab8bf51f7954545eda5ce16cbff6717b8f1"}
+  },
+  "post_update": {
+    "adapter_a": {"path": "/data/local/tmp/polymath_gemma4_gate/phase12/runs/20260524T173847Z_phase12_long_native_lr_retry1_lr3e4_cont24_train/Phase12-long-native-lr/iterations/iter_000023/checkpoint/adapter_a.f32.bin", "sha256": "022bbe96a89539f41bc6479269272a3e30123a8126a9a31e8da839e47450eb0d"},
+    "adapter_b": {"path": "/data/local/tmp/polymath_gemma4_gate/phase12/runs/20260524T173847Z_phase12_long_native_lr_retry1_lr3e4_cont24_train/Phase12-long-native-lr/iterations/iter_000023/checkpoint/adapter_b.f32.bin", "sha256": "ee2eecf9560fcb3d1e991d4f89c0cc6a826509c248d8ae598db9af4a9f3bb604"}
+  },
+  "optimizer_state": {
+    "step": {"path": "/data/local/tmp/polymath_gemma4_gate/phase12/runs/20260524T173847Z_phase12_long_native_lr_retry1_lr3e4_cont24_train/Phase12-long-native-lr/iterations/iter_000023/checkpoint/optimizer_state/step.txt", "sha256": "2115cdb6bfcfb008eb2bab2bb79347cb064a48e4e7c4115ccbe4469c787bb6c4"},
+    "adapter_a_m": {"path": "/data/local/tmp/polymath_gemma4_gate/phase12/runs/20260524T173847Z_phase12_long_native_lr_retry1_lr3e4_cont24_train/Phase12-long-native-lr/iterations/iter_000023/checkpoint/optimizer_state/adapter_a_m.f32.bin", "sha256": "0f78dc4de489010962da6ded7f88f2b1b816eb0e3db76003b6749f065ec8d2dd"},
+    "adapter_a_v": {"path": "/data/local/tmp/polymath_gemma4_gate/phase12/runs/20260524T173847Z_phase12_long_native_lr_retry1_lr3e4_cont24_train/Phase12-long-native-lr/iterations/iter_000023/checkpoint/optimizer_state/adapter_a_v.f32.bin", "sha256": "572afdb267a53b2328df7523004963d470f9937836e7a7d0123ea130fa12a087"},
+    "adapter_b_m": {"path": "/data/local/tmp/polymath_gemma4_gate/phase12/runs/20260524T173847Z_phase12_long_native_lr_retry1_lr3e4_cont24_train/Phase12-long-native-lr/iterations/iter_000023/checkpoint/optimizer_state/adapter_b_m.f32.bin", "sha256": "4a41b9b375e5890baf2c3c0842f22d338f60d5eeae8711fd4e1eca0cb166a283"},
+    "adapter_b_v": {"path": "/data/local/tmp/polymath_gemma4_gate/phase12/runs/20260524T173847Z_phase12_long_native_lr_retry1_lr3e4_cont24_train/Phase12-long-native-lr/iterations/iter_000023/checkpoint/optimizer_state/adapter_b_v.f32.bin", "sha256": "837ab8dbb2f4e9edbb0337ec9cd56c66996876cb08706a0f8e40ce4af3e6532a"}
+  }
+}

@@ -1,0 +1,36 @@
+qnn-context-binary-generator pid:45682
+     0.2ms [  INFO ] qnn-context-binary-generator build version: v2.44.0.260225143659
+    30.4ms [  INFO ] Inferences will run in sync mode
+    30.9ms [  INFO ] No input files are provided. Input file paths vector size is 0.
+    33.8ms [  INFO ] No BackendExtensions lib provided;initializing NetRunBackend Interface
+    33.8ms [  INFO ] opMapping is not required for the specified backend
+    33.9ms [  INFO ] Backend build version: v2.44.0.260225143659
+    33.9ms [  INFO ] No platform-specific callback implementation available
+     4.4ms [  INFO ] [QNN_CPU] CpuBackend creation start
+     4.4ms [  INFO ] [QNN_CPU] CpuBackend creation end
+     4.4ms [  INFO ] [QNN_CPU]  Code: QNN_DEVICE_ERROR_UNSUPPORTED_FEATURE
+    38.2ms [WARNING] Unable to find a device with NetRunDeviceKeyDefault in Library NetRunBackendLibKeyDefault
+    38.2ms [WARNING] Profile Logger with name = defaultKey doesn't exist! Returning nullptr
+     4.4ms [  INFO ] [QNN_CPU] QnnContext create start
+     4.4ms [  INFO ] [QNN_CPU] QnnContext create end
+    41.1ms [  INFO ] Composing Graph for DLC = /workspace/Polymath-AI/runtime/reports/gemma4_megakernel/phase12_remote/20260524T170746Z_gate_f_qwen_updateable/qwen_block_updateable_linear_biases.dlc
+    41.1ms [WARNING] Profile Logger with name = defaultKey doesn't exist! Returning nullptr
+    41.1ms [  INFO ] Initializing logging in the System Library. Callback: [0x739e79576180], Log Level: [3]
+   219.3ms [  INFO ] [QNN_CPU] CpuGraph creation start
+   243.3ms [  INFO ] [QNN_CPU] CpuGraph creation end
+   243.3ms [  INFO ] [QNN_CPU] QnnGraph create end
+   431.6ms [ ERROR ] [QNN_CPU] Tensor with ID: 16 is misconfigured: Non-static tensors cannot have a valid buffer
+   424.5ms [ ERROR ] Exception encountered: tensorCreateGraphTensor failed: QNN_TENSOR_ERROR_INVALID_TENSOR_PARAM: Invalid tensor param.
+   424.5ms [ ERROR ] Failed to successfully compose graph
+   424.5ms [ ERROR ] Graph composer failed, no graphs were created
+   465.6ms [ ERROR ] Failed in QnnSystemDlc_composeGraphs() with error code 1002
+   465.6ms [ ERROR ] Received nullptr for graphsInput.
+   465.6ms [ ERROR ] Failed to copy graph infos while composing graphs from dlc.
+   465.6ms [ ERROR ] ComposeGraphs Failed with error = 1
+Graph Compose failure
+   488.1ms [WARNING] Profile Logger with name = defaultKey doesn't exist! Returning nullptr
+   454.3ms [  INFO ] [QNN_CPU] QnnContext Free start
+   456.8ms [  INFO ] [QNN_CPU] QnnContext Free end
+   493.9ms [WARNING] Profile Logger with name = defaultKey doesn't exist!
+   460.1ms [  INFO ] [QNN_CPU] QnnBackend Free start
+   460.1ms [  INFO ] [QNN_CPU] QnnBackend Free end

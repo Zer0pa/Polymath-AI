@@ -1,0 +1,41 @@
+{
+  "logs": {
+    "full_heldout": {
+      "max_battery_tenth_c": 320,
+      "max_zone_millideg_c": 130048,
+      "max_zone_type": "alps-therm",
+      "path": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-H-overnight-phone-local-long-run/collection/chain/full_heldout_safety.jsonl",
+      "sample_count": 75,
+      "threshold_event_count": 1
+    },
+    "original": {
+      "max_battery_tenth_c": 320,
+      "max_zone_millideg_c": 95000,
+      "max_zone_type": "cpu-1-0-1",
+      "path": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-H-overnight-phone-local-long-run/collection/chain/original_safety.jsonl",
+      "sample_count": 109,
+      "threshold_event_count": 1
+    }
+  },
+  "max_battery_tenth_c": 320,
+  "max_zone_millideg_c": 130048,
+  "max_zone_type": "alps-therm",
+  "schema_version": "phase13_p13h_safety_summary_v1",
+  "threshold_crossed": true,
+  "threshold_events": [
+    {
+      "battery_tenth_c": 310,
+      "log": "original",
+      "max_zone_millideg_c": 95000,
+      "max_zone_type": "cpu-1-0-1",
+      "ts": 1779668491
+    },
+    {
+      "battery_tenth_c": 310,
+      "log": "full_heldout",
+      "max_zone_millideg_c": 130048,
+      "max_zone_type": "alps-therm",
+      "ts": 1779667938
+    }
+  ]
+}

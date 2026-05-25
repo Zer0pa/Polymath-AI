@@ -1,15 +1,21 @@
 {
-  "_synced_at": "2026-05-23T22:33:01Z",
+  "_synced_at": "2026-05-25T17:08:00Z",
   "active_calculations": [
-    "Execute Phase 11 only through phone-resident queue-run experiments with authority non-regression gates and artifact hygiene.",
-    "Sequential hypotheses complete through H11-G; continue H11-H combined POVC using the H11-F OpenCL objective lane, with HTP only as frozen-forward/teacher if useful."
+    "Phase 14 P14-0 through P14-2 passed without training; P14-3 RunPod reconciliation, P14-4 full-heldout evaluator repair, P14-5 objective repair, P14-6 short proof, and P14-7 segmented long run remain ordered gates.",
+    "No training may launch until P14-3, P14-4, and P14-5 are complete and P14-6 is explicitly scoped.",
+    "P13-H failed; P13-I exact claims are authoritative; P13-F HTP ReLU is execution-only; residual-adapter OpenCL is not a fused megakernel; train-loss movement cannot replace full-heldout movement."
   ],
   "approximations": [],
   "blockers": [
     "Phase 10 six-hour endurance is promoted only for the current rank-4 two-layer phone-native lane. Full Gemma4 training, Hexagon NPU training, public benchmark readiness, and theoretical maximum remain blocked.",
     "H11-E did not promote expanded adapter ranks or projection LoRA. Rank-16 and rank-32 were finite and mutable but showed zero two-iteration loss reduction; projection LoRA remains blocked until layer-internal backward kernels and checkpoint layout exist.",
     "H11-F top-k KL objective pass is narrow: deterministic held-out movement is positive but tiny, so it does not support public benchmark readiness, broad capability, full Gemma4 training, or stronger scope claims.",
-    "GPD phase-add succeeded for Phase 11, but generic GPD state synchronization rewrote .gpd/state.json in a lossy parser format during this PRD-writing task. The machine state was restored and updated via structured JSON; future agents should parse-check .gpd/state.json after GPD CLI state commands."
+    "GPD phase-add succeeded for Phase 11, but generic GPD state synchronization rewrote .gpd/state.json in a lossy parser format during this PRD-writing task. The machine state was restored and updated via structured JSON; future agents should parse-check .gpd/state.json after GPD CLI state commands.",
+    "Phase 13 forbids non-Gemma artifacts inside promoted Gemma gates. Any Qwen, SmolLM, random-init, hidden-size mismatch, or artifact not bridged into the Gemma runtime is an immediate failure and can only be retained as a negative tool-surface probe.",
+    "Phase 13 requires real corpus scale before learning promotion. A 16-sequence cache is a smoke test only, not a corpus-scale learning gate.",
+    "P13-H failed after 1742/5000 updates under thermal safety; full-heldout baseline/trained evals did not pass and no heldout KL improvement is promoted.",
+    "RunPod /workspace/Polymath-AI is quarantined as stale for Phase 14 until reconciled: observed branch linux/phase0g-qairt-v2.43 with dirty/untracked workspace, not gemma4-megakernel-native-training.",
+    "P13-G raw/bin HTP ReLU payloads and local build caches were moved outside the repo to /Users/Zer0pa/Polymat AI/.artifact_quarantine/Polymath-AI/20260525T164328Z_phase14_p14_0; compact manifest repair remains P14-2."
   ],
   "blockers_concerns": [
     "H11-G does not promote mutable QAIRT sections or HTP zero-order training: the active qwen_block QNN context reports zero updateable tensors, and RunPod x86 LoRA tooling still has onnx/pydantic/libc++.so.1 environment gaps. HTP is frozen-forward/teacher only for H11-H."
@@ -40,6 +46,16 @@
       "phase": "11",
       "rationale": "Prevents documentation-as-progress and preserves the authority metric.",
       "summary": "Phase 11 documentation is only a control artifact; execution progress begins only when H11 gate artifacts are produced by phone experiments."
+    },
+    {
+      "phase": "13",
+      "rationale": "Prevents Phase 12 Qwen/random-init hidden-size mismatch from contaminating Gemma heterogeneous claims.",
+      "summary": "Promoted Gemma gates must be Gemma4-only; non-Gemma HTP artifacts are negative probes only."
+    },
+    {
+      "phase": "14",
+      "summary": "Phase 14 selected by P13-I: repair scaled heldout learning before new hardware claims.",
+      "rationale": "P13-H failed the authority heldout gate under thermal safety, so cleanup, heldout evaluator repair, and objective repair precede any new long phone-native run."
     }
   ],
   "intermediate_results": [
@@ -66,19 +82,37 @@
     "H11-D OpenCL recordable queues passed: runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T205951Z_h11d_recordable_queues/H11-D-recordable-queues/gate_result.json",
     "H11-E trainable scope sweep failed with rank-4 baseline retained: runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T211427Z_h11e_scope_sweep/H11-E-scope-sweep/gate_result.json; first implementation failure preserved at runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T211134Z_h11e_scope_sweep/H11-E-scope-sweep/gate_result.json",
     "H11-F objective upgrade passed narrowly: runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T213836Z_h11f_objective_upgrade/H11-F-objective-upgrade/gate_result.json",
-    "H11-G classified HTP as frozen-forward/teacher only: runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T223147Z_h11g_htp_mutable_adapter/H11-G-htp-mutable-adapter/gate_result.json; active qwen_block context has zero updateable tensors, so mutable-section and zero-order paths are not promoted."
+    "H11-G classified HTP as frozen-forward/teacher only: runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T223147Z_h11g_htp_mutable_adapter/H11-G-htp-mutable-adapter/gate_result.json; active qwen_block context has zero updateable tensors, so mutable-section and zero-order paths are not promoted.",
+    "H11-H combined POVC passed under exact narrow scope: runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T225149Z_h11h_combined_povc/H11-H-combined-povc/gate_result.json",
+    "Phase 12 final exact claims resolved by pass/falsify/fallback artifacts: runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T175056Z_phase12_final_exact_claims/phase12_gate_status.json",
+    "Phase 12 residual rank-16/rank-32 post-layer0 adapters with AdamW/clipping and phone-local queue execution passed; strongest rank-16 LR 3e-4 continuation improved heldout KL 1.0005755997 -> 0.8207082971.",
+    "Phase 12 exposed a hard contamination boundary: Qwen/random-init hidden-size-1536 HTP artifacts are invalid for Gemma4 hidden-size-2560 heterogeneous claims and may only be isolated negative tool-surface probes.",
+    "Phase 13 authority PRD and executor handoff written: docs/PRD-PHASE13-GEMMA4-ONLY-HETEROGENEOUS-CORPUS-SCALE.md, docs/HANDOFF-PHASE13-GEMMA4-ONLY-HETEROGENEOUS-EXECUTOR.md, docs/STARTUP-PROMPT-PHASE13-GEMMA4-ONLY-HETEROGENEOUS.md, .gpd/phases/13-gemma4-only-heterogeneous-corpus-scale/13-01-PLAN.md.",
+    "P13-A contamination audit passed: runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-A-contamination-audit/gate_result.json. Phase 12 report payload scan was clean, .gpd/state.json parsed, cde/gradient_parity/long_native_lr/preflight were classified as Gemma-valid narrow/control evidence, and qairt_f/heterogeneous_g were quarantined as forbidden for promoted Gemma gates.",
+    "P13-B Gemma identity/kernel-lineage instrumentation passed: runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-B-identity-kernel-lineage/gate_result.json. The valid phone smoke emitted model_id google/gemma-4-E4B, revision 7aa32e6889efd6300124851b164f8b364314c3d8, hidden size 2560, runner SHA 1dbb56566ba0119db01e5e4a6898cc56dd7f838bbc4154b896c9ba4252ab63a4, and residual_adapter_opencl_training lineage; a deliberate Qwen hidden-size-1536 config was rejected before training.",
+    "P13-C scaled phone-native HF corpus passed: runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-C-phone-native-hf-corpus/gate_result.json. Phone-native curl fetched databricks/databricks-dolly-15k@bdd27f4d94b9c1f951818a7da7fd7aeea5dbff1a; phone C++ Gemma tokenizer built 8192/1024 seq128 train/heldout caches; RunPod Transformers parity passed on 3 rows; host minibatch serving remained false.",
+    "P13-D expanded gradient parity passed: runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-D-expanded-gradient-parity/gate_result.json. Seeded phone finite differences validated 64 sampled rank16/rank32 residual-adapter coordinates with max_rel=1 and max_abs=6.73384e-08; no HTP or multi-site claim is promoted.",
+    "P13-E second-site adapter passed: runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-E-layer1-adapter-site/gate_result.json. The new post-layer1 rank16 residual site updated on phone and passed 8 sampled finite-difference checks; G1/G3/G8/post-layer0 smokes passed.",
+    "P13-F passed: runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-F-gemma-compatible-htp-context/gate_result.json: phone QAIRT generated and executed a Gemma hidden-size-2560 HTP context from a megakernel layer0 hidden tensor; selected HTP island=relu. This proves only Gemma-compatible HTP execution, not HTP backprop or heterogeneous learning.",
+    "P13-G heterogeneous comparison completed: runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-G-heterogeneous-vs-adreno-baseline/gate_result.json. Gemma-compatible HTP execution is valid only as a ReLU hidden-tensor island; integrated heterogeneous learning remains falsified, so P13-H uses Adreno/OpenCL fallback.",
+    "P13-I exact claims: runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-I-exact-claims-and-next-branch/gate_result.json status=pass_exact_claims_written",
+    "P13-H failed: runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-H-overnight-phone-local-long-run/gate_result.json. Train reached 1742/5000 updates, thermal safety threshold crossed, full-heldout baseline/trained evals did not pass, and full-heldout KL delta is None.",
+    "P13-I exact claims selected phase14_repair_scaled_heldout_learning_before_new_hardware_claims: runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-I-exact-claims-and-next-branch/gate_result.json.",
+    "P14-0 control-plane snapshot: Mac branch gemma4-megakernel-native-training, phone FY25013101C8 visible by ADB, RunPod quarantined stale on linux/phase0g-qairt-v2.43, forbidden raw/bin/build-cache artifacts quarantined outside the repo, no training launched.",
+    "P14-1 phone thermal/process baseline passed: runtime/reports/gemma4_megakernel/phase14_drift_cleanup/20260525T164328Z_phase14_drift_cleanup/P14-1-phone-thermal-process-baseline/gate_result.json. ADB sees FY25013101C8, no stale runner matched, thermalservice status is 0, battery is 28.0 C, storage/memory baseline is recorded, and no Game Zone/fan/training activation was attempted.",
+    "P14-2 artifact quarantine and compact manifest repair passed: runtime/reports/gemma4_megakernel/phase14_drift_cleanup/20260525T164328Z_phase14_drift_cleanup/P14-2-artifact-quarantine-compact-manifest-repair/gate_result.json. P13-G raw/bin payloads remain quarantined outside the repo and P13-G artifact_manifest.json now records compact quarantine metadata with no forbidden payload entries in artifacts[]."
   ],
   "open_questions": [
-    "Whether Android permits the phone-resident runner to continue reliably after ADB/USB disconnect, and what resume behavior is needed if it does not.",
-    "Whether safe fixed performance mode, charge separation, fan state, and OEM controls materially improve active/wall without unsafe thermal behavior.",
-    "Whether H11-G can classify QAIRT/HTP mutable sections as frozen-forward, teacher, updateable-section, zero-order, or blocked without claiming normal HTP backprop.",
-    "Whether H11-D recordable queue launch savings remain useful in an end-to-end H11-H training sequence after the H11-C residual was already reduced below threshold.",
-    "Whether the H11-F objective lane, H11-D recordable-queue evidence, and H11-G frozen-forward-only HTP classification combine cleanly in H11-H without G1/G3/relevant G8 regression or overclaiming capability movement."
+    "Can the full-heldout evaluator run baseline and trained checks independently over the P13-C heldout cache without depending on train-chain success?",
+    "Can full Gemma teacher top-k/logit-KL shards be generated compactly from the P13-C phone-defined corpus using RunPod only as offline oracle?",
+    "Which segmented thermal policy keeps REDMAGIC phone-local training below safety thresholds while preserving disconnected execution?",
+    "Can RedMagic Game Space/Game Zone or fan controls be used through reversible user-visible settings without hidden authority or safety regressions?"
   ],
   "pending_todos": [
-    "Execute H11-H combined POVC using the H11-A daemon, H11-B baseline-safe profile, H11-E rank-4 retained scope, H11-F top-k KL objective, and H11-G frozen-forward-only HTP classification.",
-    "Do not promote mutable QAIRT sections, HTP zero-order training, or normal HTP backprop unless a context with updateable tensors is produced and applied on phone with parity proof.",
-    "Do not narrate H11-H as full Gemma4 training or public benchmark readiness unless the authority gate actually proves those claims."
+    "P14-3: reconcile or rebuild RunPod on gemma4-megakernel-native-training before using it as offline oracle.",
+    "P14-4: repair independent full-heldout baseline/trained evaluator before any training campaign.",
+    "P14-5: decide full Gemma teacher top-k/logit-KL feasibility or document a stronger falsifier-backed fallback objective.",
+    "P14-6: run only a short thermally bounded phone-local learning proof with full-heldout before/after after P14-3/P14-4/P14-5 pass."
   ],
   "performance_metrics": {
     "rows": [
@@ -194,8 +228,8 @@
       "rank16_loss_delta": 0.0,
       "rank32_loss_delta": 0.0,
       "rank4_active_seconds": 12.500036,
-      "rank4_loss_delta": 1.000000082740371e-10,
-      "rank4_loss_delta_per_active_second": 7.999977621987417e-12,
+      "rank4_loss_delta": 1.000000082740371E-10,
+      "rank4_loss_delta_per_active_second": 7.999977621987417E-12,
       "selected_rank": 4,
       "status": "fail_with_rank4_baseline_retained"
     },
@@ -211,7 +245,7 @@
       "status": "pass_narrow_objective_signal",
       "teacher_shard_status": "precomputed_on_runpod_pushed_to_phone_before_runtime",
       "train_iterations": 100,
-      "train_kl_delta": 2.429999998998511e-07,
+      "train_kl_delta": 2.429999998998511E-7,
       "trained_heldout_kl": 1.12916688,
       "trained_heldout_teacher_top1_probability": 0.1137876981
     },
@@ -233,16 +267,16 @@
     }
   },
   "position": {
-    "current_phase": "11",
-    "current_phase_name": "Hardware-Native Training POVC",
+    "current_phase": "14",
+    "current_phase_name": "Repair Scaled Heldout Learning Before New Hardware Claims",
     "current_plan": 1,
-    "last_activity": "2026-05-23",
-    "last_activity_desc": "Ran H11-G. Phone QAIRT 2.44 HTP inference completed, RunPod compiled the QNN apply-binary-section API probe, and phone context utility showed zero updateable tensors in the active context; HTP is frozen-forward/teacher only for H11-H.",
-    "last_activity_description": "Ran H11-G. Phone QAIRT 2.44 HTP inference completed, RunPod compiled the QNN apply-binary-section API probe, and phone context utility showed zero updateable tensors in the active context; HTP is frozen-forward/teacher only for H11-H.",
+    "last_activity": "2026-05-25",
+    "last_activity_desc": "Phase 14 P14-2 artifact quarantine and compact manifest repair passed: P13-G forbidden raw/bin payloads remain outside the repo, strict scans are clean, and the P13-G artifact manifest now uses compact quarantine metadata instead of commit-path raw/bin artifacts.",
+    "last_activity_description": "Phase 14 P14-2 artifact quarantine and compact manifest repair passed: P13-G forbidden raw/bin payloads remain outside the repo, strict scans are clean, and the P13-G artifact manifest now uses compact quarantine metadata instead of commit-path raw/bin artifacts.",
     "paused_at": null,
-    "progress_percent": 92,
-    "status": "H11-G classified HTP frozen-forward/teacher only; H11-H combined POVC next",
-    "total_phases": 12,
+    "progress_percent": 94,
+    "status": "Phase 14 P14-0 through P14-2 passed without training; P14-3/P14-4/P14-5 repair gates next",
+    "total_phases": 14,
     "total_plans_in_phase": 1
   },
   "project_contract": {
@@ -723,14 +757,13 @@
   },
   "project_reference": {
     "core_research_question": "Can Polymath-AI execute and validate a real Gemma 4 training run natively on REDMAGIC SM8750 without substituting Mac or RunPod for any runtime data-path stage?",
-    "current_focus": "Phase 11: Hardware-native training POVC execution campaign",
+    "current_focus": "Phase 14: repair scaled heldout learning before new hardware claims",
     "project_md_updated": "2026-05-17"
   },
   "propagated_uncertainties": [],
   "session": {
-    "last_gate": "H11-G",
-    "last_session": "2026-05-23",
+    "last_session": "2026-05-25",
     "resume_file": ".gpd/STATE.md",
-    "stopped_at": "H11-G classified HTP as frozen-forward/teacher only; continue with H11-H combined POVC."
+    "stopped_at": "Phase 14 P14-2 artifact quarantine and compact manifest repair; no training launched."
   }
 }

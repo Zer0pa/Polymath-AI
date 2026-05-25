@@ -1,0 +1,3 @@
+- No proper LoRA/updateable graph source artifacts are present for Gemma/Qwen in this workspace.
+- Direct updateable marking of Qwen block tensors converts to DLC but fails QNN context generation on HTP and CPU.
+- No valid binary section exists to apply on phone; applyBinarySection remains unexecuted.

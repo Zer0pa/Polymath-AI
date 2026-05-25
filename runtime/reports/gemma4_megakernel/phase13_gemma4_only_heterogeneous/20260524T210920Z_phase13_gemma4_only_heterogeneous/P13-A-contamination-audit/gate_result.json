@@ -1,0 +1,43 @@
+{
+  "blockers": [],
+  "ended_at_utc": "2026-05-24T21:09:25Z",
+  "gate": "P13-A-contamination-audit",
+  "pass_condition_checks": {
+    "dirty_worktree_forbidden_untracked_payloads_absent": true,
+    "nongemma_terms_confined_to_negative_or_summary_artifacts": true,
+    "phase12_final_status_understood": true,
+    "primary_artifacts_exist": true,
+    "raw_payload_scan_clean": true,
+    "state_json_valid": true
+  },
+  "quarantine_summary": {
+    "forbidden_for_promoted_gemma_keys": [
+      "heterogeneous_g",
+      "qairt_f"
+    ],
+    "gemma_valid_narrow_keys": [
+      "cde",
+      "gradient_parity",
+      "long_native_lr",
+      "preflight"
+    ],
+    "negative_tool_surface_rule": "Qwen/random-init/hidden-size-1536 HTP artifacts may be referenced only as negative tool-surface probes and cannot feed Gemma training, teacher generation, evaluation, or heterogeneous promotion."
+  },
+  "report_dir": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-A-contamination-audit",
+  "run_id": "20260524T210920Z_phase13_gemma4_only_heterogeneous",
+  "schema_version": "phase13_p13a_gate_result_v1",
+  "started_at_utc": "20260524T210920Z",
+  "status": "pass",
+  "strongest_valid_fallback": {
+    "hidden_size": 2560,
+    "kernel_lineage_class": "residual_adapter_opencl_training",
+    "limits": [
+      "Phase 12 corpus was only 16 sequences and is smoke-scale for Phase 13.",
+      "Phase 12 gradient parity covered two high-gradient coordinates only.",
+      "No multi-site, HTP backprop, updateable QNN, or heterogeneous Gemma learning claim is valid."
+    ],
+    "model_id": "google/gemma-4-E4B",
+    "source": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T173847Z_phase12_long_native_lr_retry1/CDE-long-native-lr/gate_result.json",
+    "trainable_scope": "post_layer0_residual_adapter_rank16"
+  }
+}

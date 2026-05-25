@@ -1,0 +1,3 @@
+- HTP output is not consumed by the Gemma training loop
+- No heldout movement is attributable to the HTP candidate
+- No measured HTP-to-Adreno bridge exists inside the optimizer/objective path

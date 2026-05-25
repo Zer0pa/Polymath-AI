@@ -1,0 +1,30 @@
+{
+  "ended_at_utc": "2026-05-24T15:53:21Z",
+  "gate": "F",
+  "host_repairs_completed": {
+    "libcxx_installed": "libc++1/libc++abi1 installed from apt",
+    "libunwind_installed": "libunwind8 and libunwind-18 installed from apt",
+    "onnx_1_18_import": "pass in /tmp/qairt_pydeps",
+    "pip_cache_purged_mb": 2574.6,
+    "pydantic_import": "pass in /tmp/qairt_pydeps",
+    "temporary_python_deps": "/tmp/qairt_pydeps"
+  },
+  "nonclaims": [
+    "No updateable QNN context was generated",
+    "No QnnContext_applyBinarySection call was executed on the phone",
+    "No HTP backprop or mutable HTP training claim is promoted"
+  ],
+  "observed_error_signatures": [
+    "libPyIrGraph.so: /lib/x86_64-linux-gnu/libc.so.6: version GLIBC_2.34 not found",
+    "qairt-lora-adapter-bin-updater: /lib/x86_64-linux-gnu/libm.so.6: version GLIBC_2.35 not found",
+    "adb: device FY25013101C8 not found"
+  ],
+  "remaining_blockers": [
+    "QAIRT 2.41/2.43/2.44 x86 LoRA updater/importer binaries require GLIBC_2.32 through GLIBC_2.35; current RunPod image is Ubuntu 20.04 / GLIBC 2.31",
+    "ADB currently lists no FY25013101C8 device, so QnnContext_applyBinarySection cannot be proved or falsified on phone in this turn"
+  ],
+  "runpod_host": "38.80.152.147:31002",
+  "schema_version": "phase12_gate_f_qairt_updateable_context_v1",
+  "status": "blocked_host_glibc_and_phone_adb",
+  "strongest_next_fallback": "Run QAIRT x86 updateable-context tooling on an Ubuntu 22.04+ host/container or a RunPod image with GLIBC >=2.35, then reconnect ADB and apply/probe the binary section on the phone."
+}

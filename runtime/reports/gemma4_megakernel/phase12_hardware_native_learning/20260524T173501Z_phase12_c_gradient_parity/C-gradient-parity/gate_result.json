@@ -1,0 +1,175 @@
+{
+  "base_checkpoint": "/data/local/tmp/polymath_gemma4_gate/phase12/runs/20260524T164412Z_phase12_cde_authority_rank16_train/Phase12-CDE-learning/iterations/iter_000007/checkpoint",
+  "blockers": [],
+  "claims": [
+    "phone-produced residual adapter top-k KL gradients match finite-difference sign and magnitude for one high-gradient parameter per adapter tensor"
+  ],
+  "gate": "C-gradient-parity",
+  "gradient_source_iteration": "/data/local/tmp/polymath_gemma4_gate/phase12/runs/20260524T164412Z_phase12_cde_authority_rank16_trained_eval/Phase12-CDE-learning/iterations/iter_000000",
+  "nonclaims": [
+    "full-gradient parity",
+    "multi-site adapter parity",
+    "HTP backprop",
+    "full Gemma4 training"
+  ],
+  "probe_results": [
+    {
+      "abs_gradient": 0.02265859581530094,
+      "analytic_gradient": 0.02265859581530094,
+      "best": {
+        "analytic_gradient": 0.02265859581530094,
+        "epsilon": 0.01,
+        "finite_difference_gradient": 0.022658590000002032,
+        "minus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T173501Z_phase12_c_gradient_parity/C-gradient-parity/evals/20260524T173501Z_phase12_c_gradient_parity_adapter_a_idx10032_eps0p01_minus/telemetry.json",
+          "loss_topk_kl": 1.0003490981,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase12/runs/20260524T173501Z_phase12_c_gradient_parity/finite_difference/20260524T173501Z_phase12_c_gradient_parity_adapter_a_idx10032_eps0p01_minus",
+          "returncode": 0,
+          "stderr_first_2048": "",
+          "stdout_first_2048": ""
+        },
+        "plus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T173501Z_phase12_c_gradient_parity/C-gradient-parity/evals/20260524T173501Z_phase12_c_gradient_parity_adapter_a_idx10032_eps0p01_plus/telemetry.json",
+          "loss_topk_kl": 1.0008022699,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase12/runs/20260524T173501Z_phase12_c_gradient_parity/finite_difference/20260524T173501Z_phase12_c_gradient_parity_adapter_a_idx10032_eps0p01_plus",
+          "returncode": 0,
+          "stderr_first_2048": "",
+          "stdout_first_2048": ""
+        },
+        "relative_error": 2.566486889340826e-07,
+        "sign_match": true
+      },
+      "eps_results": [
+        {
+          "analytic_gradient": 0.02265859581530094,
+          "epsilon": 0.01,
+          "finite_difference_gradient": 0.022658590000002032,
+          "minus": {
+            "local_telemetry": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T173501Z_phase12_c_gradient_parity/C-gradient-parity/evals/20260524T173501Z_phase12_c_gradient_parity_adapter_a_idx10032_eps0p01_minus/telemetry.json",
+            "loss_topk_kl": 1.0003490981,
+            "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase12/runs/20260524T173501Z_phase12_c_gradient_parity/finite_difference/20260524T173501Z_phase12_c_gradient_parity_adapter_a_idx10032_eps0p01_minus",
+            "returncode": 0,
+            "stderr_first_2048": "",
+            "stdout_first_2048": ""
+          },
+          "plus": {
+            "local_telemetry": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T173501Z_phase12_c_gradient_parity/C-gradient-parity/evals/20260524T173501Z_phase12_c_gradient_parity_adapter_a_idx10032_eps0p01_plus/telemetry.json",
+            "loss_topk_kl": 1.0008022699,
+            "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase12/runs/20260524T173501Z_phase12_c_gradient_parity/finite_difference/20260524T173501Z_phase12_c_gradient_parity_adapter_a_idx10032_eps0p01_plus",
+            "returncode": 0,
+            "stderr_first_2048": "",
+            "stdout_first_2048": ""
+          },
+          "relative_error": 2.566486889340826e-07,
+          "sign_match": true
+        },
+        {
+          "analytic_gradient": 0.02265859581530094,
+          "epsilon": 0.005,
+          "finite_difference_gradient": 0.022658440000000724,
+          "minus": {
+            "local_telemetry": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T173501Z_phase12_c_gradient_parity/C-gradient-parity/evals/20260524T173501Z_phase12_c_gradient_parity_adapter_a_idx10032_eps0p005_minus/telemetry.json",
+            "loss_topk_kl": 1.000462328,
+            "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase12/runs/20260524T173501Z_phase12_c_gradient_parity/finite_difference/20260524T173501Z_phase12_c_gradient_parity_adapter_a_idx10032_eps0p005_minus",
+            "returncode": 0,
+            "stderr_first_2048": "",
+            "stdout_first_2048": ""
+          },
+          "plus": {
+            "local_telemetry": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T173501Z_phase12_c_gradient_parity/C-gradient-parity/evals/20260524T173501Z_phase12_c_gradient_parity_adapter_a_idx10032_eps0p005_plus/telemetry.json",
+            "loss_topk_kl": 1.0006889124,
+            "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase12/runs/20260524T173501Z_phase12_c_gradient_parity/finite_difference/20260524T173501Z_phase12_c_gradient_parity_adapter_a_idx10032_eps0p005_plus",
+            "returncode": 0,
+            "stderr_first_2048": "",
+            "stdout_first_2048": ""
+          },
+          "relative_error": 6.876652970379145e-06,
+          "sign_match": true
+        }
+      ],
+      "index": 10032,
+      "tensor": "adapter_a"
+    },
+    {
+      "abs_gradient": 0.003061519470065832,
+      "analytic_gradient": -0.003061519470065832,
+      "best": {
+        "analytic_gradient": -0.003061519470065832,
+        "epsilon": 0.01,
+        "finite_difference_gradient": -0.003061524999992127,
+        "minus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T173501Z_phase12_c_gradient_parity/C-gradient-parity/evals/20260524T173501Z_phase12_c_gradient_parity_adapter_b_idx1931_eps0p01_minus/telemetry.json",
+          "loss_topk_kl": 1.000606218,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase12/runs/20260524T173501Z_phase12_c_gradient_parity/finite_difference/20260524T173501Z_phase12_c_gradient_parity_adapter_b_idx1931_eps0p01_minus",
+          "returncode": 0,
+          "stderr_first_2048": "",
+          "stdout_first_2048": ""
+        },
+        "plus": {
+          "local_telemetry": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T173501Z_phase12_c_gradient_parity/C-gradient-parity/evals/20260524T173501Z_phase12_c_gradient_parity_adapter_b_idx1931_eps0p01_plus/telemetry.json",
+          "loss_topk_kl": 1.0005449875,
+          "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase12/runs/20260524T173501Z_phase12_c_gradient_parity/finite_difference/20260524T173501Z_phase12_c_gradient_parity_adapter_b_idx1931_eps0p01_plus",
+          "returncode": 0,
+          "stderr_first_2048": "",
+          "stdout_first_2048": ""
+        },
+        "relative_error": 1.8062685371513564e-06,
+        "sign_match": true
+      },
+      "eps_results": [
+        {
+          "analytic_gradient": -0.003061519470065832,
+          "epsilon": 0.01,
+          "finite_difference_gradient": -0.003061524999992127,
+          "minus": {
+            "local_telemetry": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T173501Z_phase12_c_gradient_parity/C-gradient-parity/evals/20260524T173501Z_phase12_c_gradient_parity_adapter_b_idx1931_eps0p01_minus/telemetry.json",
+            "loss_topk_kl": 1.000606218,
+            "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase12/runs/20260524T173501Z_phase12_c_gradient_parity/finite_difference/20260524T173501Z_phase12_c_gradient_parity_adapter_b_idx1931_eps0p01_minus",
+            "returncode": 0,
+            "stderr_first_2048": "",
+            "stdout_first_2048": ""
+          },
+          "plus": {
+            "local_telemetry": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T173501Z_phase12_c_gradient_parity/C-gradient-parity/evals/20260524T173501Z_phase12_c_gradient_parity_adapter_b_idx1931_eps0p01_plus/telemetry.json",
+            "loss_topk_kl": 1.0005449875,
+            "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase12/runs/20260524T173501Z_phase12_c_gradient_parity/finite_difference/20260524T173501Z_phase12_c_gradient_parity_adapter_b_idx1931_eps0p01_plus",
+            "returncode": 0,
+            "stderr_first_2048": "",
+            "stdout_first_2048": ""
+          },
+          "relative_error": 1.8062685371513564e-06,
+          "sign_match": true
+        },
+        {
+          "analytic_gradient": -0.003061519470065832,
+          "epsilon": 0.005,
+          "finite_difference_gradient": -0.0030615300000036427,
+          "minus": {
+            "local_telemetry": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T173501Z_phase12_c_gradient_parity/C-gradient-parity/evals/20260524T173501Z_phase12_c_gradient_parity_adapter_b_idx1931_eps0p005_minus/telemetry.json",
+            "loss_topk_kl": 1.0005909081,
+            "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase12/runs/20260524T173501Z_phase12_c_gradient_parity/finite_difference/20260524T173501Z_phase12_c_gradient_parity_adapter_b_idx1931_eps0p005_minus",
+            "returncode": 0,
+            "stderr_first_2048": "",
+            "stdout_first_2048": ""
+          },
+          "plus": {
+            "local_telemetry": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T173501Z_phase12_c_gradient_parity/C-gradient-parity/evals/20260524T173501Z_phase12_c_gradient_parity_adapter_b_idx1931_eps0p005_plus/telemetry.json",
+            "loss_topk_kl": 1.0005602928,
+            "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase12/runs/20260524T173501Z_phase12_c_gradient_parity/finite_difference/20260524T173501Z_phase12_c_gradient_parity_adapter_b_idx1931_eps0p005_plus",
+            "returncode": 0,
+            "stderr_first_2048": "",
+            "stdout_first_2048": ""
+          },
+          "relative_error": 3.4394482587961076e-06,
+          "sign_match": true
+        }
+      ],
+      "index": 1931,
+      "tensor": "adapter_b"
+    }
+  ],
+  "rank": 16,
+  "schema_version": "phase12_c_gradient_parity_gate_v1",
+  "source_cde_result": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/phase12_cde_gate_result.json",
+  "status": "pass_single_parameter_fd_parity"
+}

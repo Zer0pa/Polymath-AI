@@ -1,0 +1,104 @@
+{
+  "phone_regression_root": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13e/regressions",
+  "schema_version": "phase13_p13e_phone_regression_smokes_v1",
+  "status": "pass",
+  "tests": [
+    {
+      "ended_at_utc": "2026-05-24T22:25:42Z",
+      "name": "g1_layer0_opencl_smoke",
+      "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13e/regressions/g1_layer0_opencl_smoke",
+      "pulled_artifacts": [
+        "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-E-layer1-adapter-site/regressions/phone_smokes/g1_layer0_opencl_smoke/telemetry.json"
+      ],
+      "returncode": 0,
+      "started_at_utc": "2026-05-24T22:25:35Z",
+      "status": "pass",
+      "telemetry_summary": {
+        "adapter_backend": null,
+        "backend": "opencl",
+        "layer_backend": null,
+        "loss_half_mse": null,
+        "loss_topk_kl": null,
+        "max_rss_kb": 813248,
+        "model_id": "google/gemma-4-E4B",
+        "revision": "7aa32e6889efd6300124851b164f8b364314c3d8",
+        "schema_version": "gemma4_opencl_layer_forward_telemetry_v1",
+        "trainable_scope": null
+      }
+    },
+    {
+      "ended_at_utc": "2026-05-24T22:25:59Z",
+      "name": "g3_two_layer_opencl_stack_smoke",
+      "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13e/regressions/g3_two_layer_opencl_stack_smoke",
+      "pulled_artifacts": [
+        "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-E-layer1-adapter-site/regressions/phone_smokes/g3_two_layer_opencl_stack_smoke/telemetry.json"
+      ],
+      "returncode": 0,
+      "started_at_utc": "2026-05-24T22:25:42Z",
+      "status": "pass",
+      "telemetry_summary": {
+        "adapter_backend": null,
+        "backend": "opencl",
+        "layer_backend": null,
+        "loss_half_mse": null,
+        "loss_topk_kl": null,
+        "max_rss_kb": 823376,
+        "model_id": "google/gemma-4-E4B",
+        "revision": "7aa32e6889efd6300124851b164f8b364314c3d8",
+        "schema_version": "gemma4_opencl_two_layer_stack_telemetry_v1",
+        "trainable_scope": null
+      }
+    },
+    {
+      "ended_at_utc": "2026-05-24T22:26:31Z",
+      "name": "g8_rank4_distill_compact_smoke",
+      "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13e/regressions/g8_rank4_distill_compact_smoke",
+      "pulled_artifacts": [
+        "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-E-layer1-adapter-site/regressions/phone_smokes/g8_rank4_distill_compact_smoke/telemetry.json",
+        "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-E-layer1-adapter-site/regressions/phone_smokes/g8_rank4_distill_compact_smoke/artifact_manifest.json",
+        "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-E-layer1-adapter-site/regressions/phone_smokes/g8_rank4_distill_compact_smoke/replay_manifest.json",
+        "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-E-layer1-adapter-site/regressions/phone_smokes/g8_rank4_distill_compact_smoke/checkpoint_manifest.json"
+      ],
+      "returncode": 0,
+      "started_at_utc": "2026-05-24T22:25:59Z",
+      "status": "pass",
+      "telemetry_summary": {
+        "adapter_backend": "opencl",
+        "backend": "opencl",
+        "layer_backend": "opencl",
+        "loss_half_mse": 1.6465152695,
+        "loss_topk_kl": null,
+        "max_rss_kb": 834780,
+        "model_id": "google/gemma-4-E4B",
+        "revision": "7aa32e6889efd6300124851b164f8b364314c3d8",
+        "schema_version": "gemma4_opencl_streamed_distill_training_v1",
+        "trainable_scope": "post_layer0_rank4_residual_adapter"
+      }
+    },
+    {
+      "ended_at_utc": "2026-05-24T22:26:53Z",
+      "name": "post_layer0_topk_regression_smoke",
+      "phone_output_dir": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13e/regressions/post_layer0_topk_regression_smoke",
+      "pulled_artifacts": [
+        "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-E-layer1-adapter-site/regressions/phone_smokes/post_layer0_topk_regression_smoke/telemetry.json",
+        "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-E-layer1-adapter-site/regressions/phone_smokes/post_layer0_topk_regression_smoke/replay_manifest.json",
+        "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-E-layer1-adapter-site/regressions/phone_smokes/post_layer0_topk_regression_smoke/checkpoint_manifest.json"
+      ],
+      "returncode": 0,
+      "started_at_utc": "2026-05-24T22:26:31Z",
+      "status": "pass",
+      "telemetry_summary": {
+        "adapter_backend": "opencl",
+        "backend": "opencl",
+        "layer_backend": "opencl",
+        "loss_half_mse": null,
+        "loss_topk_kl": 1.3055719223,
+        "max_rss_kb": 835112,
+        "model_id": "google/gemma-4-E4B",
+        "revision": "7aa32e6889efd6300124851b164f8b364314c3d8",
+        "schema_version": "gemma4_opencl_streamed_topk_kl_training_v1",
+        "trainable_scope": "post_layer0_rank16_residual_adapter"
+      }
+    }
+  ]
+}

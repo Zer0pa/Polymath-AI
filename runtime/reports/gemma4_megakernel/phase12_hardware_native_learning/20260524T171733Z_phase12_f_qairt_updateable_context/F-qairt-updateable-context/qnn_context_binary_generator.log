@@ -1,0 +1,133 @@
+qnn-context-binary-generator pid:45475
+     5.3ms [  INFO ] qnn-context-binary-generator build version: v2.44.0.260225143659
+ <W> Initializing HtpProvider
+   666.9ms [  INFO ] Inferences will run in sync mode
+   673.8ms [  INFO ] No input files are provided. Input file paths vector size is 0.
+   673.8ms [  INFO ]  <I> QnnLog_create started.
+
+   673.8ms [  INFO ]  <I> QnnLog_create exit.
+
+   673.8ms [  INFO ] No BackendExtensions lib provided;initializing NetRunBackend Interface
+   673.8ms [  INFO ] opMapping is not required for the specified backend
+   673.8ms [  INFO ] Backend build version: v2.44.0.260225143659
+   673.8ms [  INFO ] No platform-specific callback implementation available
+   673.8ms [  INFO ]  <I> QnnBackend_create started. backend = 0x68a82370
+
+   674.0ms [  INFO ]  <I> QnnBackend_create done successfully. backend = 0x68a82370
+
+   674.0ms [  INFO ]  <I> QnnDevice_create started
+
+   674.1ms [  INFO ]  <I> QnnDevice_create done. device = 0x1. status 0x0
+
+   674.1ms [WARNING] Profile Logger with name = defaultKey doesn't exist! Returning nullptr
+   674.1ms [  INFO ]  <I> QnnContext_create started. backend = 0x1, device = 0x1
+
+   674.1ms [  INFO ]  <I> Number of existing contexts: 1, graphs: 0
+
+   674.1ms [  INFO ]  <I> QnnContext_create done successfully. context = 0x1
+
+   680.1ms [  INFO ] Composing Graph for DLC = /workspace/Polymath-AI/runtime/reports/gemma4_megakernel/phase12_remote/20260524T170746Z_gate_f_qwen_updateable/qwen_block_updateable_survivors.dlc
+   680.1ms [WARNING] Profile Logger with name = defaultKey doesn't exist! Returning nullptr
+   680.1ms [  INFO ] Initializing logging in the System Library. Callback: [0x7c010cb76180], Log Level: [3]
+   706.1ms [  INFO ]  <I> QnnGraph_create started for graph qwen_block_updateable_survivors
+
+   887.0ms [  INFO ] graph_registry.cc:558:[DefaultInitStatus] Graph 256 set to default init state
+
+   890.8ms [WARNING]  <W> Sanitizing the value for hvx_threads and setting to default
+
+   891.0ms [  INFO ] graph_registry.cc:558:[DefaultInitStatus] Graph 257 set to default init state
+
+   891.2ms [  INFO ]  <I> Number of existing contexts: 1, graphs: 1
+
+   891.2ms [  INFO ]  <I> QnnGraph_create done. status 0x0
+
+   891.6ms [  INFO ]  <I> QnnTensor_createGraphTensor started, graph = 0x1
+
+   891.6ms [  INFO ]  <I> QnnTensor_createGraphTensor graph 1 
+
+   891.6ms [  INFO ]  <I> QnnTensor_createGraphTensor done. graph = 0x1, status 0x0
+
+   891.6ms [  INFO ]  <I> QnnTensor_createGraphTensor started, graph = 0x1
+
+   891.6ms [  INFO ]  <I> QnnTensor_createGraphTensor graph 1 
+
+   891.6ms [  INFO ]  <I> QnnTensor_createGraphTensor done. graph = 0x1, status 0x0
+
+   891.6ms [  INFO ]  <I> QnnBackend_validateOpConfig started, backend = 0x1
+
+   896.3ms [  INFO ]  <I> QnnBackend_validateOpConfig done successfully. Backend = 0x1
+
+   896.3ms [  INFO ]  <I> QnnGraph_addNode started.
+
+   901.8ms [  INFO ]  <I> QnnGraph_addNode done. status 0x0
+
+   901.9ms [  INFO ]  <I> QnnTensor_createGraphTensor started, graph = 0x1
+
+   901.9ms [  INFO ]  <I> QnnTensor_createGraphTensor graph 1 
+
+   901.9ms [  INFO ]  <I> QnnTensor_createGraphTensor done. graph = 0x1, status 0x0
+
+   901.9ms [  INFO ]  <I> QnnTensor_createGraphTensor started, graph = 0x1
+
+   901.9ms [  INFO ]  <I> QnnTensor_createGraphTensor graph 1 
+
+   901.9ms [  INFO ]  <I> QnnTensor_createGraphTensor done. graph = 0x1, status 0x0
+
+   901.9ms [  INFO ]  <I> QnnBackend_validateOpConfig started, backend = 0x1
+
+   906.5ms [  INFO ]  <I> QnnBackend_validateOpConfig done successfully. Backend = 0x1
+
+   906.5ms [  INFO ]  <I> QnnGraph_addNode started.
+
+   906.6ms [  INFO ]  <I> QnnGraph_addNode done. status 0x0
+
+   906.6ms [  INFO ]  <I> QnnTensor_createGraphTensor started, graph = 0x1
+
+   906.6ms [  INFO ]  <I> QnnTensor_createGraphTensor graph 1 
+
+   907.6ms [  INFO ]  <I> QnnTensor_createGraphTensor done. graph = 0x1, status 0x0
+
+   907.6ms [  INFO ]  <I> QnnTensor_createGraphTensor started, graph = 0x1
+
+   907.6ms [  INFO ]  <I> QnnTensor_createGraphTensor graph 1 
+
+   907.6ms [  INFO ]  <I> QnnTensor_createGraphTensor done. graph = 0x1, status 0x0
+
+   907.6ms [  INFO ]  <I> QnnBackend_validateOpConfig started, backend = 0x1
+
+   907.6ms [ ERROR ]  <E> Tensor is updateable but HTP doesn't support the op being so
+
+   907.6ms [ ERROR ]  <E> None of the combinations match the provided case
+
+   907.6ms [ ERROR ]  <E> QnnBackend_validateOpConfig failed 3110
+
+   907.6ms [ ERROR ]  <E> Failed to validate op elementwise_product_1 with error 0xc26
+
+   234.3ms [ ERROR ] Exception encountered: Validate OpConfig failed: QNN_OP_PACKAGE_ERROR_VALIDATION_FAILURE: Op configuration failed validation
+   234.3ms [ ERROR ] Failed to successfully compose graph
+   234.3ms [ ERROR ] Graph composer failed, no graphs were created
+   914.5ms [ ERROR ] Failed in QnnSystemDlc_composeGraphs() with error code 1002
+   914.5ms [ ERROR ] Received nullptr for graphsInput.
+   914.5ms [ ERROR ] Failed to copy graph infos while composing graphs from dlc.
+   914.5ms [ ERROR ] ComposeGraphs Failed with error = 1
+Graph Compose failure
+   914.7ms [WARNING] Profile Logger with name = defaultKey doesn't exist! Returning nullptr
+   914.8ms [  INFO ]  <I> QnnContext_free started. context = 0x1
+
+   914.8ms [ ERROR ] api_recorder.cc:362::ERROR:Errors in graph connectivity:
+
+   914.8ms [ ERROR ] api_recorder.cc:363::ERROR:OpId 0x2 is referenced, but not defined
+
+   914.9ms [  INFO ]  <I> Number of existing contexts: 0, graphs: 0
+
+   914.9ms [  INFO ]  <I> QnnContext_free done successfully.
+
+   918.2ms [  INFO ]  <I> QnnDevice_free started. device = 0x1
+
+   918.2ms [  INFO ]  <I> QnnDevice_free done. status 0x0
+
+   918.2ms [WARNING] Profile Logger with name = defaultKey doesn't exist!
+   918.3ms [  INFO ]  <I> QnnBackend_free started. backend = 0x1
+
+   918.3ms [  INFO ] c_interface.cc:234:Closing environment: 0x5555686e2700
+

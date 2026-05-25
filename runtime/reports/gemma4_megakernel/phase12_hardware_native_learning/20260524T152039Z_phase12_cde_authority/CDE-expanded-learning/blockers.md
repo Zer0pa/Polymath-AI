@@ -1,0 +1,12 @@
+- rank-16 train arm did not pass configured iterations
+- rank-16 train top-k KL did not decrease
+- rank-16 train checkpoint did not change
+- rank-16 train did not report AdamW optimizer
+- rank-16 heldout control or trained eval did not pass
+- rank-16 heldout metrics missing
+- rank-32 train arm did not pass configured iterations
+- rank-32 train top-k KL did not decrease
+- rank-32 train checkpoint did not change
+- rank-32 train did not report AdamW optimizer
+- rank-32 heldout control or trained eval did not pass
+- rank-32 heldout metrics missing

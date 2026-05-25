@@ -1,0 +1,3 @@
+- Available HTP context is Qwen random-init, not real Gemma4.
+- HTP output shape [1,16,1536] is incompatible with Gemma hidden size 2560.
+- Gate F did not produce a valid updateable QNN context, so HTP cannot act as mutable training island.

@@ -1,0 +1,150 @@
+{
+  "goal": "Keep future long-run git artifacts bounded while preserving replayability and authority auditability.",
+  "h11h_empirical_index": {
+    "file_count": 3084,
+    "forbidden_local_payloads": [],
+    "iteration_json_file_count": 3006,
+    "largest_files": [
+      {
+        "bytes": 4635475,
+        "forbidden_payload_suffix": false,
+        "path": "runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T225149Z_h11h_combined_povc/H11-H-combined-povc/arms/train/checksum_chain.jsonl",
+        "sha256": "8f9177f828f83171b7e7ee03a9ba6819eec098c3351ecc09ce5d85d28e31f767"
+      },
+      {
+        "bytes": 920676,
+        "forbidden_payload_suffix": false,
+        "path": "runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T225149Z_h11h_combined_povc/H11-H-combined-povc/artifact_manifest.json",
+        "sha256": "6a5274237dc2181986434bdcdf65fa2d9feea38decc388e40643481b2a8fcd4b"
+      },
+      {
+        "bytes": 920065,
+        "forbidden_payload_suffix": false,
+        "path": "runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T225149Z_h11h_combined_povc/H11-H-combined-povc/arms/train/telemetry.jsonl",
+        "sha256": "8cd3766a7d3db19e6a4bd5f12a16315e46a4e62237a579857d688c5177f675aa"
+      },
+      {
+        "bytes": 706606,
+        "forbidden_payload_suffix": false,
+        "path": "runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T225149Z_h11h_combined_povc/H11-H-combined-povc/metric_trace.jsonl",
+        "sha256": "8c4e08bf83e72313be48ee13e6268a45e053ac63320dc7502b4cbb8032bbd0cc"
+      },
+      {
+        "bytes": 205946,
+        "forbidden_payload_suffix": false,
+        "path": "runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T225149Z_h11h_combined_povc/H11-H-combined-povc/loss_traces.json",
+        "sha256": "692006cf324ff42547f705ef998f13cd5308dde52cc5f25143ce3d805168c9e3"
+      },
+      {
+        "bytes": 198188,
+        "forbidden_payload_suffix": false,
+        "path": "runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T225149Z_h11h_combined_povc/H11-H-combined-povc/gate_result.json",
+        "sha256": "7ad7ca4b04240f77fe9d5635980046e6e833da847ce20f9dcc126df9e5d4f3c6"
+      },
+      {
+        "bytes": 105391,
+        "forbidden_payload_suffix": false,
+        "path": "runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T225149Z_h11h_combined_povc/H11-H-combined-povc/arms/train/timing_breakdown.json",
+        "sha256": "79ccb8e22a43ac1117d0f76ca2e931eb3d773b57ebb160113a9adf20c96c4e30"
+      },
+      {
+        "bytes": 17100,
+        "forbidden_payload_suffix": false,
+        "path": "runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T225149Z_h11h_combined_povc/H11-H-combined-povc/regressions/g1_g3_g8_falsifier_rerun/falsifier_report.json",
+        "sha256": "5d28b42add20cdc34c13a6a45c3d2220807fb3ef0f569211ce1ccc55fd5e6b2c"
+      },
+      {
+        "bytes": 10362,
+        "forbidden_payload_suffix": false,
+        "path": "runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T225149Z_h11h_combined_povc/H11-H-combined-povc/arms/baseline_eval/checksum_chain.jsonl",
+        "sha256": "2e30469cbd4cae9bd9f4830f4c73657794a15f338a2e4e474e193c392c00e92c"
+      },
+      {
+        "bytes": 10344,
+        "forbidden_payload_suffix": false,
+        "path": "runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T225149Z_h11h_combined_povc/H11-H-combined-povc/arms/trained_eval/checksum_chain.jsonl",
+        "sha256": "b1f6c0cc8bbbee63f4efa0d2335fcef8796af6ad7a82bfa450351db508017680"
+      },
+      {
+        "bytes": 8464,
+        "forbidden_payload_suffix": false,
+        "path": "runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T225149Z_h11h_combined_povc/H11-H-combined-povc/heldout_report.json",
+        "sha256": "09d350ca9e5f5e265c35796271a24671a91a545d76ab9e5f3a7cffc6f605f997"
+      },
+      {
+        "bytes": 6104,
+        "forbidden_payload_suffix": false,
+        "path": "runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T225149Z_h11h_combined_povc/H11-H-combined-povc/detached_launch.json",
+        "sha256": "089a0f4cf0404db87a4084a4bd05cd3851aa19664b830194dbda29536f44e4f6"
+      },
+      {
+        "bytes": 5685,
+        "forbidden_payload_suffix": false,
+        "path": "runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T225149Z_h11h_combined_povc/H11-H-combined-povc/regression_report.json",
+        "sha256": "ac4fa0c7418f44bc62f5c29283ba537046a26b6d720b3ca2907c9091c57a4135"
+      },
+      {
+        "bytes": 4522,
+        "forbidden_payload_suffix": false,
+        "path": "runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T225149Z_h11h_combined_povc/H11-H-combined-povc/regressions/phone_smokes/g8_rank4_distill_compact_smoke/artifact_manifest.json",
+        "sha256": "14a5c648c1c379bebffc15454e0bd18993e8a344b4234ca7c42494087d92e90c"
+      },
+      {
+        "bytes": 4458,
+        "forbidden_payload_suffix": false,
+        "path": "runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T225149Z_h11h_combined_povc/H11-H-combined-povc/detached_chain/h11h_20260523T225149Z_h11h_combined_povc_chain.sh",
+        "sha256": "528013abe05fc45c373dce45de69cf611bf320b9ea47c4c2e73e46fc251954bc"
+      },
+      {
+        "bytes": 3465,
+        "forbidden_payload_suffix": false,
+        "path": "runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T225149Z_h11h_combined_povc/H11-H-combined-povc/arms/baseline_eval/daemon_static_artifact_manifest.json",
+        "sha256": "0e2580186ac14baeeecf5189e5fa236103ab2f28278670b69df7a3f70e286abc"
+      },
+      {
+        "bytes": 3465,
+        "forbidden_payload_suffix": false,
+        "path": "runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T225149Z_h11h_combined_povc/H11-H-combined-povc/arms/trained_eval/daemon_static_artifact_manifest.json",
+        "sha256": "e0c594817f1a02203f3e59e25f423433f1d98264818df09c772aff92532c9c15"
+      },
+      {
+        "bytes": 3457,
+        "forbidden_payload_suffix": false,
+        "path": "runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T225149Z_h11h_combined_povc/H11-H-combined-povc/arms/train/daemon_static_artifact_manifest.json",
+        "sha256": "2f285ede1a4b8400ae5131ea8f00c99a361be0f49325057d9591653752bbbcf5"
+      },
+      {
+        "bytes": 3233,
+        "forbidden_payload_suffix": false,
+        "path": "runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T225149Z_h11h_combined_povc/H11-H-combined-povc/arms/baseline_eval/artifact_manifest.json",
+        "sha256": "2d37c7d74f6357c1593246b0f2be44ecec29772a820a1fadeda4530c74b5cc36"
+      },
+      {
+        "bytes": 3222,
+        "forbidden_payload_suffix": false,
+        "path": "runtime/reports/gemma4_megakernel/hardware_native_povc/20260523T225149Z_h11h_combined_povc/H11-H-combined-povc/regressions/phone_smokes/summary.json",
+        "sha256": "d84b53e572f4debb8741efe37973312e69ddc812232e517494934c947b7c45cb"
+      }
+    ],
+    "total_bytes": 13492667
+  },
+  "new_phase12_code_support": {
+    "optimizer_state_policy": "AdamW state is checkpoint-local phone payload; manifests record state hashes only.",
+    "runner_config_fields": [
+      "optimizer",
+      "weight_decay",
+      "beta1",
+      "beta2",
+      "optimizer_epsilon",
+      "grad_clip_l2"
+    ]
+  },
+  "policies": [
+    "Hash static model/token assets once per run in a static manifest; later iterations reference that manifest.",
+    "Write raw tensors only for predeclared sample/parity iterations; compact iterations emit telemetry, replay manifests, checkpoint manifests, and checksum records only.",
+    "Keep trainable adapter payloads and optimizer-state payloads on the phone; pull only manifests and hashes into git.",
+    "Represent long traces as JSONL metric rows plus rolled summaries; do not duplicate full loss arrays in multiple artifacts.",
+    "Every compact gate must include artifact_manifest.json, blockers.md, falsifier_report.md, gate_result.json, and checksum_chain.jsonl."
+  ],
+  "schema_version": "phase12_compact_artifact_strategy_v1"
+}

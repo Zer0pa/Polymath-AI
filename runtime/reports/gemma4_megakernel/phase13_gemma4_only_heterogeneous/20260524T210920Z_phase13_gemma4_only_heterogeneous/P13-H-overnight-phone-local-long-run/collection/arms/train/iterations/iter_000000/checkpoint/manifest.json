@@ -1,0 +1,47 @@
+{
+  "schema_version": "gemma4_rank_adapter_topk_kl_checkpoint_v1",
+  "objective": "label_contrastive_topk_kl_v1",
+  "objective_contract": "p13c_label_onehot_topk_over_phone_native_corpus_labels_no_runtime_teacher_service",
+  "teacher_provenance": "phone_native_p13c_labels_to_host_deterministic_onehot_topk_precompute",
+  "adapter_site": "post_layer0",
+  "trainable_scope": "post_layer0_rank16_residual_adapter",
+  "rank": 16,
+  "optimizer": "adamw",
+  "optimizer_backend": "phone_cpu_after_opencl_gradients",
+  "learning_rate": 0.0003000000,
+  "optimizer_step": 33,
+  "weight_decay": 0.0099999998,
+  "gradient_clip_l2": 1.0000000000,
+  "gradient_clip_scale": 1.0000000000,
+  "combined_gradient_l2": 0.4639108434,
+  "applied_update": true,
+  "loss_topk_kl": 1.9959086212,
+  "active_loss_tokens": 596,
+  "student_teacher_top1_agreement": 0.1812080537,
+  "mean_student_teacher_top1_probability": 0.1757317151,
+  "gradient_l2": {"adapter_a": 0.1688648196, "adapter_b": 0.4320855741, "output": 0.0321242987},
+  "checkpoint_delta_l2": {"adapter_a": 0.0362630200, "adapter_b": 0.0369017704},
+  "teacher_shard": {
+    "path": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13h/shards/train/teacher_shards/shard_0000",
+    "manifest_schema_version": "phase13_p13h_label_contrastive_topk_teacher_v1",
+    "teacher_scope": "p13c_next_token_label_onehot_plus_deterministic_negatives",
+    "manifest_sha256": "63805e8f2f5f2b8ab1c0f8753c7654460798bd94be66fff357f8c5e5896d1f74",
+    "topk_token_ids_sha256": "d47c85a73b1094060f121ea89acb878361ef5ce23840fbede71ac7ca346f0ba9",
+    "topk_probabilities_sha256": "6c28aeed155249e7440fba7bcf35325f2520aaef79d66cedaded3f19133f4528"
+  },
+  "pre_update": {
+    "adapter_a": {"path": "/data/local/tmp/polymath_gemma4_gate/phase12/runs/20260524T173847Z_phase12_long_native_lr_retry1_lr3e4_cont24_train/Phase12-long-native-lr/iterations/iter_000023/checkpoint/adapter_a.f32.bin", "sha256": "022bbe96a89539f41bc6479269272a3e30123a8126a9a31e8da839e47450eb0d"},
+    "adapter_b": {"path": "/data/local/tmp/polymath_gemma4_gate/phase12/runs/20260524T173847Z_phase12_long_native_lr_retry1_lr3e4_cont24_train/Phase12-long-native-lr/iterations/iter_000023/checkpoint/adapter_b.f32.bin", "sha256": "ee2eecf9560fcb3d1e991d4f89c0cc6a826509c248d8ae598db9af4a9f3bb604"}
+  },
+  "post_update": {
+    "adapter_a": {"path": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13h/runs/20260524T210920Z_phase13_gemma4_only_heterogeneous_p13h_20260524T232423Z_train/P13-H-overnight-phone-local-long-run/iterations/iter_000000/checkpoint/adapter_a.f32.bin", "sha256": "2701b45750f21cf1d4b6b9fdb381cb326bc118a0b2eb44e38932b7e6c5ce9e10"},
+    "adapter_b": {"path": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13h/runs/20260524T210920Z_phase13_gemma4_only_heterogeneous_p13h_20260524T232423Z_train/P13-H-overnight-phone-local-long-run/iterations/iter_000000/checkpoint/adapter_b.f32.bin", "sha256": "36f1880f0b15eec70a83071a11dbab58ea63c939643d0a70d1c4cacf74591e3f"}
+  },
+  "optimizer_state": {
+    "step": {"path": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13h/runs/20260524T210920Z_phase13_gemma4_only_heterogeneous_p13h_20260524T232423Z_train/P13-H-overnight-phone-local-long-run/iterations/iter_000000/checkpoint/optimizer_state/step.txt", "sha256": "19b8d5c59e421f037fe563007c7254eb8d98bc221b278c3db3e5fdbbfd52e273"},
+    "adapter_a_m": {"path": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13h/runs/20260524T210920Z_phase13_gemma4_only_heterogeneous_p13h_20260524T232423Z_train/P13-H-overnight-phone-local-long-run/iterations/iter_000000/checkpoint/optimizer_state/adapter_a_m.f32.bin", "sha256": "22b19517941dd9f89b0f658a35a24e8ae95571ff37680bb498ac1de25770185d"},
+    "adapter_a_v": {"path": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13h/runs/20260524T210920Z_phase13_gemma4_only_heterogeneous_p13h_20260524T232423Z_train/P13-H-overnight-phone-local-long-run/iterations/iter_000000/checkpoint/optimizer_state/adapter_a_v.f32.bin", "sha256": "38eb7bb8584875b5d97e82f3f84ae9f13dae456a67fe82d9b02d0cc41d8da443"},
+    "adapter_b_m": {"path": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13h/runs/20260524T210920Z_phase13_gemma4_only_heterogeneous_p13h_20260524T232423Z_train/P13-H-overnight-phone-local-long-run/iterations/iter_000000/checkpoint/optimizer_state/adapter_b_m.f32.bin", "sha256": "37df50bad5d2b3dca7e127e5223ab94e077fc8cc2f0fbea7d650587b9c642243"},
+    "adapter_b_v": {"path": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13h/runs/20260524T210920Z_phase13_gemma4_only_heterogeneous_p13h_20260524T232423Z_train/P13-H-overnight-phone-local-long-run/iterations/iter_000000/checkpoint/optimizer_state/adapter_b_v.f32.bin", "sha256": "1e9571d7d30a07005b2eca7c6fdd022535052d8fe958d0a962fb45787adc8ef9"}
+  }
+}

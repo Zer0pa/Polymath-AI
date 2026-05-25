@@ -1,0 +1,41 @@
+{
+  "blockers": [],
+  "ended_at_utc": "2026-05-24T22:13:06Z",
+  "fail_count": 0,
+  "gate": "P13-D-expanded-gradient-parity",
+  "max_absolute_error": 6.733842150552505e-08,
+  "max_relative_error": 1.0,
+  "method": "phone_finite_difference_vs_phone_sgd_checkpoint_delta_gradient",
+  "model_id": "google/gemma-4-E4B",
+  "nonclaims": [
+    "P13-D is sampled residual-adapter gradient parity, not full-gradient proof.",
+    "P13-D does not validate multi-site adapters.",
+    "P13-D does not validate HTP backprop or heterogeneous training."
+  ],
+  "pass_count": 64,
+  "phone_gate_root": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13d",
+  "probe_count": 64,
+  "promoted_claims": [
+    "Seeded sampled phone finite-difference parity passed for 64 residual-adapter coordinates.",
+    "Coverage includes rank16/rank32, adapter_a/adapter_b, and init/final checkpoint states."
+  ],
+  "rank_coverage": [
+    16,
+    32
+  ],
+  "revision": "7aa32e6889efd6300124851b164f8b364314c3d8",
+  "run_id": "20260524T210920Z_phase13_gemma4_only_heterogeneous",
+  "schema_version": "phase13_p13d_gate_result_v1",
+  "source_state_coverage": [
+    "rank16_final_iter7",
+    "rank16_init_iter0",
+    "rank32_final_iter7",
+    "rank32_init_iter0"
+  ],
+  "started_at_utc": "2026-05-24T22:13:06Z",
+  "status": "pass",
+  "tensor_coverage": [
+    "adapter_a",
+    "adapter_b"
+  ]
+}

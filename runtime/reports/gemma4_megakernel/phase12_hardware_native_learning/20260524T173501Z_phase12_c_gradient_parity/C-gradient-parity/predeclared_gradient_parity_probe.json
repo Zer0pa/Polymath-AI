@@ -1,0 +1,20 @@
+{
+  "base_checkpoint": "/data/local/tmp/polymath_gemma4_gate/phase12/runs/20260524T164412Z_phase12_cde_authority_rank16_train/Phase12-CDE-learning/iterations/iter_000007/checkpoint",
+  "declared_at_utc": "2026-05-24T17:35:01.588392+00:00",
+  "epsilons": [
+    0.01,
+    0.005
+  ],
+  "gradient_source_iteration": "/data/local/tmp/polymath_gemma4_gate/phase12/runs/20260524T164412Z_phase12_cde_authority_rank16_trained_eval/Phase12-CDE-learning/iterations/iter_000000",
+  "nonclaims": [
+    "full-gradient parity",
+    "multi-site adapter gradient parity",
+    "HTP backprop"
+  ],
+  "objective": "heldout top-k KL",
+  "pass_rule": "each tensor has a sign-matching finite-difference estimate with relative error <= 0.25 for at least one epsilon",
+  "probe_policy": "largest absolute adapter_a gradient and largest absolute adapter_b gradient",
+  "rank": 16,
+  "schema_version": "phase12_c_gradient_parity_predeclare_v1",
+  "source_cde_result": "runtime/reports/gemma4_megakernel/phase12_hardware_native_learning/20260524T164412Z_phase12_cde_authority/CDE-expanded-learning/phase12_cde_gate_result.json"
+}
