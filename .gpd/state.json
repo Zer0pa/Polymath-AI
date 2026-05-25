@@ -1,8 +1,8 @@
 {
-  "_synced_at": "2026-05-25T17:30:00Z",
+  "_synced_at": "2026-05-25T17:53:23Z",
   "active_calculations": [
-    "Phase 14 P14-0 through P14-4 passed without training; P14-5 objective repair, P14-6 short proof, and P14-7 segmented long run remain ordered gates.",
-    "No training may launch until P14-5 is complete and P14-6 is explicitly scoped.",
+    "Phase 14 P14-0 through P14-5 passed without training; P14-6 short thermally bounded proof and P14-7 segmented long run remain ordered gates.",
+    "P14-6 may use only predeclared full_gemma_teacher_topk_kl_v1 subset shards generated offline from phone-defined token caches; full scaled generation is deferred/not promoted.",
     "P13-H failed; P13-I exact claims are authoritative; P13-F HTP ReLU is execution-only; residual-adapter OpenCL is not a fused megakernel; train-loss movement cannot replace full-heldout movement."
   ],
   "approximations": [],
@@ -102,17 +102,18 @@
     "P14-1 phone thermal/process baseline passed: runtime/reports/gemma4_megakernel/phase14_drift_cleanup/20260525T164328Z_phase14_drift_cleanup/P14-1-phone-thermal-process-baseline/gate_result.json. ADB sees FY25013101C8, no stale runner matched, thermalservice status is 0, battery is 28.0 C, storage/memory baseline is recorded, and no Game Zone/fan/training activation was attempted.",
     "P14-2 artifact quarantine and compact manifest repair passed: runtime/reports/gemma4_megakernel/phase14_drift_cleanup/20260525T164328Z_phase14_drift_cleanup/P14-2-artifact-quarantine-compact-manifest-repair/gate_result.json. P13-G raw/bin payloads remain quarantined outside the repo and P13-G artifact_manifest.json now records compact quarantine metadata with no forbidden payload entries in artifacts[].",
     "P14-3 Mac/RunPod/GitHub/GPD reconciliation passed: runtime/reports/gemma4_megakernel/phase14_drift_cleanup/20260525T164328Z_phase14_drift_cleanup/P14-3-state-reconciliation/gate_result.json. Mac/GitHub reconciled on gemma4-megakernel-native-training, clean RunPod worktree /workspace/Polymath-AI-phase14-gemma4 is detached at the reconciled commit for offline-oracle work, stale /workspace/Polymath-AI remains quarantined, phone FY25013101C8 is visible, and forbidden payload scans are clean.",
-    "P14-4 full-heldout evaluator repair passed: runtime/reports/gemma4_megakernel/phase14_drift_cleanup/20260525T164328Z_phase14_drift_cleanup/P14-4-full-heldout-evaluator-repair/gate_result.json. Train-chain wait dependency removed, 128-shard baseline/candidate evaluator configs generated with apply_update=false, phone checkpoint manifests verified, and existing phone eval telemetry aggregation validated for objective/model/hidden-size/teacher-provenance/no-update invariants; no heldout improvement or training promoted."
+    "P14-4 full-heldout evaluator repair passed: runtime/reports/gemma4_megakernel/phase14_drift_cleanup/20260525T164328Z_phase14_drift_cleanup/P14-4-full-heldout-evaluator-repair/gate_result.json. Train-chain wait dependency removed, 128-shard baseline/candidate evaluator configs generated with apply_update=false, phone checkpoint manifests verified, and existing phone eval telemetry aggregation validated for objective/model/hidden-size/teacher-provenance/no-update invariants; no heldout improvement or training promoted.",
+    "P14-5 objective repair passed: runtime/reports/gemma4_megakernel/phase14_drift_cleanup/20260525T164328Z_phase14_drift_cleanup/P14-5-objective-repair/gate_result.json. Repaired objective is full_gemma_teacher_topk_kl_v1 with full Gemma logits, conditional top-k KL, RunPod offline-teacher provenance, no runtime teacher service, and no phone training launched; complete 8-sequence shard smoke passed on clean RunPod CPU in 471s, while full 1024-train/128-heldout generation is deferred/not promoted."
   ],
   "open_questions": [
-    "Can the full-heldout evaluator run baseline and trained checks independently over the P13-C heldout cache without depending on train-chain success?",
-    "Can full Gemma teacher top-k/logit-KL shards be generated compactly from the P13-C phone-defined corpus using RunPod only as offline oracle?",
+    "Which predeclared full-teacher train/heldout subset is sufficient for P14-6 without turning into a toy/demo proof?",
     "Which segmented thermal policy keeps REDMAGIC phone-local training below safety thresholds while preserving disconnected execution?",
-    "Can RedMagic Game Space/Game Zone or fan controls be used through reversible user-visible settings without hidden authority or safety regressions?"
+    "Can RedMagic Game Space/Game Zone or fan controls be used through reversible user-visible settings without hidden authority or safety regressions?",
+    "What validated oracle or parallel generation campaign is needed before full 1024-train/128-heldout full-teacher scale can be promoted?"
   ],
   "pending_todos": [
-    "P14-5: decide full Gemma teacher top-k/logit-KL feasibility or document a stronger falsifier-backed fallback objective.",
-    "P14-6: run only a short thermally bounded phone-local learning proof with full-heldout before/after after P14-5 passes."
+    "P14-6: generate/deploy a predeclared full-teacher subset, run phone thermal/process preflight, then run only a short thermally bounded phone-local learning proof with heldout before/after.",
+    "P14-7: only after P14-6 passes, plan segmented disconnected long phone-local training with explicit full-heldout authority gates."
   ],
   "performance_metrics": {
     "rows": [
@@ -271,11 +272,11 @@
     "current_phase_name": "Repair Scaled Heldout Learning Before New Hardware Claims",
     "current_plan": 1,
     "last_activity": "2026-05-25",
-    "last_activity_desc": "Phase 14 P14-4 full-heldout evaluator repair passed: the evaluator path is independent of the train chain, generates 128-shard baseline/candidate eval queues with apply_update=false, verifies phone checkpoint manifests, and validates objective/provenance/no-update aggregation on existing phone eval telemetry; no training or heldout improvement was launched or promoted.",
-    "last_activity_description": "Phase 14 P14-4 full-heldout evaluator repair passed: the evaluator path is independent of the train chain, generates 128-shard baseline/candidate eval queues with apply_update=false, verifies phone checkpoint manifests, and validates objective/provenance/no-update aggregation on existing phone eval telemetry; no training or heldout improvement was launched or promoted.",
+    "last_activity_desc": "Phase 14 P14-5 objective repair passed: full_gemma_teacher_topk_kl_v1 is now the next proof objective, RunPod is limited to offline full-Gemma top-k oracle work over phone-defined token caches, a complete 8-sequence shard smoke passed in 471 seconds, full scaled 1024-train/128-heldout generation is deferred/not promoted, and no training was launched.",
+    "last_activity_description": "Phase 14 P14-5 objective repair passed: full_gemma_teacher_topk_kl_v1 is now the next proof objective, RunPod is limited to offline full-Gemma top-k oracle work over phone-defined token caches, a complete 8-sequence shard smoke passed in 471 seconds, full scaled 1024-train/128-heldout generation is deferred/not promoted, and no training was launched.",
     "paused_at": null,
-    "progress_percent": 94,
-    "status": "Phase 14 P14-0 through P14-4 passed without training; P14-5 objective repair next",
+    "progress_percent": 96,
+    "status": "Phase 14 P14-0 through P14-5 passed without training; P14-6 short proof next",
     "total_phases": 14,
     "total_plans_in_phase": 1
   },
@@ -764,6 +765,6 @@
   "session": {
     "last_session": "2026-05-25",
     "resume_file": ".gpd/STATE.md",
-    "stopped_at": "Phase 14 P14-4 full-heldout evaluator repair; no training launched."
+    "stopped_at": "Phase 14 P14-5 objective repair; no training launched."
   }
 }

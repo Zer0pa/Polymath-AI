@@ -1,0 +1,48 @@
+{
+  "files": [
+    {
+      "bytes": 32768,
+      "path": "topk_token_ids.u32.bin",
+      "sha256": "e94e32ca5d30a6a8c88bd2b59960b0ef6bbe6d697c95892d0ba37ccf6f0e617a"
+    },
+    {
+      "bytes": 32768,
+      "path": "topk_probabilities.f32.bin",
+      "sha256": "a681cd8515f5cdfe9daf2dce0044c42b87d6ac76dfda4c02401a67c66135b2f1"
+    },
+    {
+      "bytes": 1024,
+      "path": "loss_mask.u8.bin",
+      "sha256": "baa96e7c9b0beb767e3c01d3cbd7a102399cd6254c6380faf171e6c3a41b3c7c"
+    },
+    {
+      "bytes": 4096,
+      "path": "labels.u32.bin",
+      "sha256": "c54f9e05b0d59240663eb1317bb1811c067487f55900d9ed19fdcab8535a6373"
+    }
+  ],
+  "loss_tokens": 552,
+  "metric_predeclared": {
+    "heldout_guardrail": "student_teacher_top1_agreement_non_regression",
+    "heldout_primary": "mean_student_teacher_top1_probability",
+    "train_signal": "loss_topk_kl_decrease"
+  },
+  "model_id": "google/gemma-4-E4B",
+  "objective": "conditional_topk_kl_over_full_teacher_topk",
+  "revision": "7aa32e6889efd6300124851b164f8b364314c3d8",
+  "schema_version": "phase11_h11f_topk_teacher_shard_v1",
+  "sequence_count": 8,
+  "sequence_length": 128,
+  "split": "heldout_smoke",
+  "student_scope": "two_layer_phone_runtime_rank4_residual_adapter",
+  "teacher_scope": "full_gemma4_e4b_causal_lm_logits",
+  "token_cache": {
+    "attention_mask_sha256": "91f8879aa778073d1b3e7e5a2175e7a4a88274add71ef99aeba92b8dbf39c45f",
+    "input_ids_sha256": "10a9e4b7b3ca91131c1a6e05ab93cf5a34c2e2ba5878fbc85ef74b60038a9920",
+    "labels_sha256": "c54f9e05b0d59240663eb1317bb1811c067487f55900d9ed19fdcab8535a6373",
+    "loss_mask_sha256": "baa96e7c9b0beb767e3c01d3cbd7a102399cd6254c6380faf171e6c3a41b3c7c",
+    "position_ids_sha256": "25eda8b16571181a876d5b6e34311fc5e3cfd410ae704ad01213648dcecaa16f"
+  },
+  "token_count": 1024,
+  "top_k": 8
+}

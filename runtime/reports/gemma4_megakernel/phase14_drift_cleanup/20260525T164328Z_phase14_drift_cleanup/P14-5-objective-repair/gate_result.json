@@ -1,0 +1,62 @@
+{
+  "authority_metric": "full-heldout before/after movement; train-loss movement cannot substitute",
+  "created_at_utc": "2026-05-25T17:53:23Z",
+  "evidence": {
+    "full_teacher_smoke_1case_manifest": "runtime/reports/gemma4_megakernel/phase14_drift_cleanup/20260525T164328Z_phase14_drift_cleanup/P14-5-objective-repair/full_teacher_smoke_1case_manifest.json",
+    "full_teacher_smoke_8case_manifest_prepatch": "runtime/reports/gemma4_megakernel/phase14_drift_cleanup/20260525T164328Z_phase14_drift_cleanup/P14-5-objective-repair/full_teacher_smoke_8case_manifest.json",
+    "full_teacher_smoke_8case_manifest_v2": "runtime/reports/gemma4_megakernel/phase14_drift_cleanup/20260525T164328Z_phase14_drift_cleanup/P14-5-objective-repair/full_teacher_smoke_8case_v2_manifest.json",
+    "runpod_environment_and_outputs": "runtime/reports/gemma4_megakernel/phase14_drift_cleanup/20260525T164328Z_phase14_drift_cleanup/P14-5-objective-repair/runpod_full_teacher_environment_and_outputs.txt"
+  },
+  "forbidden_claims_not_promoted": [
+    "P13-F HTP ReLU island as heterogeneous training",
+    "train-loss movement as a replacement for full-heldout movement",
+    "residual-adapter OpenCL training as a fused megakernel",
+    "label_contrastive_topk_kl_v1 as the repaired Phase 14 objective",
+    "full scaled 1024-train/128-heldout full-teacher generation as completed"
+  ],
+  "full_scaled_generation": {
+    "heldout_shards": 128,
+    "observed_cpu_seconds_per_8_sequence_shard": 471,
+    "projected_serial_days_for_1152_shards": 6.28,
+    "projected_serial_hours_for_1152_shards": 150.72,
+    "runpod_gpu_available": false,
+    "status": "deferred_not_promoted",
+    "train_shards": 1024
+  },
+  "gate": "P14-5-objective-repair",
+  "next_gate": "P14-6 short thermally bounded phone-local learning proof",
+  "objective_after": {
+    "full_teacher_logits_used": true,
+    "objective_contract": "precomputed_full_teacher_topk_to_phone_tied_embedding_student_kl_no_runtime_teacher_service",
+    "probability_normalization": "conditional_within_topk",
+    "teacher_provenance": "runpod_precomputed_full_gemma4_topk_from_p13c_phone_defined_tokens",
+    "teacher_scope": "full_gemma4_e4b_causal_lm_logits",
+    "telemetry_objective": "full_gemma_teacher_topk_kl_v1"
+  },
+  "objective_before": {
+    "teacher_provenance": "phone_native_p13c_labels_to_host_deterministic_onehot_topk_precompute",
+    "telemetry_objective": "label_contrastive_topk_kl_v1"
+  },
+  "p14_6_preconditions": [
+    "generate a predeclared small set of full-teacher train and heldout shards outside the repo",
+    "deploy only the generated shard payloads needed for the short proof to the phone runtime root",
+    "record a phone thermal/process preflight immediately before launch",
+    "run baseline and candidate heldout evaluations with apply_update=false",
+    "launch only a short thermally bounded phone-local proof, not the segmented long run"
+  ],
+  "phone_runtime_data_path_substitution": false,
+  "runpod_role": "offline full-teacher top-k oracle only",
+  "schema_version": "phase14_p14_5_gate_result_v1",
+  "status": "pass_full_teacher_subset_objective_repaired_scaled_generation_deferred",
+  "training_launched": false,
+  "validated_full_teacher_subset": {
+    "elapsed_seconds": 471,
+    "loss_tokens": 552,
+    "manifest": "runtime/reports/gemma4_megakernel/phase14_drift_cleanup/20260525T164328Z_phase14_drift_cleanup/P14-5-objective-repair/full_teacher_smoke_8case_v2_manifest.json",
+    "max_cases": null,
+    "returncode": 0,
+    "sequence_count": 8,
+    "sequence_length": 128,
+    "top_k": 8
+  }
+}

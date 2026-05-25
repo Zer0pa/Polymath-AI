@@ -1,0 +1,47 @@
+python=3.11 clean .venv
+torch=2.12.0+cpu
+cuda=False
+transformers=5.9.0
+numpy=1.26.4
+accelerate=1.13.0
+
+# output sizes
+/workspace/phase14_p14_5_full_teacher_smoke/teacher_shard_0000/labels.u32.bin 4096 bytes
+/workspace/phase14_p14_5_full_teacher_smoke/teacher_shard_0000/loss_mask.u8.bin 1024 bytes
+/workspace/phase14_p14_5_full_teacher_smoke/teacher_shard_0000/manifest.json 1814 bytes
+/workspace/phase14_p14_5_full_teacher_smoke/teacher_shard_0000/topk_probabilities.f32.bin 32768 bytes
+/workspace/phase14_p14_5_full_teacher_smoke/teacher_shard_0000/topk_token_ids.u32.bin 32768 bytes
+/workspace/phase14_p14_5_full_teacher_smoke/teacher_shard_0000_max1/labels.u32.bin 512 bytes
+/workspace/phase14_p14_5_full_teacher_smoke/teacher_shard_0000_max1/loss_mask.u8.bin 128 bytes
+/workspace/phase14_p14_5_full_teacher_smoke/teacher_shard_0000_max1/manifest.json 2227 bytes
+/workspace/phase14_p14_5_full_teacher_smoke/teacher_shard_0000_max1/topk_probabilities.f32.bin 4096 bytes
+/workspace/phase14_p14_5_full_teacher_smoke/teacher_shard_0000_max1/topk_token_ids.u32.bin 4096 bytes
+/workspace/phase14_p14_5_full_teacher_smoke/token_shard_0000/attention_mask.u8.bin 1024 bytes
+/workspace/phase14_p14_5_full_teacher_smoke/token_shard_0000/input_ids.u32.bin 4096 bytes
+/workspace/phase14_p14_5_full_teacher_smoke/token_shard_0000/labels.u32.bin 4096 bytes
+/workspace/phase14_p14_5_full_teacher_smoke/token_shard_0000/loss_mask.u8.bin 1024 bytes
+/workspace/phase14_p14_5_full_teacher_smoke/token_shard_0000/manifest.json 2343 bytes
+/workspace/phase14_p14_5_full_teacher_smoke/token_shard_0000/position_ids.u32.bin 4096 bytes
+## HEAD (no branch)
+ M integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/create_h11f_topk_teacher_shard.py
+!! .venv/
+
+# patched v2 full-shard smoke
+clean_worktree=4f1c41f1
+python=Python 3.11.13
+torch=2.12.0+cpu cuda=False
+transformers=5.9.0
+numpy=1.26.4
+accelerate=1.13.0
+elapsed_seconds=471
+returncode=0
+
+# patched v2 output sizes and hashes
+/workspace/phase14_p14_5_full_teacher_smoke/teacher_shard_0000_v2/labels.u32.bin 4096 bytes sha256=c54f9e05b0d59240663eb1317bb1811c067487f55900d9ed19fdcab8535a6373
+/workspace/phase14_p14_5_full_teacher_smoke/teacher_shard_0000_v2/loss_mask.u8.bin 1024 bytes sha256=baa96e7c9b0beb767e3c01d3cbd7a102399cd6254c6380faf171e6c3a41b3c7c
+/workspace/phase14_p14_5_full_teacher_smoke/teacher_shard_0000_v2/manifest.json 2227 bytes sha256=9bbffe5591f0fe874f0515e79f920810a8e1a98e08b6ac020376d261b4fdc6e6
+/workspace/phase14_p14_5_full_teacher_smoke/teacher_shard_0000_v2/topk_probabilities.f32.bin 32768 bytes sha256=a681cd8515f5cdfe9daf2dce0044c42b87d6ac76dfda4c02401a67c66135b2f1
+/workspace/phase14_p14_5_full_teacher_smoke/teacher_shard_0000_v2/topk_token_ids.u32.bin 32768 bytes sha256=e94e32ca5d30a6a8c88bd2b59960b0ef6bbe6d697c95892d0ba37ccf6f0e617a
+
+The v2 binary outputs are remote scratch artifacts only. They were not copied
+into the repository; only manifest metadata was pulled into this report.

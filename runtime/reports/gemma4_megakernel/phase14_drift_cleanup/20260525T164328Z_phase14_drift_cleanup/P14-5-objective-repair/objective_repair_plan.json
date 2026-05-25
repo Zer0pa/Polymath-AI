@@ -1,0 +1,36 @@
+{
+  "created_at_utc": "2026-05-25T17:53:23Z",
+  "decision": "use full_gemma_teacher_topk_kl_v1 for P14-6 subset proof",
+  "gate": "P14-5-objective-repair",
+  "implementation": {
+    "generator": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/create_h11f_topk_teacher_shard.py",
+    "new_manifest_fields": [
+      "telemetry_objective",
+      "objective_contract",
+      "teacher_provenance",
+      "teacher_scope",
+      "probability_normalization",
+      "full_teacher_logits_used",
+      "source_sequence_count",
+      "max_cases"
+    ],
+    "smoke_limit_option": "--max-cases"
+  },
+  "p14_6_subset_scope": {
+    "allowed": true,
+    "minimum_heldout_scope": "predeclared full-teacher heldout subset with baseline/candidate before-after comparison",
+    "minimum_train_scope": "predeclared full-teacher train subset sufficient for a thermally bounded phone-local proof",
+    "not_allowed": [
+      "runtime teacher service",
+      "host or RunPod runtime data-path substitution",
+      "label-contrastive fallback promotion",
+      "long segmented phone run before the short proof passes"
+    ]
+  },
+  "scaled_generation": {
+    "status": "deferred_not_promoted",
+    "reason": "CPU-only clean RunPod completed an 8-sequence shard in 471 seconds; serial generation for 1024 train plus 128 heldout shards projects to about 150.72 hours.",
+    "requirement_to_promote_full_scale": "complete the offline full-teacher shard generation campaign with compact manifests and no repository payloads, or provision a faster validated oracle."
+  },
+  "schema_version": "phase14_p14_5_objective_repair_plan_v1"
+}

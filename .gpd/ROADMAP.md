@@ -30,7 +30,7 @@ any new hardware claim or long phone-local run.
 | Hardware-native training POVC | Phase 11 | Complete under exact narrow H11-H claim |
 | Expanded residual learning | Phase 12 | Complete with residual rank-16/rank-32 learning pass and falsified HTP/Gemma heterogeneous nonclaims |
 | Gemma-only heterogeneous corpus-scale correction | Phase 13 | Completed with terminal P13-H failure and P13-I exact claims |
-| Scaled heldout/objective repair | Phase 14 | P14-0 through P14-4 passed; objective repair next |
+| Scaled heldout/objective repair | Phase 14 | P14-0 through P14-5 passed; short proof next |
 
 ## Phases
 
@@ -463,4 +463,4 @@ Plans:
 | 11. Hardware-Native Training POVC | 1/1 | H11-H completed under exact narrow POVC claim; no broad/full/benchmark claim | 2026-05-23 |
 | 12. Hardware-Native Learning Correction | 1/1 | Residual rank-16/rank-32 learning passed narrowly; Qwen/random-init HTP contamination boundary recorded | 2026-05-24 |
 | 13. Gemma4-Only Heterogeneous Corpus-Scale Training | 1/1 | P13-A through P13-G produced narrow artifacts; P13-H failed; P13-I exact claims written | 2026-05-25 |
-| 14. Repair Scaled Heldout Learning Before New Hardware Claims | 0/1 | P14-0 through P14-4 passed without training; P14-5 objective repair next | - |
+| 14. Repair Scaled Heldout Learning Before New Hardware Claims | 0/1 | P14-0 through P14-5 passed without training; P14-6 short proof next | - |

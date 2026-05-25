@@ -1,0 +1,55 @@
+{
+  "files": [
+    {
+      "bytes": 4096,
+      "path": "topk_token_ids.u32.bin",
+      "sha256": "0648e7feab5bc6da8ec63b469a3f4fb93d0dcd0239819549d0ea6a31d055df05"
+    },
+    {
+      "bytes": 4096,
+      "path": "topk_probabilities.f32.bin",
+      "sha256": "366f8a656e1f1553d1d5669f428435138ee9c3546c2328809d76ce1894eef63e"
+    },
+    {
+      "bytes": 128,
+      "path": "loss_mask.u8.bin",
+      "sha256": "ff739efc30701e1c464b9e425b9f86dd1d83b4c0124f758fac606e550deb9c9f"
+    },
+    {
+      "bytes": 512,
+      "path": "labels.u32.bin",
+      "sha256": "d492c6c8ef85a87a953d5db759cf3b4fd2d561d432e7bae2e33012433a5862cb"
+    }
+  ],
+  "full_teacher_logits_used": true,
+  "loss_tokens": 105,
+  "max_cases": 1,
+  "metric_predeclared": {
+    "heldout_guardrail": "student_teacher_top1_agreement_non_regression",
+    "heldout_primary": "mean_student_teacher_top1_probability",
+    "train_signal": "loss_topk_kl_decrease"
+  },
+  "model_id": "google/gemma-4-E4B",
+  "objective": "conditional_topk_kl_over_full_teacher_topk",
+  "objective_contract": "precomputed_full_teacher_topk_to_phone_tied_embedding_student_kl_no_runtime_teacher_service",
+  "probability_normalization": "conditional_within_topk",
+  "revision": "7aa32e6889efd6300124851b164f8b364314c3d8",
+  "schema_version": "phase11_h11f_topk_teacher_shard_v1",
+  "sequence_count": 1,
+  "sequence_length": 128,
+  "source_sequence_count": 8,
+  "split": "heldout_smoke_max1",
+  "student_scope": "two_layer_phone_runtime_rank4_residual_adapter",
+  "teacher_provenance": "runpod_precomputed_full_gemma4_topk_from_p13c_phone_defined_tokens",
+  "teacher_scope": "full_gemma4_e4b_causal_lm_logits",
+  "telemetry_objective": "full_gemma_teacher_topk_kl_v1",
+  "token_cache": {
+    "attention_mask_sha256": "91f8879aa778073d1b3e7e5a2175e7a4a88274add71ef99aeba92b8dbf39c45f",
+    "input_ids_sha256": "10a9e4b7b3ca91131c1a6e05ab93cf5a34c2e2ba5878fbc85ef74b60038a9920",
+    "labels_sha256": "c54f9e05b0d59240663eb1317bb1811c067487f55900d9ed19fdcab8535a6373",
+    "loss_mask_sha256": "baa96e7c9b0beb767e3c01d3cbd7a102399cd6254c6380faf171e6c3a41b3c7c",
+    "position_ids_sha256": "25eda8b16571181a876d5b6e34311fc5e3cfd410ae704ad01213648dcecaa16f"
+  },
+  "token_count": 128,
+  "top_k": 8
+}

@@ -15,6 +15,12 @@ from transformers import AutoModelForCausalLM
 
 MODEL_ID = "google/gemma-4-E4B"
 REVISION = "7aa32e6889efd6300124851b164f8b364314c3d8"
+TELEMETRY_OBJECTIVE = "full_gemma_teacher_topk_kl_v1"
+OBJECTIVE_CONTRACT = (
+    "precomputed_full_teacher_topk_to_phone_tied_embedding_student_kl_no_runtime_teacher_service"
+)
+TEACHER_PROVENANCE = "runpod_precomputed_full_gemma4_topk_from_p13c_phone_defined_tokens"
+TEACHER_SCOPE = "full_gemma4_e4b_causal_lm_logits"
 
 
 def sha256_file(path: Path) -> str:
@@ -69,19 +75,32 @@ def main() -> int:
     parser.add_argument("--split", required=True)
     parser.add_argument("--top-k", default=8, type=int)
     parser.add_argument("--seq", default=128, type=int)
+    parser.add_argument(
+        "--max-cases",
+        default=None,
+        type=int,
+        help="Optionally limit the number of sequences read from the token cache for bounded smokes.",
+    )
     args = parser.parse_args()
 
     input_ids_np = read_u32(args.token_cache / "input_ids.u32.bin")
     if input_ids_np.size % args.seq != 0:
         raise ValueError("input_ids size is not divisible by sequence length")
-    cases = input_ids_np.size // args.seq
+    source_cases = input_ids_np.size // args.seq
+    cases = source_cases
+    if args.max_cases is not None:
+        if args.max_cases <= 0:
+            raise ValueError("--max-cases must be positive")
+        cases = min(source_cases, args.max_cases)
     tokens = cases * args.seq
-    attention_mask_np = read_u8(args.token_cache / "attention_mask.u8.bin", tokens)
-    loss_mask_np = read_u8(args.token_cache / "loss_mask.u8.bin", tokens)
-    labels_np = read_u32(args.token_cache / "labels.u32.bin")
-    position_ids_np = read_u32(args.token_cache / "position_ids.u32.bin")
+    source_tokens = source_cases * args.seq
+    input_ids_np = input_ids_np[:tokens]
+    attention_mask_np = read_u8(args.token_cache / "attention_mask.u8.bin", source_tokens)[:tokens]
+    loss_mask_np = read_u8(args.token_cache / "loss_mask.u8.bin", source_tokens)[:tokens]
+    labels_np = read_u32(args.token_cache / "labels.u32.bin")[:tokens]
+    position_ids_np = read_u32(args.token_cache / "position_ids.u32.bin")[:tokens]
     if labels_np.size != tokens or position_ids_np.size != tokens:
-        raise ValueError("labels or position_ids has invalid length")
+        raise ValueError("labels or position_ids has invalid length after max-cases slicing")
 
     input_ids = torch.tensor(input_ids_np.reshape(cases, args.seq).astype(np.int64))
     attention_mask = torch.tensor(attention_mask_np.reshape(cases, args.seq).astype(np.int64))
@@ -120,14 +139,21 @@ def main() -> int:
         "schema_version": "phase11_h11f_topk_teacher_shard_v1",
         "model_id": MODEL_ID,
         "revision": REVISION,
-        "teacher_scope": "full_gemma4_e4b_causal_lm_logits",
+        "telemetry_objective": TELEMETRY_OBJECTIVE,
+        "objective_contract": OBJECTIVE_CONTRACT,
+        "teacher_provenance": TEACHER_PROVENANCE,
+        "teacher_scope": TEACHER_SCOPE,
         "student_scope": "two_layer_phone_runtime_rank4_residual_adapter",
         "objective": "conditional_topk_kl_over_full_teacher_topk",
+        "probability_normalization": "conditional_within_topk",
+        "full_teacher_logits_used": True,
         "split": args.split,
         "top_k": args.top_k,
         "sequence_length": args.seq,
+        "source_sequence_count": source_cases,
         "sequence_count": cases,
         "token_count": tokens,
+        "max_cases": args.max_cases,
         "loss_tokens": int(loss_mask_np.sum()),
         "token_cache": {
             "input_ids_sha256": sha256_file(args.token_cache / "input_ids.u32.bin"),
