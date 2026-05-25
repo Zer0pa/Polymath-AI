@@ -1,8 +1,8 @@
 {
-  "_synced_at": "2026-05-25T17:08:00Z",
+  "_synced_at": "2026-05-25T17:20:00Z",
   "active_calculations": [
-    "Phase 14 P14-0 through P14-2 passed without training; P14-3 RunPod reconciliation, P14-4 full-heldout evaluator repair, P14-5 objective repair, P14-6 short proof, and P14-7 segmented long run remain ordered gates.",
-    "No training may launch until P14-3, P14-4, and P14-5 are complete and P14-6 is explicitly scoped.",
+    "Phase 14 P14-0 through P14-3 passed without training; P14-4 full-heldout evaluator repair, P14-5 objective repair, P14-6 short proof, and P14-7 segmented long run remain ordered gates.",
+    "No training may launch until P14-4 and P14-5 are complete and P14-6 is explicitly scoped.",
     "P13-H failed; P13-I exact claims are authoritative; P13-F HTP ReLU is execution-only; residual-adapter OpenCL is not a fused megakernel; train-loss movement cannot replace full-heldout movement."
   ],
   "approximations": [],
@@ -14,7 +14,7 @@
     "Phase 13 forbids non-Gemma artifacts inside promoted Gemma gates. Any Qwen, SmolLM, random-init, hidden-size mismatch, or artifact not bridged into the Gemma runtime is an immediate failure and can only be retained as a negative tool-surface probe.",
     "Phase 13 requires real corpus scale before learning promotion. A 16-sequence cache is a smoke test only, not a corpus-scale learning gate.",
     "P13-H failed after 1742/5000 updates under thermal safety; full-heldout baseline/trained evals did not pass and no heldout KL improvement is promoted.",
-    "RunPod /workspace/Polymath-AI is quarantined as stale for Phase 14 until reconciled: observed branch linux/phase0g-qairt-v2.43 with dirty/untracked workspace, not gemma4-megakernel-native-training.",
+    "RunPod /workspace/Polymath-AI remains quarantined as stale for Phase 14 authority/oracle work; use clean detached worktree /workspace/Polymath-AI-phase14-gemma4 for gate-specific offline oracle commands.",
     "P13-G raw/bin HTP ReLU payloads and local build caches were moved outside the repo to /Users/Zer0pa/Polymat AI/.artifact_quarantine/Polymath-AI/20260525T164328Z_phase14_p14_0; compact manifest repair remains P14-2."
   ],
   "blockers_concerns": [
@@ -100,7 +100,8 @@
     "P13-I exact claims selected phase14_repair_scaled_heldout_learning_before_new_hardware_claims: runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-I-exact-claims-and-next-branch/gate_result.json.",
     "P14-0 control-plane snapshot: Mac branch gemma4-megakernel-native-training, phone FY25013101C8 visible by ADB, RunPod quarantined stale on linux/phase0g-qairt-v2.43, forbidden raw/bin/build-cache artifacts quarantined outside the repo, no training launched.",
     "P14-1 phone thermal/process baseline passed: runtime/reports/gemma4_megakernel/phase14_drift_cleanup/20260525T164328Z_phase14_drift_cleanup/P14-1-phone-thermal-process-baseline/gate_result.json. ADB sees FY25013101C8, no stale runner matched, thermalservice status is 0, battery is 28.0 C, storage/memory baseline is recorded, and no Game Zone/fan/training activation was attempted.",
-    "P14-2 artifact quarantine and compact manifest repair passed: runtime/reports/gemma4_megakernel/phase14_drift_cleanup/20260525T164328Z_phase14_drift_cleanup/P14-2-artifact-quarantine-compact-manifest-repair/gate_result.json. P13-G raw/bin payloads remain quarantined outside the repo and P13-G artifact_manifest.json now records compact quarantine metadata with no forbidden payload entries in artifacts[]."
+    "P14-2 artifact quarantine and compact manifest repair passed: runtime/reports/gemma4_megakernel/phase14_drift_cleanup/20260525T164328Z_phase14_drift_cleanup/P14-2-artifact-quarantine-compact-manifest-repair/gate_result.json. P13-G raw/bin payloads remain quarantined outside the repo and P13-G artifact_manifest.json now records compact quarantine metadata with no forbidden payload entries in artifacts[].",
+    "P14-3 Mac/RunPod/GitHub/GPD reconciliation passed: runtime/reports/gemma4_megakernel/phase14_drift_cleanup/20260525T164328Z_phase14_drift_cleanup/P14-3-state-reconciliation/gate_result.json. Mac/GitHub reconciled on gemma4-megakernel-native-training, clean RunPod worktree /workspace/Polymath-AI-phase14-gemma4 is detached at the reconciled commit for offline-oracle work, stale /workspace/Polymath-AI remains quarantined, phone FY25013101C8 is visible, and forbidden payload scans are clean."
   ],
   "open_questions": [
     "Can the full-heldout evaluator run baseline and trained checks independently over the P13-C heldout cache without depending on train-chain success?",
@@ -109,10 +110,9 @@
     "Can RedMagic Game Space/Game Zone or fan controls be used through reversible user-visible settings without hidden authority or safety regressions?"
   ],
   "pending_todos": [
-    "P14-3: reconcile or rebuild RunPod on gemma4-megakernel-native-training before using it as offline oracle.",
     "P14-4: repair independent full-heldout baseline/trained evaluator before any training campaign.",
     "P14-5: decide full Gemma teacher top-k/logit-KL feasibility or document a stronger falsifier-backed fallback objective.",
-    "P14-6: run only a short thermally bounded phone-local learning proof with full-heldout before/after after P14-3/P14-4/P14-5 pass."
+    "P14-6: run only a short thermally bounded phone-local learning proof with full-heldout before/after after P14-4/P14-5 pass."
   ],
   "performance_metrics": {
     "rows": [
@@ -271,11 +271,11 @@
     "current_phase_name": "Repair Scaled Heldout Learning Before New Hardware Claims",
     "current_plan": 1,
     "last_activity": "2026-05-25",
-    "last_activity_desc": "Phase 14 P14-2 artifact quarantine and compact manifest repair passed: P13-G forbidden raw/bin payloads remain outside the repo, strict scans are clean, and the P13-G artifact manifest now uses compact quarantine metadata instead of commit-path raw/bin artifacts.",
-    "last_activity_description": "Phase 14 P14-2 artifact quarantine and compact manifest repair passed: P13-G forbidden raw/bin payloads remain outside the repo, strict scans are clean, and the P13-G artifact manifest now uses compact quarantine metadata instead of commit-path raw/bin artifacts.",
+    "last_activity_desc": "Phase 14 P14-3 Mac/RunPod/GitHub/GPD reconciliation passed: Mac/GitHub are reconciled on gemma4-megakernel-native-training, clean RunPod Phase 14 worktree is detached at the reconciled commit, stale RunPod workspace remains quarantined, ADB still sees FY25013101C8, and no training was launched.",
+    "last_activity_description": "Phase 14 P14-3 Mac/RunPod/GitHub/GPD reconciliation passed: Mac/GitHub are reconciled on gemma4-megakernel-native-training, clean RunPod Phase 14 worktree is detached at the reconciled commit, stale RunPod workspace remains quarantined, ADB still sees FY25013101C8, and no training was launched.",
     "paused_at": null,
     "progress_percent": 94,
-    "status": "Phase 14 P14-0 through P14-2 passed without training; P14-3/P14-4/P14-5 repair gates next",
+    "status": "Phase 14 P14-0 through P14-3 passed without training; P14-4/P14-5 repair gates next",
     "total_phases": 14,
     "total_plans_in_phase": 1
   },
@@ -764,6 +764,6 @@
   "session": {
     "last_session": "2026-05-25",
     "resume_file": ".gpd/STATE.md",
-    "stopped_at": "Phase 14 P14-2 artifact quarantine and compact manifest repair; no training launched."
+    "stopped_at": "Phase 14 P14-3 Mac/RunPod/GitHub/GPD reconciliation; no training launched."
   }
 }

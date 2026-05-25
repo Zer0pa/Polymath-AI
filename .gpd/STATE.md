@@ -19,17 +19,17 @@ any runtime data-path stage?
 **Total Phases:** 14
 **Current Plan:** 1
 **Total Plans in Phase:** 1
-**Status:** Phase 14 P14-0 through P14-2 passed without training; P14-3 RunPod reconciliation and P14-4 heldout evaluator repair remain next.
+**Status:** Phase 14 P14-0 through P14-3 passed without training; P14-4 heldout evaluator repair and P14-5 objective repair remain next.
 **Last Activity:** 2026-05-25
-**Last Activity Description:** P14-2 passed at runtime/reports/gemma4_megakernel/phase14_drift_cleanup/20260525T164328Z_phase14_drift_cleanup/P14-2-artifact-quarantine-compact-manifest-repair/gate_result.json. P13-G raw/bin payloads remain quarantined outside the repo, strict payload scans are clean, and the P13-G artifact manifest now records compact quarantine metadata instead of commit-path raw/bin artifacts.
+**Last Activity Description:** P14-3 passed at runtime/reports/gemma4_megakernel/phase14_drift_cleanup/20260525T164328Z_phase14_drift_cleanup/P14-3-state-reconciliation/gate_result.json. Mac and GitHub are reconciled on gemma4-megakernel-native-training, RunPod stale workspace remains quarantined, clean RunPod Phase 14 worktree is detached at the reconciled commit, ADB still sees FY25013101C8, and no training was launched.
 
 **Progress:** [#########-] 94%
 
 ## Active Calculations
 
-- Execute Phase 14 in gate order. P14-0 cleanup is the entry gate; no training
-  may launch until control-plane truth, artifact hygiene, RunPod status, phone
-  visibility, and GPD state are coherent.
+- Execute Phase 14 in gate order. P14-0 through P14-3 are passed; no training
+  may launch until full-heldout evaluator repair, objective repair, and the
+  short proof scope are coherent.
 - Repair the authority path before any long run: P14-1 phone reconnection and
   thermal/process baseline, P14-2 compact artifact manifest repair, P14-3
   Mac/RunPod/GitHub/GPD reconciliation, P14-4 independent full-heldout
@@ -283,8 +283,6 @@ Full log: `.gpd/DECISIONS.md`
 ### Pending Todos
 
 - Keep all forbidden payloads outside the commit path.
-- P14-3: reconcile or rebuild RunPod on `gemma4-megakernel-native-training`
-  before using it as offline oracle.
 - P14-4: make full-heldout baseline/trained evaluation runnable independently
   before any new long training campaign.
 - P14-5: decide whether full Gemma teacher top-k/logit-KL shards are feasible
@@ -368,11 +366,12 @@ Full log: `.gpd/DECISIONS.md`
 - P14-0 live control-plane snapshot: Mac is on `gemma4-megakernel-native-training`, ADB sees `FY25013101C8`, RunPod `/workspace/Polymath-AI` is quarantined as stale on `linux/phase0g-qairt-v2.43`, and forbidden raw/bin/build-cache artifacts were moved to `/Users/Zer0pa/Polymat AI/.artifact_quarantine/Polymath-AI/20260525T164328Z_phase14_p14_0`.
 - P14-1 phone baseline passed: `runtime/reports/gemma4_megakernel/phase14_drift_cleanup/20260525T164328Z_phase14_drift_cleanup/P14-1-phone-thermal-process-baseline/gate_result.json`. ADB sees `FY25013101C8`; no stale runner matched; thermalservice status is `0`; battery is `28.0 C`; storage/memory are adequate; RedMagic Game Zone packages and Termux are present, but no activation or authority claim was made.
 - P14-2 artifact quarantine and compact manifest repair passed: `runtime/reports/gemma4_megakernel/phase14_drift_cleanup/20260525T164328Z_phase14_drift_cleanup/P14-2-artifact-quarantine-compact-manifest-repair/gate_result.json`. P13-G forbidden raw/bin payloads remain outside the repo and `P13-G-heterogeneous-vs-adreno-baseline/artifact_manifest.json` has compact quarantine metadata with no forbidden payload entries in its `artifacts` list.
+- P14-3 Mac/RunPod/GitHub/GPD reconciliation passed: `runtime/reports/gemma4_megakernel/phase14_drift_cleanup/20260525T164328Z_phase14_drift_cleanup/P14-3-state-reconciliation/gate_result.json`. Mac/GitHub reconciled on `gemma4-megakernel-native-training`, clean RunPod worktree `/workspace/Polymath-AI-phase14-gemma4` is detached at the reconciled commit for offline-oracle work, stale `/workspace/Polymath-AI` remains quarantined, and forbidden payload scans are clean.
 
 ## Session Continuity
 
 **Last session:** 2026-05-25
-**Stopped at:** Phase 14 P14-2 artifact quarantine and compact manifest repair.
-Do not launch training until P14-3 RunPod reconciliation, P14-4 heldout
-evaluator repair, and P14-5 objective repair are complete.
+**Stopped at:** Phase 14 P14-3 Mac/RunPod/GitHub/GPD reconciliation.
+Do not launch training until P14-4 heldout evaluator repair and P14-5
+objective repair are complete and P14-6 short proof is explicitly scoped.
 **Resume file:** `.gpd/STATE.md`

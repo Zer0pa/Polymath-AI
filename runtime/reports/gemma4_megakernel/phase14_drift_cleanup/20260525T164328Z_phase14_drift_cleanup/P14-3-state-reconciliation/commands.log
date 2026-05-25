@@ -1,0 +1,11 @@
+# P14-3 Sanitized Commands
+
+git status --short --branch
+git rev-parse HEAD
+git push origin gemma4-megakernel-native-training
+ssh root@38.80.152.147 -p 31002 -i ~/.ssh/id_ed25519 'cd /workspace/Polymath-AI-phase14-gemma4 && git status --short --branch && git rev-parse HEAD'
+ssh root@38.80.152.147 -p 31002 -i ~/.ssh/id_ed25519 'cd /workspace/Polymath-AI-phase14-gemma4 && git fetch origin gemma4-megakernel-native-training && git checkout --detach origin/gemma4-megakernel-native-training && git status --short --branch && git rev-parse HEAD && find runtime/reports integrations scripts docs .gpd -type f \( -name "*.raw" -o -name "*.bin" -o -name "*.safetensors" -o -name "*.pt" -o -name "*.pth" -o -name "*.npy" -o -name "*.npz" -o -name "*.gguf" -o -name "*.dlc" \) -print'
+git ls-remote origin refs/heads/gemma4-megakernel-native-training
+adb devices -l
+ssh root@38.80.152.147 -p 31002 -i ~/.ssh/id_ed25519 'cd /workspace/Polymath-AI && git status --short --branch && git rev-parse HEAD && git branch --show-current'
+find runtime/reports integrations scripts docs .gpd -type f \( -name '*.raw' -o -name '*.bin' -o -name '*.safetensors' -o -name '*.pt' -o -name '*.pth' -o -name '*.npy' -o -name '*.npz' -o -name '*.gguf' -o -name '*.dlc' \) -print

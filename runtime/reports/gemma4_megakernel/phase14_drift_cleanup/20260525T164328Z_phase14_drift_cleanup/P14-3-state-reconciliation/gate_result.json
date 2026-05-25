@@ -1,0 +1,81 @@
+{
+  "schema_version": "phase14_p14_3_state_reconciliation_v1",
+  "gate": "P14-3 Mac/RunPod/GitHub/GPD state reconciliation",
+  "status": "pass_state_reconciled_no_training_launched",
+  "created_at_utc": "2026-05-25T17:20:00Z",
+  "training_launched": false,
+  "mac": {
+    "repo": "/Users/Zer0pa/Polymat AI/Polymath-AI",
+    "branch": "gemma4-megakernel-native-training",
+    "pre_report_reconciled_head": "c90acd60c421de00489de55fca5f08bb2c7054c8",
+    "status_snapshot": "mac_status_after_push.txt"
+  },
+  "github": {
+    "remote": "origin",
+    "branch": "gemma4-megakernel-native-training",
+    "pre_report_reconciled_head": "c90acd60c421de00489de55fca5f08bb2c7054c8",
+    "origin_snapshot": "origin_branch_after_push.txt"
+  },
+  "phone": {
+    "serial": "FY25013101C8",
+    "adb_snapshot": "adb_devices.txt",
+    "authority_runtime_status": "visible_no_training_launched"
+  },
+  "runpod": {
+    "primary_endpoint": "root@38.80.152.147:31002",
+    "stale_workspace": {
+      "path": "/workspace/Polymath-AI",
+      "branch": "linux/phase0g-qairt-v2.43",
+      "head": "6db6aa7fd0a75168beb3de9ce37b833f9c82279d",
+      "status": "quarantined_do_not_use_for_phase14_authority_or_oracle_work",
+      "snapshot": "runpod_stale_workspace_status.txt"
+    },
+    "clean_phase14_worktree": {
+      "path": "/workspace/Polymath-AI-phase14-gemma4",
+      "checkout_mode": "detached_origin_gemma4_megakernel_native_training",
+      "pre_report_reconciled_head": "c90acd60c421de00489de55fca5f08bb2c7054c8",
+      "status": "authorized_for_phase14_offline_oracle_only_after_gate_specific_commands",
+      "snapshot": "runpod_clean_worktree_status.txt"
+    }
+  },
+  "report_commit_note": "This P14-3 report and GPD update are committed after the pre-report reconciliation snapshot, so the branch may advance by an evidence-only control-plane commit.",
+  "artifact_policy": {
+    "mac_forbidden_payload_scan": "no_matches",
+    "runpod_clean_worktree_forbidden_payload_scan": "no_matches",
+    "scan_artifact": "forbidden_payload_scan_after_push.txt",
+    "forbidden_extensions": [
+      ".raw",
+      ".bin",
+      ".safetensors",
+      ".pt",
+      ".pth",
+      ".npy",
+      ".npz",
+      ".gguf",
+      ".dlc"
+    ]
+  },
+  "gpd": {
+    "state_files_updated_in_same_control_plane_batch": [
+      ".gpd/STATE.md",
+      ".gpd/state.json",
+      ".gpd/ROADMAP.md",
+      ".gpd/runlog.jsonl"
+    ],
+    "phase14_position": "P14-0 through P14-3 passed; P14-4 full-heldout evaluator repair and P14-5 objective repair are next"
+  },
+  "blockers": [],
+  "carry_forward_blockers": [
+    "P14-4 full-heldout evaluator repair remains open.",
+    "P14-5 objective repair remains open.",
+    "P14-6 short thermally bounded phone-local learning proof remains blocked until P14-4 and P14-5 pass.",
+    "P14-7 segmented long phone-local training remains blocked until P14-6 passes."
+  ],
+  "nonclaims": [
+    "P14-3 does not promote P13-H or any training result.",
+    "P14-3 does not repair heldout evaluation or objective quality.",
+    "RunPod is authorized only as an offline oracle/build surface, not as a runtime data path for phone authority gates.",
+    "The stale RunPod /workspace/Polymath-AI checkout remains quarantined."
+  ],
+  "next_gate": "P14-4 full-heldout evaluator repair"
+}
