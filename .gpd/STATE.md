@@ -19,17 +19,16 @@ any runtime data-path stage?
 **Total Phases:** 14
 **Current Plan:** 1
 **Total Plans in Phase:** 1
-**Status:** Phase 14 P14-0 through P14-3 passed without training; P14-4 heldout evaluator repair and P14-5 objective repair remain next.
+**Status:** Phase 14 P14-0 through P14-4 passed without training; P14-5 objective repair remains next.
 **Last Activity:** 2026-05-25
-**Last Activity Description:** P14-3 passed at runtime/reports/gemma4_megakernel/phase14_drift_cleanup/20260525T164328Z_phase14_drift_cleanup/P14-3-state-reconciliation/gate_result.json. Mac and GitHub are reconciled on gemma4-megakernel-native-training, RunPod stale workspace remains quarantined, clean RunPod Phase 14 worktree is detached at the reconciled commit, ADB still sees FY25013101C8, and no training was launched.
+**Last Activity Description:** P14-4 passed at runtime/reports/gemma4_megakernel/phase14_drift_cleanup/20260525T164328Z_phase14_drift_cleanup/P14-4-full-heldout-evaluator-repair/gate_result.json. The full-heldout evaluator path is now train-chain independent, generates 128-shard baseline/candidate eval queues with apply_update=false, verifies required phone checkpoint manifests, and validates objective/provenance/no-update aggregation on existing phone eval telemetry. No training or full-heldout improvement was launched or promoted.
 
 **Progress:** [#########-] 94%
 
 ## Active Calculations
 
-- Execute Phase 14 in gate order. P14-0 through P14-3 are passed; no training
-  may launch until full-heldout evaluator repair, objective repair, and the
-  short proof scope are coherent.
+- Execute Phase 14 in gate order. P14-0 through P14-4 are passed; no training
+  may launch until objective repair and the short proof scope are coherent.
 - Repair the authority path before any long run: P14-1 phone reconnection and
   thermal/process baseline, P14-2 compact artifact manifest repair, P14-3
   Mac/RunPod/GitHub/GPD reconciliation, P14-4 independent full-heldout
@@ -283,8 +282,6 @@ Full log: `.gpd/DECISIONS.md`
 ### Pending Todos
 
 - Keep all forbidden payloads outside the commit path.
-- P14-4: make full-heldout baseline/trained evaluation runnable independently
-  before any new long training campaign.
 - P14-5: decide whether full Gemma teacher top-k/logit-KL shards are feasible
   from the P13-C phone-defined corpus using RunPod only as offline oracle; if
   infeasible, document the boundary and stronger fallback falsifiers.
@@ -367,11 +364,12 @@ Full log: `.gpd/DECISIONS.md`
 - P14-1 phone baseline passed: `runtime/reports/gemma4_megakernel/phase14_drift_cleanup/20260525T164328Z_phase14_drift_cleanup/P14-1-phone-thermal-process-baseline/gate_result.json`. ADB sees `FY25013101C8`; no stale runner matched; thermalservice status is `0`; battery is `28.0 C`; storage/memory are adequate; RedMagic Game Zone packages and Termux are present, but no activation or authority claim was made.
 - P14-2 artifact quarantine and compact manifest repair passed: `runtime/reports/gemma4_megakernel/phase14_drift_cleanup/20260525T164328Z_phase14_drift_cleanup/P14-2-artifact-quarantine-compact-manifest-repair/gate_result.json`. P13-G forbidden raw/bin payloads remain outside the repo and `P13-G-heterogeneous-vs-adreno-baseline/artifact_manifest.json` has compact quarantine metadata with no forbidden payload entries in its `artifacts` list.
 - P14-3 Mac/RunPod/GitHub/GPD reconciliation passed: `runtime/reports/gemma4_megakernel/phase14_drift_cleanup/20260525T164328Z_phase14_drift_cleanup/P14-3-state-reconciliation/gate_result.json`. Mac/GitHub reconciled on `gemma4-megakernel-native-training`, clean RunPod worktree `/workspace/Polymath-AI-phase14-gemma4` is detached at the reconciled commit for offline-oracle work, stale `/workspace/Polymath-AI` remains quarantined, and forbidden payload scans are clean.
+- P14-4 full-heldout evaluator repair passed: `runtime/reports/gemma4_megakernel/phase14_drift_cleanup/20260525T164328Z_phase14_drift_cleanup/P14-4-full-heldout-evaluator-repair/gate_result.json`. The repair removed the P13-H train-final wait dependency, generated 128-shard baseline/candidate evaluator configs with `apply_update=false`, verified baseline/candidate phone checkpoint manifests exist, and validated objective/model/hidden-size/teacher-provenance/no-update aggregation against existing phone eval telemetry. It does not claim heldout improvement.
 
 ## Session Continuity
 
 **Last session:** 2026-05-25
-**Stopped at:** Phase 14 P14-3 Mac/RunPod/GitHub/GPD reconciliation.
-Do not launch training until P14-4 heldout evaluator repair and P14-5
-objective repair are complete and P14-6 short proof is explicitly scoped.
+**Stopped at:** Phase 14 P14-4 full-heldout evaluator repair.
+Do not launch training until P14-5 objective repair is complete and P14-6
+short proof is explicitly scoped.
 **Resume file:** `.gpd/STATE.md`

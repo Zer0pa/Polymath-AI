@@ -1,0 +1,44 @@
+{
+  "all_eval_arms_apply_update_false": true,
+  "arms": {
+    "baseline": {
+      "apply_update": false,
+      "arm": "baseline",
+      "checkpoint": "/data/local/tmp/polymath_gemma4_gate/phase12/runs/20260524T173847Z_phase12_long_native_lr_retry1_lr3e4_cont24_train/Phase12-long-native-lr/iterations/iter_000023/checkpoint",
+      "config_name": "p14_baseline_config.json",
+      "heartbeat_path": "/data/local/tmp/polymath_gemma4_gate/phase14/p14_full_heldout_eval/p14_baseline_heartbeat.json",
+      "iterations": 128,
+      "local_config": "runtime/reports/gemma4_megakernel/phase14_drift_cleanup/20260525T164328Z_phase14_drift_cleanup/P14-4-full-heldout-evaluator-repair/control/p14_baseline_config.json",
+      "local_queue": "runtime/reports/gemma4_megakernel/phase14_drift_cleanup/20260525T164328Z_phase14_drift_cleanup/P14-4-full-heldout-evaluator-repair/control/p14_baseline_queue.jsonl",
+      "phone_gate_dir": "/data/local/tmp/polymath_gemma4_gate/phase14/p14_full_heldout_eval/runs/p14_full_heldout_eval_20260525T171624Z_baseline/P14-4-full-heldout-evaluator-repair",
+      "queue_name": "p14_baseline_queue.jsonl",
+      "run_id": "p14_full_heldout_eval_20260525T171624Z_baseline",
+      "state_path": "/data/local/tmp/polymath_gemma4_gate/phase14/p14_full_heldout_eval/p14_baseline_state.json",
+      "stop_path": "/data/local/tmp/polymath_gemma4_gate/phase14/p14_full_heldout_eval/STOP_p14_baseline"
+    },
+    "candidate": {
+      "apply_update": false,
+      "arm": "candidate",
+      "checkpoint": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13h/runs/20260524T210920Z_phase13_gemma4_only_heterogeneous_p13h_20260524T232423Z_train/P13-H-overnight-phone-local-long-run/iterations/iter_001741/checkpoint",
+      "config_name": "p14_candidate_config.json",
+      "heartbeat_path": "/data/local/tmp/polymath_gemma4_gate/phase14/p14_full_heldout_eval/p14_candidate_heartbeat.json",
+      "iterations": 128,
+      "local_config": "runtime/reports/gemma4_megakernel/phase14_drift_cleanup/20260525T164328Z_phase14_drift_cleanup/P14-4-full-heldout-evaluator-repair/control/p14_candidate_config.json",
+      "local_queue": "runtime/reports/gemma4_megakernel/phase14_drift_cleanup/20260525T164328Z_phase14_drift_cleanup/P14-4-full-heldout-evaluator-repair/control/p14_candidate_queue.jsonl",
+      "phone_gate_dir": "/data/local/tmp/polymath_gemma4_gate/phase14/p14_full_heldout_eval/runs/p14_full_heldout_eval_20260525T171624Z_candidate/P14-4-full-heldout-evaluator-repair",
+      "queue_name": "p14_candidate_queue.jsonl",
+      "run_id": "p14_full_heldout_eval_20260525T171624Z_candidate",
+      "state_path": "/data/local/tmp/polymath_gemma4_gate/phase14/p14_full_heldout_eval/p14_candidate_state.json",
+      "stop_path": "/data/local/tmp/polymath_gemma4_gate/phase14/p14_full_heldout_eval/STOP_p14_candidate"
+    }
+  },
+  "chain_script": "runtime/reports/gemma4_megakernel/phase14_drift_cleanup/20260525T164328Z_phase14_drift_cleanup/P14-4-full-heldout-evaluator-repair/p14_full_heldout_eval_20260525T171624Z_eval_chain.sh",
+  "created_at_utc": "2026-05-25T17:30:00Z",
+  "heldout_shards_planned": 128,
+  "phone_eval_root": "/data/local/tmp/polymath_gemma4_gate/phase14/p14_full_heldout_eval",
+  "requires_candidate_checkpoint_manifest_before_launch": true,
+  "run_id": "p14_full_heldout_eval_20260525T171624Z",
+  "schema_version": "phase14_p14_4_full_heldout_eval_repair_plan_v1",
+  "shard_package_manifest": "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-H-overnight-phone-local-long-run/shard_package_manifest.json",
+  "train_chain_dependency_removed": true
+}

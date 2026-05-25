@@ -1,0 +1,86 @@
+{
+  "baseline": {
+    "active_tokens": 552,
+    "applied_update_values": [
+      false
+    ],
+    "gate_apply_update": false,
+    "gate_iteration_count": 1,
+    "gate_status": "pass",
+    "hidden_sizes": [
+      2560
+    ],
+    "hidden_state_fixtures_consumed_values": [
+      []
+    ],
+    "iteration_count": 1,
+    "label_in_teacher_topk_rate": 1.0,
+    "learning_rate_values": [
+      0.0
+    ],
+    "loss_topk_kl": 2.0060571108,
+    "max_checkpoint_delta_l2": 0.0,
+    "mean_student_label_probability_when_in_topk": 0.1781673628,
+    "mean_student_teacher_top1_probability": 0.1781673628,
+    "model_ids": [
+      "google/gemma-4-E4B"
+    ],
+    "objective_values": [
+      "label_contrastive_topk_kl_v1"
+    ],
+    "schema_version": "phase14_full_heldout_eval_aggregate_v1",
+    "student_teacher_top1_agreement": 0.2155797101,
+    "teacher_provenance_values": [
+      "phone_native_p13c_labels_to_host_deterministic_onehot_topk_precompute"
+    ],
+    "telemetry_files": [
+      "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-H-overnight-phone-local-long-run/collection/arms/baseline_eval/iterations/iter_000000/telemetry.json"
+    ]
+  },
+  "blockers": [],
+  "candidate": {
+    "active_tokens": 552,
+    "applied_update_values": [
+      false
+    ],
+    "gate_apply_update": false,
+    "gate_iteration_count": 1,
+    "gate_status": "pass",
+    "hidden_sizes": [
+      2560
+    ],
+    "hidden_state_fixtures_consumed_values": [
+      []
+    ],
+    "iteration_count": 1,
+    "label_in_teacher_topk_rate": 1.0,
+    "learning_rate_values": [
+      0.0
+    ],
+    "loss_topk_kl": 2.0060571108,
+    "max_checkpoint_delta_l2": 0.0,
+    "mean_student_label_probability_when_in_topk": 0.1781673628,
+    "mean_student_teacher_top1_probability": 0.1781673628,
+    "model_ids": [
+      "google/gemma-4-E4B"
+    ],
+    "objective_values": [
+      "label_contrastive_topk_kl_v1"
+    ],
+    "schema_version": "phase14_full_heldout_eval_aggregate_v1",
+    "student_teacher_top1_agreement": 0.2155797101,
+    "teacher_provenance_values": [
+      "phone_native_p13c_labels_to_host_deterministic_onehot_topk_precompute"
+    ],
+    "telemetry_files": [
+      "runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-H-overnight-phone-local-long-run/collection/arms/baseline_eval/iterations/iter_000000/telemetry.json"
+    ]
+  },
+  "deltas": {
+    "loss_topk_kl": 0.0
+  },
+  "expected_iterations": 1,
+  "require_improvement": false,
+  "schema_version": "phase14_full_heldout_eval_pair_validation_v1",
+  "status": "pass"
+}
