@@ -52,7 +52,7 @@
 <table width="100%">
 <tr>
 <td width="50%" valign="top">
-<div><b>03 · VALUE</b></div>
+<div><b>03 · VALUE OF MARKET</b></div>
       <div><span>OPEN</span> <span>NOW</span></div>
       <div>Public repo and PyPI exist; <b>the value is the training harness and its constraints, not a phone-trained model.</b></div>
 </td>
