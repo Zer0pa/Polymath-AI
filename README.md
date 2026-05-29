@@ -1,9 +1,6 @@
 # Polymath-AI
 
-## Install / Developer Commands
-
-<!-- INSTALL-DX:START -->
-#### Package Install
+## Package Install
 
 Installable package: `python3.11 -m pip install polymath-ai`.
 Current release: `0.1.0` on [PyPI](https://pypi.org/project/polymath-ai/).
@@ -13,21 +10,9 @@ Source: [Zer0pa/Polymath-AI](https://github.com/Zer0pa/Polymath-AI/).
 python3.11 -m pip install polymath-ai
 ```
 
-Import smoke:
+For full install, smoke, source, and developer commands, [click here](#install-developer-commands-detailed).
 
-```bash
-python3.11 - <<'PY'
-import importlib.metadata as md
-import polymath_ai
-
-print("polymath-ai", md.version("polymath-ai"))
-PY
-```
-
-Install success only proves package acquisition/import. Product scope, stale PyPI state, platform limits, and blockers remain in the front-door sections below.
-- PyPI copy is stale; no model, checkpoint, phone-compile, or product-readiness claim follows from install success.
-<!-- INSTALL-DX:END -->
-
+---
 
 <table width="100%">
 <tr>
@@ -300,3 +285,35 @@ Install success only proves package acquisition/import. Product scope, stale PyP
 </td>
 </tr>
 </table>
+
+---
+
+<a id="install-developer-commands-detailed"></a>
+
+## Install / Developer Commands Detailed
+
+<!-- INSTALL-DX:START -->
+#### Package Install
+
+Installable package: `python3.11 -m pip install polymath-ai`.
+Current release: `0.1.0` on [PyPI](https://pypi.org/project/polymath-ai/).
+Source: [Zer0pa/Polymath-AI](https://github.com/Zer0pa/Polymath-AI/).
+
+```bash
+python3.11 -m pip install polymath-ai
+```
+
+Import smoke:
+
+```bash
+python3.11 - <<'PY'
+import importlib.metadata as md
+import polymath_ai
+
+print("polymath-ai", md.version("polymath-ai"))
+PY
+```
+
+Install success only proves package acquisition/import. Product scope, stale PyPI state, platform limits, and blockers remain in the front-door sections below.
+- PyPI copy is stale; no model, checkpoint, phone-compile, or product-readiness claim follows from install success.
+<!-- INSTALL-DX:END -->
