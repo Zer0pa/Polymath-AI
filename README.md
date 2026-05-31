@@ -18,7 +18,7 @@ For full install, smoke, source, and developer commands, [click here](#install-d
 <tr>
 <td width="100%" valign="top">
 <div><span><b>00 · POLYMATH-AI</b> · MOBILE LLM TRAINING</span> <span>RESEARCH-READY · PHONE COMPILE OPEN</span></div>
-      <h1>A research lane for <span>phone-side LLM training.</span></h1>
+      <h1>Polymath LLM Training <span>on Your Phone</span></h1>
       <p>On-device language-model training research lane &middot; Polymath-AI &middot; PyPI 0.1.0 &middot; Snapdragon 8 Elite target</p>
       <p>Polymath-AI is a training harness aimed at the <strong>Snapdragon 8 Elite (SM8750)</strong> phone chip. It trains only the first and last layers of a language model while the middle stays sealed and SHA-checked. The host smoke runs cleanly on Qwen 2.5 1.5B with the frozen middle showing <em>zero weight changes</em>. Phone compilation, licensed multilingual corpora, sustained device telemetry, and a public checkpoint are all open. This is a route, not a product.</p>
 </td>
