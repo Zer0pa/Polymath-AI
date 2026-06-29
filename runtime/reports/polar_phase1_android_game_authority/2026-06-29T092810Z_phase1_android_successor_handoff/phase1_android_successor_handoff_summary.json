@@ -1,0 +1,123 @@
+{
+  "schema_version": "phase1_android_successor_handoff_v1",
+  "created_utc": "2026-06-29T09:28:10Z",
+  "repo": "/Users/Zer0pa/Polymat AI/Polymath-AI",
+  "branch_observed": "gemma4-megakernel-native-training",
+  "handoff_markdown": "NEXT_AGENT_PHASE1_ANDROID_UI_HANDOFF.md",
+  "governing_rules": [
+    "Do not create a new worktree",
+    "Do not use GPD",
+    "Do not edit root README.md",
+    "Do not import raw .qai1, .pqa1, .jsonl, APKs, AABs, model weights, or model binaries into git",
+    "Do not overwrite unrelated dirty work",
+    "Treat the high-performance Nubia profile as the only active Phase 1 Android authority lane"
+  ],
+  "primary_paths": {
+    "canonical_engineering_doc": "docs/ENGINEERING-PHASE1-ANDROID-NATIVE-RUNTIME-2026-06-27.md",
+    "android_app": "apps/android-redmagic-lab",
+    "host_scripts": "scripts/android_lab",
+    "handoff_dir": "runtime/reports/polar_phase1_android_game_authority/2026-06-29T092810Z_phase1_android_successor_handoff",
+    "white_label_seed": "/Users/Zer0pa/Hyperspeed Mobile Tokenizer"
+  },
+  "current_runtime_truth": {
+    "phase1_real_artifact_integrated": true,
+    "correctness_material_parity_blocker": false,
+    "active_profile_policy": "high_performance_profile_is_authority_default_no_restore",
+    "standard_apk_profile_is_product_mode": false,
+    "standard_apk_profile_observed_token_ids_per_sec_class": "53-54M",
+    "high_performance_profile_observed_token_ids_per_sec_class": "60-61M"
+  },
+  "best_evidence": [
+    {
+      "report_dir": "runtime/reports/polar_phase1_android_game_authority/2026-06-27T182522Z_phase1_apk_nubia_whitelist_no_sampler_repro",
+      "run_id": "2026-06-27T182529Z",
+      "policy_note": "historical reversible attribution run; restore policy is no longer active lane",
+      "best_trial_token_ids_per_sec_derived": 61755471.23860105,
+      "mean_trial_token_ids_per_sec_derived": 60519383.23451158,
+      "exact_material_parity": "pass",
+      "child_exec_enabled": true,
+      "child_exec_errno": 0,
+      "native_cpuset_before": "/top-app",
+      "native_cpus_allowed_before": "0-7",
+      "forbidden_payload_scan": "pass"
+    },
+    {
+      "report_dir": "runtime/reports/polar_phase1_android_game_authority/2026-06-27T185310Z_phase1_apk_high_profile_no_sampler_authority",
+      "run_id": "2026-06-27T185317Z",
+      "settings_policy": "high_performance_profile_is_authority_default_no_restore",
+      "settings_final_match_target": true,
+      "best_trial_token_ids_per_sec_derived": 61122162.523318745,
+      "mean_trial_token_ids_per_sec_derived": 60155131.80507622,
+      "exact_material_parity": "pass",
+      "child_exec_enabled": true,
+      "child_exec_errno": 0,
+      "native_cpuset_before": "/top-app",
+      "native_cpus_allowed_before": "0-7",
+      "forbidden_payload_scan": "pass"
+    },
+    {
+      "report_dir": "runtime/reports/polar_phase1_android_game_authority/2026-06-27T185358Z_phase1_apk_high_profile_no_sampler_authority",
+      "run_id": "2026-06-27T185405Z",
+      "settings_policy": "high_performance_profile_is_authority_default_no_restore",
+      "settings_final_match_target": true,
+      "best_trial_token_ids_per_sec_derived": 60857026.252532445,
+      "mean_trial_token_ids_per_sec_derived": 59054959.45330168,
+      "exact_material_parity": "pass",
+      "child_exec_enabled": true,
+      "child_exec_errno": 0,
+      "native_cpuset_before": "/top-app",
+      "native_cpus_allowed_before": "0-7",
+      "forbidden_payload_scan": "pass"
+    }
+  ],
+  "authority_command": [
+    "SERIAL=FY25013101C8",
+    "python3",
+    "scripts/android_lab/run_phase1_nubia_whitelist_probe.py",
+    "--trial",
+    "1m",
+    "--staging",
+    "external",
+    "--timeout-sec",
+    "1800"
+  ],
+  "target_nubia_settings": {
+    "NubiaperformanceMode": "ai.zer0pa.polymath.lab+300,com.primatelabs.geekbench6+300,",
+    "db_game_strengthen_mode_list": "null,ai.zer0pa.polymath.lab+6,com.primatelabs.geekbench6+6",
+    "db_game_strengthen_packagename": "ai.zer0pa.polymath.lab",
+    "performance_mode_package": "ai.zer0pa.polymath.lab",
+    "performance_mode_value": "2",
+    "game_strengthen_mode_value": "6"
+  },
+  "ui_state": {
+    "placeholder_only": false,
+    "product_complete": false,
+    "latest_report_reader": "apps/android-redmagic-lab/app/src/main/java/ai/zer0pa/polymath/lab/data/LocalPhase1ReportReader.kt",
+    "controller": "apps/android-redmagic-lab/app/src/main/java/ai/zer0pa/polymath/lab/ui/LabController.kt",
+    "screen": "apps/android-redmagic-lab/app/src/main/java/ai/zer0pa/polymath/lab/ui/screens/LabConsoleScreen.kt",
+    "visible_probe_button_removed": true,
+    "write_probe_report_function_still_exists": true
+  },
+  "commit_scope_warning": {
+    "phase1_android_paths": [
+      "apps/android-redmagic-lab",
+      "scripts/android_lab",
+      "docs/ENGINEERING-PHASE1-ANDROID-NATIVE-RUNTIME-2026-06-27.md",
+      "runtime/reports/polar_phase1_android_game_authority/2026-06-27T182522Z_phase1_apk_nubia_whitelist_no_sampler_repro",
+      "runtime/reports/polar_phase1_android_game_authority/2026-06-27T185310Z_phase1_apk_high_profile_no_sampler_authority",
+      "runtime/reports/polar_phase1_android_game_authority/2026-06-27T185358Z_phase1_apk_high_profile_no_sampler_authority",
+      "runtime/reports/polar_phase1_android_game_authority/2026-06-29T092810Z_phase1_android_successor_handoff"
+    ],
+    "avoid": [
+      ".gpd",
+      "integrations/gemma4-snapdragon-megakernel",
+      "unrelated Phase 15 work",
+      "unrelated Phase 2 and Phase 2C work",
+      "native",
+      "polymath_ai/schtm",
+      "build outputs",
+      "raw payloads",
+      "model binaries"
+    ]
+  }
+}

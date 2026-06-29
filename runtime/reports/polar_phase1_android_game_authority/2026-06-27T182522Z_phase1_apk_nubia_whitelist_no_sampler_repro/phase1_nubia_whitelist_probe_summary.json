@@ -1,0 +1,235 @@
+{
+  "app_token_ids_per_sec": 57502300,
+  "best_trial_token_ids_per_sec_derived": 61755471.23860105,
+  "child_exec_enabled": true,
+  "child_exec_errno": 0,
+  "cpu_frequency_sampler": {
+    "cpus": [],
+    "duration_sec": 0,
+    "enabled": false,
+    "max_thread_count": 0,
+    "min_thread_count": 0,
+    "sample_count": 0,
+    "sample_interval_ms": 5,
+    "schema_version": "cpu_frequency_sampler_v1"
+  },
+  "exact_material_parity": "pass",
+  "flags": 22,
+  "forbidden_payload_scan": {
+    "findings": [],
+    "status": "pass"
+  },
+  "frequency_after_apply": {
+    "cmd": [
+      "adb",
+      "-s",
+      "FY25013101C8",
+      "shell",
+      "for c in 0 1 2 3 4 5 6 7; do b=/sys/devices/system/cpu/cpu${c}/cpufreq; printf 'cpu%s cur=' \"$c\"; cat $b/scaling_cur_freq; printf 'cpu%s min=' \"$c\"; cat $b/scaling_min_freq; printf 'cpu%s max=' \"$c\"; cat $b/scaling_max_freq; printf 'cpu%s hwmax=' \"$c\"; cat $b/cpuinfo_max_freq; done"
+    ],
+    "elapsed_sec": 0.4955962089879904,
+    "returncode": 0,
+    "stderr_tail": "",
+    "stdout_tail": "cpu0 cur=1152000\ncpu0 min=384000\ncpu0 max=3532800\ncpu0 hwmax=3532800\ncpu1 cur=1996800\ncpu1 min=384000\ncpu1 max=3532800\ncpu1 hwmax=3532800\ncpu2 cur=1785600\ncpu2 min=384000\ncpu2 max=3532800\ncpu2 hwmax=3532800\ncpu3 cur=1363200\ncpu3 min=384000\ncpu3 max=3532800\ncpu3 hwmax=3532800\ncpu4 cur=2745600\ncpu4 min=384000\ncpu4 max=3532800\ncpu4 hwmax=3532800\ncpu5 cur=2745600\ncpu5 min=384000\ncpu5 max=3532800\ncpu5 hwmax=3532800\ncpu6 cur=1017600\ncpu6 min=1017600\ncpu6 max=3072000\ncpu6 hwmax=4320000\ncpu7 cur=1017600\ncpu7 min=1017600\ncpu7 max=3072000\ncpu7 hwmax=4320000\n"
+  },
+  "frequency_after_restore": {
+    "cmd": [
+      "adb",
+      "-s",
+      "FY25013101C8",
+      "shell",
+      "for c in 0 1 2 3 4 5 6 7; do b=/sys/devices/system/cpu/cpu${c}/cpufreq; printf 'cpu%s cur=' \"$c\"; cat $b/scaling_cur_freq; printf 'cpu%s min=' \"$c\"; cat $b/scaling_min_freq; printf 'cpu%s max=' \"$c\"; cat $b/scaling_max_freq; printf 'cpu%s hwmax=' \"$c\"; cat $b/cpuinfo_max_freq; done"
+    ],
+    "elapsed_sec": 0.4408861249976326,
+    "returncode": 0,
+    "stderr_tail": "",
+    "stdout_tail": "cpu0 cur=2745600\ncpu0 min=384000\ncpu0 max=3532800\ncpu0 hwmax=3532800\ncpu1 cur=2745600\ncpu1 min=384000\ncpu1 max=3532800\ncpu1 hwmax=3532800\ncpu2 cur=1555200\ncpu2 min=384000\ncpu2 max=3532800\ncpu2 hwmax=3532800\ncpu3 cur=1996800\ncpu3 min=384000\ncpu3 max=3532800\ncpu3 hwmax=3532800\ncpu4 cur=2745600\ncpu4 min=384000\ncpu4 max=3532800\ncpu4 hwmax=3532800\ncpu5 cur=2745600\ncpu5 min=384000\ncpu5 max=3532800\ncpu5 hwmax=3532800\ncpu6 cur=1017600\ncpu6 min=1017600\ncpu6 max=4320000\ncpu6 hwmax=4320000\ncpu7 cur=1017600\ncpu7 min=1017600\ncpu7 max=4320000\ncpu7 hwmax=4320000\n"
+  },
+  "frequency_before": {
+    "cmd": [
+      "adb",
+      "-s",
+      "FY25013101C8",
+      "shell",
+      "for c in 0 1 2 3 4 5 6 7; do b=/sys/devices/system/cpu/cpu${c}/cpufreq; printf 'cpu%s cur=' \"$c\"; cat $b/scaling_cur_freq; printf 'cpu%s min=' \"$c\"; cat $b/scaling_min_freq; printf 'cpu%s max=' \"$c\"; cat $b/scaling_max_freq; printf 'cpu%s hwmax=' \"$c\"; cat $b/cpuinfo_max_freq; done"
+    ],
+    "elapsed_sec": 0.5340313749911729,
+    "returncode": 0,
+    "stderr_tail": "",
+    "stdout_tail": "cpu0 cur=2745600\ncpu0 min=384000\ncpu0 max=3532800\ncpu0 hwmax=3532800\ncpu1 cur=2745600\ncpu1 min=384000\ncpu1 max=3532800\ncpu1 hwmax=3532800\ncpu2 cur=1996800\ncpu2 min=384000\ncpu2 max=3532800\ncpu2 hwmax=3532800\ncpu3 cur=1555200\ncpu3 min=384000\ncpu3 max=3532800\ncpu3 hwmax=3532800\ncpu4 cur=2745600\ncpu4 min=384000\ncpu4 max=3532800\ncpu4 hwmax=3532800\ncpu5 cur=1785600\ncpu5 min=384000\ncpu5 max=3532800\ncpu5 hwmax=3532800\ncpu6 cur=1017600\ncpu6 min=1017600\ncpu6 max=4320000\ncpu6 hwmax=4320000\ncpu7 cur=1017600\ncpu7 min=1017600\ncpu7 max=4320000\ncpu7 hwmax=4320000\n"
+  },
+  "game_mode_before": "standard",
+  "game_mode_restore": {},
+  "game_mode_target": {
+    "after": {
+      "cmd": [
+        "adb",
+        "-s",
+        "FY25013101C8",
+        "shell",
+        "cmd",
+        "game",
+        "list-modes",
+        "ai.zer0pa.polymath.lab"
+      ],
+      "elapsed_sec": 0.09761495800921693,
+      "returncode": 0,
+      "stderr_tail": "",
+      "stdout_tail": "ai.zer0pa.polymath.lab current mode: standard, available game modes: [standard,custom]\n"
+    },
+    "before": {
+      "cmd": [
+        "adb",
+        "-s",
+        "FY25013101C8",
+        "shell",
+        "cmd",
+        "game",
+        "list-modes",
+        "ai.zer0pa.polymath.lab"
+      ],
+      "elapsed_sec": 0.09270104201277718,
+      "returncode": 0,
+      "stderr_tail": "",
+      "stdout_tail": "ai.zer0pa.polymath.lab current mode: standard, available game modes: [standard,custom]\n"
+    },
+    "requested_mode": "standard",
+    "set_result": {
+      "cmd": [
+        "adb",
+        "-s",
+        "FY25013101C8",
+        "shell",
+        "cmd",
+        "game",
+        "mode",
+        "standard",
+        "ai.zer0pa.polymath.lab"
+      ],
+      "elapsed_sec": 0.12563200001022778,
+      "returncode": 0,
+      "stderr_tail": "",
+      "stdout_tail": "Set game mode to `STANDARD` for user `0` in game `ai.zer0pa.polymath.lab`\n"
+    }
+  },
+  "launch_stdout": "see adb logcat marker; launch completed through existing app runner",
+  "material_hash_parity": true,
+  "mean_trial_token_ids_per_sec_derived": 60519383.23451158,
+  "native_cpus_allowed_before": "0-7",
+  "native_cpuset_before": "/top-app",
+  "native_phase1_exec_path": "/data/app/~~FajaXUkv26SIn1gcm0B2gg==/ai.zer0pa.polymath.lab-hDzJcWXV3KHGvzrDrP3TKw==/lib/arm64/libphase1_qa_stream_exec.so",
+  "native_phase1_token_ids_per_sec": 57502300.0,
+  "native_sched_excerpt_before": "uclamp.min                                   :                    0\nuclamp.max                                   :                 1024\neffective uclamp.min                         :                    0\neffective uclamp.max                         :                 1024\npolicy                                       :                    0\nprio                                         :                  110",
+  "native_token_ids_per_sec": 57502300,
+  "native_wall_sec": 0.48974,
+  "nonclaims": [
+    "diagnostic_only",
+    "settings_probe_restored_after_run",
+    "no_phase1_promotion_claim",
+    "no_oem_mode_recommendation_without_repeated_ab"
+  ],
+  "ratio_vs_termux_promoted_best_trial": 0.9859637670984821,
+  "record_count_parity": true,
+  "run_id": "2026-06-27T182529Z",
+  "schema_version": "phase1_apk_nubia_whitelist_probe_v2",
+  "settings_after_run_before_restore": {
+    "NubiaperformanceMode": "ai.zer0pa.polymath.lab+300,com.primatelabs.geekbench6+300,",
+    "db_game_strengthen_mode_list": "null,ai.zer0pa.polymath.lab+6,com.primatelabs.geekbench6+6",
+    "db_game_strengthen_packagename": "ai.zer0pa.polymath.lab",
+    "game_strengthen_mode_value": "0",
+    "performance_mode_package": "ai.zer0pa.polymath.lab",
+    "performance_mode_value": "3"
+  },
+  "settings_applied": {
+    "NubiaperformanceMode": "ai.zer0pa.polymath.lab+300,com.primatelabs.geekbench6+300,",
+    "db_game_strengthen_mode_list": "null,ai.zer0pa.polymath.lab+6,com.primatelabs.geekbench6+6",
+    "db_game_strengthen_packagename": "ai.zer0pa.polymath.lab",
+    "game_strengthen_mode_value": "6",
+    "performance_mode_package": "ai.zer0pa.polymath.lab",
+    "performance_mode_value": "2"
+  },
+  "settings_original": {
+    "NubiaperformanceMode": "com.primatelabs.geekbench6+300,",
+    "db_game_strengthen_mode_list": "null,com.primatelabs.geekbench6+6",
+    "db_game_strengthen_packagename": "com.primatelabs.geekbench6",
+    "game_strengthen_mode_value": "0",
+    "performance_mode_package": "com.termux",
+    "performance_mode_value": "0"
+  },
+  "settings_restored": {
+    "NubiaperformanceMode": "com.primatelabs.geekbench6+300,",
+    "db_game_strengthen_mode_list": "null,com.primatelabs.geekbench6+6",
+    "db_game_strengthen_packagename": "com.primatelabs.geekbench6",
+    "game_strengthen_mode_value": "0",
+    "performance_mode_package": "com.termux",
+    "performance_mode_value": "0"
+  },
+  "settings_restored_match_original": true,
+  "settings_target": {
+    "NubiaperformanceMode": "ai.zer0pa.polymath.lab+300,com.primatelabs.geekbench6+300,",
+    "db_game_strengthen_mode_list": "null,ai.zer0pa.polymath.lab+6,com.primatelabs.geekbench6+6",
+    "db_game_strengthen_packagename": "ai.zer0pa.polymath.lab",
+    "game_strengthen_mode_value": "6",
+    "performance_mode_package": "ai.zer0pa.polymath.lab",
+    "performance_mode_value": "2"
+  },
+  "status": "probe",
+  "termux_promoted_baseline": {
+    "memory_pss_kb": 244233,
+    "records": 1000000,
+    "records_per_sec": 2224147.7604567455,
+    "token_ids": 28161180,
+    "token_ids_per_sec": 62634625.42881929
+  },
+  "token_count_parity": true,
+  "trials_derived_from_elapsed_ns": [
+    {
+      "elapsed_ns": 460424583,
+      "elapsed_sec": 0.460424583,
+      "file": "native_batch_metrics_trial1.json",
+      "token_ids_per_sec_derived": 61163502.210306615
+    },
+    {
+      "elapsed_ns": 466769063,
+      "elapsed_sec": 0.466769063,
+      "file": "native_batch_metrics_trial2.json",
+      "token_ids_per_sec_derived": 60332147.59136683
+    },
+    {
+      "elapsed_ns": 468402135,
+      "elapsed_sec": 0.468402135,
+      "file": "native_batch_metrics_trial3.json",
+      "token_ids_per_sec_derived": 60121801.11006539
+    },
+    {
+      "elapsed_ns": 474772812,
+      "elapsed_sec": 0.474772812,
+      "file": "native_batch_metrics_trial4.json",
+      "token_ids_per_sec_derived": 59315064.57029389
+    },
+    {
+      "elapsed_ns": 463330104,
+      "elapsed_sec": 0.463330104,
+      "file": "native_batch_metrics_trial5.json",
+      "token_ids_per_sec_derived": 60779948.802981295
+    },
+    {
+      "elapsed_ns": 469898437,
+      "elapsed_sec": 0.469898437,
+      "file": "native_batch_metrics_trial6.json",
+      "token_ids_per_sec_derived": 59930354.69492315
+    },
+    {
+      "elapsed_ns": 456011094,
+      "elapsed_sec": 0.456011094,
+      "file": "native_batch_metrics_trial7.json",
+      "token_ids_per_sec_derived": 61755471.23860105
+    },
+    {
+      "elapsed_ns": 463506822,
+      "elapsed_sec": 0.463506822,
+      "file": "native_batch_metrics_trial8.json",
+      "token_ids_per_sec_derived": 60756775.6575544
+    }
+  ]
+}

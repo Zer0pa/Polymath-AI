@@ -1,0 +1,43 @@
+# Polymath Lab Phase 1 App Probe Manifest
+
+Run ID: `2026-06-27T182529Z`
+Device report root: `/sdcard/Android/data/ai.zer0pa.polymath.lab/files/reports/phase1/2026-06-27T182529Z`
+Gate state: `probe`
+
+This is an APK-owned smoke/probe artifact set. It does not prove Phase 1 correctness,
+Game Mode acceptance, REDMAGIC Game Space, Rise, Diablo, ADPF, or Comet success.
+
+## Files
+
+- `apk_identity.json` 587 bytes sha256=55bb011f1ae85a657a9a42c5d00278f08256cb86f5552fe7884bc47d4f828df0
+- `commands.json` 176 bytes sha256=1323ac9f027cd895da17917937b651c53bffa582da64b6fc54009dea37832a7c
+- `gate_result.json` 627 bytes sha256=cea94a2398af2ba4ba749bae5a9bf6dba98e5bb61137e91e7db792f7ff906456
+- `native_batch_metrics.json` 1355 bytes sha256=37bbcde4796d5bce612bc9dea75dec1c48a65ef26027be39694876b0d5ff6e92
+- `native_batch_metrics_trial1.json` 1351 bytes sha256=45b66fbc31ea61c1cc75a106d37d9b2d005e4fb65cbbf446f705a4bedadaf672
+- `native_batch_metrics_trial2.json` 1352 bytes sha256=13c56aec72e9026f4b4643c64d4dfe1b549322b38092650e883fef69d4ea4a54
+- `native_batch_metrics_trial3.json` 1353 bytes sha256=ee8ce8e5fd08a49a4166e7d04abe92786df5fb545d0b36e792a67f755618c9df
+- `native_batch_metrics_trial4.json` 1348 bytes sha256=1e6a3a63fa7e7b8b8f15cd295bd40ac7f375458f532db72dfc59ce5a11bcfa35
+- `native_batch_metrics_trial5.json` 1355 bytes sha256=342ab308348a338a35822d8420fdfeed8f07a438e2e1a9d2a54b97cb765da5f3
+- `native_batch_metrics_trial6.json` 1354 bytes sha256=131b6e7f1f38a1449d02febc6c074f63df2bfbfc8b1054bc031a4b16c70d8486
+- `native_batch_metrics_trial7.json` 1354 bytes sha256=89fda7f0fcfa165db2ffa377f45d2f54ba23bfb4b492a5e16026cbc472602ebb
+- `native_batch_metrics_trial8.json` 1355 bytes sha256=37bbcde4796d5bce612bc9dea75dec1c48a65ef26027be39694876b0d5ff6e92
+- `native_batch_metrics_warmup1.json` 1349 bytes sha256=3d5a6b2d0971bbd987e910beef90369eb243dc0450427e2084e3d37d55db6e78
+- `native_batch_metrics_warmup2.json` 1354 bytes sha256=b1961742ecb3bfb3bc5f7395604d175383c5e0a3f55bb44d2efce4919bdb1b4f
+- `native_batch_metrics_warmup3.json` 1351 bytes sha256=b8fb7809681ce11944f7fab45280e76d1f96bc9df98b6c23747231f0e41a3d11
+- `native_batch_metrics_warmup4.json` 1353 bytes sha256=ced04bce703197016698ab226b762682d2b082167a3666dc91f91749c23da575
+- `native_batch_metrics_warmup5.json` 1350 bytes sha256=11b299987894e22bf0bbaa2fe56c214b50be48cf61e23cdb49945a00faafe319
+- `native_batch_metrics_warmup6.json` 1351 bytes sha256=7524630a21f1e94f5a1304c51ae70830c2072577f0166b088d03178f9692980b
+- `native_engine_info.json` 499 bytes sha256=68744740792b1471d0cc0c6d61e2d0adb2682a895412c1670b6b844dc03c2ef8
+- `native_phase1_metrics.json` 2686 bytes sha256=68a5f6148462bb36b4b186d8d9953fea4ed7650edf5dace8d7dc9b462955b83f
+- `native_probe_result.json` 1652 bytes sha256=c17537a254e3aae479800a284b76ed1e5178533cc8aabc48c2700088cbe498d2
+- `native_warm_sequence_metrics.json` 3411 bytes sha256=a2e0d6b8673f0050a85709ae16962ea70ed46052c8983d2cd1d2d8523655dfe4
+- `phase1_ab_matrix.json` 483 bytes sha256=5ca4866d319ae594801c1b03d63bd7335cb95b1399e7bd0d8f96d16116e10334
+- `phase1_android_game_authority.json` 421 bytes sha256=c558372be37f540cadfcfbfbc3f5733a249af0db6775a6b1a311f399aa667b01
+- `phase1_app_run_config.json` 853 bytes sha256=bd3cb14f2b38b542315c5e636b72fe3510f7c9f9574f657279fb8b49c8da8439
+- `phase1_app_run_result.json` 44873 bytes sha256=c8e0b26ace7dbc714cbe37e7630535f8bcc175d96e0df73cd0bde7db17984a15
+- `phase1_comet_logging_plan.json` 353 bytes sha256=23db6170f08667c0240d1dfa25e8e186b8aedc3aac96d3a0c6d87f8ac45c603a
+- `phase1_correctness_summary.json` 389 bytes sha256=5b8c040a1df0cdb1f6ea83f9033439aae045e707be98276128c99e60c49bcf51
+- `phase1_forbidden_payload_scan.json` 119 bytes sha256=21ac085eada56c3d072cfd559b4d149ff81c96181c018116d8719ab77a557eac
+- `phase1_redmagic_operator_attestation.md` 276 bytes sha256=c20f4fa5febf981a72f4aace9b81571e0ea8213a17dc0cb5e811d46f961d8d99
+- `phase1_telemetry_summary.json` 210 bytes sha256=2aef1233f485566e41bbcacf5cbc9547698155c3984f66f6642a5226a2dbb670
+- `phase1_termux_baseline_comparison.json` 3057 bytes sha256=10845bcf0bca77cdf3cd7b860c5b88f69cbaa3b5fdeebb5f7e7e202de9ae6b04
