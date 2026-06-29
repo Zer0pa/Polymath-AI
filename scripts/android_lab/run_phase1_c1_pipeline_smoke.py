@@ -42,7 +42,6 @@ from run_phase1_apk_benchmark import (  # noqa: E402
     write_json,
 )
 from run_phase1_nubia_whitelist_probe import (  # noqa: E402
-    CHILD_EXEC_WARM_FLAGS,
     RUNTIME_SAMPLER_FLAG,
     apply_settings,
     current_game_mode,
@@ -59,6 +58,9 @@ DEFAULT_FULL_QA = C1_ROOT / "qa_bridge/phase_C1_full.qa.jsonl"
 
 PHASE1_SOURCE_KINDS = {"dictionary", "megascience", "synthetic_stress", "user_supplied"}
 DEFAULT_SOURCE_KIND_MAP = {"lexatlas": "dictionary"}
+CHILD_EXEC_FLAG = 16
+NATIVE_WARM_SEQUENCE_FLAG = 2
+NATIVE_EXTENDED_WARM_SEQUENCE_FLAG = 4
 ACCEPTED_ENRICHMENT_FIELDS = [
     "formal_definition",
     "related_terms",
@@ -365,6 +367,14 @@ def build_generation_manifest(
         "batch_list_path": batch_path,
         "tokenizer_dir": tokenizer_dir,
         "gbt1_path": gbt1_path,
+        "run_flags": run_flags_for(args),
+        "run_flag_policy": {
+            "child_exec_enabled": True,
+            "native_warm_sequence_enabled": args.native_warm_sequence or args.native_extended_warm_sequence,
+            "native_extended_warm_sequence_enabled": args.native_extended_warm_sequence,
+            "runtime_sampler_enabled": args.runtime_sampler,
+            "full_c1_default": "single child-exec pass; warm sequences are opt-in diagnostics",
+        },
         "planned_pqa1_outputs": outputs,
         "qai1_file_count": len(qai1_files),
         "qai1_total_bytes": sum(path.stat().st_size for path in qai1_files),
@@ -388,6 +398,17 @@ def phase2_staging_contract(run_label: str, outputs: list[dict[str, Any]]) -> di
         "bridge_policy": "Execution may bridge raw PQA1 via ADB /tmp or Termux SSH; repo reports contain only path/hash/list metadata.",
         "raw_payload_policy": "raw PQA1 is forbidden in git and Comet assets",
     }
+
+
+def run_flags_for(args: argparse.Namespace) -> int:
+    flags = CHILD_EXEC_FLAG
+    if args.native_warm_sequence or args.native_extended_warm_sequence:
+        flags |= NATIVE_WARM_SEQUENCE_FLAG
+    if args.native_extended_warm_sequence:
+        flags |= NATIVE_EXTENDED_WARM_SEQUENCE_FLAG
+    if args.runtime_sampler:
+        flags |= RUNTIME_SAMPLER_FLAG
+    return flags
 
 
 def dry_run(args: argparse.Namespace, records: list[dict[str, str]], source_manifest: dict[str, Any], outputs: list[dict[str, Any]], report_root: Path) -> dict[str, Any]:
@@ -452,7 +473,7 @@ def run_phase1(args: argparse.Namespace, records: list[dict[str, str]], source_m
     settings_target = target_settings()
     game_mode_before = current_game_mode(serial)
     frequency_before = frequency_snapshot(serial)
-    flags = CHILD_EXEC_WARM_FLAGS | (RUNTIME_SAMPLER_FLAG if args.runtime_sampler else 0)
+    flags = run_flags_for(args)
     run_id = ""
     settings_applied: dict[str, str] = {}
     settings_after_run: dict[str, str] = {}
@@ -497,6 +518,9 @@ def run_phase1(args: argparse.Namespace, records: list[dict[str, str]], source_m
                 "frequency_after_apply": frequency_after_apply,
                 "frequency_after_final_apply": frequency_after_final_apply,
                 "policy": "high_performance_profile_is_authority_default_no_restore",
+                "run_flags": flags,
+                "native_warm_sequence_enabled": args.native_warm_sequence or args.native_extended_warm_sequence,
+                "native_extended_warm_sequence_enabled": args.native_extended_warm_sequence,
             },
         )
 
@@ -578,6 +602,8 @@ def main() -> int:
     parser.add_argument("--out-dir", type=Path, default=Path("runtime/reports/polar_phase1_c1_pipeline"))
     parser.add_argument("--timeout-sec", type=int, default=1800)
     parser.add_argument("--runtime-sampler", action="store_true")
+    parser.add_argument("--native-warm-sequence", action="store_true", help="Opt-in warmup/trial sequence for small diagnostics; disabled by default for full C1 completion.")
+    parser.add_argument("--native-extended-warm-sequence", action="store_true", help="Opt-in extended warm sequence; implies --native-warm-sequence and is not for full C1 completion.")
     parser.add_argument("--dry-run", action="store_true", help="Validate C1 and write safe manifests without ADB or QAI1/PQA1 generation.")
     parser.add_argument("--run-label", default=None)
     args = parser.parse_args()
