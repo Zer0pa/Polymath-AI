@@ -56,7 +56,6 @@ from run_phase1_nubia_whitelist_probe import (  # noqa: E402
 C1_ROOT = WORKSPACE_ROOT / "corpus_packages/commercial/20260629T100304Z/phase_C1_lexatlas_frontier_gpt_enriched_scale_v1"
 DEFAULT_TRAIN_QA = C1_ROOT / "qa_bridge/phase_C1_train.qa.jsonl"
 DEFAULT_FULL_QA = C1_ROOT / "qa_bridge/phase_C1_full.qa.jsonl"
-DEFAULT_PACKAGE_MANIFEST = C1_ROOT / "phase_C1_build_manifest.json"
 
 PHASE1_SOURCE_KINDS = {"dictionary", "megascience", "synthetic_stress", "user_supplied"}
 DEFAULT_SOURCE_KIND_MAP = {"lexatlas": "dictionary"}
@@ -121,6 +120,24 @@ def resolve_input_path(args: argparse.Namespace) -> Path:
     if args.full:
         return DEFAULT_FULL_QA
     return DEFAULT_TRAIN_QA
+
+
+def infer_package_root(input_path: Path) -> Path:
+    if input_path.parent.name == "qa_bridge":
+        return input_path.parent.parent
+    return input_path.parent
+
+
+def resolve_package_root(args: argparse.Namespace, input_path: Path) -> Path:
+    if args.package_root:
+        return args.package_root.resolve()
+    return infer_package_root(input_path).resolve()
+
+
+def resolve_package_manifest(args: argparse.Namespace, package_root: Path) -> Path:
+    if args.package_manifest:
+        return args.package_manifest.resolve()
+    return package_root / "phase_C1_build_manifest.json"
 
 
 def sanitize_label(value: str) -> str:
@@ -303,7 +320,7 @@ def build_source_manifest(
     payload = {
         "schema_version": "phase1_c1_source_manifest_v1",
         "run_label": run_label,
-        "corpus": "C1_lexatlas_frontier_gpt_enriched_scale_v1",
+        "corpus": args.corpus_id,
         "input_identity": source_identity,
         "package_root": str(args.package_root),
         "package_manifest": str(args.package_manifest) if args.package_manifest else None,
@@ -549,9 +566,10 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--input-path", type=Path, default=None, help="C1 QA bridge JSONL. Defaults to train split or full split with --full.")
     parser.add_argument("--full", action="store_true", help="Use the steward-approved full C1 QA bridge input.")
-    parser.add_argument("--limit", type=int, default=64, help="Number of records to select. Use 0 with --full for all rows.")
-    parser.add_argument("--package-root", type=Path, default=C1_ROOT)
-    parser.add_argument("--package-manifest", type=Path, default=DEFAULT_PACKAGE_MANIFEST)
+    parser.add_argument("--limit", type=int, default=64, help="Number of records to select. Use 0 for all rows in the selected input.")
+    parser.add_argument("--package-root", type=Path, default=None, help="C1 package root. Defaults to the parent of qa_bridge for --input-path.")
+    parser.add_argument("--package-manifest", type=Path, default=None, help="C1 package manifest. Defaults to <package-root>/phase_C1_build_manifest.json.")
+    parser.add_argument("--corpus-id", default=None, help="Report corpus identity. Defaults to the package root directory name.")
     parser.add_argument("--source-kind-map", action="append", default=[], help="Map raw source_kind to Phase 1 enum, e.g. lexis=dictionary.")
     parser.add_argument("--scheduler", choices=["byte_greedy", "dynamic"], default="byte_greedy")
     parser.add_argument("--chunk-size", type=int, default=8192)
@@ -568,7 +586,10 @@ def main() -> int:
         raise SystemExit("--limit must be >= 0")
 
     input_path = resolve_input_path(args)
-    limit = None if args.full and args.limit == 0 else args.limit
+    args.package_root = resolve_package_root(args, input_path)
+    args.package_manifest = resolve_package_manifest(args, args.package_root)
+    args.corpus_id = args.corpus_id or args.package_root.name
+    limit = None if args.limit == 0 else args.limit
     kind_map = parse_kind_map(args.source_kind_map)
     records, source_identity = load_c1_records(input_path, limit=limit, kind_map=kind_map)
     stamp = utc_stamp()
