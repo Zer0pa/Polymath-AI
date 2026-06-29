@@ -1,0 +1,154 @@
+{
+  "forbidden_suffixes": [
+    ".bin",
+    ".jsonl",
+    ".pjp1",
+    ".pqa1",
+    ".qai1",
+    ".safetensors"
+  ],
+  "payloads": [
+    {
+      "copied_to_mirror": false,
+      "exists": true,
+      "path": "/data/data/com.termux/files/home/Polymath-AI/runtime/reports/polar_phase2/2026-06-26T235142Z/raw_1M.pjp1",
+      "producing_report": "runtime/reports/polar_phase2/2026-06-26T235142Z",
+      "purpose": "Original Python/NumPy 1M PJP1 output; reference-only",
+      "sha256": null,
+      "sha256_policy": "not_recomputed_for_handoff",
+      "size_bytes": 9110557440
+    },
+    {
+      "copied_to_mirror": false,
+      "exists": true,
+      "path": "/data/data/com.termux/files/home/Polymath-AI/runtime/reports/polar_phase2_native_closure/2026-06-28T105404Z-cached-1M/raw_1M.pjp1",
+      "producing_report": "runtime/reports/polar_phase2_native_closure/2026-06-28T105404Z-cached-1M",
+      "purpose": "Phase 2-B native 1M PJP1 output; authority stress evidence",
+      "sha256": null,
+      "sha256_policy": "not_recomputed_for_handoff",
+      "size_bytes": 9110557440
+    },
+    {
+      "copied_to_mirror": false,
+      "exists": true,
+      "path": "/data/data/com.termux/files/home/Polymath-AI/runtime/reports/polar_phase2c/2026-06-29Tphase2c-high-diversity-opt/unique_50000/raw.pjp1",
+      "producing_report": "runtime/reports/polar_phase2c/2026-06-29Tphase2c-high-diversity-opt/unique_50000",
+      "purpose": "Optimized high-diversity unique_50000 PJP1 output",
+      "sha256": "8fe6007dba342f9aae2f61a6375748f3f21971f68a31ba04253362921673c91f",
+      "sha256_policy": "from_phase2c_high_diversity_optimization_report",
+      "size_bytes": 905604096
+    },
+    {
+      "copied_to_mirror": false,
+      "exists": true,
+      "path": "/data/data/com.termux/files/home/Polymath-AI/runtime/reports/polar_phase2c/2026-06-29Tphase2c-high-diversity-opt/unique_100000/raw.pjp1",
+      "producing_report": "runtime/reports/polar_phase2c/2026-06-29Tphase2c-high-diversity-opt/unique_100000",
+      "purpose": "Optimized high-diversity unique_100000 PJP1 output",
+      "sha256": "b38ab3c76525fda7ac07ae5e83f049ae68eb8a8de73088f5cf434dbc7e0bfbf5",
+      "sha256_policy": "from_phase2c_high_diversity_optimization_report",
+      "size_bytes": 905604096
+    },
+    {
+      "copied_to_mirror": false,
+      "exists": true,
+      "path": "/data/data/com.termux/files/home/polymath_polar_phase2/embeddings/gemma4_E4B_input_embedding.f16",
+      "producing_report": "phase2 embedding manifest",
+      "purpose": "Gemma4 input embedding f16 tensor",
+      "sha256": "b57e1e756f32d02c1aaad6c5c868f975f53b0938e0a04ed546804ed9c7d4ca7b",
+      "sha256_policy": "from_embedding_manifest",
+      "size_bytes": 1342177280
+    },
+    {
+      "copied_to_mirror": false,
+      "exists": true,
+      "path": "/data/data/com.termux/files/home/polymath_polar_phase2/jl/gemma4_dense_rademacher_k256_d2560_i8.bin",
+      "producing_report": "phase2 JL config",
+      "purpose": "Dense Rademacher k=256,d=2560 matrix",
+      "sha256": "1b1f9de3dd6fbdf9597240eeeb08a6b482b33f1ae4d127e730222750cdf92a79",
+      "sha256_policy": "from_jl_config",
+      "size_bytes": 655360
+    },
+    {
+      "copied_to_mirror": false,
+      "exists": true,
+      "path": "/data/data/com.termux/files/home/Polymath-AI/runtime/gpd_tmp/phase1_logged_maximal_closure/2026-06-26T171915Z/hundredk_heap_static_bg8_trial2/out_0000.pqa1",
+      "producing_report": "Phase 1 logged maximal closure",
+      "purpose": "PQA1 stress source shard used by Phase 2-B/2-C repeated-token gates",
+      "sha256": null,
+      "sha256_policy": "not_recomputed_for_handoff",
+      "size_bytes": 1954218
+    },
+    {
+      "copied_to_mirror": false,
+      "exists": true,
+      "path": "/data/data/com.termux/files/home/Polymath-AI/runtime/gpd_tmp/phase1_logged_maximal_closure/2026-06-26T171915Z/hundredk_heap_static_bg8_trial2/out_0001.pqa1",
+      "producing_report": "Phase 1 logged maximal closure",
+      "purpose": "PQA1 stress source shard used by Phase 2-B/2-C repeated-token gates",
+      "sha256": null,
+      "sha256_policy": "not_recomputed_for_handoff",
+      "size_bytes": 1945170
+    },
+    {
+      "copied_to_mirror": false,
+      "exists": true,
+      "path": "/data/data/com.termux/files/home/Polymath-AI/runtime/gpd_tmp/phase1_logged_maximal_closure/2026-06-26T171915Z/hundredk_heap_static_bg8_trial2/out_0003.pqa1",
+      "producing_report": "Phase 1 logged maximal closure",
+      "purpose": "PQA1 stress source shard used by Phase 2-B/2-C repeated-token gates",
+      "sha256": null,
+      "sha256_policy": "not_recomputed_for_handoff",
+      "size_bytes": 1938727
+    },
+    {
+      "copied_to_mirror": false,
+      "exists": true,
+      "path": "/data/data/com.termux/files/home/Polymath-AI/runtime/gpd_tmp/phase1_logged_maximal_closure/2026-06-26T171915Z/hundredk_heap_static_bg8_trial2/out_0002.pqa1",
+      "producing_report": "Phase 1 logged maximal closure",
+      "purpose": "PQA1 stress source shard used by Phase 2-B/2-C repeated-token gates",
+      "sha256": null,
+      "sha256_policy": "not_recomputed_for_handoff",
+      "size_bytes": 1948670
+    },
+    {
+      "copied_to_mirror": false,
+      "exists": true,
+      "path": "/data/data/com.termux/files/home/Polymath-AI/runtime/gpd_tmp/phase1_logged_maximal_closure/2026-06-26T171915Z/hundredk_heap_static_bg8_trial2/out_0004.pqa1",
+      "producing_report": "Phase 1 logged maximal closure",
+      "purpose": "PQA1 stress source shard used by Phase 2-B/2-C repeated-token gates",
+      "sha256": null,
+      "sha256_policy": "not_recomputed_for_handoff",
+      "size_bytes": 1948491
+    },
+    {
+      "copied_to_mirror": false,
+      "exists": true,
+      "path": "/data/data/com.termux/files/home/Polymath-AI/runtime/gpd_tmp/phase1_logged_maximal_closure/2026-06-26T171915Z/hundredk_heap_static_bg8_trial2/out_0005.pqa1",
+      "producing_report": "Phase 1 logged maximal closure",
+      "purpose": "PQA1 stress source shard used by Phase 2-B/2-C repeated-token gates",
+      "sha256": null,
+      "sha256_policy": "not_recomputed_for_handoff",
+      "size_bytes": 1938695
+    },
+    {
+      "copied_to_mirror": false,
+      "exists": true,
+      "path": "/data/data/com.termux/files/home/Polymath-AI/runtime/gpd_tmp/phase1_logged_maximal_closure/2026-06-26T171915Z/hundredk_heap_static_bg8_trial2/out_0006.pqa1",
+      "producing_report": "Phase 1 logged maximal closure",
+      "purpose": "PQA1 stress source shard used by Phase 2-B/2-C repeated-token gates",
+      "sha256": null,
+      "sha256_policy": "not_recomputed_for_handoff",
+      "size_bytes": 1947855
+    },
+    {
+      "copied_to_mirror": false,
+      "exists": true,
+      "path": "/data/data/com.termux/files/home/Polymath-AI/runtime/gpd_tmp/phase1_logged_maximal_closure/2026-06-26T171915Z/hundredk_heap_static_bg8_trial2/out_0007.pqa1",
+      "producing_report": "Phase 1 logged maximal closure",
+      "purpose": "PQA1 stress source shard used by Phase 2-B/2-C repeated-token gates",
+      "sha256": null,
+      "sha256_policy": "not_recomputed_for_handoff",
+      "size_bytes": 1945634
+    }
+  ],
+  "schema_version": "phase2c_raw_payload_manifest_v1",
+  "status": "indexed_not_copied"
+}

@@ -1,0 +1,24 @@
+{
+  "pass_fail_thresholds": {
+    "collision_duplicate_token_fraction_max": 0.001,
+    "comet_logging": "logged from environment only",
+    "geometry": "no degenerate margins; Hamming/embedding relation no worse than synthetic proxy baseline without explanation",
+    "pjp1_readback": "pass",
+    "real_50k_plus_distinct_token_throughput_floor_real_tokens_per_sec": 200000,
+    "stratified_oracle": "100% bit-exact sampled packets"
+  },
+  "required_corpus": {
+    "answer_structure": "question/answer segments with loss_mask answer-active spans preserved",
+    "format": "Phase 1 PQA1 files with tokenizer hashes matching Gemma4 manifest",
+    "identity": "source manifest, license/corpus provenance, vocab hash, merges hash, PQA1 source SHA-256 stream",
+    "labels_or_objectives": "real task labels or training objective metadata for information-bottleneck k decisions; proxy cosine is insufficient",
+    "minimum_records_by_gate": {
+      "100k_real_sample": 100000,
+      "1M_real_sample": 1000000
+    },
+    "token_diversity": "must include measured unique-token count, target >=50000 distinct token IDs for production floor gate"
+  },
+  "schema_version": "phase2c_real_material_required_inputs_v2",
+  "status": "real_corpus_required",
+  "why_required": "Synthetic/proxy gates cannot prove production token distribution, answer-span repetition, real-label information retention, or final k/projection promotion."
+}

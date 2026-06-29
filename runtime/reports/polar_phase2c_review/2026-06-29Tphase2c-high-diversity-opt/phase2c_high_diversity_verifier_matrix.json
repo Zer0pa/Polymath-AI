@@ -1,0 +1,36 @@
+{
+  "gates": [
+    {
+      "evidence": "runtime/reports/polar_phase2c/2026-06-29Tphase2c-high-diversity-opt/unique_50000/native_packetizer_report.json",
+      "gate": "50k diversity >= 200000 real tok/sec",
+      "status": "pass"
+    },
+    {
+      "evidence": "unique_50000/pjp1_section_parity_report.json",
+      "gate": "PJP1 section parity 50k",
+      "status": "pass"
+    },
+    {
+      "evidence": "unique_50000/pjp1_readback_report.json",
+      "gate": "PJP1 readback 50k",
+      "status": "pass"
+    },
+    {
+      "evidence": "runtime/reports/polar_phase2c/2026-06-29Tphase2c-high-diversity-opt/unique_100000/native_packetizer_report.json",
+      "gate": "100k diversity harder sanity >= 200000 real tok/sec",
+      "status": "pass"
+    },
+    {
+      "evidence": "unique_100000/pjp1_section_parity_report.json",
+      "gate": "PJP1 section parity 100k",
+      "status": "pass"
+    },
+    {
+      "evidence": "unique_100000/pjp1_readback_report.json",
+      "gate": "PJP1 readback 100k",
+      "status": "pass"
+    }
+  ],
+  "schema_version": "phase2c_high_diversity_verifier_matrix_v1",
+  "status": "pass"
+}

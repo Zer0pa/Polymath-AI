@@ -1,0 +1,10 @@
+{
+  "answer": "PJP1 can be read as file-backed byte tensors without CPU unpacking when the consumer accepts bitpacked uint8 hypervectors. A QNN/HTP consumer will likely require one explicit staging copy into an accelerator-compatible buffer unless it can import file-backed memory.",
+  "arrow_ring_sidecar_needed_for_current_contract": false,
+  "arrow_ring_sidecar_reason": "No equivalence-promoted sidecar is needed for byte-tensor staging; Arrow/ring remains optional if future consumers require columnar IPC.",
+  "cpu_reader_copy_count": 0,
+  "mmap_to_numpy_view_copy_count": 0,
+  "qnn_staging_expected_copy_count": 1,
+  "schema_version": "phase2c_copy_count_report_v1",
+  "status": "pass"
+}

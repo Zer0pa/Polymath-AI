@@ -1,0 +1,74 @@
+{
+  "drift_action_count": 11,
+  "items": [
+    {
+      "action": "kept_for_evidence",
+      "path": "/data/data/com.termux/files/home/Polymath-AI/runtime/reports/polar_phase2/2026-06-26T235142Z",
+      "reason": "Original Python/NumPy PQA1-to-PJP1 path is correct but lower-throughput reference-only.",
+      "status": "documented"
+    },
+    {
+      "action": "kept_for_evidence",
+      "path": "/data/data/com.termux/files/home/Polymath-AI/runtime/reports/polar_phase2_native_closure/2026-06-28T105404Z-cached-1M",
+      "reason": "Phase 2-B repeated-token stress closure remains evidence but does not substitute for real-corpus proof.",
+      "status": "documented"
+    },
+    {
+      "action": "kept_for_evidence",
+      "path": "/data/data/com.termux/files/home/Polymath-AI/runtime/reports/polar_phase2c/2026-06-28Tphase2c-final",
+      "reason": "Phase 2-C run failed high-diversity performance in that version; useful regression evidence only.",
+      "status": "documented"
+    },
+    {
+      "action": "kept_for_evidence",
+      "path": "/data/data/com.termux/files/home/Polymath-AI/runtime/reports/polar_phase2c/2026-06-29Tphase2c-high-diversity-opt",
+      "reason": "High-diversity optimization evidence; promoted engineering path, not final maximal pass.",
+      "status": "documented"
+    },
+    {
+      "action": "kept_for_evidence",
+      "path": "/data/data/com.termux/files/home/Polymath-AI/runtime/reports/polar_phase2c/2026-06-29Tphase2c-after-high-diversity-continuation",
+      "reason": "Current terminal evidence for real-corpus-required status.",
+      "status": "documented"
+    },
+    {
+      "action": "kept_for_evidence",
+      "path": "docs/PHASE2C_PRD_MAXIMAL_2026-06-28.md",
+      "reason": "Authority PRD/supplement; do not delete or silently narrow.",
+      "status": "documented"
+    },
+    {
+      "action": "kept_for_evidence",
+      "path": "docs/PHASE2C_PRD_SUPPLEMENT_MAXIMAL_GUARDRAILS_2026-06-28.md",
+      "reason": "Authority PRD/supplement; do not delete or silently narrow.",
+      "status": "documented"
+    },
+    {
+      "action": "kept_for_evidence",
+      "path": "/sdcard/Download/polymath/polar_phase2c/PHASE2C_PRD_MAXIMAL_2026-06-28.md",
+      "reason": "Authority PRD/supplement; do not delete or silently narrow.",
+      "status": "documented"
+    },
+    {
+      "action": "kept_for_evidence",
+      "path": "/sdcard/Download/polymath/polar_phase2c/PHASE2C_PRD_SUPPLEMENT_MAXIMAL_GUARDRAILS_2026-06-28.md",
+      "reason": "Authority PRD/supplement; do not delete or silently narrow.",
+      "status": "documented"
+    },
+    {
+      "action": "documented_only",
+      "path": "native/polar_phase2_packetizer/phase2b_native_packetizer.cpp",
+      "reason": "Current promoted native packetizer source; name still phase2b but used by Phase 2-C optimized route.",
+      "status": "documented"
+    },
+    {
+      "action": "documented_only",
+      "path": "root README.md",
+      "reason": "Out of bounds by instruction; not edited.",
+      "status": "documented"
+    }
+  ],
+  "rules": "Authority evidence kept; no raw payload deletion; no root README edit; stale paths labeled rather than moved because deletion/move would obscure evidence.",
+  "schema_version": "phase2c_drift_quarantine_manifest_v1",
+  "status": "documented_no_deletions"
+}

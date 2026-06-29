@@ -1,0 +1,21 @@
+{
+  "decision": "dense_rademacher_k256_remains_incumbent",
+  "dense_incumbent": {
+    "mean_hamming_distance": 0.4783668518066406,
+    "name": "dense_rademacher_incumbent_k256",
+    "spearman_pvalue": 2.090100551226418e-252,
+    "spearman_r_vs_embedding_cosine_distance": 0.4951788506519414,
+    "std_hamming_distance": 0.03752704571887964
+  },
+  "reason": "SRHT was only evaluated as padded proxy geometry; no native implementation, PJP1 equivalence, or throughput evidence was produced.",
+  "sample_token_count": 512,
+  "schema_version": "phase2c_srht_comparison_arm_v1",
+  "srht_proxy": {
+    "mean_hamming_distance": 0.4782524108886719,
+    "name": "srht_proxy_k256_padded4096",
+    "spearman_pvalue": 1.1214372069358517e-269,
+    "spearman_r_vs_embedding_cosine_distance": 0.5096209104956426,
+    "std_hamming_distance": 0.03763704106498955
+  },
+  "status": "proxy_only_not_promoted"
+}

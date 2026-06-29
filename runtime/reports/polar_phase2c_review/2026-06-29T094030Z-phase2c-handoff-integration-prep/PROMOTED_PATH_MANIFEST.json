@@ -1,0 +1,50 @@
+{
+  "binary": {
+    "path": "native/polar_phase2_packetizer/bin/phase2b_native_packetizer",
+    "sha256": "11c81138d181f09dd1a9a4715952c8a5357a91e3f1c1562f2fb9761d4d4c336a"
+  },
+  "build_command": "native/polar_phase2_packetizer/build_phase2b_native_packetizer.sh",
+  "canonical_route": "Phase 1 PQA1 -> native C++/NEON packetizer -> PJP1 audit output",
+  "key_performance_reports": [
+    "runtime/reports/polar_phase2_native_closure/2026-06-28T105404Z-cached-1M/phase2b_1M_native_packetizer_report.json",
+    "runtime/reports/polar_phase2c/2026-06-29Tphase2c-high-diversity-opt/unique_50000/native_packetizer_report.json",
+    "runtime/reports/polar_phase2c/2026-06-29Tphase2c-high-diversity-opt/unique_100000/native_packetizer_report.json"
+  ],
+  "nonclaims": [
+    "no Phase 3 handoff",
+    "no NPU execution",
+    "no Arrow/ring promotion",
+    "no SRHT promotion",
+    "no Lorenz promotion",
+    "no alternate k promotion"
+  ],
+  "projection": {
+    "d": 2560,
+    "k": 256,
+    "status": "incumbent",
+    "type": "dense_rademacher"
+  },
+  "schema_version": "phase2c_promoted_path_manifest_v1",
+  "schemas": {
+    "audit_output": "PJP1 schema version 1 little-endian",
+    "input": "PQA1 schema version 1 little-endian"
+  },
+  "scripts": [
+    {
+      "path": "native/polar_phase2_packetizer/build_phase2b_native_packetizer.sh",
+      "sha256": "3c284c858aaa0d1e7697c4b63a12330d2e24d62a2391f109f34133463a631716"
+    },
+    {
+      "path": "scripts/termux/comet_log_phase_artifacts.py",
+      "sha256": "b5f8d1df1d865b7f8fd0dcaa1f195c0de70b3f83061e986e608e67da215fea9b"
+    }
+  ],
+  "source_files": [
+    {
+      "path": "native/polar_phase2_packetizer/phase2b_native_packetizer.cpp",
+      "sha256": "ba2d4dd48e2d9afeabf69b84019af0375aa739b26e982d69e8084a94a264c61f"
+    }
+  ],
+  "status": "current_promoted_engineering_route_real_corpus_required",
+  "thread_count": 8
+}

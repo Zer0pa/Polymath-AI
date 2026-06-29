@@ -1,0 +1,99 @@
+{
+  "comet_experiment_url": "https://www.comet.com/zer0pa/mobile-polymath-ai-training/0231809361bf4ca48fef4e79b865bafb",
+  "comet_logging_status": "logged",
+  "nonclaims": [
+    "no Phase 3 handoff",
+    "no NPU execution",
+    "no Arrow/ring promotion",
+    "no SRHT promotion",
+    "no Lorenz promotion",
+    "no k change",
+    "strict zero polar collisions not claimed for k=256 synthetic high-diversity tokens"
+  ],
+  "overall_status": "pass_synthetic_proxy_engineering_gates_real_corpus_required",
+  "rows": [
+    {
+      "evidence": "phase2c_stratified_oracle_100k.json",
+      "gate": "stratified_oracle_100k",
+      "status": "pass"
+    },
+    {
+      "evidence": "phase2c_stratified_oracle_1M.json",
+      "gate": "stratified_oracle_1M",
+      "status": "pass"
+    },
+    {
+      "evidence": "phase2c_collision_falsifier.json",
+      "gate": "collision_rate_falsifier",
+      "note": "Strict zero collisions falsified; duplicate-token fraction below 0.1% supplement gate.",
+      "status": "pass"
+    },
+    {
+      "evidence": "phase2c_margin_distribution.json",
+      "gate": "margin_distribution",
+      "status": "pass"
+    },
+    {
+      "evidence": "phase2c_hamming_geometry_report.json",
+      "gate": "hamming_geometry",
+      "status": "pass"
+    },
+    {
+      "evidence": "phase2c_npu_layout_contract.md",
+      "gate": "npu_layout_contract",
+      "status": "pass"
+    },
+    {
+      "evidence": "phase2c_phase3_preflight_reader_report.json",
+      "gate": "phase3_preflight_reader",
+      "status": "pass"
+    },
+    {
+      "evidence": "phase2c_phase3_staging_throughput_report.json",
+      "gate": "phase3_staging_throughput",
+      "status": "pass"
+    },
+    {
+      "evidence": "phase2c_copy_count_report.json",
+      "gate": "copy_count",
+      "status": "pass"
+    },
+    {
+      "evidence": "phase2c_alignment_report.json",
+      "gate": "alignment",
+      "status": "pass"
+    },
+    {
+      "evidence": "phase2c_blake3_microbench_redmagic.json",
+      "gate": "blake3_microbench",
+      "status": "pass"
+    },
+    {
+      "evidence": "phase2c_hash_identity_compatibility_report.md",
+      "gate": "hash_identity_compatibility",
+      "status": "pass"
+    },
+    {
+      "evidence": "phase2c_srht_comparison_arm_report.json",
+      "gate": "srht_proxy_arm",
+      "status": "proxy_only_not_promoted"
+    },
+    {
+      "evidence": "phase2c_ib_k_sweep_report.json",
+      "gate": "ib_k_sweep_proxy",
+      "status": "proxy_only_not_promoted"
+    },
+    {
+      "evidence": "phase2c_lorenz_vs_rademacher_falsifier.json",
+      "gate": "lorenz_proxy_arm",
+      "status": "proxy_only_not_promoted"
+    },
+    {
+      "evidence": "phase2c_real_corpus_boundary_report.md",
+      "gate": "real_corpus_boundary",
+      "status": "real_corpus_required"
+    }
+  ],
+  "schema_version": "phase2c_verifier_matrix_after_high_diversity_v2",
+  "terminal_status": "phase2c_real_corpus_required"
+}

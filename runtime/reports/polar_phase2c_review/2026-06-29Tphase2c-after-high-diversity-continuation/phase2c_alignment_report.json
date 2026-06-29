@@ -1,0 +1,79 @@
+{
+  "alignment_policy": "section offsets checked for 64/128/4096 byte boundaries; per-packet strides expose fixed batch tensors",
+  "all_section_offsets_128_aligned": true,
+  "all_section_offsets_64_aligned": true,
+  "layout": {
+    "file_len": 905604096,
+    "header": {
+      "embedding_dim": 2560,
+      "endian": 1,
+      "header_len": 4096,
+      "jl_dim": 256,
+      "packet_count": 100000,
+      "packet_len": 128,
+      "schema": 1,
+      "slot_count": 12800000,
+      "source_record_count": 100000,
+      "source_token_count": 2800000
+    },
+    "path": "/data/data/com.termux/files/home/Polymath-AI/runtime/reports/polar_phase2c/2026-06-29Tphase2c-high-diversity-opt/unique_100000/raw.pjp1",
+    "sections": [
+      {
+        "bytes": 19200000,
+        "offset": 4096,
+        "offset_align_128": true,
+        "offset_align_4096": true,
+        "offset_align_64": true,
+        "record_stride_bytes": 192,
+        "section": "metadata"
+      },
+      {
+        "bytes": 51200000,
+        "offset": 19204096,
+        "offset_align_128": true,
+        "offset_align_4096": false,
+        "offset_align_64": true,
+        "record_stride_bytes": 512,
+        "section": "token_ids"
+      },
+      {
+        "bytes": 12800000,
+        "offset": 70404096,
+        "offset_align_128": true,
+        "offset_align_4096": false,
+        "offset_align_64": true,
+        "record_stride_bytes": 128,
+        "section": "roles"
+      },
+      {
+        "bytes": 409600000,
+        "offset": 83204096,
+        "offset_align_128": true,
+        "offset_align_4096": false,
+        "offset_align_64": true,
+        "record_stride_bytes": 4096,
+        "section": "input_polar"
+      },
+      {
+        "bytes": 409600000,
+        "offset": 492804096,
+        "offset_align_128": true,
+        "offset_align_4096": false,
+        "offset_align_64": true,
+        "record_stride_bytes": 4096,
+        "section": "target_polar"
+      },
+      {
+        "bytes": 3200000,
+        "offset": 902404096,
+        "offset_align_128": true,
+        "offset_align_4096": false,
+        "offset_align_64": true,
+        "record_stride_bytes": 32,
+        "section": "pooled_answer"
+      }
+    ]
+  },
+  "schema_version": "phase2c_alignment_report_v1",
+  "status": "pass"
+}

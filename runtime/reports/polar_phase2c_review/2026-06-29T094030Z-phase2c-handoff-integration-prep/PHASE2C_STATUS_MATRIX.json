@@ -1,0 +1,94 @@
+{
+  "rows": [
+    {
+      "evidence_file": "runtime/reports/polar_phase2/2026-06-26T235142Z/phase2_gate_result.json",
+      "gate": "Phase 2 Python/NumPy reference",
+      "pass_fail_blocker": "reference_only",
+      "promotion": "reference_only",
+      "real_corpus_required": false,
+      "status": "pass_with_performance_residual"
+    },
+    {
+      "evidence_file": "runtime/reports/polar_phase2_native_closure/2026-06-28T105404Z-cached-1M/phase2b_gate_result.json",
+      "gate": "Phase 2-B native cached-1M closure",
+      "pass_fail_blocker": "pass_on_stress",
+      "promotion": "superseded_by_phase2c_high_diversity_optimization_for_current_path",
+      "real_corpus_required": false,
+      "status": "pass_reference_incumbent_stress"
+    },
+    {
+      "evidence_file": "runtime/reports/polar_phase2c/2026-06-28Tphase2c-final/phase2c_gate_result.json",
+      "gate": "Phase 2-C audit/cold/profile",
+      "pass_fail_blocker": "diversity_perf_failed_in_that_run",
+      "promotion": "not_final",
+      "real_corpus_required": true,
+      "status": "pass"
+    },
+    {
+      "evidence_file": "runtime/reports/polar_phase2c/2026-06-29Tphase2c-high-diversity-opt/phase2c_high_diversity_gate_result.json",
+      "gate": "Phase 2-C high-diversity 50k/100k optimized",
+      "pass_fail_blocker": "pass_synthetic_high_diversity",
+      "promotion": "promoted_engineering_path",
+      "real_corpus_required": true,
+      "status": "pass"
+    },
+    {
+      "evidence_file": "runtime/reports/polar_phase2c/2026-06-29Tphase2c-after-high-diversity-continuation/phase2c_verifier_matrix.json",
+      "gate": "Verifier expansion after high diversity",
+      "pass_fail_blocker": "pass_proxy",
+      "promotion": "supports_current_incumbent",
+      "real_corpus_required": true,
+      "status": "pass"
+    },
+    {
+      "evidence_file": "runtime/reports/polar_phase2c/2026-06-29Tphase2c-after-high-diversity-continuation/phase2c_npu_layout_contract.md",
+      "gate": "NPU-readiness preflight",
+      "pass_fail_blocker": "real_consumer_not_executed",
+      "promotion": "not_phase3",
+      "real_corpus_required": true,
+      "status": "pass_preflight_only"
+    },
+    {
+      "evidence_file": "runtime/reports/polar_phase2c/2026-06-29Tphase2c-after-high-diversity-continuation/phase2c_blake3_microbench_redmagic.json",
+      "gate": "BLAKE3",
+      "pass_fail_blocker": "identity_continuity_preserved",
+      "promotion": "not_promoted_as_replacement",
+      "real_corpus_required": false,
+      "status": "measured_not_external_identity_replacement"
+    },
+    {
+      "evidence_file": "runtime/reports/polar_phase2c/2026-06-29Tphase2c-after-high-diversity-continuation/phase2c_srht_comparison_arm_report.json",
+      "gate": "SRHT",
+      "pass_fail_blocker": "no_native_contract_or_real_labels",
+      "promotion": "non_promoted",
+      "real_corpus_required": true,
+      "status": "proxy_only_not_promoted"
+    },
+    {
+      "evidence_file": "runtime/reports/polar_phase2c/2026-06-29Tphase2c-after-high-diversity-continuation/phase2c_lorenz_vs_rademacher_falsifier.json",
+      "gate": "Lorenz/reservoir",
+      "pass_fail_blocker": "no_real_label_or_distance_preservation_promotion",
+      "promotion": "non_promoted",
+      "real_corpus_required": true,
+      "status": "proxy_only_not_promoted"
+    },
+    {
+      "evidence_file": "runtime/reports/polar_phase2c/2026-06-29Tphase2c-after-high-diversity-continuation/phase2c_ib_k_sweep_report.json",
+      "gate": "alternate k",
+      "pass_fail_blocker": "real labels/objectives absent",
+      "promotion": "k256_remains_incumbent",
+      "real_corpus_required": true,
+      "status": "proxy_only_no_change"
+    },
+    {
+      "evidence_file": "runtime/reports/polar_phase2c/2026-06-29T094030Z-phase2c-handoff-integration-prep/PHASE3_NOT_READY.md",
+      "gate": "final Phase 3 handoff",
+      "pass_fail_blocker": "real_corpus_required",
+      "promotion": "blocked",
+      "real_corpus_required": true,
+      "status": "not_authorized"
+    }
+  ],
+  "schema_version": "phase2c_status_matrix_v1",
+  "terminal_status": "phase2c_real_corpus_required"
+}

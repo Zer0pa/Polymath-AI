@@ -1,0 +1,71 @@
+## git status --short --branch
+
+```text
+## main...origin/main
+ M .gitignore
+ M pyproject.toml
+ M scripts/termux/requirements-termux.txt
+?? AGENTS.md
+?? GPD/
+?? data/fixtures/polar_phase1/
+?? docs/COMET-LOGGING-POLICY-2026-06-26.md
+?? docs/PHASE2C_PRD_MAXIMAL_2026-06-28.md
+?? docs/PHASE2C_PRD_SUPPLEMENT_MAXIMAL_GUARDRAILS_2026-06-28.md
+?? docs/PRD-GEMMA4-POLAR-LEARNING-FABRIC-TERMUX-PHASE1-2026-06-25.md
+?? docs/PRD-POLAR-PHASE1-MAXIMAL-CLOSURE-EXTENSION-2026-06-26.md
+?? docs/PRD-POLAR-PHASE1-QA-ZIG-MAXIMAL-2026-06-25.md
+?? docs/PRD-POLAR-PHASE1-SCALING-CRUCIBLE-2026-06-26.md
+?? docs/PRD-POLAR-PHASE2-PACKETIZATION-MAXIMAL-2026-06-26.md
+?? docs/PRD-POLAR-PHASE2B-INTERSECTED-NATIVE-CLOSURE-2026-06-27.md
+?? docs/PRD-POLAR-PHASE2B-NATIVE-PERFORMANCE-CLOSURE-2026-06-27.md
+?? docs/TERMUX-POLAR-PHASE1-CODEX-LAUNCH-PROMPT-2026-06-25.md
+?? docs/TERMUX-POLAR-PHASE1-MAXIMAL-CLOSURE-STARTUP-PROMPT-2026-06-26.md
+?? docs/TERMUX-POLAR-PHASE1-QA-ZIG-MAXIMAL-PROMPT-2026-06-25.md
+?? docs/TERMUX-POLAR-PHASE1-SCALING-STARTUP-PROMPT-2026-06-26.md
+?? docs/TERMUX-POLAR-PHASE2-PACKETIZATION-STARTUP-PROMPT-2026-06-26.md
+?? docs/TERMUX-POLAR-PHASE2B-FRONTIER-CONTINUATION-STARTUP-PROMPT-2026-06-28.md
+?? docs/TERMUX-POLAR-PHASE2B-NATIVE-CLOSURE-STARTUP-PROMPT-2026-06-27.md
+?? native/
+?? polymath_ai/telemetry/
+?? runtime/gpd_tmp/
+?? runtime/reports/polar_phase1/
+?? runtime/reports/polar_phase1_android_lab_validation/
+?? runtime/reports/polar_phase1_fast_regime_reproduction/
+?? runtime/reports/polar_phase1_maximal_closure/
+?? runtime/reports/polar_phase1_million_two_million_rerun/
+?? runtime/reports/polar_phase1_perf/
+?? runtime/reports/polar_phase1_scaling/
+?? runtime/reports/polar_phase1_termux_extended_warmup/
+?? runtime/reports/polar_phase1_termux_nice0_warmup/
+?? runtime/reports/polar_phase2/
+?? runtime/reports/polar_phase2_native_closure/
+?? runtime/reports/polar_phase2c/
+?? scripts/termux/bootstrap_polar_phase1_exec.sh
+?? scripts/termux/comet_log_phase_artifacts.py
+?? scripts/termux/pack_polar_phase1_tokenizer.py
+?? scripts/termux/run_polar_phase1_gate.py
+?? scripts/termux/run_polar_phase1_logged_maximal_closure.py
+?? scripts/termux/run_polar_phase1_perf2_crucible.py
+?? scripts/termux/run_polar_phase1_perf_crucible.py
+?? scripts/termux/run_polar_phase1_scaling_crucible.py
+?? scripts/termux/run_polar_phase2_gate.py
+?? scripts/termux/run_polar_phase2b_native_closure.py
+?? tests/test_polar_phase1_ingest.py
+```
+
+## git diff --no-ext-diff -- GPD docs native scripts
+
+```diff
+diff --git a/scripts/termux/requirements-termux.txt b/scripts/termux/requirements-termux.txt
+index bb1fd5f..9d61cb8 100644
+--- a/scripts/termux/requirements-termux.txt
++++ b/scripts/termux/requirements-termux.txt
+@@ -16,6 +16,7 @@ tokenizers>=0.20
+ sentencepiece>=0.2.0
+ pyyaml>=6.0
+ requests>=2.31
++comet_ml>=3.44
+
+ # Optional: torch + transformers attempted by bootstrap.sh.
+ # torch (no pin - pip resolves the best wheel for Android arm64-v8a)
+```

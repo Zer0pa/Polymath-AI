@@ -1,0 +1,44 @@
+{
+  "baseline_k": 256,
+  "decision": "No memory-cost-driven k promotion; k=256 remains incumbent pending real labels and Phase 3 consumer evidence.",
+  "rows": [
+    {
+      "input_plus_target_plus_pooled_bytes_per_packet": 2056,
+      "k": 64,
+      "per_packet_input_polar_bytes": 1024,
+      "relative_pjp1_polar_storage_vs_k256": 0.25
+    },
+    {
+      "input_plus_target_plus_pooled_bytes_per_packet": 4112,
+      "k": 128,
+      "per_packet_input_polar_bytes": 2048,
+      "relative_pjp1_polar_storage_vs_k256": 0.5
+    },
+    {
+      "input_plus_target_plus_pooled_bytes_per_packet": 6168,
+      "k": 192,
+      "per_packet_input_polar_bytes": 3072,
+      "relative_pjp1_polar_storage_vs_k256": 0.75
+    },
+    {
+      "input_plus_target_plus_pooled_bytes_per_packet": 8224,
+      "k": 256,
+      "per_packet_input_polar_bytes": 4096,
+      "relative_pjp1_polar_storage_vs_k256": 1.0
+    },
+    {
+      "input_plus_target_plus_pooled_bytes_per_packet": 10280,
+      "k": 320,
+      "per_packet_input_polar_bytes": 5120,
+      "relative_pjp1_polar_storage_vs_k256": 1.25
+    },
+    {
+      "input_plus_target_plus_pooled_bytes_per_packet": 16448,
+      "k": 512,
+      "per_packet_input_polar_bytes": 8192,
+      "relative_pjp1_polar_storage_vs_k256": 2.0
+    }
+  ],
+  "schema_version": "phase2c_k_memory_cost_v2",
+  "status": "pass"
+}
