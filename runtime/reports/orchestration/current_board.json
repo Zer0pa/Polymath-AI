@@ -1,0 +1,105 @@
+{
+  "schema_version": "polymath_meta_orchestration_board_v1",
+  "updated_at_utc": "2026-06-29T14:00:39Z",
+  "authority": {
+    "meta_orchestrator_thread": "current Codex meta thread",
+    "living_context_doc": "docs/META-ORCHESTRATION-LIVING-CONTEXT-2026-06-29.md",
+    "status": "go_received_repo_reconciliation_first",
+    "heartbeat_automation_id": "polymath-orchestration-monitor"
+  },
+  "workspace": {
+    "working_folder": "/Users/Zer0pa/Polymat AI",
+    "canonical_repo": "/Users/Zer0pa/Polymat AI/Polymath-AI",
+    "branch": "gemma4-megakernel-native-training",
+    "remote": "https://github.com/Zer0pa/Polymath-AI.git",
+    "gpd_initialized": true,
+    "gpd_status": "initialized_but_stale_relative_to_phase2c_handoffs"
+  },
+  "device": {
+    "attached": true,
+    "serial": "FY25013101C8",
+    "model": "NX789J",
+    "role": "authority_runtime_when_execution_is_authorized"
+  },
+  "threads": [
+    {
+      "lane": "repo_custodian",
+      "thread_id": "019f138b-288e-7d91-b426-7cdee9f62e28",
+      "status": "authorized_for_repo_reconciliation",
+      "next_authorized_action": "reconcile_safe_canonical_state_and_push"
+    },
+    {
+      "lane": "training_material_steward",
+      "thread_id": "019f138b-7bfc-7671-b9fc-22c14ab76342",
+      "status": "authorized_for_c1_source_acceptance_handoff",
+      "next_authorized_action": "prepare_c1_acceptance_handoff_no_repo_write"
+    },
+    {
+      "lane": "engineering_orchestrator",
+      "thread_id": "019f138b-d229-7640-98b7-2f185d6beae0",
+      "status": "authorized_for_phase1_contract_preparation",
+      "next_authorized_action": "prepare_phase1_c1_to_pqa1_contract_no_repo_write"
+    },
+    {
+      "lane": "pipeline_integrator",
+      "thread_id": "019f138c-35b6-73e1-b26d-3db8c59cf850",
+      "status": "authorized_for_contract_mapping",
+      "next_authorized_action": "prepare_phase1_phase2_contract_handoff_no_repo_write"
+    },
+    {
+      "lane": "ui_engineer",
+      "thread_id": "019f138c-8d85-7141-a813-66db51c62b3d",
+      "status": "standby_until_pipeline_surface_stabilizes",
+      "next_authorized_action": "monitor_for_integrated_evidence_surface"
+    },
+    {
+      "lane": "execution_orchestrator",
+      "thread_id": "019f138c-fb51-7c53-a41a-ab8eac950d9c",
+      "status": "authorized_for_execution_plan_preparation",
+      "next_authorized_action": "prepare_phase1_c1_and_phase2_c1_run_plan_no_execution"
+    }
+  ],
+  "phase_status": {
+    "phase1": {
+      "status": "backend_native_android_authority_evidence_exists",
+      "next": "c1_source_to_pqa1_execution_contract"
+    },
+    "phase2": {
+      "status": "native_engineering_exists_real_pqa1_blocker",
+      "next": "c1_real_material_smoke_then_100k_1m_authority_gate"
+    },
+    "phase3": {
+      "status": "not_authorized",
+      "next": "wait_for_phase2_real_pqa1_to_pjp1_authority"
+    },
+    "phase4": {
+      "status": "concept_only",
+      "next": "wait_for_phase3_activation_contract"
+    }
+  },
+  "material_status": {
+    "c1_records": 5180,
+    "c2_records": 3198,
+    "combined_records": 8378,
+    "interpretation": "valid_qa_source_material_not_pqa1",
+    "next": "c1_as_first_real_source_specimen_after_go"
+  },
+  "go_sequence": [
+    "repo_custodian_reconcile_and_push",
+    "training_material_steward_accept_c1_source",
+    "engineering_orchestrator_define_phase1_c1_to_pqa1_contract",
+    "pipeline_integrator_bind_phase1_phase2_contracts",
+    "execution_orchestrator_run_phase1_c1",
+    "engineering_pipeline_harden_phase2_with_real_c1_pqa1",
+    "execution_orchestrator_run_phase2_c1",
+    "repo_custodian_commit_push_converged_evidence",
+    "meta_orchestrator_decide_phase3_phase4_planning_readiness"
+  ],
+  "non_emergency_blockers": [
+    "dirty_repo_requires_reconciliation",
+    "c1_c2_are_not_pqa1",
+    "c1_c2_not_100k_1m_scale",
+    "phase2_source_binary_identity_requires_reconciliation",
+    "gpd_state_stale_relative_to_phase2c_handoff"
+  ]
+}
