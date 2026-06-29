@@ -222,6 +222,23 @@ private paths are not the Phase 2 contract; the shared PQA1 list is.
 | Embedding manifest | metadata hash | `0bf2dc2ec4487c079da94d8c8a37f54bb7c45ed2f9a29dbbd73edc0ababaf8bd` |
 | Dense Rademacher JL | `/data/data/com.termux/files/home/polymath_polar_phase2/jl/gemma4_dense_rademacher_k256_d2560_i8.bin` | `1b1f9de3dd6fbdf9597240eeeb08a6b482b33f1ae4d127e730222750cdf92a79` |
 
+### Phase 2 Source Provenance Refinement
+
+After the initial full-C1 diagnostic report, a local host comparison made the
+Phase 2 provenance blocker more specific:
+
+| Surface | SHA-256 | Bytes |
+| --- | --- | ---: |
+| Canonical host `a4d25ea` packetizer source | `deb7a8439d9a8233e8d700a746bd3d9dfa6cef108a7802386ebef9b22c3d17d9` | `39,142` |
+| Executed Termux diagnostic packetizer source | `ba2d4dd48e2d9afeabf69b84019af0375aa739b26e982d69e8084a94a264c61f` | `63,517` |
+| Shared build script identity | `3c284c858aaa0d1e7697c4b63a12330d2e24d62a2391f109f34133463a631716` | `705` |
+| Executed packetizer binary | `11c81138d181f09dd1a9a4715952c8a5357a91e3f1c1562f2fb9761d4d4c336a` | `131,832` |
+
+This does not invalidate the full-C1 diagnostic output as diagnostic evidence.
+It does block any authority-scale Phase 2 claim until the Termux source delta is
+recovered, reviewed, and either committed canonically or superseded by a clean
+canonical rebuild/rerun.
+
 ## Termux Access and Execution Channel
 
 The Termux problem was command-channel access, not Phase 2 capability:
@@ -265,8 +282,10 @@ Raw payload suffixes remain forbidden in git for this pipeline event:
    record authority gate without additional material or repeat-policy semantics
    that must be explicitly authorized.
 3. The Termux repo used for Phase 2 reported branch `main`, head `54d9aa1`, and
-   a dirty worktree. Source/binary identity must be reconciled against canonical
-   branch `gemma4-megakernel-native-training` before authority-scale claims.
+   a dirty worktree. The executed packetizer source also differs from canonical
+   host `a4d25ea`: Termux `ba2d4dd...`, `63,517` bytes; host `deb7a843...`,
+   `39,142` bytes. Source/binary identity must be reconciled before
+   authority-scale claims.
 4. Phase 1 reports `parity_state=not_checked_in_apk_run`; do not treat this as
    final APK parity.
 5. The Phase 2 run proves deterministic packet production and throughput on this
@@ -287,13 +306,17 @@ Reviewers should verify:
 - Bridge: PQA1 list SHA-256 `37c9f65fb88a1cbb3a0de375dcb6f8946a04d680136ac7d243f27cbcdc6195b8`.
 - Phase 2 native result: wrapper/native `pass`, `50,994` packets, `461,805,760`
   byte PJP1, PJP1 SHA-256 `e347676432fa7a76489f402f3c3e38ab492b6554f71930f14bc7d36ed1b3ecf5`.
+- Phase 2 provenance blocker: executed Termux packetizer source
+  `ba2d4dd...` / `63,517` bytes differs from canonical host packetizer source
+  `deb7a843...` / `39,142` bytes.
 - Data custody: raw payloads outside git; only metadata and report docs in repo.
 - Nonclaims: no 100k/1M authority, no Phase 3, no learning/model-quality claim.
 
 ## Next Engineering Actions
 
-1. Reconcile Termux packetizer source, binary, build script, branch, and dirty
-   worktree state against the canonical repository branch.
+1. Recover and review the dirty Termux packetizer source delta, then either
+   commit it canonically and rebuild/rerun or promote the canonical host source
+   through a clean rebuild/rerun.
 2. Decide the authority-scale material route: add more real corpus, define an
    explicit repeat-policy gate, or stage C2/other corpora under a material
    steward contract.

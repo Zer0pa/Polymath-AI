@@ -189,8 +189,14 @@ Verified Phase 2 diagnostic identities:
 
 - Packetizer binary SHA-256:
   `11c81138d181f09dd1a9a4715952c8a5357a91e3f1c1562f2fb9761d4d4c336a`
-- Packetizer source SHA-256:
+- Executed Termux packetizer source SHA-256:
   `ba2d4dd48e2d9afeabf69b84019af0375aa739b26e982d69e8084a94a264c61f`
+- Executed Termux packetizer source bytes: `63,517`
+- Canonical host `a4d25ea` packetizer source SHA-256:
+  `deb7a8439d9a8233e8d700a746bd3d9dfa6cef108a7802386ebef9b22c3d17d9`
+- Canonical host `a4d25ea` packetizer source bytes: `39,142`
+- Identity state:
+  `host_termux_packetizer_source_mismatch_blocks_authority_scale`
 - Build script SHA-256:
   `3c284c858aaa0d1e7697c4b63a12330d2e24d62a2391f109f34133463a631716`
 - Embedding SHA-256:
@@ -386,6 +392,9 @@ drift lock.
   a `45,808` record gap to 100k and `945,808` gap to 1M.
 - Existing C1 variants are not additive scale without global dedup proof.
 - Phase 2 source/binary identity is recorded for the full-C1 diagnostic, but
-  Termux reported branch `main`, head `54d9aa1`, and dirty worktree. This needs
-  explicit reconciliation before 100k/1M authority-scale promotion.
+  Termux reported branch `main`, head `54d9aa1`, and dirty worktree. A later
+  host comparison also found that Termux executed packetizer source
+  `ba2d4dd...` / `63,517` bytes differs from canonical host source
+  `deb7a843...` / `39,142` bytes. This needs explicit reconciliation before
+  100k/1M authority-scale promotion.
 - GPD state is initialized but stale relative to Phase 2-C handoffs.

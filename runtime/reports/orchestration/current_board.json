@@ -1,10 +1,10 @@
 {
   "schema_version": "polymath_meta_orchestration_board_v1",
-  "updated_at_utc": "2026-06-29T17:54:28Z",
+  "updated_at_utc": "2026-06-29T19:26:28Z",
   "authority": {
     "meta_orchestrator_thread": "current Codex meta thread",
     "living_context_doc": "docs/META-ORCHESTRATION-LIVING-CONTEXT-2026-06-29.md",
-    "status": "full_c1_diagnostic_external_report_pushed_authority_scale_still_open",
+    "status": "full_c1_diagnostic_external_report_pushed_authority_scale_blocked_on_scale_and_phase2_source_identity",
     "heartbeat_automation_id": "polymath-orchestration-monitor"
   },
   "workspace": {
@@ -37,8 +37,8 @@
     {
       "lane": "engineering_orchestrator",
       "thread_id": "019f138b-d229-7640-98b7-2f185d6beae0",
-      "status": "phase1_full_c1_completion_fix_landed_and_diagnostic_executed",
-      "next_authorized_action": "reconcile_phase2_termux_source_binary_identity_before_authority_scale"
+      "status": "phase2_authority_blocked_on_host_termux_packetizer_source_mismatch",
+      "next_authorized_action": "recover_review_termux_packetizer_delta_or_rebuild_clean_canonical_before_authority_scale"
     },
     {
       "lane": "pipeline_integrator",
@@ -74,7 +74,7 @@
     },
     "phase2": {
       "status": "full_c1_v4_pqa1_to_pjp1_diagnostic_passed_100k_1m_still_blocking_authority",
-      "next": "source_binary_identity_reconciliation_then_100k_1m_real_pqa1_authority_gate"
+      "next": "recover_review_termux_packetizer_source_delta_or_rebuild_clean_canonical_then_100k_1m_real_pqa1_authority_gate"
     },
     "phase3": {
       "status": "not_authorized",
@@ -154,7 +154,14 @@
       "pjp1_sha256": "e347676432fa7a76489f402f3c3e38ab492b6554f71930f14bc7d36ed1b3ecf5",
       "records_per_sec": 8694.35,
       "real_tokens_per_sec": 363294,
-      "pjp1_inside_git_worktree": false
+      "pjp1_inside_git_worktree": false,
+      "packetizer_binary_sha256": "11c81138d181f09dd1a9a4715952c8a5357a91e3f1c1562f2fb9761d4d4c336a",
+      "termux_packetizer_source_sha256": "ba2d4dd48e2d9afeabf69b84019af0375aa739b26e982d69e8084a94a264c61f",
+      "termux_packetizer_source_bytes": 63517,
+      "host_packetizer_source_sha256_at_a4d25ea": "deb7a8439d9a8233e8d700a746bd3d9dfa6cef108a7802386ebef9b22c3d17d9",
+      "host_packetizer_source_bytes_at_a4d25ea": 39142,
+      "packetizer_build_script_sha256": "3c284c858aaa0d1e7697c4b63a12330d2e24d62a2391f109f34133463a631716",
+      "packetizer_source_identity_state": "host_termux_source_mismatch_blocks_authority_scale"
     }
   },
   "external_review_docs": [
@@ -166,10 +173,10 @@
     },
     {
       "path": "docs/SCIENCE-ENGINEERING-EXTERNAL-REPORT-C1-FULL-DIAGNOSTIC-2026-06-29.md",
-      "status": "external_science_engineering_review_report",
+      "status": "external_science_engineering_review_report_with_source_identity_addendum",
       "scope": "full_c1_phase1_phase2_diagnostic_quantitative_qualitative_external_review",
       "authority_boundary": "not_phase3_ready_not_100k_1m_authority",
-      "commit": "906896d"
+      "commit": "906896d_initial_report_updated_after_phase2_source_identity_refinement"
     }
   ],
   "go_sequence": [
@@ -187,7 +194,7 @@
   "non_emergency_blockers": [
     "full_c1_c2_not_100k_1m_scale",
     "pre_existing_dirty_repo_requires_narrow_staging",
-    "phase2_source_binary_identity_requires_reconciliation_before_authority_scale",
+    "phase2_host_termux_packetizer_source_mismatch_requires_reconciliation_before_authority_scale",
     "gpd_state_stale_relative_to_phase2c_handoff"
   ]
 }
