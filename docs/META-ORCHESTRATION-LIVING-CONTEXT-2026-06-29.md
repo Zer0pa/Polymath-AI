@@ -34,15 +34,17 @@ This repo is a GPD project: `.gpd/STATE.md` and `.gpd/state.json` exist.
 GPD is useful as a secondary state ledger and research discipline layer. It is
 not the live authority for this orchestration until synchronized. At creation,
 `.gpd/state.json` still says Polar Phase 2 has PRD/startup readiness but no
-implementation/authority run; newer handoffs show Phase 2-C native engineering
-has advanced to a real-corpus blocker. Therefore:
+implementation/authority run; newer evidence shows full-C1 Phase 1 and Phase 2
+diagnostic execution has passed while 100k/1M authority remains blocked.
+Therefore:
 
 - Treat this document plus the listed handoffs as live orchestration authority.
 - Treat `.gpd` as initialized but stale on the Polar Phase 2 current state.
 - Do not run GPD repair/sync/write commands until the Meta-Orchestrator
   authorizes Repo Custodian to reconcile state.
 - After repo hygiene, GPD should be reconciled to reflect the six-thread
-  orchestration and the current Phase 2-C real-corpus blocker.
+  orchestration, the full-C1 diagnostic pass, and the current 100k/1M
+  real-corpus authority blocker.
 
 ## Six Orchestration Threads
 
@@ -88,76 +90,109 @@ Phase 2 C1 execution.
 
 ## Current Material Facts
 
-Primary current corpus handoff:
+Canonical C1 material used for the full diagnostic:
 
-`/Users/Zer0pa/Polymat AI/runtime/reports/corpus_pipeline/c1_c2_frontier_scale_20260629T100304Z/handover/c1_c2_enriched_handover_manifest.md`
+`/Users/Zer0pa/Polymat AI/corpus_packages/commercial/2026-06-27T041511Z/phase_C1_lexatlas_gemma4_v4_full_strict`
 
-C1 package:
+Full C1 QA bridge:
 
-`/Users/Zer0pa/Polymat AI/corpus_packages/commercial/20260629T100304Z/phase_C1_lexatlas_frontier_gpt_enriched_scale_v1`
+`/Users/Zer0pa/Polymat AI/corpus_packages/commercial/2026-06-27T041511Z/phase_C1_lexatlas_gemma4_v4_full_strict/qa_bridge/phase_C1_full.qa.jsonl`
 
-C2 package:
+Full C1 rows/SHA-256:
+
+- Rows: `50,994`
+- SHA-256: `4c8bb5a208d416bc4dae49ddf89e8e7845c459aef42b83ff15aac1a8aa76ce97`
+- Source-kind mapping: `lexatlas -> dictionary`
+
+Known C2 material:
 
 `/Users/Zer0pa/Polymat AI/corpus_packages/commercial/20260629T100304Z/phase_C2_vocabexpansion_frontier_gpt_enriched_scale_v1`
 
-Current corpus interpretation:
+Material interpretation:
 
-- C1 has 5,180 promoted records.
-- C2 has 3,198 promoted records.
-- Combined promoted records: 8,378.
-- These packages are valid enriched QA source material.
-- They are not PQA1 and do not satisfy the 100k/1M Phase 2 authority gate.
-- Default training-safe enriched fields are: `formal_definition`,
-  `related_terms`, `usage_example`, `register`, `domain`, `collocations`,
-  `sentiment_potential`, `word_family`, `pragmatic_note`, and `frame`.
-- `cultural_note`, `scenario`, and `poetic_example` are experimental and not
-  default primary SFT fields.
+- Full C1 v4 is valid QA source material and has now been converted through
+  Phase 1 PQA1 and Phase 2 PJP1 as a diagnostic run.
+- Known enriched C2 has `3,198` records.
+- Conservative C1 + known C2 count: `54,192`.
+- Gap to `100,000`: `45,808`.
+- Gap to `1,000,000`: `945,808`.
+- If the largest local valid C2 candidate at `11,324` records is authorized,
+  C1 + C2 would be `62,318`, leaving `37,682` to 100k and `937,682` to 1M.
+- Existing C1 variants are not additive scale unless global dedup proves they
+  are not duplicate laundering.
+- Current C1/C2 material does not satisfy the 100k/1M Phase 2 authority gate.
 
 ## Current Phase Facts
 
-### Current C1 Smoke Evidence
+### Current C1 Full Diagnostic Evidence
 
-Status: C1 Phase 1 plus Phase 2 smoke passed on the REDMAGIC phone.
+Status: full canonical C1 v4 passed Phase 1, bridge, and Phase 2 diagnostic on
+the REDMAGIC phone/Termux path.
 
-This is integration evidence for the source-to-PQA1-to-PJP1 path. It is not the
-100k/1M Phase 2 authority gate and does not authorize Phase 3.
+This is engineering diagnostic evidence for the source-to-PQA1-to-PJP1 path. It
+is not the 100k/1M Phase 2 authority gate and does not authorize Phase 3.
+
+External science/engineering report:
+
+`docs/SCIENCE-ENGINEERING-EXTERNAL-REPORT-C1-FULL-DIAGNOSTIC-2026-06-29.md`
 
 Phase 1 source-of-record:
 
-- Run label: `c1_phase1_smoke_internal_20260629T143408Z`
+- Run label: `c1_phase1_v4_full_rerun_20260629T170920Z`
 - Report root:
-  `runtime/reports/polar_phase1_c1_pipeline/c1_phase1_smoke_internal_20260629T143408Z_phase1_c1_pipeline_smoke`
-- App report run id: `2026-06-29T143414Z`
-- Status: `phase1_c1_smoke_complete`
-- Records selected: 64
-- Token IDs: 2,674
-- Material hash:
-  `243f8b5349988ca0a288dcdc90445254c4b5dd6c3691a762cc683d4c72154f8d`
-- PQA1 outputs: 8 shards, all present with hash/size metadata.
+  `runtime/reports/polar_phase1_c1_pipeline/c1_phase1_v4_full_rerun_20260629T170920Z_phase1_c1_pipeline_smoke`
+- App report run id: `2026-06-29T170931Z`
+- Records selected: `50,994`
+- Token IDs: `2,130,785`
+- Records/sec: `62,228.1`
+- Token IDs/sec: `2,600,200`
+- Run flags: `16`
+- Native warm sequences: `false`
+- PQA1 outputs: `8` shards, `11,124,986` bytes total, all hash recorded.
 - Forbidden payload scan: pass.
 
-Phase 2 smoke:
+Bridge:
 
-- Run label: `c1_phase2_smoke_20260629T144238Z`
+- Staging root:
+  `/sdcard/Download/polymath/polar_phase1_c1/c1_phase1_v4_full_rerun_20260629T170920Z`
+- PQA1 list:
+  `/sdcard/Download/polymath/polar_phase1_c1/c1_phase1_v4_full_rerun_20260629T170920Z/c1_pqa1_list.txt`
+- PQA1 list SHA-256:
+  `37c9f65fb88a1cbb3a0de375dcb6f8946a04d680136ac7d243f27cbcdc6195b8`
+- Copied shards: `8`
+- Copied bytes: `11,124,986`
+- Raw bridge payload inside git: false.
+
+Phase 2 full-C1 diagnostic:
+
+- Run label: `c1_phase2_v4_full_20260629T173243Z`
 - Report root:
-  `runtime/reports/polar_phase2_c1_smoke/c1_phase2_smoke_20260629T144238Z`
+  `runtime/reports/polar_phase2_c1_smoke/c1_phase2_v4_full_20260629T173243Z`
 - Wrapper status: pass.
 - Native packetizer status: pass.
-- PQA1 files consumed: 8.
-- Source records: 64.
-- Source real tokens: 2,674.
-- Packets: 64.
+- PQA1 files consumed: `8`.
+- Source records: `50,994`.
+- Source real tokens: `2,130,785`.
+- Distinct/projected token count: `65,139`.
+- Packets: `50,994`.
+- Slots: `6,527,232`.
 - PJP1 path on phone:
-  `/data/data/com.termux/files/home/polymath_phase2_outputs/c1_phase2_smoke_20260629T144238Z/raw_c1_phase2_smoke_20260629T144238Z.pjp1`
+  `/data/data/com.termux/files/home/polymath_phase2_outputs/c1_phase2_v4_full_20260629T173243Z/raw_c1_phase2_v4_full_20260629T173243Z.pjp1`
 - PJP1 SHA-256:
-  `7ffb81ab1fc129fcaf7de84a50a196ebac30d366d49e59471486e51a323ee340`
-- PJP1 bytes: 583,680.
+  `e347676432fa7a76489f402f3c3e38ab492b6554f71930f14bc7d36ed1b3ecf5`
+- PJP1 bytes: `461,805,760`.
+- Records/sec: `8,694.35`.
+- Real tokens/sec: `363,294`.
 - Raw PJP1 inside git worktree: false.
 
-Verified Phase 2 identities:
+Verified Phase 2 diagnostic identities:
 
-- Packetizer SHA-256:
+- Packetizer binary SHA-256:
   `11c81138d181f09dd1a9a4715952c8a5357a91e3f1c1562f2fb9761d4d4c336a`
+- Packetizer source SHA-256:
+  `ba2d4dd48e2d9afeabf69b84019af0375aa739b26e982d69e8084a94a264c61f`
+- Build script SHA-256:
+  `3c284c858aaa0d1e7697c4b63a12330d2e24d62a2391f109f34133463a631716`
 - Embedding SHA-256:
   `b57e1e756f32d02c1aaad6c5c868f975f53b0938e0a04ed546804ed9c7d4ca7b`
 - Embedding manifest SHA-256:
@@ -165,18 +200,14 @@ Verified Phase 2 identities:
 - JL SHA-256:
   `1b1f9de3dd6fbdf9597240eeeb08a6b482b33f1ae4d127e730222750cdf92a79`
 
-External-review synthesis:
-
-`docs/ENGINEERING-EXTERNAL-REVIEW-PHASE1-PHASE2-C1-SMOKE-2026-06-29.md`
-
-This document is a metadata-only external engineering review pack for Phase 1,
-Phase 2, and the latest C1 smoke. It is useful for quantitative and qualitative
-review, but it must not be read as Phase 3/4 authorization.
+Historical 64-record smoke remains wiring-only evidence and should not be cited
+as current state, authority progress, or Phase 3 readiness.
 
 ### Phase 1: Ingestion / Chopping
 
-Current status: backend/native Android path is real and strong. The C1 smoke
-source-to-PQA1 path passed on 64 real C1 source records.
+Current status: backend/native Android path is real and strong. The full
+canonical C1 v4 source-to-PQA1 diagnostic passed on `50,994` real C1 source
+records.
 
 Authority lane:
 
@@ -189,12 +220,13 @@ Authority lane:
 Remaining work:
 
 - Product-real UI/operator surface.
-- Scale authority material beyond C1 smoke.
+- Scale authority material beyond full C1 diagnostic.
 
 ### Phase 2: Mechanical Packetization
 
-Current status: native engineering exists; C1 real-material smoke passed;
-authority remains blocked on 100k/1M real PQA1.
+Current status: native engineering exists; full-C1 real-material diagnostic
+passed; authority remains blocked on 100k/1M real PQA1/PJP1 plus verifier
+surfaces.
 
 Promoted engineering route from handoff:
 
@@ -213,8 +245,8 @@ Blocking gate:
 - Margin/Hamming geometry.
 - NPU/app consumer preflight repeated on real PJP1.
 
-Current C1 smoke passed as real-material pipeline hardening, but it is not the
-100k/1M Phase 2 authority gate.
+Full C1 diagnostic passed as real-material pipeline hardening, but it is not
+the 100k/1M Phase 2 authority gate.
 
 ### Phase 3: NPU Forward Read
 
@@ -237,26 +269,28 @@ contract.
 
 ## GO Sequence
 
-When the user says `GO`, run the work through the six lanes in this order. For
-the 2026-06-29 C1 smoke, steps 1 through 7 completed, and step 8 is the current
-repo-evidence freeze/push step.
+The 2026-06-29 full-C1 diagnostic sequence has completed through Phase 1,
+bridge, Phase 2, metadata custody, external reporting, and board update. The
+next real moves are engineering review, UI evidence surfacing, Phase 2
+source/binary identity reconciliation, and material scaling toward 100k/1M.
 
 1. **Repo Custodian:** reconcile dirty repo, classify lanes, secret-scan
    candidate files, commit/push safe canonical state.
-2. **Training Material Steward:** accept/reject C1 as first source specimen and
-   define what fields and records enter Phase 1 conversion.
-3. **Engineering Orchestrator:** define or repair the exact Phase 1 C1-to-PQA1
-   execution contract.
-4. **Pipeline Integrator:** bind material, Phase 1 reports, PQA1 identity, and
-   Phase 2 input assumptions into an executable handoff.
-5. **Execution Orchestrator:** run Phase 1 on C1 only after receiving material
-   and engineering/integration handoffs.
-6. **Engineering Orchestrator / Pipeline Integrator:** use real C1 PQA1 output
-   to debug and harden Phase 2 input handling.
-7. **Execution Orchestrator:** run Phase 2 on the C1-derived real PQA1 output.
-8. **Repo Custodian:** commit and push converged pipeline evidence.
-9. **Meta-Orchestrator:** report success only if Phase 1 and Phase 2 C1
-   execution are clean; then begin Phase 3/4 planning.
+2. **Training Material Steward:** define the additive real-material route to
+   100k/1M without duplicate laundering or toy augmentation.
+3. **Engineering Orchestrator:** reconcile Phase 2 source/build/binary identity
+   before any authority-scale execution.
+4. **Pipeline Integrator:** keep the full-C1 diagnostic review surface distinct
+   from 100k/1M authority and Phase 3 readiness.
+5. **UI Engineer:** implement only evidence-backed diagnostic/blocked/authority
+   states after explicit UI GO.
+6. **Execution Orchestrator:** hold for an evidence-backed 100k/1M execution
+   contract before any new gate run.
+7. **Repo Custodian:** commit and push only scoped canonical updates after
+   authorization, never broad-add the dirty tree.
+8. **Meta-Orchestrator:** report a new success only if a real authority gate
+   passes. Full-C1 diagnostic evidence is review material, not Phase 3/4
+   authorization.
 
 ## Fail Routing
 
@@ -345,9 +379,13 @@ drift lock.
 ## Current Non-Emergency Blockers
 
 - Repo still has pre-existing unrelated dirty/untracked material. Canonical
-  C1 smoke evidence should be staged narrowly and pushed without broad cleanup.
-- C1/C2 are source material, not PQA1.
-- C1/C2 scale is enough for smoke/integration hardening, not 100k/1M authority.
-- Phase 2 source/binary identity is recorded for the C1 smoke, but still needs
+  evidence should be staged narrowly and pushed without broad cleanup.
+- Full C1 diagnostic passed, but C1/C2 scale is still short of 100k/1M
+  authority.
+- Material Steward reports conservative C1 + known C2 = `54,192` records, with
+  a `45,808` record gap to 100k and `945,808` gap to 1M.
+- Existing C1 variants are not additive scale without global dedup proof.
+- Phase 2 source/binary identity is recorded for the full-C1 diagnostic, but
+  Termux reported branch `main`, head `54d9aa1`, and dirty worktree. This needs
   explicit reconciliation before 100k/1M authority-scale promotion.
 - GPD state is initialized but stale relative to Phase 2-C handoffs.
