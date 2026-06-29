@@ -1,10 +1,10 @@
 {
   "schema_version": "polymath_meta_orchestration_board_v1",
-  "updated_at_utc": "2026-06-29T15:04:58Z",
+  "updated_at_utc": "2026-06-29T17:54:28Z",
   "authority": {
     "meta_orchestrator_thread": "current Codex meta thread",
     "living_context_doc": "docs/META-ORCHESTRATION-LIVING-CONTEXT-2026-06-29.md",
-    "status": "c1_smoke_pushed_external_review_doc_registered",
+    "status": "full_c1_diagnostic_external_report_pushed_authority_scale_still_open",
     "heartbeat_automation_id": "polymath-orchestration-monitor"
   },
   "workspace": {
@@ -25,38 +25,38 @@
     {
       "lane": "repo_custodian",
       "thread_id": "019f138b-288e-7d91-b426-7cdee9f62e28",
-      "status": "canonical_c1_evidence_pushed",
-      "next_authorized_action": "stage_only_safe_scoped_evidence_updates"
+      "status": "canonical_evidence_current_through_906896d_monitor_review_mode",
+      "next_authorized_action": "stage_only_safe_scoped_evidence_updates_on_meta_authorization"
     },
     {
       "lane": "training_material_steward",
       "thread_id": "019f138b-7bfc-7671-b9fc-22c14ab76342",
-      "status": "c1_source_acceptance_completed_for_smoke",
-      "next_authorized_action": "prepare_scale_material_route_for_100k_1m_gate"
+      "status": "canonical_c1_v4_full_selected_and_scale_insufficiency_preserved",
+      "next_authorized_action": "prepare_real_material_route_for_100k_1m_without_duplicate_laundering"
     },
     {
       "lane": "engineering_orchestrator",
       "thread_id": "019f138b-d229-7640-98b7-2f185d6beae0",
-      "status": "phase1_c1_contract_executed_for_smoke",
-      "next_authorized_action": "support_phase2_scale_gate_debug_and_phase3_phase4_planning_boundaries"
+      "status": "phase1_full_c1_completion_fix_landed_and_diagnostic_executed",
+      "next_authorized_action": "reconcile_phase2_termux_source_binary_identity_before_authority_scale"
     },
     {
       "lane": "pipeline_integrator",
       "thread_id": "019f138c-35b6-73e1-b26d-3db8c59cf850",
-      "status": "phase1_phase2_c1_contract_executed_for_smoke",
-      "next_authorized_action": "harden_contract_for_100k_1m_real_pqa1_authority"
+      "status": "full_c1_phase1_phase2_diagnostic_contract_executed",
+      "next_authorized_action": "harden_full_c1_review_surface_and_100k_1m_real_pqa1_authority_contract"
     },
     {
       "lane": "ui_engineer",
       "thread_id": "019f138c-8d85-7141-a813-66db51c62b3d",
-      "status": "evidence_surface_available_for_design",
-      "next_authorized_action": "design_operator_ui_from_c1_smoke_evidence_without_phase3_claims"
+      "status": "full_c1_diagnostic_evidence_contract_ready_no_implementation_go",
+      "next_authorized_action": "design_operator_ui_from_full_c1_evidence_without_authority_or_phase3_claims"
     },
     {
       "lane": "execution_orchestrator",
       "thread_id": "019f138c-fb51-7c53-a41a-ab8eac950d9c",
-      "status": "c1_phase1_phase2_smoke_passed",
-      "next_authorized_action": "hold_for_scale_gate_or_next_authorized_execution"
+      "status": "full_c1_phase1_bridge_phase2_diagnostic_passed",
+      "next_authorized_action": "hold_for_review_or_next_authorized_scale_execution"
     }
   ],
   "adjacent_threads": [
@@ -69,12 +69,12 @@
   ],
   "phase_status": {
     "phase1": {
-      "status": "c1_source_to_pqa1_smoke_passed",
-      "next": "scale_real_material_beyond_c1_smoke"
+      "status": "full_c1_v4_source_to_pqa1_diagnostic_passed",
+      "next": "engineering_review_and_scale_material_route"
     },
     "phase2": {
-      "status": "c1_real_material_smoke_passed_100k_1m_still_blocking_authority",
-      "next": "100k_1m_real_pqa1_authority_gate"
+      "status": "full_c1_v4_pqa1_to_pjp1_diagnostic_passed_100k_1m_still_blocking_authority",
+      "next": "source_binary_identity_reconciliation_then_100k_1m_real_pqa1_authority_gate"
     },
     "phase3": {
       "status": "not_authorized",
@@ -86,11 +86,13 @@
     }
   },
   "material_status": {
-    "c1_records": 5180,
+    "c1_records": 50994,
+    "c1_qa_sha256": "4c8bb5a208d416bc4dae49ddf89e8e7845c459aef42b83ff15aac1a8aa76ce97",
+    "c1_package_root": "/Users/Zer0pa/Polymat AI/corpus_packages/commercial/2026-06-27T041511Z/phase_C1_lexatlas_gemma4_v4_full_strict",
     "c2_records": 3198,
-    "combined_records": 8378,
-    "interpretation": "valid_qa_source_material_not_pqa1",
-    "next": "c1_as_first_real_source_specimen_after_go"
+    "combined_records_known": 54192,
+    "interpretation": "full_c1_valid_qa_source_material_converted_to_pqa1_pjp1_diagnostic_not_authority_scale",
+    "next": "real_material_route_for_100k_1m_or_explicit_repeat_policy_before_authority_gate"
   },
   "latest_c1_smoke": {
     "status": "pass",
@@ -118,28 +120,72 @@
       "pjp1_inside_git_worktree": false
     }
   },
+  "latest_c1_full_diagnostic": {
+    "status": "pass",
+    "authority_boundary": "full_c1_diagnostic_only_not_100k_1m_not_phase3_ready",
+    "phase1": {
+      "run_label": "c1_phase1_v4_full_rerun_20260629T170920Z",
+      "report_root": "runtime/reports/polar_phase1_c1_pipeline/c1_phase1_v4_full_rerun_20260629T170920Z_phase1_c1_pipeline_smoke",
+      "app_report_run_id": "2026-06-29T170931Z",
+      "records_selected": 50994,
+      "token_ids": 2130785,
+      "records_per_sec": 62228.1,
+      "token_ids_per_sec": 2600200,
+      "run_flags": 16,
+      "native_warm_sequence_enabled": false,
+      "native_extended_warm_sequence_enabled": false,
+      "pqa1_shards": 8,
+      "pqa1_total_bytes": 11124986,
+      "forbidden_payload_scan": "pass",
+      "pqa1_list_sha256": "37c9f65fb88a1cbb3a0de375dcb6f8946a04d680136ac7d243f27cbcdc6195b8"
+    },
+    "phase2": {
+      "run_label": "c1_phase2_v4_full_20260629T173243Z",
+      "report_root": "runtime/reports/polar_phase2_c1_smoke/c1_phase2_v4_full_20260629T173243Z",
+      "wrapper_status": "pass",
+      "native_status": "pass",
+      "source_records": 50994,
+      "source_real_tokens": 2130785,
+      "distinct_projected_tokens": 65139,
+      "packets": 50994,
+      "slots": 6527232,
+      "pqa1_files_consumed": 8,
+      "pjp1_bytes": 461805760,
+      "pjp1_sha256": "e347676432fa7a76489f402f3c3e38ab492b6554f71930f14bc7d36ed1b3ecf5",
+      "records_per_sec": 8694.35,
+      "real_tokens_per_sec": 363294,
+      "pjp1_inside_git_worktree": false
+    }
+  },
   "external_review_docs": [
     {
       "path": "docs/ENGINEERING-EXTERNAL-REVIEW-PHASE1-PHASE2-C1-SMOKE-2026-06-29.md",
       "status": "metadata_only_review_pack",
       "scope": "phase1_phase2_c1_smoke_quantitative_qualitative_external_review",
       "authority_boundary": "not_phase3_ready_not_100k_1m_authority"
+    },
+    {
+      "path": "docs/SCIENCE-ENGINEERING-EXTERNAL-REPORT-C1-FULL-DIAGNOSTIC-2026-06-29.md",
+      "status": "external_science_engineering_review_report",
+      "scope": "full_c1_phase1_phase2_diagnostic_quantitative_qualitative_external_review",
+      "authority_boundary": "not_phase3_ready_not_100k_1m_authority",
+      "commit": "906896d"
     }
   ],
   "go_sequence": [
     "repo_custodian_reconcile_and_push_done_for_scaffold",
-    "training_material_steward_accept_c1_source_done_for_smoke",
-    "engineering_orchestrator_define_phase1_c1_to_pqa1_contract_done_for_smoke",
-    "pipeline_integrator_bind_phase1_phase2_contracts_done_for_smoke",
-    "execution_orchestrator_run_phase1_c1_done",
-    "engineering_pipeline_harden_phase2_with_real_c1_pqa1_done_for_smoke",
-    "execution_orchestrator_run_phase2_c1_done",
+    "training_material_steward_select_full_c1_v4_done",
+    "engineering_orchestrator_fix_full_c1_phase1_completion_done",
+    "pipeline_integrator_bind_full_c1_phase1_phase2_contract_done",
+    "execution_orchestrator_run_full_c1_phase1_done",
+    "execution_orchestrator_bridge_full_c1_pqa1_done",
+    "execution_orchestrator_run_full_c1_phase2_done",
     "repo_custodian_commit_push_converged_evidence_current",
-    "meta_orchestrator_decide_phase3_phase4_planning_readiness_next"
+    "meta_orchestrator_external_science_engineering_report_done",
+    "engineering_review_and_scale_route_next"
   ],
   "non_emergency_blockers": [
-    "c1_c2_are_not_pqa1",
-    "c1_c2_not_100k_1m_scale",
+    "full_c1_c2_not_100k_1m_scale",
     "pre_existing_dirty_repo_requires_narrow_staging",
     "phase2_source_binary_identity_requires_reconciliation_before_authority_scale",
     "gpd_state_stale_relative_to_phase2c_handoff"
