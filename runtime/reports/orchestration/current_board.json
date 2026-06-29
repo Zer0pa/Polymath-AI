@@ -1,10 +1,10 @@
 {
   "schema_version": "polymath_meta_orchestration_board_v1",
-  "updated_at_utc": "2026-06-29T14:00:39Z",
+  "updated_at_utc": "2026-06-29T14:46:16Z",
   "authority": {
     "meta_orchestrator_thread": "current Codex meta thread",
     "living_context_doc": "docs/META-ORCHESTRATION-LIVING-CONTEXT-2026-06-29.md",
-    "status": "go_received_repo_reconciliation_first",
+    "status": "c1_phase1_phase2_smoke_passed_repo_evidence_freeze",
     "heartbeat_automation_id": "polymath-orchestration-monitor"
   },
   "workspace": {
@@ -25,48 +25,48 @@
     {
       "lane": "repo_custodian",
       "thread_id": "019f138b-288e-7d91-b426-7cdee9f62e28",
-      "status": "authorized_for_repo_reconciliation",
-      "next_authorized_action": "reconcile_safe_canonical_state_and_push"
+      "status": "canonical_c1_evidence_freeze_needed",
+      "next_authorized_action": "stage_only_safe_c1_smoke_evidence_and_push"
     },
     {
       "lane": "training_material_steward",
       "thread_id": "019f138b-7bfc-7671-b9fc-22c14ab76342",
-      "status": "authorized_for_c1_source_acceptance_handoff",
-      "next_authorized_action": "prepare_c1_acceptance_handoff_no_repo_write"
+      "status": "c1_source_acceptance_completed_for_smoke",
+      "next_authorized_action": "prepare_scale_material_route_for_100k_1m_gate"
     },
     {
       "lane": "engineering_orchestrator",
       "thread_id": "019f138b-d229-7640-98b7-2f185d6beae0",
-      "status": "authorized_for_phase1_contract_preparation",
-      "next_authorized_action": "prepare_phase1_c1_to_pqa1_contract_no_repo_write"
+      "status": "phase1_c1_contract_executed_for_smoke",
+      "next_authorized_action": "support_phase2_scale_gate_debug_and_phase3_phase4_planning_boundaries"
     },
     {
       "lane": "pipeline_integrator",
       "thread_id": "019f138c-35b6-73e1-b26d-3db8c59cf850",
-      "status": "authorized_for_contract_mapping",
-      "next_authorized_action": "prepare_phase1_phase2_contract_handoff_no_repo_write"
+      "status": "phase1_phase2_c1_contract_executed_for_smoke",
+      "next_authorized_action": "harden_contract_for_100k_1m_real_pqa1_authority"
     },
     {
       "lane": "ui_engineer",
       "thread_id": "019f138c-8d85-7141-a813-66db51c62b3d",
-      "status": "standby_until_pipeline_surface_stabilizes",
-      "next_authorized_action": "monitor_for_integrated_evidence_surface"
+      "status": "evidence_surface_available_for_design",
+      "next_authorized_action": "design_operator_ui_from_c1_smoke_evidence_without_phase3_claims"
     },
     {
       "lane": "execution_orchestrator",
       "thread_id": "019f138c-fb51-7c53-a41a-ab8eac950d9c",
-      "status": "authorized_for_execution_plan_preparation",
-      "next_authorized_action": "prepare_phase1_c1_and_phase2_c1_run_plan_no_execution"
+      "status": "c1_phase1_phase2_smoke_passed",
+      "next_authorized_action": "hold_for_scale_gate_or_next_authorized_execution"
     }
   ],
   "phase_status": {
     "phase1": {
-      "status": "backend_native_android_authority_evidence_exists",
-      "next": "c1_source_to_pqa1_execution_contract"
+      "status": "c1_source_to_pqa1_smoke_passed",
+      "next": "scale_real_material_beyond_c1_smoke"
     },
     "phase2": {
-      "status": "native_engineering_exists_real_pqa1_blocker",
-      "next": "c1_real_material_smoke_then_100k_1m_authority_gate"
+      "status": "c1_real_material_smoke_passed_100k_1m_still_blocking_authority",
+      "next": "100k_1m_real_pqa1_authority_gate"
     },
     "phase3": {
       "status": "not_authorized",
@@ -84,22 +84,48 @@
     "interpretation": "valid_qa_source_material_not_pqa1",
     "next": "c1_as_first_real_source_specimen_after_go"
   },
+  "latest_c1_smoke": {
+    "status": "pass",
+    "authority_boundary": "smoke_integration_only_not_100k_1m_not_phase3_ready",
+    "phase1": {
+      "run_label": "c1_phase1_smoke_internal_20260629T143408Z",
+      "report_root": "runtime/reports/polar_phase1_c1_pipeline/c1_phase1_smoke_internal_20260629T143408Z_phase1_c1_pipeline_smoke",
+      "app_report_run_id": "2026-06-29T143414Z",
+      "records_selected": 64,
+      "token_ids": 2674,
+      "pqa1_shards": 8,
+      "forbidden_payload_scan": "pass"
+    },
+    "phase2": {
+      "run_label": "c1_phase2_smoke_20260629T144238Z",
+      "report_root": "runtime/reports/polar_phase2_c1_smoke/c1_phase2_smoke_20260629T144238Z",
+      "wrapper_status": "pass",
+      "native_status": "pass",
+      "source_records": 64,
+      "source_real_tokens": 2674,
+      "packets": 64,
+      "pqa1_files_consumed": 8,
+      "pjp1_bytes": 583680,
+      "pjp1_sha256": "7ffb81ab1fc129fcaf7de84a50a196ebac30d366d49e59471486e51a323ee340",
+      "pjp1_inside_git_worktree": false
+    }
+  },
   "go_sequence": [
-    "repo_custodian_reconcile_and_push",
-    "training_material_steward_accept_c1_source",
-    "engineering_orchestrator_define_phase1_c1_to_pqa1_contract",
-    "pipeline_integrator_bind_phase1_phase2_contracts",
-    "execution_orchestrator_run_phase1_c1",
-    "engineering_pipeline_harden_phase2_with_real_c1_pqa1",
-    "execution_orchestrator_run_phase2_c1",
-    "repo_custodian_commit_push_converged_evidence",
-    "meta_orchestrator_decide_phase3_phase4_planning_readiness"
+    "repo_custodian_reconcile_and_push_done_for_scaffold",
+    "training_material_steward_accept_c1_source_done_for_smoke",
+    "engineering_orchestrator_define_phase1_c1_to_pqa1_contract_done_for_smoke",
+    "pipeline_integrator_bind_phase1_phase2_contracts_done_for_smoke",
+    "execution_orchestrator_run_phase1_c1_done",
+    "engineering_pipeline_harden_phase2_with_real_c1_pqa1_done_for_smoke",
+    "execution_orchestrator_run_phase2_c1_done",
+    "repo_custodian_commit_push_converged_evidence_current",
+    "meta_orchestrator_decide_phase3_phase4_planning_readiness_next"
   ],
   "non_emergency_blockers": [
-    "dirty_repo_requires_reconciliation",
     "c1_c2_are_not_pqa1",
     "c1_c2_not_100k_1m_scale",
-    "phase2_source_binary_identity_requires_reconciliation",
+    "pre_existing_dirty_repo_requires_narrow_staging",
+    "phase2_source_binary_identity_requires_reconciliation_before_authority_scale",
     "gpd_state_stale_relative_to_phase2c_handoff"
   ]
 }

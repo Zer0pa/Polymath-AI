@@ -105,9 +105,60 @@ Current corpus interpretation:
 
 ## Current Phase Facts
 
+### Current C1 Smoke Evidence
+
+Status: C1 Phase 1 plus Phase 2 smoke passed on the REDMAGIC phone.
+
+This is integration evidence for the source-to-PQA1-to-PJP1 path. It is not the
+100k/1M Phase 2 authority gate and does not authorize Phase 3.
+
+Phase 1 source-of-record:
+
+- Run label: `c1_phase1_smoke_internal_20260629T143408Z`
+- Report root:
+  `runtime/reports/polar_phase1_c1_pipeline/c1_phase1_smoke_internal_20260629T143408Z_phase1_c1_pipeline_smoke`
+- App report run id: `2026-06-29T143414Z`
+- Status: `phase1_c1_smoke_complete`
+- Records selected: 64
+- Token IDs: 2,674
+- Material hash:
+  `243f8b5349988ca0a288dcdc90445254c4b5dd6c3691a762cc683d4c72154f8d`
+- PQA1 outputs: 8 shards, all present with hash/size metadata.
+- Forbidden payload scan: pass.
+
+Phase 2 smoke:
+
+- Run label: `c1_phase2_smoke_20260629T144238Z`
+- Report root:
+  `runtime/reports/polar_phase2_c1_smoke/c1_phase2_smoke_20260629T144238Z`
+- Wrapper status: pass.
+- Native packetizer status: pass.
+- PQA1 files consumed: 8.
+- Source records: 64.
+- Source real tokens: 2,674.
+- Packets: 64.
+- PJP1 path on phone:
+  `/data/data/com.termux/files/home/polymath_phase2_outputs/c1_phase2_smoke_20260629T144238Z/raw_c1_phase2_smoke_20260629T144238Z.pjp1`
+- PJP1 SHA-256:
+  `7ffb81ab1fc129fcaf7de84a50a196ebac30d366d49e59471486e51a323ee340`
+- PJP1 bytes: 583,680.
+- Raw PJP1 inside git worktree: false.
+
+Verified Phase 2 identities:
+
+- Packetizer SHA-256:
+  `11c81138d181f09dd1a9a4715952c8a5357a91e3f1c1562f2fb9761d4d4c336a`
+- Embedding SHA-256:
+  `b57e1e756f32d02c1aaad6c5c868f975f53b0938e0a04ed546804ed9c7d4ca7b`
+- Embedding manifest SHA-256:
+  `0bf2dc2ec4487c079da94d8c8a37f54bb7c45ed2f9a29dbbd73edc0ababaf8bd`
+- JL SHA-256:
+  `1b1f9de3dd6fbdf9597240eeeb08a6b482b33f1ae4d127e730222750cdf92a79`
+
 ### Phase 1: Ingestion / Chopping
 
-Current status: backend/native Android path is real and strong.
+Current status: backend/native Android path is real and strong. The C1 smoke
+source-to-PQA1 path passed on 64 real C1 source records.
 
 Authority lane:
 
@@ -120,11 +171,12 @@ Authority lane:
 Remaining work:
 
 - Product-real UI/operator surface.
-- C1 source-to-PQA1 execution contract and run evidence.
+- Scale authority material beyond C1 smoke.
 
 ### Phase 2: Mechanical Packetization
 
-Current status: native engineering exists; authority is blocked on real PQA1.
+Current status: native engineering exists; C1 real-material smoke passed;
+authority remains blocked on 100k/1M real PQA1.
 
 Promoted engineering route from handoff:
 
@@ -143,8 +195,8 @@ Blocking gate:
 - Margin/Hamming geometry.
 - NPU/app consumer preflight repeated on real PJP1.
 
-Current C1 smoke is allowed as real-material pipeline hardening, but it is not
-the 100k/1M Phase 2 authority gate.
+Current C1 smoke passed as real-material pipeline hardening, but it is not the
+100k/1M Phase 2 authority gate.
 
 ### Phase 3: NPU Forward Read
 
@@ -167,7 +219,9 @@ contract.
 
 ## GO Sequence
 
-When the user says `GO`, run the work through the six lanes in this order:
+When the user says `GO`, run the work through the six lanes in this order. For
+the 2026-06-29 C1 smoke, steps 1 through 7 completed, and step 8 is the current
+repo-evidence freeze/push step.
 
 1. **Repo Custodian:** reconcile dirty repo, classify lanes, secret-scan
    candidate files, commit/push safe canonical state.
@@ -272,10 +326,10 @@ drift lock.
 
 ## Current Non-Emergency Blockers
 
-- Repo is dirty and local branch is ahead of origin; Repo Custodian must
-  reconcile before broad execution.
+- Repo still has pre-existing unrelated dirty/untracked material. Canonical
+  C1 smoke evidence should be staged narrowly and pushed without broad cleanup.
 - C1/C2 are source material, not PQA1.
 - C1/C2 scale is enough for smoke/integration hardening, not 100k/1M authority.
-- Local Phase 2 source/binary identity needs reconciliation against promoted
-  handoff hashes before Execution treats it as authority.
+- Phase 2 source/binary identity is recorded for the C1 smoke, but still needs
+  explicit reconciliation before 100k/1M authority-scale promotion.
 - GPD state is initialized but stale relative to Phase 2-C handoffs.
