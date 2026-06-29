@@ -1,0 +1,163 @@
+started_utc=2026-06-29T17:32:43Z
+label=c1_phase2_v4_full_20260629T173243Z
+repo=/data/data/com.termux/files/home/Polymath-AI
+branch=main
+head=54d9aa1
+dirty_short_begin
+ M .gitignore
+ M pyproject.toml
+ M scripts/termux/requirements-termux.txt
+?? AGENTS.md
+?? GPD/
+?? data/fixtures/polar_phase1/
+?? docs/COMET-LOGGING-POLICY-2026-06-26.md
+?? docs/PHASE2C_PRD_MAXIMAL_2026-06-28.md
+?? docs/PHASE2C_PRD_SUPPLEMENT_MAXIMAL_GUARDRAILS_2026-06-28.md
+?? docs/PRD-GEMMA4-POLAR-LEARNING-FABRIC-TERMUX-PHASE1-2026-06-25.md
+?? docs/PRD-POLAR-PHASE1-MAXIMAL-CLOSURE-EXTENSION-2026-06-26.md
+?? docs/PRD-POLAR-PHASE1-QA-ZIG-MAXIMAL-2026-06-25.md
+?? docs/PRD-POLAR-PHASE1-SCALING-CRUCIBLE-2026-06-26.md
+?? docs/PRD-POLAR-PHASE2-PACKETIZATION-MAXIMAL-2026-06-26.md
+?? docs/PRD-POLAR-PHASE2B-INTERSECTED-NATIVE-CLOSURE-2026-06-27.md
+?? docs/PRD-POLAR-PHASE2B-NATIVE-PERFORMANCE-CLOSURE-2026-06-27.md
+?? docs/TERMUX-POLAR-PHASE1-CODEX-LAUNCH-PROMPT-2026-06-25.md
+?? docs/TERMUX-POLAR-PHASE1-MAXIMAL-CLOSURE-STARTUP-PROMPT-2026-06-26.md
+?? docs/TERMUX-POLAR-PHASE1-QA-ZIG-MAXIMAL-PROMPT-2026-06-25.md
+?? docs/TERMUX-POLAR-PHASE1-SCALING-STARTUP-PROMPT-2026-06-26.md
+?? docs/TERMUX-POLAR-PHASE2-PACKETIZATION-STARTUP-PROMPT-2026-06-26.md
+?? docs/TERMUX-POLAR-PHASE2B-FRONTIER-CONTINUATION-STARTUP-PROMPT-2026-06-28.md
+?? docs/TERMUX-POLAR-PHASE2B-NATIVE-CLOSURE-STARTUP-PROMPT-2026-06-27.md
+?? native/
+?? polymath_ai/telemetry/
+?? runtime/gpd_tmp/
+?? runtime/reports/polar_phase1/
+?? runtime/reports/polar_phase1_android_lab_validation/
+?? runtime/reports/polar_phase1_fast_regime_reproduction/
+?? runtime/reports/polar_phase1_maximal_closure/
+?? runtime/reports/polar_phase1_million_two_million_rerun/
+?? runtime/reports/polar_phase1_perf/
+?? runtime/reports/polar_phase1_scaling/
+?? runtime/reports/polar_phase1_termux_extended_warmup/
+?? runtime/reports/polar_phase1_termux_nice0_warmup/
+?? runtime/reports/polar_phase2/
+?? runtime/reports/polar_phase2_native_closure/
+?? runtime/reports/polar_phase2c/
+?? scripts/termux/bootstrap_polar_phase1_exec.sh
+?? scripts/termux/comet_log_phase_artifacts.py
+?? scripts/termux/pack_polar_phase1_tokenizer.py
+?? scripts/termux/run_phase2_c1_smoke.py
+?? scripts/termux/run_polar_phase1_gate.py
+?? scripts/termux/run_polar_phase1_logged_maximal_closure.py
+?? scripts/termux/run_polar_phase1_perf2_crucible.py
+?? scripts/termux/run_polar_phase1_perf_crucible.py
+?? scripts/termux/run_polar_phase1_scaling_crucible.py
+?? scripts/termux/run_polar_phase2_gate.py
+?? scripts/termux/run_polar_phase2b_native_closure.py
+?? tests/test_polar_phase1_ingest.py
+dirty_short_end
+pqa1_list=/sdcard/Download/polymath/polar_phase1_c1/c1_phase1_v4_full_rerun_20260629T170920Z/c1_pqa1_list.txt
+pqa1_list_sha=37c9f65fb88a1cbb3a0de375dcb6f8946a04d680136ac7d243f27cbcdc6195b8
+pqa1_count=8
+pqa1_total_bytes=11124986
+packetizer=/data/data/com.termux/files/home/Polymath-AI/native/polar_phase2_packetizer/bin/phase2b_native_packetizer
+packetizer_sha=11c81138d181f09dd1a9a4715952c8a5357a91e3f1c1562f2fb9761d4d4c336a
+embedding=/data/data/com.termux/files/home/polymath_polar_phase2/embeddings/gemma4_E4B_input_embedding.f16
+embedding_sha=b57e1e756f32d02c1aaad6c5c868f975f53b0938e0a04ed546804ed9c7d4ca7b
+embedding_manifest_sha=0bf2dc2ec4487c079da94d8c8a37f54bb7c45ed2f9a29dbbd73edc0ababaf8bd
+jl=/data/data/com.termux/files/home/polymath_polar_phase2/jl/gemma4_dense_rademacher_k256_d2560_i8.bin
+jl_sha=1b1f9de3dd6fbdf9597240eeeb08a6b482b33f1ae4d127e730222750cdf92a79
+command_begin
+python3 scripts/termux/run_phase2_c1_smoke.py --pqa1-list /sdcard/Download/polymath/polar_phase1_c1/c1_phase1_v4_full_rerun_20260629T170920Z/c1_pqa1_list.txt --output-dir /data/data/com.termux/files/home/polymath_phase2_outputs/c1_phase2_v4_full_20260629T173243Z --run-label c1_phase2_v4_full_20260629T173243Z --embedding /data/data/com.termux/files/home/polymath_polar_phase2/embeddings/gemma4_E4B_input_embedding.f16 --embedding-sha b57e1e756f32d02c1aaad6c5c868f975f53b0938e0a04ed546804ed9c7d4ca7b --embedding-manifest-sha 0bf2dc2ec4487c079da94d8c8a37f54bb7c45ed2f9a29dbbd73edc0ababaf8bd --jl /data/data/com.termux/files/home/polymath_polar_phase2/jl/gemma4_dense_rademacher_k256_d2560_i8.bin --jl-sha 1b1f9de3dd6fbdf9597240eeeb08a6b482b33f1ae4d127e730222750cdf92a79 --threads 8 --timeout-sec 0
+command_end
+{"status": "pass", "wrapper_report": "/data/data/com.termux/files/home/polymath_phase2_outputs/c1_phase2_v4_full_20260629T173243Z/c1_phase2_v4_full_20260629T173243Z_phase2_c1_smoke_wrapper_report.json"}
+forbidden_scan_sd_begin
+forbidden_scan_sd_end
+forbidden_scan_run_policy_begin
+{
+  "status": "pass",
+  "raw_payload_policy": {
+    "dry_run_does_not_invoke_native_packetizer": false,
+    "raw_payload_suffixes": [
+      ".bin",
+      ".onnx",
+      ".pjp1",
+      ".pqa1",
+      ".pt",
+      ".pth",
+      ".qai1",
+      ".safetensors",
+      ".tflite"
+    ],
+    "raw_payloads_allowed_in_git_worktree": false,
+    "real_output_dir_inside_git_worktree": false
+  },
+  "pqa1_inside_git": [],
+  "pjp1_inside_git": false,
+  "pjp1_path": "/data/data/com.termux/files/home/polymath_phase2_outputs/c1_phase2_v4_full_20260629T173243Z/raw_c1_phase2_v4_full_20260629T173243Z.pjp1"
+}
+forbidden_scan_run_policy_end
+summary_begin
+{
+  "status": "pass",
+  "run_label": "c1_phase2_v4_full_20260629T173243Z",
+  "mode": "real",
+  "pjp1_output": {
+    "bytes": 461805760,
+    "inside_git_worktree": false,
+    "path": "/data/data/com.termux/files/home/polymath_phase2_outputs/c1_phase2_v4_full_20260629T173243Z/raw_c1_phase2_v4_full_20260629T173243Z.pjp1",
+    "sha256": "e347676432fa7a76489f402f3c3e38ab492b6554f71930f14bc7d36ed1b3ecf5"
+  },
+  "native_result_json": {
+    "path": "/data/data/com.termux/files/home/polymath_phase2_outputs/c1_phase2_v4_full_20260629T173243Z/c1_phase2_v4_full_20260629T173243Z_native_packetizer_report.json",
+    "sha256": "611118aab3c1a1e664b472d709e63e78d2c240194fb75a99086962dfb7068df3"
+  },
+  "nonclaims": [
+    "c1_smoke_only",
+    "no_100k_or_1m_phase2_authority_claim",
+    "no_phase3_ready_claim",
+    "no_npu_htp_claim",
+    "no_learning_claim",
+    "no_model_quality_claim"
+  ]
+}
+{
+  "status": "pass",
+  "label": "c1_phase2_v4_full_20260629T173243Z",
+  "pqa1_files_consumed": 8,
+  "source_record_count": 50994,
+  "source_real_token_count": 2130785,
+  "packet_count": 50994,
+  "slot_count": 6527232,
+  "pjp1_bytes": 461805760,
+  "timing_sec": {
+    "scan_validate": 0.021077,
+    "projection_cache_prepare": 2.74169,
+    "output_prepare": 0.000988073,
+    "native_process": 2.73741,
+    "flush_sync": 0.360984,
+    "sample_hash": 0.000147813,
+    "total": 5.86519
+  },
+  "throughput": {
+    "records_per_sec": 8694.35,
+    "real_tokens_per_sec": 363294,
+    "process_real_tokens_per_sec": 778395,
+    "cache_inclusive_process_real_tokens_per_sec": 388893,
+    "packets_per_sec": 8694.35,
+    "packet_slots_per_sec": 1.11288E+6,
+    "output_MB_per_sec": 78.7367
+  },
+  "input_projection_cache": {
+    "enabled": true,
+    "reason": "enabled_exact_dense_rademacher_token_projection_reuse",
+    "projection_kernel": "single_token_k4_parallel_exact_dense_rademacher",
+    "build_threads": 8,
+    "unique_token_count": 65139,
+    "projected_token_count": 65139,
+    "semantic_token_positions": 2130785,
+    "cache_hits": 2130785,
+    "reuse_factor": 32.7114
+  }
+}
+summary_end
+finished_utc=2026-06-29T17:32:52Z

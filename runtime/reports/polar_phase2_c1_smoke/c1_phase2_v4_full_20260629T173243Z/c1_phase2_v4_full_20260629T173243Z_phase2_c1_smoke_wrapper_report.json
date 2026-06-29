@@ -1,0 +1,225 @@
+{
+  "created_at_utc": "2026-06-29T17:32:45.425762Z",
+  "execution_contract": {
+    "c1_smoke_only": true,
+    "max_records": null,
+    "threads": 8
+  },
+  "input_identity": {
+    "embedding": {
+      "bytes": 1342177280,
+      "exists": true,
+      "expected_sha256": "b57e1e756f32d02c1aaad6c5c868f975f53b0938e0a04ed546804ed9c7d4ca7b",
+      "inside_git_worktree": false,
+      "is_executable": false,
+      "is_file": true,
+      "path": "/data/data/com.termux/files/home/polymath_polar_phase2/embeddings/gemma4_E4B_input_embedding.f16",
+      "sha256": "b57e1e756f32d02c1aaad6c5c868f975f53b0938e0a04ed546804ed9c7d4ca7b",
+      "sha256_match": true
+    },
+    "embedding_manifest_sha256": "0bf2dc2ec4487c079da94d8c8a37f54bb7c45ed2f9a29dbbd73edc0ababaf8bd",
+    "jl": {
+      "bytes": 655360,
+      "exists": true,
+      "expected_sha256": "1b1f9de3dd6fbdf9597240eeeb08a6b482b33f1ae4d127e730222750cdf92a79",
+      "inside_git_worktree": false,
+      "is_executable": false,
+      "is_file": true,
+      "path": "/data/data/com.termux/files/home/polymath_polar_phase2/jl/gemma4_dense_rademacher_k256_d2560_i8.bin",
+      "sha256": "1b1f9de3dd6fbdf9597240eeeb08a6b482b33f1ae4d127e730222750cdf92a79",
+      "sha256_match": true
+    },
+    "pqa1_list": {
+      "line_count": 8,
+      "list_file": {
+        "bytes": 816,
+        "exists": true,
+        "inside_git_worktree": false,
+        "is_executable": false,
+        "is_file": true,
+        "path": "/storage/emulated/0/Download/polymath/polar_phase1_c1/c1_phase1_v4_full_rerun_20260629T170920Z/c1_pqa1_list.txt",
+        "sha256": "37c9f65fb88a1cbb3a0de375dcb6f8946a04d680136ac7d243f27cbcdc6195b8"
+      },
+      "listed_raw_paths_inside_git_worktree": [],
+      "nonempty_line_count": 8,
+      "sample_paths": [
+        "/sdcard/Download/polymath/polar_phase1_c1/c1_phase1_v4_full_rerun_20260629T170920Z/pqa1/out_0000.pqa1",
+        "/sdcard/Download/polymath/polar_phase1_c1/c1_phase1_v4_full_rerun_20260629T170920Z/pqa1/out_0001.pqa1",
+        "/sdcard/Download/polymath/polar_phase1_c1/c1_phase1_v4_full_rerun_20260629T170920Z/pqa1/out_0002.pqa1",
+        "/sdcard/Download/polymath/polar_phase1_c1/c1_phase1_v4_full_rerun_20260629T170920Z/pqa1/out_0003.pqa1",
+        "/sdcard/Download/polymath/polar_phase1_c1/c1_phase1_v4_full_rerun_20260629T170920Z/pqa1/out_0004.pqa1",
+        "/sdcard/Download/polymath/polar_phase1_c1/c1_phase1_v4_full_rerun_20260629T170920Z/pqa1/out_0005.pqa1",
+        "/sdcard/Download/polymath/polar_phase1_c1/c1_phase1_v4_full_rerun_20260629T170920Z/pqa1/out_0006.pqa1",
+        "/sdcard/Download/polymath/polar_phase1_c1/c1_phase1_v4_full_rerun_20260629T170920Z/pqa1/out_0007.pqa1"
+      ]
+    }
+  },
+  "mode": "real",
+  "native_command": {
+    "cmd": [
+      "/data/data/com.termux/files/home/Polymath-AI/native/polar_phase2_packetizer/bin/phase2b_native_packetizer",
+      "--label",
+      "c1_phase2_v4_full_20260629T173243Z",
+      "--pqa1-list",
+      "/storage/emulated/0/Download/polymath/polar_phase1_c1/c1_phase1_v4_full_rerun_20260629T170920Z/c1_pqa1_list.txt",
+      "--output",
+      "/data/data/com.termux/files/home/polymath_phase2_outputs/c1_phase2_v4_full_20260629T173243Z/raw_c1_phase2_v4_full_20260629T173243Z.pjp1",
+      "--embedding",
+      "/data/data/com.termux/files/home/polymath_polar_phase2/embeddings/gemma4_E4B_input_embedding.f16",
+      "--jl",
+      "/data/data/com.termux/files/home/polymath_polar_phase2/jl/gemma4_dense_rademacher_k256_d2560_i8.bin",
+      "--embed-sha",
+      "b57e1e756f32d02c1aaad6c5c868f975f53b0938e0a04ed546804ed9c7d4ca7b",
+      "--embed-manifest-sha",
+      "0bf2dc2ec4487c079da94d8c8a37f54bb7c45ed2f9a29dbbd73edc0ababaf8bd",
+      "--jl-sha",
+      "1b1f9de3dd6fbdf9597240eeeb08a6b482b33f1ae4d127e730222750cdf92a79",
+      "--threads",
+      "8",
+      "--result-json",
+      "/data/data/com.termux/files/home/polymath_phase2_outputs/c1_phase2_v4_full_20260629T173243Z/c1_phase2_v4_full_20260629T173243Z_native_packetizer_report.json"
+    ],
+    "cwd": "/data/data/com.termux/files/home/Polymath-AI",
+    "elapsed_sec": 5.928333800009568,
+    "returncode": 0,
+    "stderr_tail": "",
+    "stdout_tail": "{\"status\":\"pass\",\"result_json\":\"/data/data/com.termux/files/home/polymath_phase2_outputs/c1_phase2_v4_full_20260629T173243Z/c1_phase2_v4_full_20260629T173243Z_native_packetizer_report.json\",\"real_tokens_per_sec\":363294}\n"
+  },
+  "native_command_argv": [
+    "/data/data/com.termux/files/home/Polymath-AI/native/polar_phase2_packetizer/bin/phase2b_native_packetizer",
+    "--label",
+    "c1_phase2_v4_full_20260629T173243Z",
+    "--pqa1-list",
+    "/storage/emulated/0/Download/polymath/polar_phase1_c1/c1_phase1_v4_full_rerun_20260629T170920Z/c1_pqa1_list.txt",
+    "--output",
+    "/data/data/com.termux/files/home/polymath_phase2_outputs/c1_phase2_v4_full_20260629T173243Z/raw_c1_phase2_v4_full_20260629T173243Z.pjp1",
+    "--embedding",
+    "/data/data/com.termux/files/home/polymath_polar_phase2/embeddings/gemma4_E4B_input_embedding.f16",
+    "--jl",
+    "/data/data/com.termux/files/home/polymath_polar_phase2/jl/gemma4_dense_rademacher_k256_d2560_i8.bin",
+    "--embed-sha",
+    "b57e1e756f32d02c1aaad6c5c868f975f53b0938e0a04ed546804ed9c7d4ca7b",
+    "--embed-manifest-sha",
+    "0bf2dc2ec4487c079da94d8c8a37f54bb7c45ed2f9a29dbbd73edc0ababaf8bd",
+    "--jl-sha",
+    "1b1f9de3dd6fbdf9597240eeeb08a6b482b33f1ae4d127e730222750cdf92a79",
+    "--threads",
+    "8",
+    "--result-json",
+    "/data/data/com.termux/files/home/polymath_phase2_outputs/c1_phase2_v4_full_20260629T173243Z/c1_phase2_v4_full_20260629T173243Z_native_packetizer_report.json"
+  ],
+  "native_invoked": true,
+  "native_result_json": {
+    "path": "/data/data/com.termux/files/home/polymath_phase2_outputs/c1_phase2_v4_full_20260629T173243Z/c1_phase2_v4_full_20260629T173243Z_native_packetizer_report.json",
+    "sha256": "611118aab3c1a1e664b472d709e63e78d2c240194fb75a99086962dfb7068df3",
+    "summary": {
+      "job_count": 50994,
+      "label": "c1_phase2_v4_full_20260629T173243Z",
+      "packet_count": 50994,
+      "pjp1_bytes": 461805760,
+      "pjp1_path": "/data/data/com.termux/files/home/polymath_phase2_outputs/c1_phase2_v4_full_20260629T173243Z/raw_c1_phase2_v4_full_20260629T173243Z.pjp1",
+      "pqa1_files_consumed": 8,
+      "pqa1_source_sha256_stream": "7acdbe6fd607584c1281ca4b065340fed18da0fc633ffea467a0e1eab15548f3",
+      "schema_version": "polar_phase2b_native_packetizer_run_v1",
+      "slot_count": 6527232,
+      "source_real_token_count": 2130785,
+      "source_record_count": 50994,
+      "status": "pass",
+      "thread_count": 8,
+      "throughput": {
+        "cache_inclusive_process_real_tokens_per_sec": 388893,
+        "output_MB_per_sec": 78.7367,
+        "packet_slots_per_sec": 1112880.0,
+        "packets_per_sec": 8694.35,
+        "process_real_tokens_per_sec": 778395,
+        "real_tokens_per_sec": 363294,
+        "records_per_sec": 8694.35
+      },
+      "timing_sec": {
+        "flush_sync": 0.360984,
+        "native_process": 2.73741,
+        "output_prepare": 0.000988073,
+        "projection_cache_prepare": 2.74169,
+        "sample_hash": 0.000147813,
+        "scan_validate": 0.021077,
+        "total": 5.86519
+      },
+      "worker_rollup": {
+        "input_jl_cache_hits": 2130785,
+        "packets": 50994,
+        "real_tokens": 2130785,
+        "records": 50994
+      },
+      "writer": "phase2b_native_cpp_neon_writer_v1"
+    }
+  },
+  "nonclaims": [
+    "c1_smoke_only",
+    "no_100k_or_1m_phase2_authority_claim",
+    "no_phase3_ready_claim",
+    "no_npu_htp_claim",
+    "no_learning_claim",
+    "no_model_quality_claim"
+  ],
+  "packetizer_identity": {
+    "binary": {
+      "bytes": 131832,
+      "exists": true,
+      "inside_git_worktree": true,
+      "is_executable": true,
+      "is_file": true,
+      "path": "/data/data/com.termux/files/home/Polymath-AI/native/polar_phase2_packetizer/bin/phase2b_native_packetizer",
+      "sha256": "11c81138d181f09dd1a9a4715952c8a5357a91e3f1c1562f2fb9761d4d4c336a"
+    },
+    "build_script": {
+      "bytes": 705,
+      "exists": true,
+      "inside_git_worktree": true,
+      "is_executable": true,
+      "is_file": true,
+      "path": "/data/data/com.termux/files/home/Polymath-AI/native/polar_phase2_packetizer/build_phase2b_native_packetizer.sh",
+      "sha256": "3c284c858aaa0d1e7697c4b63a12330d2e24d62a2391f109f34133463a631716"
+    },
+    "source": {
+      "bytes": 63517,
+      "exists": true,
+      "inside_git_worktree": true,
+      "is_executable": false,
+      "is_file": true,
+      "path": "/data/data/com.termux/files/home/Polymath-AI/native/polar_phase2_packetizer/phase2b_native_packetizer.cpp",
+      "sha256": "ba2d4dd48e2d9afeabf69b84019af0375aa739b26e982d69e8084a94a264c61f"
+    }
+  },
+  "paths": {
+    "native_result_json": "/data/data/com.termux/files/home/polymath_phase2_outputs/c1_phase2_v4_full_20260629T173243Z/c1_phase2_v4_full_20260629T173243Z_native_packetizer_report.json",
+    "output_dir": "/data/data/com.termux/files/home/polymath_phase2_outputs/c1_phase2_v4_full_20260629T173243Z",
+    "pjp1_output": "/data/data/com.termux/files/home/polymath_phase2_outputs/c1_phase2_v4_full_20260629T173243Z/raw_c1_phase2_v4_full_20260629T173243Z.pjp1",
+    "repo_root": "/data/data/com.termux/files/home/Polymath-AI",
+    "wrapper_report": "/data/data/com.termux/files/home/polymath_phase2_outputs/c1_phase2_v4_full_20260629T173243Z/c1_phase2_v4_full_20260629T173243Z_phase2_c1_smoke_wrapper_report.json"
+  },
+  "pjp1_output": {
+    "bytes": 461805760,
+    "inside_git_worktree": false,
+    "path": "/data/data/com.termux/files/home/polymath_phase2_outputs/c1_phase2_v4_full_20260629T173243Z/raw_c1_phase2_v4_full_20260629T173243Z.pjp1",
+    "sha256": "e347676432fa7a76489f402f3c3e38ab492b6554f71930f14bc7d36ed1b3ecf5"
+  },
+  "raw_payload_policy": {
+    "dry_run_does_not_invoke_native_packetizer": false,
+    "raw_payload_suffixes": [
+      ".bin",
+      ".onnx",
+      ".pjp1",
+      ".pqa1",
+      ".pt",
+      ".pth",
+      ".qai1",
+      ".safetensors",
+      ".tflite"
+    ],
+    "raw_payloads_allowed_in_git_worktree": false,
+    "real_output_dir_inside_git_worktree": false
+  },
+  "run_label": "c1_phase2_v4_full_20260629T173243Z",
+  "schema_version": "polar_phase2_c1_smoke_wrapper_v1",
+  "status": "pass"
+}
