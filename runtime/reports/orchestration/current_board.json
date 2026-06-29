@@ -1,10 +1,10 @@
 {
   "schema_version": "polymath_meta_orchestration_board_v1",
-  "updated_at_utc": "2026-06-29T14:46:16Z",
+  "updated_at_utc": "2026-06-29T15:04:58Z",
   "authority": {
     "meta_orchestrator_thread": "current Codex meta thread",
     "living_context_doc": "docs/META-ORCHESTRATION-LIVING-CONTEXT-2026-06-29.md",
-    "status": "c1_phase1_phase2_smoke_passed_repo_evidence_freeze",
+    "status": "c1_smoke_pushed_external_review_doc_registered",
     "heartbeat_automation_id": "polymath-orchestration-monitor"
   },
   "workspace": {
@@ -25,8 +25,8 @@
     {
       "lane": "repo_custodian",
       "thread_id": "019f138b-288e-7d91-b426-7cdee9f62e28",
-      "status": "canonical_c1_evidence_freeze_needed",
-      "next_authorized_action": "stage_only_safe_c1_smoke_evidence_and_push"
+      "status": "canonical_c1_evidence_pushed",
+      "next_authorized_action": "stage_only_safe_scoped_evidence_updates"
     },
     {
       "lane": "training_material_steward",
@@ -57,6 +57,14 @@
       "thread_id": "019f138c-fb51-7c53-a41a-ab8eac950d9c",
       "status": "c1_phase1_phase2_smoke_passed",
       "next_authorized_action": "hold_for_scale_gate_or_next_authorized_execution"
+    }
+  ],
+  "adjacent_threads": [
+    {
+      "thread": "phase_three_and_four_engineer",
+      "thread_id": "019f13da-d897-7ba2-8ed1-b959892f5ed4",
+      "status": "created_for_user_managed_exploratory_planning",
+      "authority_boundary": "planning_only_no_phase3_execution_authorization_from_c1_smoke"
     }
   ],
   "phase_status": {
@@ -110,6 +118,14 @@
       "pjp1_inside_git_worktree": false
     }
   },
+  "external_review_docs": [
+    {
+      "path": "docs/ENGINEERING-EXTERNAL-REVIEW-PHASE1-PHASE2-C1-SMOKE-2026-06-29.md",
+      "status": "metadata_only_review_pack",
+      "scope": "phase1_phase2_c1_smoke_quantitative_qualitative_external_review",
+      "authority_boundary": "not_phase3_ready_not_100k_1m_authority"
+    }
+  ],
   "go_sequence": [
     "repo_custodian_reconcile_and_push_done_for_scaffold",
     "training_material_steward_accept_c1_source_done_for_smoke",

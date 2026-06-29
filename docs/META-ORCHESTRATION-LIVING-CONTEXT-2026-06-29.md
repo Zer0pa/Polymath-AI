@@ -62,6 +62,16 @@ report-for-duty only.
 Termux/ADB/SSH is a capability available to engineering, integration, and
 execution lanes when authorized. It is not a separate orchestration lane.
 
+## Adjacent Exploratory Threads
+
+These threads are independent user-managed workspaces adjacent to the six-lane
+orchestration system. They do not create new authority lanes unless this
+document and the board are explicitly updated.
+
+| Thread | Thread ID | Purpose | Authority Boundary |
+| --- | --- | --- | --- |
+| Phase Three and Four Engineer | `019f13da-d897-7ba2-8ed1-b959892f5ed4` | Explore Phase 3/4 architecture, read current handoffs, and prepare planning context for the user | Planning only; no Phase 3/4 execution authorization from C1 smoke |
+
 ## Monitoring Automation
 
 Heartbeat automation: `polymath-orchestration-monitor`.
@@ -154,6 +164,14 @@ Verified Phase 2 identities:
   `0bf2dc2ec4487c079da94d8c8a37f54bb7c45ed2f9a29dbbd73edc0ababaf8bd`
 - JL SHA-256:
   `1b1f9de3dd6fbdf9597240eeeb08a6b482b33f1ae4d127e730222750cdf92a79`
+
+External-review synthesis:
+
+`docs/ENGINEERING-EXTERNAL-REVIEW-PHASE1-PHASE2-C1-SMOKE-2026-06-29.md`
+
+This document is a metadata-only external engineering review pack for Phase 1,
+Phase 2, and the latest C1 smoke. It is useful for quantitative and qualitative
+review, but it must not be read as Phase 3/4 authorization.
 
 ### Phase 1: Ingestion / Chopping
 
