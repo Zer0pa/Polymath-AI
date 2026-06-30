@@ -17,6 +17,7 @@
 #include <sys/stat.h>
 #include <sys/wait.h>
 #include <thread>
+#include <unordered_set>
 #include <unistd.h>
 #include <vector>
 
@@ -33,6 +34,7 @@ constexpr int kNotConnected = 2;
 constexpr int kThreadLaunchFailed = 125;
 constexpr int kChildExecFailed = 126;
 constexpr std::size_t kPhase1EntryStackBytes = 64U * 1024U * 1024U;
+constexpr std::uint32_t kTokenizerVocabSize = 262144U;
 
 void copy_message(char* destination, size_t destination_size, const char* message) {
     if (destination == nullptr || destination_size == 0) {
@@ -176,9 +178,44 @@ struct Pqa1Summary {
     bool ok = false;
     std::uint64_t records = 0;
     std::uint64_t token_ids = 0;
+    std::uint64_t distinct_token_ids = 0;
+    std::uint32_t vocab_size = kTokenizerVocabSize;
     std::uint64_t bytes = 0;
+    std::uint32_t max_token_id = 0;
+    double vocab_coverage_ratio = 0.0;
+    double tokens_per_record_mean = 0.0;
+    double tokens_per_record_p50 = 0.0;
+    double tokens_per_record_p95 = 0.0;
+    double tokens_per_record_p99 = 0.0;
+    std::vector<std::uint32_t> tokens_per_record;
+    std::unordered_set<std::uint32_t> distinct_tokens;
     std::string error;
 };
+
+double percentile_u32(std::vector<std::uint32_t> values, double fraction) {
+    if (values.empty()) {
+        return 0.0;
+    }
+    std::sort(values.begin(), values.end());
+    const double scaled = static_cast<double>(values.size() - 1U) * fraction;
+    const std::size_t index = static_cast<std::size_t>(std::max(0.0, std::min(static_cast<double>(values.size() - 1U), scaled + 0.5)));
+    return static_cast<double>(values[index]);
+}
+
+void finalize_pqa1_summary(Pqa1Summary& summary) {
+    summary.distinct_token_ids = static_cast<std::uint64_t>(summary.distinct_tokens.size());
+    summary.vocab_size = kTokenizerVocabSize;
+    summary.vocab_coverage_ratio = summary.vocab_size > 0
+        ? static_cast<double>(summary.distinct_token_ids) / static_cast<double>(summary.vocab_size)
+        : 0.0;
+    if (summary.tokens_per_record.empty()) {
+        return;
+    }
+    summary.tokens_per_record_mean = static_cast<double>(summary.token_ids) / static_cast<double>(summary.tokens_per_record.size());
+    summary.tokens_per_record_p50 = percentile_u32(summary.tokens_per_record, 0.50);
+    summary.tokens_per_record_p95 = percentile_u32(summary.tokens_per_record, 0.95);
+    summary.tokens_per_record_p99 = percentile_u32(summary.tokens_per_record, 0.99);
+}
 
 Pqa1Summary parse_pqa1(const char* path) {
     Pqa1Summary summary {};
@@ -205,6 +242,7 @@ Pqa1Summary parse_pqa1(const char* path) {
     }
 
     std::uint64_t token_ids = 0;
+    summary.tokens_per_record.reserve(static_cast<std::size_t>(std::min<std::uint64_t>(records, 1'000'000ULL)));
     for (std::uint64_t record = 0; record < records; ++record) {
         (void)read_u64_le(stream, ok);
         char kind = 0;
@@ -215,7 +253,16 @@ Pqa1Summary parse_pqa1(const char* path) {
             summary.error = "truncated PQA1 record header";
             return summary;
         }
-        stream.seekg(static_cast<std::streamoff>(static_cast<std::uint64_t>(token_count) * 4U), std::ios::cur);
+        summary.tokens_per_record.push_back(token_count);
+        for (std::uint32_t index = 0; index < token_count; ++index) {
+            const std::uint32_t token_id = read_u32_le(stream, ok);
+            if (!ok) {
+                summary.error = "truncated PQA1 token ids";
+                return summary;
+            }
+            summary.distinct_tokens.insert(token_id);
+            summary.max_token_id = std::max(summary.max_token_id, token_id);
+        }
         stream.seekg(static_cast<std::streamoff>(static_cast<std::uint64_t>(segment_count) * 18U), std::ios::cur);
         if (!stream.good()) {
             summary.error = "truncated PQA1 record body";
@@ -228,6 +275,7 @@ Pqa1Summary parse_pqa1(const char* path) {
     summary.records = records;
     summary.token_ids = token_ids;
     summary.bytes = file_size(path);
+    finalize_pqa1_summary(summary);
     return summary;
 }
 
@@ -556,8 +604,12 @@ Pqa1Summary summarize_batch_outputs(const std::vector<BatchJobPaths>& jobs) {
         total.records += part.records;
         total.token_ids += part.token_ids;
         total.bytes += part.bytes;
+        total.max_token_id = std::max(total.max_token_id, part.max_token_id);
+        total.tokens_per_record.insert(total.tokens_per_record.end(), part.tokens_per_record.begin(), part.tokens_per_record.end());
+        total.distinct_tokens.insert(part.distinct_tokens.begin(), part.distinct_tokens.end());
     }
     total.ok = true;
+    finalize_pqa1_summary(total);
     return total;
 }
 
@@ -756,6 +808,15 @@ void write_native_metrics_report(
     report << "  \"status\": \"" << (return_code == 0 && summary.ok ? "probe" : "fail") << "\",\n";
     report << "  \"records\": " << summary.records << ",\n";
     report << "  \"token_ids\": " << summary.token_ids << ",\n";
+    report << "  \"distinct_token_ids\": " << summary.distinct_token_ids << ",\n";
+    report << "  \"vocab_size\": " << summary.vocab_size << ",\n";
+    report << "  \"vocab_coverage_ratio\": " << summary.vocab_coverage_ratio << ",\n";
+    report << "  \"tokens_per_record_mean\": " << summary.tokens_per_record_mean << ",\n";
+    report << "  \"tokens_per_record_p50\": " << summary.tokens_per_record_p50 << ",\n";
+    report << "  \"tokens_per_record_p95\": " << summary.tokens_per_record_p95 << ",\n";
+    report << "  \"tokens_per_record_p99\": " << summary.tokens_per_record_p99 << ",\n";
+    report << "  \"tokens_per_record_distribution_source\": \"pqa1_record_headers\",\n";
+    report << "  \"max_token_id\": " << summary.max_token_id << ",\n";
     report << "  \"wall_sec\": " << wall_sec << ",\n";
     report << "  \"input_bytes\": " << input_bytes << ",\n";
     report << "  \"output_bytes\": " << output_bytes << ",\n";
@@ -1030,7 +1091,14 @@ extern "C" int phase1_engine_run(
 
     out->records = summary.records;
     out->token_ids = summary.token_ids;
+    out->distinct_token_ids = summary.distinct_token_ids;
+    out->vocab_size = summary.vocab_size;
     out->wall_sec = wall_sec;
+    out->vocab_coverage_ratio = summary.vocab_coverage_ratio;
+    out->tokens_per_record_mean = summary.tokens_per_record_mean;
+    out->tokens_per_record_p50 = summary.tokens_per_record_p50;
+    out->tokens_per_record_p95 = summary.tokens_per_record_p95;
+    out->tokens_per_record_p99 = summary.tokens_per_record_p99;
     out->input_bytes = input_bytes;
     out->output_bytes = output_bytes;
     out->input_mb_per_sec = input_mb_per_sec;

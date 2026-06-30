@@ -1,0 +1,286 @@
+{
+  "schema_version": "polymath_c1_c5_metric_schema_v1",
+  "created_at_utc": "2026-06-30T20:06:56Z",
+  "owner_lane": "pipeline_integrator",
+  "prd": "docs/PRD-C1-C5-DRIFT-FREE-METRICS-COMET-EXECUTION-2026-06-30.md",
+  "scope": {
+    "objective": "Shared drift-free metric vocabulary for C1->C2->C2.5->C3->C4 through Phase1->Phase2->Phase3->Phase4, with C5 evaluation after each curriculum phase and after the full sequence.",
+    "corpus_phases": ["C1", "C2", "C2_5", "C3", "C4"],
+    "c5_eval_points": [
+      "C5_after_C1",
+      "C5_after_C2",
+      "C5_after_C2_5",
+      "C5_after_C3",
+      "C5_after_C4",
+      "C5_full_curriculum_postrun"
+    ],
+    "nonclaims": [
+      "schema_does_not_claim_model_learning",
+      "schema_does_not_claim_phase3_or_phase4_readiness",
+      "schema_does_not_replace_authority_gate_results",
+      "c5_is_eval_boundary_not_pre_execution_material_phase"
+    ]
+  },
+  "top_level_report_contract": {
+    "required_fields": [
+      "schema_version",
+      "run_label",
+      "created_at_utc",
+      "material_identity",
+      "code_identity",
+      "runtime_identity",
+      "phase_metrics",
+      "c5_evaluations",
+      "throughput",
+      "pass_fail",
+      "nonclaims"
+    ],
+    "material_identity_required_fields": [
+      "hf_repo_id",
+      "hf_revision",
+      "hf_revision_is_immutable",
+      "remote_package_paths",
+      "upload_verification_report_path",
+      "upload_verification_sha256",
+      "material_manifest_path",
+      "material_manifest_sha256",
+      "transition_gate_plan_path",
+      "transition_gate_plan_sha256",
+      "replay_schedule_path",
+      "replay_schedule_sha256"
+    ],
+    "code_identity_required_fields": [
+      "repo_path",
+      "git_head",
+      "git_dirty_status",
+      "code_hash_manifest_sha256",
+      "canonical_execution_surface_map_sha256"
+    ],
+    "runtime_identity_required_fields": [
+      "phone_model",
+      "android_api",
+      "termux_identity",
+      "htp_backend_path",
+      "qairt_or_qnn_version",
+      "opencl_device",
+      "thermal_policy"
+    ]
+  },
+  "metric_name_rules": {
+    "phase_metric_pattern": "phase<1|2|3|4>/<C1|C2|C2_5|C3|C4>/<metric_name>",
+    "c5_metric_pattern": "c5/<C5_after_C1|C5_after_C2|C5_after_C2_5|C5_after_C3|C5_after_C4|C5_full_curriculum_postrun>/<metric_name>",
+    "throughput_metric_pattern": "throughput/<metric_name>",
+    "latency_metric_pattern": "latency/<metric_name>",
+    "rule": "Accepted metric runs must use these names in local JSON and Comet."
+  },
+  "phase_metrics": {
+    "phase1": {
+      "family": "data_and_tokenizer",
+      "required_per_corpus_phase": [
+        "record_count",
+        "question_bytes_total",
+        "answer_bytes_total",
+        "token_ids_total",
+        "distinct_token_ids",
+        "vocab_coverage_ratio",
+        "tokens_per_record_mean",
+        "tokens_per_record_p50",
+        "tokens_per_record_p95",
+        "tokens_per_record_p99",
+        "source_kind_counts",
+        "source_kind_mapping",
+        "invalid_record_count",
+        "duplicate_record_id_count",
+        "token_ids_per_sec",
+        "latency_ms"
+      ],
+      "pass_gate": {
+        "invalid_record_count": 0,
+        "duplicate_record_id_count": 0,
+        "accepted_source_kind_mapping_required": true,
+        "finite_throughput_required": true,
+        "distinct_token_coverage_logged": true,
+        "length_distribution_logged": true
+      }
+    },
+    "phase2": {
+      "family": "packetizer_and_geometry",
+      "required_per_corpus_phase": [
+        "pqa1_files_consumed",
+        "source_record_count",
+        "source_real_token_count",
+        "packet_count",
+        "slot_count",
+        "pjp1_bytes",
+        "pjp1_sha256",
+        "packetizer_binary_sha256",
+        "packetizer_source_sha256",
+        "packetizer_build_script_sha256",
+        "collision_rate",
+        "collision_count",
+        "projected_vector_norm_mean",
+        "projected_vector_norm_p95",
+        "hamming_distance_mean",
+        "hamming_distance_p05",
+        "hamming_distance_p50",
+        "hamming_distance_p95",
+        "jl_distance_distortion_mean",
+        "jl_distance_distortion_p95",
+        "records_per_sec",
+        "real_tokens_per_sec",
+        "output_MB_per_sec",
+        "latency_ms"
+      ],
+      "pass_gate": {
+        "collision_rate_max": 0.001,
+        "no_nan_or_inf_geometry_stats": true,
+        "source_build_binary_identity_reconciled": true,
+        "throughput_logged": true,
+        "c3_c4_geometry_regression_must_be_flagged": true
+      }
+    },
+    "phase3": {
+      "family": "htp_npu_forward_path",
+      "required_per_corpus_phase": [
+        "pjp1_preflight_status",
+        "native_preflight_status",
+        "i8_oracle_mismatches",
+        "htp_backend",
+        "htp_output_sha256",
+        "forward_loss",
+        "forward_mse",
+        "forward_cross_entropy",
+        "perplexity",
+        "answer_token_accuracy",
+        "calibration_ece",
+        "brier_score",
+        "tokens_per_sec",
+        "latency_ms",
+        "host_to_device_ms",
+        "device_compute_ms",
+        "device_to_host_ms"
+      ],
+      "conditional_metrics": [
+        "forward_cross_entropy when target format supports it",
+        "perplexity when language-model likelihood is available",
+        "answer_token_accuracy when supervised answer targets are available"
+      ],
+      "pass_gate": {
+        "i8_oracle_mismatches": 0,
+        "htp_backend_identity_logged": true,
+        "forward_metrics_finite_on_c5_slice": true,
+        "latency_and_throughput_logged": true,
+        "no_readiness_claim_without_stable_run_improvement": true
+      }
+    },
+    "phase4": {
+      "family": "opencl_gpu_update_path",
+      "required_per_corpus_phase": [
+        "opencl_device",
+        "phase3_output_sha256",
+        "target_sha256",
+        "adapter_pre_sha256",
+        "adapter_post_sha256",
+        "consumed_output_causes_update",
+        "adapter_changed",
+        "loss_pre_update",
+        "loss_post_update",
+        "loss_delta",
+        "grad_norm_l2",
+        "grad_norm_linf",
+        "update_norm_l2",
+        "adapter_delta_norm_l2",
+        "nan_gradient_count",
+        "inf_gradient_count",
+        "opencl_kernel_ms",
+        "tokens_per_sec",
+        "latency_ms"
+      ],
+      "pass_gate": {
+        "consumed_output_causes_update": true,
+        "adapter_changed": true,
+        "gradient_norms_finite": true,
+        "nan_gradient_count": 0,
+        "inf_gradient_count": 0,
+        "loss_pre_post_measured": true,
+        "no_learning_claim_without_c5_confirmation": true
+      }
+    }
+  },
+  "c5_metrics": {
+    "required_per_eval_point": [
+      "loss",
+      "loss_delta_vs_last_stable",
+      "accuracy",
+      "answer_exact_match",
+      "answer_token_f1",
+      "perplexity",
+      "calibration_ece",
+      "brier_score",
+      "overfit_gap_train_vs_val",
+      "grad_norm_max_observed",
+      "checkpoint_sha256",
+      "stable_checkpoint_baseline_sha256",
+      "learning_score"
+    ],
+    "conditional_metrics": [
+      "perplexity when available"
+    ],
+    "pass_gate": {
+      "loss_improves_or_within_tolerance": true,
+      "accuracy_exact_match_token_f1_no_regression_beyond_tolerance": true,
+      "calibration_no_degradation_beyond_tolerance": true,
+      "gradient_norms_finite_and_within_configured_band": true,
+      "overfit_gap_below_threshold": true,
+      "throughput_no_collapse_without_blocker": true
+    }
+  },
+  "throughput_metrics": {
+    "required": [
+      "throughput/e2e_tokens_per_sec",
+      "throughput/e2e_records_per_sec",
+      "throughput/phase1_tokens_per_sec",
+      "throughput/phase2_real_tokens_per_sec",
+      "throughput/phase3_htp_tokens_per_sec",
+      "throughput/phase4_opencl_tokens_per_sec",
+      "latency/phase1_ms",
+      "latency/phase2_ms",
+      "latency/phase3_htp_ms",
+      "latency/phase4_opencl_ms",
+      "latency/host_to_phone_transfer_ms",
+      "latency/phone_to_host_transfer_ms",
+      "latency/termux_bridge_ms",
+      "latency/reporting_ms"
+    ],
+    "pass_gate": {
+      "slowest_stage_exposed": true,
+      "data_movement_overhead_logged": true,
+      "correctness_hashes_preserved": true,
+      "authority_metrics_preserved": true
+    }
+  },
+  "raw_payload_boundaries": {
+    "allowed_in_repo_reports": [
+      "JSON metadata",
+      "Markdown summaries",
+      "text command manifests",
+      "hashes",
+      "counts",
+      "sanitized compact telemetry"
+    ],
+    "forbidden_in_repo_reports": [
+      ".qai1",
+      ".pqa1",
+      ".pjp1",
+      ".bin",
+      ".raw",
+      ".f16",
+      "model weights",
+      "checkpoint payloads",
+      "adapter payloads",
+      "env files",
+      "tokens",
+      "secrets"
+    ]
+  }
+}

@@ -10,6 +10,7 @@
 #include <array>
 #include <atomic>
 #include <chrono>
+#include <cmath>
 #include <cstdint>
 #include <cstdio>
 #include <cstdlib>
@@ -19,6 +20,7 @@
 #include <iomanip>
 #include <iostream>
 #include <mutex>
+#include <numeric>
 #include <sstream>
 #include <stdexcept>
 #include <string>
@@ -42,6 +44,8 @@ constexpr uint32_t kPooledBytes = kJlDim / 8;
 constexpr uint32_t kMaxRecordTokens = 8192;
 constexpr uint32_t kMaxSegments = 16;
 constexpr uint32_t kTokenProjectionTile = 16;
+constexpr uint64_t kDefaultGeometrySamplePairs = 4096;
+constexpr double kPi = 3.14159265358979323846;
 
 using Clock = std::chrono::steady_clock;
 
@@ -176,6 +180,7 @@ struct Options {
   std::string jl_sha;
   int64_t max_records = -1;
   int threads = 1;
+  uint64_t geometry_sample_pairs = kDefaultGeometrySamplePairs;
   std::vector<std::string> pqa1_paths;
 };
 
@@ -224,6 +229,12 @@ Options parse_args(int argc, char** argv) {
       opt.max_records = std::stoll(take("--max-records"));
     } else if (arg == "--threads") {
       opt.threads = std::stoi(take("--threads"));
+    } else if (arg == "--geometry-sample-pairs") {
+      const int64_t value = std::stoll(take("--geometry-sample-pairs"));
+      if (value < 0) {
+        fail("--geometry-sample-pairs must be >= 0");
+      }
+      opt.geometry_sample_pairs = static_cast<uint64_t>(value);
     } else if (arg == "--pqa1-list") {
       opt.pqa1_paths = read_list_file(take("--pqa1-list"));
     } else if (arg == "--pqa1") {
@@ -972,6 +983,14 @@ struct Sample {
   uint32_t crc32_value = 0;
 };
 
+struct GeometryQuality {
+  uint64_t sample_pair_count = 0;
+  double original_angular_distance_mean = 0.0;
+  double projected_hamming_distance_mean = 0.0;
+  double jl_distance_distortion_mean = 0.0;
+  double jl_distance_distortion_p95 = 0.0;
+};
+
 uint16_t popcount128(unsigned __int128 value) {
   const uint64_t low = static_cast<uint64_t>(value);
   const uint64_t high = static_cast<uint64_t>(value >> 64);
@@ -1015,9 +1034,106 @@ std::string read_status_value(const char* key) {
   return "";
 }
 
+double percentile_f64(std::vector<double> values, double fraction) {
+  if (values.empty()) {
+    return 0.0;
+  }
+  std::sort(values.begin(), values.end());
+  const double scaled = static_cast<double>(values.size() - 1U) * fraction;
+  const size_t index = static_cast<size_t>(std::max(0.0, std::min(static_cast<double>(values.size() - 1U), scaled + 0.5)));
+  return values[index];
+}
+
+uint32_t token_id_at(const MappedFile& file, const RecordRef& rec, uint32_t source_index) {
+  const uint8_t* tokens = file.data + rec.offset + 15;
+  return load_u32(tokens + static_cast<uint64_t>(source_index) * 4u);
+}
+
+double embedding_angular_distance(const __fp16* rows, uint32_t left_token, uint32_t right_token) {
+  const __fp16* left = rows + static_cast<uint64_t>(left_token) * kEmbedDim;
+  const __fp16* right = rows + static_cast<uint64_t>(right_token) * kEmbedDim;
+  double dot = 0.0;
+  double left_norm = 0.0;
+  double right_norm = 0.0;
+  for (uint32_t d = 0; d < kEmbedDim; ++d) {
+    const double a = static_cast<double>(left[d]);
+    const double b = static_cast<double>(right[d]);
+    dot += a * b;
+    left_norm += a * a;
+    right_norm += b * b;
+  }
+  if (left_norm <= 0.0 || right_norm <= 0.0) {
+    return 0.0;
+  }
+  const double cosine = std::max(-1.0, std::min(1.0, dot / std::sqrt(left_norm * right_norm)));
+  return std::acos(cosine) / kPi;
+}
+
+const uint8_t* projected_vector_at(const uint8_t* output, const Layout& layout, const RecordRef& rec, uint32_t source_index) {
+  const uint64_t packet_id = rec.first_packet_id + static_cast<uint64_t>(source_index / kPacketLen);
+  const uint32_t slot = source_index % kPacketLen;
+  return output + layout.input_polar_offset + packet_id * kPolarBytes + static_cast<uint64_t>(slot) * (kJlDim / 8u);
+}
+
+double projected_hamming_distance(const uint8_t* left, const uint8_t* right) {
+  uint32_t hamming = 0;
+  for (uint32_t index = 0; index < (kJlDim / 8u); ++index) {
+    hamming += static_cast<uint32_t>(__builtin_popcount(static_cast<unsigned>(left[index] ^ right[index])));
+  }
+  return static_cast<double>(hamming) / static_cast<double>(kJlDim);
+}
+
+GeometryQuality collect_geometry_quality(const ScanResult& scan, const EmbeddingMap& embedding, const Layout& layout,
+                                         const uint8_t* output, uint64_t max_pairs) {
+  GeometryQuality quality;
+  if (max_pairs == 0) {
+    return quality;
+  }
+  std::vector<double> distortions;
+  distortions.reserve(static_cast<size_t>(std::min<uint64_t>(max_pairs, 65536U)));
+  double original_sum = 0.0;
+  double projected_sum = 0.0;
+  for (const RecordRef& rec : scan.records) {
+    if (rec.token_count < 2) {
+      continue;
+    }
+    const MappedFile& file = scan.files[rec.file_index];
+    for (uint32_t source_index = 1; source_index < rec.token_count; ++source_index) {
+      if (quality.sample_pair_count >= max_pairs) {
+        break;
+      }
+      const uint32_t left_token = token_id_at(file, rec, source_index - 1U);
+      const uint32_t right_token = token_id_at(file, rec, source_index);
+      if (left_token >= kVocabSize || right_token >= kVocabSize) {
+        continue;
+      }
+      const double original = embedding_angular_distance(embedding.rows, left_token, right_token);
+      const uint8_t* left_projection = projected_vector_at(output, layout, rec, source_index - 1U);
+      const uint8_t* right_projection = projected_vector_at(output, layout, rec, source_index);
+      const double projected = projected_hamming_distance(left_projection, right_projection);
+      const double distortion = std::fabs(projected - original);
+      original_sum += original;
+      projected_sum += projected;
+      distortions.push_back(distortion);
+      ++quality.sample_pair_count;
+    }
+    if (quality.sample_pair_count >= max_pairs) {
+      break;
+    }
+  }
+  if (quality.sample_pair_count == 0) {
+    return quality;
+  }
+  quality.original_angular_distance_mean = original_sum / static_cast<double>(quality.sample_pair_count);
+  quality.projected_hamming_distance_mean = projected_sum / static_cast<double>(quality.sample_pair_count);
+  quality.jl_distance_distortion_mean = std::accumulate(distortions.begin(), distortions.end(), 0.0) / static_cast<double>(distortions.size());
+  quality.jl_distance_distortion_p95 = percentile_f64(distortions, 0.95);
+  return quality;
+}
+
 void write_result_json(const Options& opt, const ScanResult& scan, const Layout& layout, const std::vector<Sample>& samples,
-                       const std::vector<WorkerStats>& worker_stats, double scan_sec, double output_prepare_sec,
-                       double process_sec, double total_sec) {
+                       const std::vector<WorkerStats>& worker_stats, const GeometryQuality& geometry_quality,
+                       double scan_sec, double output_prepare_sec, double process_sec, double total_sec) {
   std::ofstream out(opt.result_json);
   if (!out) {
     fail("unable to write result json: " + opt.result_json);
@@ -1067,6 +1183,27 @@ void write_result_json(const Options& opt, const ScanResult& scan, const Layout&
   out << "    \"records\": " << worker_records << ",\n";
   out << "    \"packets\": " << worker_packets << ",\n";
   out << "    \"real_tokens\": " << worker_tokens << "\n";
+  out << "  },\n";
+  out << "  \"geometry_quality\": {\n";
+  out << "    \"schema_version\": \"phase2_geometry_quality_v1\",\n";
+  out << "    \"status\": \"" << (geometry_quality.sample_pair_count > 0 ? "pass" : "partial") << "\",\n";
+  out << "    \"sample_pair_count\": " << geometry_quality.sample_pair_count << ",\n";
+  out << "    \"sample_pair_policy\": \"first_adjacent_real_token_pairs_in_source_order\",\n";
+  out << "    \"original_distance_kind\": \"embedding_cosine_angular_distance_div_pi\",\n";
+  out << "    \"projected_distance_kind\": \"input_polar_hamming_fraction\",\n";
+  if (geometry_quality.sample_pair_count > 0) {
+    out << "    \"original_angular_distance_mean\": " << geometry_quality.original_angular_distance_mean << ",\n";
+    out << "    \"projected_hamming_distance_mean\": " << geometry_quality.projected_hamming_distance_mean << ",\n";
+    out << "    \"jl_distance_distortion_mean\": " << geometry_quality.jl_distance_distortion_mean << ",\n";
+    out << "    \"jl_distance_distortion_p95\": " << geometry_quality.jl_distance_distortion_p95 << ",\n";
+    out << "    \"measurement_status\": \"measured_from_original_embedding_rows_and_projected_polar_vectors\"\n";
+  } else {
+    out << "    \"original_angular_distance_mean\": null,\n";
+    out << "    \"projected_hamming_distance_mean\": null,\n";
+    out << "    \"jl_distance_distortion_mean\": null,\n";
+    out << "    \"jl_distance_distortion_p95\": null,\n";
+    out << "    \"measurement_status\": \"not_measured_no_sample_pairs\"\n";
+  }
   out << "  },\n";
   out << "  \"memory_after\": {\n";
   out << "    \"VmRSS\": \"" << json_escape(read_status_value("VmRSS")) << "\",\n";
@@ -1128,9 +1265,10 @@ int run(int argc, char** argv) {
   if (msync(output.data, static_cast<size_t>(layout.file_len), MS_SYNC) != 0) {
     fail("msync output failed");
   }
+  const GeometryQuality geometry_quality = collect_geometry_quality(scan, embedding, layout, output.data, opt.geometry_sample_pairs);
   const std::vector<Sample> samples = collect_samples(output.data, layout, scan.packet_count);
   const double total_sec = total_timer.elapsed();
-  write_result_json(opt, scan, layout, samples, ctx.worker_stats, scan_sec, prepare_sec, process_sec, total_sec);
+  write_result_json(opt, scan, layout, samples, ctx.worker_stats, geometry_quality, scan_sec, prepare_sec, process_sec, total_sec);
 
   std::cout << "{\"status\":\"pass\",\"result_json\":\"" << json_escape(opt.result_json) << "\",\"real_tokens_per_sec\":"
             << (static_cast<double>(scan.source_token_count) / total_sec) << "}" << std::endl;

@@ -1,0 +1,313 @@
+{
+  "c4_expansion_gates": {
+    "accepted_domains": [
+      "physics",
+      "chemistry",
+      "computational science",
+      "numerical methods",
+      "materials science",
+      "engineering science with explicit source, provenance, and license"
+    ],
+    "fail_conditions": [
+      "missing immutable HF revision",
+      "source license is NC, missing, or not commercial-safe",
+      "answer leakage, unit mismatch, impossible constraint, or duplicate laundering exceeds threshold",
+      "C5 after C4 regresses beyond accepted tolerance"
+    ],
+    "forbidden_substitutions": [
+      "math-only material promoted as science authority",
+      "OpenMath substitute as C4 authority",
+      "unlicensed or unverifiable material",
+      "rows without verifier/evidence/unit/provenance where required",
+      "deleting bad rows while preserving an invalid package identity"
+    ],
+    "required_reports": [
+      "manifest",
+      "QA bridge",
+      "row and split counts",
+      "SHA streams",
+      "license/provenance pass",
+      "unit/evidence/answer-leak pass",
+      "verifier recomputation or explicit structural-verification scope",
+      "C5 comparison against prior stable C4"
+    ]
+  },
+  "c5_eval_material_slices": {
+    "eval_points": {
+      "C5_after_C1": [
+        "packages/C1/qa_bridge/phase_C1_test.qa.jsonl"
+      ],
+      "C5_after_C2": [
+        "packages/C1/qa_bridge/phase_C1_test.qa.jsonl",
+        "packages/C2/qa_bridge/phase_C2_test.qa.jsonl"
+      ],
+      "C5_after_C2_5": [
+        "packages/C1/qa_bridge/phase_C1_test.qa.jsonl",
+        "packages/C2/qa_bridge/phase_C2_test.qa.jsonl",
+        "packages/C2_5/qa_bridge/phase_C2.5_val.qa.jsonl"
+      ],
+      "C5_after_C3": [
+        "packages/C1/qa_bridge/phase_C1_test.qa.jsonl",
+        "packages/C2/qa_bridge/phase_C2_test.qa.jsonl",
+        "packages/C2_5/qa_bridge/phase_C2.5_val.qa.jsonl",
+        "packages/C3/qa_bridge/phase_C3_test.qa.jsonl"
+      ],
+      "C5_after_C4": [
+        "packages/C1/qa_bridge/phase_C1_test.qa.jsonl",
+        "packages/C2/qa_bridge/phase_C2_test.qa.jsonl",
+        "packages/C2_5/qa_bridge/phase_C2.5_val.qa.jsonl",
+        "packages/C3/qa_bridge/phase_C3_test.qa.jsonl",
+        "packages/C4/qa_bridge/phase_C4_test.qa.jsonl"
+      ],
+      "C5_full_curriculum_postrun": [
+        "packages/C1/qa_bridge/phase_C1_test.qa.jsonl",
+        "packages/C2/qa_bridge/phase_C2_test.qa.jsonl",
+        "packages/C2_5/qa_bridge/phase_C2.5_val.qa.jsonl",
+        "packages/C3/qa_bridge/phase_C3_test.qa.jsonl",
+        "packages/C4/qa_bridge/phase_C4_test.qa.jsonl"
+      ]
+    },
+    "policy": "Use immutable HF paths only; prefer held-out test QA bridge files, add C2.5 validation sentinel because C2.5 test is empty, and keep C5 as evaluation rather than a new training corpus phase.",
+    "revision": "504dd91c5a7c8365882d690d52f3de20697c4f7b",
+    "slice_seed": "polymath-c1-c5-eval-slices-v1"
+  },
+  "created_at_utc": "2026-06-30T20:07:51Z",
+  "current_blocker": {
+    "material_verification_path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_integrated_20260630T164809Z/material_verification.json",
+    "material_verification_sha256": "6ef8f699c0040bdc776e8d3306f34ccd0c7b7a829b615da5589d9195e04c1779",
+    "reason": "The integrated material verification artifact records hf_revision=main, which is a moving branch and is a PRD Stage 0 falsifier.",
+    "recorded_hf_revision": "main",
+    "required_hf_revision": "504dd91c5a7c8365882d690d52f3de20697c4f7b"
+  },
+  "drift_status": "green",
+  "hf_repo_id": "Zer0pa/polymat-gemmalit-c1-c4-commercial-corpus",
+  "hf_repo_url": "https://huggingface.co/datasets/Zer0pa/polymat-gemmalit-c1-c4-commercial-corpus",
+  "immutable_revision": "504dd91c5a7c8365882d690d52f3de20697c4f7b",
+  "immutable_revision_candidate": "504dd91c5a7c8365882d690d52f3de20697c4f7b",
+  "immutable_revision_candidate_source": {
+    "artifact": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json",
+    "artifact_sha256": "2f0af5133de4fbf28006a62f468bf98e584527efe0b22faf39e027046f6038de",
+    "json_pointer": "/keys/material_key/c25_authority/hf_head_checked",
+    "scope_observed": "C2.5 authority remote exact-match pass at packages/C2_5; 123 SHA checks, 0 missing files, 0 SHA failures"
+  },
+  "material_verification_patch_recommendation": {
+    "minimum_changes": [
+      {
+        "from": "main",
+        "op": "replace",
+        "path": "/hf_revision",
+        "to": "504dd91c5a7c8365882d690d52f3de20697c4f7b"
+      },
+      {
+        "op": "add",
+        "path": "/hf_revision_type",
+        "value": "immutable_commit_sha"
+      },
+      {
+        "op": "add",
+        "path": "/material_revision_lock_path",
+        "value": "/Users/Zer0pa/Polymat AI/runtime/reports/corpus_pipeline/stage0_material_freeze_20260630T_steward/material_revision_lock.json"
+      },
+      {
+        "op": "add",
+        "path": "/material_revision_lock_sha256",
+        "value": "to_be_filled_after_lock_file_finalized"
+      }
+    ],
+    "target_path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_integrated_20260630T164809Z/material_verification.json",
+    "verification_requirement": "Do not mark Stage 0 dataset freeze green until every C1-C4 manifest and QA bridge SHA resolves at the immutable revision candidate."
+  },
+  "nonclaims": [
+    "not_100k_or_1m_phase2_authority",
+    "no_learning_claim",
+    "no_model_quality_claim",
+    "no_phase3_or_phase4_readiness_claim_from_material_lock",
+    "C5 is evaluation, not an added training corpus phase"
+  ],
+  "owner_lane": "training_material_steward",
+  "phase_material_locks": {
+    "C1": {
+      "hf_root": "hf://datasets/Zer0pa/polymat-gemmalit-c1-c4-commercial-corpus/packages/C1/",
+      "manifest_remote_path": "packages/C1/phase_C1_build_manifest.json",
+      "manifest_sha256": "7349512beadd2da2f678c3229425fc291576912f274450f3186f8c695fe8e305",
+      "qa_bridge_full_remote_path": "packages/C1/qa_bridge/phase_C1_full.qa.jsonl",
+      "qa_bridge_full_sha256": "a752cafde223b0203be9478c3f28cf672d2ba0962394377f61a926da771c8088",
+      "remote_root": "packages/C1",
+      "rows": 5180,
+      "source_kind_values": [
+        "openrouter_frontier_scale_c1"
+      ],
+      "splits": {
+        "test": 53,
+        "train": 4931,
+        "val": 196
+      }
+    },
+    "C2": {
+      "hf_root": "hf://datasets/Zer0pa/polymat-gemmalit-c1-c4-commercial-corpus/packages/C2/",
+      "manifest_remote_path": "packages/C2/phase_C2_build_manifest.json",
+      "manifest_sha256": "3ed5a4d0190911744716f7e294a59271b54b319c0d80bab67f9cca3a1dbdeaee",
+      "qa_bridge_full_remote_path": "packages/C2/qa_bridge/phase_C2_full.qa.jsonl",
+      "qa_bridge_full_sha256": "676d985fff59d4a60c36d3e5142ac679a45db6082003fe98fa440b8cdbc517a3",
+      "remote_root": "packages/C2",
+      "rows": 3198,
+      "source_kind_values": [
+        "openrouter_frontier_scale_c2"
+      ],
+      "splits": {
+        "test": 27,
+        "train": 3042,
+        "val": 129
+      }
+    },
+    "C2.5": {
+      "c5_eval_caveat": "C2.5 has no test split; use its single validation row as held-out bridge sentinel and do not make standalone C2.5 generalization claims.",
+      "hf_root": "hf://datasets/Zer0pa/polymat-gemmalit-c1-c4-commercial-corpus/packages/C2_5/",
+      "manifest_remote_path": "packages/C2_5/phase_C2.5_build_manifest.json",
+      "manifest_sha256": "b1b7ed6f03cc2da281959c87dfa6ffb84cddfb23805e76c3682fc916a6284316",
+      "qa_bridge_full_remote_path": "packages/C2_5/qa_bridge/phase_C2.5_full.qa.jsonl",
+      "qa_bridge_full_sha256": "ec5a85f111ba42bf778fffd98212f3f92ec871e9eb0a757196393cef99d2ba83",
+      "remote_root": "packages/C2_5",
+      "rows": 20,
+      "source_kind_values": [
+        "openrouter/frontier_scivocab_bridge_c25"
+      ],
+      "splits": {
+        "test": 0,
+        "train": 19,
+        "val": 1
+      }
+    },
+    "C3": {
+      "hf_root": "hf://datasets/Zer0pa/polymat-gemmalit-c1-c4-commercial-corpus/packages/C3/",
+      "manifest_remote_path": "packages/C3/phase_C3_build_manifest.json",
+      "manifest_sha256": "f95b1569f01b8c541d0cbe1c359d81dcbe8d1b036d9ddc6838780cdf1ae215be",
+      "qa_bridge_full_remote_path": "packages/C3/qa_bridge/phase_C3_full.qa.jsonl",
+      "qa_bridge_full_sha256": "c6c3e98ebd1c583fc92588160922aad758af6a0d56c75ca7fb6cd8c7d0d1a87a",
+      "remote_root": "packages/C3",
+      "rows": 56138,
+      "source_kind_values": [
+        "zd21/SciInstruct"
+      ],
+      "splits": {
+        "test": 548,
+        "train": 53379,
+        "val": 2211
+      }
+    },
+    "C4": {
+      "commercial_allowed": true,
+      "hf_root": "hf://datasets/Zer0pa/polymat-gemmalit-c1-c4-commercial-corpus/packages/C4/",
+      "license": "cc-by-4.0",
+      "manifest_remote_path": "packages/C4/phase_C4_build_manifest.json",
+      "manifest_sha256": "451b879c2ab4df71db2b11da7868fb0a71664a09b35b8f7d73aec56dea5bf490",
+      "numeric_recomputation_scope": "not_claimed_for_hf_source_rows",
+      "qa_bridge_full_remote_path": "packages/C4/qa_bridge/phase_C4_full.qa.jsonl",
+      "qa_bridge_full_sha256": "0bfe358075383a74dbd0b6cf763e2ea5d5407ce3e3a894cccea4b67f41dcdcc6",
+      "remote_root": "packages/C4",
+      "rows": 12487,
+      "source_kind_values": [
+        "allenai/qasc",
+        "pranav-gupta/openstax-qa"
+      ],
+      "splits": {
+        "test": 112,
+        "train": 11883,
+        "val": 492
+      }
+    }
+  },
+  "schema_version": "polymath_material_revision_lock_proposal_v1",
+  "status": "locked_verified",
+  "supporting_hf_publication_evidence": [
+    {
+      "artifact": "/Users/Zer0pa/Polymat AI/runtime/reports/corpus_pipeline/hf_publish_c1_c4_20260630T_hf_c4_v2/hf_upload_verification_report.json",
+      "artifact_sha256": "0e8289f170e3d21c8adf872bb06e6a36690df150145a82e5ab1dcf0a82d79701",
+      "recorded_revision": "main",
+      "sha_checked": 124,
+      "sha_failures": 0,
+      "status": "pass"
+    },
+    {
+      "artifact": "/Users/Zer0pa/Polymat AI/runtime/reports/corpus_pipeline/hf_publish_c25_repair5_20260630T_resolve_authority/hf_upload_verification_report.json",
+      "artifact_sha256": "0c1fd25b9b219bc1d0146b6760db4e94d1d8a855e6f1e1be13b089e92500bf0b",
+      "recorded_revision": "main",
+      "sha_checked": 123,
+      "sha_failures": 0,
+      "status": "pass"
+    },
+    {
+      "artifact": "/Users/Zer0pa/Polymat AI/runtime/reports/corpus_pipeline/hf_publish_c25_repair5_20260630T_resolve_authority/hf_c25_repair5_publish_summary.json",
+      "artifact_sha256": "489998f07a9003896978cd5f12fce662a9c3e7e20c08245ee385a6a3d7c5bc3b",
+      "final_revision": "6f5c25fa3d610c092ceab00cbf78ac11e1962306",
+      "final_revision_after_curriculum_upload": "718c6ac3c988d902d9b01274027772501141f1a6",
+      "status": "pass"
+    }
+  ],
+  "verification_completed_at_utc": "2026-06-30T21:09:12Z",
+  "verification_report_path": "/Users/Zer0pa/Polymat AI/runtime/reports/corpus_pipeline/stage0_material_freeze_20260630T_steward/hf_revision_504dd91_c1_c4_sha_verification.json",
+  "verification_report_sha256": "0cb70fc473b3abab52f82a2a6a9c505d73e1c8877ac0ed0a2623b715ad6fc4ac",
+  "verification_root_removed_after_hashing": true,
+  "verified_sha_streams": [
+    {
+      "actual_sha256": "7349512beadd2da2f678c3229425fc291576912f274450f3186f8c695fe8e305",
+      "expected_sha256": "7349512beadd2da2f678c3229425fc291576912f274450f3186f8c695fe8e305",
+      "remote_path": "packages/C1/phase_C1_build_manifest.json",
+      "status": "pass"
+    },
+    {
+      "actual_sha256": "a752cafde223b0203be9478c3f28cf672d2ba0962394377f61a926da771c8088",
+      "expected_sha256": "a752cafde223b0203be9478c3f28cf672d2ba0962394377f61a926da771c8088",
+      "remote_path": "packages/C1/qa_bridge/phase_C1_full.qa.jsonl",
+      "status": "pass"
+    },
+    {
+      "actual_sha256": "3ed5a4d0190911744716f7e294a59271b54b319c0d80bab67f9cca3a1dbdeaee",
+      "expected_sha256": "3ed5a4d0190911744716f7e294a59271b54b319c0d80bab67f9cca3a1dbdeaee",
+      "remote_path": "packages/C2/phase_C2_build_manifest.json",
+      "status": "pass"
+    },
+    {
+      "actual_sha256": "676d985fff59d4a60c36d3e5142ac679a45db6082003fe98fa440b8cdbc517a3",
+      "expected_sha256": "676d985fff59d4a60c36d3e5142ac679a45db6082003fe98fa440b8cdbc517a3",
+      "remote_path": "packages/C2/qa_bridge/phase_C2_full.qa.jsonl",
+      "status": "pass"
+    },
+    {
+      "actual_sha256": "b1b7ed6f03cc2da281959c87dfa6ffb84cddfb23805e76c3682fc916a6284316",
+      "expected_sha256": "b1b7ed6f03cc2da281959c87dfa6ffb84cddfb23805e76c3682fc916a6284316",
+      "remote_path": "packages/C2_5/phase_C2.5_build_manifest.json",
+      "status": "pass"
+    },
+    {
+      "actual_sha256": "ec5a85f111ba42bf778fffd98212f3f92ec871e9eb0a757196393cef99d2ba83",
+      "expected_sha256": "ec5a85f111ba42bf778fffd98212f3f92ec871e9eb0a757196393cef99d2ba83",
+      "remote_path": "packages/C2_5/qa_bridge/phase_C2.5_full.qa.jsonl",
+      "status": "pass"
+    },
+    {
+      "actual_sha256": "f95b1569f01b8c541d0cbe1c359d81dcbe8d1b036d9ddc6838780cdf1ae215be",
+      "expected_sha256": "f95b1569f01b8c541d0cbe1c359d81dcbe8d1b036d9ddc6838780cdf1ae215be",
+      "remote_path": "packages/C3/phase_C3_build_manifest.json",
+      "status": "pass"
+    },
+    {
+      "actual_sha256": "c6c3e98ebd1c583fc92588160922aad758af6a0d56c75ca7fb6cd8c7d0d1a87a",
+      "expected_sha256": "c6c3e98ebd1c583fc92588160922aad758af6a0d56c75ca7fb6cd8c7d0d1a87a",
+      "remote_path": "packages/C3/qa_bridge/phase_C3_full.qa.jsonl",
+      "status": "pass"
+    },
+    {
+      "actual_sha256": "451b879c2ab4df71db2b11da7868fb0a71664a09b35b8f7d73aec56dea5bf490",
+      "expected_sha256": "451b879c2ab4df71db2b11da7868fb0a71664a09b35b8f7d73aec56dea5bf490",
+      "remote_path": "packages/C4/phase_C4_build_manifest.json",
+      "status": "pass"
+    },
+    {
+      "actual_sha256": "0bfe358075383a74dbd0b6cf763e2ea5d5407ce3e3a894cccea4b67f41dcdcc6",
+      "expected_sha256": "0bfe358075383a74dbd0b6cf763e2ea5d5407ce3e3a894cccea4b67f41dcdcc6",
+      "remote_path": "packages/C4/qa_bridge/phase_C4_full.qa.jsonl",
+      "status": "pass"
+    }
+  ]
+}

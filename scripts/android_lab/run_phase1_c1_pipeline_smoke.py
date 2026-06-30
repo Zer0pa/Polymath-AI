@@ -20,8 +20,10 @@ from typing import Any
 SCRIPT_DIR = Path(__file__).resolve().parent
 REPO_ROOT = SCRIPT_DIR.parents[1]
 WORKSPACE_ROOT = REPO_ROOT.parent
+sys.path.insert(0, str(REPO_ROOT))
 sys.path.insert(0, str(SCRIPT_DIR))
 
+from polymath_ai.polar.metrics_contract import metric_report  # noqa: E402
 from run_phase1_apk_benchmark import (  # noqa: E402
     ADB_REPORT_ROOT,
     INTERNAL_FILES_ROOT,
@@ -164,6 +166,224 @@ def normalize_source_kind(record_id: str, raw_kind: Any, kind_map: dict[str, str
     if raw_kind in kind_map:
         return kind_map[raw_kind], raw_kind
     raise ValueError(f"{record_id}: unsupported source_kind {raw_kind!r}")
+
+
+def percentile(values: list[int | float], fraction: float) -> float | None:
+    if not values:
+        return None
+    ordered = sorted(values)
+    index = min(len(ordered) - 1, max(0, round((len(ordered) - 1) * fraction)))
+    return float(ordered[index])
+
+
+def summarize_text_distribution(records: list[dict[str, str]]) -> dict[str, Any]:
+    question_bytes = [len(record["question"].encode("utf-8")) for record in records]
+    answer_bytes = [len(record["answer"].encode("utf-8")) for record in records]
+    combined_bytes = [question + answer for question, answer in zip(question_bytes, answer_bytes)]
+    whitespace_token_estimates = [
+        len((record["question"] + " " + record["answer"]).split()) for record in records
+    ]
+    return {
+        "question_bytes_total": sum(question_bytes),
+        "answer_bytes_total": sum(answer_bytes),
+        "combined_bytes_total": sum(combined_bytes),
+        "combined_bytes_mean": (sum(combined_bytes) / len(combined_bytes)) if combined_bytes else None,
+        "combined_bytes_p50": percentile(combined_bytes, 0.50),
+        "combined_bytes_p95": percentile(combined_bytes, 0.95),
+        "combined_bytes_p99": percentile(combined_bytes, 0.99),
+        "source_text_whitespace_tokens_mean": (
+            sum(whitespace_token_estimates) / len(whitespace_token_estimates)
+        )
+        if whitespace_token_estimates
+        else None,
+        "source_text_whitespace_tokens_p95": percentile(whitespace_token_estimates, 0.95),
+    }
+
+
+def load_json_file_if_present(path: Path) -> dict[str, Any]:
+    if not path.is_file():
+        return {}
+    with path.open("r", encoding="utf-8") as handle:
+        payload = json.load(handle)
+    return payload if isinstance(payload, dict) else {}
+
+
+def numeric_token_sequence(payload: dict[str, Any]) -> list[float]:
+    for key in ("token_ids_per_record", "tokens_per_record", "record_token_counts"):
+        values = payload.get(key)
+        if not isinstance(values, list):
+            continue
+        out: list[float] = []
+        for value in values:
+            if isinstance(value, (int, float)) and not isinstance(value, bool) and value >= 0:
+                out.append(float(value))
+            else:
+                return []
+        return out
+    return []
+
+
+def first_numeric(*values: Any) -> float | int | None:
+    for value in values:
+        if isinstance(value, (int, float)) and not isinstance(value, bool):
+            return value
+    return None
+
+
+def summarize_native_batch_token_distribution(native_batch_metrics: dict[str, Any] | None) -> dict[str, Any]:
+    if not native_batch_metrics:
+        return {
+            "job_count": None,
+            "tokens_per_record_job_mean": None,
+            "tokens_per_record_job_p50": None,
+            "tokens_per_record_job_p95": None,
+            "tokens_per_record_job_p99": None,
+            "native_batch_elapsed_ms": None,
+            "native_batch_token_ids_per_sec": None,
+        }
+
+    job_ratios: list[float] = []
+    for job in native_batch_metrics.get("job_results", []):
+        if not isinstance(job, dict):
+            continue
+        records = job.get("records")
+        token_ids = job.get("token_ids")
+        if (
+            isinstance(records, (int, float))
+            and isinstance(token_ids, (int, float))
+            and not isinstance(records, bool)
+            and not isinstance(token_ids, bool)
+            and records > 0
+        ):
+            job_ratios.append(float(token_ids) / float(records))
+
+    elapsed_ns = native_batch_metrics.get("elapsed_ns")
+    token_ids_total = native_batch_metrics.get("token_ids")
+    elapsed_ms = float(elapsed_ns) / 1_000_000.0 if isinstance(elapsed_ns, (int, float)) else None
+    token_rate = None
+    if elapsed_ms and isinstance(token_ids_total, (int, float)):
+        token_rate = float(token_ids_total) / (elapsed_ms / 1000.0)
+
+    return {
+        "job_count": native_batch_metrics.get("job_count"),
+        "tokens_per_record_job_mean": (sum(job_ratios) / len(job_ratios)) if job_ratios else None,
+        "tokens_per_record_job_p50": percentile(job_ratios, 0.50),
+        "tokens_per_record_job_p95": percentile(job_ratios, 0.95),
+        "tokens_per_record_job_p99": percentile(job_ratios, 0.99),
+        "native_batch_elapsed_ms": elapsed_ms,
+        "native_batch_token_ids_per_sec": token_rate,
+    }
+
+
+def build_phase1_metrics(
+    args: argparse.Namespace,
+    records: list[dict[str, str]],
+    source_identity: dict[str, Any],
+    *,
+    app_result: dict[str, Any] | None = None,
+    native_phase1_metrics: dict[str, Any] | None = None,
+    native_batch_metrics: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    app_result = app_result or {}
+    native_phase1_metrics = native_phase1_metrics or {}
+    native_batch_metrics = native_batch_metrics or {}
+    token_counts = numeric_token_sequence(app_result)
+    if not token_counts:
+        token_counts = numeric_token_sequence(native_phase1_metrics)
+    token_ids = app_result.get("token_ids")
+    if token_ids is None:
+        token_ids = native_phase1_metrics.get("token_ids")
+    if token_ids is None and token_counts:
+        token_ids = sum(token_counts)
+    wall_sec = first_numeric(app_result.get("wall_sec"), native_phase1_metrics.get("wall_sec"))
+    text_distribution = summarize_text_distribution(records)
+    batch_distribution = summarize_native_batch_token_distribution(native_batch_metrics)
+    token_mean = (float(token_ids) / float(len(records))) if isinstance(token_ids, (int, float)) and records else None
+    if token_counts:
+        token_mean = sum(token_counts) / len(token_counts)
+    token_mean = first_numeric(app_result.get("tokens_per_record_mean"), native_phase1_metrics.get("tokens_per_record_mean"), token_mean)
+
+    distinct_token_ids = app_result.get("distinct_token_ids")
+    if distinct_token_ids is None:
+        distinct_token_ids = native_phase1_metrics.get("distinct_token_ids")
+    if distinct_token_ids is None:
+        distinct_token_ids = native_batch_metrics.get("distinct_token_ids")
+    vocab_size = app_result.get("vocab_size") or native_phase1_metrics.get("vocab_size") or native_batch_metrics.get("vocab_size")
+    vocab_coverage_ratio = None
+    if isinstance(app_result.get("vocab_coverage_ratio"), (int, float)):
+        vocab_coverage_ratio = float(app_result["vocab_coverage_ratio"])
+    elif isinstance(native_phase1_metrics.get("vocab_coverage_ratio"), (int, float)):
+        vocab_coverage_ratio = float(native_phase1_metrics["vocab_coverage_ratio"])
+    if isinstance(distinct_token_ids, (int, float)) and isinstance(vocab_size, (int, float)) and vocab_size > 0:
+        vocab_coverage_ratio = float(distinct_token_ids) / float(vocab_size)
+
+    per_record_p50 = first_numeric(app_result.get("tokens_per_record_p50"), native_phase1_metrics.get("tokens_per_record_p50"), percentile(token_counts, 0.50))
+    per_record_p95 = first_numeric(app_result.get("tokens_per_record_p95"), native_phase1_metrics.get("tokens_per_record_p95"), percentile(token_counts, 0.95))
+    per_record_p99 = first_numeric(app_result.get("tokens_per_record_p99"), native_phase1_metrics.get("tokens_per_record_p99"), percentile(token_counts, 0.99))
+    per_record_distribution_measured = per_record_p50 is not None and per_record_p95 is not None and per_record_p99 is not None
+
+    metrics = {
+        "record_count": len(records),
+        "question_bytes_total": text_distribution["question_bytes_total"],
+        "answer_bytes_total": text_distribution["answer_bytes_total"],
+        "token_ids_total": token_ids,
+        "distinct_token_ids": distinct_token_ids,
+        "vocab_size": vocab_size,
+        "vocab_coverage_ratio": vocab_coverage_ratio,
+        "tokens_per_record_mean": token_mean,
+        "tokens_per_record_p50": per_record_p50,
+        "tokens_per_record_p95": per_record_p95,
+        "tokens_per_record_p99": per_record_p99,
+        "tokens_per_record_distribution_source": app_result.get(
+            "tokens_per_record_distribution_source",
+            native_phase1_metrics.get("tokens_per_record_distribution_source"),
+        ),
+        "tokens_per_record_job_mean": batch_distribution["tokens_per_record_job_mean"],
+        "tokens_per_record_job_p50": batch_distribution["tokens_per_record_job_p50"],
+        "tokens_per_record_job_p95": batch_distribution["tokens_per_record_job_p95"],
+        "tokens_per_record_job_p99": batch_distribution["tokens_per_record_job_p99"],
+        "source_kind_counts": source_identity.get("normalized_source_kind_counts", {}),
+        "source_kind_mapping": source_identity.get("source_kind_mapping_applied", {}),
+        "invalid_record_count": 0,
+        "duplicate_record_id_count": 0,
+        "token_ids_per_sec": app_result.get("token_ids_per_sec"),
+        "records_per_sec": app_result.get("records_per_sec"),
+        "latency_ms": (float(wall_sec) * 1000.0) if isinstance(wall_sec, (int, float)) else None,
+        "native_batch_job_count": batch_distribution["job_count"],
+        "native_batch_elapsed_ms": batch_distribution["native_batch_elapsed_ms"],
+        "native_batch_token_ids_per_sec": batch_distribution["native_batch_token_ids_per_sec"],
+        "source_text_distribution": text_distribution,
+        "metric_measurement_status": {
+            "token_ids_total": "measured_by_phase1_app" if token_ids is not None else "missing",
+            "distinct_token_ids": "measured" if distinct_token_ids is not None else "requires_phase1_app_or_native_distinct_counter",
+            "vocab_coverage_ratio": "measured" if vocab_coverage_ratio is not None else "requires_distinct_token_ids_and_vocab_size",
+            "tokens_per_record_quantiles": "measured_true_per_record" if per_record_distribution_measured else "requires_phase1_app_per_record_token_counts",
+            "tokens_per_record_job_quantiles": "measured_from_native_batch_jobs_not_per_record" if batch_distribution["tokens_per_record_job_p50"] is not None else "unavailable",
+        },
+    }
+    blockers: list[str] = []
+    if token_ids is None:
+        blockers.append("app_tokenizer_token_ids_total_missing")
+    if distinct_token_ids is None:
+        blockers.append("distinct_token_ids_not_reported_by_phase1_app_or_native")
+    if not per_record_distribution_measured:
+        blockers.append("per_record_token_distribution_not_reported_by_phase1_app")
+    if vocab_coverage_ratio is None:
+        blockers.append("vocab_coverage_unavailable_without_distinct_token_ids_and_vocab_size")
+    if metrics["latency_ms"] is None:
+        blockers.append("phase1_wall_latency_missing")
+
+    return metric_report(
+        schema_version="phase1_c1_metric_contract_v1",
+        phase_family="phase1",
+        corpus_phase=args.corpus_phase,
+        metrics=metrics,
+        blockers=sorted(set(blockers)),
+        nonclaims=[
+            "phase1_metrics_do_not_claim_learning",
+            "phase1_metrics_do_not_claim_phase2_or_phase3_readiness",
+        ],
+    )
 
 
 def load_c1_records(input_path: Path, *, limit: int | None, kind_map: dict[str, str]) -> tuple[list[dict[str, str]], dict[str, Any]]:
@@ -333,6 +553,7 @@ def build_source_manifest(
         "raw_payload_policy": "C1 JSONL remains outside the repository; QAI1/PQA1 never enter repo reports",
         "report_root": str(report_root),
         "records_selected": len(records),
+        "source_text_distribution": summarize_text_distribution(records),
         "nonclaims": [
             "c1_is_source_material_not_pqa1",
             "c1_smoke_is_not_100k_or_1m_authority_gate",
@@ -414,6 +635,8 @@ def run_flags_for(args: argparse.Namespace) -> int:
 def dry_run(args: argparse.Namespace, records: list[dict[str, str]], source_manifest: dict[str, Any], outputs: list[dict[str, Any]], report_root: Path) -> dict[str, Any]:
     report_root.mkdir(parents=True, exist_ok=True)
     write_json(report_root / "phase1_c1_source_manifest.json", source_manifest)
+    phase1_metrics = build_phase1_metrics(args, records, source_manifest["input_identity"])
+    write_json(report_root / "phase1_c1_metrics_contract.json", phase1_metrics)
     contract = phase2_staging_contract(str(source_manifest["run_label"]), outputs)
     write_json(report_root / "phase1_c1_to_phase2_staging_contract.json", contract)
     findings = report_suffix_findings(report_root)
@@ -427,6 +650,9 @@ def dry_run(args: argparse.Namespace, records: list[dict[str, str]], source_mani
         "records_selected": len(records),
         "report_root": str(report_root),
         "source_manifest_sha256": source_manifest["source_manifest_sha256"],
+        "phase1_metrics_file": str(report_root / "phase1_c1_metrics_contract.json"),
+        "phase1_metrics_status": phase1_metrics["status"],
+        "phase1_metric_blockers": phase1_metrics["blockers"],
         "phase2_staging_contract": contract,
         "nonclaims": [
             "no_adb_execution",
@@ -554,6 +780,17 @@ def run_phase1(args: argparse.Namespace, records: list[dict[str, str]], source_m
 
     app_result_path = pulled / "phase1_app_run_result.json"
     app_result = json.loads(app_result_path.read_text(encoding="utf-8")) if app_result_path.is_file() else {}
+    native_phase1_metrics = load_json_file_if_present(pulled / "native_phase1_metrics.json")
+    native_batch_metrics = load_json_file_if_present(pulled / "native_batch_metrics.json")
+    phase1_metrics = build_phase1_metrics(
+        args,
+        records,
+        source_manifest["input_identity"],
+        app_result=app_result,
+        native_phase1_metrics=native_phase1_metrics,
+        native_batch_metrics=native_batch_metrics,
+    )
+    write_json(report_root / "phase1_c1_metrics_contract.json", phase1_metrics)
     summary = {
         "schema_version": "phase1_c1_pipeline_smoke_summary_v1",
         "status": "phase1_c1_smoke_complete",
@@ -569,6 +806,9 @@ def run_phase1(args: argparse.Namespace, records: list[dict[str, str]], source_m
         "token_ids": app_result.get("token_ids"),
         "token_ids_per_sec": app_result.get("token_ids_per_sec"),
         "records_per_sec": app_result.get("records_per_sec"),
+        "phase1_metrics_file": str(report_root / "phase1_c1_metrics_contract.json"),
+        "phase1_metrics_status": phase1_metrics["status"],
+        "phase1_metric_blockers": phase1_metrics["blockers"],
         "material_hash_hex": app_result.get("material_hash_hex"),
         "parity_state": app_result.get("parity_state"),
         "settings_final_match_target": settings_final == settings_target,
@@ -594,6 +834,7 @@ def main() -> int:
     parser.add_argument("--package-root", type=Path, default=None, help="C1 package root. Defaults to the parent of qa_bridge for --input-path.")
     parser.add_argument("--package-manifest", type=Path, default=None, help="C1 package manifest. Defaults to <package-root>/phase_C1_build_manifest.json.")
     parser.add_argument("--corpus-id", default=None, help="Report corpus identity. Defaults to the package root directory name.")
+    parser.add_argument("--corpus-phase", default="C1", help="Metric namespace corpus phase, e.g. C1, C2, C2.5, C3, C4.")
     parser.add_argument("--source-kind-map", action="append", default=[], help="Map raw source_kind to Phase 1 enum, e.g. lexis=dictionary.")
     parser.add_argument("--scheduler", choices=["byte_greedy", "dynamic"], default="byte_greedy")
     parser.add_argument("--chunk-size", type=int, default=8192)

@@ -1,0 +1,12 @@
+2026-06-30T22:07:50Z exec_preflight started under Executive GO.
+pwd: /Users/Zer0pa/Polymat AI/Polymath-AI
+git branch --show-current
+git rev-parse HEAD
+git log --oneline -8
+git status --short --branch
+rg --files runtime/reports/orchestration | rg 'freeze|manifest|material|lock|metric|EXECUTIVE|source_state|identity|C1_C5|c1_c5'
+sha256sum runtime/reports/orchestration/accepted_full_code_hash_manifest_20260630T2118Z.json runtime/reports/orchestration/material_revision_lock.json runtime/reports/orchestration/phase2_binary_identity_reconciliation.stage0_rebuild_20260630T212205Z.json runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json
+sha256sum scripts/android_lab/run_phase1_c1_pipeline_smoke.py scripts/termux/run_phase2_c1_smoke.py polymath_ai/polar/pjp1.py native/polar_phase2_packetizer/phase2b_native_packetizer.cpp
+python3.11 inline manifest verifier: compared accepted_full_code_hash_manifest_20260630T2118Z.json accepted_source_paths against current file SHA-256 values.
+sha256sum runtime/reports/polar_phase34_consumer_preflight/active_wave/PHASE34_EXECUTION_HANDOFF_AFTER_STAGE0_GREEN.md runtime/reports/polar_phase34_consumer_preflight/active_wave/PHASE34_WAVEB_METRIC_SURFACES.md scripts/termux/run_phase34_pjp1_htp_relu_input_stage.py scripts/host/run_phase34_adb_pjp1_derived_htp_relu.py scripts/host/run_phase34_metric_readiness_report.py native/polar_phase34_consumer_preflight/phase4_bridge_cell_runner.cpp polymath_ai/polar/phase4_bridge_cell.py
+Result: stopped before phone/ADB/Termux execution because current source hashes mismatch accepted custody manifest.

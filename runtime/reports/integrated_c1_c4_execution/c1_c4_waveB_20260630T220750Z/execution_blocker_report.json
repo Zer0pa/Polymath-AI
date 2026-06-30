@@ -1,0 +1,219 @@
+{
+  "schema_version": "integrated_c1_c4_waveB_execution_blocker_v1",
+  "lane": "execution_orchestrator",
+  "status": "awaiting_custody_freeze_precise_blocker",
+  "run_label": "c1_c4_waveB_20260630T220750Z",
+  "created_utc": "2026-06-30T22:07:50Z",
+  "authority_context": {
+    "executive_go_received": true,
+    "phone_adb_termux_authorized": true,
+    "pipeline_executed": false,
+    "phase1_executed": false,
+    "phase2_executed": false,
+    "phase3_executed": false,
+    "phase4_executed": false,
+    "secrets_sourced": false,
+    "hf_or_comet_mutation": false,
+    "raw_payloads_moved_into_git": false,
+    "staged_committed_or_pushed": false
+  },
+  "custody_gate": {
+    "required_gate": "Clean freeze commit or accepted full code-hash manifest matching the execution files currently on disk.",
+    "accepted_manifest_path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/orchestration/accepted_full_code_hash_manifest_20260630T2118Z.json",
+    "accepted_manifest_sha256": "6d556b700d78002b0e6f6a531d8a9dbd2a2aad3425d9ca4245fdd125760321e5",
+    "manifest_status": "accepted_hash_manifest_ready_for_authorized_commit",
+    "current_git_head": "a9db7c3a3d7a8ebf58d1eca6d4c83108ef627b17",
+    "branch": "gemma4-megakernel-native-training",
+    "blocker": "Current execution-source file hashes do not match the accepted full code-hash manifest. Running now would drift from the sovereign freeze boundary.",
+    "first_missing_green_field": "accepted_full_code_hash_manifest must match current execution source hashes, or Repo Custodian must provide a clean freeze commit/updated accepted manifest for the current metric-instrumented tree."
+  },
+  "source_hash_mismatches": [
+    {
+      "role": "canonical_phase1_c1_c5_runner",
+      "path": "scripts/android_lab/run_phase1_c1_pipeline_smoke.py",
+      "expected_manifest_sha256": "13f84a0ed750e34a4b49977e087c0528d0a2a34d5fa28e9c5d2079efd3092f6e",
+      "current_sha256": "d54a9627d7599574a7797cea1527470e25f9c2cf51ca863ce4852ac6e0aa41bd"
+    },
+    {
+      "role": "canonical_phase2_termux_helper",
+      "path": "scripts/termux/run_phase2_c1_smoke.py",
+      "expected_manifest_sha256": "abcffdf96cda0ba8988e84544576eb33cf61beebc33afce77a7dfba9df5bd189",
+      "current_sha256": "a8ab233b72970e151278f2a0b27d54e3c93f46d160d4161c14a70c1117bd5d6d"
+    },
+    {
+      "role": "canonical_packetizer_source",
+      "path": "native/polar_phase2_packetizer/phase2b_native_packetizer.cpp",
+      "expected_manifest_sha256": "deb7a8439d9a8233e8d700a746bd3d9dfa6cef108a7802386ebef9b22c3d17d9",
+      "current_sha256": "1c668e0392f76a1c5eef2677172419bdc0d265f7861fb3a651c3eb7a0fc291e6"
+    },
+    {
+      "role": "pjp1_parser_and_geometry_sampler",
+      "path": "polymath_ai/polar/pjp1.py",
+      "expected_manifest_sha256": "e06748fac289a9e379ac3f53f9b1406af102499b801c67567ddc117c33fce5ee",
+      "current_sha256": "dfc1a4c565c461adfc512747c17512be0120c1312d16f0ed64d0c8b73f49e950"
+    },
+    {
+      "role": "phase4_bridge_validator_and_metric_validator",
+      "path": "polymath_ai/polar/phase4_bridge_cell.py",
+      "expected_manifest_sha256": "5f024e445d8d9c602a1e5e6d9f664b34b83f7c0e6945b618833dfb20015dacdc",
+      "current_sha256": "66a8fe2f0b0869fd64b94e04b845ea43c947fd5c3cbbf886b919bfb1ec270b79"
+    },
+    {
+      "role": "metric_contract_tests",
+      "path": "tests/test_metrics_contract.py",
+      "expected_manifest_sha256": "0e0667e5394047204154aaec43bce6eceb094a7ef029852a0bdfcf3e45c9e526",
+      "current_sha256": "4185d3b04e2e7cb2ba1a1e322c81351274907a142ac9871a2d8298b067b02d53"
+    },
+    {
+      "role": "pjp1_contract_and_geometry_tests",
+      "path": "tests/test_pjp1_contract.py",
+      "expected_manifest_sha256": "ba4ad905d9875505f90be63c535fb3149f30706f0edfa7c1f53624c8eab5afb7",
+      "current_sha256": "18df6cf21e036a46c7b750b5c4fdcc7aca25d4692dbdd1c6f200d29a1cf7daf1"
+    },
+    {
+      "role": "phase4_bridge_metric_tests",
+      "path": "tests/test_phase4_bridge_cell.py",
+      "expected_manifest_sha256": "17afd5989c20241a6efda858312197cce260b371267140fc480f5f936a2b898a",
+      "current_sha256": "8f4148d8997b67b65ed8ad151fd2e167074ac9aba5a5358149e45b5824418841"
+    }
+  ],
+  "green_prerequisites_verified": {
+    "material_lock": {
+      "path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/orchestration/material_revision_lock.json",
+      "sha256": "078a9a208fb6fae06db64b5306cd4069912af867062a6689ecc0340de2be2edc",
+      "status": "locked_verified",
+      "immutable_revision": "504dd91c5a7c8365882d690d52f3de20697c4f7b",
+      "verification_report_path": "/Users/Zer0pa/Polymat AI/runtime/reports/corpus_pipeline/stage0_material_freeze_20260630T_steward/hf_revision_504dd91_c1_c4_sha_verification.json"
+    },
+    "phase2_identity_repair": {
+      "path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/orchestration/phase2_binary_identity_reconciliation.stage0_rebuild_20260630T212205Z.json",
+      "sha256": "41d2cde3b72b1b050527558fccba14c0837f55c264528d17dadeef930bbc0bb6",
+      "status": "stage0_phase2_identity_green",
+      "rebuilt_termux_binary_sha256": "045f9318aecb08c4f7f2c4737354ff4766b11cd2edc1b69ba5e745e6458ce8f0"
+    }
+  },
+  "phase34_support_surfaces_verified": {
+    "handoff": {
+      "path": "runtime/reports/polar_phase34_consumer_preflight/active_wave/PHASE34_EXECUTION_HANDOFF_AFTER_STAGE0_GREEN.md",
+      "sha256": "2b1215d1b13b167c88437aced30b48913254d3508ca18bd9d31a5e86dd15cd48"
+    },
+    "waveB_metric_surfaces": {
+      "path": "runtime/reports/polar_phase34_consumer_preflight/active_wave/PHASE34_WAVEB_METRIC_SURFACES.md",
+      "sha256": "6ac39c68f5ade6206863969444f03aefb3894c6b01513a31ecdc481babd3c67e"
+    },
+    "termux_htp_input_stager_sha256": "df666f957ee26fd42c8d86a7a4fda448e58138f8296074b8e11576a2b75927ff",
+    "host_htp_runner_sha256": "8e00a731ca0b13c75e0832a144d303261f6f60ef24d61a75879cd6931be73db1",
+    "phase4_bridge_runner_sha256": "b7583e0f39272cab74c22bb8311fd875226f965bd2e9170d430191b393307ab7",
+    "phase34_metric_readiness_runner_sha256": "3d319732c3b87c914848974d530bb9f6cf500fb72fc79556d7d62a924c7745d6",
+    "phase4_validator_current_sha256": "66a8fe2f0b0869fd64b94e04b845ea43c947fd5c3cbbf886b919bfb1ec270b79",
+    "known_phase34_source_blocker": null
+  },
+  "metrics_green_missing_table": {
+    "phase1": {
+      "status": "not_run_due_to_custody_freeze_blocker",
+      "required_fields": [
+        "record_count",
+        "token_ids_total",
+        "distinct_token_ids",
+        "vocab_size",
+        "vocab_coverage_ratio",
+        "tokens_per_record_mean",
+        "tokens_per_record_p50",
+        "tokens_per_record_p95",
+        "tokens_per_record_p99",
+        "source_kind_counts",
+        "source_kind_mapping",
+        "invalid_count",
+        "duplicate_count",
+        "token_ids_per_sec",
+        "latency_ms"
+      ],
+      "missing_runtime_fields": "all_runtime_fields_pending"
+    },
+    "phase2": {
+      "status": "not_run_due_to_custody_freeze_blocker",
+      "required_fields": [
+        "source_counts",
+        "packet_count",
+        "slot_count",
+        "pjp1_hash",
+        "pjp1_bytes",
+        "packetizer_source_sha256",
+        "packetizer_build_script_sha256",
+        "packetizer_binary_sha256",
+        "collision_count",
+        "collision_rate",
+        "projected_norm",
+        "hamming_stats",
+        "geometry_quality.jl_distance_distortion_mean",
+        "geometry_quality.jl_distance_distortion_p95",
+        "throughput",
+        "latency"
+      ],
+      "missing_runtime_fields": "all_runtime_fields_pending"
+    },
+    "phase3": {
+      "status": "not_run_due_to_custody_freeze_blocker",
+      "required_fields": [
+        "backend",
+        "output_sha256",
+        "forward_loss_or_mse",
+        "throughput",
+        "latency",
+        "nonclaims"
+      ],
+      "missing_runtime_fields": "all_runtime_fields_pending"
+    },
+    "phase4": {
+      "status": "not_run_due_to_custody_freeze_blocker",
+      "required_fields": [
+        "opencl_device",
+        "phase3_output_hash",
+        "target_hash",
+        "adapter_pre_hash",
+        "adapter_post_hash",
+        "consumed_output_causes_update",
+        "adapter_changed",
+        "loss_pre",
+        "loss_post",
+        "loss_delta",
+        "grad_norm",
+        "update_norm",
+        "adapter_delta_norm",
+        "nan_count",
+        "inf_count",
+        "opencl_kernel_ms",
+        "tokens_per_sec",
+        "latency"
+      ],
+      "missing_runtime_fields": "all_runtime_fields_pending"
+    },
+    "c5": {
+      "status": "pending_surface_after_phase1_4_unblocked",
+      "expected_compatibility_object": "metric_names_aligned_no_c5_authority"
+    }
+  },
+  "prepared_command_surfaces": {
+    "phase1": "Build/install Android app from the custody-frozen source, then run scripts/android_lab/run_phase1_c1_pipeline_smoke.py for each locked C1/C2/C2_5/C3/C4 QA bridge with explicit input-path/package-root/package-manifest and run label c1_c4_waveB_20260630T220750Z_<phase>.",
+    "phase2": "Rebuild Termux packetizer from the custody-frozen source, then run scripts/termux/run_phase2_c1_smoke.py for each verified PQA1 list with --jl-sample-pairs 4096 and raw PJP1 output outside git.",
+    "phase3": "For each phase, stage PJP1-derived HTP input with scripts/termux/run_phase34_pjp1_htp_relu_input_stage.py and run scripts/host/run_phase34_adb_pjp1_derived_htp_relu.py against the resulting stage report.",
+    "phase4": "Build/push native/polar_phase34_consumer_preflight/phase4_bridge_cell_runner.cpp, run bridge cell on the Phase3 output and PJP1-derived target, then build scripts/host/run_phase34_metric_readiness_report.py output."
+  },
+  "next_action": {
+    "owner": "Repo Custodian",
+    "required": "Provide clean freeze commit or refreshed accepted full code-hash manifest for the current execution files. At minimum it must cover the mismatched Phase1 runner, Phase2 helper, packetizer source, PJP1 parser, Phase4 validator, and related tests.",
+    "execution_resume_condition": "All accepted_source_paths in the freeze manifest match current hashes, or git HEAD is a clean custody freeze commit containing the intended Wave B source."
+  },
+  "nonclaims": [
+    "no_phone_gate_run",
+    "no_integrated_pipeline_rerun",
+    "no_metric_complete_runtime_evidence",
+    "no_comet_logging",
+    "no_c5_eval",
+    "no_100k_or_1m_phase2_authority",
+    "no_phase3_readiness_claim",
+    "no_phase4_readiness_claim",
+    "no_learning_claim",
+    "no_model_quality_claim"
+  ]
+}

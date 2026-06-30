@@ -15,6 +15,11 @@ from typing import Any
 
 
 ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT))
+
+from polymath_ai.polar.metrics_contract import metric_report  # noqa: E402
+from polymath_ai.polar.pjp1 import sample_pjp1_geometry  # noqa: E402
+
 DEFAULT_PACKETIZER_BIN = ROOT / "native/polar_phase2_packetizer/bin/phase2b_native_packetizer"
 PACKETIZER_SOURCE = ROOT / "native/polar_phase2_packetizer/phase2b_native_packetizer.cpp"
 PACKETIZER_BUILD_SCRIPT = ROOT / "native/polar_phase2_packetizer/build_phase2b_native_packetizer.sh"
@@ -150,8 +155,121 @@ def summarize_native_report(path: Path) -> dict[str, Any]:
         "timing_sec",
         "throughput",
         "worker_rollup",
+        "geometry_quality",
     ]
     return {key: report[key] for key in keys if key in report}
+
+
+def build_phase2_metrics(
+    args: argparse.Namespace,
+    *,
+    native_summary: dict[str, Any] | None = None,
+    pjp1_output: dict[str, Any] | None = None,
+    geometry: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    summary = native_summary or {}
+    throughput = summary.get("throughput") if isinstance(summary.get("throughput"), dict) else {}
+    timing = summary.get("timing_sec") if isinstance(summary.get("timing_sec"), dict) else {}
+    geometry = geometry or {
+        "status": "pending",
+        "blockers": ["geometry_not_measured_in_dry_run" if args.dry_run else "geometry_not_measured"],
+        "metric_measurement_status": {
+            "collision_rate": "not_measured_in_dry_run" if args.dry_run else "not_measured",
+            "projected_vector_norm": "not_measured_in_dry_run" if args.dry_run else "not_measured",
+            "hamming_distance": "not_measured_in_dry_run" if args.dry_run else "not_measured",
+            "jl_distance_distortion": "not_measured_in_dry_run" if args.dry_run else "not_measured",
+        },
+    }
+    pjp1_output = pjp1_output or {}
+    native_geometry = summary.get("geometry_quality") if isinstance(summary.get("geometry_quality"), dict) else {}
+    geometry_status = geometry.get("metric_measurement_status")
+    if not isinstance(geometry_status, dict):
+        geometry_status = {}
+    jl_distortion_mean = geometry.get("jl_distance_distortion_mean")
+    if jl_distortion_mean is None:
+        jl_distortion_mean = native_geometry.get("jl_distance_distortion_mean")
+    jl_distortion_p95 = geometry.get("jl_distance_distortion_p95")
+    if jl_distortion_p95 is None:
+        jl_distortion_p95 = native_geometry.get("jl_distance_distortion_p95")
+    jl_distortion_status = geometry.get("jl_distance_distortion_status")
+    if jl_distortion_status is None and native_geometry.get("measurement_status"):
+        jl_distortion_status = native_geometry.get("measurement_status")
+    source_identity = file_identity(PACKETIZER_SOURCE, hash_if_exists=PACKETIZER_SOURCE.exists())
+    build_identity = file_identity(PACKETIZER_BUILD_SCRIPT, hash_if_exists=PACKETIZER_BUILD_SCRIPT.exists())
+    binary_identity = file_identity(args.packetizer_bin, hash_if_exists=args.packetizer_bin.exists())
+
+    metrics = {
+        "pqa1_files_consumed": summary.get("pqa1_files_consumed"),
+        "source_record_count": summary.get("source_record_count"),
+        "source_real_token_count": summary.get("source_real_token_count"),
+        "packet_count": summary.get("packet_count"),
+        "slot_count": summary.get("slot_count"),
+        "pjp1_bytes": pjp1_output.get("bytes") or summary.get("pjp1_bytes"),
+        "pjp1_sha256": pjp1_output.get("sha256"),
+        "packetizer_binary_sha256": binary_identity.get("sha256"),
+        "packetizer_source_sha256": source_identity.get("sha256"),
+        "packetizer_build_script_sha256": build_identity.get("sha256"),
+        "collision_rate": geometry.get("collision_rate"),
+        "collision_count": geometry.get("collision_count"),
+        "projected_vector_norm_mean": geometry.get("projected_vector_norm_mean"),
+        "projected_vector_norm_p95": geometry.get("projected_vector_norm_p95"),
+        "hamming_distance_mean": geometry.get("hamming_distance_mean"),
+        "hamming_distance_p05": geometry.get("hamming_distance_p05"),
+        "hamming_distance_p50": geometry.get("hamming_distance_p50"),
+        "hamming_distance_p95": geometry.get("hamming_distance_p95"),
+        "jl_distance_distortion_mean": jl_distortion_mean,
+        "jl_distance_distortion_p95": jl_distortion_p95,
+        "jl_distance_distortion_status": jl_distortion_status,
+        "jl_distance_distortion_sample_pairs": native_geometry.get("sample_pair_count"),
+        "jl_distance_distortion_metric": (
+            "abs(input_polar_hamming_fraction - embedding_cosine_angular_distance_div_pi)"
+            if native_geometry
+            else None
+        ),
+        "records_per_sec": throughput.get("records_per_sec"),
+        "real_tokens_per_sec": throughput.get("real_tokens_per_sec"),
+        "output_MB_per_sec": throughput.get("output_MB_per_sec"),
+        "latency_ms": (float(timing["total"]) * 1000.0) if timing.get("total") is not None else None,
+        "metric_measurement_status": {
+            "structural_counts": "measured_from_native_packetizer_report" if summary else "pending_native_packetizer_report",
+            "pjp1_sha256": "measured_from_output_payload_metadata" if pjp1_output.get("sha256") else "pending_pjp1_output",
+            "packetizer_identity": "measured_from_repo_paths",
+            **geometry_status,
+            "jl_distance_distortion": (
+                "measured_from_native_packetizer_original_embedding_and_projected_distances"
+                if jl_distortion_mean is not None
+                else geometry_status.get("jl_distance_distortion", "requires_native_packetizer_geometry_quality")
+            ),
+        },
+    }
+    blockers: list[str] = list(geometry.get("blockers") or [])
+    if metrics["packetizer_source_sha256"] is None:
+        blockers.append("packetizer_source_sha256_missing")
+    if metrics["packetizer_build_script_sha256"] is None:
+        blockers.append("packetizer_build_script_sha256_missing")
+    if metrics["collision_rate"] is None:
+        blockers.append("collision_rate_missing")
+    if metrics["jl_distance_distortion_mean"] is None:
+        blockers.append("jl_distance_distortion_requires_original_embedding_distance_support")
+
+    payload = metric_report(
+        schema_version="phase2_c1_metric_contract_v1",
+        phase_family="phase2",
+        corpus_phase=args.corpus_phase,
+        metrics=metrics,
+        blockers=sorted(set(blockers)),
+        nonclaims=NONCLAIMS,
+    )
+    payload["geometry_sample"] = geometry
+    payload["identity_reconciliation"] = {
+        "binary": binary_identity,
+        "source": source_identity,
+        "build_script": build_identity,
+        "termux_source_build_identity_captured": (
+            source_identity.get("sha256") is not None and build_identity.get("sha256") is not None
+        ),
+    }
+    return payload
 
 
 def run_cmd(cmd: list[str], *, cwd: Path, timeout: int | None) -> dict[str, Any]:
@@ -212,6 +330,8 @@ def make_command(args: argparse.Namespace, pjp1_path: Path, native_result_json: 
         args.jl_sha.lower(),
         "--threads",
         str(args.threads),
+        "--geometry-sample-pairs",
+        str(args.jl_sample_pairs),
         "--result-json",
         path_for_report(native_result_json),
     ]
@@ -262,7 +382,11 @@ def initial_report(args: argparse.Namespace, output_dir: Path, pjp1_path: Path, 
             "threads": args.threads,
             "max_records": args.max_records,
             "c1_smoke_only": True,
+            "corpus_phase": args.corpus_phase,
+            "geometry_sample_packets": args.geometry_sample_packets,
+            "jl_sample_pairs": args.jl_sample_pairs,
         },
+        "phase2_metrics": build_phase2_metrics(args),
     }
 
 
@@ -281,6 +405,9 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     parser.add_argument("--jl-sha", required=True)
     parser.add_argument("--threads", type=int, default=8)
     parser.add_argument("--max-records", type=int)
+    parser.add_argument("--corpus-phase", default="C1", help="Metric namespace corpus phase, e.g. C1, C2, C2.5, C3, C4.")
+    parser.add_argument("--geometry-sample-packets", type=int, default=1024, help="Number of PJP1 packets to sample for compact geometry metrics; 0 means all packets.")
+    parser.add_argument("--jl-sample-pairs", type=int, default=4096, help="Adjacent token pairs sampled by the native packetizer for original-vs-projected JL distortion metrics; 0 disables native distortion sampling.")
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--timeout-sec", type=int, default=0, help="0 means no timeout in real mode.")
     parser.add_argument(
@@ -294,6 +421,10 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
         parser.error("--threads must be >= 1")
     if args.max_records is not None and args.max_records < 1:
         parser.error("--max-records must be >= 1 when supplied")
+    if args.geometry_sample_packets < 0:
+        parser.error("--geometry-sample-packets must be >= 0")
+    if args.jl_sample_pairs < 0:
+        parser.error("--jl-sample-pairs must be >= 0")
     if not re.fullmatch(r"[A-Za-z0-9_.=-]+", args.run_label):
         parser.error("--run-label may contain only letters, numbers, underscore, dash, dot, and equals")
 
@@ -353,17 +484,26 @@ def main(argv: list[str]) -> int:
         if not pjp1_path.exists():
             raise Phase2C1Error(f"PJP1 output missing after run: {pjp1_path}")
 
-        report["native_result_json"] = {
-            "path": path_for_report(native_result_json),
-            "sha256": sha256_file(native_result_json),
-            "summary": summarize_native_report(native_result_json),
-        }
-        report["pjp1_output"] = {
+        native_summary = summarize_native_report(native_result_json)
+        pjp1_output = {
             "path": path_for_report(pjp1_path),
             "bytes": pjp1_path.stat().st_size,
             "sha256": sha256_file(pjp1_path),
             "inside_git_worktree": is_under(pjp1_path, ROOT),
         }
+        geometry = sample_pjp1_geometry(pjp1_path, max_packets=args.geometry_sample_packets)
+        report["native_result_json"] = {
+            "path": path_for_report(native_result_json),
+            "sha256": sha256_file(native_result_json),
+            "summary": native_summary,
+        }
+        report["pjp1_output"] = pjp1_output
+        report["phase2_metrics"] = build_phase2_metrics(
+            args,
+            native_summary=native_summary,
+            pjp1_output=pjp1_output,
+            geometry=geometry,
+        )
         report["status"] = "pass"
         jwrite(args.wrapper_report, report)
         print(json.dumps({"status": "pass", "wrapper_report": path_for_report(args.wrapper_report)}))

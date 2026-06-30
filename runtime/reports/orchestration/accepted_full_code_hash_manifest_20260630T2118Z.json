@@ -1,0 +1,351 @@
+{
+  "schema_version": "polymath_accepted_full_code_hash_manifest_v2",
+  "created_utc": "2026-06-30T21:18:00Z",
+  "lane": "repo_custodian",
+  "status": "waveB_execution_source_freeze_target_current",
+  "repo": "/Users/Zer0pa/Polymat AI/Polymath-AI",
+  "branch_observed": "gemma4-megakernel-native-training",
+  "authority_basis": {
+    "latest_user_go": "User explicitly authorized execution and told Engineering Orchestrator to remove process-theatre stalls.",
+    "execution_preflight_blocker": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_20260630T220750Z/execution_blocker_report.json",
+    "decision": "Current Wave B metric-instrumented source tree supersedes the older 20260630T2118 manifest hashes for the next integrated C1-C4 run."
+  },
+  "manifest_scope": {
+    "source_state": "canonical_next_run_waveB_metric_instrumented_source",
+    "historical_integrated_run_source": "diagnostic_lineage_only",
+    "phase2_packetizer_source": "canonical_next_run_waveB_source; Termux must rebuild from this source during execution",
+    "phone_or_termux_mutation": false,
+    "staged_committed_or_pushed": false,
+    "raw_payloads_included": false
+  },
+  "accepted_source_paths": [
+    {
+      "phase": "PRD",
+      "role": "governing_prd",
+      "path": "docs/PRD-C1-C5-DRIFT-FREE-METRICS-COMET-EXECUTION-2026-06-30.md",
+      "sha256": "fd5e37ae09de9c0fbeb94282a58a8a06d4cdcfa75b1fb441725e49159b5bdc20"
+    },
+    {
+      "phase": "Phase1",
+      "role": "canonical_phase1_c1_c5_runner",
+      "path": "scripts/android_lab/run_phase1_c1_pipeline_smoke.py",
+      "sha256": "d54a9627d7599574a7797cea1527470e25f9c2cf51ca863ce4852ac6e0aa41bd"
+    },
+    {
+      "phase": "Phase1",
+      "role": "android_native_phase1_engine",
+      "path": "apps/android-redmagic-lab/app/src/main/cpp/phase1_lab_engine.cpp",
+      "sha256": "7677989a2d2c4af676d0825deebc88b19d855ae04eb928e0a5eac824d16372a4"
+    },
+    {
+      "phase": "Phase1",
+      "role": "android_native_phase1_engine_abi",
+      "path": "apps/android-redmagic-lab/app/src/main/cpp/phase1_lab_engine.h",
+      "sha256": "4b4701ac05dd82bffdbc366723b021e02277a24bba145989e208f6c11c8164c8"
+    },
+    {
+      "phase": "Phase1",
+      "role": "android_native_phase1_jni_bridge",
+      "path": "apps/android-redmagic-lab/app/src/main/cpp/polymath_lab_jni.cpp",
+      "sha256": "ca21fb48b8ef62ddb4934ead1fd93ca0508a3c168c910075dcc4d3bc2ad3f59a"
+    },
+    {
+      "phase": "Phase1",
+      "role": "android_phase1_native_engine_kotlin_surface",
+      "path": "apps/android-redmagic-lab/app/src/main/java/ai/zer0pa/polymath/lab/data/Phase1NativeTokenizerEngine.kt",
+      "sha256": "c423c4480900676b989e9ada03e611b6e879f7fcbd4e24007db25ddbb158b422"
+    },
+    {
+      "phase": "Phase2",
+      "role": "canonical_phase2_termux_helper",
+      "path": "scripts/termux/run_phase2_c1_smoke.py",
+      "sha256": "a8ab233b72970e151278f2a0b27d54e3c93f46d160d4161c14a70c1117bd5d6d"
+    },
+    {
+      "phase": "Phase2",
+      "role": "canonical_packetizer_source_waveB_metrics",
+      "path": "native/polar_phase2_packetizer/phase2b_native_packetizer.cpp",
+      "sha256": "1c668e0392f76a1c5eef2677172419bdc0d265f7861fb3a651c3eb7a0fc291e6"
+    },
+    {
+      "phase": "Phase2",
+      "role": "canonical_packetizer_build_script",
+      "path": "native/polar_phase2_packetizer/build_phase2b_native_packetizer.sh",
+      "sha256": "3c284c858aaa0d1e7697c4b63a12330d2e24d62a2391f109f34133463a631716"
+    },
+    {
+      "phase": "Metrics",
+      "role": "shared_metric_contract_helper",
+      "path": "polymath_ai/polar/metrics_contract.py",
+      "sha256": "f39f2deed3ec0b9c072f3b39e08bf3a70a2b48509927289af9db5cc81c8d68c5"
+    },
+    {
+      "phase": "Package",
+      "role": "polar_package_exports",
+      "path": "polymath_ai/polar/__init__.py",
+      "sha256": "cb48bf778a8afd23f51c04099bedb7b11deb3cdab0059d5c05d71e935a430311"
+    },
+    {
+      "phase": "Phase2",
+      "role": "pjp1_parser_and_geometry_sampler",
+      "path": "polymath_ai/polar/pjp1.py",
+      "sha256": "dfc1a4c565c461adfc512747c17512be0120c1312d16f0ed64d0c8b73f49e950"
+    },
+    {
+      "phase": "Phase3",
+      "role": "termux_pjp1_to_htp_input_stager",
+      "path": "scripts/termux/run_phase34_pjp1_htp_relu_input_stage.py",
+      "sha256": "df666f957ee26fd42c8d86a7a4fda448e58138f8296074b8e11576a2b75927ff"
+    },
+    {
+      "phase": "Phase3",
+      "role": "host_adb_pjp1_derived_htp_runner",
+      "path": "scripts/host/run_phase34_adb_pjp1_derived_htp_relu.py",
+      "sha256": "8e00a731ca0b13c75e0832a144d303261f6f60ef24d61a75879cd6931be73db1"
+    },
+    {
+      "phase": "Phase3",
+      "role": "termux_phase34_phone_accel_prereq_probe",
+      "path": "scripts/termux/run_phase34_phone_accel_prereqs.py",
+      "sha256": "f53f7e09d4f4cf38574a38ade08e2d16fd33f7239282b7ced91cb7c7a3b98fbf"
+    },
+    {
+      "phase": "Phase3",
+      "role": "termux_pjp1_consumer_preflight",
+      "path": "scripts/termux/run_phase34_pjp1_consumer_preflight.py",
+      "sha256": "b19cf831fbb4909f27a1c7d4677b41424a37d1d66cc32355ad0d8a087169e8f8"
+    },
+    {
+      "phase": "Phase3",
+      "role": "host_termux_pjp1_preflight_helper",
+      "path": "scripts/host/run_phase34_termux_pjp1_preflight.py",
+      "sha256": "49e7c56ecd42c59daa0ae26a3ab7b62d5ab615d757c8232b171a56334f971e43"
+    },
+    {
+      "phase": "Phase3",
+      "role": "native_pjp1_consumer_preflight_source",
+      "path": "native/polar_phase34_consumer_preflight/phase34_native_pjp1_consumer_preflight.cpp",
+      "sha256": "ebfcc263d97059d17982c73f47c45391c909ff3e52a792ea205ffcd941fc5743"
+    },
+    {
+      "phase": "Phase3",
+      "role": "native_pjp1_consumer_preflight_build_script",
+      "path": "native/polar_phase34_consumer_preflight/build_phase34_native_pjp1_consumer_preflight.sh",
+      "sha256": "5a9c5545f0a0d05718cb197af23c59ee4bc4fec714d13dae15ac5680c4a030f3"
+    },
+    {
+      "phase": "Phase3",
+      "role": "native_pjp1_i8_staging_bench_source",
+      "path": "native/polar_phase34_consumer_preflight/phase34_pjp1_i8_staging_bench.cpp",
+      "sha256": "0395599db0d354e6304944d428447311624de84db3948d5d8e3795ed8229d6e7"
+    },
+    {
+      "phase": "Phase3",
+      "role": "native_pjp1_i8_staging_bench_build_script",
+      "path": "native/polar_phase34_consumer_preflight/build_phase34_pjp1_i8_staging_bench.sh",
+      "sha256": "6f60163789bd9ec05655c0cb2a1fe5911b45d12a81b66129b63bec1200ef1bbd"
+    },
+    {
+      "phase": "Phase3/4",
+      "role": "metric_readiness_report_builder",
+      "path": "scripts/host/run_phase34_metric_readiness_report.py",
+      "sha256": "3d319732c3b87c914848974d530bb9f6cf500fb72fc79556d7d62a924c7745d6"
+    },
+    {
+      "phase": "Phase4",
+      "role": "opencl_bridge_cell_runner",
+      "path": "native/polar_phase34_consumer_preflight/phase4_bridge_cell_runner.cpp",
+      "sha256": "b7583e0f39272cab74c22bb8311fd875226f965bd2e9170d430191b393307ab7"
+    },
+    {
+      "phase": "Phase4",
+      "role": "opencl_bridge_cell_build_script",
+      "path": "native/polar_phase34_consumer_preflight/build_phase4_bridge_cell_runner.sh",
+      "sha256": "fc75497c0a3dfdb5703138495fd3c7cf7b170628f61c1f041f58ff170d93ee95"
+    },
+    {
+      "phase": "Phase4",
+      "role": "phase4_bridge_validator_and_metric_validator",
+      "path": "polymath_ai/polar/phase4_bridge_cell.py",
+      "sha256": "66a8fe2f0b0869fd64b94e04b845ea43c947fd5c3cbbf886b919bfb1ec270b79"
+    },
+    {
+      "phase": "Tests",
+      "role": "metric_contract_tests",
+      "path": "tests/test_metrics_contract.py",
+      "sha256": "4185d3b04e2e7cb2ba1a1e322c81351274907a142ac9871a2d8298b067b02d53"
+    },
+    {
+      "phase": "Tests",
+      "role": "pjp1_contract_and_geometry_tests",
+      "path": "tests/test_pjp1_contract.py",
+      "sha256": "18df6cf21e036a46c7b750b5c4fdcc7aca25d4692dbdd1c6f200d29a1cf7daf1"
+    },
+    {
+      "phase": "Tests",
+      "role": "phase4_bridge_metric_tests",
+      "path": "tests/test_phase4_bridge_cell.py",
+      "sha256": "8f4148d8997b67b65ed8ad151fd2e167074ac9aba5a5358149e45b5824418841"
+    },
+    {
+      "phase": "Tests",
+      "role": "phone_accel_prereq_contract_tests",
+      "path": "tests/test_phase34_phone_accel_prereqs.py",
+      "sha256": "b5863f888a2ba909bbeb60904fb973c7800b72c0e01d2ce465db758517cdf50a"
+    },
+    {
+      "phase": "Tests",
+      "role": "native_pjp1_preflight_contract_tests",
+      "path": "tests/test_native_pjp1_preflight_contract.py",
+      "sha256": "cf02b9af68673211a6be520f43ef43f0789061e08ca669f0084bcced04904263"
+    },
+    {
+      "phase": "Tests",
+      "role": "pjp1_i8_staging_bench_tests",
+      "path": "tests/test_pjp1_i8_staging_bench.py",
+      "sha256": "17fcd07529578ddc9ef90075b952de224c86e01a61aeb73c04e0735584127f5a"
+    },
+    {
+      "phase": "Phase3/4",
+      "role": "native_phase34_build_artifact_gitignore",
+      "path": "native/polar_phase34_consumer_preflight/.gitignore",
+      "sha256": "aaccb1a00557171b31d00a99a6a2666856e417964732490685cdcba9f02de491"
+    }
+  ],
+  "accepted_contract_and_stage0_report_paths": [
+    {
+      "role": "cross_phase_metric_schema",
+      "path": "runtime/reports/orchestration/c1_c5_metric_schema.json",
+      "sha256": "b6f700aee3b3202fe84bdec76e4e5387e9514a4f1b72339cd40207af4753c2c8"
+    },
+    {
+      "role": "comet_logging_contract",
+      "path": "runtime/reports/orchestration/comet_logging_contract.md",
+      "sha256": "bdc7639204087dc7ad25748921f0e9f43ee132d1ef822af12f316d1f2bc1cf1d"
+    },
+    {
+      "role": "c5_eval_contract",
+      "path": "runtime/reports/orchestration/c5_eval_contract.md",
+      "sha256": "70581537438a25772c2485bac9872f1022b16d41dbf6056c0d721836df7f3d80"
+    },
+    {
+      "role": "c5_comet_execution_runbook",
+      "path": "runtime/reports/orchestration/c5_comet_execution_runbook.md",
+      "sha256": "78abb5ec7e283b20ead72468c823814774f379d241cec2759ad33c1c76bceb84"
+    },
+    {
+      "role": "hf_token_access_status",
+      "path": "runtime/reports/orchestration/hf_token_access_status_20260630.json",
+      "sha256": "4a7080a85ddd48ad2d4c87692fb443477cf1518e9ae031a54a3ebe4d344ca7d7"
+    },
+    {
+      "role": "material_revision_lock",
+      "path": "runtime/reports/orchestration/material_revision_lock.json",
+      "sha256": "078a9a208fb6fae06db64b5306cd4069912af867062a6689ecc0340de2be2edc"
+    },
+    {
+      "role": "phase34_execution_handoff",
+      "path": "runtime/reports/polar_phase34_consumer_preflight/active_wave/PHASE34_EXECUTION_HANDOFF_AFTER_STAGE0_GREEN.md",
+      "sha256": "2b1215d1b13b167c88437aced30b48913254d3508ca18bd9d31a5e86dd15cd48"
+    },
+    {
+      "role": "phase34_waveB_metric_surface_map",
+      "path": "runtime/reports/polar_phase34_consumer_preflight/active_wave/PHASE34_WAVEB_METRIC_SURFACES.md",
+      "sha256": "6ac39c68f5ade6206863969444f03aefb3894c6b01513a31ecdc481babd3c67e"
+    },
+    {
+      "role": "execution_stale_manifest_blocker_report",
+      "path": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_20260630T220750Z/execution_blocker_report.json",
+      "sha256": "ca72e92c6c9023e8617562dfb57a2be054d9581b6d5e83cf27f0fb4687ad82dc"
+    },
+    {
+      "role": "execution_stale_manifest_command_log",
+      "path": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_20260630T220750Z/command_log.txt",
+      "sha256": "b38e0186ab7252efbac8d17d32e704bf13015f7ddd784425131ecb2055f4c736"
+    }
+  ],
+  "custody_wrapper_paths_excluded_from_manifest_hash_scope": [
+    "runtime/reports/orchestration/canonical_execution_surface_map.md",
+    "runtime/reports/orchestration/c1_c5_stage0_code_freeze_commit_plan_20260630.json",
+    "runtime/reports/orchestration/drift_cleanup_plan.json",
+    "runtime/reports/orchestration/engineering_source_state_decision_20260630T2118Z.json",
+    "runtime/reports/orchestration/phase2_packetizer_source_reconciliation_decision_20260630.json"
+  ],
+  "outside_git_evidence_by_hash_only": [
+    {
+      "role": "hf_revision_504dd91_c1_c4_sha_verification",
+      "path": "/Users/Zer0pa/Polymat AI/runtime/reports/corpus_pipeline/stage0_material_freeze_20260630T_steward/hf_revision_504dd91_c1_c4_sha_verification.json",
+      "sha256": "0cb70fc473b3abab52f82a2a6a9c505d73e1c8877ac0ed0a2623b715ad6fc4ac",
+      "inside_nested_repo": false,
+      "commit_policy": "reference_by_hash_only"
+    }
+  ],
+  "excluded_or_quarantined_paths": [
+    ".gpd/**",
+    "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/opencl_layer_runner.cpp",
+    "polymath_ai/schtm/**",
+    "scripts/host/run_phase15_schtm_mac_observability.py",
+    "tests/test_schtm_observability.py",
+    "runtime/reports/gemma4_megakernel/**",
+    "runtime/reports/polar_phase1_android_game_authority/** historical bulk except exact later-authorized pathsets",
+    "runtime/reports/polar_phase2_native_review/** historical bulk except exact later-authorized pathsets",
+    "runtime/reports/polar_phase2c_review/** historical bulk except exact later-authorized pathsets",
+    "native/polar_phase34_consumer_preflight/bin/**"
+  ],
+  "forbidden_artifacts": [
+    ".qai1",
+    ".pqa1",
+    ".pjp1",
+    ".bin",
+    ".raw",
+    ".f16",
+    ".safetensors",
+    ".pt",
+    ".pth",
+    ".onnx",
+    ".tflite",
+    ".apk",
+    ".aab",
+    ".env",
+    ".env.*",
+    "token files",
+    "model weights",
+    "checkpoint payloads",
+    "adapter payloads"
+  ],
+  "proposed_commit_plan": {
+    "recommended_commit_count": 1,
+    "commit_message": "Freeze Wave B C1-C4 execution source",
+    "rationale": "Freeze current PRD metric-instrumented Phase1/2/3/4 execution surfaces, tests, metric contracts, material lock, and compact handoff/blocker metadata so Execution can run without source drift.",
+    "stage_only_exact_pathset": true,
+    "user_go_received": true,
+    "requires_explicit_authorization": false
+  },
+  "verification_commands": [
+    "python3.11 -m json.tool runtime/reports/orchestration/accepted_full_code_hash_manifest_20260630T2118Z.json >/dev/null",
+    "python3.11 -m py_compile scripts/android_lab/run_phase1_c1_pipeline_smoke.py scripts/termux/run_phase2_c1_smoke.py scripts/termux/run_phase34_pjp1_htp_relu_input_stage.py scripts/termux/run_phase34_phone_accel_prereqs.py scripts/termux/run_phase34_pjp1_consumer_preflight.py scripts/host/run_phase34_adb_pjp1_derived_htp_relu.py scripts/host/run_phase34_termux_pjp1_preflight.py scripts/host/run_phase34_metric_readiness_report.py polymath_ai/polar/metrics_contract.py polymath_ai/polar/pjp1.py polymath_ai/polar/phase4_bridge_cell.py",
+    "python3.11 -m pytest -q tests/test_metrics_contract.py tests/test_pjp1_contract.py tests/test_phase4_bridge_cell.py tests/test_phase34_phone_accel_prereqs.py tests/test_native_pjp1_preflight_contract.py tests/test_pjp1_i8_staging_bench.py",
+    "clang++ -std=c++20 -fsyntax-only native/polar_phase2_packetizer/phase2b_native_packetizer.cpp",
+    "git diff --check -- <staged_pathset>",
+    "bounded raw suffix scan over staged pathset",
+    "bounded secret/token scan over staged pathset"
+  ],
+  "first_missing_green_field": "freeze_commit_sha_until_this_manifest_is_committed_and_pushed",
+  "authorization_needed": {
+    "repo_stage_commit_push": "user_go_received_for_this_bounded_freeze",
+    "phase2_termux_rebuild_for_current_packetizer": "execution_step_after_freeze_commit",
+    "hf_or_comet_mutation": "only_if_required_later_by_execution_prd_path"
+  },
+  "nonclaims": [
+    "not_a_claim_that_historical_integrated_run_used_waveB_source",
+    "not_100k_or_1m_phase2_authority",
+    "no_phase3_readiness_claim",
+    "no_phase4_readiness_claim",
+    "no_learning_claim",
+    "no_model_quality_claim",
+    "no_C5_pass",
+    "no_phone_or_termux_execution_performed_by_this_manifest"
+  ],
+  "updated_utc": "2026-06-30T22:15:00Z",
+  "status_classification": "READY_FOR_BOUNDED_COMMIT_PUSH_UNDER_USER_GO"
+}

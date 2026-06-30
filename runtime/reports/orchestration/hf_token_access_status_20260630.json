@@ -1,0 +1,58 @@
+{
+  "schema_version": "polymath_hf_token_access_status_v1",
+  "created_utc": "2026-06-30T21:00:00Z",
+  "lane": "executive_orchestrator",
+  "status": "hf_token_access_verified",
+  "secrets_policy": {
+    "secrets_file": "/Users/prinivenpillay/.polymath-ai-corpus.env",
+    "secrets_file_exists": true,
+    "secrets_file_mode": "0600",
+    "secret_values_printed": false,
+    "secret_values_copied": false,
+    "repo_env_files_created": false
+  },
+  "available_keys_observed_without_values": [
+    "COMET_API_KEY",
+    "HF_TOKEN",
+    "OPENROUTER_API_KEY"
+  ],
+  "hf_cli": {
+    "path": "/usr/local/bin/hf",
+    "auth_whoami_status": "pass",
+    "authenticated_user": "Architect-Prime",
+    "authenticated_orgs": [
+      "Zer0pa"
+    ]
+  },
+  "dataset_access_check": {
+    "repo_id": "Zer0pa/polymat-gemmalit-c1-c4-commercial-corpus",
+    "repo_type": "dataset",
+    "revision": "504dd91c5a7c8365882d690d52f3de20697c4f7b",
+    "file_checked": "packages/C2_5/phase_C2.5_build_manifest.json",
+    "dry_run_access": "pass",
+    "download_to_hf_cache": "pass",
+    "sha256": "b1b7ed6f03cc2da281959c87dfa6ffb84cddfb23805e76c3682fc916a6284316"
+  },
+  "orchestration_decision": {
+    "credential_availability_blocker": false,
+    "remaining_dataset_freeze_work": [
+      "run full revision-pinned SHA verification for all accepted C1-C4 manifest and QA bridge files",
+      "write repo-local runtime/reports/orchestration/material_revision_lock.json",
+      "update or regenerate integrated material_verification.json so hf_revision is the immutable commit, not main"
+    ],
+    "remaining_authorization_distinction": "Token availability is verified. Future blockers must distinguish read-only revision verification from mutating HF upload/delete operations. Do not report 'no HF access' unless auth check fails."
+  },
+  "commands_run_sanitized": [
+    "source env file in a non-echoing shell, export HUGGINGFACE_HUB_TOKEN from HF_TOKEN, run hf auth whoami",
+    "hf download Zer0pa/polymat-gemmalit-c1-c4-commercial-corpus packages/C2_5/phase_C2.5_build_manifest.json --repo-type dataset --revision 504dd91c5a7c8365882d690d52f3de20697c4f7b --dry-run --format json",
+    "hf download same file to the Hugging Face cache and shasum -a 256 the cached file"
+  ],
+  "nonclaims": [
+    "full_C1_C4_material_revision_verification_not_completed_by_this_check",
+    "material_verification_json_not_patched_by_this_check",
+    "no_hf_upload_or_delete_performed",
+    "no_phone_gate_run",
+    "no_raw_payload_copied_into_git",
+    "no_secret_value_disclosed"
+  ]
+}

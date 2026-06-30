@@ -6,7 +6,7 @@
 extern "C" {
 #endif
 
-#define POLYMATH_PHASE1_ENGINE_ABI_VERSION 3u
+#define POLYMATH_PHASE1_ENGINE_ABI_VERSION 4u
 #define POLYMATH_PHASE1_RUN_FLAG_RUNTIME_SAMPLER 1u
 #define POLYMATH_PHASE1_RUN_FLAG_NATIVE_WARM_SEQUENCE 2u
 #define POLYMATH_PHASE1_RUN_FLAG_NATIVE_EXTENDED_WARM_SEQUENCE 4u
@@ -42,7 +42,14 @@ typedef struct {
 typedef struct {
     uint64_t records;
     uint64_t token_ids;
+    uint64_t distinct_token_ids;
+    uint32_t vocab_size;
     double wall_sec;
+    double vocab_coverage_ratio;
+    double tokens_per_record_mean;
+    double tokens_per_record_p50;
+    double tokens_per_record_p95;
+    double tokens_per_record_p99;
     uint64_t input_bytes;
     uint64_t output_bytes;
     double input_mb_per_sec;
