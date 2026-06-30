@@ -2,7 +2,11 @@ from __future__ import annotations
 
 import argparse
 import importlib.util
+import json
+import subprocess
 from pathlib import Path
+
+import pytest
 
 from polymath_ai.polar.metrics_contract import flatten_numeric_metrics, metric_report
 
@@ -169,6 +173,57 @@ def test_phase1_run_flags_default_to_linked_native_engine() -> None:
     assert runner.run_flags_for(args) == runner.CHILD_EXEC_FLAG
 
 
+def test_phase1_launch_timeout_writes_keyguard_process_report_evidence(monkeypatch, tmp_path) -> None:
+    launcher = _load_phase1_apk_benchmark()
+    adb_calls = []
+    report_calls = {"count": 0}
+
+    def fake_adb(serial, *args, timeout=60, check=True):
+        adb_calls.append(args)
+        command = " ".join(args)
+        stdout = ""
+        if "dumpsys window" in command:
+            stdout = "mDreamingLockscreen=true\nmCurrentFocus=NotificationShade\nmAwake=false\n"
+        elif f"pidof {launcher.PACKAGE_NAME}" in command:
+            stdout = "1234\n"
+        elif "ps -A" in command:
+            stdout = f"u0_a1 1234 1 S {launcher.PACKAGE_NAME}\n"
+        elif "find" in command and "head -80" in command:
+            stdout = f"{launcher.ADB_REPORT_ROOT}/2026-06-30T230534Z/native_phase1_metrics.json\n"
+        return subprocess.CompletedProcess(["adb", *args], 0, stdout, "")
+
+    def fake_report_run_ids(serial):
+        report_calls["count"] += 1
+        return [] if report_calls["count"] == 1 else ["2026-06-30T230534Z"]
+
+    monkeypatch.setattr(launcher, "adb", fake_adb)
+    monkeypatch.setattr(launcher, "report_run_ids", fake_report_run_ids)
+
+    evidence_path = tmp_path / "phase1_marker_timeout_evidence.json"
+    with pytest.raises(TimeoutError) as exc:
+        launcher.launch_and_wait(
+            "SERIAL",
+            "/tokenizer",
+            "/tokenizer/gemma4_bpe.gbt1",
+            "/batch.tsv",
+            8,
+            "heap",
+            0,
+            timeout_evidence_path=evidence_path,
+        )
+
+    evidence = json.loads(evidence_path.read_text(encoding="utf-8"))
+    assert evidence["status"] == "timeout"
+    assert evidence["drift_deleted_by_patch"] == "device_sleep_keyguard_report_marker_starvation_during_long_phase1_waits"
+    assert "mDreamingLockscreen=true" in evidence["window_state"]["stdout"]
+    assert evidence["app_process"]["pidof"]["stdout"] == "1234"
+    assert evidence["new_report_ids"] == ["2026-06-30T230534Z"]
+    assert any("KEYCODE_WAKEUP" in call for call in adb_calls)
+    assert any(call[:3] == ("shell", "wm", "dismiss-keyguard") for call in adb_calls)
+    assert any(call[:4] == ("shell", "svc", "power", "stayon") for call in adb_calls)
+    assert "timeout_evidence=" in str(exc.value)
+
+
 def test_phase2_metrics_accept_native_jl_distortion_quality() -> None:
     runner = _load_phase2_runner()
     args = argparse.Namespace(
@@ -223,6 +278,15 @@ def test_phase2_metrics_accept_native_jl_distortion_quality() -> None:
 def _load_phase1_runner():
     path = ROOT / "scripts/android_lab/run_phase1_c1_pipeline_smoke.py"
     spec = importlib.util.spec_from_file_location("phase1_c1_runner_for_tests", path)
+    assert spec and spec.loader
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def _load_phase1_apk_benchmark():
+    path = ROOT / "scripts/android_lab/run_phase1_apk_benchmark.py"
+    spec = importlib.util.spec_from_file_location("phase1_apk_benchmark_for_tests", path)
     assert spec and spec.loader
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)

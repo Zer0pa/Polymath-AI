@@ -752,6 +752,7 @@ def run_phase1(args: argparse.Namespace, records: list[dict[str, str]], source_m
             args.timeout_sec,
             run_flags=flags,
             phase1_exec_path=str(args.phase1_exec_path) if args.phase1_exec_path else None,
+            timeout_evidence_path=report_root / "phase1_marker_timeout_evidence.json",
         )
         settings_after_run = snapshot_settings(serial)
     finally:

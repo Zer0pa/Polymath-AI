@@ -1,0 +1,88 @@
+{
+  "blocker_artifact": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/execution_blocker_phase1_C3_timeout.json",
+  "blocker_artifact_sha256": "fae9e1d6f1cf0fa041c7139bcea3ab3d1e5dd3d0d4aa696ca692e6f663df906d",
+  "cause": "device slept/entered keyguard while app process remained present; C3 native PQA1 outputs existed, but app report marker files appeared only after ADB wake",
+  "deleted_drift": "device_sleep_keyguard_report_marker_starvation_during_long_phase1_waits",
+  "falsification": {
+    "c3_material_invalid": "not_supported_by_evidence; C3 tokenization recovered with metrics_status_pass",
+    "keyguard_sleep": "supported_by_mAwake_false_mDreamingLockscreen_true_before_wake_and_marker_files_appearing_after_wake",
+    "native_never_ran": "falsified_by_existing_remote_pqa1_outputs_and_recovered_native_return_code_0",
+    "performance_claim": "not_supported; recovered latency includes sleep interval and must not be used for throughput authority"
+  },
+  "first_missing_green_field": "Repo Custodian freeze/commit/push of shared Phase1 launcher hardening pathset before continuing long Phase1 runs",
+  "freeze_commit": "392a990b1001c7d6b013555bdcf52f971bea48dc",
+  "lane": "engineering_orchestrator",
+  "next_execution_command": "After custody freeze, rerun from C3 or resume using recovered C3 metadata per Execution policy, then run C4 with keep-awake patch active before Phase2/3/4.",
+  "nonclaims": [
+    "C1_C2_C2_5_green_not_full_pass",
+    "C3_recovery_not_throughput_authority_due_sleep_contaminated_latency",
+    "C4_not_run",
+    "Phase2_not_run_for_this_rerun",
+    "no_phase3_or_phase4_readiness_claim",
+    "no_learning_or_model_quality_claim",
+    "no_100k_or_1m_phase2_authority_claim"
+  ],
+  "recovery_evidence": {
+    "contaminated_latency_ms": 2059540.0,
+    "distinct_token_ids": 39875,
+    "metrics_blockers": [],
+    "metrics_path": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/phase1/c1_c4_waveB_rerun_20260630T230411Z_C3_phase1_phase1_c1_pipeline_smoke/phase1_c1_metrics_contract.json",
+    "metrics_sha256": "4af607b4fdcdf11116f4a76547ed2122601f8c72d3ff8b19e4e7143e4deb9509",
+    "metrics_status": "pass",
+    "native_connection_state": "CONNECTED",
+    "native_return_code": 0,
+    "pqa1_all_outputs_present": true,
+    "pqa1_count": 8,
+    "pqa1_manifest_path": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/phase1/c1_c4_waveB_rerun_20260630T230411Z_C3_phase1_phase1_c1_pipeline_smoke/phase1_c1_remote_pqa1_manifest.json",
+    "pqa1_manifest_sha256": "cd3eb01d82af4d24dfd3fb6da50d38805bebfdba1633ee5414295b91a907dde0",
+    "records": 56138,
+    "recovery_path": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/phase1/c1_c4_waveB_rerun_20260630T230411Z_C3_phase1_phase1_c1_pipeline_smoke/phase1_c3_report_marker_timeout_recovery.json",
+    "recovery_sha256": "131869fcee25cdf3446c34af86f811f5042f006c177567957f159047e95425bb",
+    "token_ids_total": 27792304
+  },
+  "run_label": "c1_c4_waveB_rerun_20260630T230411Z",
+  "schema_version": "phase1_c3_timeout_engineering_diagnosis_v1",
+  "regression_guard": {
+    "path": "tests/test_metrics_contract.py",
+    "test": "test_phase1_launch_timeout_writes_keyguard_process_report_evidence",
+    "asserts": [
+      "shared launch_and_wait timeout writes phase1_marker_timeout_evidence.json",
+      "evidence contains drift_deleted_by_patch=device_sleep_keyguard_report_marker_starvation_during_long_phase1_waits",
+      "evidence captures keyguard/window state, app process state, and report-dir state",
+      "wake and keyguard-dismiss commands are issued before/during waits"
+    ],
+    "result": "python3.11 -m pytest -q tests/test_metrics_contract.py -> 8 passed"
+  },
+  "source_patch": {
+    "description": "shared Phase1 APK launcher now sets stay-awake before launch, wakes/dismisses keyguard during wait loop every 15s, writes structured timeout evidence, and preserves linked-native run_flags=0",
+    "path": "scripts/android_lab/run_phase1_apk_benchmark.py",
+    "sha256": "cea3dea6c0499cbfbed8ef5d73ec075943a3b9383d17623250b2ce1e770f9911"
+  },
+  "freeze_pathset": [
+    {
+      "path": "scripts/android_lab/run_phase1_apk_benchmark.py",
+      "sha256": "cea3dea6c0499cbfbed8ef5d73ec075943a3b9383d17623250b2ce1e770f9911",
+      "role": "shared Phase1 APK launcher/wait hardening"
+    },
+    {
+      "path": "scripts/android_lab/run_phase1_c1_pipeline_smoke.py",
+      "sha256": "c1b61e38d41bb6b46c5763717cad1dcbe9bb71197b051e41e56f9753fbd11884",
+      "role": "canonical C1-C4 Phase1 wrapper timeout evidence path wiring"
+    },
+    {
+      "path": "tests/test_metrics_contract.py",
+      "sha256": "589f3fc0b5fb94e53c6c253535451325336e8b1765102daae9d2c7fc10d586d9",
+      "role": "regression guard for timeout evidence fail-closed path"
+    }
+  ],
+  "metadata_artifact_policy": "diagnosis artifact SHA is reported externally to avoid a self-referential hash field",
+  "status": "phase1_c3_report_marker_timeout_cause_identified_keepawake_patch_required",
+  "verification_commands": [
+    "python3.11 -m py_compile scripts/android_lab/run_phase1_apk_benchmark.py scripts/android_lab/run_phase1_c1_pipeline_smoke.py tests/test_metrics_contract.py -> passed",
+    "python3.11 -m pytest -q tests/test_metrics_contract.py -> 8 passed",
+    "ADB wake/dismiss/stay-awake sequence; marker files appeared in /sdcard app report dir within 5s",
+    "metadata-only C3 report recovery; no raw PQA1 pulled",
+    "raw payload suffix scan over recovered C3 host report tree",
+    "git diff --check -- scripts/android_lab/run_phase1_apk_benchmark.py scripts/android_lab/run_phase1_c1_pipeline_smoke.py tests/test_metrics_contract.py -> passed"
+  ]
+}

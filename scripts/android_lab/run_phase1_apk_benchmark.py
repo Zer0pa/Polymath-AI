@@ -100,6 +100,84 @@ def run_as(serial: str, command: str, *, timeout: int = 60, check: bool = True) 
     return adb(serial, "shell", f"run-as {PACKAGE_NAME} sh -c {shell_quote(command)}", timeout=timeout, check=check)
 
 
+def keep_device_awake_for_phase1(serial: str, *, persistent: bool = False) -> None:
+    """Keep long APK Phase 1 runs from being starved behind keyguard/sleep."""
+
+    adb(serial, "shell", "input", "keyevent", "KEYCODE_WAKEUP", timeout=10, check=False)
+    if persistent:
+        adb(serial, "shell", "svc", "power", "stayon", "true", timeout=10, check=False)
+        adb(serial, "shell", "settings", "put", "global", "stay_on_while_plugged_in", "3", timeout=10, check=False)
+    adb(serial, "shell", "wm", "dismiss-keyguard", timeout=10, check=False)
+    adb(serial, "shell", "input", "keyevent", "KEYCODE_MENU", timeout=10, check=False)
+
+
+def window_state_excerpt(serial: str) -> str:
+    proc = adb(
+        serial,
+        "shell",
+        "dumpsys window | grep -E 'mDreamingLockscreen|mCurrentFocus|mFocusedApp|mScreenOn|mAwake' | head -40",
+        timeout=10,
+        check=False,
+    )
+    return (proc.stdout or proc.stderr).strip()
+
+
+def compact_text(text: str, *, max_lines: int = 40, max_chars: int = 4000) -> str:
+    lines = [line.strip() for line in text.splitlines() if line.strip()]
+    compact = "\n".join(lines[:max_lines])
+    if len(compact) > max_chars:
+        compact = compact[:max_chars] + "...<truncated>"
+    if len(lines) > max_lines:
+        compact += "\n...<truncated>"
+    return compact
+
+
+def safe_adb_evidence(serial: str, *args: str, timeout: int = 10) -> dict[str, Any]:
+    try:
+        proc = adb(serial, *args, timeout=timeout, check=False)
+    except Exception as exc:  # pragma: no cover - defensive timeout evidence path.
+        return {"error": f"{type(exc).__name__}: {exc}"}
+    return {
+        "returncode": proc.returncode,
+        "stdout": compact_text(proc.stdout),
+        "stderr": compact_text(proc.stderr),
+    }
+
+
+def phase1_marker_timeout_evidence(serial: str, before_report_ids: set[str]) -> dict[str, Any]:
+    current_report_ids = set(report_run_ids(serial))
+    new_report_ids = sorted(current_report_ids - before_report_ids)
+    report_file_listing: dict[str, dict[str, Any]] = {}
+    for run_id in new_report_ids[:5]:
+        report_file_listing[run_id] = safe_adb_evidence(
+            serial,
+            "shell",
+            f"find {shell_quote(f'{ADB_REPORT_ROOT}/{run_id}')} -maxdepth 1 -type f | sort | head -80",
+        )
+    return {
+        "schema_version": "phase1_marker_timeout_evidence_v1",
+        "status": "timeout",
+        "package": PACKAGE_NAME,
+        "drift_deleted_by_patch": "device_sleep_keyguard_report_marker_starvation_during_long_phase1_waits",
+        "raw_payload_policy": "metadata_only_no_qai1_pqa1_pjp1_bin_payloads",
+        "wake_guard_policy": "KEYCODE_WAKEUP_and_keyguard_dismiss_before_launch_and_during_wait",
+        "window_state": safe_adb_evidence(
+            serial,
+            "shell",
+            "dumpsys window | grep -E 'mDreamingLockscreen|mCurrentFocus|mFocusedApp|mScreenOn|mAwake' | head -40",
+        ),
+        "app_process": {
+            "pidof": safe_adb_evidence(serial, "shell", f"pidof {PACKAGE_NAME}"),
+            "ps": safe_adb_evidence(serial, "shell", f"ps -A | grep {shell_quote(PACKAGE_NAME)} | head -20"),
+        },
+        "report_root": ADB_REPORT_ROOT,
+        "before_report_ids_tail": sorted(before_report_ids)[-20:],
+        "current_report_ids_tail": sorted(current_report_ids)[-20:],
+        "new_report_ids": new_report_ids,
+        "new_report_file_listing": report_file_listing,
+    }
+
+
 def ensure_gbt1(serial: str, remote_dir: str, staging: str) -> str:
     if not GBT1_SOURCE.is_file():
         raise SystemExit(f"GBT1 source missing: {GBT1_SOURCE}")
@@ -299,8 +377,10 @@ def launch_and_wait(
     timeout_sec: int,
     run_flags: int = 0,
     phase1_exec_path: str | None = None,
+    timeout_evidence_path: Path | None = None,
 ) -> str:
     adb(serial, "logcat", "-c", timeout=10, check=False)
+    keep_device_awake_for_phase1(serial, persistent=True)
     adb(serial, "shell", "am", "force-stop", PACKAGE_NAME, timeout=20)
     before_dirs = set(report_run_ids(serial))
     start_args = [
@@ -333,9 +413,15 @@ def launch_and_wait(
     ]
     if phase1_exec_path:
         start_args.extend(["--es", "phase1_exec_path", phase1_exec_path])
+    keep_device_awake_for_phase1(serial, persistent=True)
     adb(serial, *start_args, timeout=60)
     deadline = time.time() + timeout_sec
+    next_wake = 0.0
     while time.time() < deadline:
+        now = time.time()
+        if now >= next_wake:
+            keep_device_awake_for_phase1(serial)
+            next_wake = now + 15.0
         logs = adb(serial, "logcat", "-d", "-s", "PolymathLabActivity", timeout=10, check=False).stdout
         for line in reversed(logs.splitlines()):
             marker = "adb_probe_report_written run_id="
@@ -348,7 +434,11 @@ def launch_and_wait(
             if probe.returncode == 0:
                 return run_id
         time.sleep(2.0)
-    raise TimeoutError("Timed out waiting for app benchmark report marker.")
+    evidence = phase1_marker_timeout_evidence(serial, before_dirs)
+    if timeout_evidence_path:
+        write_json(timeout_evidence_path, evidence)
+    evidence_text = json.dumps(evidence, sort_keys=True)
+    raise TimeoutError(f"Timed out waiting for app benchmark report marker. timeout_evidence={evidence_text}")
 
 
 def report_run_ids(serial: str) -> list[str]:
@@ -503,6 +593,7 @@ def main() -> int:
         "heap",
         args.timeout_sec,
         run_flags=1 if args.runtime_sampler else 0,
+        timeout_evidence_path=report_dir / "phase1_marker_timeout_evidence.json",
     )
     pulled = pull_run_report(serial, run_id, report_dir)
     findings = scan_forbidden(report_dir)
