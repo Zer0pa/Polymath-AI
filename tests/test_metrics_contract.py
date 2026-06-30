@@ -116,6 +116,59 @@ def test_phase1_metrics_accept_native_true_tokenizer_distribution() -> None:
     assert report["metrics"]["metric_measurement_status"]["tokens_per_record_quantiles"] == "measured_true_per_record"
 
 
+def test_phase1_metrics_reject_blocked_zero_token_native_probe() -> None:
+    runner = _load_phase1_runner()
+    args = argparse.Namespace(corpus_phase="C1")
+    records = [{"record_id": "r1", "source_kind": "dictionary", "question": "alpha", "answer": "one"}]
+    source_identity = {"normalized_source_kind_counts": {"dictionary": 1}, "source_kind_mapping_applied": {}}
+
+    report = runner.build_phase1_metrics(
+        args,
+        records,
+        source_identity,
+        app_result={
+            "status": "blocked",
+            "token_ids": 0,
+            "distinct_token_ids": 0,
+            "vocab_size": 262144,
+            "vocab_coverage_ratio": 0.0,
+            "tokens_per_record_mean": 0.0,
+            "tokens_per_record_p50": 0.0,
+            "tokens_per_record_p95": 0.0,
+            "tokens_per_record_p99": 0.0,
+            "wall_sec": 0.0,
+            "token_ids_per_sec": 0.0,
+            "records_per_sec": 0.0,
+            "native_probe": {
+                "return_code": 126,
+                "gate_result": "blocked",
+                "connection_state": "BLOCKED",
+            },
+        },
+        pqa1_all_outputs_present=False,
+    )
+
+    assert report["status"] == "partial"
+    assert "phase1_native_return_code_nonzero_126" in report["blockers"]
+    assert "phase1_native_gate_result_blocked" in report["blockers"]
+    assert "phase1_app_status_blocked" in report["blockers"]
+    assert "phase1_pqa1_outputs_missing" in report["blockers"]
+    assert "app_tokenizer_token_ids_total_nonpositive" in report["blockers"]
+
+
+def test_phase1_run_flags_default_to_linked_native_engine() -> None:
+    runner = _load_phase1_runner()
+    args = argparse.Namespace(
+        child_exec=False,
+        native_warm_sequence=False,
+        native_extended_warm_sequence=False,
+        runtime_sampler=False,
+    )
+    assert runner.run_flags_for(args) == 0
+    args.child_exec = True
+    assert runner.run_flags_for(args) == runner.CHILD_EXEC_FLAG
+
+
 def test_phase2_metrics_accept_native_jl_distortion_quality() -> None:
     runner = _load_phase2_runner()
     args = argparse.Namespace(

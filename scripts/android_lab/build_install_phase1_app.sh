@@ -42,7 +42,11 @@ select_adb_serial() {
     return 0
   fi
 
-  mapfile -t devices < <(adb devices | awk '$2 == "device" {print $1}')
+  local devices=()
+  local device
+  while IFS= read -r device; do
+    devices+=("${device}")
+  done < <(adb devices | awk '$2 == "device" {print $1}')
   if [[ "${#devices[@]}" -ne 1 ]]; then
     printf 'Expected exactly one adb device or SERIAL=<serial>; found %s.\n' "${#devices[@]}" >&2
     adb devices -l >&2 || true

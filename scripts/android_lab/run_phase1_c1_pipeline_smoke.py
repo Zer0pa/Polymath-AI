@@ -283,10 +283,12 @@ def build_phase1_metrics(
     app_result: dict[str, Any] | None = None,
     native_phase1_metrics: dict[str, Any] | None = None,
     native_batch_metrics: dict[str, Any] | None = None,
+    pqa1_all_outputs_present: bool | None = None,
 ) -> dict[str, Any]:
     app_result = app_result or {}
     native_phase1_metrics = native_phase1_metrics or {}
     native_batch_metrics = native_batch_metrics or {}
+    native_probe = app_result.get("native_probe") if isinstance(app_result.get("native_probe"), dict) else {}
     token_counts = numeric_token_sequence(app_result)
     if not token_counts:
         token_counts = numeric_token_sequence(native_phase1_metrics)
@@ -352,6 +354,10 @@ def build_phase1_metrics(
         "native_batch_job_count": batch_distribution["job_count"],
         "native_batch_elapsed_ms": batch_distribution["native_batch_elapsed_ms"],
         "native_batch_token_ids_per_sec": batch_distribution["native_batch_token_ids_per_sec"],
+        "native_return_code": first_numeric(native_probe.get("return_code"), native_phase1_metrics.get("return_code")),
+        "native_gate_result": native_probe.get("gate_result") or app_result.get("status"),
+        "native_connection_state": native_probe.get("connection_state"),
+        "pqa1_all_outputs_present": pqa1_all_outputs_present,
         "source_text_distribution": text_distribution,
         "metric_measurement_status": {
             "token_ids_total": "measured_by_phase1_app" if token_ids is not None else "missing",
@@ -362,16 +368,37 @@ def build_phase1_metrics(
         },
     }
     blockers: list[str] = []
+    native_return_code = metrics["native_return_code"]
+    native_gate_result = str(metrics["native_gate_result"] or "").lower()
+    app_status = str(app_result.get("status") or "").lower()
+    if native_return_code is not None and int(native_return_code) != 0:
+        blockers.append(f"phase1_native_return_code_nonzero_{int(native_return_code)}")
+    if native_gate_result in {"blocked", "fail", "failed"}:
+        blockers.append(f"phase1_native_gate_result_{native_gate_result}")
+    if app_status in {"blocked", "fail", "failed"}:
+        blockers.append(f"phase1_app_status_{app_status}")
+    if pqa1_all_outputs_present is False:
+        blockers.append("phase1_pqa1_outputs_missing")
     if token_ids is None:
         blockers.append("app_tokenizer_token_ids_total_missing")
+    elif records and float(token_ids) <= 0.0:
+        blockers.append("app_tokenizer_token_ids_total_nonpositive")
     if distinct_token_ids is None:
         blockers.append("distinct_token_ids_not_reported_by_phase1_app_or_native")
+    elif records and float(distinct_token_ids) <= 0.0:
+        blockers.append("distinct_token_ids_nonpositive")
     if not per_record_distribution_measured:
         blockers.append("per_record_token_distribution_not_reported_by_phase1_app")
+    elif records and any(float(value) <= 0.0 for value in (token_mean, per_record_p50, per_record_p95, per_record_p99) if value is not None):
+        blockers.append("per_record_token_distribution_nonpositive")
     if vocab_coverage_ratio is None:
         blockers.append("vocab_coverage_unavailable_without_distinct_token_ids_and_vocab_size")
+    elif records and float(vocab_coverage_ratio) <= 0.0:
+        blockers.append("vocab_coverage_ratio_nonpositive")
     if metrics["latency_ms"] is None:
         blockers.append("phase1_wall_latency_missing")
+    elif records and float(metrics["latency_ms"]) <= 0.0:
+        blockers.append("phase1_wall_latency_nonpositive")
 
     return metric_report(
         schema_version="phase1_c1_metric_contract_v1",
@@ -590,11 +617,13 @@ def build_generation_manifest(
         "gbt1_path": gbt1_path,
         "run_flags": run_flags_for(args),
         "run_flag_policy": {
-            "child_exec_enabled": True,
+            "linked_native_engine_default": True,
+            "child_exec_enabled": args.child_exec,
+            "child_exec_requires_explicit_phase1_exec_path": True,
             "native_warm_sequence_enabled": args.native_warm_sequence or args.native_extended_warm_sequence,
             "native_extended_warm_sequence_enabled": args.native_extended_warm_sequence,
             "runtime_sampler_enabled": args.runtime_sampler,
-            "full_c1_default": "single child-exec pass; warm sequences are opt-in diagnostics",
+            "full_c1_default": "single linked-native pass; warm sequences and child exec are opt-in diagnostics",
         },
         "planned_pqa1_outputs": outputs,
         "qai1_file_count": len(qai1_files),
@@ -622,7 +651,7 @@ def phase2_staging_contract(run_label: str, outputs: list[dict[str, Any]]) -> di
 
 
 def run_flags_for(args: argparse.Namespace) -> int:
-    flags = CHILD_EXEC_FLAG
+    flags = CHILD_EXEC_FLAG if args.child_exec else 0
     if args.native_warm_sequence or args.native_extended_warm_sequence:
         flags |= NATIVE_WARM_SEQUENCE_FLAG
     if args.native_extended_warm_sequence:
@@ -722,6 +751,7 @@ def run_phase1(args: argparse.Namespace, records: list[dict[str, str]], source_m
             "heap",
             args.timeout_sec,
             run_flags=flags,
+            phase1_exec_path=str(args.phase1_exec_path) if args.phase1_exec_path else None,
         )
         settings_after_run = snapshot_settings(serial)
     finally:
@@ -755,6 +785,7 @@ def run_phase1(args: argparse.Namespace, records: list[dict[str, str]], source_m
 
     pulled = pull_run_report(serial, run_id, report_root)
     pqa1_stats = collect_remote_pqa1_stats(serial, outputs, args.staging)
+    all_pqa1_outputs_present = all(row.get("sha256") and row.get("bytes") for row in pqa1_stats)
     write_json(
         report_root / "phase1_c1_remote_pqa1_manifest.json",
         {
@@ -763,7 +794,7 @@ def run_phase1(args: argparse.Namespace, records: list[dict[str, str]], source_m
             "staging": args.staging,
             "remote_dir": remote_dir,
             "pqa1_outputs": pqa1_stats,
-            "all_outputs_present": all(row.get("sha256") and row.get("bytes") for row in pqa1_stats),
+            "all_outputs_present": all_pqa1_outputs_present,
             "raw_payload_policy": "remote PQA1 paths and hashes only; raw PQA1 is not pulled into repo reports",
         },
     )
@@ -789,11 +820,12 @@ def run_phase1(args: argparse.Namespace, records: list[dict[str, str]], source_m
         app_result=app_result,
         native_phase1_metrics=native_phase1_metrics,
         native_batch_metrics=native_batch_metrics,
+        pqa1_all_outputs_present=all_pqa1_outputs_present,
     )
     write_json(report_root / "phase1_c1_metrics_contract.json", phase1_metrics)
     summary = {
         "schema_version": "phase1_c1_pipeline_smoke_summary_v1",
-        "status": "phase1_c1_smoke_complete",
+        "status": "phase1_c1_smoke_complete" if phase1_metrics["status"] == "pass" else "phase1_c1_runtime_failed",
         "run_label": run_label,
         "serial": serial,
         "package": PACKAGE_NAME,
@@ -812,7 +844,7 @@ def run_phase1(args: argparse.Namespace, records: list[dict[str, str]], source_m
         "material_hash_hex": app_result.get("material_hash_hex"),
         "parity_state": app_result.get("parity_state"),
         "settings_final_match_target": settings_final == settings_target,
-        "remote_pqa1_all_outputs_present": all(row.get("sha256") and row.get("bytes") for row in pqa1_stats),
+        "remote_pqa1_all_outputs_present": all_pqa1_outputs_present,
         "phase2_staging_contract_file": str(report_root / "phase1_c1_to_phase2_staging_contract.json"),
         "forbidden_payload_scan": "pass",
         "nonclaims": [
@@ -823,6 +855,8 @@ def run_phase1(args: argparse.Namespace, records: list[dict[str, str]], source_m
         ],
     }
     write_json(report_root / "phase1_c1_pipeline_smoke_summary.json", summary)
+    if phase1_metrics["status"] != "pass":
+        raise SystemExit(f"Phase 1 runtime metrics failed: {phase1_metrics['blockers']}")
     return summary
 
 
@@ -845,12 +879,18 @@ def main() -> int:
     parser.add_argument("--runtime-sampler", action="store_true")
     parser.add_argument("--native-warm-sequence", action="store_true", help="Opt-in warmup/trial sequence for small diagnostics; disabled by default for full C1 completion.")
     parser.add_argument("--native-extended-warm-sequence", action="store_true", help="Opt-in extended warm sequence; implies --native-warm-sequence and is not for full C1 completion.")
+    parser.add_argument("--child-exec", action="store_true", help="Opt into executing a separate Phase 1 PIE. Default uses the linked APK-native engine.")
+    parser.add_argument("--phase1-exec-path", default=None, help="Explicit device path for --child-exec. Required when --child-exec is used.")
     parser.add_argument("--dry-run", action="store_true", help="Validate C1 and write safe manifests without ADB or QAI1/PQA1 generation.")
     parser.add_argument("--run-label", default=None)
     args = parser.parse_args()
 
     if args.limit is not None and args.limit < 0:
         raise SystemExit("--limit must be >= 0")
+    if args.phase1_exec_path and not args.child_exec:
+        raise SystemExit("--phase1-exec-path is only valid with --child-exec")
+    if args.child_exec and not args.phase1_exec_path:
+        raise SystemExit("--child-exec requires --phase1-exec-path to prevent drifting to an unverified APK lib path")
 
     input_path = resolve_input_path(args)
     args.package_root = resolve_package_root(args, input_path)

@@ -1,0 +1,75 @@
+{
+  "accepted_manifest_sha_before_repair": "d2d76eb16913779131b3af2db893c7723f26a3f4a44272432233df9484534946",
+  "authorization_needed": "custody_freeze_commit_push; phone rerun already authorized after custody freeze",
+  "blocker_deleted": {
+    "drift": "C1 wrapper forced CHILD_EXEC_FLAG against a non-packaged phase1_qa_stream_exec shared object path",
+    "fail_closed": "native blocked/nonzero, zero token metrics, missing PQA1 now produce blockers and nonzero wrapper exit",
+    "repair": "default runner back to linked APK-native engine; child exec requires explicit --child-exec --phase1-exec-path"
+  },
+  "edited_paths": [
+    {
+      "path": "scripts/android_lab/run_phase1_c1_pipeline_smoke.py",
+      "sha256": "954763c2dfe72f6760d3b6ad732cba1d73060c42a9e6d23a333b3c11e5a34042"
+    },
+    {
+      "path": "scripts/android_lab/build_install_phase1_app.sh",
+      "sha256": "4f784f7f2309a47699feb8e2970d91191de73626beb707acb8b3e202331c5071"
+    },
+    {
+      "path": "tests/test_metrics_contract.py",
+      "sha256": "fccafd4b58582ee65a393c2203cd39ac52884a383e8e98ec278aa8851e597ad5"
+    }
+  ],
+  "first_missing_green_field": "Repo Custodian freeze/commit/push of the three-file repair pathset before full C1-C4 rerun",
+  "frozen_commit_before_repair": "bbcc229e07a8bca0c55318a0b6ffb51fe0bc6a3d",
+  "lane": "engineering_orchestrator",
+  "next_action": "Repo Custodian freezes repair pathset; Execution reruns Phase1 C1-C4 from repaired source, then Phase2/3/4.",
+  "nonclaims": [
+    "C1 repair run is bounded blocker verification, not full C1-C4 pass",
+    "no Phase2 pass",
+    "no Phase3/4 readiness",
+    "no learning/model quality claim",
+    "no 100k/1M authority claim"
+  ],
+  "repair_evidence": {
+    "child_exec_enabled": false,
+    "distinct_token_ids": 16651,
+    "latency_ms": 126.221,
+    "metrics_blockers": [],
+    "metrics_path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_20260630T221810Z/phase1_repair/c1_c4_waveB_20260630T221810Z_C1_phase1_linked_native_repair_phase1_c1_pipeline_smoke/phase1_c1_metrics_contract.json",
+    "metrics_sha256": "ebd96cc6ba2bca179890af65ecdc908e18da434f3f4a3613659ebcdd0bd1139a",
+    "metrics_status": "pass",
+    "native_connection_state": "CONNECTED",
+    "native_metrics_path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_20260630T221810Z/phase1_repair/c1_c4_waveB_20260630T221810Z_C1_phase1_linked_native_repair_phase1_c1_pipeline_smoke/2026-06-30T223048Z/native_phase1_metrics.json",
+    "native_metrics_sha256": "d20d76a3dab544ca1df44416d121541e7a9f0e867f377f77494d7ea37b85fa10",
+    "native_return_code": 0,
+    "pqa1_all_outputs_present": true,
+    "pqa1_manifest_path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_20260630T221810Z/phase1_repair/c1_c4_waveB_20260630T221810Z_C1_phase1_linked_native_repair_phase1_c1_pipeline_smoke/phase1_c1_remote_pqa1_manifest.json",
+    "pqa1_manifest_sha256": "8975fdd1052da2bc393d93b97490ef90d150f6c8eb6b8c87aa6eed6c7e91d670",
+    "pqa1_output_count": 8,
+    "records": 5180,
+    "repair_report_root": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_20260630T221810Z/phase1_repair/c1_c4_waveB_20260630T221810Z_C1_phase1_linked_native_repair_phase1_c1_pipeline_smoke",
+    "summary_path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_20260630T221810Z/phase1_repair/c1_c4_waveB_20260630T221810Z_C1_phase1_linked_native_repair_phase1_c1_pipeline_smoke/phase1_c1_pipeline_smoke_summary.json",
+    "summary_sha256": "2fa3682271a8700337761181cbaeca4180556ffb9cb29c3406010eb4d27276e5",
+    "token_ids_per_sec": 1718610,
+    "token_ids_total": 216924,
+    "tokens_per_record_mean": 41.8772,
+    "tokens_per_record_p50": 42,
+    "tokens_per_record_p95": 48,
+    "tokens_per_record_p99": 50,
+    "vocab_coverage_ratio": 0.06351852416992188
+  },
+  "repair_run_label": "c1_c4_waveB_20260630T221810Z_C1_phase1_linked_native_repair",
+  "run_label": "c1_c4_waveB_20260630T221810Z",
+  "schema_version": "phase1_exec_permission_repair_report_v1",
+  "status": "phase1_exec_permission_partially_repaired_requires_custody_freeze",
+  "verification_commands": [
+    "python3.11 -m py_compile scripts/android_lab/run_phase1_c1_pipeline_smoke.py",
+    "python3.11 -m pytest -q tests/test_metrics_contract.py -> 7 passed",
+    "bash -n scripts/android_lab/build_install_phase1_app.sh",
+    "C1 Phase1 linked-native repair device run on FY25013101C8",
+    "git diff --check -- edited pathset",
+    "raw payload suffix scan over repair report tree",
+    "bounded secret/token scan over edited pathset"
+  ]
+}
