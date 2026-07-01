@@ -1,14 +1,14 @@
 # Executive Delivery State
 
-Updated UTC: `2026-07-01T13:54:07Z`
+Updated UTC: `2026-07-01T14:05:30Z`
 
 ## Current Gate
 
-`WaveB_C5_after_C1_phone_exporter_rerun_after_attention_layout_repair_pending`
+`WaveB_C5_after_C1_exporter_q_norm_layout_repair_pending`
 
-Status classification: `PENDING_ACTION_EXECUTION_PHONE_EXPORTER_RERUN_SCHEMA_COMPLETE_COMPONENT_PACK`
+Status classification: `PENDING_ACTION_ENGINEERING_PHASE34_EXPORTER_Q_NORM_LAYOUT_REPAIR`
 
-Owner: Execution Orchestrator owns the post-custody phone exporter rerun. Repo Custodian owns freezing this metadata-only central mirror. Phase3/4 resumes native logits work only after schema-complete exporter evidence exists.
+Owner: Engineering Orchestrator and Phase3/4 Engineer own the q_norm layout repair. Repo Custodian freezes the returned pathset. Execution reruns the phone exporter only after custody.
 
 User action required: `false`
 
@@ -16,29 +16,27 @@ Dominant failure domain: `phase5_eval_failure`
 
 ## Artifact Waiting On
 
-- Execution consumes Repo Custodian commit `9e6d5086aaabf24e0e08e69656ba39c074c4dfbc` in a clean Termux exporter worktree and verifies exporter SHA `21f62fb37b247375492791833d2a273276f0a2a33e4785d6dd3dea0aaf665f5f`.
-- Execution reruns the phone-local exporter from the newly frozen repair against the already phone-held `model.safetensors` SHA `43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651`.
-- Schema-complete `decoder_manifest.json`, `adapter_site_policy.json`, and `export_report.json` identities generated after the repair, not old pre-runtime-fields component-pack hashes.
-- Repo Custodian freeze of this metadata-only central mirror after the runnable owner was advanced.
-- Phase3/4 replacement of `full_decoder_logits_generation_kernel_not_implemented` only after schema/header validation is green.
+- Engineering/Phase3/4 inspect and repair the q_norm shape rule from the phone exporter blocker `decoder_layer_5_self_attn_q_norm_shape_mismatch_expected_[256]_actual_[512]`.
+- Blocker log: `runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/exporter_9e6d508_attention_layout_repair_rerun/export_stdout_9e6d508.log` SHA `c8cf3521ea5ed533b23cf02fe0d6dae9e8eab744d061e6bdd130b66db6834aa1`.
+- Repair must determine whether Gemma 4 E4B q_norm shape `[512]` is valid for this attention layout or prove the header is invalid; if valid, patch exporter and native validator mirror with focused tests.
+- Repo Custodian freezes only the returned code/test/metadata pathset after Engineering/Phase3/4 hands it off.
+- Execution reruns the same phone-local exporter against model SHA `43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651` only after custody of the q_norm repair.
 
 ## Last Concrete Action
 
-Repo Custodian verified, committed, and pushed the exact 14-file exporter attention-layout repair pathset at `9e6d5086aaabf24e0e08e69656ba39c074c4dfbc` on `origin/gemma4-megakernel-native-training`. The frozen exporter SHA is `21f62fb37b247375492791833d2a273276f0a2a33e4785d6dd3dea0aaf665f5f`; Engineering report SHA is `84f65397246edb58ce5f0d21861ec3cb4b604868fb0fccf05e0a5dc00acbaf6a`. Execution had already restored the Termux SSH command channel and is ready for the post-custody rerun.
+Execution consumed custody commit `9e6d5086aaabf24e0e08e69656ba39c074c4dfbc`, verified Termux exporter SHA `21f62fb37b247375492791833d2a273276f0a2a33e4785d6dd3dea0aaf665f5f`, verified phone-held model SHA `43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651` without redownload, and reran the phone-local exporter. The exporter failed closed with exit code `2` at `decoder_layer_5_self_attn_q_norm_shape_mismatch_expected_[256]_actual_[512]`; blocker log SHA `c8cf3521ea5ed533b23cf02fe0d6dae9e8eab744d061e6bdd130b66db6834aa1`; stderr SHA `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`. Old component-pack files remain superseded and were not accepted as schema-complete evidence.
 
 Verification:
-- Custodian `python3.11 -m json.tool` checks passed.
-- Custodian `python3.11 -m py_compile` checks passed.
-- Custodian combined C5-focused pytest suite -> `25 passed`.
-- `cmake --build build/gemma4_megakernel_host --target gemma4_layer_runner -j 8` -> built.
-- Custodian `ctest --test-dir build/gemma4_megakernel_host --output-on-failure` -> `4/4 passed`.
-- Custodian staged scope, diff hygiene, raw-suffix scan, and secret scan passed.
+- Execution post-custody Termux exporter SHA verification passed.
+- Execution phone-held `model.safetensors` SHA verification passed.
+- Phone exporter rerun failed closed at the new q_norm shape blocker with expected/actual details.
+- Report folder raw-boundary scan remained clean per Execution update.
 
 ## First Missing Green Field
 
-Current: `phone_exporter_rerun_for_schema_complete_component_pack_pending`
+Current: `decoder_layer_5_self_attn_q_norm_shape_mismatch_expected_[256]_actual_[512]`
 
-After schema-complete export: `full_decoder_logits_generation_kernel_not_implemented_until_native_compute_body_lands`
+After q_norm repair custody: `phone_exporter_rerun_after_q_norm_layout_repair_pending`
 
 ## Custody Pathset
 
@@ -59,16 +57,15 @@ After schema-complete export: `full_decoder_logits_generation_kernel_not_impleme
 
 ## Next Concrete Action
 
-Execution consumes commit `9e6d5086aaabf24e0e08e69656ba39c074c4dfbc` on the phone, verifies exporter SHA `21f62fb37b247375492791833d2a273276f0a2a33e4785d6dd3dea0aaf665f5f` and existing model SHA `43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651`, then reruns the same phone exporter command. If the exporter still fails, Execution must return the new expected/actual shape-bearing blocker JSON. If it passes, Execution returns metadata-only hashes, bytes, and schema proof for `decoder_manifest.json`, `adapter_site_policy.json`, and `export_report.json`.
+Engineering/Phase3/4 patch or reject the q_norm layout rule: inspect exporter attention/norm validation and native validator mirror, determine whether q_norm `[512]` is valid for Gemma 4 E4B, add focused regression coverage, and return a custody-ready pathset with hashes and verification. If the shape is invalid, return the exact source/header rule proving rejection. After custody, Execution reruns the same phone exporter command.
 
 ## Drift Deletion / Hardening
 
-Hard-coded attention projection row-count drift is frozen at `9e6d5086aaabf24e0e08e69656ba39c074c4dfbc`, and old pre-runtime-fields component-pack hashes remain superseded. Pending drift: prove the repair on the real phone-held model via exporter rerun. After export passes, native full decoder compute still intentionally fails closed; bridge MSE remains forbidden as C5 loss.
+Hard-coded attention projection row-count drift is frozen at `9e6d5086aaabf24e0e08e69656ba39c074c4dfbc`, and old pre-runtime-fields component-pack hashes remain superseded. The real phone exporter rerun exposed new q_norm shape drift: expected `[256]`, actual `[512]`. Pending drift: repair or prove invalid this q_norm layout rule. After export passes, native full decoder compute still intentionally fails closed; bridge MSE remains forbidden as C5 loss.
 
 ## Threads Nudged This Tick
 
-- Execution Orchestrator `019f138c-fb51-7c53-a41a-ab8eac950d9c` for post-custody phone exporter rerun with commit `9e6d5086aaabf24e0e08e69656ba39c074c4dfbc`.
-- Repo Custodian `019f1ac2-0f0f-7721-bf46-ad402dbd9050` for metadata-only central mirror freeze.
+- Phase3/4 Engineer `019f13da-d897-7ba2-8ed1-b959892f5ed4` for q_norm shape blocker repair with exact log path, SHA, first missing field, and fail-fast boundary.
 
 ## Nonclaims Preserved
 
