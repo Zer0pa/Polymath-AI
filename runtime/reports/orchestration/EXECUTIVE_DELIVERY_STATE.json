@@ -1,9 +1,8 @@
 {
   "active_bottleneck": {
     "artifact_waiting_on": [
-      "Repo Custodian freeze of exporter, exporter tests, exporter pathset report, and refreshed executive state mirror.",
-      "Phase3/4 native full-decoder consumer source/test/report pathset after active turn completes.",
-      "Outside-git model source for actual component export: restored/mounted historical /workspace model or separately authorized bounded HF read/export.",
+      "Repo Custodian freeze of the Phase3/4 native full-decoder consumer source/test/report pathset plus refreshed executive state mirror.",
+      "Outside-git model source for actual component export: restored/mounted historical /workspace/models/gemma4_e4b/snapshot/model.safetensors or separately authorized bounded HF read/export.",
       "Outside-git decoder_manifest.json, adapter_site_policy.json, LM-head/unembedding proof, prediction JSONL, finite candidate_train_loss, and polymath_c5_executed_metrics_v1 after real runtime execution."
     ],
     "authorization_needed": "none for immediate custody; later exact model-source authorization only if historical model cannot be mounted locally",
@@ -852,11 +851,11 @@
       "status": "c5_full_decoder_failure_artifacts_and_state_pending_custody",
       "user_action_required": false
     },
-    "current_gate": "WaveB_C5_after_C1_full_decoder_exporter_pathset_pending_custody",
+    "current_gate": "WaveB_C5_after_C1_native_full_decoder_consumer_pathset_pending_custody",
     "custody_commit_latest": "bb8105a2bc91b6c9b0993603e14b49d0a5730f8d",
     "custody_status_latest": "c5_decoder_runtime_owner_state_committed_pushed",
     "dominant_failure_domain": "phase5_eval_failure",
-    "drift_deleted_or_pending": "Exporter route now fails closed for absent model snapshots and rejects repo-contained output; pending freeze and native consumer pathset.",
+    "drift_deleted_or_pending": "Exporter-route custody deleted the missing-model narrative drift by freezing a fail-closed model exporter. Pending drift hardening is the native consumer custody freeze; older nested state references remain non-authoritative until refreshed after Custodian returns.",
     "engineering_evaluator_implementation": {
       "artifact_paths_in_progress": [
         "polymath_ai/polar/c5_heldout_eval.py",
@@ -963,7 +962,7 @@
       "existing_surface_role": "run_c5_eval.py validates supplied metrics JSON; it does not compute metrics",
       "status": "c5_after_c1_real_evaluator_surface_missing"
     },
-    "first_missing_green_field": "repo_custody_freeze_of_full_decoder_exporter_pathset",
+    "first_missing_green_field": "repo_custody_freeze_of_native_full_decoder_consumer_pathset",
     "first_missing_green_field_after_custody_until_model_source_available": "model_safetensors_missing",
     "first_unresolved_technical_failure_after_schema_paths": "full_decoder_logits_generation_not_implemented_after_valid_schema_paths",
     "first_unresolved_technical_failure_after_valid_schema_paths": "full_decoder_logits_generation_not_implemented_after_valid_schema_paths",
@@ -994,7 +993,7 @@
       "training_material_steward": "complete for material identities",
       "ui_engineer": "not nudged until C5 evidence-backed status exists"
     },
-    "last_concrete_action": "Engineering produced custody-ready full-decoder exporter route pathset and metadata report; state mirror refreshed for custody.",
+    "last_concrete_action": "Repo Custodian froze and pushed the full-decoder exporter route at f4791ae09b31b738ef2642cd58b9b1b4097d36c2. Phase3/4 produced native full-decoder consumer pathset report /Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/orchestration/c5_after_c1_native_full_decoder_consumer_pathset_20260701T_phase34.json SHA 3073f17d529ee432a2088eea8e3c1fc79f1ee58a140d40059d1ca768dddce942.",
     "lineage_drift_repair_status": {
       "commit": "ee74ae572322e05624deac6f6f8788c2c6e2f692",
       "proof_required": [
@@ -1010,7 +1009,7 @@
       ],
       "status": "source_repair_frozen_pending_execution_proof"
     },
-    "next_concrete_action": "Repo Custodian freezes the exact five-file exporter/state pathset; Phase3/4 completes native consumer pathset separately.",
+    "next_concrete_action": "Repo Custodian freezes the exact Phase3/4 native consumer pathset and these central-state mirrors. After custody, Engineering/Execution provide the outside-git model source, run the frozen exporter outside git, then route native logits implementation and Execution C5 metrics.",
     "nonclaims": [
       "development-cycle evidence only unless stronger gates pass",
       "no C5 pass",
@@ -1038,7 +1037,7 @@
       "no HF/Comet call",
       "no secrets sourced"
     ],
-    "owner": "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050 for exact exporter/state freeze; Phase3/4 remains active on native consumer boundary.",
+    "owner": "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050 owns the Phase3/4 native consumer pathset/state freeze. Engineering/Execution own model-source export and real C5 prediction payloads after custody.",
     "phase2_status_by_phase": {
       "C1": {
         "packets": 5180,
@@ -1248,7 +1247,7 @@
       "phase34": "raw PJP1, HTP raw output, OpenCL tensors, and adapters remain on device/Termux; repair must keep compact JSON only",
       "report_root_scan": "metadata-freeze report root had 179 tracked files and clean forbidden suffix scans; raw payloads not committed"
     },
-    "recursive_improvement_next_step": "custody freeze exporter pathset -> native consumer pathset -> outside-git model export -> native logits producer -> Execution metrics -> Pipeline validation -> custody freeze",
+    "recursive_improvement_next_step": "freeze native consumer pathset -> export component pack from real model outside git -> implement/run native logits producer -> Execution emits prediction JSONL and heldout metrics -> Pipeline validates -> Custodian freezes metadata/code only.",
     "repo_custody_state_freeze": {
       "branch": "origin/gemma4-megakernel-native-training",
       "commit": "7290fbec13c6a13e88710afddfe4af70637096f9",
@@ -1261,13 +1260,68 @@
     },
     "run_label": "c1_c4_waveB_rerun_20260630T230411Z",
     "run_root": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z",
-    "status_classification": "PENDING_ACTION_REPO_CUSTODY_THEN_MODEL_SOURCE_EXPORT",
+    "status_classification": "PENDING_ACTION_REPO_CUSTODY_PHASE34_NATIVE_CONSUMER_PATHSET_THEN_MODEL_SOURCE_EXPORT",
     "threads_nudged_this_tick": [
       "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050"
     ],
     "timestamp_utc": "2026-07-01T03:45:47Z",
     "updated_utc": "2026-07-01T04:05:47Z",
-    "user_action_required": false
+    "user_action_required": false,
+    "c5_full_decoder_exporter_custody": {
+      "schema_version": "polymath_c5_full_decoder_exporter_post_custody_v1",
+      "custody_status": "c5_full_decoder_exporter_route_committed_pushed",
+      "custody_commit": "f4791ae09b31b738ef2642cd58b9b1b4097d36c2",
+      "branch": "origin/gemma4-megakernel-native-training",
+      "frozen_pathset": {
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py": "b89fece1509aadd3448ef7c2747cee74113cc3a3733c816d015a6286280d3b4c",
+        "tests/test_c5_full_decoder_exporter.py": "ab056b50d700fa52100199b768142dc001e75f0b157666466a36ff52906414c7",
+        "runtime/reports/orchestration/c5_after_c1_full_decoder_exporter_pathset_20260701T_engineering.json": "f4f6ffa5ef5dd3aa8013e722b2b42fc9e48cf4ce53fc4aad931eb327fa86fdf8",
+        "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json": "4eca3a0586d2d161d7437dc8d9e6ad4264633c912f3dfee6337a21953ed0a766",
+        "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md": "82a86b9f8b9b2032a113c9b9ee29b7acda938d589eeba61053038e0b36d1d190"
+      },
+      "first_missing_green_field_after_custody": "model_safetensors_missing",
+      "nonclaims": [
+        "no C5 pass",
+        "no decoder_manifest emitted from a real model yet",
+        "no logits/predictions/loss/confidence/candidate_train_loss fabricated",
+        "no HF/Comet call"
+      ]
+    },
+    "c5_after_c1_native_full_decoder_consumer_pathset": {
+      "schema_version": "polymath_c5_native_full_decoder_consumer_pathset_v1",
+      "lane": "phase34_native_full_decoder_consumer",
+      "status": "c5_after_c1_native_full_decoder_consumer_pathset_ready_for_custodian",
+      "status_classification": "PENDING_ACTION_REPO_CUSTODY_PHASE34_NATIVE_CONSUMER_PATHSET",
+      "artifact_paths": [
+        "runtime/reports/orchestration/c5_after_c1_native_full_decoder_consumer_pathset_20260701T_phase34.json",
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/include/polymath/gemma4/c5_qa_inference.h",
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_qa_inference.cpp",
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/runner/main.cpp",
+        "scripts/host/run_c5_phase34_qa_inference_producer.py",
+        "tests/test_c5_phase34_qa_inference_producer.py"
+      ],
+      "pathset_sha256": {
+        "runtime/reports/orchestration/c5_after_c1_native_full_decoder_consumer_pathset_20260701T_phase34.json": "3073f17d529ee432a2088eea8e3c1fc79f1ee58a140d40059d1ca768dddce942",
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/include/polymath/gemma4/c5_qa_inference.h": "aeaa7b1f14b09aa686f04e833bc3fa7812858a794dfed3210719c64e833c2fb1",
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_qa_inference.cpp": "aaa899673cd09616557e5977558a5633af2366fff72479ea80d5d7b5ae54d7e4",
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/runner/main.cpp": "01b60b73fb21146474b3838f30a9ecaef163504c415aa3a50e4de949cf6d934e",
+        "scripts/host/run_c5_phase34_qa_inference_producer.py": "8476ecfa9ee8b5aa12822a1222245aff18e4e9d4536a775957960e9d38f4bd20",
+        "tests/test_c5_phase34_qa_inference_producer.py": "7d89d55afd5b8dde1a2cc29e0544af67bc3e59e8a14148dd0adf583529c1c988"
+      },
+      "verification_commands": [
+        "Phase3/4: python3.11 -m py_compile scripts/host/run_c5_phase34_qa_inference_producer.py -> passed",
+        "Phase3/4: python3.11 -m pytest -q tests/test_c5_phase34_qa_inference_producer.py -> 7 passed",
+        "Phase3/4: cmake --build build/gemma4_megakernel_host --target gemma4_layer_runner -j 8 -> built",
+        "Phase3/4: python3.11 -m pytest -q tests/test_c5_phase34_qa_inference_producer.py tests/test_c5_prediction_payloads.py -> 11 passed",
+        "Phase3/4: ctest --test-dir build/gemma4_megakernel_host --output-on-failure -> 4/4 passed",
+        "Phase3/4: native synthetic valid component-pack probe -> returncode 13, first_missing_green_field full_decoder_logits_generation_not_implemented, output_jsonl_exists false"
+      ],
+      "first_missing_green_field": "repo_custody_freeze_of_native_full_decoder_consumer_pathset",
+      "first_missing_green_field_after_custody": "decoder_manifest_missing",
+      "first_unresolved_technical_failure_after_valid_schema_paths": "full_decoder_logits_generation_not_implemented_after_valid_schema_paths",
+      "next_action": "Repo Custodian freezes the pathset; Engineering exporter supplies outside-git full E4B decoder component pack; native branch is then replaced with streamed/chunked logits generation plus teacher-forced answer loss.",
+      "user_action_required": false
+    }
   },
   "active_edge": "WaveB_C5_after_C1_full_decoder_exporter_pathset_pending_custody",
   "active_watchdog_state": {
@@ -4445,8 +4499,8 @@
     ]
   },
   "schema_version": "polymath_executive_delivery_state_v1",
-  "status": "PENDING_ACTION_REPO_CUSTODY_THEN_MODEL_SOURCE_EXPORT",
-  "status_classification": "PENDING_ACTION_REPO_CUSTODY_THEN_MODEL_SOURCE_EXPORT",
-  "updated_at": "2026-07-01T04:16:17Z",
-  "updated_at_utc": "2026-07-01T04:16:17Z"
+  "status": "PENDING_ACTION_REPO_CUSTODY_PHASE34_NATIVE_CONSUMER_PATHSET_THEN_MODEL_SOURCE_EXPORT",
+  "status_classification": "PENDING_ACTION_REPO_CUSTODY_PHASE34_NATIVE_CONSUMER_PATHSET_THEN_MODEL_SOURCE_EXPORT",
+  "updated_at": "2026-07-01T04:26:17Z",
+  "updated_at_utc": "2026-07-01T04:26:17Z"
 }

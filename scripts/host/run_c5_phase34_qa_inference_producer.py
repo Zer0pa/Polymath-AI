@@ -35,15 +35,37 @@ GEMMA4_E4B_REVISION = "7aa32e6889efd6300124851b164f8b364314c3d8"
 GEMMA4_E4B_LAYERS = 42
 GEMMA4_E4B_HIDDEN_SIZE = 2560
 GEMMA4_E4B_VOCAB_SIZE = 262144
+DEFAULT_VOCAB_CHUNK_SIZE = 4096
+MAX_ACCEPTED_VOCAB_CHUNK_SIZE = 16384
+DEFAULT_MAX_GENERATION_TOKENS = 128
+MAX_ACCEPTED_GENERATION_TOKENS = 512
+LM_HEAD_CANDIDATE_FILENAMES = (
+    "lm_head_or_unembedding.bf16",
+    "lm_head_or_unembedding.f16",
+    "lm_head_or_unembedding.f32",
+    "lm_head.bf16",
+    "lm_head.f16",
+    "lm_head.f32",
+    "unembedding.bf16",
+    "unembedding.f16",
+    "unembedding.f32",
+)
 
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--gemma4-runner", default=os.environ.get("GEMMA4_LAYER_RUNNER"))
     parser.add_argument("--tokenizer-dir")
+    parser.add_argument("--decoder-component-pack")
     parser.add_argument("--decoder-manifest")
     parser.add_argument("--lm-head")
     parser.add_argument("--adapter-site-policy")
+    parser.add_argument("--vocab-chunk-size", type=int, default=DEFAULT_VOCAB_CHUNK_SIZE)
+    parser.add_argument(
+        "--max-generation-tokens",
+        type=int,
+        default=DEFAULT_MAX_GENERATION_TOKENS,
+    )
     parser.add_argument("--native-timeout-seconds", type=int, default=3600)
     parser.add_argument("--print-contract", action="store_true")
 
@@ -65,9 +87,11 @@ def producer_contract() -> dict[str, Any]:
             "python3.11 scripts/host/run_c5_phase34_qa_inference_producer.py "
             "--gemma4-runner <outside_git_or_build_gemma4_layer_runner> "
             "--tokenizer-dir <outside_git_tokenizer_dir> "
-            "--decoder-manifest <outside_git_decoder_manifest> "
-            "--lm-head <outside_git_lm_head_or_unembedding> "
-            "--adapter-site-policy <outside_git_adapter_site_policy>"
+            "--decoder-component-pack <outside_git_c5_decoder_component_pack> "
+            "[--decoder-manifest <outside_git_decoder_manifest>] "
+            "[--lm-head <outside_git_lm_head_or_unembedding>] "
+            "[--adapter-site-policy <outside_git_adapter_site_policy>] "
+            "--vocab-chunk-size 4096 --max-generation-tokens 128"
         ),
         "wrapper_appended_args": [
             "--run-label",
@@ -81,6 +105,7 @@ def producer_contract() -> dict[str, Any]:
         "fail_closed_missing_runtime_fields": [
             "gemma4_runner_missing",
             "tokenizer_dir_missing",
+            "decoder_component_pack_missing_or_decoder_manifest_missing",
             "decoder_manifest_missing",
             "lm_head_or_unembedding_missing",
             "adapter_site_policy_missing",
@@ -119,6 +144,19 @@ def producer_contract() -> dict[str, Any]:
                 "stable_baseline_adapter_sha256",
                 "bridge_mse_is_c5_loss",
             ],
+        },
+        "component_pack_layout": {
+            "decoder_manifest": "decoder_manifest.json",
+            "adapter_site_policy": "adapter_site_policy.json",
+            "lm_head_or_unembedding_candidates": list(LM_HEAD_CANDIDATE_FILENAMES),
+        },
+        "memory_strategy_contract": {
+            "default_vocab_chunk_size": DEFAULT_VOCAB_CHUNK_SIZE,
+            "max_accepted_vocab_chunk_size": MAX_ACCEPTED_VOCAB_CHUNK_SIZE,
+            "default_max_generation_tokens": DEFAULT_MAX_GENERATION_TOKENS,
+            "max_accepted_generation_tokens": MAX_ACCEPTED_GENERATION_TOKENS,
+            "full_bsv_logits_materialization_allowed": False,
+            "streamed_or_chunked_logits_required": True,
         },
     }
 
@@ -197,6 +235,9 @@ def validate_decoder_manifest(path: Path, blockers: list[str]) -> bool:
     lm_head = payload.get("lm_head")
     if lm_head is not None:
         validate_lm_head_identity(lm_head, "decoder_manifest_lm_head", blockers)
+    runtime = payload.get("runtime")
+    if isinstance(runtime, dict) and runtime.get("materializes_full_bsv_logits") is True:
+        blockers.append("decoder_manifest_full_bsv_logits_materialization_forbidden")
     return "decoder_manifest_not_object" not in blockers
 
 
@@ -223,7 +264,12 @@ def decoder_manifest_embeds_lm_head(path: Path) -> bool:
     return nested_get(payload, "lm_head", "embedded_in_decoder") is True
 
 
-def validate_adapter_site_policy(path: Path, blockers: list[str]) -> None:
+def validate_adapter_site_policy(
+    path: Path,
+    blockers: list[str],
+    checkpoint_role: str | None,
+    checkpoint_sha256: str | None,
+) -> None:
     payload = load_json_file(path, "adapter_site_policy", blockers)
     if not isinstance(payload, dict):
         blockers.append("adapter_site_policy_not_object")
@@ -243,12 +289,56 @@ def validate_adapter_site_policy(path: Path, blockers: list[str]) -> None:
         blockers.append("adapter_site_policy_input_shape_mismatch")
     if payload.get("output_shape") != [1, 16, GEMMA4_E4B_HIDDEN_SIZE]:
         blockers.append("adapter_site_policy_output_shape_mismatch")
-    if not is_sha256(str(payload.get("candidate_adapter_sha256", ""))):
+    candidate_sha = str(payload.get("candidate_adapter_sha256", ""))
+    stable_sha = str(payload.get("stable_baseline_adapter_sha256", ""))
+    if not is_sha256(candidate_sha):
         blockers.append("adapter_site_policy_candidate_sha256_invalid")
-    if not is_sha256(str(payload.get("stable_baseline_adapter_sha256", ""))):
+    if not is_sha256(stable_sha):
         blockers.append("adapter_site_policy_stable_sha256_invalid")
+    if checkpoint_role == "candidate" and checkpoint_sha256 and candidate_sha != checkpoint_sha256:
+        blockers.append("adapter_site_policy_candidate_sha256_mismatch")
+    if (
+        checkpoint_role == "stable_baseline"
+        and checkpoint_sha256
+        and stable_sha != checkpoint_sha256
+    ):
+        blockers.append("adapter_site_policy_stable_sha256_mismatch")
     if payload.get("bridge_mse_is_c5_loss") is not False:
         blockers.append("adapter_site_policy_bridge_mse_loss_forbidden")
+
+
+def resolve_component_pack_args(args: argparse.Namespace) -> list[str]:
+    blockers: list[str] = []
+    if not args.decoder_component_pack:
+        return blockers
+    component_pack = Path(args.decoder_component_pack)
+    if not component_pack.is_dir():
+        blockers.append("decoder_component_pack_path_not_found")
+        return blockers
+    if not args.decoder_manifest:
+        args.decoder_manifest = str(component_pack / "decoder_manifest.json")
+    if not args.adapter_site_policy:
+        args.adapter_site_policy = str(component_pack / "adapter_site_policy.json")
+    if not args.lm_head:
+        for filename in LM_HEAD_CANDIDATE_FILENAMES:
+            candidate = component_pack / filename
+            if candidate.is_file():
+                args.lm_head = str(candidate)
+                break
+    return blockers
+
+
+def validate_memory_strategy_args(args: argparse.Namespace) -> list[str]:
+    blockers: list[str] = []
+    if args.vocab_chunk_size <= 0:
+        blockers.append("vocab_chunk_size_zero")
+    if args.vocab_chunk_size > MAX_ACCEPTED_VOCAB_CHUNK_SIZE:
+        blockers.append("vocab_chunk_size_exceeds_streaming_limit")
+    if args.max_generation_tokens <= 0:
+        blockers.append("max_generation_tokens_zero")
+    if args.max_generation_tokens > MAX_ACCEPTED_GENERATION_TOKENS:
+        blockers.append("max_generation_tokens_exceeds_c5_limit")
+    return blockers
 
 
 def validate_optional_runtime_paths(args: argparse.Namespace) -> list[str]:
@@ -281,7 +371,12 @@ def validate_optional_runtime_paths(args: argparse.Namespace) -> list[str]:
         if not adapter_site_policy.is_file():
             blockers.append("adapter_site_policy_path_not_found")
         else:
-            validate_adapter_site_policy(adapter_site_policy, blockers)
+            validate_adapter_site_policy(
+                adapter_site_policy,
+                blockers,
+                args.checkpoint_role,
+                args.checkpoint_sha256,
+            )
     return blockers
 
 
@@ -346,6 +441,18 @@ def build_blocked_report(
             "path_redacted": True,
             "prediction_jsonl_written": bool(args.output_jsonl and args.output_jsonl.exists()),
         },
+        "decoder_component_pack_identity": {
+            "path_string_sha256": path_string_digest(
+                Path(args.decoder_component_pack) if args.decoder_component_pack else None
+            ),
+            "path_redacted": True,
+        },
+        "memory_strategy_contract": {
+            "vocab_chunk_size": args.vocab_chunk_size,
+            "max_generation_tokens": args.max_generation_tokens,
+            "full_bsv_logits_materialization_allowed": False,
+            "streamed_or_chunked_logits_required": True,
+        },
         "raw_boundary_proof": {
             "raw_payload_bytes_in_report": False,
             "checkpoint_payload_copied_to_git": False,
@@ -360,7 +467,7 @@ def build_blocked_report(
 
 
 def validate_args(args: argparse.Namespace) -> list[str]:
-    blockers: list[str] = []
+    blockers = resolve_component_pack_args(args)
     if not args.gemma4_runner:
         blockers.append("gemma4_runner_missing")
     elif not Path(args.gemma4_runner).exists():
@@ -383,6 +490,7 @@ def validate_args(args: argparse.Namespace) -> list[str]:
         blockers.append("heldout_qa_jsonl_inside_git_worktree")
     if args.output_jsonl is not None and is_under(args.output_jsonl, REPO_ROOT):
         blockers.append("output_jsonl_inside_git_worktree")
+    blockers.extend(validate_memory_strategy_args(args))
     blockers.extend(validate_optional_runtime_paths(args))
     return blockers
 
@@ -406,9 +514,14 @@ def native_argv(args: argparse.Namespace) -> list[str]:
         str(args.heldout_qa_jsonl),
         "--output-jsonl",
         str(args.output_jsonl),
+        "--vocab-chunk-size",
+        str(args.vocab_chunk_size),
+        "--max-generation-tokens",
+        str(args.max_generation_tokens),
     ]
     optional = (
         ("--tokenizer-dir", args.tokenizer_dir),
+        ("--decoder-component-pack", args.decoder_component_pack),
         ("--decoder-manifest", args.decoder_manifest),
         ("--lm-head", args.lm_head),
         ("--adapter-site-policy", args.adapter_site_policy),

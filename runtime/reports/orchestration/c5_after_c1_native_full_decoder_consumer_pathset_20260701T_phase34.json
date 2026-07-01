@@ -1,0 +1,130 @@
+{
+  "schema_version": "polymath_c5_after_c1_native_full_decoder_consumer_pathset_v1",
+  "lane": "phase34_native_full_decoder_consumer",
+  "status": "c5_after_c1_native_full_decoder_consumer_pathset_ready_for_custodian",
+  "current_gate": "WaveB_C5_after_C1_full_decoder_exporter_pathset_pending_engineering",
+  "paired_native_status_before_patch": "c5_after_c1_native_full_decoder_logits_pending_exact_unresolved_technical_failure",
+  "first_missing_green_field": "decoder_manifest_missing",
+  "first_unresolved_technical_failure_after_valid_schema_paths": "full_decoder_logits_generation_not_implemented_after_valid_schema_paths",
+  "consumed_artifacts": {
+    "engineering_failure_artifact": {
+      "path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/orchestration/c5_after_c1_full_decoder_logits_runtime_failure_20260701T_engineering.json",
+      "sha256": "6cf8b31689cfaaa247198063fde4ff129f0bc6de391232317571db5a45178931"
+    },
+    "phase34_native_failure_artifact": {
+      "path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/orchestration/c5_after_c1_native_full_decoder_logits_unresolved_after_abf94a_20260701T_phase34.json",
+      "sha256": "eede821fb7a4202161deaccf820aa2d15449066bd46f6846c8b96883075e9285"
+    },
+    "central_state_json_sha256": "5ee907adb339f3085dddf2862dba3ea52b4825379c24c8a5a3127d19e339d0c7",
+    "central_state_md_sha256": "caea4c7e31a6445bd117c2f9c9da79c47b366960536a7421277c9a08ef3631ae"
+  },
+  "implemented_consumer_boundary": {
+    "native_cli": [
+      "gemma4_layer_runner --run-c5-qa-predict",
+      "--decoder-component-pack <outside_git_c5_decoder_component_pack>",
+      "--decoder-manifest <outside_git_decoder_manifest>",
+      "--lm-head <outside_git_lm_head_or_unembedding>",
+      "--adapter-site-policy <outside_git_adapter_site_policy>",
+      "--vocab-chunk-size <N>",
+      "--max-generation-tokens <N>"
+    ],
+    "component_pack_layout": {
+      "decoder_manifest": "decoder_manifest.json",
+      "adapter_site_policy": "adapter_site_policy.json",
+      "lm_head_or_unembedding_candidates": [
+        "lm_head_or_unembedding.bf16",
+        "lm_head_or_unembedding.f16",
+        "lm_head_or_unembedding.f32",
+        "lm_head.bf16",
+        "lm_head.f16",
+        "lm_head.f32",
+        "unembedding.bf16",
+        "unembedding.f16",
+        "unembedding.f32"
+      ]
+    },
+    "fail_closed_guards": [
+      "host and native reject two-layer/checkpoint-only decoder manifests",
+      "host and native reject adapter policies whose candidate/stable SHA does not match the checkpoint role and checkpoint SHA being evaluated",
+      "host and native reject manifests that advertise full B*S*V logits materialization",
+      "host and native enforce vocab_chunk_size <= 16384 and max_generation_tokens <= 512",
+      "native report includes redacted component-pack and resolved-path identities",
+      "native valid-schema synthetic pack still stops at full_decoder_logits_generation_not_implemented and writes no prediction JSONL"
+    ],
+    "memory_strategy_contract": {
+      "default_vocab_chunk_size": 4096,
+      "max_accepted_vocab_chunk_size": 16384,
+      "default_max_generation_tokens": 128,
+      "max_accepted_generation_tokens": 512,
+      "full_bsv_logits_materialization_allowed": false,
+      "streamed_or_chunked_logits_required": true
+    }
+  },
+  "source_pathset": {
+    "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/include/polymath/gemma4/c5_qa_inference.h": {
+      "sha256": "aeaa7b1f14b09aa686f04e833bc3fa7812858a794dfed3210719c64e833c2fb1",
+      "role": "adds decoder_component_pack_dir, vocab_chunk_size, and max_generation_tokens to C5QaInferenceRequest"
+    },
+    "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_qa_inference.cpp": {
+      "sha256": "aaa899673cd09616557e5977558a5633af2366fff72479ea80d5d7b5ae54d7e4",
+      "role": "resolves component packs, enforces schema/policy/memory guards, reports redacted identities, and keeps terminal full-decoder not-implemented stop"
+    },
+    "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/runner/main.cpp": {
+      "sha256": "01b60b73fb21146474b3838f30a9ecaef163504c415aa3a50e4de949cf6d934e",
+      "role": "threads decoder component pack and memory flags into gemma4_layer_runner --run-c5-qa-predict"
+    },
+    "scripts/host/run_c5_phase34_qa_inference_producer.py": {
+      "sha256": "8476ecfa9ee8b5aa12822a1222245aff18e4e9d4536a775957960e9d38f4bd20",
+      "role": "resolves outside-git component packs before native invocation and mirrors schema/policy/memory guards"
+    },
+    "tests/test_c5_phase34_qa_inference_producer.py": {
+      "sha256": "7d89d55afd5b8dde1a2cc29e0544af67bc3e59e8a14148dd0adf583529c1c988",
+      "role": "covers component-pack contract, adapter SHA binding, unsafe full-logits rejection, and fail-closed native behavior"
+    }
+  },
+  "first_test_to_turn_green_after_exporter_pack": {
+    "command": "gemma4_layer_runner --run-c5-qa-predict --run-label <run> --eval-point C5_after_C1 --checkpoint-role candidate --checkpoint-payload <outside_git_candidate_adapter> --checkpoint-sha256 1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f --heldout-qa-jsonl /tmp/polymath_c5/C5_after_C1/phase_C1_test.qa.jsonl --output-jsonl /tmp/polymath_c5/C5_after_C1/candidate_predictions.jsonl --tokenizer-dir /data/local/tmp/polymath_gemma4_gate/tokenizer/gemma4_e4b_bpe_v1 --decoder-component-pack <outside_git_c5_decoder_component_pack> --vocab-chunk-size 4096 --max-generation-tokens 128",
+    "expected_before_logits_body": "blocked with full_decoder_logits_generation_not_implemented and prediction_jsonl_written=false",
+    "expected_after_logits_body": "outside-git JSONL rows with record_id, prediction, finite nonnegative loss, and confidence in [0,1]"
+  },
+  "remaining_execution_requirement": {
+    "status": "component_pack_and_real_logits_body_still_pending",
+    "needed_from_engineering_exporter": [
+      "outside-git decoder_manifest.json with polymath_c5_full_decoder_manifest_v1 and full E4B dimensions",
+      "outside-git LM-head/unembedding tensor identity/path or embedded proof",
+      "outside-git adapter_site_policy.json binding rank-16 adapter to concrete decoder layer/site and accepted candidate/stable SHAs",
+      "full decoder layer weights/runtime plus streamed/chunked logits implementation behind c5_qa_inference.cpp::run_c5_qa_predict",
+      "finite candidate_train_loss from the same real logits/training objective"
+    ]
+  },
+  "verification_commands": [
+    "python3.11 -m py_compile scripts/host/run_c5_phase34_qa_inference_producer.py -> passed",
+    "python3.11 -m pytest -q tests/test_c5_phase34_qa_inference_producer.py -> 7 passed",
+    "cmake --build build/gemma4_megakernel_host --target gemma4_layer_runner -j 8 -> built",
+    "python3.11 -m pytest -q tests/test_c5_phase34_qa_inference_producer.py tests/test_c5_prediction_payloads.py -> 11 passed",
+    "ctest --test-dir build/gemma4_megakernel_host --output-on-failure -> 4/4 passed",
+    "native synthetic valid component-pack probe -> returncode 13, first_missing_green_field full_decoder_logits_generation_not_implemented, output_jsonl_exists false",
+    "git diff --check -- edited pathset -> clean"
+  ],
+  "raw_boundary_proof": {
+    "raw_qa_jsonl_copied_to_git": false,
+    "raw_prediction_jsonl_copied_to_git": false,
+    "raw_checkpoint_or_adapter_payload_copied_to_git": false,
+    "raw_model_or_tensor_payload_copied_to_git": false,
+    "hf_or_comet_called": false,
+    "phone_gate_run": false
+  },
+  "next_action": "Repo Custodian reviews/freezes the five-file source/test pathset. Engineering exporter then supplies the outside-git component pack and implements/replaces the terminal native full_decoder_logits_generation_not_implemented branch with streamed/chunked logits generation and teacher-forced answer loss.",
+  "user_action_required": false,
+  "nonclaims": [
+    "no C5 pass",
+    "no prediction JSONL emitted by real model",
+    "no logits, loss, confidence, candidate_train_loss, or C5 metrics fabricated",
+    "no bridge MSE relabeled as C5 loss",
+    "no learning or model-quality claim",
+    "no Phase3 readiness claim",
+    "no Phase4 readiness claim",
+    "not 100k or 1M Phase2 authority",
+    "no HF, Comet, API, secrets, staging, commit, or push"
+  ]
+}

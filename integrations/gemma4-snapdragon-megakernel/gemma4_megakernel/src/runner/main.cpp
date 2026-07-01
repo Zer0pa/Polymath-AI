@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <cstdint>
 #include <iostream>
+#include <limits>
 #include <string>
 
 #include "polymath/gemma4/adapter_training.h"
@@ -27,6 +28,7 @@ void print_help() {
       << "                           [--run-h11f-topk-kl-compact TOKEN_CACHE ASSETS PACK0 PACK1 CHECKPOINT TEACHER_SHARD OUT_DIR LR RANK APPLY_UPDATE]\n"
       << "                           [--run-h11f-topk-kl-layer1-compact TOKEN_CACHE ASSETS PACK0 PACK1 CHECKPOINT TEACHER_SHARD OUT_DIR LR RANK APPLY_UPDATE]\n"
       << "                           [--run-c5-qa-predict --run-label LABEL --eval-point POINT --checkpoint-role ROLE --checkpoint-payload PATH --checkpoint-sha256 SHA --heldout-qa-jsonl PATH --output-jsonl PATH]\n"
+      << "                           [--decoder-component-pack DIR | --decoder-manifest PATH --lm-head PATH --adapter-site-policy PATH] [--vocab-chunk-size N] [--max-generation-tokens N]\n"
       << "                           [--tokenize-pack TOKENIZER_DIR RAW_TEXT OUT_DIR SEQ N URL]\n"
       << "\n"
       << "Current authority gates: Gemma 4 E4B layer forward-only and stack\n"
@@ -44,6 +46,18 @@ std::string require_named_value(int argc, char** argv, int& index,
   }
   ++index;
   return argv[index];
+}
+
+std::uint32_t require_named_u32(int argc, char** argv, int& index,
+                                const std::string& flag) {
+  const std::string value = require_named_value(argc, argv, index, flag);
+  std::size_t parsed_characters = 0;
+  const unsigned long parsed = std::stoul(value, &parsed_characters);
+  if (parsed_characters != value.size() ||
+      parsed > std::numeric_limits<std::uint32_t>::max()) {
+    throw std::invalid_argument(flag + " requires uint32");
+  }
+  return static_cast<std::uint32_t>(parsed);
 }
 
 void write_pack_validation_json(const std::string& pack_dir,
@@ -284,12 +298,19 @@ int run_c5_qa_predict(int argc, char** argv, int index) {
       request.output_jsonl_path = require_named_value(argc, argv, arg_index, flag);
     } else if (flag == "--tokenizer-dir") {
       request.tokenizer_dir = require_named_value(argc, argv, arg_index, flag);
+    } else if (flag == "--decoder-component-pack") {
+      request.decoder_component_pack_dir =
+          require_named_value(argc, argv, arg_index, flag);
     } else if (flag == "--decoder-manifest") {
       request.decoder_manifest_path = require_named_value(argc, argv, arg_index, flag);
     } else if (flag == "--lm-head") {
       request.lm_head_path = require_named_value(argc, argv, arg_index, flag);
     } else if (flag == "--adapter-site-policy") {
       request.adapter_site_policy_path = require_named_value(argc, argv, arg_index, flag);
+    } else if (flag == "--vocab-chunk-size") {
+      request.vocab_chunk_size = require_named_u32(argc, argv, arg_index, flag);
+    } else if (flag == "--max-generation-tokens") {
+      request.max_generation_tokens = require_named_u32(argc, argv, arg_index, flag);
     } else {
       throw std::invalid_argument("unknown --run-c5-qa-predict argument: " + flag);
     }
