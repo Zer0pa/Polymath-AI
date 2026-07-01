@@ -262,7 +262,7 @@ def test_c5_full_decoder_exporter_accepts_reduced_kv_rows_with_512_norms(
     assert layer5["attention_layout"]["k_norm_shape"] == [512]
 
 
-def test_c5_full_decoder_exporter_rejects_norm_shape_not_matching_k_norm(
+def test_c5_full_decoder_exporter_accepts_independent_k_norm_width(
     tmp_path: Path,
 ) -> None:
     model = tmp_path / "model.safetensors"
@@ -270,7 +270,44 @@ def test_c5_full_decoder_exporter_rejects_norm_shape_not_matching_k_norm(
     _write_mock_full_decoder_safetensors(
         model,
         embed_bytes=b"abcd",
-        per_layer_role_shapes={5: {"self_attn.q_norm.weight": [256]}},
+        per_layer_role_shapes={0: {"self_attn.k_norm.weight": [256]}},
+    )
+
+    result = subprocess.run(
+        [
+            "python3.11",
+            str(EXPORTER),
+            "--model-safetensors",
+            str(model),
+            "--out",
+            str(output_dir),
+            "--candidate-adapter-sha",
+            VALID_SHA,
+            "--stable-baseline-sha",
+            VALID_STABLE_SHA,
+        ],
+        cwd=ROOT,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+
+    assert result.returncode == 0, result.stderr + result.stdout
+    decoder_manifest = json.loads((output_dir / "decoder_manifest.json").read_text())
+    layer0 = decoder_manifest["tensor_role_inventory"]["layers"][0]
+    assert layer0["attention_layout"]["q_norm_shape"] == [512]
+    assert layer0["attention_layout"]["k_norm_shape"] == [256]
+
+
+def test_c5_full_decoder_exporter_rejects_incompatible_norm_width(
+    tmp_path: Path,
+) -> None:
+    model = tmp_path / "model.safetensors"
+    output_dir = tmp_path / "component_pack"
+    _write_mock_full_decoder_safetensors(
+        model,
+        embed_bytes=b"abcd",
+        per_layer_role_shapes={5: {"self_attn.q_norm.weight": [768]}},
     )
 
     result = subprocess.run(
@@ -296,7 +333,7 @@ def test_c5_full_decoder_exporter_rejects_norm_shape_not_matching_k_norm(
     payload = json.loads(result.stdout)
     assert (
         payload["first_missing_green_field"]
-        == "decoder_layer_5_self_attn_q_norm_shape_mismatch_expected_[512]_actual_[256]"
+        == "decoder_layer_5_self_attn_q_norm_shape_mismatch_expected_{\"rank\":1,\"dim0_multiple_of\":256,\"dim0_at_most_q_proj_dim0\":true,\"q_proj_dim0_multiple_of_dim0\":true,\"dim0_compatible_with_projection_dim0\":true}_actual_[768]"
     )
     assert not output_dir.exists()
 

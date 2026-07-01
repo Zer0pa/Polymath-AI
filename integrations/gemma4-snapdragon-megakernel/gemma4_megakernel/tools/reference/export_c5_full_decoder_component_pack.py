@@ -446,31 +446,20 @@ def attention_layout_for_layer(layer_index: int, roles: dict[str, Any]) -> dict[
         raise ValueError(f"decoder_layer_{layer_index}_q_o_head_shape_mismatch")
     if key_heads == 0 or query_heads == 0 or query_heads % key_heads:
         raise ValueError(f"decoder_layer_{layer_index}_attention_head_grouping_invalid")
-    expected_norm_shape = k_norm_shape
-    if q_norm_shape != expected_norm_shape:
-        raise ValueError(
-            shape_mismatch_message(
-                f"decoder_layer_{layer_index}_self_attn_q_norm",
-                expected_norm_shape,
-                q_norm_shape,
-            )
-        )
-    norm_width = q_norm_shape[0]
-    if norm_width < k_shape[0] or norm_width % k_shape[0] or q_shape[0] % norm_width:
-        expected_norm_layout = {
-            "rank": 1,
-            "dim0_multiple_of": HEAD_DIM,
-            "dim0_at_least": k_shape[0],
-            "dim0_multiple_of_k_proj_dim0": True,
-            "q_proj_dim0_multiple_of_dim0": True,
-        }
-        raise ValueError(
-            shape_mismatch_message(
-                f"decoder_layer_{layer_index}_self_attn_k_norm",
-                expected_norm_layout,
-                k_norm_shape,
-            )
-        )
+    validate_attention_norm_shape(
+        layer_index=layer_index,
+        role_name="q_norm",
+        norm_shape=q_norm_shape,
+        q_proj_rows=q_shape[0],
+        projected_rows=q_shape[0],
+    )
+    validate_attention_norm_shape(
+        layer_index=layer_index,
+        role_name="k_norm",
+        norm_shape=k_norm_shape,
+        q_proj_rows=q_shape[0],
+        projected_rows=k_shape[0],
+    )
     return {
         "query_heads": query_heads,
         "key_value_heads": key_heads,
@@ -483,6 +472,37 @@ def attention_layout_for_layer(layer_index: int, roles: dict[str, Any]) -> dict[
         "q_norm_shape": q_norm_shape,
         "k_norm_shape": k_norm_shape,
     }
+
+
+def validate_attention_norm_shape(
+    *,
+    layer_index: int,
+    role_name: str,
+    norm_shape: list[int],
+    q_proj_rows: int,
+    projected_rows: int,
+) -> None:
+    norm_width = norm_shape[0]
+    expected_layout = {
+        "rank": 1,
+        "dim0_multiple_of": HEAD_DIM,
+        "dim0_at_most_q_proj_dim0": True,
+        "q_proj_dim0_multiple_of_dim0": True,
+        "dim0_compatible_with_projection_dim0": True,
+    }
+    norm_tiles_query = norm_width <= q_proj_rows and q_proj_rows % norm_width == 0
+    norm_matches_projection = (
+        projected_rows % norm_width == 0 or norm_width % projected_rows == 0
+    )
+    if norm_tiles_query and norm_matches_projection:
+        return
+    raise ValueError(
+        shape_mismatch_message(
+            f"decoder_layer_{layer_index}_self_attn_{role_name}",
+            expected_layout,
+            norm_shape,
+        )
+    )
 
 
 def build_architecture_config() -> dict[str, Any]:

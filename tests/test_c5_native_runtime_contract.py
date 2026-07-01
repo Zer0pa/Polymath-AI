@@ -77,10 +77,27 @@ def test_native_c5_runtime_accepts_layer_variant_attention_layout(tmp_path: Path
     assert not paths["output_jsonl"].exists()
 
 
-def test_native_c5_runtime_rejects_norm_shape_not_matching_kv_width(tmp_path: Path) -> None:
+def test_native_c5_runtime_accepts_independent_k_norm_width(tmp_path: Path) -> None:
     paths = _write_component_pack(
         tmp_path,
         tensor_mutation=lambda key, entry: entry.update({"shape": [256]})
+        if key.endswith("layers.0.self_attn.k_norm.weight")
+        else None,
+    )
+
+    result = _run_native(paths)
+    payload = json.loads(result.stdout)
+
+    assert result.returncode == 13
+    assert payload["first_missing_green_field"] == "full_decoder_logits_generation_kernel_not_implemented"
+    assert payload["blockers"] == ["full_decoder_logits_generation_kernel_not_implemented"]
+    assert not paths["output_jsonl"].exists()
+
+
+def test_native_c5_runtime_rejects_incompatible_norm_width(tmp_path: Path) -> None:
+    paths = _write_component_pack(
+        tmp_path,
+        tensor_mutation=lambda key, entry: entry.update({"shape": [768]})
         if key.endswith("layers.5.self_attn.q_norm.weight")
         else None,
     )

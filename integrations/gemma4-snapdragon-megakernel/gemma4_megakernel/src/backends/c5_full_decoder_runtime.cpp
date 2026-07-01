@@ -478,6 +478,20 @@ Status validate_role_tensor(const SafetensorsReader& reader,
   return Status::ok();
 }
 
+bool norm_width_compatible_with_projection(std::uint64_t norm_width,
+                                           std::uint64_t q_proj_rows,
+                                           std::uint64_t projected_rows) {
+  if (norm_width == 0U || q_proj_rows == 0U || projected_rows == 0U) {
+    return false;
+  }
+  if ((norm_width % kHeadDim) != 0U || norm_width > q_proj_rows ||
+      (q_proj_rows % norm_width) != 0U) {
+    return false;
+  }
+  return (projected_rows % norm_width) == 0U ||
+         (norm_width % projected_rows) == 0U;
+}
+
 void append_attention_layout_blockers(const SafetensorsReader& reader,
                                       std::uint32_t layer,
                                       std::vector<std::string>& blockers) {
@@ -519,14 +533,13 @@ void append_attention_layout_blockers(const SafetensorsReader& reader,
     blockers.push_back("safetensors_attention_head_grouping_invalid:" +
                        std::to_string(layer));
   }
-  if (q_norm->shape[0] != k_norm->shape[0]) {
+  if (!norm_width_compatible_with_projection(q_norm->shape[0], q->shape[0],
+                                             q->shape[0])) {
     blockers.push_back("safetensors_attention_q_norm_shape_mismatch:" +
                        std::to_string(layer));
   }
-  const std::uint64_t norm_width = q_norm->shape[0];
-  if (k->shape[0] == 0U || norm_width == 0U || norm_width < k->shape[0] ||
-      (norm_width % k->shape[0]) != 0U ||
-      (q->shape[0] % norm_width) != 0U) {
+  if (!norm_width_compatible_with_projection(k_norm->shape[0], q->shape[0],
+                                             k->shape[0])) {
     blockers.push_back("safetensors_attention_k_norm_shape_mismatch:" +
                        std::to_string(layer));
   }

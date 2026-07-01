@@ -1,0 +1,60 @@
+{
+  "schema_version": "polymath_c5_after_c1_exporter_k_norm_layout_repair_v1",
+  "status": "pathset_ready_for_custodian",
+  "current_gate": "WaveB_C5_after_C1_exporter_k_norm_layout_repair_custody_pending",
+  "status_classification": "PENDING_ACTION_REPO_CUSTODY_EXPORTER_K_NORM_LAYOUT_REPAIR",
+  "first_missing_green_field": "repo_custody_freeze_exporter_k_norm_layout_repair",
+  "repaired_blocker": "decoder_layer_0_self_attn_k_norm_shape_mismatch_expected_{\"rank\":1,\"dim0_multiple_of\":256,\"dim0_at_least\":512,\"dim0_multiple_of_k_proj_dim0\":true,\"q_proj_dim0_multiple_of_dim0\":true}_actual_[256]",
+  "execution_evidence": {
+    "consumed_commit": "11801cbd360786e707fde58c70a5e82a65de0ed7",
+    "exporter_sha256_verified": "0ce0a3dc8fc2d53b8c71964ed732abaedcda0d4a8938d359fc53b5ed2bca78e7",
+    "model_safetensors_sha256_verified": "43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651",
+    "model_safetensors_size_bytes": 15992595884,
+    "exporter_exit_code": 2,
+    "blocker_log_path": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/exporter_11801cb_q_norm_layout_repair_rerun/export_stdout_11801cb.log",
+    "blocker_log_sha256": "70e90d89fe4e236fc5c7c1f43cce677650999440e810c390cec6e4491e5f9a89",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "patch_meaning": [
+    "Exporter and native validator no longer require q_norm and k_norm widths to be identical.",
+    "q_norm is validated against q projection rows.",
+    "k_norm is validated independently against q projection rows and k projection rows.",
+    "Norm widths must remain rank-1, head-dim aligned, not wider than q projection rows, must tile q projection rows, and must be compatible with the corresponding projection rows in either divisor direction.",
+    "The real phone failure shape, q_norm [512] with k_norm [256], is covered by exporter and native regression tests.",
+    "Validation remains fail-closed for incompatible norm widths, dtype/shape/range errors, and missing runtime compute body."
+  ],
+  "artifact_paths": [
+    "runtime/reports/orchestration/c5_after_c1_exporter_k_norm_layout_repair_20260701T_engineering.json",
+    "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py",
+    "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp",
+    "tests/test_c5_full_decoder_exporter.py",
+    "tests/test_c5_native_runtime_contract.py",
+    "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json",
+    "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md"
+  ],
+  "verification_commands": [
+    "python3.11 -m py_compile integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py tests/test_c5_full_decoder_exporter.py tests/test_c5_native_runtime_contract.py -> passed",
+    "python3.11 -m pytest -q tests/test_c5_full_decoder_exporter.py -> 11 passed",
+    "cmake --build build/gemma4_megakernel_host --target gemma4_layer_runner -j 8 -> built",
+    "git diff --check on exact code/test pathset -> passed",
+    "python3.11 -m pytest -q tests/test_c5_native_runtime_contract.py -> 7 passed",
+    "ctest --test-dir build/gemma4_megakernel_host --output-on-failure -> 4/4 passed",
+    "python3.11 -m pytest -q tests/test_c5_full_decoder_exporter.py tests/test_c5_native_runtime_contract.py tests/test_c5_phase34_qa_inference_producer.py tests/test_c5_prediction_payloads.py -> 30 passed"
+  ],
+  "next_action": "Repo Custodian freezes the exact k_norm repair pathset. After custody, Execution reruns the same phone-local exporter command from the frozen commit against the existing phone-held model.",
+  "authorization_needed": "none",
+  "user_action_required": false,
+  "raw_boundary": "Metadata/code/test/report pathset only; no raw model, checkpoint, adapter, tensor, prediction JSONL, .bin, .raw, .f16, .qai1, .pqa1, or .pjp1 payload is included.",
+  "nonclaims": [
+    "no C5 pass",
+    "no executed C5 metrics",
+    "no prediction JSONL",
+    "no logits/loss/confidence/candidate_train_loss",
+    "no bridge MSE relabeled as C5 loss",
+    "no learning/model-quality claim",
+    "no Phase3 readiness",
+    "no Phase4 readiness",
+    "no raw payload committed",
+    "no secrets printed"
+  ]
+}
