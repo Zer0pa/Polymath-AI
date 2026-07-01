@@ -1,63 +1,75 @@
 # Executive Delivery State
 
-Updated UTC: `2026-07-01T16:59:07Z`
+Updated UTC: `2026-07-01T17:09:07Z`
 
 ## Current Gate
 
-`WaveB_C5_after_C1_opencl_runtime_discovery_repair_custody_pending_after_phase34_pathset`
+`WaveB_C5_after_C1_bounded_opencl_icd_vendor_loader_sprint_required_after_repeated_clgetplatformids_minus1001`
 
-Status classification: `PENDING_ACTION_REPO_CUSTODIAN_OPENCL_RUNTIME_DISCOVERY_REPAIR_FREEZE`
+Status classification: `PENDING_ACTION_PHASE34_BOUNDED_OPENCL_ICD_VENDOR_LOADER_SPRINT`
 
-Owner: Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050 is actively verifying/freezing the Phase3/4 OpenCL runtime discovery repair pathset; Phase3/4 has handed off; Execution remains parked until a repair commit exists.
+Owner: Phase3/4 Engineer `019f13da-d897-7ba2-8ed1-b959892f5ed4` owns the bounded OpenCL ICD/vendor-loader sprint. Execution is parked after repeated same-field phone proof until Phase3/4 supplies a frozen repair or exact bounded probe command.
 
 User action required: `false`
 
 Dominant failure domain: `phase5_eval_failure`
 
-Research escalation: `none; first repair for the current repaired-manifest OpenCL platform availability field is in custody.`
+Research escalation: `bounded_sprint_required`
 
 ## Artifact Waiting On
 
-- Repo Custodian completes verification/freeze/push of the Phase3/4 OpenCL runtime discovery repair pathset handed off by `019f13da-d897-7ba2-8ed1-b959892f5ed4`.
-- Frozen pathset must remain the existing native C5 runner surface; no parallel evaluator and no OpenCL parity bypass.
-- First post-custody green field: `PENDING_ACTION_EXECUTION_REBUILD_COPY_RUNNER_AND_BOUNDED_PHONE_PROBE`.
-- Execution remains parked until a repair commit exists or a bounded follow-up probe command is supplied.
+- Phase3/4 bounded OpenCL ICD/vendor-loader sprint for the repeated RedMagic/Termux `clGetPlatformIDs -1001` failure.
+- Metadata-only evidence root: `runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_d9c1fe_opencl_discovery`.
+- Required return: custody-ready source/test/report pathset, exact bounded follow-up phone probe command using `--opencl-library` or `POLYMATH_GEMMA4_OPENCL_LIBRARY`/`POLYMATH_GEMMA4_OPENCL_LIBRARY_PATHS`, or a precise source/runtime blocker.
+- Execution remains parked; no C5 pass, metrics, prediction JSONL, logits, loss, confidence, or `candidate_train_loss` exists.
 
 ## Last Concrete Action
 
-Phase3/4 completed the OpenCL runtime discovery repair pathset and sent it to Repo Custodian.
+Repo Custodian froze the OpenCL runtime discovery repair and its prior central mirror:
 
-Pathset evidence:
-- report: `runtime/reports/orchestration/c5_after_c1_opencl_runtime_discovery_repair_20260701T_phase34.json` SHA `6a5de7ae94e18cbb4eeaa78eecf1fc6ac81ec75d44e363262735ac1af7f9811e`
-- `opencl_layer_runner.h`: `9261cf4b42f5bbf4519793e4d4a50624cb5c683b4b81c91452c5a8f44b5b46e7`
-- `c5_qa_inference.h`: `ca4bc6ed226c5f59c1df7fdf24e8e233d6606969f367ec808353dcff6e529e06`
-- `main.cpp`: `c3b906553ce7d00e65a06d7425ba55ed8a8ade7d18550394952103c427fe73ca`
-- `opencl_layer_runner.cpp`: `ba6779769201949b9e611eed3e7f52cca205b6aee7f41b81a9e96df42d06c760`
-- `c5_full_decoder_runtime.cpp`: `2776090c77f66c5e9fdaf9601d46dc648398d245be69131efcfb507cea31804d`
-- `c5_qa_inference.cpp`: `92440c1d9c9cd66ff15195d28f77bb42738488face7be749fa7cdb07463f9fb8`
-- `test_c5_native_runtime_contract.py`: `3cfa4de756effb92acc65c6c22cb6d8b7b57e727fb0caff91076dd328cbef8a0`
+- repair commit: `2c612931b32bef8b9e7ce68cbe42742e0d3bd01b`
+- central mirror commit: `d9c1fe1f188234ff2c2c5ec14f6ace3e914d08e2`
 
-Reported Phase3/4 verification: CMake warnings-as-errors build passed; focused native tests `13 passed`; broader C5 suite `40 passed`; `ctest` `4/4`; JSON/diff/raw-boundary checks passed.
+Execution consumed the repair, restored Termux SSH, built the repaired runner from `d9c1fe1`, verified the new `--opencl-library` surface, and reran the bounded `C5_after_C1` phone probe without override. The same field repeated with default Android-vendor-first discovery active and no CLI/env override configured:
 
-Repo Custodian is active on this freeze. No Execution rerun has been requested yet.
+`c5_full_decoder_opencl_parity_runtime_unavailable:opencl_single_token_layer_runtime_unavailable:clGetPlatformIDs count failed with OpenCL error -1001`
+
+Probe evidence:
+
+- `candidate_probe_stdout.json` SHA `de3f059a9c3c038b6bba934eaee7a74c1bd52c0d73bda98852fc20cc9ffabb92`
+- `candidate_probe_stderr.log` SHA `090f6c91104f21f2e00715c1e02032811043d8710ae22bb671949a5b99f1872f`
+- `meminfo_before.txt` SHA `ab97b0e9186fc0d600f32871cda127f10b09c7ed88c5fe14ce4f135e423be4f6`
+- `meminfo_after.txt` SHA `32d877480366340c256efa601e681ebc4147067a72602290b707f3946aa1ff9c`
+
+Raw boundary remains clean: no prediction JSONL was written, no checkpoint payload was copied into repo, and reports contain metadata only.
 
 ## First Missing Green Field
 
-Current: `opencl_runtime_discovery_repair_custody_commit_missing`
+Current: `bounded_opencl_icd_vendor_loader_sprint_pathset_or_probe_command_missing`
 
 ## Next Concrete Action
 
-Repo Custodian finishes the active OpenCL runtime discovery repair freeze and returns commit/SHA. Then Engineering updates the central mirror to the repair commit and routes Execution to rebuild/copy the repaired runner and rerun only the bounded C5_after_C1 phone probe.
+Phase3/4 must inspect the repeated probe evidence and return one of:
+
+- a custody-ready OpenCL ICD/vendor-loader repair pathset,
+- an exact bounded Execution probe command using explicit OpenCL loader configuration,
+- or a precise source/runtime blocker.
+
+If a source patch is needed, Repo Custodian freezes it before Execution reruns. If only phone discovery is needed, route the exact bounded command to Execution.
 
 ## Drift Deletion / Hardening
 
-per_layer_input_runtime drift is repaired and verified by the regenerated 58872fd manifest. Current drift is OpenCL runtime discovery/loading under Termux/RedMagic; Phase3/4 repair pathset is custody-pending and not yet an executable frozen repair.
+OpenCL runtime discovery/loading remains the active drift: the default Android-vendor-first repair is frozen but still reaches clGetPlatformIDs -1001 under Termux/RedMagic. This is now a repeated same-field runtime/resource failure and requires bounded sprint escalation, not another passive probe.
+
+## Recursive Improvement Next Step
+
+Bounded sprint narrows Android/Termux OpenCL ICD/vendor-loader behavior. Smallest proof is either an explicit --opencl-library/env override probe or a source patch that reports the discovered loader path redacted/hash-only, followed by one bounded C5_after_C1 phone probe.
 
 ## Threads Nudged This Tick
 
-- Repo Custodian `019f1ac2-0f0f-7721-bf46-ad402dbd9050`: polled active on the OpenCL runtime discovery repair freeze; central mirror freeze queued after this update.
-- Phase3/4 Engineer `019f13da-d897-7ba2-8ed1-b959892f5ed4`: polled complete with `opencl_runtime_discovery_repair_pathset_ready_for_custodian`; no duplicate nudge.
-- Execution Orchestrator `019f138c-fb51-7c53-a41a-ab8eac950d9c`: polled parked after OpenCL runtime-unavailable proof; no rerun nudge until repair frozen.
+- Phase3/4 Engineer `019f13da-d897-7ba2-8ed1-b959892f5ed4`: routed bounded OpenCL ICD/vendor-loader sprint with exact repeated failure artifacts and fail-fast boundary.
+- Repo Custodian `019f1ac2-0f0f-7721-bf46-ad402dbd9050`: routed two-file central mirror freeze after this metadata-only update.
+- Execution Orchestrator `019f138c-fb51-7c53-a41a-ab8eac950d9c`: polled active/finalizing repeated probe evidence; not nudged while active.
 - Training Material Steward, Pipeline Integrator, UI Engineer, Engineering Orchestrator: polled/not current owner; no nudge.
 
 ## Nonclaims Preserved
