@@ -54,6 +54,10 @@ struct QaTokenization {
   std::vector<std::uint32_t> answer_tokens;
 };
 
+struct SingleLayerBody {
+  std::vector<float> output_row;
+};
+
 std::vector<RoleSpec> role_specs() {
   return {
       {"input_layernorm", "input_layernorm.weight", {kHiddenSize}},
@@ -211,6 +215,61 @@ Status decode_tensor_slice_f32(const SafetensorsReader& reader,
   return decode_tensor_f32(slice, bytes, output);
 }
 
+Status decode_tensor_slice_f32_from_stream(const SafetensorsReader& reader,
+                                           std::ifstream& file,
+                                           const std::string& key,
+                                           std::uint64_t element_offset,
+                                           std::uint64_t element_count,
+                                           std::uint64_t max_bytes,
+                                           std::vector<float>& output) {
+  output.clear();
+  const SafetensorsTensorInfo* tensor = reader.find_tensor(key);
+  if (tensor == nullptr) {
+    return Status::invalid("safetensors_tensor_missing:" + key);
+  }
+  const std::uint64_t element_bytes = tensor_element_bytes(*tensor);
+  if (element_bytes == 0U) {
+    return Status::invalid("safetensors_tensor_dtype_unsupported:" + key);
+  }
+  if (element_count == 0U ||
+      element_count > (std::numeric_limits<std::uint64_t>::max() / element_bytes) ||
+      element_offset > (std::numeric_limits<std::uint64_t>::max() / element_bytes)) {
+    return Status::invalid("safetensors_tensor_slice_element_range_invalid:" + key);
+  }
+  const std::uint64_t relative_offset = element_offset * element_bytes;
+  const std::uint64_t byte_count = element_count * element_bytes;
+  if (tensor->byte_length == 0U) {
+    return Status::invalid("safetensors_tensor_empty:" + key);
+  }
+  if (max_bytes == 0U || byte_count > max_bytes) {
+    return Status::invalid("safetensors_tensor_read_exceeds_limit:" + key);
+  }
+  if (relative_offset > tensor->byte_length ||
+      byte_count > (tensor->byte_length - relative_offset)) {
+    return Status::invalid("safetensors_tensor_slice_range_invalid:" + key);
+  }
+  const std::uint64_t absolute_begin =
+      tensor->absolute_data_offset_begin + relative_offset;
+  const std::uint64_t absolute_end = absolute_begin + byte_count;
+  if (absolute_end > reader.metadata().file_size_bytes ||
+      absolute_end < absolute_begin ||
+      absolute_begin < tensor->absolute_data_offset_begin ||
+      absolute_end > tensor->absolute_data_offset_end) {
+    return Status::invalid("safetensors_tensor_range_invalid:" + key);
+  }
+  file.clear();
+  file.seekg(static_cast<std::streamoff>(absolute_begin), std::ios::beg);
+  std::vector<std::uint8_t> bytes(static_cast<std::size_t>(byte_count));
+  file.read(reinterpret_cast<char*>(bytes.data()),
+            static_cast<std::streamsize>(bytes.size()));
+  if (file.gcount() != static_cast<std::streamsize>(bytes.size())) {
+    return Status::invalid("safetensors_tensor_read_truncated:" + key);
+  }
+  SafetensorsTensorInfo slice = *tensor;
+  slice.shape = {element_count};
+  return decode_tensor_f32(slice, bytes, output);
+}
+
 Status decode_full_tensor_f32_limited(const SafetensorsReader& reader,
                                       const std::string& key,
                                       std::uint64_t expected_elements,
@@ -232,6 +291,172 @@ Status decode_full_tensor_f32_limited(const SafetensorsReader& reader,
   }
   if (output.size() != expected_elements) {
     return Status::invalid("c5_full_decoder_tensor_element_count_mismatch:" + key);
+  }
+  return Status::ok();
+}
+
+std::string layer_key(std::uint32_t layer_index, const std::string& suffix) {
+  return "model.language_model.layers." + std::to_string(layer_index) + "." +
+         suffix;
+}
+
+Status decode_layer_vector(const SafetensorsReader& reader,
+                           std::uint32_t layer_index,
+                           const std::string& suffix,
+                           std::uint64_t expected_elements,
+                           std::vector<float>& output) {
+  const std::string key = layer_key(layer_index, suffix);
+  return decode_full_tensor_f32_limited(
+      reader, key, expected_elements, expected_elements * sizeof(float), output);
+}
+
+Status linear_row_major_streamed(const SafetensorsReader& reader,
+                                 std::ifstream& file,
+                                 const std::string& key,
+                                 const std::vector<float>& input,
+                                 std::vector<float>& output) {
+  output.clear();
+  const SafetensorsTensorInfo* tensor = reader.find_tensor(key);
+  if (tensor == nullptr) {
+    return Status::invalid("safetensors_tensor_missing:" + key);
+  }
+  if (tensor->shape.size() != 2U || tensor->shape[0] == 0U ||
+      tensor->shape[1] != input.size()) {
+    return Status::invalid("c5_full_decoder_streamed_linear_shape_mismatch:" +
+                           key);
+  }
+  const std::uint64_t output_width = tensor->shape[0];
+  const std::uint64_t input_width = tensor->shape[1];
+  if (output_width >
+      static_cast<std::uint64_t>(std::numeric_limits<std::size_t>::max())) {
+    return Status::invalid("c5_full_decoder_streamed_linear_output_too_large:" +
+                           key);
+  }
+  output.assign(static_cast<std::size_t>(output_width), 0.0F);
+  std::vector<float> row;
+  for (std::uint64_t out = 0U; out < output_width; ++out) {
+    Status status = decode_tensor_slice_f32_from_stream(
+        reader, file, key, out * input_width, input_width,
+        input_width * sizeof(float), row);
+    if (!status.is_ok()) {
+      return status;
+    }
+    double sum = 0.0;
+    for (std::uint64_t col = 0U; col < input_width; ++col) {
+      sum += static_cast<double>(input[static_cast<std::size_t>(col)]) *
+             static_cast<double>(row[static_cast<std::size_t>(col)]);
+    }
+    const float value = static_cast<float>(sum);
+    if (!std::isfinite(value)) {
+      return Status::invalid("c5_full_decoder_streamed_linear_nonfinite:" +
+                             key);
+    }
+    output[static_cast<std::size_t>(out)] = value;
+  }
+  return Status::ok();
+}
+
+Status rms_norm_weighted_repeating(const std::vector<float>& input,
+                                   const std::vector<float>& weight,
+                                   std::vector<float>& output) {
+  output.clear();
+  if (input.empty() || weight.empty() || (input.size() % weight.size()) != 0U) {
+    return Status::invalid("c5_full_decoder_repeating_rms_shape_mismatch");
+  }
+  return rms_norm_weighted(input, weight,
+                           input.size() / weight.size(), weight.size(),
+                           1.0e-6F, output);
+}
+
+Status rms_norm_unweighted_repeating(const std::vector<float>& input,
+                                     std::uint64_t width,
+                                     std::vector<float>& output) {
+  output.clear();
+  if (input.empty() || width == 0U || (input.size() % width) != 0U) {
+    return Status::invalid("c5_full_decoder_unweighted_rms_shape_mismatch");
+  }
+  output.resize(input.size());
+  const std::uint64_t rows = input.size() / width;
+  for (std::uint64_t row = 0U; row < rows; ++row) {
+    const std::uint64_t base = row * width;
+    double sum_sq = 0.0;
+    for (std::uint64_t col = 0U; col < width; ++col) {
+      const float value = input[static_cast<std::size_t>(base + col)];
+      sum_sq += static_cast<double>(value) * static_cast<double>(value);
+    }
+    const float scale =
+        1.0F / std::sqrt(static_cast<float>(sum_sq / width) + 1.0e-6F);
+    for (std::uint64_t col = 0U; col < width; ++col) {
+      output[static_cast<std::size_t>(base + col)] =
+          input[static_cast<std::size_t>(base + col)] * scale;
+    }
+  }
+  return Status::ok();
+}
+
+Status add_rows(const std::vector<float>& lhs,
+                const std::vector<float>& rhs,
+                std::vector<float>& output) {
+  output.clear();
+  if (lhs.empty() || lhs.size() != rhs.size()) {
+    return Status::invalid("c5_full_decoder_add_shape_mismatch");
+  }
+  output.resize(lhs.size());
+  for (std::size_t index = 0U; index < lhs.size(); ++index) {
+    const float value = lhs[index] + rhs[index];
+    if (!std::isfinite(value)) {
+      return Status::invalid("c5_full_decoder_add_nonfinite");
+    }
+    output[index] = value;
+  }
+  return Status::ok();
+}
+
+Status single_token_attention_context(const std::vector<float>& query,
+                                      const std::vector<float>& key,
+                                      const std::vector<float>& value,
+                                      std::vector<float>& context) {
+  context.clear();
+  if (query.empty() || key.empty() || value.empty() ||
+      (query.size() % kHeadDim) != 0U || (key.size() % kHeadDim) != 0U ||
+      key.size() != value.size()) {
+    return Status::invalid("c5_full_decoder_single_token_attention_shape_mismatch");
+  }
+  const std::uint64_t query_heads = query.size() / kHeadDim;
+  const std::uint64_t key_value_heads = key.size() / kHeadDim;
+  if (query_heads == 0U || key_value_heads == 0U ||
+      (query_heads % key_value_heads) != 0U) {
+    return Status::invalid("c5_full_decoder_single_token_attention_head_mismatch");
+  }
+  context.resize(query.size());
+  const std::uint64_t group_size = query_heads / key_value_heads;
+  for (std::uint64_t query_head = 0U; query_head < query_heads; ++query_head) {
+    const std::uint64_t key_head = query_head / group_size;
+    double score = 0.0;
+    for (std::uint64_t dim = 0U; dim < kHeadDim; ++dim) {
+      score += static_cast<double>(
+                   query[static_cast<std::size_t>(query_head * kHeadDim + dim)]) *
+               static_cast<double>(
+                   key[static_cast<std::size_t>(key_head * kHeadDim + dim)]);
+      context[static_cast<std::size_t>(query_head * kHeadDim + dim)] =
+          value[static_cast<std::size_t>(key_head * kHeadDim + dim)];
+    }
+    if (!std::isfinite(score)) {
+      return Status::invalid("c5_full_decoder_single_token_attention_score_nonfinite");
+    }
+  }
+  return Status::ok();
+}
+
+Status ensure_finite_row(const std::vector<float>& row,
+                         const std::string& label) {
+  if (row.empty()) {
+    return Status::invalid(label + "_empty");
+  }
+  for (const float value : row) {
+    if (!std::isfinite(value)) {
+      return Status::invalid(label + "_nonfinite");
+    }
   }
   return Status::ok();
 }
@@ -1002,6 +1227,278 @@ void append_ple_single_layer_slice_blockers(
   }
 }
 
+Status run_cpu_single_layer_body_slice(const SafetensorsReader& reader,
+                                       std::ifstream& file,
+                                       std::uint32_t layer_index,
+                                       const std::vector<float>& layer_input_row,
+                                       const std::vector<float>& ple_input_row,
+                                       SingleLayerBody& body) {
+  body = SingleLayerBody{};
+  if (layer_input_row.size() != kHiddenSize ||
+      ple_input_row.size() != kSmallInputSize ||
+      layer_index >= kLayerCount) {
+    return Status::invalid("c5_full_decoder_cpu_single_layer_input_shape_mismatch");
+  }
+
+  std::vector<float> attn_input;
+  Status status = prepare_single_layer_input_norm_slice(
+      reader, layer_input_row, layer_index, attn_input);
+  if (!status.is_ok()) {
+    return status;
+  }
+
+  std::vector<float> query;
+  std::vector<float> key;
+  std::vector<float> value;
+  status = linear_row_major_streamed(
+      reader, file, layer_key(layer_index, "self_attn.q_proj.weight"),
+      attn_input, query);
+  if (!status.is_ok()) {
+    return status;
+  }
+  status = linear_row_major_streamed(
+      reader, file, layer_key(layer_index, "self_attn.k_proj.weight"),
+      attn_input, key);
+  if (!status.is_ok()) {
+    return status;
+  }
+  status = linear_row_major_streamed(
+      reader, file, layer_key(layer_index, "self_attn.v_proj.weight"),
+      attn_input, value);
+  if (!status.is_ok()) {
+    return status;
+  }
+
+  std::vector<float> q_norm_weight;
+  std::vector<float> k_norm_weight;
+  status = decode_layer_vector(reader, layer_index, "self_attn.q_norm.weight",
+                               reader.find_tensor(layer_key(layer_index, "self_attn.q_norm.weight"))
+                                   ->shape[0],
+                               q_norm_weight);
+  if (!status.is_ok()) {
+    return status;
+  }
+  status = decode_layer_vector(reader, layer_index, "self_attn.k_norm.weight",
+                               reader.find_tensor(layer_key(layer_index, "self_attn.k_norm.weight"))
+                                   ->shape[0],
+                               k_norm_weight);
+  if (!status.is_ok()) {
+    return status;
+  }
+
+  std::vector<float> query_norm;
+  std::vector<float> key_norm;
+  std::vector<float> value_norm;
+  status = rms_norm_weighted_repeating(query, q_norm_weight, query_norm);
+  if (!status.is_ok()) {
+    return status;
+  }
+  status = rms_norm_weighted_repeating(key, k_norm_weight, key_norm);
+  if (!status.is_ok()) {
+    return status;
+  }
+  status = rms_norm_unweighted_repeating(value, kHeadDim, value_norm);
+  if (!status.is_ok()) {
+    return status;
+  }
+
+  std::vector<float> context;
+  status = single_token_attention_context(query_norm, key_norm, value_norm,
+                                          context);
+  if (!status.is_ok()) {
+    return status;
+  }
+
+  std::vector<float> attn_projection;
+  status = linear_row_major_streamed(
+      reader, file, layer_key(layer_index, "self_attn.o_proj.weight"),
+      context, attn_projection);
+  if (!status.is_ok()) {
+    return status;
+  }
+  std::vector<float> post_attention_weight;
+  status = decode_layer_vector(reader, layer_index,
+                               "post_attention_layernorm.weight", kHiddenSize,
+                               post_attention_weight);
+  if (!status.is_ok()) {
+    return status;
+  }
+  std::vector<float> attn_norm;
+  status = rms_norm_weighted(attn_projection, post_attention_weight, 1U,
+                             kHiddenSize, 1.0e-6F, attn_norm);
+  if (!status.is_ok()) {
+    return status;
+  }
+  std::vector<float> hidden_state;
+  status = add_rows(layer_input_row, attn_norm, hidden_state);
+  if (!status.is_ok()) {
+    return status;
+  }
+
+  std::vector<float> pre_ff_weight;
+  status = decode_layer_vector(reader, layer_index,
+                               "pre_feedforward_layernorm.weight", kHiddenSize,
+                               pre_ff_weight);
+  if (!status.is_ok()) {
+    return status;
+  }
+  std::vector<float> ff_input;
+  status = rms_norm_weighted(hidden_state, pre_ff_weight, 1U, kHiddenSize,
+                             1.0e-6F, ff_input);
+  if (!status.is_ok()) {
+    return status;
+  }
+
+  std::vector<float> gate;
+  std::vector<float> up;
+  status = linear_row_major_streamed(
+      reader, file, layer_key(layer_index, "mlp.gate_proj.weight"), ff_input,
+      gate);
+  if (!status.is_ok()) {
+    return status;
+  }
+  status = linear_row_major_streamed(
+      reader, file, layer_key(layer_index, "mlp.up_proj.weight"), ff_input, up);
+  if (!status.is_ok()) {
+    return status;
+  }
+  std::vector<float> activation;
+  status = gelu_tanh_mul(gate, up, activation);
+  if (!status.is_ok()) {
+    return status;
+  }
+  std::vector<float> down;
+  status = linear_row_major_streamed(
+      reader, file, layer_key(layer_index, "mlp.down_proj.weight"), activation,
+      down);
+  if (!status.is_ok()) {
+    return status;
+  }
+  std::vector<float> post_ff_weight;
+  status = decode_layer_vector(reader, layer_index,
+                               "post_feedforward_layernorm.weight", kHiddenSize,
+                               post_ff_weight);
+  if (!status.is_ok()) {
+    return status;
+  }
+  std::vector<float> down_norm;
+  status = rms_norm_weighted(down, post_ff_weight, 1U, kHiddenSize, 1.0e-6F,
+                             down_norm);
+  if (!status.is_ok()) {
+    return status;
+  }
+  std::vector<float> hidden2;
+  status = add_rows(hidden_state, down_norm, hidden2);
+  if (!status.is_ok()) {
+    return status;
+  }
+
+  std::vector<float> per_gate;
+  status = linear_row_major_streamed(
+      reader, file, layer_key(layer_index, "per_layer_input_gate.weight"),
+      hidden2, per_gate);
+  if (!status.is_ok()) {
+    return status;
+  }
+  std::vector<float> per_activation;
+  status = gelu_tanh_mul(per_gate, ple_input_row, per_activation);
+  if (!status.is_ok()) {
+    return status;
+  }
+  std::vector<float> per_projection;
+  status = linear_row_major_streamed(
+      reader, file, layer_key(layer_index, "per_layer_projection.weight"),
+      per_activation, per_projection);
+  if (!status.is_ok()) {
+    return status;
+  }
+  std::vector<float> post_per_weight;
+  status = decode_layer_vector(reader, layer_index,
+                               "post_per_layer_input_norm.weight", kHiddenSize,
+                               post_per_weight);
+  if (!status.is_ok()) {
+    return status;
+  }
+  std::vector<float> per_norm;
+  status = rms_norm_weighted(per_projection, post_per_weight, 1U, kHiddenSize,
+                             1.0e-6F, per_norm);
+  if (!status.is_ok()) {
+    return status;
+  }
+  std::vector<float> output;
+  status = add_rows(hidden2, per_norm, output);
+  if (!status.is_ok()) {
+    return status;
+  }
+
+  std::vector<float> layer_scalar;
+  status = decode_layer_vector(reader, layer_index, "layer_scalar", 1U,
+                               layer_scalar);
+  if (!status.is_ok()) {
+    return status;
+  }
+  for (float& value : output) {
+    value *= layer_scalar[0];
+  }
+  status = ensure_finite_row(output, "c5_full_decoder_cpu_single_layer_output");
+  if (!status.is_ok()) {
+    return status;
+  }
+  body.output_row = std::move(output);
+  return Status::ok();
+}
+
+void append_cpu_single_layer_body_blockers(
+    const SourceModelIdentity& identity,
+    const QaTokenization& tokenization,
+    std::vector<std::string>& blockers) {
+  if (identity.path.empty() || !file_exists(identity.path)) {
+    return;
+  }
+  if (tokenization.question_tokens.empty()) {
+    blockers.push_back("c5_full_decoder_single_layer_prompt_tokens_missing");
+    return;
+  }
+
+  SafetensorsReader reader;
+  Status status = reader.open(identity.path);
+  if (!status.is_ok()) {
+    blockers.push_back(status.message());
+    return;
+  }
+  std::ifstream file(identity.path, std::ios::binary);
+  if (!file) {
+    blockers.push_back("safetensors_file_open_failed");
+    return;
+  }
+
+  const std::uint32_t token_id = tokenization.question_tokens.front();
+  std::vector<float> layer_input_row;
+  status = derive_layer_input_row(reader, token_id, layer_input_row);
+  if (!status.is_ok()) {
+    blockers.push_back(status.message());
+    return;
+  }
+  std::vector<float> ple_input_row;
+  status = derive_ple_input_row(reader, layer_input_row, token_id, 0U,
+                                ple_input_row);
+  if (!status.is_ok()) {
+    blockers.push_back(status.message());
+    return;
+  }
+
+  SingleLayerBody body;
+  status = run_cpu_single_layer_body_slice(reader, file, 0U, layer_input_row,
+                                           ple_input_row, body);
+  if (!status.is_ok()) {
+    blockers.push_back(status.message());
+    return;
+  }
+  if (body.output_row.size() != kHiddenSize) {
+    blockers.push_back("c5_full_decoder_cpu_single_layer_output_shape_mismatch");
+  }
+}
+
 std::string first_nonempty_jsonl_line(const std::string& path) {
   std::ifstream file(path);
   if (!file) {
@@ -1114,9 +1611,9 @@ void append_numeric_decoder_primitive_blockers(
 void append_full_decoder_compute_kernel_blockers(
     C5FullDecoderRuntimeResult& result) {
   result.blockers.push_back(
-      "c5_full_decoder_single_layer_attention_mlp_kernel_missing_after_ple_derivation");
+      "c5_full_decoder_opencl_parity_dispatch_missing_after_cpu_single_layer_slice");
   result.blockers.push_back(
-      "c5_full_decoder_opencl_parity_dispatch_missing_after_cpu_ple_slice");
+      "c5_full_decoder_multi_token_qa_prompt_sequence_orchestration_missing");
   result.blockers.push_back("c5_full_decoder_rank16_adapter_stream_injection_missing");
   result.blockers.push_back("c5_full_decoder_42_layer_orchestration_missing");
   result.blockers.push_back("c5_full_decoder_chunked_lm_head_nll_writer_missing");
@@ -1154,6 +1651,10 @@ C5FullDecoderRuntimeResult run_c5_full_decoder_runtime(
     if (result.blockers.empty()) {
       append_ple_single_layer_slice_blockers(identity, tokenization,
                                              result.blockers);
+    }
+    if (result.blockers.empty()) {
+      append_cpu_single_layer_body_blockers(identity, tokenization,
+                                            result.blockers);
     }
   } catch (const std::exception& error) {
     result.blockers.push_back(std::string("c5_full_decoder_runtime_error:") +

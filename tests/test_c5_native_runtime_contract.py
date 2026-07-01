@@ -44,7 +44,7 @@ ROLE_SHAPES = {
 
 
 def test_native_c5_runtime_validates_pack_then_stops_at_compute_kernel(tmp_path: Path) -> None:
-    paths = _write_component_pack(tmp_path)
+    paths = _write_component_pack(tmp_path, include_layer0_compute_tensors=True)
 
     result = _run_native(paths)
 
@@ -52,7 +52,7 @@ def test_native_c5_runtime_validates_pack_then_stops_at_compute_kernel(tmp_path:
     payload = json.loads(result.stdout)
     assert (
         payload["first_missing_green_field"]
-        == "c5_full_decoder_single_layer_attention_mlp_kernel_missing_after_ple_derivation"
+        == "c5_full_decoder_opencl_parity_dispatch_missing_after_cpu_single_layer_slice"
     )
     assert payload["raw_boundary_proof"]["raw_payload_bytes_in_report"] is False
     assert payload["raw_boundary_proof"]["prediction_jsonl_written"] is False
@@ -70,7 +70,11 @@ def test_native_c5_runtime_accepts_layer_variant_attention_layout(tmp_path: Path
         if key.endswith("layers.5.self_attn.o_proj.weight"):
             entry.update({"shape": [2560, 2560]})
 
-    paths = _write_component_pack(tmp_path, tensor_mutation=mutate_layer5_attention)
+    paths = _write_component_pack(
+        tmp_path,
+        include_layer0_compute_tensors=True,
+        tensor_mutation=mutate_layer5_attention,
+    )
 
     result = _run_native(paths)
     payload = json.loads(result.stdout)
@@ -78,21 +82,26 @@ def test_native_c5_runtime_accepts_layer_variant_attention_layout(tmp_path: Path
     assert result.returncode == 13
     assert (
         payload["first_missing_green_field"]
-        == "c5_full_decoder_single_layer_attention_mlp_kernel_missing_after_ple_derivation"
+        == "c5_full_decoder_opencl_parity_dispatch_missing_after_cpu_single_layer_slice"
     )
     assert payload["blockers"][:2] == [
-        "c5_full_decoder_single_layer_attention_mlp_kernel_missing_after_ple_derivation",
-        "c5_full_decoder_opencl_parity_dispatch_missing_after_cpu_ple_slice",
+        "c5_full_decoder_opencl_parity_dispatch_missing_after_cpu_single_layer_slice",
+        "c5_full_decoder_multi_token_qa_prompt_sequence_orchestration_missing",
     ]
     assert not paths["output_jsonl"].exists()
 
 
 def test_native_c5_runtime_accepts_independent_k_norm_width(tmp_path: Path) -> None:
+    def mutate_layer0_k_norm(key: str, entry: dict) -> None:
+        if not key.endswith("layers.0.self_attn.k_norm.weight"):
+            return
+        entry["shape"] = [256]
+        entry["data_offsets"][1] = entry["data_offsets"][0] + (256 * 2)
+
     paths = _write_component_pack(
         tmp_path,
-        tensor_mutation=lambda key, entry: entry.update({"shape": [256]})
-        if key.endswith("layers.0.self_attn.k_norm.weight")
-        else None,
+        include_layer0_compute_tensors=True,
+        tensor_mutation=mutate_layer0_k_norm,
     )
 
     result = _run_native(paths)
@@ -101,11 +110,11 @@ def test_native_c5_runtime_accepts_independent_k_norm_width(tmp_path: Path) -> N
     assert result.returncode == 13
     assert (
         payload["first_missing_green_field"]
-        == "c5_full_decoder_single_layer_attention_mlp_kernel_missing_after_ple_derivation"
+        == "c5_full_decoder_opencl_parity_dispatch_missing_after_cpu_single_layer_slice"
     )
     assert payload["blockers"][:2] == [
-        "c5_full_decoder_single_layer_attention_mlp_kernel_missing_after_ple_derivation",
-        "c5_full_decoder_opencl_parity_dispatch_missing_after_cpu_ple_slice",
+        "c5_full_decoder_opencl_parity_dispatch_missing_after_cpu_single_layer_slice",
+        "c5_full_decoder_multi_token_qa_prompt_sequence_orchestration_missing",
     ]
     assert not paths["output_jsonl"].exists()
 
@@ -275,6 +284,7 @@ def _run_native(paths: dict[str, Path]) -> subprocess.CompletedProcess[str]:
 def _write_component_pack(
     tmp_path: Path,
     *,
+    include_layer0_compute_tensors: bool = False,
     tensor_mutation=None,
 ) -> dict[str, Path]:
     pack = tmp_path / "component_pack"
@@ -294,7 +304,11 @@ def _write_component_pack(
         encoding="utf-8",
     )
     model = tmp_path / "model.safetensors"
-    entries = _write_mock_safetensors(model, tensor_mutation=tensor_mutation)
+    entries = _write_mock_safetensors(
+        model,
+        include_layer0_compute_tensors=include_layer0_compute_tensors,
+        tensor_mutation=tensor_mutation,
+    )
     model_sha = _sha256_file(model)
 
     (pack / "decoder_manifest.json").write_text(
@@ -468,13 +482,20 @@ def _per_layer_input_runtime(entries: dict[str, dict]) -> dict:
     }
 
 
-def _write_mock_safetensors(path: Path, *, tensor_mutation=None) -> dict[str, dict]:
+def _write_mock_safetensors(
+    path: Path,
+    *,
+    include_layer0_compute_tensors: bool,
+    tensor_mutation=None,
+) -> dict[str, dict]:
     data = bytearray()
 
     def add_tensor(key: str, dtype: str, shape: list[int], byte_count: int) -> None:
         start = len(data)
         data.extend(b"\x00" * byte_count)
         header[key] = {"dtype": dtype, "shape": shape, "data_offsets": [start, len(data)]}
+        if tensor_mutation:
+            tensor_mutation(key, header[key])
 
     header: dict[str, dict] = {
     }
@@ -496,10 +517,20 @@ def _write_mock_safetensors(path: Path, *, tensor_mutation=None) -> dict[str, di
         prefix = f"model.language_model.layers.{layer_index}."
         for _role, (suffix, shape) in ROLE_SHAPES.items():
             key = prefix + suffix
-            if layer_index == 0 and suffix == "input_layernorm.weight":
-                start = len(data)
-                data.extend(b"\x00" * (2560 * 2))
-                offsets = [start, len(data)]
+            element_count = 1
+            for dimension in shape:
+                element_count *= dimension
+            if layer_index == 0 and (
+                include_layer0_compute_tensors or suffix in {"input_layernorm.weight", "layer_scalar"}
+            ):
+                if suffix == "layer_scalar":
+                    start = len(data)
+                    data.extend(b"\x00\x3f")
+                    offsets = [start, len(data)]
+                else:
+                    start = len(data)
+                    data.extend(b"\x00" * (element_count * 2))
+                    offsets = [start, len(data)]
             elif layer_index == 0 and suffix == "layer_scalar":
                 start = len(data)
                 data.extend(b"\x00\x3f")
