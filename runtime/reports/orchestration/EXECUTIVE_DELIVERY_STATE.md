@@ -1,14 +1,14 @@
 # Executive Delivery State
 
-Updated UTC: `2026-07-01T02:00:26Z`
+Updated UTC: `2026-07-01T02:04:00Z`
 
 ## Current Gate
 
 `WaveB_C5_after_C1_executed_metrics_json_pending_evaluator_run`
 
-Status classification: `PENDING_ACTION_REPO_CUSTODY_THEN_EXECUTION_PAYLOADS`
+Status classification: `PENDING_ACTION_EXECUTION_C5_PAYLOAD_VERIFICATION_AND_EVALUATOR_RUN`
 
-Owner: `Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050 for evaluator pathset freeze; Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c after freeze`
+Owner: `Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c`
 
 User action required: `false`
 
@@ -16,44 +16,41 @@ Dominant failure domain: `phase5_eval_failure`
 
 ## Artifact Waiting On
 
-- Repo Custodian freeze of the C5 heldout evaluator producer pathset, metadata-only execution probe, and central state mirrors.
-- After freeze: outside-git heldout QA plus candidate/stable prediction JSONL with per-record `record_id`, `prediction`, `loss`, and `confidence` matching the accepted identities.
-- After execution: `polymath_c5_executed_metrics_v1` JSON consumed by `scripts/host/run_c5_eval.py`.
+- Execution verification of frozen C5 heldout evaluator producer commit `bfe2cc642cfd6fe48255b30901d4f5461c817e32`.
+- Outside-git `C5_after_C1` heldout QA plus candidate/stable prediction JSONL with per-record `record_id`, `prediction`, `loss`, and `confidence` matching accepted identity hashes.
+- If payloads verify: metadata-only `polymath_c5_executed_metrics_v1` JSON and downstream `scripts/host/run_c5_eval.py` validation report. If not: exact missing payload/action report.
 
 ## Last Concrete Action
 
-Engineering completed the canonical C5 heldout evaluator producer pathset: c5_heldout_eval.py, run_c5_heldout_eval.py, and tests/test_c5_heldout_eval.py. Focused verification passed in Engineering: py_compile, --print-prediction-schema, pytest over C5 eval/heldout/metrics tests with 19 passed, git diff --check, and bounded secret scan. Execution previously proved the old C5 surface was validator-only and produced a metadata-only probe.
+Repo Custodian froze and pushed the C5 heldout evaluator producer at `bfe2cc642cfd6fe48255b30901d4f5461c817e32`; local and remote HEAD match. The frozen pathset adds the real heldout metrics producer, preserves `scripts/host/run_c5_eval.py` as the validator/report builder, and includes the metadata-only surface probe plus prior central state mirrors.
 
-Engineering pathset ready for custody:
+Frozen producer pathset:
 
 - `polymath_ai/polar/c5_heldout_eval.py` `0095c2ded45e2b02e68888562635e59026963bb85e385b48b42cb6e3275a05eb`
 - `scripts/host/run_c5_heldout_eval.py` `32e2f2c2d2d3ba4965a6869d0f97793bc990b40421c7292bab5deba2633842c9`
 - `tests/test_c5_heldout_eval.py` `e8993da430ae8c86880d21edf96c3d44d969e73aace7be26c38e7f6864dbeccf`
 
-Execution probe evidence:
-
-- Probe report: `/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_real_eval_surface_probe/C5_after_C1/c5_after_c1_real_eval_surface_probe_20260701T014500Z.json`
-- Probe SHA: `fc14671c9b53f2fa476d6b777351486a6e048f725ddd408421491918236ebeac`
-- Verified heldout split outside git SHA: `da41c5362398f24e0e0dd9df9a5cf0594435a455871fa77ab74d9312e6c8e9b2`
-- Real executable candidates before Engineering pathset: `0`
+Custodian verification included py_compile, prediction-schema JSON probe, `19 passed` focused pytest suite, JSON validation, diff checks, exact staged pathset verification, raw-payload suffix scan, literal secret/token scan, and local/remote HEAD readback.
 
 ## Next Concrete Action
 
-Repo Custodian verifies and freezes only the exact scoped C5 evaluator pathset, the metadata-only surface probe, and central state mirrors if clean. Then Execution consumes the frozen command surface, verifies outside-git heldout/prediction payload identities, runs C5_after_C1, and feeds the emitted metrics JSON into run_c5_eval.py.
+Execution consumes commit `bfe2cc642cfd6fe48255b30901d4f5461c817e32`, verifies the frozen producer pathset, verifies outside-git heldout/prediction payload identities, runs `scripts/host/run_c5_heldout_eval.py` if payloads exist, and feeds the emitted metrics JSON into `scripts/host/run_c5_eval.py`.
+
+Fail-fast: do not invent prediction JSONL or metrics. If heldout QA, candidate predictions, stable baseline predictions, candidate train loss, or identity fields are absent/mismatched, Execution returns the exact missing path/action.
 
 ## Drift Deletion / Hardening
 
-Engineering deleted the validator-as-evaluator drift by adding a producer pathset. The old `run_c5_eval.py` remains the validator/report builder; the new heldout producer must generate the executed metrics JSON it consumes.
+Validator-as-evaluator drift is deleted and frozen at `bfe2cc642cfd6fe48255b30901d4f5461c817e32`. The current pending edge is not another status report; it is real payload verification and C5 heldout metrics execution.
 
-Recursive improvement next step: freeze producer, run `C5_after_C1`, validate emitted metrics, compare candidate against stable baseline, then route one falsifiable repair from the measured failure domain.
+Recursive improvement next step: run `C5_after_C1`, validate metrics, compare candidate against stable baseline, route one falsifiable repair from the measured failure domain, and rerun the smallest proof path.
 
 ## Threads Nudged This Tick
 
-- Repo Custodian `019f1ac2-0f0f-7721-bf46-ad402dbd9050`: freeze exact C5 heldout evaluator producer pathset, probe report, and central state mirrors if clean.
+- Execution Orchestrator `019f138c-fb51-7c53-a41a-ab8eac950d9c`: consume frozen C5 heldout evaluator commit, verify outside-git payloads, run real `C5_after_C1` evaluator if possible, or return exact missing payload/action.
 
 ## First Missing Green Field
 
-`repo_custody_freeze_of_c5_heldout_evaluator_pathset`
+`outside_git_prediction_payloads_and_real_C5_after_C1_evaluator_run`
 
 ## Nonclaims Preserved
 
@@ -67,4 +64,4 @@ Recursive improvement next step: freeze producer, run `C5_after_C1`, validate em
 
 ## State Hash
 
-`EXECUTIVE_DELIVERY_STATE.json` SHA after this update: `4c535816d6e4b930f799485903e02410761468e70d88c2d8bf7cb7da73dcbd42`
+`EXECUTIVE_DELIVERY_STATE.json` SHA after this update: `a6dfca9b04c9b3b02eab605c10042f2355346dbd12c54cfd02ce631efcc13388`
