@@ -126,6 +126,54 @@ def test_phase34_qa_producer_rejects_checkpoint_hash_before_native_run(tmp_path:
     assert not (tmp_path / "native_invoked").exists()
 
 
+def test_phase34_qa_producer_rejects_invalid_runtime_component_paths_before_native_run(
+    tmp_path: Path,
+) -> None:
+    runner = _write_blocking_native_runner(tmp_path)
+    heldout = tmp_path / "phase_C1_test.qa.jsonl"
+    heldout.write_text(
+        json.dumps({"record_id": "r1", "question": "q", "answer": "a"}) + "\n",
+        encoding="utf-8",
+    )
+    checkpoint = tmp_path / "adapter_post_rank16.f32.bin"
+    checkpoint.write_bytes(b"candidate-adapter")
+    output_jsonl = tmp_path / "predictions/candidate_predictions.jsonl"
+
+    result = subprocess.run(
+        [
+            "python3.11",
+            str(PRODUCER),
+            "--gemma4-runner",
+            str(runner),
+            "--tokenizer-dir",
+            str(tmp_path / "missing_tokenizer"),
+            "--run-label",
+            "unit",
+            "--eval-point",
+            "C5_after_C1",
+            "--checkpoint-role",
+            "candidate",
+            "--checkpoint-payload",
+            str(checkpoint),
+            "--checkpoint-sha256",
+            sha256_file(checkpoint),
+            "--heldout-qa-jsonl",
+            str(heldout),
+            "--output-jsonl",
+            str(output_jsonl),
+        ],
+        cwd=ROOT,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+
+    assert result.returncode == 2
+    assert json.loads(result.stdout)["first_missing_green_field"] == "tokenizer_dir_path_not_found"
+    assert not output_jsonl.exists()
+    assert not (tmp_path / "native_invoked").exists()
+
+
 def _write_blocking_native_runner(tmp_path: Path) -> Path:
     runner = tmp_path / "gemma4_layer_runner_stub.py"
     runner.write_text(

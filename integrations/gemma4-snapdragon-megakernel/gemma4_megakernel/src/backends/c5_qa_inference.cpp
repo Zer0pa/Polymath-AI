@@ -33,6 +33,13 @@ bool file_exists(const std::string& path) {
   return static_cast<bool>(file);
 }
 
+std::string join_path(const std::string& base, const std::string& leaf) {
+  if (base.empty() || base.back() == '/') {
+    return base + leaf;
+  }
+  return base + "/" + leaf;
+}
+
 std::uint64_t file_size_bytes(const std::string& path) {
   std::ifstream file(path, std::ios::binary | std::ios::ate);
   if (!file) {
@@ -68,6 +75,27 @@ void append_missing_if_empty(std::vector<std::string>& blockers,
                              const std::string& blocker) {
   if (value.empty()) {
     blockers.push_back(blocker);
+  }
+}
+
+void append_file_missing_if_present(std::vector<std::string>& blockers,
+                                    const std::string& path,
+                                    const std::string& blocker) {
+  if (!path.empty() && !file_exists(path)) {
+    blockers.push_back(blocker);
+  }
+}
+
+void append_tokenizer_table_blockers(std::vector<std::string>& blockers,
+                                     const std::string& tokenizer_dir) {
+  if (tokenizer_dir.empty()) {
+    return;
+  }
+  if (!file_exists(join_path(tokenizer_dir, "vocab.hex.tsv"))) {
+    blockers.push_back("tokenizer_vocab_hex_missing");
+  }
+  if (!file_exists(join_path(tokenizer_dir, "merges.hex.tsv"))) {
+    blockers.push_back("tokenizer_merges_hex_missing");
   }
 }
 
@@ -228,6 +256,13 @@ Status run_c5_qa_predict(const C5QaInferenceRequest& request) {
   append_missing_if_empty(blockers, request.lm_head_path, "lm_head_or_unembedding_missing");
   append_missing_if_empty(blockers, request.adapter_site_policy_path,
                           "adapter_site_policy_missing");
+  append_tokenizer_table_blockers(blockers, request.tokenizer_dir);
+  append_file_missing_if_present(blockers, request.decoder_manifest_path,
+                                 "decoder_manifest_path_not_found");
+  append_file_missing_if_present(blockers, request.lm_head_path,
+                                 "lm_head_or_unembedding_path_not_found");
+  append_file_missing_if_present(blockers, request.adapter_site_policy_path,
+                                 "adapter_site_policy_path_not_found");
 
   if (blockers.empty()) {
     blockers.push_back("full_decoder_logits_generation_not_implemented");

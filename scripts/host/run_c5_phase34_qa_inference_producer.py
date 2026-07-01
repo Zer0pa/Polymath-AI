@@ -108,6 +108,26 @@ def is_under(path: Path, root: Path) -> bool:
     return True
 
 
+def validate_optional_runtime_paths(args: argparse.Namespace) -> list[str]:
+    blockers: list[str] = []
+    if args.tokenizer_dir:
+        tokenizer_dir = Path(args.tokenizer_dir)
+        if not tokenizer_dir.is_dir():
+            blockers.append("tokenizer_dir_path_not_found")
+        else:
+            if not (tokenizer_dir / "vocab.hex.tsv").is_file():
+                blockers.append("tokenizer_vocab_hex_missing")
+            if not (tokenizer_dir / "merges.hex.tsv").is_file():
+                blockers.append("tokenizer_merges_hex_missing")
+    if args.decoder_manifest and not Path(args.decoder_manifest).is_file():
+        blockers.append("decoder_manifest_path_not_found")
+    if args.lm_head and not Path(args.lm_head).is_file():
+        blockers.append("lm_head_or_unembedding_path_not_found")
+    if args.adapter_site_policy and not Path(args.adapter_site_policy).is_file():
+        blockers.append("adapter_site_policy_path_not_found")
+    return blockers
+
+
 def report_path_for(output_jsonl: Path | None) -> Path | None:
     if output_jsonl is None:
         return None
@@ -206,6 +226,7 @@ def validate_args(args: argparse.Namespace) -> list[str]:
         blockers.append("heldout_qa_jsonl_inside_git_worktree")
     if args.output_jsonl is not None and is_under(args.output_jsonl, REPO_ROOT):
         blockers.append("output_jsonl_inside_git_worktree")
+    blockers.extend(validate_optional_runtime_paths(args))
     return blockers
 
 

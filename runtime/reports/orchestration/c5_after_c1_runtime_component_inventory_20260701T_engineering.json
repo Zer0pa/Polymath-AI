@@ -1,0 +1,158 @@
+{
+  "custody_commit_seen": "9f6a27f3640078d81a303445d7ab29c7ce3a2db8",
+  "edited_pathset": {
+    "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_qa_inference.cpp": {
+      "exists": true,
+      "is_file": true,
+      "path": "/Users/Zer0pa/Polymat AI/Polymath-AI/integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_qa_inference.cpp",
+      "sha256": "09cba8af0efb0fec1a8b84f55515c8bd145bb381f436bbe9b52581cc98793e0d",
+      "size_bytes": 10720
+    },
+    "scripts/host/run_c5_phase34_qa_inference_producer.py": {
+      "exists": true,
+      "is_file": true,
+      "path": "/Users/Zer0pa/Polymat AI/Polymath-AI/scripts/host/run_c5_phase34_qa_inference_producer.py",
+      "sha256": "93a2137ccc8c8e37e1541ebe61f34f5cfe35b63de2289f759c6cdcfca02290dd",
+      "size_bytes": 12144
+    },
+    "tests/test_c5_phase34_qa_inference_producer.py": {
+      "exists": true,
+      "is_file": true,
+      "path": "/Users/Zer0pa/Polymat AI/Polymath-AI/tests/test_c5_phase34_qa_inference_producer.py",
+      "sha256": "c2bb18f1560ab1b760d09a4f53bf18065e36feed0706aff28a1e69599d8e8a7e",
+      "size_bytes": 7660
+    }
+  },
+  "first_missing_green_field": "outside_git_tokenizer_dir_with_vocab_hex_tsv_and_merges_hex_tsv",
+  "first_unresolved_technical_failure_after_component_paths": "full_decoder_logits_generation_not_implemented",
+  "lane": "engineering_c5_qa_runtime_components",
+  "next_action": "Repo Custodian freezes the three-file guard patch. In parallel, Phase3/4 Engineering must provide or implement the real decoder/logits runtime: outside-git tokenizer tables, full decoder/layer-pack manifest, LM-head/unembedding identity, adapter-site policy, and native decode plus teacher-forced loss/candidate_train_loss body behind --run-c5-qa-predict.",
+  "nonclaims": [
+    "no C5 pass",
+    "no prediction JSONL emitted",
+    "no learning or model-quality claim",
+    "no Phase3 readiness claim",
+    "no Phase4 readiness claim",
+    "not 100k or 1M Phase2 authority",
+    "no remote Comet logging"
+  ],
+  "runtime_component_inventory": {
+    "adapter_site_policy": {
+      "bridge_mse_is_not_qa_loss": true,
+      "candidate_adapter_post_sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f",
+      "missing_green_field": "outside_git_adapter_site_policy_mapping_rank16_payload_into_decoder_without_relabeling_mse",
+      "phase34_metric_readiness_report": {
+        "exists": true,
+        "is_file": true,
+        "path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/phase34_lineage_repair/C1/phase34_metric_readiness/phase34_metric_readiness_report.json",
+        "sha256": "ab8fb945b34645e72b1e607b4e3ce87d18dde082fa285e1d34ea8331363e0fc6",
+        "size_bytes": 3641
+      },
+      "phase4_bridge_cell_report": {
+        "exists": true,
+        "is_file": true,
+        "path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/phase34_lineage_repair/C1/phase4_bridge_cell/phase4_bridge_cell_report.json",
+        "sha256": "c8eeee9a7ce54a9780b584dfb5d343c33db00c7aa3bebd803e95ab114a48e831",
+        "size_bytes": 6004
+      },
+      "stable_adapter_pre_sha256": "e0d1c66ac876c2b6fbbe9e88f1b02dd37201d8ffba10afcd44f1c558fc32f7c9"
+    },
+    "decoder": {
+      "e4b_model_spec": {
+        "exists": true,
+        "is_file": true,
+        "path": "/Users/Zer0pa/Polymat AI/Polymath-AI/integrations/gemma4-snapdragon-megakernel/model_spec/gemma4_e4b.json",
+        "sha256": "942c8eb338306edb5afbcc415a1b0bf97ae5e041a26fe5eedd62226fafd04e2b",
+        "size_bytes": 10760
+      },
+      "local_layer_pack_manifests_found": [
+        {
+          "exists": true,
+          "is_file": true,
+          "path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/gemma4_megakernel/integrated_training/20260517T071405Z_g8_streamed_corpus_repaired/layer_pack_meta/layer0/manifest.json",
+          "sha256": "cc3ccad8d5c58bfde20faf142280ab3efa7d6b424a059ffd7498bd1972124b8a",
+          "size_bytes": 2377
+        },
+        {
+          "exists": true,
+          "is_file": true,
+          "path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/gemma4_megakernel/integrated_training/20260517T071405Z_g8_streamed_corpus_repaired/layer_pack_meta/layer1/manifest.json",
+          "sha256": "95d6cd1bedf647fc91cca2691952c307348fa70be8fb41183b9f4f267c38603e",
+          "size_bytes": 2377
+        }
+      ],
+      "missing_green_field": "outside_git_full_decoder_or_layer_pack_manifest_for_logits_path",
+      "required_text_layers_from_model_spec": 42,
+      "usable_full_decoder_manifest_found": false
+    },
+    "lm_head_or_unembedding": {
+      "missing_green_field": "outside_git_lm_head_or_unembedding_identity_and_path_or_decoder_embedded_proof",
+      "usable_lm_head_or_unembedding_found": false
+    },
+    "native_logits_generation": {
+      "candidate_train_loss_requirement": "finite value from same real logits/training objective, not Phase4 bridge MSE",
+      "implemented_cli_boundary": "gemma4_layer_runner --run-c5-qa-predict",
+      "native_body_current_terminal_blocker_after_valid_component_paths": "full_decoder_logits_generation_not_implemented",
+      "required_outputs": [
+        "record_id",
+        "prediction",
+        "finite_nonnegative_loss",
+        "confidence_0_to_1"
+      ]
+    },
+    "tokenizer": {
+      "missing_green_field": "outside_git_tokenizer_dir_with_vocab_hex_tsv_and_merges_hex_tsv",
+      "native_loader_requires": [
+        "vocab.hex.tsv",
+        "merges.hex.tsv"
+      ],
+      "workspace_findings": {
+        "historical_parity_spotcheck": {
+          "exists": true,
+          "is_file": true,
+          "path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/gemma4_megakernel/phase13_gemma4_only_heterogeneous/20260524T210920Z_phase13_gemma4_only_heterogeneous/P13-C-phone-native-hf-corpus/tokenizer_parity_spotcheck.json",
+          "sha256": "0005d71423e345ffe42f59c91520f4b72fd406c71fe682f6ca11af492935b05a",
+          "size_bytes": 2718
+        },
+        "merges_hex_tsv_found_under_workspace_or_tmp": false,
+        "packed_gbt1_present_but_not_accepted_c5_tokenizer_dir": {
+          "exists": true,
+          "is_file": true,
+          "path": "/tmp/polymath_android_lab_phase1_artifact_export/android_lab_phase1_artifact_export/tokenizer/packed/gemma4_bpe.gbt1",
+          "sha256": "5887e29db2618b21fd9db1358c7f6db5bb7efffab54c16ba0643b46d7f3714ae",
+          "size_bytes": 52649096
+        },
+        "vocab_hex_tsv_found_under_workspace_or_tmp": false
+      }
+    }
+  },
+  "schema_version": "polymath_c5_after_c1_runtime_component_inventory_v1",
+  "state_mirror_identity": {
+    "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json": {
+      "exists": true,
+      "is_file": true,
+      "path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json",
+      "sha256": "203fea9e6a13d8e96a964d5d8b1e6523e1608cd60c1351ef8a0430dfd11ffa64",
+      "size_bytes": 252990
+    },
+    "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md": {
+      "exists": true,
+      "is_file": true,
+      "path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md",
+      "sha256": "c4bca497a102f62e981bb9ae7cc7ac4c9e84fb6096f6155112cddcc0e5694cd6",
+      "size_bytes": 5548
+    }
+  },
+  "status": "c5_after_c1_runtime_component_pathset_ready_for_custodian",
+  "status_detail": "Guard pathset now validates real runtime component paths/tables; real QA logits generation remains unavailable until tokenizer tables, full decoder manifest, LM-head/unembedding, adapter policy, and native decode/loss implementation exist.",
+  "user_action_required": false,
+  "verification_commands": [
+    "python3.11 -m pytest -q tests/test_c5_phase34_qa_inference_producer.py tests/test_c5_prediction_payloads.py -> 8 passed",
+    "python3.11 -m py_compile scripts/host/run_c5_phase34_qa_inference_producer.py polymath_ai/polar/c5_prediction_payloads.py -> passed",
+    "git diff --check -- scripts/host/run_c5_phase34_qa_inference_producer.py integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_qa_inference.cpp tests/test_c5_phase34_qa_inference_producer.py -> clean",
+    "cmake --build build/gemma4_megakernel_host --target gemma4_layer_runner -j 8 -> built",
+    "native no-component probe -> first_missing_green_field tokenizer_dir_missing",
+    "native fake-component probe -> first_missing_green_field tokenizer_vocab_hex_missing, with decoder_manifest_path_not_found/lm_head_or_unembedding_path_not_found/adapter_site_policy_path_not_found",
+    "host producer fake tokenizer probe -> first_missing_green_field tokenizer_dir_path_not_found without native invocation"
+  ]
+}
