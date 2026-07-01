@@ -1,14 +1,14 @@
 # Executive Delivery State
 
-Updated UTC: `2026-07-01T12:18:07Z`
+Updated UTC: `2026-07-01T12:28:07Z`
 
 ## Current Gate
 
-`WaveB_C5_after_C1_phone_export_hashes_ready_runner_build_pending`
+`WaveB_C5_after_C1_native_full_decoder_logits_implementation_failure`
 
-Status classification: `PENDING_ACTION_EXECUTION_C5_RUNNER_BUILD_AND_HELDOUT_QA_STAGING`
+Status classification: `PENDING_ACTION_PHASE34_ENGINEERING_NATIVE_FULL_DECODER_LOGITS_IMPLEMENTATION`
 
-Owner: Execution Orchestrator owns C5-capable runner build/copy, heldout QA staging, and the next bounded predict probe. Phase3/4 owns the native logits implementation if the probe reaches the fail-closed branch.
+Owner: Phase3/4 Engineer and Engineering own the native full-decoder logits implementation. Execution owns rerun after the patch is frozen.
 
 User action required: `false`
 
@@ -16,38 +16,41 @@ Dominant failure domain: `phase5_eval_failure`
 
 ## Artifact Waiting On
 
-- Execution builds or copies a C5-capable phone runner and verifies `--run-c5-qa-predict` plus decoder-component help flags.
-- Execution stages the `C5_after_C1` heldout QA JSONL into phone-accessible outside-git storage and reports metadata-only identity.
-- Execution runs a bounded C5 QA predict probe using the exported decoder component pack; if it reaches the known fail-closed branch, Phase3/4/Engineering replace `full_decoder_logits_generation_not_implemented` with streamed/chunked full-decoder logits.
+- Phase3/4/Engineering implement the native full-decoder logits runtime path behind the existing C5 QA predict runner surface.
+- Repo Custodian freezes the metadata-only native probe report and central state mirror.
+- Execution reruns the same bounded C5 QA predict probe after the native logits patch and custody freeze.
 
 ## Last Concrete Action
 
-Repo Custodian froze the phone-compatible exporter pathset at `090417c75b19573146e26c77e663ac605981fae3` and the export-complete central mirror at `b7a1dbde480eac4571ece61cf4576f688297b3b8`. Execution completed the phone-local pinned HF model download, verified size `15992595884` bytes and model SHA-256 `43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651`, ran the frozen stdlib exporter on phone with exit `0`, and reported `decoder_manifest.json` SHA `6700f3c2912bfdcb659b9e7de3cdb0831d58f3708a0f841c181ec446b3a83a5f`, `adapter_site_policy.json` SHA `f38bd8109bbb77e9e94a5b4b34a238bc0ec0a39e7736870c97defe5aecc93357`, and `export_report.json` SHA `06fe8e91b5938ff3235cad5fa96e7b25d5b20fb3c4e456c249c84d53bf839d0f`. Execution also restored the Termux SSH channel again after a timeout and identified the next missing green field as the native C5 QA predict runner build/verification.
+Execution built the Termux C5 runner from frozen source commit `090417c75b19573146e26c77e663ac605981fae3`, verified runner SHA `a5a6f9a3b93d167d9cd69eddbe2f3404443ae1c2222e1c6a0782398c9ff09e84` with `369536` bytes and help flags `--run-c5-qa-predict`, `--decoder-component-pack`, `--vocab-chunk-size`, and `--max-generation-tokens`. Execution staged the accepted `C5_after_C1` heldout QA with SHA `da41c5362398f24e0e0dd9df9a5cf0594435a455871fa77ab74d9312e6c8e9b2`, `153158` bytes, `53` rows, then ran the smallest native C5 QA predict probe. The probe verified candidate adapter SHA `1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f` and failed closed with exit code `13` at `full_decoder_logits_generation_not_implemented`; probe stdout metadata SHA `8be05287d47bb148054bd26425f41f7f0c2cded8b98110d956c0f3e778cb86e6` and stderr SHA `d2f647b4efae9fe021b2e0d5ce9f79f88d87853e4f40cf0d660cf6d5d5c2d819`.
 
 ## First Missing Green Field
 
-Current: `native_c5_qa_predict_runner_build_or_verification_pending`
+Current: `full_decoder_logits_generation_not_implemented`
 
-After runner: `heldout_qa_jsonl_staging_or_c5_predict_probe_pending`
+After patch: `bounded_c5_qa_predict_rerun_pending`
 
 After valid schema paths: `full_decoder_logits_generation_not_implemented_after_valid_schema_paths`
 
 ## Next Concrete Action
 
-Execution uses the Phase3/4 Termux command package to build/copy a C5-capable `gemma4_layer_runner`, verifies `--run-c5-qa-predict` and decoder-component flags, stages the `C5_after_C1` heldout QA JSONL metadata-only, then runs the smallest C5 QA predict probe. If the probe stops at `full_decoder_logits_generation_not_implemented`, Phase3/4/Engineering patch the exact native logits/generation body rather than creating a new pathway.
+Phase3/4/Engineering patch the existing native C5 QA predict surface to replace only the `full_decoder_logits_generation_not_implemented` branch with a streamed/chunked full-decoder logits path using the exported decoder component pack and adapter policy. The patch must emit real prediction JSONL, finite answer loss/confidence from runtime logits, and fail closed on schema/shape/hash errors; after custody, Execution reruns the same bounded probe.
 
 ## Drift Deletion / Hardening
 
-Model-source authorization, Termux command-channel, phone model-download, and exporter-output blockers are superseded by model and export metadata hashes. Pending drift hardening remains for C5-capable phone runner deployment, heldout QA staging, and native full-decoder logits implementation.
+Runner build, heldout staging, model download, and component-pack export blockers are superseded by hashes and a real probe. The remaining drift is the deliberate native fail-closed logits body; bridge MSE remains forbidden as C5 loss.
 
 ## Threads Nudged This Tick
 
-- Execution Orchestrator `019f138c-fb51-7c53-a41a-ab8eac950d9c` for runner build/heldout staging.
-- Repo Custodian `019f1ac2-0f0f-7721-bf46-ad402dbd9050` for the two-file central mirror freeze.
+- Phase3/4 Engineer `019f13da-d897-7ba2-8ed1-b959892f5ed4` for native logits implementation.
+- Repo Custodian `019f1ac2-0f0f-7721-bf46-ad402dbd9050` for central mirror plus native probe report freeze.
 
 ## Nonclaims Preserved
 
 - no executed C5 metrics.
+- no prediction JSONL emitted.
+- no logits emitted.
+- no loss, confidence, or `candidate_train_loss` emitted.
 - no logits emitted.
 - no prediction JSONL emitted.
 - no loss, confidence, `candidate_train_loss`, or C5 metrics fabricated.
