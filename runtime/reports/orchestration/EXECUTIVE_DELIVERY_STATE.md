@@ -1,69 +1,64 @@
 # Executive Delivery State
 
-Updated UTC: `2026-07-01T16:38:37Z`
+Updated UTC: `2026-07-01T16:59:07Z`
 
 ## Current Gate
 
-`WaveB_C5_after_C1_opencl_runtime_availability_repair_pending_after_repaired_manifest_phone_probe`
+`WaveB_C5_after_C1_opencl_runtime_discovery_repair_custody_pending_after_phase34_pathset`
 
-Status classification: `PENDING_ACTION_PHASE34_OPENCL_RUNTIME_DISCOVERY_REPAIR_AFTER_PHONE_RESOURCE_FAILURE`
+Status classification: `PENDING_ACTION_REPO_CUSTODIAN_OPENCL_RUNTIME_DISCOVERY_REPAIR_FREEZE`
 
-Owner: Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 + Engineering Orchestrator own the OpenCL runtime discovery/loading repair; Execution is parked after completing the repaired-manifest phone proof.
+Owner: Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050 is actively verifying/freezing the Phase3/4 OpenCL runtime discovery repair pathset; Phase3/4 has handed off; Execution remains parked until a repair commit exists.
 
 User action required: `false`
 
 Dominant failure domain: `phase5_eval_failure`
 
-Research escalation: `none; first occurrence of this repaired-manifest OpenCL platform availability field.`
+Research escalation: `none; first repair for the current repaired-manifest OpenCL platform availability field is in custody.`
 
 ## Artifact Waiting On
 
-- Phase3/4/Engineering patches the existing OpenCL runtime discovery/loading path used by `run_c5_full_decoder_runtime` and `--run-c5-qa-predict` so the RedMagic/Termux runtime can discover a platform instead of failing `clGetPlatformIDs` with OpenCL error `-1001`.
-- Repair must stay behind the existing native C5 runner path; do not create a parallel evaluator or bypass the frozen C5 surface.
-- Return either a custody-ready source/test/report pathset with exact hashes and verification, or a precise source/build/runtime blocker for OpenCL discovery/loading.
-- Execution resumes only after the repair is frozen or Phase3/4 supplies a bounded phone probe command.
-- Prediction JSONL, logits, loss, confidence, `candidate_train_loss`, and executed C5 metrics remain unclaimable until real runtime emits them.
+- Repo Custodian completes verification/freeze/push of the Phase3/4 OpenCL runtime discovery repair pathset handed off by `019f13da-d897-7ba2-8ed1-b959892f5ed4`.
+- Frozen pathset must remain the existing native C5 runner surface; no parallel evaluator and no OpenCL parity bypass.
+- First post-custody green field: `PENDING_ACTION_EXECUTION_REBUILD_COPY_RUNNER_AND_BOUNDED_PHONE_PROBE`.
+- Execution remains parked until a repair commit exists or a bounded follow-up probe command is supplied.
 
 ## Last Concrete Action
 
-Repo Custodian froze the post-repair execution-rerun central mirror at `e1b7aa4976a5b45222b3c490a89b874a3191a9fd`.
+Phase3/4 completed the OpenCL runtime discovery repair pathset and sent it to Repo Custodian.
 
-Execution consumed repair commit `58872fdc3dd7ff6efb73321252d58f3447eb0e2b`, regenerated the phone component pack successfully, rebuilt runner `gemma4_layer_runner_c5_58872fd`, and ran the bounded `C5_after_C1` phone probe.
+Pathset evidence:
+- report: `runtime/reports/orchestration/c5_after_c1_opencl_runtime_discovery_repair_20260701T_phase34.json` SHA `6a5de7ae94e18cbb4eeaa78eecf1fc6ac81ec75d44e363262735ac1af7f9811e`
+- `opencl_layer_runner.h`: `9261cf4b42f5bbf4519793e4d4a50624cb5c683b4b81c91452c5a8f44b5b46e7`
+- `c5_qa_inference.h`: `ca4bc6ed226c5f59c1df7fdf24e8e233d6606969f367ec808353dcff6e529e06`
+- `main.cpp`: `c3b906553ce7d00e65a06d7425ba55ed8a8ade7d18550394952103c427fe73ca`
+- `opencl_layer_runner.cpp`: `ba6779769201949b9e611eed3e7f52cca205b6aee7f41b81a9e96df42d06c760`
+- `c5_full_decoder_runtime.cpp`: `2776090c77f66c5e9fdaf9601d46dc648398d245be69131efcfb507cea31804d`
+- `c5_qa_inference.cpp`: `92440c1d9c9cd66ff15195d28f77bb42738488face7be749fa7cdb07463f9fb8`
+- `test_c5_native_runtime_contract.py`: `3cfa4de756effb92acc65c6c22cb6d8b7b57e727fb0caff91076dd328cbef8a0`
 
-Exporter rerun evidence:
-- `decoder_manifest.json`: `52fcb53666bb4b06d0118cb825b983afc54624a630f667bbfa5af278640e28f8`
-- `adapter_site_policy.json`: `f38bd8109bbb77e9e94a5b4b34a238bc0ec0a39e7736870c97defe5aecc93357`
-- `export_report.json`: `4774d31953a58ad6ae1f64e4196405ba820e5be75d36880ac863cfb9dae00b6c`
-- Manifest proof: `per_layer_input_runtime` present, `manifest_contract_checks` present, 42 tensor-role layers, 42 attention layouts, source model SHA `43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651`.
+Reported Phase3/4 verification: CMake warnings-as-errors build passed; focused native tests `13 passed`; broader C5 suite `40 passed`; `ctest` `4/4`; JSON/diff/raw-boundary checks passed.
 
-Bounded phone probe evidence:
-- Runner SHA/bytes: `efc18e811b4edff6ca4af5baad5fc9bab3db0f707a36ad3aba114d3994303a01`, `515072`
-- Exit code: `13`
-- Elapsed: `97s`
-- Classification: `resource/runtime_availability`
-- First failing field: `c5_full_decoder_opencl_parity_runtime_unavailable:opencl_single_token_layer_runtime_unavailable:clGetPlatformIDs count failed with OpenCL error -1001`
-- Probe report SHA: `ad87aeaab55902d6fc2e62ed761010ee759386964e5f2927210998a08b9885c2`
-- Stderr SHA: `090f6c91104f21f2e00715c1e02032811043d8710ae22bb671949a5b99f1872f`
-- Meminfo before/after SHA: `baecb005b2984f5b73b34efb8f55c89a0fa73ca401d9d755e2e32753205360e8`, `02f37282e1c3485a56ea6fab416fc443807058ca05cd3c993e648899eff6e55e`
-- Prediction JSONL: not written.
+Repo Custodian is active on this freeze. No Execution rerun has been requested yet.
 
 ## First Missing Green Field
 
-Current: `c5_full_decoder_opencl_parity_runtime_unavailable:opencl_single_token_layer_runtime_unavailable:clGetPlatformIDs count failed with OpenCL error -1001`
+Current: `opencl_runtime_discovery_repair_custody_commit_missing`
 
 ## Next Concrete Action
 
-Nudge Phase3/4 to inspect and patch the OpenCL runtime discovery/loading path, then return a custody-ready pathset or precise blocker. Route this updated two-file central mirror to Repo Custodian. Do not reroute Execution until a real repair is frozen or a bounded follow-up probe command exists.
+Repo Custodian finishes the active OpenCL runtime discovery repair freeze and returns commit/SHA. Then Engineering updates the central mirror to the repair commit and routes Execution to rebuild/copy the repaired runner and rerun only the bounded C5_after_C1 phone probe.
 
 ## Drift Deletion / Hardening
 
-The `per_layer_input_runtime` manifest/runtime drift is repaired and verified by the regenerated `58872fd` manifest. Current drift is OpenCL platform discovery/loading under Termux/RedMagic: the C5 path reaches OpenCL parity and fails at `clGetPlatformIDs -1001` before predictions/logits/loss can be emitted.
+per_layer_input_runtime drift is repaired and verified by the regenerated 58872fd manifest. Current drift is OpenCL runtime discovery/loading under Termux/RedMagic; Phase3/4 repair pathset is custody-pending and not yet an executable frozen repair.
 
 ## Threads Nudged This Tick
 
-- Repo Custodian `019f1ac2-0f0f-7721-bf46-ad402dbd9050`: polled complete at `e1b7aa4976a5b45222b3c490a89b874a3191a9fd`; will receive this new two-file central mirror freeze request.
-- Execution Orchestrator `019f138c-fb51-7c53-a41a-ab8eac950d9c`: polled complete with `exporter_green_bounded_phone_probe_resource_failure_opencl_runtime_unavailable`; no duplicate rerun nudge sent.
-- Phase3/4 Engineer `019f13da-d897-7ba2-8ed1-b959892f5ed4`: nudged to repair the existing OpenCL runtime discovery/loading path or return a precise blocker.
+- Repo Custodian `019f1ac2-0f0f-7721-bf46-ad402dbd9050`: polled active on the OpenCL runtime discovery repair freeze; central mirror freeze queued after this update.
+- Phase3/4 Engineer `019f13da-d897-7ba2-8ed1-b959892f5ed4`: polled complete with `opencl_runtime_discovery_repair_pathset_ready_for_custodian`; no duplicate nudge.
+- Execution Orchestrator `019f138c-fb51-7c53-a41a-ab8eac950d9c`: polled parked after OpenCL runtime-unavailable proof; no rerun nudge until repair frozen.
+- Training Material Steward, Pipeline Integrator, UI Engineer, Engineering Orchestrator: polled/not current owner; no nudge.
 
 ## Nonclaims Preserved
 
