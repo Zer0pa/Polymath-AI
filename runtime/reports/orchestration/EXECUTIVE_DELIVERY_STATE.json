@@ -1,30 +1,39 @@
 {
   "active_bottleneck": {
-    "current_gate": "WaveB_C5_after_C1_decoder_manifest_per_layer_input_runtime_repair_pending_after_phone_opencl_probe",
-    "status_classification": "PENDING_ACTION_PHASE34_DECODER_MANIFEST_PER_LAYER_INPUT_RUNTIME_REPAIR_AFTER_PHONE_OPENCL_PROBE",
-    "first_missing_green_field": "decoder_manifest_per_layer_input_runtime_missing",
-    "completed_prior_edge": "WaveB_C5_after_C1_phone_opencl_parity_probe_result_pending_after_opencl_dispatch_custody",
-    "custody_commit_to_follow": "05bb56437b83138547301e69af14ab0fce7d4b1a",
+    "current_gate": "WaveB_C5_after_C1_execution_exporter_rerun_and_bounded_phone_probe_after_per_layer_input_runtime_repair_custody",
+    "status_classification": "PENDING_ACTION_EXECUTION_EXPORTER_RERUN_AND_BOUNDED_PHONE_PROBE_AFTER_REPAIR_CUSTODY",
+    "first_missing_green_field": "PENDING_ACTION_EXECUTION_EXPORTER_RERUN_AND_BOUNDED_PHONE_PROBE",
+    "completed_prior_edge": "WaveB_C5_after_C1_decoder_manifest_per_layer_input_runtime_repair_pathset_custody_pending",
+    "custody_commit_to_follow": "58872fdc3dd7ff6efb73321252d58f3447eb0e2b",
     "artifact_waiting_on": [
-      "Phase3/4/Engineering repairs the manifest/runtime contract for per_layer_input_runtime behind the existing exporter/native C5 path; do not create a parallel C5 pathway.",
-      "Execution probe evidence: runner built from 05bb56437b83138547301e69af14ab0fce7d4b1a, runner SHA 9c830f8337f61df9d63d2d86255a039c8f705258484df73aa5fad30473bde0e5, exit code 13, elapsed 97s, semantic classification.",
-      "Probe report: runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_opencl_05bb564/candidate_probe_stdout.json SHA fdddc66acb25942701567344c0a9414afb7851bf9f6b39a8f6dfd893c4f47bce.",
-      "Stderr log SHA 7588fb8cffee4da0ed9cb23db07b0586de362b52934fbcdc448cb20a64176470; meminfo before SHA c2ca8410159a436563d1f2e4e5e5b24dffc8c162534f63a5cd2ae97c887aae27; meminfo after SHA 9d1f0d6d5ca276e5190596f1e81f78162a31d41a5a779db7c6f939ee4741f28f.",
-      "Prediction JSONL was not written; no logits/loss/confidence/candidate_train_loss or C5 metrics are claimable."
+      "Execution consumes frozen repair commit 58872fdc3dd7ff6efb73321252d58f3447eb0e2b in a clean Termux worktree, verifies the five frozen pathset hashes, and reruns the phone-local exporter against the accepted phone-held model.",
+      "Exporter rerun must regenerate decoder_manifest.json with top-level per_layer_input_runtime.roles and manifest_contract_checks; no raw model/checkpoint/adapter/tensor payloads may be copied into git.",
+      "If exporter succeeds, Execution rebuilds/copies the C5 runner if needed and reruns only the bounded C5_after_C1 native phone probe through the existing --run-c5-qa-predict surface.",
+      "If exporter/probe fails, Execution returns exact command, commit, binary hash, first failing field, stderr/log SHA, memory/latency/throughput if available, and semantic/resource/scheduling classification.",
+      "Prediction JSONL remains not claimable unless the real runtime emits it; no logits/loss/confidence/candidate_train_loss or C5 metrics are claimable yet."
     ],
-    "evidence_freeze_commit": "eb7ce060d1295e8396f2f7d5701df32dc1234cad",
-    "evidence_freeze_status": "phone_opencl_probe_failure_evidence_and_central_mirror_committed_pushed"
+    "evidence_freeze_commit": "58872fdc3dd7ff6efb73321252d58f3447eb0e2b",
+    "evidence_freeze_status": "decoder_manifest_per_layer_input_runtime_repair_committed_pushed",
+    "active_repair_pathset_status": "decoder_manifest_per_layer_input_runtime_repair_custody_pending",
+    "active_repair_pathset_sha256": {
+      "runtime/reports/orchestration/c5_after_c1_decoder_manifest_per_layer_input_runtime_repair_20260701T_phase34.json": "7571f6e22ecee84cff44def6b48715405cab5b87fa76620dc1d3a1d9c80ceaa0",
+      "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py": "2e875146b8dbf58aa977f468cdd9cb03679039afe9f3f9321b5c512bed15a03a",
+      "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp": "45f9112cadfc9f43ba17cce780b2ad2c0f0d80f1419f2d56546db107ebf3f580",
+      "tests/test_c5_full_decoder_exporter.py": "3e85411471df37c62b5e201c88caa3803faeeca761734d10ceac698b654b6a81",
+      "tests/test_c5_native_runtime_contract.py": "9f65a5635046501fcd83dbed23131a69e969f13f750499ca41357410275da572"
+    },
+    "active_execution_status": "phone_exporter_rerun_and_bounded_probe_active"
   },
-  "active_edge": "WaveB_C5_after_C1_decoder_manifest_per_layer_input_runtime_repair_pending_after_phone_opencl_probe",
+  "active_edge": "WaveB_C5_after_C1_execution_exporter_rerun_and_bounded_phone_probe_after_per_layer_input_runtime_repair_custody",
   "active_watchdog_state": {
     "adapter_site_policy_sha256": "f38bd8109bbb77e9e94a5b4b34a238bc0ec0a39e7736870c97defe5aecc93357",
     "additional_missing_runtime_field_after_contract_patch": "decoder_manifest_tensor_role_inventory_missing",
     "artifact_waiting_on": [
-      "Phase3/4/Engineering repairs the manifest/runtime contract for per_layer_input_runtime behind the existing exporter/native C5 path; do not create a parallel C5 pathway.",
-      "Execution probe evidence: runner built from 05bb56437b83138547301e69af14ab0fce7d4b1a, runner SHA 9c830f8337f61df9d63d2d86255a039c8f705258484df73aa5fad30473bde0e5, exit code 13, elapsed 97s, semantic classification.",
-      "Probe report: runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_opencl_05bb564/candidate_probe_stdout.json SHA fdddc66acb25942701567344c0a9414afb7851bf9f6b39a8f6dfd893c4f47bce.",
-      "Stderr log SHA 7588fb8cffee4da0ed9cb23db07b0586de362b52934fbcdc448cb20a64176470; meminfo before SHA c2ca8410159a436563d1f2e4e5e5b24dffc8c162534f63a5cd2ae97c887aae27; meminfo after SHA 9d1f0d6d5ca276e5190596f1e81f78162a31d41a5a779db7c6f939ee4741f28f.",
-      "Prediction JSONL was not written; no logits/loss/confidence/candidate_train_loss or C5 metrics are claimable."
+      "Execution consumes frozen repair commit 58872fdc3dd7ff6efb73321252d58f3447eb0e2b in a clean Termux worktree, verifies the five frozen pathset hashes, and reruns the phone-local exporter against the accepted phone-held model.",
+      "Exporter rerun must regenerate decoder_manifest.json with top-level per_layer_input_runtime.roles and manifest_contract_checks; no raw model/checkpoint/adapter/tensor payloads may be copied into git.",
+      "If exporter succeeds, Execution rebuilds/copies the C5 runner if needed and reruns only the bounded C5_after_C1 native phone probe through the existing --run-c5-qa-predict surface.",
+      "If exporter/probe fails, Execution returns exact command, commit, binary hash, first failing field, stderr/log SHA, memory/latency/throughput if available, and semantic/resource/scheduling classification.",
+      "Prediction JSONL remains not claimable unless the real runtime emits it; no logits/loss/confidence/candidate_train_loss or C5 metrics are claimable yet."
     ],
     "authorization_needed": "none; native implementation work is under current GO and must preserve raw/secrets boundary",
     "c5_after_c1_c5_qa_runtime_fail_closed_pathset": {
@@ -987,12 +996,12 @@
       "status": "c5_full_decoder_failure_artifacts_and_state_pending_custody",
       "user_action_required": false
     },
-    "current_gate": "WaveB_C5_after_C1_decoder_manifest_per_layer_input_runtime_repair_pending_after_phone_opencl_probe",
+    "current_gate": "WaveB_C5_after_C1_execution_exporter_rerun_and_bounded_phone_probe_after_per_layer_input_runtime_repair_custody",
     "custody_commit_latest": "05bb56437b83138547301e69af14ab0fce7d4b1a",
     "custody_status_latest": "c5_opencl_parity_dispatch_committed_pushed",
     "decoder_manifest_sha256": "2384cd0331423c46a8e0f4a510add39990c16275e5adcd72a00ef56be820bea5",
     "dominant_failure_domain": "phase5_eval_failure",
-    "drift_deleted_or_pending": "OpenCL parity dispatch is frozen and the phone proof reached a new semantic manifest/runtime contract field. Stale OpenCL-pending and Execution-running mirrors are superseded. Pending drift is per_layer_input_runtime manifest/runtime repair, bounded multi-token QA prompt orchestration, rank-16 adapter stream injection, 42-layer orchestration, chunked LM-head/NLL writer, outside-git prediction JSONL, and executed C5 metrics.",
+    "drift_deleted_or_pending": "The first per_layer_input_runtime manifest/runtime drift is source-frozen at 58872fdc3dd7ff6efb73321252d58f3447eb0e2b. Pending drift is phone exporter rerun with regenerated manifest_contract_checks, bounded probe evidence, bounded multi-token QA prompt orchestration, rank-16 adapter stream injection, 42-layer orchestration, chunked LM-head/NLL writer, outside-git prediction JSONL, and executed C5 metrics.",
     "engineering_evaluator_implementation": {
       "artifact_paths_in_progress": [
         "polymath_ai/polar/c5_heldout_eval.py",
@@ -1100,9 +1109,9 @@
       "status": "c5_after_c1_real_evaluator_surface_missing"
     },
     "export_report_sha256": "3313602e8ac2ebf259c36c7aa7a9107e1536e79fea9bf7d0b275434bcda17358",
-    "first_missing_green_field": "decoder_manifest_per_layer_input_runtime_missing",
+    "first_missing_green_field": "PENDING_ACTION_EXECUTION_EXPORTER_RERUN_AND_BOUNDED_PHONE_PROBE",
     "first_missing_green_field_after_contract_patch": "decoder_manifest_architecture_config_missing",
-    "first_missing_green_field_after_custody": "c5_full_decoder_opencl_parity_dispatch_missing_after_cpu_single_layer_slice",
+    "first_missing_green_field_after_custody": "PENDING_ACTION_EXECUTION_EXPORTER_RERUN_AND_BOUNDED_PHONE_PROBE",
     "first_missing_green_field_after_export": "phone_c5_runner_rebuild_or_copy_missing",
     "first_missing_green_field_after_exporter_patch_custody": "phone_exporter_rerun_for_schema_complete_component_pack_pending",
     "first_missing_green_field_after_patch": "bounded_c5_qa_predict_rerun_pending",
@@ -1141,7 +1150,7 @@
       "training_material_steward": "complete for material identities",
       "ui_engineer": "not nudged until C5 evidence-backed status exists"
     },
-    "last_concrete_action": "Execution consumed OpenCL parity custody commit 05bb56437b83138547301e69af14ab0fce7d4b1a, built phone runner gemma4_layer_runner_c5_05bb564 SHA 9c830f8337f61df9d63d2d86255a039c8f705258484df73aa5fad30473bde0e5, verified C5 inputs, and ran the bounded C5_after_C1 phone probe with --max-generation-tokens 1. The probe completed in 97s with exit code 13 and semantic first failing field decoder_manifest_per_layer_input_runtime_missing. Report SHA fdddc66acb25942701567344c0a9414afb7851bf9f6b39a8f6dfd893c4f47bce; stderr SHA 7588fb8cffee4da0ed9cb23db07b0586de362b52934fbcdc448cb20a64176470. No prediction JSONL was produced or pulled.",
+    "last_concrete_action": "Repo Custodian froze and pushed the five-file decoder_manifest per_layer_input_runtime repair at 58872fdc3dd7ff6efb73321252d58f3447eb0e2b. Execution accepted the handoff, verified the frozen pathset and phone-held model identity, created a clean Termux worktree at 58872fd, and started rerunning the phone exporter to regenerate a component pack with per_layer_input_runtime and manifest_contract_checks.",
     "lineage_drift_repair_status": {
       "commit": "ee74ae572322e05624deac6f6f8788c2c6e2f692",
       "proof_required": [
@@ -1316,7 +1325,7 @@
     "native_logits_contract_patch_custody_commit": "2151dbada9012a5f54806cf689e806001180521f",
     "native_probe_exit_code": 13,
     "native_probe_report_path": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe/candidate_probe_stdout.json",
-    "next_concrete_action": "Phase3/4 inspects the exporter manifest schema and native run_c5_full_decoder_runtime validation path, then returns a custody-ready repair pathset for decoder_manifest_per_layer_input_runtime_missing or a precise source/schema blocker. After custody, Execution reruns only the bounded phone C5_after_C1 probe against the repaired manifest/runtime contract.",
+    "next_concrete_action": "Execution completes the phone-local exporter rerun and bounded C5_after_C1 probe, then returns either schema-complete regenerated component-pack identities plus probe result, or a precise exporter/schema/source/build/runtime blocker. Do not route Phase3/4 unless Execution reports a new repair field.",
     "nonclaims": [
       "development-cycle evidence only unless stronger gates pass",
       "no C5 pass",
@@ -1344,7 +1353,7 @@
       "no Comet/API call",
       "no secrets sourced"
     ],
-    "owner": "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 owns the manifest/runtime contract repair after Execution ran the bounded phone OpenCL parity probe and failed semantically at decoder_manifest_per_layer_input_runtime_missing. Engineering Orchestrator validates/reroutes; Execution is parked until a repaired/frozen runtime or bounded probe command exists.",
+    "owner": "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c owns the phone/Termux exporter rerun and bounded C5_after_C1 native probe after Repo Custodian froze the per_layer_input_runtime repair at 58872fdc3dd7ff6efb73321252d58f3447eb0e2b. Repo Custodian will freeze this metadata-only central mirror; Phase3/4 is parked unless Execution returns a new source/schema/runtime failure.",
     "phase2_status_by_phase": {
       "C1": {
         "packets": 5180,
@@ -1556,7 +1565,7 @@
       "phase34": "raw PJP1, HTP raw output, OpenCL tensors, and adapters remain on device/Termux; repair must keep compact JSON only",
       "report_root_scan": "metadata-freeze report root had 179 tracked files and clean forbidden suffix scans; raw payloads not committed"
     },
-    "recursive_improvement_next_step": "Route the first occurrence of decoder_manifest_per_layer_input_runtime_missing to Phase3/4 as the next falsifiable repair. Keep research_escalation none unless this same field repeats after repair/custody or the phone evidence hits a memory/throughput envelope failure.",
+    "recursive_improvement_next_step": "Let Execution finish the smallest falsifiable proof: phone-local exporter rerun plus bounded C5_after_C1 native probe. If the same per_layer_input_runtime field repeats after this repair/custody, escalate to bounded_sprint_required; otherwise route the next concrete first failing field.",
     "repo_custody_state_freeze": {
       "branch": "origin/gemma4-megakernel-native-training",
       "commit": "7290fbec13c6a13e88710afddfe4af70637096f9",
@@ -1571,12 +1580,12 @@
     "run_root": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z",
     "runner_sha256": "a5a6f9a3b93d167d9cd69eddbe2f3404443ae1c2222e1c6a0782398c9ff09e84",
     "runner_size_bytes": 369536,
-    "status": "bounded_phone_probe_semantic_failure_decoder_manifest_per_layer_input_runtime_missing",
-    "status_classification": "PENDING_ACTION_PHASE34_DECODER_MANIFEST_PER_LAYER_INPUT_RUNTIME_REPAIR_AFTER_PHONE_OPENCL_PROBE",
+    "status": "execution_exporter_rerun_and_bounded_phone_probe_active_after_repair_custody",
+    "status_classification": "PENDING_ACTION_EXECUTION_EXPORTER_RERUN_AND_BOUNDED_PHONE_PROBE_AFTER_REPAIR_CUSTODY",
     "threads_nudged_this_tick": [
-      "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: polled complete at eb7ce060d1295e8396f2f7d5701df32dc1234cad; no nudge sent; will receive only this two-file post-freeze central mirror correction.",
-      "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4: active on decoder_manifest_per_layer_input_runtime repair; no duplicate nudge sent.",
-      "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: parked after bounded phone semantic failure; not re-nudged until repair is frozen."
+      "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: polled complete at 58872fdc3dd7ff6efb73321252d58f3447eb0e2b; will receive two-file central mirror freeze request only.",
+      "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: polled active on phone exporter rerun after repair custody; no duplicate nudge sent.",
+      "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4: not nudged; parked after custody-ready repair and Custodian freeze."
     ],
     "timestamp_utc": "2026-07-01T15:19:37Z",
     "updated_utc": "2026-07-01T16:18:07Z",
@@ -1669,9 +1678,9 @@
     "native_tokenizer_tensor_loader_prereq_custody_commit": "4472e3dee86d88d83031eecfc94b91008e5215e0",
     "native_tokenizer_tensor_loader_prereq_central_mirror_commit": "59567735db38a4680c60a7f9c0182d90d7ffb38e",
     "phase34_streamed_decoder_compute_runtime_status": "implementation_in_progress",
-    "updated_at_utc": "2026-07-01T16:13:35Z",
-    "active_edge": "WaveB_C5_after_C1_decoder_manifest_per_layer_input_runtime_repair_pending_after_phone_opencl_probe",
-    "governing_edge": "WaveB_C5_after_C1_decoder_manifest_per_layer_input_runtime_repair_pending_after_phone_opencl_probe",
+    "updated_at_utc": "2026-07-01T16:28:37Z",
+    "active_edge": "WaveB_C5_after_C1_execution_exporter_rerun_and_bounded_phone_probe_after_per_layer_input_runtime_repair_custody",
+    "governing_edge": "WaveB_C5_after_C1_execution_exporter_rerun_and_bounded_phone_probe_after_per_layer_input_runtime_repair_custody",
     "c5_after_c1_native_ple_contract_decoder_math_boundary_custody_20260701T153007Z": {
       "status": "c5_ple_decoder_math_boundary_committed_pushed",
       "commit_sha": "7f62882a72610b52094040aa0ab24b718e4b7006",
@@ -1765,7 +1774,7 @@
         "no secrets printed"
       ]
     },
-    "research_escalation": "none; first occurrence of decoder_manifest_per_layer_input_runtime_missing and no memory/throughput envelope failure.",
+    "research_escalation": "none; Execution is actively running the post-custody exporter/probe proof.",
     "c5_after_c1_native_ple_single_layer_slice_custody_20260701T153007Z": {
       "status": "c5_native_ple_single_layer_slice_committed_pushed",
       "commit_sha": "955730e88c500fff9517d0a22d0f5bbd207ecaa9",
@@ -1805,7 +1814,7 @@
         "no secrets printed"
       ]
     },
-    "owner_thread": "019f13da-d897-7ba2-8ed1-b959892f5ed4",
+    "owner_thread": "019f138c-fb51-7c53-a41a-ab8eac950d9c",
     "c5_after_c1_opencl_parity_dispatch_custody_20260701T160607Z": {
       "status": "c5_opencl_parity_dispatch_committed_pushed",
       "commit_sha": "05bb56437b83138547301e69af14ab0fce7d4b1a",
@@ -1892,16 +1901,28 @@
         "no secrets printed"
       ]
     },
-    "current_highest_valid_state": "C1-C4 Wave B mechanics, phone-local model/exporter evidence, C5-capable runner build, heldout QA staging, native C5 probe, tokenizer/tensor-loader custody, PLE contract/decoder math custody, PLE derivation/layer-0 normalization custody, CPU single-layer attention/MLP custody, OpenCL parity dispatch custody, and phone OpenCL probe failure evidence custody are development-cycle metadata/code evidence only. No C5 pass, prediction JSONL, or executed metrics exist. The active edge is Phase3/4 repairing the decoder manifest/runtime per_layer_input_runtime contract after the bounded phone probe failed semantically."
+    "current_highest_valid_state": "C1-C4 Wave B mechanics, phone-local model/exporter evidence, C5-capable runner build, heldout QA staging, native C5 probe, tokenizer/tensor-loader custody, PLE contract/decoder math custody, PLE derivation/layer-0 normalization custody, CPU single-layer attention/MLP custody, OpenCL parity dispatch custody, phone OpenCL probe failure evidence custody, and per_layer_input_runtime repair custody are development-cycle metadata/code evidence only. No C5 pass, prediction JSONL, or executed metrics exist. The active edge is Execution rerunning the phone exporter and bounded C5_after_C1 probe after repair custody.",
+    "updated_at": "2026-07-01T16:28:37Z",
+    "central_mirror_local_update_status": "updated_for_decoder_manifest_per_layer_input_runtime_repair_custody_pending",
+    "repo_custodian_post_phone_probe_central_mirror_commit": "5802ea1e25222c068dd3fcb5050c91f20f72357b",
+    "phase34_repair_pathset_sha256": {
+      "runtime/reports/orchestration/c5_after_c1_decoder_manifest_per_layer_input_runtime_repair_20260701T_phase34.json": "7571f6e22ecee84cff44def6b48715405cab5b87fa76620dc1d3a1d9c80ceaa0",
+      "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py": "2e875146b8dbf58aa977f468cdd9cb03679039afe9f3f9321b5c512bed15a03a",
+      "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp": "45f9112cadfc9f43ba17cce780b2ad2c0f0d80f1419f2d56546db107ebf3f580",
+      "tests/test_c5_full_decoder_exporter.py": "3e85411471df37c62b5e201c88caa3803faeeca761734d10ceac698b654b6a81",
+      "tests/test_c5_native_runtime_contract.py": "9f65a5635046501fcd83dbed23131a69e969f13f750499ca41357410275da572"
+    },
+    "repo_custodian_per_layer_input_runtime_repair_commit": "58872fdc3dd7ff6efb73321252d58f3447eb0e2b",
+    "execution_post_repair_rerun_status": "phone_exporter_rerun_active"
   },
   "adapter_site_policy_sha256": "f38bd8109bbb77e9e94a5b4b34a238bc0ec0a39e7736870c97defe5aecc93357",
   "additional_missing_runtime_field_after_contract_patch": "decoder_manifest_tensor_role_inventory_missing",
   "artifact_waiting_on": [
-    "Phase3/4/Engineering repairs the manifest/runtime contract for per_layer_input_runtime behind the existing exporter/native C5 path; do not create a parallel C5 pathway.",
-    "Execution probe evidence: runner built from 05bb56437b83138547301e69af14ab0fce7d4b1a, runner SHA 9c830f8337f61df9d63d2d86255a039c8f705258484df73aa5fad30473bde0e5, exit code 13, elapsed 97s, semantic classification.",
-    "Probe report: runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_opencl_05bb564/candidate_probe_stdout.json SHA fdddc66acb25942701567344c0a9414afb7851bf9f6b39a8f6dfd893c4f47bce.",
-    "Stderr log SHA 7588fb8cffee4da0ed9cb23db07b0586de362b52934fbcdc448cb20a64176470; meminfo before SHA c2ca8410159a436563d1f2e4e5e5b24dffc8c162534f63a5cd2ae97c887aae27; meminfo after SHA 9d1f0d6d5ca276e5190596f1e81f78162a31d41a5a779db7c6f939ee4741f28f.",
-    "Prediction JSONL was not written; no logits/loss/confidence/candidate_train_loss or C5 metrics are claimable."
+    "Execution consumes frozen repair commit 58872fdc3dd7ff6efb73321252d58f3447eb0e2b in a clean Termux worktree, verifies the five frozen pathset hashes, and reruns the phone-local exporter against the accepted phone-held model.",
+    "Exporter rerun must regenerate decoder_manifest.json with top-level per_layer_input_runtime.roles and manifest_contract_checks; no raw model/checkpoint/adapter/tensor payloads may be copied into git.",
+    "If exporter succeeds, Execution rebuilds/copies the C5 runner if needed and reruns only the bounded C5_after_C1 native phone probe through the existing --run-c5-qa-predict surface.",
+    "If exporter/probe fails, Execution returns exact command, commit, binary hash, first failing field, stderr/log SHA, memory/latency/throughput if available, and semantic/resource/scheduling classification.",
+    "Prediction JSONL remains not claimable unless the real runtime emits it; no logits/loss/confidence/candidate_train_loss or C5 metrics are claimable yet."
   ],
   "authorization_needed": "none; native implementation work is under current GO and must preserve raw/secrets boundary",
   "c5_after_c1_exporter_attention_layout_repair_20260701T_engineering": {
@@ -2237,11 +2258,11 @@
     ]
   },
   "candidate_adapter_sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f",
-  "current_gate": "WaveB_C5_after_C1_decoder_manifest_per_layer_input_runtime_repair_pending_after_phone_opencl_probe",
-  "current_highest_valid_state": "C1-C4 Wave B mechanics, phone-local model/exporter evidence, C5-capable runner build, heldout QA staging, native C5 probe, tokenizer/tensor-loader custody, PLE contract/decoder math custody, PLE derivation/layer-0 normalization custody, CPU single-layer attention/MLP custody, OpenCL parity dispatch custody, and phone OpenCL probe failure evidence custody are development-cycle metadata/code evidence only. No C5 pass, prediction JSONL, or executed metrics exist. The active edge is Phase3/4 repairing the decoder manifest/runtime per_layer_input_runtime contract after the bounded phone probe failed semantically.",
+  "current_gate": "WaveB_C5_after_C1_execution_exporter_rerun_and_bounded_phone_probe_after_per_layer_input_runtime_repair_custody",
+  "current_highest_valid_state": "C1-C4 Wave B mechanics, phone-local model/exporter evidence, C5-capable runner build, heldout QA staging, native C5 probe, tokenizer/tensor-loader custody, PLE contract/decoder math custody, PLE derivation/layer-0 normalization custody, CPU single-layer attention/MLP custody, OpenCL parity dispatch custody, phone OpenCL probe failure evidence custody, and per_layer_input_runtime repair custody are development-cycle metadata/code evidence only. No C5 pass, prediction JSONL, or executed metrics exist. The active edge is Execution rerunning the phone exporter and bounded C5_after_C1 probe after repair custody.",
   "decoder_manifest_sha256": "2384cd0331423c46a8e0f4a510add39990c16275e5adcd72a00ef56be820bea5",
   "dominant_failure_domain": "phase5_eval_failure",
-  "drift_deleted_or_pending": "OpenCL parity dispatch is frozen and the phone proof reached a new semantic manifest/runtime contract field. Stale OpenCL-pending and Execution-running mirrors are superseded. Pending drift is per_layer_input_runtime manifest/runtime repair, bounded multi-token QA prompt orchestration, rank-16 adapter stream injection, 42-layer orchestration, chunked LM-head/NLL writer, outside-git prediction JSONL, and executed C5 metrics.",
+  "drift_deleted_or_pending": "The first per_layer_input_runtime manifest/runtime drift is source-frozen at 58872fdc3dd7ff6efb73321252d58f3447eb0e2b. Pending drift is phone exporter rerun with regenerated manifest_contract_checks, bounded probe evidence, bounded multi-token QA prompt orchestration, rank-16 adapter stream injection, 42-layer orchestration, chunked LM-head/NLL writer, outside-git prediction JSONL, and executed C5 metrics.",
   "driver_tick_history": [
     {
       "artifact_waiting_on": [
@@ -3130,7 +3151,7 @@
   "export_report_sha256": "3313602e8ac2ebf259c36c7aa7a9107e1536e79fea9bf7d0b275434bcda17358",
   "exporter_runtime_fields_freeze_commit": "43cf3c4130dc902fc8fd69183bac1056f0596626",
   "exporter_runtime_fields_freeze_status": "committed_pushed",
-  "first_missing_green_field": "decoder_manifest_per_layer_input_runtime_missing",
+  "first_missing_green_field": "PENDING_ACTION_EXECUTION_EXPORTER_RERUN_AND_BOUNDED_PHONE_PROBE",
   "first_missing_green_field_after_contract_patch": "decoder_manifest_architecture_config_missing",
   "first_missing_green_field_after_download": "full_decoder_logits_generation_not_implemented",
   "first_missing_green_field_after_export": "c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land",
@@ -3139,7 +3160,7 @@
   "first_missing_green_field_after_runner": "heldout_qa_jsonl_staging_or_c5_predict_probe_pending",
   "first_unresolved_technical_failure_after_schema_complete_export": "c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land",
   "first_unresolved_technical_failure_after_valid_schema_paths": "c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land",
-  "governing_edge": "WaveB_C5_after_C1_decoder_manifest_per_layer_input_runtime_repair_pending_after_phone_opencl_probe",
+  "governing_edge": "WaveB_C5_after_C1_execution_exporter_rerun_and_bounded_phone_probe_after_per_layer_input_runtime_repair_custody",
   "governing_objective": {
     "nonclaims": [
       "diagnostics_are_not_100k_or_1M_authority_unless_specific_authority_gate_passes",
@@ -3662,112 +3683,88 @@
   "known_downstream_access_issue_after_download": "native_full_decoder_logits_implementation_failure",
   "lane_status": {
     "engineering_orchestrator": {
-      "additional_missing_runtime_field": "decoder_manifest_tensor_role_inventory_missing",
+      "thread_id": "019f138b-d229-7640-98b7-2f185d6beae0",
+      "status": "central_mirror_updated_for_execution_post_repair_rerun_active",
+      "status_classification": "ORCHESTRATION_META_UPDATED_EXECUTION_ACTIVE",
+      "last_update_utc": "2026-07-01T16:28:37Z",
+      "first_missing_green_field": "PENDING_ACTION_EXECUTION_EXPORTER_RERUN_AND_BOUNDED_PHONE_PROBE",
       "artifact_paths": [
-        "runtime/reports/orchestration/c5_after_c1_exporter_runtime_fields_patch_20260701T_engineering.json",
-        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py",
-        "tests/test_c5_full_decoder_exporter.py"
+        "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json",
+        "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md"
       ],
-      "authorization_needed": false,
-      "first_missing_green_field": "repo_custody_freeze_exporter_runtime_fields_patch",
-      "first_missing_green_field_after_custody": "phone_exporter_rerun_for_schema_complete_component_pack_pending",
-      "first_missing_green_field_at_export_execution_until_model_source_is_available": "model_safetensors_missing",
-      "first_unresolved_technical_failure_after_schema_complete_export": "c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land",
-      "first_unresolved_technical_failure_after_valid_schema_paths": "c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land",
-      "last_update_utc": "2026-07-01T12:50:37Z",
-      "next_action": "Repo Custodian freezes the exact central-state plus exporter runtime-fields pathset. After custody, Execution reruns the phone exporter so the outside-git component pack advances from metadata-only manifest blockers to schema-complete decoder_manifest identities. Phase3/4 then lands safetensors_reader plus c5_full_decoder_runtime and replaces only the terminal full_decoder_logits_generation_not_implemented branch.",
+      "sha256_or_identity_fields": "computed after this update",
+      "next_action": "Route two-file central mirror to Custodian, then keep polling Execution for exporter/probe result.",
+      "user_action_required": false,
       "nonclaims": [
         "no C5 pass",
         "no executed C5 metrics",
-        "no real prediction JSONL emitted",
-        "no logits, prediction, loss, confidence, candidate_train_loss, or C5 metric fabricated",
-        "no bridge MSE relabeled as C5 loss",
-        "no old layer0/layer1 asset accepted as a full decoder",
-        "no learning or model-quality claim",
-        "no Phase3 readiness claim",
-        "no Phase4 readiness claim",
-        "not 100k or 1M Phase2 authority",
+        "no prediction JSONL/logits/loss/confidence/candidate_train_loss",
+        "no bridge-MSE-as-C5-loss",
+        "no learning/model-quality claim",
+        "no Phase3/4 readiness",
+        "no 100k/1M authority",
         "no Comet-backed accepted run"
-      ],
-      "sha256_or_identity_fields": {
-        "exporter_runtime_fields_report_sha256": "b135ba0c958c7cfea92cbd1c138f42df0cfb5b500485f0416b5167fce6a114f8",
-        "exporter_sha256": "e3922085a08703d5ba4f17357f9b71218f8cca5aff1cbc4f395edfb7180599b4",
-        "test_sha256": "d8eb5df2c73b470da58f7f37a24ff704bc005d0d58a9eb625cf15cb541a218cb"
-      },
-      "status": "exporter_runtime_fields_pathset_ready_for_custody",
-      "status_classification": "PENDING_ACTION_REPO_CUSTODY_EXPORTER_RUNTIME_FIELDS_PATCH",
-      "thread_id": "019f138b-d229-7640-98b7-2f185d6beae0",
-      "user_action_required": false,
-      "verification_commands": [
-        "python3.11 -m py_compile integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py tests/test_c5_full_decoder_exporter.py -> passed",
-        "python3.11 integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py --print-schema | python3.11 -m json.tool -> passed",
-        "python3.11 -m pytest -q tests/test_c5_full_decoder_exporter.py tests/test_c5_phase34_qa_inference_producer.py tests/test_c5_prediction_payloads.py -> 19 passed in 5.16s",
-        "git diff --check -- integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py tests/test_c5_full_decoder_exporter.py -> passed"
       ]
     },
     "execution_orchestrator": {
       "thread_id": "019f138c-fb51-7c53-a41a-ab8eac950d9c",
-      "status": "bounded_phone_probe_semantic_failure_decoder_manifest_per_layer_input_runtime_missing_complete",
-      "status_classification": "COMPLETED_BOUNDED_PHONE_PROBE_SEMANTIC_FAILURE_ROUTED_TO_PHASE34",
-      "last_update_utc": "2026-07-01T16:13:35Z",
-      "first_missing_green_field": "decoder_manifest_per_layer_input_runtime_missing",
+      "status": "phone_exporter_rerun_active_after_per_layer_input_runtime_repair_custody",
+      "status_classification": "PENDING_ACTION_EXECUTION_EXPORTER_RERUN_AND_BOUNDED_PHONE_PROBE_AFTER_REPAIR_CUSTODY",
+      "last_update_utc": "2026-07-01T16:28:37Z",
+      "first_missing_green_field": "PENDING_ACTION_EXECUTION_EXPORTER_RERUN_AND_BOUNDED_PHONE_PROBE",
       "sha256_or_identity_fields": {
-        "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_opencl_05bb564/candidate_probe_stdout.json": "fdddc66acb25942701567344c0a9414afb7851bf9f6b39a8f6dfd893c4f47bce",
-        "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_opencl_05bb564/candidate_probe_stderr.log": "7588fb8cffee4da0ed9cb23db07b0586de362b52934fbcdc448cb20a64176470",
-        "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_opencl_05bb564/meminfo_before.txt": "c2ca8410159a436563d1f2e4e5e5b24dffc8c162534f63a5cd2ae97c887aae27",
-        "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_opencl_05bb564/meminfo_after.txt": "9d1f0d6d5ca276e5190596f1e81f78162a31d41a5a779db7c6f939ee4741f28f",
-        "runner_sha256": "9c830f8337f61df9d63d2d86255a039c8f705258484df73aa5fad30473bde0e5"
+        "repair_commit": "58872fdc3dd7ff6efb73321252d58f3447eb0e2b",
+        "runtime/reports/orchestration/c5_after_c1_decoder_manifest_per_layer_input_runtime_repair_20260701T_phase34.json": "7571f6e22ecee84cff44def6b48715405cab5b87fa76620dc1d3a1d9c80ceaa0",
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py": "2e875146b8dbf58aa977f468cdd9cb03679039afe9f3f9321b5c512bed15a03a",
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp": "45f9112cadfc9f43ba17cce780b2ad2c0f0d80f1419f2d56546db107ebf3f580",
+        "tests/test_c5_full_decoder_exporter.py": "3e85411471df37c62b5e201c88caa3803faeeca761734d10ceac698b654b6a81",
+        "tests/test_c5_native_runtime_contract.py": "9f65a5635046501fcd83dbed23131a69e969f13f750499ca41357410275da572"
       },
-      "next_action": "Park until Phase3/4/Engineering freezes the per_layer_input_runtime repair or supplies a bounded follow-up probe command.",
+      "next_action": "Complete phone-local exporter rerun, rebuild/copy runner if needed, and rerun only the bounded C5_after_C1 native phone probe. Return exact metadata-only evidence and first failing field.",
       "user_action_required": false,
       "nonclaims": [
         "no C5 pass",
         "no executed C5 metrics",
-        "no prediction JSONL",
-        "no logits, loss, confidence, or candidate_train_loss",
-        "no bridge MSE relabeled as C5 loss",
+        "no prediction JSONL/logits/loss/confidence/candidate_train_loss",
+        "no bridge-MSE-as-C5-loss",
         "no learning/model-quality claim",
-        "no Phase3 readiness claim",
-        "no Phase4 readiness claim",
-        "no raw payload copied to repo",
-        "no secrets printed"
+        "no Phase3/4 readiness",
+        "no 100k/1M authority",
+        "no Comet-backed accepted run"
       ]
     },
     "phase34_engineer": {
       "thread_id": "019f13da-d897-7ba2-8ed1-b959892f5ed4",
-      "status": "decoder_manifest_per_layer_input_runtime_repair_pending_after_phone_probe",
-      "status_classification": "PENDING_ACTION_PHASE34_DECODER_MANIFEST_PER_LAYER_INPUT_RUNTIME_REPAIR_AFTER_PHONE_OPENCL_PROBE",
-      "last_update_utc": "2026-07-01T16:13:35Z",
-      "first_missing_green_field": "decoder_manifest_per_layer_input_runtime_missing",
+      "status": "parked_after_per_layer_input_runtime_repair_custody",
+      "status_classification": "PARKED_UNTIL_EXECUTION_PROOF_RESULT",
+      "last_update_utc": "2026-07-01T16:28:37Z",
+      "first_missing_green_field": "none_current_owner_execution",
       "artifact_paths": [
-        "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_opencl_05bb564/candidate_probe_stdout.json",
-        "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_opencl_05bb564/candidate_probe_stderr.log",
-        "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_opencl_05bb564/meminfo_before.txt",
-        "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_opencl_05bb564/meminfo_after.txt"
+        "runtime/reports/orchestration/c5_after_c1_decoder_manifest_per_layer_input_runtime_repair_20260701T_phase34.json",
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py",
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp",
+        "tests/test_c5_full_decoder_exporter.py",
+        "tests/test_c5_native_runtime_contract.py"
       ],
       "sha256_or_identity_fields": {
-        "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_opencl_05bb564/candidate_probe_stdout.json": "fdddc66acb25942701567344c0a9414afb7851bf9f6b39a8f6dfd893c4f47bce",
-        "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_opencl_05bb564/candidate_probe_stderr.log": "7588fb8cffee4da0ed9cb23db07b0586de362b52934fbcdc448cb20a64176470",
-        "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_opencl_05bb564/meminfo_before.txt": "c2ca8410159a436563d1f2e4e5e5b24dffc8c162534f63a5cd2ae97c887aae27",
-        "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_opencl_05bb564/meminfo_after.txt": "9d1f0d6d5ca276e5190596f1e81f78162a31d41a5a779db7c6f939ee4741f28f",
-        "candidate_adapter_sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f",
-        "heldout_qa_sha256": "da41c5362398f24e0e0dd9df9a5cf0594435a455871fa77ab74d9312e6c8e9b2",
-        "decoder_manifest_sha256": "2384cd0331423c46a8e0f4a510add39990c16275e5adcd72a00ef56be820bea5",
-        "adapter_site_policy_sha256": "f38bd8109bbb77e9e94a5b4b34a238bc0ec0a39e7736870c97defe5aecc93357",
-        "export_report_sha256": "3313602e8ac2ebf259c36c7aa7a9107e1536e79fea9bf7d0b275434bcda17358"
+        "runtime/reports/orchestration/c5_after_c1_decoder_manifest_per_layer_input_runtime_repair_20260701T_phase34.json": "7571f6e22ecee84cff44def6b48715405cab5b87fa76620dc1d3a1d9c80ceaa0",
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py": "2e875146b8dbf58aa977f468cdd9cb03679039afe9f3f9321b5c512bed15a03a",
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp": "45f9112cadfc9f43ba17cce780b2ad2c0f0d80f1419f2d56546db107ebf3f580",
+        "tests/test_c5_full_decoder_exporter.py": "3e85411471df37c62b5e201c88caa3803faeeca761734d10ceac698b654b6a81",
+        "tests/test_c5_native_runtime_contract.py": "9f65a5635046501fcd83dbed23131a69e969f13f750499ca41357410275da572"
       },
-      "next_action": "Phase3/4 inspects the exporter manifest schema and native run_c5_full_decoder_runtime validation path, then returns a custody-ready repair pathset for decoder_manifest_per_layer_input_runtime_missing or a precise source/schema blocker. After custody, Execution reruns only the bounded phone C5_after_C1 probe against the repaired manifest/runtime contract.",
+      "next_action": "Stand by for Execution exporter/probe result; repair only if Execution reports a new source/schema/runtime first failing field.",
       "user_action_required": false,
       "nonclaims": [
         "no C5 pass",
         "no executed C5 metrics",
-        "no prediction JSONL",
-        "no logits, loss, confidence, or candidate_train_loss",
-        "no bridge MSE relabeled as C5 loss",
+        "no prediction JSONL/logits/loss/confidence/candidate_train_loss",
+        "no bridge-MSE-as-C5-loss",
         "no learning/model-quality claim",
-        "no Phase3 readiness claim",
-        "no Phase4 readiness claim",
-        "no raw payload copied to repo",
+        "no Phase3/4 readiness",
+        "no 100k/1M authority",
+        "no Comet-backed accepted run",
+        "no raw payloads copied into git",
         "no secrets printed"
       ]
     },
@@ -3791,21 +3788,20 @@
     },
     "repo_custodian": {
       "thread_id": "019f1ac2-0f0f-7721-bf46-ad402dbd9050",
-      "status": "phone_opencl_probe_failure_evidence_and_central_mirror_committed_pushed",
-      "status_classification": "COMPLETE_PHONE_PROBE_FAILURE_EVIDENCE_AND_CENTRAL_MIRROR_FREEZE",
-      "last_update_utc": "2026-07-01T16:18:07Z",
-      "first_missing_green_field": "none_for_repo_custody_current_owner_phase34",
-      "commit_sha": "eb7ce060d1295e8396f2f7d5701df32dc1234cad",
+      "status": "decoder_manifest_per_layer_input_runtime_repair_committed_pushed",
+      "status_classification": "COMPLETE_REPAIR_PATHSET_FREEZE",
+      "last_update_utc": "2026-07-01T16:28:37Z",
+      "first_missing_green_field": "none_for_repo_custody_current_owner_execution",
+      "commit_sha": "58872fdc3dd7ff6efb73321252d58f3447eb0e2b",
       "branch": "origin/gemma4-megakernel-native-training",
       "pathset_sha256": {
-        "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json": "0a092fbd99b72107206fdd9e0d0d702c3a053c4634325387810480907fa688d6",
-        "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md": "ce8608b8f5d8db1bfd2c3e0e61cfc97664773b49d8cd2a1c0d81ea7efec9d679",
-        "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_opencl_05bb564/candidate_probe_stdout.json": "fdddc66acb25942701567344c0a9414afb7851bf9f6b39a8f6dfd893c4f47bce",
-        "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_opencl_05bb564/candidate_probe_stderr.log": "7588fb8cffee4da0ed9cb23db07b0586de362b52934fbcdc448cb20a64176470",
-        "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_opencl_05bb564/meminfo_before.txt": "c2ca8410159a436563d1f2e4e5e5b24dffc8c162534f63a5cd2ae97c887aae27",
-        "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_opencl_05bb564/meminfo_after.txt": "9d1f0d6d5ca276e5190596f1e81f78162a31d41a5a779db7c6f939ee4741f28f"
+        "runtime/reports/orchestration/c5_after_c1_decoder_manifest_per_layer_input_runtime_repair_20260701T_phase34.json": "7571f6e22ecee84cff44def6b48715405cab5b87fa76620dc1d3a1d9c80ceaa0",
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py": "2e875146b8dbf58aa977f468cdd9cb03679039afe9f3f9321b5c512bed15a03a",
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp": "45f9112cadfc9f43ba17cce780b2ad2c0f0d80f1419f2d56546db107ebf3f580",
+        "tests/test_c5_full_decoder_exporter.py": "3e85411471df37c62b5e201c88caa3803faeeca761734d10ceac698b654b6a81",
+        "tests/test_c5_native_runtime_contract.py": "9f65a5635046501fcd83dbed23131a69e969f13f750499ca41357410275da572"
       },
-      "next_action": "Stand by for Phase3/4 decoder_manifest_per_layer_input_runtime repair pathset or central mirror custody after that repair result; do not reroute Execution before repair custody.",
+      "next_action": "Freeze the two-file central mirror correction when routed; otherwise stand by for Execution proof evidence.",
       "user_action_required": false
     },
     "training_material_steward": {
@@ -3870,7 +3866,7 @@
       "user_action_required": false
     }
   },
-  "last_concrete_action": "Execution consumed OpenCL parity custody commit 05bb56437b83138547301e69af14ab0fce7d4b1a, built phone runner gemma4_layer_runner_c5_05bb564 SHA 9c830f8337f61df9d63d2d86255a039c8f705258484df73aa5fad30473bde0e5, verified C5 inputs, and ran the bounded C5_after_C1 phone probe with --max-generation-tokens 1. The probe completed in 97s with exit code 13 and semantic first failing field decoder_manifest_per_layer_input_runtime_missing. Report SHA fdddc66acb25942701567344c0a9414afb7851bf9f6b39a8f6dfd893c4f47bce; stderr SHA 7588fb8cffee4da0ed9cb23db07b0586de362b52934fbcdc448cb20a64176470. No prediction JSONL was produced or pulled.",
+  "last_concrete_action": "Repo Custodian froze and pushed the five-file decoder_manifest per_layer_input_runtime repair at 58872fdc3dd7ff6efb73321252d58f3447eb0e2b. Execution accepted the handoff, verified the frozen pathset and phone-held model identity, created a clean Termux worktree at 58872fd, and started rerunning the phone exporter to regenerate a component pack with per_layer_input_runtime and manifest_contract_checks.",
   "last_driver_actions": [
     {
       "utc": "2026-07-01T15:30:07Z",
@@ -4044,9 +4040,9 @@
   "model_safetensors_size_bytes": 15992595884,
   "native_probe_exit_code": 13,
   "native_probe_report_path": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe/candidate_probe_stdout.json",
-  "next_concrete_action": "Phase3/4 inspects the exporter manifest schema and native run_c5_full_decoder_runtime validation path, then returns a custody-ready repair pathset for decoder_manifest_per_layer_input_runtime_missing or a precise source/schema blocker. After custody, Execution reruns only the bounded phone C5_after_C1 probe against the repaired manifest/runtime contract.",
-  "owner": "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 owns the manifest/runtime contract repair after Execution ran the bounded phone OpenCL parity probe and failed semantically at decoder_manifest_per_layer_input_runtime_missing. Engineering Orchestrator validates/reroutes; Execution is parked until a repaired/frozen runtime or bounded probe command exists.",
-  "owner_thread": "019f13da-d897-7ba2-8ed1-b959892f5ed4",
+  "next_concrete_action": "Execution completes the phone-local exporter rerun and bounded C5_after_C1 probe, then returns either schema-complete regenerated component-pack identities plus probe result, or a precise exporter/schema/source/build/runtime blocker. Do not route Phase3/4 unless Execution reports a new repair field.",
+  "owner": "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c owns the phone/Termux exporter rerun and bounded C5_after_C1 native probe after Repo Custodian froze the per_layer_input_runtime repair at 58872fdc3dd7ff6efb73321252d58f3447eb0e2b. Repo Custodian will freeze this metadata-only central mirror; Phase3/4 is parked unless Execution returns a new source/schema/runtime failure.",
+  "owner_thread": "019f138c-fb51-7c53-a41a-ab8eac950d9c",
   "phone_exporter_rerun_required_after_commit": "43cf3c4130dc902fc8fd69183bac1056f0596626",
   "prd_watchdog": {
     "adapter_site_policy_sha256": "f38bd8109bbb77e9e94a5b4b34a238bc0ec0a39e7736870c97defe5aecc93357",
@@ -4483,7 +4479,7 @@
     "scope": "metadata mirror only",
     "status": "central_state_phone_filesystem_paths_redacted"
   },
-  "recursive_improvement_next_step": "Route the first occurrence of decoder_manifest_per_layer_input_runtime_missing to Phase3/4 as the next falsifiable repair. Keep research_escalation none unless this same field repeats after repair/custody or the phone evidence hits a memory/throughput envelope failure.",
+  "recursive_improvement_next_step": "Let Execution finish the smallest falsifiable proof: phone-local exporter rerun plus bounded C5_after_C1 native probe. If the same per_layer_input_runtime field repeats after this repair/custody, escalate to bounded_sprint_required; otherwise route the next concrete first failing field.",
   "required_lane_update_protocol": {
     "block_name": "CENTRAL_STATE_UPDATE",
     "meta_action": "on every heartbeat, read active threads, update this file, route the next concrete edge, and notify Execution only when both keys are green",
@@ -4502,15 +4498,15 @@
   "runner_sha256": "a5a6f9a3b93d167d9cd69eddbe2f3404443ae1c2222e1c6a0782398c9ff09e84",
   "runner_size_bytes": 369536,
   "schema_version": "polymath_executive_delivery_state_v1",
-  "status": "bounded_phone_probe_semantic_failure_decoder_manifest_per_layer_input_runtime_missing",
-  "status_classification": "PENDING_ACTION_PHASE34_DECODER_MANIFEST_PER_LAYER_INPUT_RUNTIME_REPAIR_AFTER_PHONE_OPENCL_PROBE",
+  "status": "execution_exporter_rerun_and_bounded_phone_probe_active_after_repair_custody",
+  "status_classification": "PENDING_ACTION_EXECUTION_EXPORTER_RERUN_AND_BOUNDED_PHONE_PROBE_AFTER_REPAIR_CUSTODY",
   "threads_nudged_this_tick": [
-    "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: polled complete at eb7ce060d1295e8396f2f7d5701df32dc1234cad; no nudge sent; will receive only this two-file post-freeze central mirror correction.",
-    "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4: active on decoder_manifest_per_layer_input_runtime repair; no duplicate nudge sent.",
-    "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: parked after bounded phone semantic failure; not re-nudged until repair is frozen."
+    "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: polled complete at 58872fdc3dd7ff6efb73321252d58f3447eb0e2b; will receive two-file central mirror freeze request only.",
+    "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: polled active on phone exporter rerun after repair custody; no duplicate nudge sent.",
+    "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4: not nudged; parked after custody-ready repair and Custodian freeze."
   ],
-  "updated_at": "2026-07-01T16:13:35Z",
-  "updated_at_utc": "2026-07-01T16:13:35Z",
+  "updated_at": "2026-07-01T16:28:37Z",
+  "updated_at_utc": "2026-07-01T16:28:37Z",
   "user_action_required": false,
   "c5_after_c1_exporter_attention_layout_repair_post_custody_20260701T135407Z": {
     "schema_version": "polymath_c5_after_c1_exporter_attention_layout_repair_post_custody_v1",
@@ -5048,7 +5044,7 @@
       "no secrets printed"
     ]
   },
-  "research_escalation": "none; first occurrence of decoder_manifest_per_layer_input_runtime_missing and no memory/throughput envelope failure.",
+  "research_escalation": "none; Execution is actively running the post-custody exporter/probe proof.",
   "c5_after_c1_native_ple_single_layer_slice_custody_20260701T153007Z": {
     "status": "c5_native_ple_single_layer_slice_committed_pushed",
     "commit_sha": "955730e88c500fff9517d0a22d0f5bbd207ecaa9",
@@ -5289,6 +5285,92 @@
       "no Phase4 readiness claim",
       "no raw payload copied to repo",
       "no secrets printed"
+    ]
+  },
+  "c5_after_c1_decoder_manifest_per_layer_input_runtime_repair_20260701T_phase34": {
+    "status": "decoder_manifest_per_layer_input_runtime_repair_pathset_ready_for_custodian",
+    "last_update_utc": "2026-07-01T16:28:37Z",
+    "source_thread_id": "019f13da-d897-7ba2-8ed1-b959892f5ed4",
+    "custodian_thread_id": "019f1ac2-0f0f-7721-bf46-ad402dbd9050",
+    "base_head_observed_before_pathset": "5802ea1e25222c068dd3fcb5050c91f20f72357b",
+    "consumed_phone_probe_opencl_commit": "05bb56437b83138547301e69af14ab0fce7d4b1a",
+    "artifact_paths": [
+      "runtime/reports/orchestration/c5_after_c1_decoder_manifest_per_layer_input_runtime_repair_20260701T_phase34.json",
+      "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py",
+      "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp",
+      "tests/test_c5_full_decoder_exporter.py",
+      "tests/test_c5_native_runtime_contract.py"
+    ],
+    "sha256_or_identity_fields": {
+      "runtime/reports/orchestration/c5_after_c1_decoder_manifest_per_layer_input_runtime_repair_20260701T_phase34.json": "7571f6e22ecee84cff44def6b48715405cab5b87fa76620dc1d3a1d9c80ceaa0",
+      "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py": "2e875146b8dbf58aa977f468cdd9cb03679039afe9f3f9321b5c512bed15a03a",
+      "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp": "45f9112cadfc9f43ba17cce780b2ad2c0f0d80f1419f2d56546db107ebf3f580",
+      "tests/test_c5_full_decoder_exporter.py": "3e85411471df37c62b5e201c88caa3803faeeca761734d10ceac698b654b6a81",
+      "tests/test_c5_native_runtime_contract.py": "9f65a5635046501fcd83dbed23131a69e969f13f750499ca41357410275da572"
+    },
+    "verification_commands": [
+      "python3.11 -m json.tool runtime/reports/orchestration/c5_after_c1_decoder_manifest_per_layer_input_runtime_repair_20260701T_phase34.json > /dev/null -> pass",
+      "git diff --check on exact pathset -> pass",
+      "raw-boundary report scan -> clean",
+      "CMake warnings-as-errors build -> pass",
+      "focused exporter/native tests -> 23 passed in 62.38s",
+      "broader C5 tests -> 38 passed in 67.70s",
+      "ctest -> 4/4 passed"
+    ],
+    "implemented_boundary": "exporter validates/reports top-level per_layer_input_runtime.roles before writing a component pack; native validation rejects missing or malformed per_layer_input_runtime.roles as decoder_manifest_per_layer_input_runtime_missing and does not accept PLE strings elsewhere in the manifest.",
+    "first_missing_green_field": "decoder_manifest_per_layer_input_runtime_repair_custody_pending",
+    "first_missing_green_field_after_custody": "PENDING_ACTION_EXECUTION_EXPORTER_RERUN_AND_BOUNDED_PHONE_PROBE",
+    "next_action": "Repo Custodian freezes this pathset; after custody Execution reruns the phone-local exporter/component pack and bounded C5_after_C1 native probe.",
+    "user_action_required": false,
+    "nonclaims": [
+      "no C5 pass",
+      "no executed C5 metrics",
+      "no prediction JSONL/logits/loss/confidence/candidate_train_loss",
+      "no bridge-MSE-as-C5-loss",
+      "no learning/model-quality claim",
+      "no Phase3/4 readiness",
+      "no 100k/1M authority",
+      "no Comet-backed accepted run",
+      "no raw payloads copied into git",
+      "no secrets printed"
+    ]
+  },
+  "c5_after_c1_decoder_manifest_per_layer_input_runtime_repair_custody_20260701T162837Z": {
+    "status": "decoder_manifest_per_layer_input_runtime_repair_committed_pushed",
+    "last_update_utc": "2026-07-01T16:28:37Z",
+    "repo_custodian_thread_id": "019f1ac2-0f0f-7721-bf46-ad402dbd9050",
+    "execution_thread_id": "019f138c-fb51-7c53-a41a-ab8eac950d9c",
+    "commit_sha": "58872fdc3dd7ff6efb73321252d58f3447eb0e2b",
+    "branch": "origin/gemma4-megakernel-native-training",
+    "pathset_sha256": {
+      "runtime/reports/orchestration/c5_after_c1_decoder_manifest_per_layer_input_runtime_repair_20260701T_phase34.json": "7571f6e22ecee84cff44def6b48715405cab5b87fa76620dc1d3a1d9c80ceaa0",
+      "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py": "2e875146b8dbf58aa977f468cdd9cb03679039afe9f3f9321b5c512bed15a03a",
+      "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp": "45f9112cadfc9f43ba17cce780b2ad2c0f0d80f1419f2d56546db107ebf3f580",
+      "tests/test_c5_full_decoder_exporter.py": "3e85411471df37c62b5e201c88caa3803faeeca761734d10ceac698b654b6a81",
+      "tests/test_c5_native_runtime_contract.py": "9f65a5635046501fcd83dbed23131a69e969f13f750499ca41357410275da572"
+    },
+    "verification": [
+      "JSON report validation passed",
+      "git diff --check and git diff --cached --check passed",
+      "CMake configure/build with warnings-as-errors passed",
+      "focused exporter/native tests -> 23 passed",
+      "broader C5 suite -> 38 passed",
+      "ctest -> 4/4 passed",
+      "staged raw payload suffix scan 0",
+      "value-shaped secret scan no hits"
+    ],
+    "first_missing_green_field": "PENDING_ACTION_EXECUTION_EXPORTER_RERUN_AND_BOUNDED_PHONE_PROBE",
+    "next_action": "Execution reruns phone exporter and bounded native phone probe on the frozen repair.",
+    "user_action_required": false,
+    "nonclaims": [
+      "no C5 pass",
+      "no executed C5 metrics",
+      "no prediction JSONL/logits/loss/confidence/candidate_train_loss",
+      "no bridge-MSE-as-C5-loss",
+      "no learning/model-quality claim",
+      "no Phase3/4 readiness",
+      "no 100k/1M authority",
+      "no Comet-backed accepted run"
     ]
   }
 }

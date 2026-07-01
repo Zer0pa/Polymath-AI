@@ -1,28 +1,28 @@
 # Executive Delivery State
 
-Updated UTC: `2026-07-01T16:18:07Z`
+Updated UTC: `2026-07-01T16:28:37Z`
 
 ## Current Gate
 
-`WaveB_C5_after_C1_decoder_manifest_per_layer_input_runtime_repair_pending_after_phone_opencl_probe`
+`WaveB_C5_after_C1_execution_exporter_rerun_and_bounded_phone_probe_after_per_layer_input_runtime_repair_custody`
 
-Status classification: `PENDING_ACTION_PHASE34_DECODER_MANIFEST_PER_LAYER_INPUT_RUNTIME_REPAIR_AFTER_PHONE_OPENCL_PROBE`
+Status classification: `PENDING_ACTION_EXECUTION_EXPORTER_RERUN_AND_BOUNDED_PHONE_PROBE_AFTER_REPAIR_CUSTODY`
 
-Owner: Phase3/4 Engineer `019f13da-d897-7ba2-8ed1-b959892f5ed4` owns the manifest/runtime contract repair after Execution ran the bounded phone OpenCL parity probe and failed semantically at `decoder_manifest_per_layer_input_runtime_missing`. Engineering Orchestrator validates/reroutes; Execution is parked until a repaired/frozen runtime or bounded probe command exists.
+Owner: Execution Orchestrator `019f138c-fb51-7c53-a41a-ab8eac950d9c` owns the phone/Termux exporter rerun and bounded `C5_after_C1` native probe after Repo Custodian froze the `per_layer_input_runtime` repair at `58872fdc3dd7ff6efb73321252d58f3447eb0e2b`. Repo Custodian will freeze this metadata-only central mirror; Phase3/4 is parked unless Execution returns a new source/schema/runtime failure.
 
 User action required: `false`
 
 Dominant failure domain: `phase5_eval_failure`
 
-Research escalation: `none`
+Research escalation: `none; Execution is actively running the post-custody exporter/probe proof.`
 
 ## Artifact Waiting On
 
-- Phase3/4/Engineering repairs the manifest/runtime contract for `per_layer_input_runtime` behind the existing exporter/native C5 path; do not create a parallel C5 pathway.
-- Execution probe evidence: runner built from `05bb56437b83138547301e69af14ab0fce7d4b1a`, runner SHA `9c830f8337f61df9d63d2d86255a039c8f705258484df73aa5fad30473bde0e5`, exit code `13`, elapsed `97s`, semantic classification.
-- Probe report: `runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_opencl_05bb564/candidate_probe_stdout.json` SHA `fdddc66acb25942701567344c0a9414afb7851bf9f6b39a8f6dfd893c4f47bce`.
-- Stderr log SHA `7588fb8cffee4da0ed9cb23db07b0586de362b52934fbcdc448cb20a64176470`; meminfo before SHA `c2ca8410159a436563d1f2e4e5e5b24dffc8c162534f63a5cd2ae97c887aae27`; meminfo after SHA `9d1f0d6d5ca276e5190596f1e81f78162a31d41a5a779db7c6f939ee4741f28f`.
-- Prediction JSONL was not written; no logits/loss/confidence/`candidate_train_loss` or C5 metrics are claimable.
+- Execution consumes frozen repair commit `58872fdc3dd7ff6efb73321252d58f3447eb0e2b` in a clean Termux worktree, verifies the five frozen pathset hashes, and reruns the phone-local exporter against the accepted phone-held model.
+- Exporter rerun must regenerate `decoder_manifest.json` with top-level `per_layer_input_runtime.roles` and `manifest_contract_checks`; no raw model/checkpoint/adapter/tensor payloads may be copied into git.
+- If exporter succeeds, Execution rebuilds/copies the C5 runner if needed and reruns only the bounded `C5_after_C1` native phone probe through the existing `--run-c5-qa-predict` surface.
+- If exporter/probe fails, Execution returns exact command, commit, binary hash, first failing field, stderr/log SHA, memory/latency/throughput if available, and semantic/resource/scheduling classification.
+- Prediction JSONL remains not claimable unless the real runtime emits it; no logits/loss/confidence/`candidate_train_loss` or C5 metrics are claimable yet.
 
 ## Last Concrete Action
 
@@ -106,23 +106,57 @@ Frozen phone probe evidence pathset:
 - `runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_opencl_05bb564/meminfo_before.txt`: `c2ca8410159a436563d1f2e4e5e5b24dffc8c162534f63a5cd2ae97c887aae27`
 - `runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_opencl_05bb564/meminfo_after.txt`: `9d1f0d6d5ca276e5190596f1e81f78162a31d41a5a779db7c6f939ee4741f28f`
 
+Repo Custodian froze the post-phone-probe central mirror correction at `5802ea1e25222c068dd3fcb5050c91f20f72357b`.
+
+Phase3/4 returned `decoder_manifest_per_layer_input_runtime_repair_pathset_ready_for_custodian` and sent the five-file pathset to Repo Custodian. Custodian is actively verifying/building that pathset.
+
+Phase3/4 repair pathset awaiting custody:
+- `runtime/reports/orchestration/c5_after_c1_decoder_manifest_per_layer_input_runtime_repair_20260701T_phase34.json`: `7571f6e22ecee84cff44def6b48715405cab5b87fa76620dc1d3a1d9c80ceaa0`
+- `integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py`: `2e875146b8dbf58aa977f468cdd9cb03679039afe9f3f9321b5c512bed15a03a`
+- `integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp`: `45f9112cadfc9f43ba17cce780b2ad2c0f0d80f1419f2d56546db107ebf3f580`
+- `tests/test_c5_full_decoder_exporter.py`: `3e85411471df37c62b5e201c88caa3803faeeca761734d10ceac698b654b6a81`
+- `tests/test_c5_native_runtime_contract.py`: `9f65a5635046501fcd83dbed23131a69e969f13f750499ca41357410275da572`
+
+Repair verification reported by Phase3/4:
+- JSON parse passed.
+- Exact pathset `git diff --check` passed.
+- Raw-boundary report scan clean.
+- CMake warnings-as-errors build passed.
+- Focused exporter/native tests -> `23 passed in 62.38s`.
+- Broader C5 tests -> `38 passed in 67.70s`.
+- `ctest` -> `4/4 passed`.
+
+Repo Custodian froze and pushed the five-file `decoder_manifest` `per_layer_input_runtime` repair at `58872fdc3dd7ff6efb73321252d58f3447eb0e2b`.
+
+Custodian repair verification:
+- JSON report validation passed.
+- `git diff --check` and `git diff --cached --check` passed.
+- CMake configure/build with warnings-as-errors passed.
+- Focused exporter/native tests -> `23 passed`.
+- Broader C5 suite -> `38 passed`.
+- `ctest` -> `4/4 passed`.
+- No raw payload files staged.
+- Value-shaped secret scan clean.
+
+Execution accepted the handoff, verified the frozen pathset and phone-held model identity, created a clean Termux worktree at `58872fd`, and started rerunning the phone exporter to regenerate a component pack with `per_layer_input_runtime` and `manifest_contract_checks`.
+
 ## First Missing Green Field
 
-Current: `decoder_manifest_per_layer_input_runtime_missing`
+Current: `PENDING_ACTION_EXECUTION_EXPORTER_RERUN_AND_BOUNDED_PHONE_PROBE`
 
 ## Next Concrete Action
 
-Phase3/4 inspects the exporter manifest schema and native `run_c5_full_decoder_runtime` validation path, then returns a custody-ready repair pathset for `decoder_manifest_per_layer_input_runtime_missing` or a precise source/schema blocker. After custody, Execution reruns only the bounded phone `C5_after_C1` probe against the repaired manifest/runtime contract.
+Execution completes the phone-local exporter rerun and bounded `C5_after_C1` probe, then returns either schema-complete regenerated component-pack identities plus probe result, or a precise exporter/schema/source/build/runtime blocker. Do not route Phase3/4 unless Execution reports a new repair field.
 
 ## Drift Deletion / Hardening
 
-OpenCL parity dispatch and the phone proof failure evidence are frozen. Stale OpenCL-pending and Execution-running mirrors are superseded. Pending drift is `per_layer_input_runtime` manifest/runtime repair, bounded multi-token QA prompt orchestration, rank-16 adapter stream injection, 42-layer orchestration, chunked LM-head/NLL writer, outside-git prediction JSONL, and executed C5 metrics.
+The first `per_layer_input_runtime` manifest/runtime drift is source-frozen at `58872fdc3dd7ff6efb73321252d58f3447eb0e2b`. Pending drift is phone exporter rerun with regenerated `manifest_contract_checks`, bounded probe evidence, bounded multi-token QA prompt orchestration, rank-16 adapter stream injection, 42-layer orchestration, chunked LM-head/NLL writer, outside-git prediction JSONL, and executed C5 metrics.
 
 ## Threads Nudged This Tick
 
-- Repo Custodian `019f1ac2-0f0f-7721-bf46-ad402dbd9050`: polled complete at `eb7ce060d1295e8396f2f7d5701df32dc1234cad`; no duplicate nudge sent; will receive only this two-file post-freeze central mirror correction.
-- Phase3/4 Engineer `019f13da-d897-7ba2-8ed1-b959892f5ed4`: active on `decoder_manifest_per_layer_input_runtime` repair; no duplicate nudge sent.
-- Execution Orchestrator `019f138c-fb51-7c53-a41a-ab8eac950d9c`: completed bounded phone probe; not re-nudged until repair is frozen.
+- Repo Custodian `019f1ac2-0f0f-7721-bf46-ad402dbd9050`: polled complete at `58872fdc3dd7ff6efb73321252d58f3447eb0e2b`; will receive two-file central mirror freeze request only.
+- Execution Orchestrator `019f138c-fb51-7c53-a41a-ab8eac950d9c`: polled active on phone exporter rerun after repair custody; no duplicate nudge sent.
+- Phase3/4 Engineer `019f13da-d897-7ba2-8ed1-b959892f5ed4`: not nudged; parked after custody-ready repair and Custodian freeze.
 
 ## Nonclaims Preserved
 
