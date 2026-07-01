@@ -1,14 +1,14 @@
 # Executive Delivery State
 
-Updated UTC: `2026-07-01T16:06:07Z`
+Updated UTC: `2026-07-01T16:13:35Z`
 
 ## Current Gate
 
-`WaveB_C5_after_C1_phone_opencl_parity_probe_result_pending_after_opencl_dispatch_custody`
+`WaveB_C5_after_C1_decoder_manifest_per_layer_input_runtime_repair_pending_after_phone_opencl_probe`
 
-Status classification: `PENDING_ACTION_EXECUTION_PHONE_OPENCL_PARITY_PROBE_RUNNING_AFTER_OPENCL_DISPATCH_CUSTODY`
+Status classification: `PENDING_ACTION_PHASE34_DECODER_MANIFEST_PER_LAYER_INPUT_RUNTIME_REPAIR_AFTER_PHONE_OPENCL_PROBE`
 
-Owner: Execution Orchestrator `019f138c-fb51-7c53-a41a-ab8eac950d9c` owns the bounded phone `C5_after_C1` OpenCL parity probe after Repo Custodian froze the OpenCL parity dispatch pathset at `05bb56437b83138547301e69af14ab0fce7d4b1a`. Phase3/4 is parked until the phone probe returns the next runtime field or a precise execution blocker.
+Owner: Phase3/4 Engineer `019f13da-d897-7ba2-8ed1-b959892f5ed4` owns the manifest/runtime contract repair after Execution ran the bounded phone OpenCL parity probe and failed semantically at `decoder_manifest_per_layer_input_runtime_missing`. Engineering Orchestrator validates/reroutes; Execution is parked until a repaired/frozen runtime or bounded probe command exists.
 
 User action required: `false`
 
@@ -18,11 +18,11 @@ Research escalation: `none`
 
 ## Artifact Waiting On
 
-- Execution rebuilds/copies the C5 runner from frozen commit `05bb56437b83138547301e69af14ab0fce7d4b1a` to the phone and reruns the existing `C5_after_C1` native probe against the schema-complete component pack and accepted heldout/checkpoint identities.
-- Execution thread `019f138c-fb51-7c53-a41a-ab8eac950d9c` is active: runner built from `05bb564`, C5 help/input hashes verified, and the bounded `--max-generation-tokens 1` phone probe is running under the 600-second timeout.
-- Local Mac first missing field from custody is `c5_full_decoder_opencl_parity_runtime_unavailable`; the phone probe determines whether RedMagic OpenCL parity succeeds or returns a precise runtime/execution blocker.
-- If phone OpenCL parity succeeds, expected next implementation field is `c5_full_decoder_multi_token_qa_prompt_sequence_orchestration_missing`; if it fails, route the exact first failing field/log SHA/runtime envelope to Phase3/4/Engineering.
-- No prediction JSONL, logits, loss, confidence, `candidate_train_loss`, or C5 metrics may be claimed until real runtime emits them.
+- Phase3/4/Engineering repairs the manifest/runtime contract for `per_layer_input_runtime` behind the existing exporter/native C5 path; do not create a parallel C5 pathway.
+- Execution probe evidence: runner built from `05bb56437b83138547301e69af14ab0fce7d4b1a`, runner SHA `9c830f8337f61df9d63d2d86255a039c8f705258484df73aa5fad30473bde0e5`, exit code `13`, elapsed `97s`, semantic classification.
+- Probe report: `runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_opencl_05bb564/candidate_probe_stdout.json` SHA `fdddc66acb25942701567344c0a9414afb7851bf9f6b39a8f6dfd893c4f47bce`.
+- Stderr log SHA `7588fb8cffee4da0ed9cb23db07b0586de362b52934fbcdc448cb20a64176470`; meminfo before SHA `c2ca8410159a436563d1f2e4e5e5b24dffc8c162534f63a5cd2ae97c887aae27`; meminfo after SHA `9d1f0d6d5ca276e5190596f1e81f78162a31d41a5a779db7c6f939ee4741f28f`.
+- Prediction JSONL was not written; no logits/loss/confidence/`candidate_train_loss` or C5 metrics are claimable.
 
 ## Last Concrete Action
 
@@ -83,25 +83,36 @@ OpenCL parity custody verification:
 - Raw suffix/path and value-shaped secret scans clean.
 - Staged pathset was exactly the five requested files.
 
-Execution has accepted the custody handoff, built the phone runner from `05bb564`, verified the C5 surface and input hashes, and is running the bounded phone probe.
+Execution consumed OpenCL parity custody commit `05bb56437b83138547301e69af14ab0fce7d4b1a`, built phone runner `gemma4_layer_runner_c5_05bb564` SHA `9c830f8337f61df9d63d2d86255a039c8f705258484df73aa5fad30473bde0e5`, verified C5 inputs, and ran the bounded `C5_after_C1` phone probe with `--max-generation-tokens 1`.
+
+Phone probe result:
+- Exit code: `13`
+- Elapsed: `97s`
+- Classification: `semantic`
+- First failing field: `decoder_manifest_per_layer_input_runtime_missing`
+- Probe report SHA: `fdddc66acb25942701567344c0a9414afb7851bf9f6b39a8f6dfd893c4f47bce`
+- Stderr log SHA: `7588fb8cffee4da0ed9cb23db07b0586de362b52934fbcdc448cb20a64176470`
+- Meminfo before SHA: `c2ca8410159a436563d1f2e4e5e5b24dffc8c162534f63a5cd2ae97c887aae27`
+- Meminfo after SHA: `9d1f0d6d5ca276e5190596f1e81f78162a31d41a5a779db7c6f939ee4741f28f`
+- Prediction JSONL: not written.
 
 ## First Missing Green Field
 
-Current: `phone_c5_after_c1_opencl_parity_probe_result_pending`
+Current: `decoder_manifest_per_layer_input_runtime_missing`
 
 ## Next Concrete Action
 
-Execution completes the bounded phone `C5_after_C1` native probe from runner commit `05bb56437b83138547301e69af14ab0fce7d4b1a` and returns metadata-only evidence: exact command, runner SHA, input identity checks, stdout/stderr/report SHAs, first failing field or next missing green field, and runtime memory/latency/throughput if available. Engineering then updates central state and routes either Phase3/4 multi-token orchestration work or the smallest falsifiable runtime repair.
+Phase3/4 inspects the exporter manifest schema and native `run_c5_full_decoder_runtime` validation path, then returns a custody-ready repair pathset for `decoder_manifest_per_layer_input_runtime_missing` or a precise source/schema blocker. After custody, Execution reruns only the bounded phone `C5_after_C1` probe against the repaired manifest/runtime contract.
 
 ## Drift Deletion / Hardening
 
-OpenCL parity dispatch is frozen; stale Phase3/4-opencl-pending wording has been superseded. Pending drift is phone GPU parity proof, bounded multi-token QA prompt orchestration, rank-16 adapter stream injection, 42-layer orchestration, chunked LM-head/NLL writer, outside-git prediction JSONL, and executed C5 metrics.
+OpenCL parity dispatch is frozen and the phone proof reached a new semantic manifest/runtime contract field. Stale OpenCL-pending and Execution-running mirrors are superseded. Pending drift is `per_layer_input_runtime` manifest/runtime repair, bounded multi-token QA prompt orchestration, rank-16 adapter stream injection, 42-layer orchestration, chunked LM-head/NLL writer, outside-git prediction JSONL, and executed C5 metrics.
 
 ## Threads Nudged This Tick
 
-- Repo Custodian `019f1ac2-0f0f-7721-bf46-ad402dbd9050`: will be nudged with the exact two-file central mirror pathset after this metadata-only update.
-- Execution Orchestrator `019f138c-fb51-7c53-a41a-ab8eac950d9c`: already active on the bounded phone OpenCL parity probe; no duplicate nudge sent.
-- Phase3/4 Engineer `019f13da-d897-7ba2-8ed1-b959892f5ed4`: not nudged; parked pending phone probe result.
+- Repo Custodian `019f1ac2-0f0f-7721-bf46-ad402dbd9050`: will receive a superseding custody note; prior two-file phone-probe-running central mirror is stale unless already committed.
+- Phase3/4 Engineer `019f13da-d897-7ba2-8ed1-b959892f5ed4`: nudged with exact phone probe artifact, first missing field, and repair boundary.
+- Execution Orchestrator `019f138c-fb51-7c53-a41a-ab8eac950d9c`: completed bounded phone probe; not re-nudged until repair is frozen.
 
 ## Nonclaims Preserved
 
