@@ -1,14 +1,14 @@
 # Executive Delivery State
 
-Updated UTC: `2026-07-01T04:05:47Z`
+Updated UTC: `2026-07-01T04:16:17Z`
 
 ## Current Gate
 
-`WaveB_C5_after_C1_full_decoder_exporter_pathset_pending_engineering`
+`WaveB_C5_after_C1_full_decoder_exporter_pathset_pending_custody`
 
-Status classification: `PENDING_ACTION_ENGINEERING_FULL_DECODER_EXPORTER_AND_MODEL_SOURCE_ROUTE`
+Status classification: `PENDING_ACTION_REPO_CUSTODY_THEN_MODEL_SOURCE_EXPORT`
 
-Owner: `Engineering Orchestrator 019f138b-d229-7640-98b7-2f185d6beae0` owns the full-decoder export/build pathset. `Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4` owns native runtime support. `Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050` owns only the metadata freeze.
+Owner: `Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050` owns the exporter/state freeze. `Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4` is still active on the native consumer boundary.
 
 User action required: `false`
 
@@ -16,48 +16,55 @@ Dominant failure domain: `phase5_eval_failure`
 
 ## Artifact Waiting On
 
-- Custody freeze of the two new metadata-only exact unresolved-failure artifacts plus refreshed executive state mirror.
-- Engineering pathset for a bounded full-decoder export/build route from a real Gemma4 E4B model snapshot into an outside-git component pack.
-- Outside-git full decoder component pack once model source is authorized or mounted: `decoder_manifest.json`, LM-head/unembedding identity or embedded proof, adapter-site policy, and model/component SHA identities.
-- Native full-decoder logits/generation plus teacher-forced answer-token NLL/confidence behind `gemma4_layer_runner --run-c5-qa-predict`.
+- Repo Custodian freeze of the exporter, exporter tests, exporter pathset report, and refreshed executive state mirror.
+- Phase3/4 native full-decoder consumer source/test/report pathset after its active turn completes.
+- Outside-git model source for actual export: restored or mounted `/workspace/models/gemma4_e4b/snapshot/model.safetensors`, or separately authorized bounded HF read/export.
+- Outside-git decoder manifest, adapter-site policy, LM-head/unembedding proof, prediction JSONL, finite `candidate_train_loss`, and `polymath_c5_executed_metrics_v1` after real runtime execution.
 
 ## Last Concrete Action
 
-Engineering returned exact unresolved runtime artifact `c5_after_c1_full_decoder_logits_runtime_failure_20260701T_engineering.json` SHA `6cf8b31689cfaaa247198063fde4ff129f0bc6de391232317571db5a45178931`. Phase3/4 returned exact native unresolved artifact `c5_after_c1_native_full_decoder_logits_unresolved_after_abf94a_20260701T_phase34.json` SHA `eede821fb7a4202161deaccf820aa2d15449066bd46f6846c8b96883075e9285`. Custodian froze the previous owner-state mirror at `bb8105a2bc91b6c9b0993603e14b49d0a5730f8d`. A bounded local search found no mounted full model, LM-head, or unembedding payload; the older RunPod report records `/workspace/models/gemma4_e4b/snapshot/model.safetensors`, but `/workspace` is not mounted locally.
+Engineering produced custody-ready exporter pathset report `c5_after_c1_full_decoder_exporter_pathset_20260701T_engineering.json` SHA `f4f6ffa5ef5dd3aa8013e722b2b42fc9e48cf4ce53fc4aad931eb327fa86fdf8`.
+
+Exporter SHA: `b89fece1509aadd3448ef7c2747cee74113cc3a3733c816d015a6286280d3b4c`
+
+Exporter test SHA: `ab056b50d700fa52100199b768142dc001e75f0b157666466a36ff52906414c7`
+
+Custodian previously froze the failure-route state at `dfbcf2e3bc1000823044276835fcc2c54850ef46`.
 
 ## First Missing Green Field
 
-`decoder_manifest_missing`
+Before custody: `repo_custody_freeze_of_full_decoder_exporter_pathset`
 
-After valid schema paths: `full_decoder_logits_generation_not_implemented_after_valid_schema_paths`.
+After custody until model source is available: `model_safetensors_missing`
+
+After valid schema paths: `full_decoder_logits_generation_not_implemented_after_valid_schema_paths`
 
 ## Drift Deletion / Hardening
 
-The evaluator and schema guards exist; the active missing surface is the full-decoder export/build route and actual mounted model/component pack. Metadata reports, two-layer packs, bridge MSE, and old RunPod path references are not authority until a real outside-git component pack is exported and verified.
+The old missing-model narrative is now a fail-closed exporter route. The exporter rejects absent model snapshots and refuses repo-contained output. It does not emit a real decoder manifest, logits, prediction JSONL, loss, confidence, train loss, or metrics without a real outside-git model source.
+
+Pending hardening: freeze the exporter route, complete Phase3/4 component-pack consumer pathset, and normalize older nested state references after active lane reports land.
 
 ## Next Concrete Action
 
-Engineering should implement a custody-ready exporter/manifest pathset by generalizing `export_streamed_training_assets.py` or adding an adjacent full-decoder exporter. It must fail closed without a real model snapshot and must return the exact later authorization request if external model source is required.
+Repo Custodian freezes exactly the five-file exporter/state pathset. Phase3/4 completes the native consumer pathset. After custody and real model source availability, run the exporter outside git, then route native/Execution for real prediction JSONL and C5 metrics.
 
 ## Threads Nudged This Tick
 
-- Engineering Orchestrator `019f138b-d229-7640-98b7-2f185d6beae0`: exporter/manifest pathset request.
-- Phase3/4 Engineer `019f13da-d897-7ba2-8ed1-b959892f5ed4`: native memory/runtime support request.
-- Repo Custodian `019f1ac2-0f0f-7721-bf46-ad402dbd9050`: metadata artifact/state freeze request.
+- Repo Custodian `019f1ac2-0f0f-7721-bf46-ad402dbd9050` for exact exporter/state freeze.
+- Not nudged: Phase3/4 Engineer `019f13da-d897-7ba2-8ed1-b959892f5ed4` is active.
 
 ## Nonclaims Preserved
 
 - no C5 pass.
-- no prediction JSONL emitted from real runtime yet.
-- no `candidate_train_loss` emitted or invented.
+- no decoder manifest emitted from a real model yet.
+- no logits emitted.
+- no prediction JSONL emitted.
+- no loss, confidence, `candidate_train_loss`, or C5 metrics fabricated.
 - no bridge MSE relabeled as C5 loss.
-- no logits, loss, confidence, or learning metrics fabricated.
 - no learning/model-quality claim.
 - no Phase3 readiness claim.
 - no Phase4 readiness claim.
 - not 100k/1M Phase2 authority.
 - no HF/Comet call.
-
-## State Hash
-
-`EXECUTIVE_DELIVERY_STATE.json` SHA after this update: `5ee907adb339f3085dddf2862dba3ea52b4825379c24c8a5a3127d19e339d0c7`
+- no secrets sourced.

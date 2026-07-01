@@ -1,0 +1,68 @@
+{
+  "artifact_paths": {
+    "exporter": "/Users/Zer0pa/Polymat AI/Polymath-AI/integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py",
+    "source_failure_artifact_engineering": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/orchestration/c5_after_c1_full_decoder_logits_runtime_failure_20260701T_engineering.json",
+    "source_failure_artifact_phase34": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/orchestration/c5_after_c1_native_full_decoder_logits_unresolved_after_abf94a_20260701T_phase34.json",
+    "test": "/Users/Zer0pa/Polymat AI/Polymath-AI/tests/test_c5_full_decoder_exporter.py",
+    "this_report": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/orchestration/c5_after_c1_full_decoder_exporter_pathset_20260701T_engineering.json"
+  },
+  "central_gate_consumed": "WaveB_C5_after_C1_full_decoder_exporter_pathset_pending_engineering",
+  "exporter_contract": {
+    "adapter_site_policy_schema": "polymath_c5_adapter_site_policy_v1",
+    "decoder_manifest_schema": "polymath_c5_full_decoder_manifest_v1",
+    "fails_closed_when_model_safetensors_absent": true,
+    "forbids_output_dir_inside_git_worktree": true,
+    "model_id": "google/gemma-4-E4B",
+    "raw_payloads_written_to_git": false,
+    "revision": "7aa32e6889efd6300124851b164f8b364314c3d8"
+  },
+  "first_missing_green_field": "decoder_manifest_missing",
+  "first_missing_green_field_at_export_execution_until_model_source_is_available": "model_safetensors_missing",
+  "first_unresolved_technical_failure_after_valid_schema_paths": "full_decoder_logits_generation_not_implemented_after_valid_schema_paths",
+  "lane": "engineering_full_decoder_exporter",
+  "next_action": {
+    "custody": "Repo Custodian should freeze the exporter pathset and test as the canonical model-source route for producing decoder_manifest.json and adapter_site_policy.json.",
+    "export_command_after_custody_and_model_source": "python3.11 integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py --model-safetensors <outside_git_model.safetensors> --out <outside_git_component_pack_dir> --candidate-adapter-sha 1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f --stable-baseline-sha e0d1c66ac876c2b6fbbe9e88f1b02dd37201d8ffba10afcd44f1c558fc32f7c9",
+    "model_source_route": "Use restored/mounted historical /workspace/models/gemma4_e4b/snapshot/model.safetensors, or separately authorize bounded HF read/download/export of google/gemma-4-E4B at revision 7aa32e6889efd6300124851b164f8b364314c3d8.",
+    "runtime_follow_on": "After decoder_manifest.json and adapter_site_policy.json exist outside git, Phase3/4 plus Engineering must replace the remaining native fail-closed branch behind gemma4_layer_runner --run-c5-qa-predict with streamed/chunked full-decoder logits, teacher-forced answer-token NLL, confidence, and finite candidate_train_loss from the same real objective."
+  },
+  "nonclaims": [
+    "no C5 pass",
+    "no decoder_manifest emitted from a real model in this lane step",
+    "no logits emitted",
+    "no prediction JSONL emitted",
+    "no loss, confidence, candidate_train_loss, or C5 metrics fabricated",
+    "no bridge MSE relabeled as C5 loss",
+    "no learning or model-quality claim",
+    "no Phase3 readiness claim",
+    "no Phase4 readiness claim",
+    "not 100k or 1M Phase2 authority",
+    "no HF or Comet call",
+    "no secrets sourced"
+  ],
+  "raw_boundary_proof": {
+    "raw_adapter_payload_copied_to_git": false,
+    "raw_checkpoint_payload_copied_to_git": false,
+    "raw_model_payload_copied_to_git": false,
+    "raw_tensor_payload_copied_to_git": false,
+    "repo_pathset_is_metadata_and_source_only": true
+  },
+  "schema_version": "polymath_c5_after_c1_full_decoder_exporter_pathset_report_v1",
+  "sha256_or_identity_fields": {
+    "exporter_sha256": "b89fece1509aadd3448ef7c2747cee74113cc3a3733c816d015a6286280d3b4c",
+    "source_failure_artifact_engineering_sha256": "6cf8b31689cfaaa247198063fde4ff129f0bc6de391232317571db5a45178931",
+    "source_failure_artifact_phase34_sha256": "eede821fb7a4202161deaccf820aa2d15449066bd46f6846c8b96883075e9285",
+    "test_sha256": "ab056b50d700fa52100199b768142dc001e75f0b157666466a36ff52906414c7"
+  },
+  "status": "c5_after_c1_full_decoder_exporter_pathset_ready_for_custodian",
+  "status_classification": "PENDING_ACTION_REPO_CUSTODY_THEN_MODEL_SOURCE_EXPORT",
+  "user_action_required": false,
+  "verification_commands": [
+    "python3.11 -m py_compile integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py tests/test_c5_full_decoder_exporter.py -> pass",
+    "git diff --check -- integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py tests/test_c5_full_decoder_exporter.py -> pass",
+    "python3.11 integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py --print-schema -> pass",
+    "python3.11 -m pytest -q tests/test_c5_full_decoder_exporter.py -> 6 passed",
+    "python3.11 -m pytest -q tests/test_c5_full_decoder_exporter.py tests/test_c5_phase34_qa_inference_producer.py -> 11 passed",
+    "python3.11 integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py --model-safetensors /tmp/polymath_missing_model.safetensors --out /tmp/polymath_c5_decoder_exporter_missing_model --candidate-adapter-sha aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa --stable-baseline-sha bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb -> exit 2, first_missing_green_field model_safetensors_missing"
+  ]
+}

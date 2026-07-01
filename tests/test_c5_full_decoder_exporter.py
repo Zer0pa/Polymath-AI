@@ -1,0 +1,172 @@
+from __future__ import annotations
+
+import importlib.util
+import json
+import subprocess
+from pathlib import Path
+
+
+ROOT = Path(__file__).resolve().parents[1]
+EXPORTER = (
+    ROOT
+    / "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/"
+    "export_c5_full_decoder_component_pack.py"
+)
+VALID_SHA = "a" * 64
+VALID_STABLE_SHA = "b" * 64
+
+
+def load_exporter_module():
+    spec = importlib.util.spec_from_file_location("c5_full_decoder_exporter", EXPORTER)
+    assert spec and spec.loader
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def test_c5_full_decoder_exporter_prints_schema_contract() -> None:
+    result = subprocess.run(
+        ["python3.11", str(EXPORTER), "--print-schema"],
+        cwd=ROOT,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+
+    assert result.returncode == 0
+    contract = json.loads(result.stdout)
+    assert contract["schema_version"] == "polymath_c5_full_decoder_component_pack_export_v1"
+    assert contract["decoder_manifest_schema"]["schema_version"] == "polymath_c5_full_decoder_manifest_v1"
+    assert contract["decoder_manifest_schema"]["decoder"]["num_hidden_layers"] == 42
+    assert contract["decoder_manifest_schema"]["decoder"]["hidden_size"] == 2560
+    assert contract["decoder_manifest_schema"]["decoder"]["logits_vocabulary_size"] == 262144
+    assert contract["decoder_manifest_schema"]["lm_head"]["source"] == "tied_word_embeddings"
+    assert contract["adapter_site_policy_schema"]["bridge_mse_is_c5_loss"] is False
+
+
+def test_c5_full_decoder_exporter_missing_model_fails_closed(tmp_path: Path) -> None:
+    output_dir = tmp_path / "component_pack"
+
+    result = subprocess.run(
+        [
+            "python3.11",
+            str(EXPORTER),
+            "--model-safetensors",
+            str(tmp_path / "missing_model.safetensors"),
+            "--out",
+            str(output_dir),
+            "--candidate-adapter-sha",
+            VALID_SHA,
+            "--stable-baseline-sha",
+            VALID_STABLE_SHA,
+        ],
+        cwd=ROOT,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+
+    assert result.returncode == 2
+    payload = json.loads(result.stdout)
+    assert payload["status"] == "blocked"
+    assert payload["first_missing_green_field"] == "model_safetensors_missing"
+    assert payload["raw_boundary_proof"]["raw_model_payload_copied_to_git"] is False
+    assert not output_dir.exists()
+
+
+def test_c5_full_decoder_exporter_rejects_repo_output() -> None:
+    repo_output = ROOT / "runtime/reports/orchestration/forbidden_c5_decoder_pack"
+
+    result = subprocess.run(
+        [
+            "python3.11",
+            str(EXPORTER),
+            "--model-safetensors",
+            "/tmp/missing_model.safetensors",
+            "--out",
+            str(repo_output),
+            "--candidate-adapter-sha",
+            VALID_SHA,
+            "--stable-baseline-sha",
+            VALID_STABLE_SHA,
+        ],
+        cwd=ROOT,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+
+    assert result.returncode == 2
+    blockers = json.loads(result.stdout)["blockers"]
+    assert "output_dir_inside_git_worktree" in blockers
+    assert not repo_output.exists()
+
+
+def test_c5_full_decoder_manifest_builder_schema() -> None:
+    exporter = load_exporter_module()
+    lm_head = exporter.build_lm_head_identity(
+        dtype="bf16",
+        tensor_sha256=VALID_SHA,
+        tokenizer_vocab_sha256=exporter.TOKENIZER_VOCAB_HEX_SHA256,
+        tokenizer_merges_sha256=exporter.TOKENIZER_MERGES_HEX_SHA256,
+    )
+    layers = [
+        {
+            "layer_index": layer_index,
+            "key_prefix": f"model.language_model.layers.{layer_index}.",
+            "key_count": 8,
+        }
+        for layer_index in range(42)
+    ]
+
+    manifest = exporter.build_decoder_manifest(
+        source_model_path=Path("/outside/model.safetensors"),
+        source_model_sha256=VALID_STABLE_SHA,
+        source_model_size_bytes=123,
+        layers=layers,
+        lm_head_identity=lm_head,
+        tokenizer_vocab_sha256=exporter.TOKENIZER_VOCAB_HEX_SHA256,
+        tokenizer_merges_sha256=exporter.TOKENIZER_MERGES_HEX_SHA256,
+    )
+
+    assert manifest["schema_version"] == "polymath_c5_full_decoder_manifest_v1"
+    assert manifest["decoder"]["kind"] == "full_gemma4_text_decoder_logits"
+    assert manifest["decoder"]["num_hidden_layers"] == 42
+    assert manifest["decoder"]["hidden_size"] == 2560
+    assert manifest["lm_head"]["embedded_in_decoder"] is True
+    assert manifest["lm_head"]["shape"] == [262144, 2560]
+    assert manifest["runtime_contract"]["candidate_train_loss_source"].endswith(
+        "bridge MSE is forbidden"
+    )
+
+
+def test_c5_full_decoder_adapter_policy_rejects_unknown_site() -> None:
+    exporter = load_exporter_module()
+
+    try:
+        exporter.build_adapter_site_policy(
+            candidate_adapter_sha256=VALID_SHA,
+            stable_baseline_adapter_sha256=VALID_STABLE_SHA,
+            adapter_site="unknown_site",
+        )
+    except ValueError as error:
+        assert str(error) == "adapter_site_unknown"
+    else:
+        raise AssertionError("unknown adapter site must fail closed")
+
+
+def test_c5_full_decoder_adapter_policy_preserves_bridge_mse_nonclaim() -> None:
+    exporter = load_exporter_module()
+
+    policy = exporter.build_adapter_site_policy(
+        candidate_adapter_sha256=VALID_SHA,
+        stable_baseline_adapter_sha256=VALID_STABLE_SHA,
+        adapter_site="post_layer1_residual",
+    )
+
+    assert policy["schema_version"] == "polymath_c5_adapter_site_policy_v1"
+    assert policy["decoder_layer_index"] == 1
+    assert policy["input_shape"] == [1, 16, 2560]
+    assert policy["output_shape"] == [1, 16, 2560]
+    assert policy["bridge_mse_is_c5_loss"] is False
+    assert policy["qa_loss_source"] == "teacher_forced_answer_token_nll_from_full_decoder_logits"
