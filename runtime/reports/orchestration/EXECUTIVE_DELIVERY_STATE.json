@@ -3408,7 +3408,7 @@
       ]
     }
   },
-  "current_gate": "WaveB_C5_after_C1_exporter_runtime_fields_patch_custody_pending",
+  "current_gate": "WaveB_C5_after_C1_phone_exporter_rerun_for_schema_complete_component_pack_pending",
   "current_highest_valid_state": "C1-C4 Wave B Phase1->Phase2->Phase3->Phase4 development-cycle mechanics remain frozen as metadata evidence. Phone-local model download, original component-pack export, C5-capable runner build, heldout QA staging, native C5 probe, and native manifest-contract guard are metadata evidence only. No C5 pass or executed metrics exist; the active edge is custody of Engineering exporter runtime-field emission before phone exporter rerun.",
   "driver_tick_history": [
     {
@@ -5614,26 +5614,26 @@
     ]
   },
   "schema_version": "polymath_executive_delivery_state_v1",
-  "status": "exporter_runtime_fields_pathset_ready_for_custody",
-  "status_classification": "PENDING_ACTION_REPO_CUSTODY_EXPORTER_RUNTIME_FIELDS_PATCH",
-  "updated_at": "2026-07-01T12:50:37Z",
-  "updated_at_utc": "2026-07-01T12:50:37Z",
+  "status": "exporter_runtime_fields_patch_committed_pushed_execution_rerun_pending",
+  "status_classification": "PENDING_ACTION_EXECUTION_PHONE_EXPORTER_RERUN_SCHEMA_COMPLETE_COMPONENT_PACK",
+  "updated_at": "2026-07-01T13:11:37Z",
+  "updated_at_utc": "2026-07-01T13:11:37Z",
   "dominant_failure_domain": "phase5_eval_failure",
   "user_action_required": false,
-  "last_concrete_action": "Repo Custodian committed and pushed the native C5 logits contract patch at 2151dbada9012a5f54806cf689e806001180521f. Engineering then patched the phone-compatible stdlib exporter to emit architecture_config and tensor_role_inventory metadata from the safetensors header: report SHA b135ba0c958c7cfea92cbd1c138f42df0cfb5b500485f0416b5167fce6a114f8; exporter SHA e3922085a08703d5ba4f17357f9b71218f8cca5aff1cbc4f395edfb7180599b4; test SHA d8eb5df2c73b470da58f7f37a24ff704bc005d0d58a9eb625cf15cb541a218cb. Focused verification passed: py_compile, exporter --print-schema JSON, pytest tests/test_c5_full_decoder_exporter.py tests/test_c5_phase34_qa_inference_producer.py tests/test_c5_prediction_payloads.py -> 19 passed, and git diff --check.",
-  "next_concrete_action": "Repo Custodian freezes the exact central-state plus exporter runtime-fields pathset. After custody, Execution reruns the phone exporter so the outside-git component pack advances from metadata-only manifest blockers to schema-complete decoder_manifest identities. Phase3/4 then lands safetensors_reader plus c5_full_decoder_runtime and replaces only the terminal full_decoder_logits_generation_not_implemented branch.",
+  "last_concrete_action": "Repo Custodian committed and pushed the five-file C5 exporter runtime-fields patch at 43cf3c4130dc902fc8fd69183bac1056f0596626. Frozen hashes: central JSON c922a7074276bc2ac5e0b7d08401aca5dff709d2cbc67edd652471f11fad8a7a, central MD 680b73bc94f1ac23e89390255035f8b1c34025a8408d875f6132c678a11e6d6f, engineering report b135ba0c958c7cfea92cbd1c138f42df0cfb5b500485f0416b5167fce6a114f8, exporter e3922085a08703d5ba4f17357f9b71218f8cca5aff1cbc4f395edfb7180599b4, exporter test d8eb5df2c73b470da58f7f37a24ff704bc005d0d58a9eb625cf15cb541a218cb. Verification returned 19 focused tests passed and staged raw/secret scans clean.",
+  "next_concrete_action": "Execution consumes commit 43cf3c4130dc902fc8fd69183bac1056f0596626 on the Termux runner source/exporter surface and reruns the phone-local exporter against the already phone-held model.safetensors SHA 43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651. Execution returns metadata-only hashes/bytes/schema proof for schema-complete decoder_manifest.json, adapter_site_policy.json, and export_report.json. Phase3/4 continues the safetensors_reader plus c5_full_decoder_runtime implementation and returns a custody-ready pathset or exact compute-kernel blocker.",
   "artifact_waiting_on": [
-    "Repo Custodian freeze of EXECUTIVE_DELIVERY_STATE.json, EXECUTIVE_DELIVERY_STATE.md, the Engineering exporter runtime-fields report, exporter, and focused exporter test.",
-    "Execution rerun of the frozen phone exporter against the phone-held model.safetensors to regenerate schema-complete decoder_manifest.json, adapter_site_policy.json, and export_report.json identities.",
-    "Phase3/4 implementation of safetensors_reader plus streamed/chunked c5_full_decoder_runtime on the existing native C5 QA predict surface.",
-    "Execution rerun of the bounded C5_after_C1 native QA predict probe after the runtime body lands."
+    "Execution rerun of the frozen phone exporter from commit 43cf3c4130dc902fc8fd69183bac1056f0596626 against the phone-held model.safetensors to regenerate schema-complete decoder_manifest.json, adapter_site_policy.json, and export_report.json identities.",
+    "Phase3/4 completion of safetensors_reader plus streamed/chunked c5_full_decoder_runtime on the existing native C5 QA predict surface, with the remaining compute-kernel body isolated if not complete.",
+    "Repo Custodian freeze of this metadata-only central-state mirror update.",
+    "Execution rerun of the bounded C5_after_C1 native QA predict probe after schema-complete component pack and runnable runtime body are frozen."
   ],
-  "drift_deleted_or_pending": "The decoder manifest no longer needs to stop at architecture_config/tensor_role_inventory absence once this exporter patch is frozen and rerun on the phone-held model. Pending drift remains the native safetensors reader and streamed full-decoder runtime body; bridge MSE remains forbidden as C5 loss.",
-  "recursive_improvement_next_step": "Freeze the exporter runtime-fields patch, regenerate phone component-pack metadata, implement the native reader/runtime body, rerun the bounded QA predict probe, and proceed to executed metrics only after real prediction JSONL and finite runtime loss/confidence exist.",
-  "owner": "Repo Custodian owns the exporter runtime-fields patch freeze; Execution owns phone exporter rerun after custody; Phase3/4 owns safetensors_reader and c5_full_decoder_runtime implementation.",
+  "drift_deleted_or_pending": "Exporter custody drift is resolved at 43cf3c4130dc902fc8fd69183bac1056f0596626. Pending drift remains: old component-pack hashes were generated before architecture_config/tensor_role_inventory emission and must be superseded by a phone exporter rerun; native safetensors reader/full-decoder compute body is still not authority evidence; bridge MSE remains forbidden as C5 loss.",
+  "recursive_improvement_next_step": "Rerun phone exporter from the frozen runtime-fields patch, freeze schema-complete metadata, land/freeze native reader/runtime pathset, rerun the bounded QA predict probe, and proceed to executed metrics only after real prediction JSONL and finite runtime loss/confidence exist.",
+  "owner": "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c owns the phone exporter rerun; Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 owns safetensors_reader and c5_full_decoder_runtime implementation; Repo Custodian owns metadata-only central-state freeze.",
   "threads_nudged_this_tick": [
-    "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: freeze exact central-state plus exporter runtime-fields pathset.",
-    "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4: prepare/implement safetensors_reader plus c5_full_decoder_runtime against the now-declared schema contract."
+    "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: rerun phone exporter from frozen commit 43cf3c4130dc902fc8fd69183bac1056f0596626 and return schema-complete manifest identities.",
+    "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: freeze metadata-only central-state mirror update after Execution route is sent."
   ],
   "raw_phone_path_hardening_20260701T094236Z": {
     "status": "central_state_phone_filesystem_paths_redacted",
@@ -5641,13 +5641,13 @@
     "reason": "Prevent stale phone filesystem strings from being treated as C5 runtime evidence or raw payload routes.",
     "preserved": "artifact identities, hashes, lane status, nonclaims, and outside-git source requirements"
   },
-  "first_missing_green_field": "repo_custody_freeze_exporter_runtime_fields_patch",
+  "first_missing_green_field": "phone_exporter_rerun_for_schema_complete_component_pack_pending",
   "first_missing_green_field_after_download": "full_decoder_logits_generation_not_implemented",
   "known_downstream_access_issue_after_download": "native_full_decoder_logits_implementation_failure",
   "authorization_needed": "none; native implementation work is under current GO and must preserve raw/secrets boundary",
   "model_safetensors_sha256": "43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651",
   "model_safetensors_size_bytes": 15992595884,
-  "first_missing_green_field_after_export": "full_decoder_logits_generation_not_implemented",
+  "first_missing_green_field_after_export": "c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land",
   "decoder_manifest_sha256": "6700f3c2912bfdcb659b9e7de3cdb0831d58f3708a0f841c181ec446b3a83a5f",
   "adapter_site_policy_sha256": "f38bd8109bbb77e9e94a5b4b34a238bc0ec0a39e7736870c97defe5aecc93357",
   "export_report_sha256": "06fe8e91b5938ff3235cad5fa96e7b25d5b20fb3c4e456c249c84d53bf839d0f",
@@ -5935,5 +5935,8 @@
       "not 100k or 1M Phase2 authority",
       "no Comet-backed accepted run"
     ]
-  }
+  },
+  "exporter_runtime_fields_freeze_commit": "43cf3c4130dc902fc8fd69183bac1056f0596626",
+  "exporter_runtime_fields_freeze_status": "committed_pushed",
+  "phone_exporter_rerun_required_after_commit": "43cf3c4130dc902fc8fd69183bac1056f0596626"
 }
