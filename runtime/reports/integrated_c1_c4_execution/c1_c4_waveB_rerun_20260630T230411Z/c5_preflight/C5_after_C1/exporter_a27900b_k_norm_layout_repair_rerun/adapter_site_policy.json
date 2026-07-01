@@ -1,0 +1,23 @@
+{
+  "adapter_rank": 16,
+  "adapter_site": "post_layer1_residual",
+  "adapter_site_description": "rank-16 adapter consumes and updates the layer-1 residual stream",
+  "bridge_mse_is_c5_loss": false,
+  "candidate_adapter_sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f",
+  "decoder_layer_index": 1,
+  "hf_revision": "7aa32e6889efd6300124851b164f8b364314c3d8",
+  "input_shape": [
+    1,
+    16,
+    2560
+  ],
+  "model_id": "google/gemma-4-E4B",
+  "output_shape": [
+    1,
+    16,
+    2560
+  ],
+  "qa_loss_source": "teacher_forced_answer_token_nll_from_full_decoder_logits",
+  "schema_version": "polymath_c5_adapter_site_policy_v1",
+  "stable_baseline_adapter_sha256": "e0d1c66ac876c2b6fbbe9e88f1b02dd37201d8ffba10afcd44f1c558fc32f7c9"
+}
