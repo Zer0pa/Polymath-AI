@@ -1,6 +1,6 @@
 # Executive Delivery State
 
-Updated UTC: `2026-07-01T05:27:17Z`
+Updated UTC: `2026-07-01T05:37:47Z`
 
 ## Current Gate
 
@@ -8,7 +8,7 @@ Updated UTC: `2026-07-01T05:27:17Z`
 
 Status classification: `AUTHORIZATION_PENDING_MODEL_SOURCE_OR_REMOTE_MOUNT`
 
-Owner: user/meta owns the exact model-source route. Engineering Orchestrator `019f138b-d229-7640-98b7-2f185d6beae0` resumes the frozen exporter after source is mounted or HF read/download is explicitly authorized. Repo Custodian completed the current metadata custody mirror at `b06d17dc642a02aa9abda5730c2ecf32cc55db9c`.
+Owner: user/meta owns the exact model-source route. Engineering Orchestrator `019f138b-d229-7640-98b7-2f185d6beae0` resumes the frozen exporter after source is mounted or HF read/download is explicitly authorized. Repo Custodian completed the latest metadata custody routing hardening at `9d1c171ea72cef391e2bbcf550ea3e0f84632f27`.
 
 User action required: `true`
 
@@ -23,7 +23,7 @@ Dominant failure domain: `phase5_eval_failure`
 
 ## Last Concrete Action
 
-Repo Custodian froze and pushed the current metadata-only model-source authorization state mirror at `b06d17dc642a02aa9abda5730c2ecf32cc55db9c`. This supersedes stale nested routing that still pointed at exporter/pathset custody after custody had completed. The previous corrected model-source authorization pathset was frozen at `abf8e5d744ea02c525c79ddfd50d451d751c67b0`.
+Repo Custodian froze and pushed the latest metadata-only model-source state routing hardening at `9d1c171ea72cef391e2bbcf550ea3e0f84632f27`. This supersedes stale nested routing that still pointed at exporter/pathset custody after custody had completed. The previous corrected model-source authorization pathset was frozen at `abf8e5d744ea02c525c79ddfd50d451d751c67b0`.
 
 Engineering previously completed the exact model-source authorization report:
 
@@ -44,7 +44,7 @@ After valid schema paths: `full_decoder_logits_generation_not_implemented_after_
 
 ## Drift Deletion / Hardening
 
-Exporter and native consumer custody are complete. Stale exporter-custody routing was deleted from central state, including nested `prd_watchdog`, `active_watchdog_state`, `lane_status.repo_custodian`, and `keys.repo_custody_key` fields that still pointed at custody after `b06d17dc642a02aa9abda5730c2ecf32cc55db9c`. The exporter rejects absent model snapshots and refuses repo-contained output. The native consumer rejects fake component packs and still fails closed at the real unresolved logits branch.
+Exporter and native consumer custody are complete. Stale exporter-custody routing was deleted from central state, including nested `prd_watchdog`, `active_watchdog_state`, `lane_status.repo_custodian`, and `keys.repo_custody_key` fields that still pointed at custody after `9d1c171ea72cef391e2bbcf550ea3e0f84632f27`. The exporter rejects absent model snapshots and refuses repo-contained output. The native consumer rejects fake component packs and still fails closed at the real unresolved logits branch.
 
 Historical phone raw-payload path strings in the central JSON were redacted to metadata-only labels while preserving SHA/identity fields.
 
@@ -58,7 +58,7 @@ User/meta supplies one exact model source route. Once source is available, Engin
 
 ## Threads Nudged This Tick
 
-- Repo Custodian `019f1ac2-0f0f-7721-bf46-ad402dbd9050` was nudged to freeze this two-file metadata-only drift cleanup pathset.
+- Repo Custodian `019f1ac2-0f0f-7721-bf46-ad402dbd9050` was nudged to freeze the current two-file metadata-only routing hardening pathset.
 
 ## Nonclaims Preserved
 
