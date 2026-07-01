@@ -1,0 +1,154 @@
+{
+  "created_at_utc": "2026-07-01T01:45:00Z",
+  "evaluator_surface_probe": {
+    "found_paths": [
+      "scripts/host/run_phase11_h11g_htp_mutable_adapter.py",
+      "scripts/host/run_phase13_p13h_attach_full_heldout_chain.py",
+      "scripts/host/run_phase13_p13e_layer1_adapter_site.py",
+      "scripts/host/run_phase14_p14_full_heldout_evaluator_repair.py",
+      "scripts/host/run_c5_eval.py",
+      "tests/test_c5_eval_contract.py",
+      "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/create_adapter_training_fixture.py",
+      "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/compare_outputs/compare_adapter_training.py",
+      "polymath_ai/dispatch/adapters.py",
+      "polymath_ai/models/adapters.py",
+      "polymath_ai/polar/c5_eval.py"
+    ],
+    "metadata_library": {
+      "path": "polymath_ai/polar/c5_eval.py",
+      "role": "builds/validates C5 metadata report; does not run model inference/eval",
+      "sha256": "be8f7befa1862956b0ffd1b924d2e4aace63a1e03036c88170f3c8c0fd8ed5bc"
+    },
+    "metadata_only_runner": {
+      "path": "scripts/host/run_c5_eval.py",
+      "role": "validates supplied executed metrics JSON; does not compute model metrics",
+      "sha256": "be88f7635ae15358a502bfecc85022163107b59f868d19d76d2852851d993ed3"
+    },
+    "metric_surface_search_summary": "Current C5 code provides metadata report construction/validation only. No active command found that executes model/adapter evaluation over C5_after_C1 and emits polymath_c5_executed_metrics_v1.",
+    "phase14_heldout_utility": {
+      "assessment": "historical P14 full-heldout planner/launcher with phase14_* schemas, phone checkpoint directories, and topk KL objective; not the C1-C5 polymath_c5_executed_metrics_v1 evaluator surface",
+      "path": "scripts/host/run_phase14_p14_full_heldout_evaluator_repair.py",
+      "sha256": "dba1fc33da65ec909a66f20637a8896111d1e64a0cab94520e62c58290d45d90"
+    },
+    "real_c5_executable_candidates": [],
+    "script_search": {
+      "command": [
+        "sh",
+        "-lc",
+        "rg --files | rg -i '(^|/)(run_.*c5|.*c5.*\\.py|.*heldout.*\\.py|.*eval.*\\.py|.*evaluator.*\\.py|.*checkpoint.*\\.py|.*adapter.*\\.py)'"
+      ],
+      "returncode": 0,
+      "stderr_first_4096": "",
+      "stdout_first_12000": "scripts/host/run_phase11_h11g_htp_mutable_adapter.py\nscripts/host/run_phase13_p13h_attach_full_heldout_chain.py\nscripts/host/run_phase13_p13e_layer1_adapter_site.py\nscripts/host/run_phase14_p14_full_heldout_evaluator_repair.py\nscripts/host/run_c5_eval.py\ntests/test_c5_eval_contract.py\nintegrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/create_adapter_training_fixture.py\nintegrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/compare_outputs/compare_adapter_training.py\npolymath_ai/dispatch/adapters.py\npolymath_ai/models/adapters.py\npolymath_ai/polar/c5_eval.py\n"
+    }
+  },
+  "first_missing_green_field": "real_c5_after_c1_evaluator_command_surface_missing",
+  "inputs_missing_or_unverified": {
+    "candidate_checkpoint_or_adapter_payload_path": "missing; identity JSON records hash only and source reports expose adapter hashes but no payload file path",
+    "local_payload_hash_scan": {
+      "matches": [],
+      "method": "hashed plausible adapter/checkpoint/phase4/bridge file names under 50MB; raw payloads not copied",
+      "scanned_files": 1278,
+      "search_scope": [
+        "/Users/Zer0pa/Polymat AI/runtime",
+        "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime",
+        "/tmp"
+      ]
+    },
+    "stable_baseline_payload_path": "missing; identity JSON records hash only and source reports expose adapter hashes but no payload file path"
+  },
+  "inputs_verified": {
+    "candidate_checkpoint_identity": {
+      "checkpoint_payload_location": "outside_git",
+      "checkpoint_sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f",
+      "file_sha256": "92dbfe9d6db7d905b069ca4af3d7dda0a01ce7a179e8fae640465397d0f4cfc1",
+      "path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/checkpoint_identities/candidate_checkpoint_identity_C5_after_C1.json",
+      "produced_by_phase": "C1"
+    },
+    "eval_split_identity": {
+      "eval_split_sha256": "da41c5362398f24e0e0dd9df9a5cf0594435a455871fa77ab74d9312e6c8e9b2",
+      "path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/c5_eval_split_identity_C5_after_C1.json",
+      "record_count": 53,
+      "sha256": "ea8bf6e9876febad8b125e78deed2d8ef534daaa7dd1e38126a07027cc6c8ca9"
+    },
+    "heldout_split_material_matches": [
+      {
+        "inside_git": false,
+        "matches_expected": true,
+        "path": "/Users/Zer0pa/Polymat AI/runtime/tmp/c1_c4_integrated_20260630T164809Z/hf_packages/packages/C1/qa_bridge/phase_C1_test.qa.jsonl",
+        "rows": 53,
+        "sha256": "da41c5362398f24e0e0dd9df9a5cf0594435a455871fa77ab74d9312e6c8e9b2",
+        "size_bytes": 153158
+      },
+      {
+        "inside_git": false,
+        "matches_expected": true,
+        "path": "/Users/Zer0pa/Polymat AI/corpus_packages/commercial/20260629T100304Z/phase_C1_lexatlas_frontier_gpt_enriched_scale_v1_checkpoint_05000/qa_bridge/phase_C1_test.qa.jsonl",
+        "rows": 53,
+        "sha256": "da41c5362398f24e0e0dd9df9a5cf0594435a455871fa77ab74d9312e6c8e9b2",
+        "size_bytes": 153158
+      }
+    ],
+    "phase4_report_identity": {
+      "adapter_post_sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f",
+      "adapter_pre_sha256": "e0d1c66ac876c2b6fbbe9e88f1b02dd37201d8ffba10afcd44f1c558fc32f7c9",
+      "path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/phase34_lineage_repair/C1/phase4_bridge_cell/phase4_bridge_cell_report.json",
+      "sha256": "c8eeee9a7ce54a9780b584dfb5d343c33db00c7aa3bebd803e95ab114a48e831"
+    },
+    "stable_baseline_identity": {
+      "checkpoint_payload_location": "outside_git",
+      "file_sha256": "7f65b37e8acc7659b6912fe7de3e46b3cffb9abca8a1c76331f1e48fd6c59fec",
+      "path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/checkpoint_identities/stable_baseline_checkpoint_identity_C5_after_C1.json",
+      "stable_checkpoint_baseline_sha256": "e0d1c66ac876c2b6fbbe9e88f1b02dd37201d8ffba10afcd44f1c558fc32f7c9"
+    }
+  },
+  "lane": "execution_orchestrator",
+  "next_action": "Route to Engineering/Phase3-4 to provide/freeze the real C5_after_C1 evaluator command surface and payload path contract, or a precise decision that existing Phase4 adapter identities are insufficient for C5 evaluation.",
+  "nonclaims": [
+    "no_c5_pass",
+    "no_executed_c5_metrics_json",
+    "no_learning_or_model_quality_claim",
+    "no_remote_comet_call",
+    "no_phase3_readiness_claim",
+    "no_phase4_readiness_claim",
+    "not_100k_or_1m_phase2_authority"
+  ],
+  "raw_payload_boundary": {
+    "comet_called": false,
+    "phone_adb_termux_used": false,
+    "raw_payloads_copied_to_repo": false,
+    "secrets_used": false
+  },
+  "repo_head": "ea2cf60ff4ceccf7e5d8b9ab67d26c13240b508d",
+  "required_engineering_contract": {
+    "command_surface": "frozen script/module that consumes immutable C5_after_C1 eval split plus candidate and stable baseline checkpoint/adapter payloads and emits polymath_c5_executed_metrics_v1 JSON",
+    "must_fail_fast_on": [
+      "payload hash mismatch",
+      "missing candidate payload",
+      "missing stable baseline payload",
+      "missing eval split material",
+      "raw payload copied into repo",
+      "metrics derived from Phase3/4 metadata instead of executed eval"
+    ],
+    "required_metrics": [
+      "c5/C5_after_C1/loss",
+      "c5/C5_after_C1/loss_delta_vs_last_stable",
+      "c5/C5_after_C1/accuracy",
+      "c5/C5_after_C1/answer_exact_match",
+      "c5/C5_after_C1/answer_token_f1",
+      "c5/C5_after_C1/perplexity",
+      "c5/C5_after_C1/calibration_ece",
+      "c5/C5_after_C1/brier_score",
+      "c5/C5_after_C1/overfit_gap_train_vs_val",
+      "c5/C5_after_C1/grad_norm_max_observed",
+      "c5/C5_after_C1/checkpoint_sha256",
+      "c5/C5_after_C1/stable_checkpoint_baseline_sha256",
+      "c5/C5_after_C1/learning_score"
+    ]
+  },
+  "run_label": "c1_c4_waveB_rerun_20260630T230411Z",
+  "schema_version": "polymath_c5_after_c1_real_eval_surface_probe_v1",
+  "status": "c5_after_c1_real_evaluator_surface_missing",
+  "status_classification": "PENDING_ACTION_ENGINEERING_REAL_C5_EVALUATOR_SURFACE",
+  "user_action_required": false
+}

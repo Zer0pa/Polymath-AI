@@ -1,9 +1,9 @@
 {
   "active_bottleneck": {
     "artifact_waiting_on": [
-      "Real executed local/device C5_after_C1 metrics JSON with schema polymath_c5_executed_metrics_v1",
-      "Exact evaluator command surface capable of consuming the heldout QA split plus candidate and stable checkpoint/adapter payloads, or Engineering pathset if that surface is absent",
-      "Outside-git heldout split payload and candidate/stable checkpoint or adapter payloads matching the accepted identity SHAs; no raw payloads in git"
+      "Repo Custodian freeze of C5 heldout evaluator producer pathset plus metadata-only execution probe and central state mirrors",
+      "After freeze: outside-git heldout QA plus candidate/stable prediction JSONL with per-record record_id, prediction, loss, confidence, and matching accepted identity hashes",
+      "After execution: polymath_c5_executed_metrics_v1 JSON consumed by scripts/host/run_c5_eval.py"
     ],
     "c5_after_c1_eval_split_identity": {
       "artifact_path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/c5_eval_split_identity_C5_after_C1.json",
@@ -222,6 +222,52 @@
       "status": "c5_remaining_eval_split_identity_matrix_ready"
     },
     "current_gate": "WaveB_C5_after_C1_executed_metrics_json_pending_evaluator_run",
+    "dominant_failure_domain": "phase5_eval_failure",
+    "drift_deleted_or_pending": "Engineering deleted the validator-as-evaluator drift by adding a producer pathset; custody freeze is pending.",
+    "engineering_evaluator_implementation": {
+      "artifact_paths_in_progress": [
+        "polymath_ai/polar/c5_heldout_eval.py",
+        "scripts/host/run_c5_heldout_eval.py",
+        "tests/test_c5_heldout_eval.py"
+      ],
+      "current_worktree_sha256": {
+        "polymath_ai/polar/c5_heldout_eval.py": "0095c2ded45e2b02e68888562635e59026963bb85e385b48b42cb6e3275a05eb",
+        "scripts/host/run_c5_heldout_eval.py": "32e2f2c2d2d3ba4965a6869d0f97793bc990b40421c7292bab5deba2633842c9",
+        "tests/test_c5_heldout_eval.py": "e8993da430ae8c86880d21edf96c3d44d969e73aace7be26c38e7f6864dbeccf"
+      },
+      "first_missing_green_field": "Engineering final verification and Custodian-ready pathset",
+      "implementation_policy": "producer emits polymath_c5_executed_metrics_v1 for the existing run_c5_eval.py validator; it must fail closed on missing per-record loss/confidence/prediction inputs rather than derive metrics from metadata",
+      "status": "c5_after_c1_evaluator_implementation_in_progress",
+      "status_classification": "PENDING_ACTION_ENGINEERING_REAL_C5_EVALUATOR_PRODUCER"
+    },
+    "engineering_evaluator_pathset_ready": {
+      "artifact_paths": [
+        "polymath_ai/polar/c5_heldout_eval.py",
+        "scripts/host/run_c5_heldout_eval.py",
+        "tests/test_c5_heldout_eval.py"
+      ],
+      "execution_payloads_pending": [
+        "heldout QA JSONL outside git",
+        "candidate prediction JSONL outside git with record_id/prediction/loss/confidence",
+        "stable baseline prediction JSONL outside git with record_id/prediction/loss/confidence",
+        "candidate_train_loss numeric value"
+      ],
+      "first_missing_green_field": "repo_custody_freeze_of_c5_heldout_evaluator_pathset",
+      "sha256_or_identity_fields": {
+        "polymath_ai/polar/c5_heldout_eval.py": "0095c2ded45e2b02e68888562635e59026963bb85e385b48b42cb6e3275a05eb",
+        "scripts/host/run_c5_heldout_eval.py": "32e2f2c2d2d3ba4965a6869d0f97793bc990b40421c7292bab5deba2633842c9",
+        "tests/test_c5_heldout_eval.py": "e8993da430ae8c86880d21edf96c3d44d969e73aace7be26c38e7f6864dbeccf"
+      },
+      "status": "c5_after_c1_evaluator_implementation_pathset_ready_for_custodian",
+      "status_classification": "PENDING_ACTION_REPO_CUSTODY_THEN_EXECUTION_PAYLOADS",
+      "verification_reported": [
+        "python3.11 -m py_compile passed",
+        "python3.11 scripts/host/run_c5_heldout_eval.py --print-prediction-schema passed",
+        "python3.11 -m pytest -q tests/test_c5_eval_contract.py tests/test_c5_heldout_eval.py tests/test_metrics_contract.py -> 19 passed",
+        "git diff --check passed",
+        "bounded secret scan on new source/tests clean"
+      ]
+    },
     "evidence_sha256": {
       "c5_after_c1_eval_split_identity": "ea8bf6e9876febad8b125e78deed2d8ef534daaa7dd1e38126a07027cc6c8ca9",
       "c5_after_c1_eval_split_payload": "da41c5362398f24e0e0dd9df9a5cf0594435a455871fa77ab74d9312e6c8e9b2",
@@ -268,7 +314,13 @@
       "run_c5_eval_py": "2024de04e54e05f6d6bc75604dcb8dcf926351444d58fc94b788f7cb4eb33117",
       "test_c5_eval_contract_py": "1654da5ac5da8a334f462e72c6c31eb25f056fd2142eae833403eb3ae2eed30e"
     },
-    "first_missing_green_field": "executed_metrics_C5_after_C1.json from a real heldout evaluator run",
+    "execution_surface_probe": {
+      "artifact_path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_real_eval_surface_probe/C5_after_C1/c5_after_c1_real_eval_surface_probe_20260701T014500Z.json",
+      "artifact_sha256": "fc14671c9b53f2fa476d6b777351486a6e048f725ddd408421491918236ebeac",
+      "existing_surface_role": "run_c5_eval.py validates supplied metrics JSON; it does not compute metrics",
+      "status": "c5_after_c1_real_evaluator_surface_missing"
+    },
+    "first_missing_green_field": "repo_custody_freeze_of_c5_heldout_evaluator_pathset",
     "hardening_policy": {
       "deleted_or_repaired_drift": [
         "forced_non_packaged_child_exec_default_for_phase1",
@@ -282,15 +334,15 @@
       "next_hardening_surface": "Real C5 evaluator implementation and metrics schema: fail closed on absent command surface, identity mismatch, raw payload leakage, or metadata-derived metric substitution."
     },
     "lane_poll": {
-      "engineering_orchestrator": "mobilized: identify or implement real C5_after_C1 evaluator surface and return command/pathset",
-      "execution_orchestrator": "mobilized: verify outside-git split/checkpoint/baseline payload identities and run real evaluator if command surface exists",
-      "phase34_engineer": "complete for search edge: no executed metrics artifact exists; available for review if evaluator emits Phase3/4-dependent evidence",
-      "pipeline_integrator": "mobilized: enforce polymath_c5_executed_metrics_v1 receiving contract and reclassify stale checkpoint-identity wording",
-      "repo_custodian_replacement": "mobilized: verify/freeze PRD and central state exact pathset only; no broad add",
-      "training_material_steward": "complete: c5_remaining_eval_split_identity_matrix_ready at db026c4a; no remaining material identity action for planned eval points",
-      "ui_engineer": "not nudged until metrics-backed status surface exists"
+      "engineering_orchestrator": "complete for implementation: C5 heldout evaluator pathset ready for Custodian",
+      "execution_orchestrator": "waiting after probe: run evaluator after custody freeze and payload verification",
+      "phase34_engineer": "standby for review; no metrics from metadata",
+      "pipeline_integrator": "waiting for emitted polymath_c5_executed_metrics_v1 artifact",
+      "repo_custodian_replacement": "nudged: freeze exact C5 evaluator producer pathset plus probe/state mirrors if clean",
+      "training_material_steward": "complete for material identities",
+      "ui_engineer": "not nudged until C5 evidence-backed status exists"
     },
-    "last_concrete_action": "Phase3/4 searched runtime artifacts and found zero executed local C5 metrics JSON files with schema polymath_c5_executed_metrics_v1. Execution and Pipeline already validated C5_after_C1 material split identity, candidate checkpoint identity, stable baseline identity, and the identity-ready preflight; the only remaining green field is a real evaluator run. Metrics such as loss, accuracy, F1, perplexity, calibration, Brier, overfit gap, and learning_score cannot be derived from metadata.",
+    "last_concrete_action": "Engineering completed the canonical C5 heldout evaluator producer pathset: c5_heldout_eval.py, run_c5_heldout_eval.py, and tests/test_c5_heldout_eval.py. Focused verification passed in Engineering: py_compile, --print-prediction-schema, pytest over C5 eval/heldout/metrics tests with 19 passed, git diff --check, and bounded secret scan. Execution previously proved the old C5 surface was validator-only and produced a metadata-only probe.",
     "lineage_drift_repair_status": {
       "commit": "ee74ae572322e05624deac6f6f8788c2c6e2f692",
       "proof_required": [
@@ -306,18 +358,17 @@
       ],
       "status": "source_repair_frozen_pending_execution_proof"
     },
-    "next_concrete_action": "Engineering identifies or implements the real heldout C5 evaluator surface; Execution verifies outside-git split/checkpoint/baseline payload identities and runs the evaluator when the command surface is present; Pipeline validates the emitted metrics JSON and C5 preflight. Material Steward prepares the remaining C5 split identity matrix in parallel.",
+    "next_concrete_action": "Repo Custodian verifies and freezes only the exact scoped C5 evaluator pathset, the metadata-only surface probe, and central state mirrors if clean. Then Execution consumes the frozen command surface, verifies outside-git heldout/prediction payload identities, runs C5_after_C1, and feeds the emitted metrics JSON into run_c5_eval.py.",
     "nonclaims": [
-      "Development-cycle Wave B mechanics and Phase3/4 lineage-clean proof are preserved and frozen",
-      "Not 100k/1M Phase2 authority",
-      "No Phase3 readiness claim",
-      "No Phase4 readiness claim",
-      "No C5 eval pass",
-      "No Comet-backed accepted run claim yet",
-      "No learning claim",
-      "No model-quality claim"
+      "development-cycle evidence only unless stronger gates pass",
+      "no C5 pass",
+      "no learning/model-quality claim",
+      "no Phase3 readiness claim",
+      "no Phase4 readiness claim",
+      "not 100k/1M Phase2 authority",
+      "no Comet-backed accepted run claim yet"
     ],
-    "owner": "Engineering Orchestrator 019f138b-d229-7640-98b7-2f185d6beae0 + Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c",
+    "owner": "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050 for evaluator pathset freeze; Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c after freeze",
     "phase2_status_by_phase": {
       "C1": {
         "packets": 5180,
@@ -497,24 +548,31 @@
       "phase34": "raw PJP1, HTP raw output, OpenCL tensors, and adapters remain on device/Termux; repair must keep compact JSON only",
       "report_root_scan": "metadata-freeze report root had 179 tracked files and clean forbidden suffix scans; raw payloads not committed"
     },
+    "recursive_improvement_next_step": "Freeze producer -> Execution runs C5_after_C1 with real heldout predictions -> Pipeline validates metrics -> route measured repair.",
+    "repo_custody_state_freeze": {
+      "branch": "origin/gemma4-megakernel-native-training",
+      "commit": "3de535adec9219017565f71eddb5cf324d995528",
+      "pathset": [
+        "docs/PRD-C1-C5-DRIFT-FREE-METRICS-COMET-EXECUTION-2026-06-30.md",
+        "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json",
+        "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md"
+      ],
+      "status": "c5_evaluator_mobilization_state_committed_pushed"
+    },
     "run_label": "c1_c4_waveB_rerun_20260630T230411Z",
     "run_root": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z",
-    "status_classification": "PENDING_ACTION_C5_EVALUATOR_EXECUTION_OR_IMPLEMENTATION",
+    "status_classification": "PENDING_ACTION_REPO_CUSTODY_THEN_EXECUTION_PAYLOADS",
     "threads_nudged_this_tick": [
-      "Engineering Orchestrator 019f138b-d229-7640-98b7-2f185d6beae0: identify/implement real C5 evaluator surface",
-      "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: verify outside-git inputs and run real evaluator if surface exists",
-      "Pipeline Integrator 019f138c-35b6-73e1-b26d-3db8c59cf850: enforce polymath_c5_executed_metrics_v1 receiving contract",
-      "Training Material Steward 019f138b-7bfc-7671-b9fc-22c14ab76342: prepare remaining C5 split identity matrix",
-      "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: verify/freeze PRD and central state pathset only if clean"
+      "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: freeze exact C5 heldout evaluator producer pathset, probe report, and central state mirrors if clean"
     ],
     "timestamp_utc": "2026-07-01T01:50:34Z",
     "user_action_required": false
   },
   "active_watchdog_state": {
     "artifact_waiting_on": [
-      "Real executed local/device C5_after_C1 metrics JSON with schema polymath_c5_executed_metrics_v1",
-      "Exact evaluator command surface capable of consuming the heldout QA split plus candidate and stable checkpoint/adapter payloads, or Engineering pathset if that surface is absent",
-      "Outside-git heldout split payload and candidate/stable checkpoint or adapter payloads matching the accepted identity SHAs; no raw payloads in git"
+      "Repo Custodian freeze of C5 heldout evaluator producer pathset plus metadata-only execution probe and central state mirrors",
+      "After freeze: outside-git heldout QA plus candidate/stable prediction JSONL with per-record record_id, prediction, loss, confidence, and matching accepted identity hashes",
+      "After execution: polymath_c5_executed_metrics_v1 JSON consumed by scripts/host/run_c5_eval.py"
     ],
     "c5_after_c1_eval_split_identity": {
       "artifact_path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/c5_eval_split_identity_C5_after_C1.json",
@@ -767,6 +825,52 @@
       "status": "c5_remaining_eval_split_identity_matrix_ready"
     },
     "current_gate": "WaveB_C5_after_C1_executed_metrics_json_pending_evaluator_run",
+    "dominant_failure_domain": "phase5_eval_failure",
+    "drift_deleted_or_pending": "Engineering deleted the validator-as-evaluator drift by adding a producer pathset; custody freeze is pending.",
+    "engineering_evaluator_implementation": {
+      "artifact_paths_in_progress": [
+        "polymath_ai/polar/c5_heldout_eval.py",
+        "scripts/host/run_c5_heldout_eval.py",
+        "tests/test_c5_heldout_eval.py"
+      ],
+      "current_worktree_sha256": {
+        "polymath_ai/polar/c5_heldout_eval.py": "0095c2ded45e2b02e68888562635e59026963bb85e385b48b42cb6e3275a05eb",
+        "scripts/host/run_c5_heldout_eval.py": "32e2f2c2d2d3ba4965a6869d0f97793bc990b40421c7292bab5deba2633842c9",
+        "tests/test_c5_heldout_eval.py": "e8993da430ae8c86880d21edf96c3d44d969e73aace7be26c38e7f6864dbeccf"
+      },
+      "first_missing_green_field": "Engineering final verification and Custodian-ready pathset",
+      "implementation_policy": "producer emits polymath_c5_executed_metrics_v1 for the existing run_c5_eval.py validator; it must fail closed on missing per-record loss/confidence/prediction inputs rather than derive metrics from metadata",
+      "status": "c5_after_c1_evaluator_implementation_in_progress",
+      "status_classification": "PENDING_ACTION_ENGINEERING_REAL_C5_EVALUATOR_PRODUCER"
+    },
+    "engineering_evaluator_pathset_ready": {
+      "artifact_paths": [
+        "polymath_ai/polar/c5_heldout_eval.py",
+        "scripts/host/run_c5_heldout_eval.py",
+        "tests/test_c5_heldout_eval.py"
+      ],
+      "execution_payloads_pending": [
+        "heldout QA JSONL outside git",
+        "candidate prediction JSONL outside git with record_id/prediction/loss/confidence",
+        "stable baseline prediction JSONL outside git with record_id/prediction/loss/confidence",
+        "candidate_train_loss numeric value"
+      ],
+      "first_missing_green_field": "repo_custody_freeze_of_c5_heldout_evaluator_pathset",
+      "sha256_or_identity_fields": {
+        "polymath_ai/polar/c5_heldout_eval.py": "0095c2ded45e2b02e68888562635e59026963bb85e385b48b42cb6e3275a05eb",
+        "scripts/host/run_c5_heldout_eval.py": "32e2f2c2d2d3ba4965a6869d0f97793bc990b40421c7292bab5deba2633842c9",
+        "tests/test_c5_heldout_eval.py": "e8993da430ae8c86880d21edf96c3d44d969e73aace7be26c38e7f6864dbeccf"
+      },
+      "status": "c5_after_c1_evaluator_implementation_pathset_ready_for_custodian",
+      "status_classification": "PENDING_ACTION_REPO_CUSTODY_THEN_EXECUTION_PAYLOADS",
+      "verification_reported": [
+        "python3.11 -m py_compile passed",
+        "python3.11 scripts/host/run_c5_heldout_eval.py --print-prediction-schema passed",
+        "python3.11 -m pytest -q tests/test_c5_eval_contract.py tests/test_c5_heldout_eval.py tests/test_metrics_contract.py -> 19 passed",
+        "git diff --check passed",
+        "bounded secret scan on new source/tests clean"
+      ]
+    },
     "evidence_sha256": {
       "c5_after_c1_eval_split_identity": "ea8bf6e9876febad8b125e78deed2d8ef534daaa7dd1e38126a07027cc6c8ca9",
       "c5_after_c1_eval_split_payload": "da41c5362398f24e0e0dd9df9a5cf0594435a455871fa77ab74d9312e6c8e9b2",
@@ -815,7 +919,13 @@
       "run_c5_eval_py": "2024de04e54e05f6d6bc75604dcb8dcf926351444d58fc94b788f7cb4eb33117",
       "test_c5_eval_contract_py": "1654da5ac5da8a334f462e72c6c31eb25f056fd2142eae833403eb3ae2eed30e"
     },
-    "first_missing_green_field": "executed_metrics_C5_after_C1.json from a real heldout evaluator run",
+    "execution_surface_probe": {
+      "artifact_path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_real_eval_surface_probe/C5_after_C1/c5_after_c1_real_eval_surface_probe_20260701T014500Z.json",
+      "artifact_sha256": "fc14671c9b53f2fa476d6b777351486a6e048f725ddd408421491918236ebeac",
+      "existing_surface_role": "run_c5_eval.py validates supplied metrics JSON; it does not compute metrics",
+      "status": "c5_after_c1_real_evaluator_surface_missing"
+    },
+    "first_missing_green_field": "repo_custody_freeze_of_c5_heldout_evaluator_pathset",
     "hardening_policy": {
       "deleted_or_repaired_drift": [
         "forced_non_packaged_child_exec_default_for_phase1",
@@ -829,15 +939,15 @@
       "next_hardening_surface": "Real C5 evaluator implementation and metrics schema: fail closed on absent command surface, identity mismatch, raw payload leakage, or metadata-derived metric substitution."
     },
     "lane_poll": {
-      "engineering_orchestrator": "mobilized: identify or implement real C5_after_C1 evaluator surface and return command/pathset",
-      "execution_orchestrator": "mobilized: verify outside-git split/checkpoint/baseline payload identities and run real evaluator if command surface exists",
-      "phase34_engineer": "complete for search edge: no executed metrics artifact exists; available for review if evaluator emits Phase3/4-dependent evidence",
-      "pipeline_integrator": "mobilized: enforce polymath_c5_executed_metrics_v1 receiving contract and reclassify stale checkpoint-identity wording",
-      "repo_custodian_replacement": "mobilized: verify/freeze PRD and central state exact pathset only; no broad add",
-      "training_material_steward": "complete: c5_remaining_eval_split_identity_matrix_ready at db026c4a; no remaining material identity action for planned eval points",
-      "ui_engineer": "not nudged until metrics-backed status surface exists"
+      "engineering_orchestrator": "complete for implementation: C5 heldout evaluator pathset ready for Custodian",
+      "execution_orchestrator": "waiting after probe: run evaluator after custody freeze and payload verification",
+      "phase34_engineer": "standby for review; no metrics from metadata",
+      "pipeline_integrator": "waiting for emitted polymath_c5_executed_metrics_v1 artifact",
+      "repo_custodian_replacement": "nudged: freeze exact C5 evaluator producer pathset plus probe/state mirrors if clean",
+      "training_material_steward": "complete for material identities",
+      "ui_engineer": "not nudged until C5 evidence-backed status exists"
     },
-    "last_concrete_action": "Phase3/4 searched runtime artifacts and found zero executed local C5 metrics JSON files with schema polymath_c5_executed_metrics_v1. Execution and Pipeline already validated C5_after_C1 material split identity, candidate checkpoint identity, stable baseline identity, and the identity-ready preflight; the only remaining green field is a real evaluator run. Metrics such as loss, accuracy, F1, perplexity, calibration, Brier, overfit gap, and learning_score cannot be derived from metadata.",
+    "last_concrete_action": "Engineering completed the canonical C5 heldout evaluator producer pathset: c5_heldout_eval.py, run_c5_heldout_eval.py, and tests/test_c5_heldout_eval.py. Focused verification passed in Engineering: py_compile, --print-prediction-schema, pytest over C5 eval/heldout/metrics tests with 19 passed, git diff --check, and bounded secret scan. Execution previously proved the old C5 surface was validator-only and produced a metadata-only probe.",
     "lineage_drift_repair_status": {
       "commit": "ee74ae572322e05624deac6f6f8788c2c6e2f692",
       "proof_required": [
@@ -853,18 +963,17 @@
       ],
       "status": "source_repair_frozen_pending_execution_proof"
     },
-    "next_concrete_action": "Engineering identifies or implements the real heldout C5 evaluator surface; Execution verifies outside-git split/checkpoint/baseline payload identities and runs the evaluator when the command surface is present; Pipeline validates the emitted metrics JSON and C5 preflight. Material Steward prepares the remaining C5 split identity matrix in parallel.",
+    "next_concrete_action": "Repo Custodian verifies and freezes only the exact scoped C5 evaluator pathset, the metadata-only surface probe, and central state mirrors if clean. Then Execution consumes the frozen command surface, verifies outside-git heldout/prediction payload identities, runs C5_after_C1, and feeds the emitted metrics JSON into run_c5_eval.py.",
     "nonclaims": [
-      "Development-cycle Wave B mechanics and Phase3/4 lineage-clean proof are preserved and frozen",
-      "Not 100k/1M Phase2 authority",
-      "No Phase3 readiness claim",
-      "No Phase4 readiness claim",
-      "No C5 eval pass",
-      "No Comet-backed accepted run claim yet",
-      "No learning claim",
-      "No model-quality claim"
+      "development-cycle evidence only unless stronger gates pass",
+      "no C5 pass",
+      "no learning/model-quality claim",
+      "no Phase3 readiness claim",
+      "no Phase4 readiness claim",
+      "not 100k/1M Phase2 authority",
+      "no Comet-backed accepted run claim yet"
     ],
-    "owner": "Engineering Orchestrator 019f138b-d229-7640-98b7-2f185d6beae0 + Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c",
+    "owner": "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050 for evaluator pathset freeze; Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c after freeze",
     "phase2_status_by_phase": {
       "C1": {
         "packets": 5180,
@@ -1044,15 +1153,22 @@
       "phase34": "raw PJP1, HTP raw output, OpenCL tensors, and adapters remain on device/Termux; repair must keep compact JSON only",
       "report_root_scan": "metadata-freeze report root had 179 tracked files and clean forbidden suffix scans; raw payloads not committed"
     },
+    "recursive_improvement_next_step": "Freeze producer -> Execution runs C5_after_C1 with real heldout predictions -> Pipeline validates metrics -> route measured repair.",
+    "repo_custody_state_freeze": {
+      "branch": "origin/gemma4-megakernel-native-training",
+      "commit": "3de535adec9219017565f71eddb5cf324d995528",
+      "pathset": [
+        "docs/PRD-C1-C5-DRIFT-FREE-METRICS-COMET-EXECUTION-2026-06-30.md",
+        "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json",
+        "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md"
+      ],
+      "status": "c5_evaluator_mobilization_state_committed_pushed"
+    },
     "run_label": "c1_c4_waveB_rerun_20260630T230411Z",
     "run_root": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z",
-    "status_classification": "PENDING_ACTION_C5_EVALUATOR_EXECUTION_OR_IMPLEMENTATION",
+    "status_classification": "PENDING_ACTION_REPO_CUSTODY_THEN_EXECUTION_PAYLOADS",
     "threads_nudged_this_tick": [
-      "Engineering Orchestrator 019f138b-d229-7640-98b7-2f185d6beae0: identify/implement real C5 evaluator surface",
-      "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: verify outside-git inputs and run real evaluator if surface exists",
-      "Pipeline Integrator 019f138c-35b6-73e1-b26d-3db8c59cf850: enforce polymath_c5_executed_metrics_v1 receiving contract",
-      "Training Material Steward 019f138b-7bfc-7671-b9fc-22c14ab76342: prepare remaining C5 split identity matrix",
-      "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: verify/freeze PRD and central state pathset only if clean"
+      "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: freeze exact C5 heldout evaluator producer pathset, probe report, and central state mirrors if clean"
     ],
     "timestamp_utc": "2026-07-01T01:50:34Z",
     "user_action_required": false
@@ -1457,6 +1573,46 @@
         "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: verify/freeze PRD and central state pathset only if clean"
       ],
       "timestamp_utc": "2026-07-01T01:48:19Z",
+      "user_action_required": false
+    },
+    {
+      "artifact_waiting_on": [
+        "Engineering C5 heldout evaluator producer pathset: polymath_ai/polar/c5_heldout_eval.py, scripts/host/run_c5_heldout_eval.py, tests/test_c5_heldout_eval.py",
+        "Outside-git candidate and stable prediction/payload path contract matching checkpoint SHA 1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f and stable SHA e0d1c66ac876c2b6fbbe9e88f1b02dd37201d8ffba10afcd44f1c558fc32f7c9",
+        "Real executed local/device C5_after_C1 metrics JSON with schema polymath_c5_executed_metrics_v1"
+      ],
+      "current_gate": "WaveB_C5_after_C1_executed_metrics_json_pending_evaluator_run",
+      "dominant_failure_domain": "phase5_eval_failure",
+      "drift_deleted_or_pending": "pending hardening of validator-only C5 surface into a real heldout evaluator producer",
+      "last_concrete_action": "Custodian froze the PRD and central state at 3de535adec9219017565f71eddb5cf324d995528. Execution produced a metadata-only real-evaluator surface probe showing the heldout split is available outside git and matches the accepted SHA, but the existing C5 command surface only validates a supplied metrics JSON and does not execute heldout evaluation. Execution also found no local candidate/stable payload path matching the accepted hashes. Engineering is active and has started a canonical producer pathset rather than treating the validator as the evaluator.",
+      "next_concrete_action": "Engineering completes the real heldout evaluator producer and focused tests, returns exact pathset/hashes for Custodian, then Execution verifies outside-git payload/prediction identities and runs C5_after_C1 to emit polymath_c5_executed_metrics_v1. Pipeline validates the emitted metrics JSON and only then can C5 status advance.",
+      "owner": "Engineering Orchestrator 019f138b-d229-7640-98b7-2f185d6beae0 primary; Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c payload verification after producer pathset",
+      "recursive_improvement_next_step": "freeze producer -> run C5_after_C1 -> validate metrics -> route measured repair",
+      "status_classification": "PENDING_ACTION_C5_REAL_EVALUATOR_IMPLEMENTATION_AND_PAYLOAD_CONTRACT",
+      "threads_nudged_this_tick": [
+        "none this tick: Engineering Orchestrator is active/in-progress on the evaluator producer; Execution completed the surface probe; Custodian completed the prior state freeze"
+      ],
+      "tick_utc": "2026-07-01T01:58:26Z",
+      "user_action_required": false
+    },
+    {
+      "artifact_waiting_on": [
+        "Repo Custodian freeze of C5 heldout evaluator producer pathset plus metadata-only execution probe and central state mirrors",
+        "After freeze: outside-git heldout QA plus candidate/stable prediction JSONL with per-record record_id, prediction, loss, confidence, and matching accepted identity hashes",
+        "After execution: polymath_c5_executed_metrics_v1 JSON consumed by scripts/host/run_c5_eval.py"
+      ],
+      "current_gate": "WaveB_C5_after_C1_executed_metrics_json_pending_evaluator_run",
+      "dominant_failure_domain": "phase5_eval_failure",
+      "drift_deleted_or_pending": "C5 evaluator producer pathset ready; custody freeze pending",
+      "last_concrete_action": "Engineering completed the canonical C5 heldout evaluator producer pathset: c5_heldout_eval.py, run_c5_heldout_eval.py, and tests/test_c5_heldout_eval.py. Focused verification passed in Engineering: py_compile, --print-prediction-schema, pytest over C5 eval/heldout/metrics tests with 19 passed, git diff --check, and bounded secret scan. Execution previously proved the old C5 surface was validator-only and produced a metadata-only probe.",
+      "next_concrete_action": "Repo Custodian verifies and freezes only the exact scoped C5 evaluator pathset, the metadata-only surface probe, and central state mirrors if clean. Then Execution consumes the frozen command surface, verifies outside-git heldout/prediction payload identities, runs C5_after_C1, and feeds the emitted metrics JSON into run_c5_eval.py.",
+      "owner": "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050 for evaluator pathset freeze; Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c after freeze",
+      "recursive_improvement_next_step": "freeze producer -> run C5 -> validate metrics -> route repair",
+      "status_classification": "PENDING_ACTION_REPO_CUSTODY_THEN_EXECUTION_PAYLOADS",
+      "threads_nudged_this_tick": [
+        "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: freeze exact C5 heldout evaluator producer pathset, probe report, and central state mirrors if clean"
+      ],
+      "tick_utc": "2026-07-01T02:00:26Z",
       "user_action_required": false
     }
   ],
@@ -1965,47 +2121,63 @@
   "lane_status": {
     "engineering_orchestrator": {
       "artifact_paths": [
-        "polymath_ai/polar/c5_eval.py",
-        "scripts/host/run_c5_eval.py",
-        "tests/test_c5_eval_contract.py"
+        "polymath_ai/polar/c5_heldout_eval.py",
+        "scripts/host/run_c5_heldout_eval.py",
+        "tests/test_c5_heldout_eval.py"
       ],
-      "first_missing_green_field": "Repo Custodian freeze of three-file C5 validator repair pathset.",
-      "latest_observed_state": "Engineering patched the bounded eval split metadata exception, proved 16 tests pass, and proved local metadata preflight now reaches checkpoint_identity_path_missing instead of eval_split_forbidden_raw_suffix.",
-      "next_action": "Stand by for Execution/Pipeline findings from C5_after_C1 input preflight.",
-      "next_expected_action": "Stand by unless Custodian finds a precise verification failure.",
+      "authorization_needed": false,
+      "first_missing_green_field": "repo_custody_freeze_of_c5_heldout_evaluator_pathset",
+      "next_action": "Repo Custodian freezes exact pathset; Engineering stands by for execution feedback.",
       "nonclaims": [
-        "Development-cycle Wave B mechanics and Phase3/4 lineage-clean proof are preserved and frozen",
-        "Not 100k/1M Phase2 authority",
-        "No Phase3 readiness claim",
-        "No Phase4 readiness claim",
-        "No C5 eval pass",
-        "No Comet-backed accepted run claim yet",
-        "No learning claim",
-        "No model-quality claim"
+        "development-cycle evidence only unless stronger gates pass",
+        "no C5 pass",
+        "no learning/model-quality claim",
+        "no Phase3 readiness claim",
+        "no Phase4 readiness claim",
+        "not 100k/1M Phase2 authority",
+        "no Comet-backed accepted run claim yet"
       ],
       "sha256_or_identity_fields": {
-        "custody_commit": "d9f9caaeb06cf98f8c5b7c3f5a6965269cd2a875",
-        "identity_schema_sha256": "6769bd6776dd545fdb740333071e71a899c843103261fd68c35af22f281bc044"
+        "polymath_ai/polar/c5_heldout_eval.py": "0095c2ded45e2b02e68888562635e59026963bb85e385b48b42cb6e3275a05eb",
+        "scripts/host/run_c5_heldout_eval.py": "32e2f2c2d2d3ba4965a6869d0f97793bc990b40421c7292bab5deba2633842c9",
+        "tests/test_c5_heldout_eval.py": "e8993da430ae8c86880d21edf96c3d44d969e73aace7be26c38e7f6864dbeccf"
       },
-      "status": "c5_eval_split_validator_repair_ready_for_custody",
-      "status_classification": "COMPLETE_FOR_ENGINEERING_REPAIR_PENDING_CUSTODY_FREEZE",
+      "status": "c5_after_c1_evaluator_implementation_pathset_ready_for_custodian",
+      "status_classification": "COMPLETE_FOR_ENGINEERING_PENDING_REPO_CUSTODY",
       "thread_id": "019f138b-d229-7640-98b7-2f185d6beae0",
-      "user_action_required": false
+      "user_action_required": false,
+      "verification_commands": [
+        "python3.11 -m py_compile passed",
+        "python3.11 scripts/host/run_c5_heldout_eval.py --print-prediction-schema passed",
+        "python3.11 -m pytest -q tests/test_c5_eval_contract.py tests/test_c5_heldout_eval.py tests/test_metrics_contract.py -> 19 passed",
+        "git diff --check passed",
+        "bounded secret scan on new source/tests clean"
+      ]
     },
     "execution_orchestrator": {
       "artifact_paths": [
-        "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/c5_eval_C5_after_C1_c1_c4_waveB_rerun_20260630T230411Z.json",
-        "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/c5_eval_split_identity_C5_after_C1.json"
+        "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_real_eval_surface_probe/C5_after_C1/c5_after_c1_real_eval_surface_probe_20260701T014500Z.json"
       ],
-      "first_missing_green_field": "checkpoint_identity_path_missing",
-      "next_action": "Rerun metadata-only C5_after_C1 preflight after checkpoint and stable baseline identities are validated.",
+      "authorization_needed": false,
+      "first_missing_green_field": "outside-git prediction payloads and executed metrics after scorer freeze",
+      "next_action": "After custody, verify heldout QA/candidate/stable prediction payloads and run run_c5_heldout_eval.py; if payloads absent, return exact missing paths/action.",
+      "nonclaims": [
+        "development-cycle evidence only unless stronger gates pass",
+        "no C5 pass",
+        "no learning/model-quality claim",
+        "no Phase3 readiness claim",
+        "no Phase4 readiness claim",
+        "not 100k/1M Phase2 authority",
+        "no Comet-backed accepted run claim yet"
+      ],
       "sha256_or_identity_fields": {
-        "commit_consumed": "ea2cf60ff4ceccf7e5d8b9ab67d26c13240b508d",
-        "eval_split_identity_sha256": "ea8bf6e9876febad8b125e78deed2d8ef534daaa7dd1e38126a07027cc6c8ca9",
-        "report_sha256": "aec39de048944decbf169691964f1d0814e4e2d84695e11801b8117177bfcff8"
+        "candidate_checkpoint_sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f",
+        "heldout_split_sha256": "da41c5362398f24e0e0dd9df9a5cf0594435a455871fa77ab74d9312e6c8e9b2",
+        "probe_report_sha256": "fc14671c9b53f2fa476d6b777351486a6e048f725ddd408421491918236ebeac",
+        "stable_checkpoint_baseline_sha256": "e0d1c66ac876c2b6fbbe9e88f1b02dd37201d8ffba10afcd44f1c558fc32f7c9"
       },
-      "status": "c5_after_c1_checkpoint_identity_missing",
-      "status_classification": "COMPLETE_FOR_POST_REPAIR_PREFLIGHT_PENDING_NEXT_INPUTS",
+      "status": "waiting_for_c5_heldout_evaluator_custody_then_payload_execution",
+      "status_classification": "PENDING_ACTION_AFTER_REPO_CUSTODY",
       "thread_id": "019f138c-fb51-7c53-a41a-ab8eac950d9c",
       "user_action_required": false
     },
@@ -2013,10 +2185,10 @@
       "artifact_paths": [
         "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/c5_eval_C5_after_C1_c1_c4_waveB_rerun_20260630T230411Z.json"
       ],
-      "first_missing_green_field": "C5_after_C1 candidate checkpoint identity JSON, then stable baseline identity JSON, then executed local C5 metrics JSON.",
-      "next_action": "Emit metadata-only polymath_checkpoint_identity_v1 JSONs for candidate and stable baseline if derivable, or return exact missing artifact/action.",
-      "status": "c5_after_c1_checkpoint_baseline_identity_inspection_active",
-      "status_classification": "PENDING_ACTION_PHASE34_CHECKPOINT_BASELINE_IDENTITY",
+      "first_missing_green_field": "real evaluator producer and executed metrics run",
+      "next_action": "Stand by for evidence review if the evaluator uses Phase3/4 outputs; do not fabricate metrics from metadata.",
+      "status": "c5_after_c1_no_executed_metrics_artifact_found_complete_for_scan",
+      "status_classification": "COMPLETE_FOR_METRICS_SCAN_PENDING_ENGINEERING_EVALUATOR_SURFACE",
       "thread_id": "019f13da-d897-7ba2-8ed1-b959892f5ed4",
       "user_action_required": false
     },
@@ -2025,30 +2197,47 @@
         "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/c5_eval_C5_after_C1_c1_c4_waveB_rerun_20260630T230411Z.json",
         "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/c5_eval_split_identity_C5_after_C1.json"
       ],
-      "first_missing_green_field": "checkpoint_identity_path_missing",
-      "next_action": "Validate Phase3/4-produced checkpoint/baseline identities when emitted.",
+      "first_missing_green_field": "polymath_c5_executed_metrics_v1 output after real evaluator run",
+      "next_action": "Validate emitted metrics JSON against identities and raw-boundary contract.",
       "sha256_or_identity_fields": {
         "code_head": "ea2cf60ff4ceccf7e5d8b9ab67d26c13240b508d",
         "eval_split_sha256": "da41c5362398f24e0e0dd9df9a5cf0594435a455871fa77ab74d9312e6c8e9b2",
         "report_sha256": "aec39de048944decbf169691964f1d0814e4e2d84695e11801b8117177bfcff8"
       },
-      "status": "c5_after_c1_checkpoint_identity_missing",
-      "status_classification": "PENDING_ACTION_C5_CHECKPOINT_BASELINE_METRICS",
+      "status": "waiting_for_c5_executed_metrics_artifact_from_new_producer",
+      "status_classification": "PENDING_ACTION_AFTER_EXECUTION_METRICS",
       "thread_id": "019f138c-35b6-73e1-b26d-3db8c59cf850",
       "user_action_required": false
     },
     "repo_custodian": {
-      "next_action": "No action unless Pipeline or Execution exposes a new scoped pathset requiring custody.",
+      "artifact_paths": [
+        "polymath_ai/polar/c5_heldout_eval.py",
+        "scripts/host/run_c5_heldout_eval.py",
+        "tests/test_c5_heldout_eval.py",
+        "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_real_eval_surface_probe/C5_after_C1/c5_after_c1_real_eval_surface_probe_20260701T014500Z.json",
+        "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json",
+        "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md"
+      ],
+      "authorization_needed": false,
+      "first_missing_green_field": "repo_custody_freeze_of_c5_heldout_evaluator_pathset",
+      "next_action": "Verify, stage, commit, and push only the exact scoped pathset if clean; no broad add.",
+      "nonclaims": [
+        "development-cycle evidence only unless stronger gates pass",
+        "no C5 pass",
+        "no learning/model-quality claim",
+        "no Phase3 readiness claim",
+        "no Phase4 readiness claim",
+        "not 100k/1M Phase2 authority",
+        "no Comet-backed accepted run claim yet"
+      ],
       "sha256_or_identity_fields": {
-        "commit": "ea2cf60ff4ceccf7e5d8b9ab67d26c13240b508d",
-        "pathset_sha256": {
-          "polymath_ai/polar/c5_eval.py": "be8f7befa1862956b0ffd1b924d2e4aace63a1e03036c88170f3c8c0fd8ed5bc",
-          "scripts/host/run_c5_eval.py": "be88f7635ae15358a502bfecc85022163107b59f868d19d76d2852851d993ed3",
-          "tests/test_c5_eval_contract.py": "7ab613707f3b907e78deaf698ede68a907ba547a9d7888783f05eda5bdde438e"
-        }
+        "polymath_ai/polar/c5_heldout_eval.py": "0095c2ded45e2b02e68888562635e59026963bb85e385b48b42cb6e3275a05eb",
+        "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_real_eval_surface_probe/C5_after_C1/c5_after_c1_real_eval_surface_probe_20260701T014500Z.json": "fc14671c9b53f2fa476d6b777351486a6e048f725ddd408421491918236ebeac",
+        "scripts/host/run_c5_heldout_eval.py": "32e2f2c2d2d3ba4965a6869d0f97793bc990b40421c7292bab5deba2633842c9",
+        "tests/test_c5_heldout_eval.py": "e8993da430ae8c86880d21edf96c3d44d969e73aace7be26c38e7f6864dbeccf"
       },
-      "status": "c5_eval_split_metadata_path_repair_committed_pushed",
-      "status_classification": "COMPLETE_FOR_THIS_GATE",
+      "status": "c5_heldout_evaluator_pathset_freeze_requested",
+      "status_classification": "PENDING_ACTION_REPO_CUSTODY_C5_EVALUATOR_PRODUCER",
       "thread_id": "019f1ac2-0f0f-7721-bf46-ad402dbd9050",
       "user_action_required": false
     },
@@ -2056,9 +2245,9 @@
       "artifact_paths": [
         "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/c5_eval_split_identity_C5_after_C1.json"
       ],
-      "first_missing_green_field": "none for C5_after_C1 eval split identity",
+      "first_missing_green_field": "none for material identity; C5_after_C1 edge is evaluator execution",
       "latest_observed_state": "C5_after_C1 eval split identity is validated by Pipeline at immutable HF revision 504dd91c5a7c8365882d690d52f3de20697c4f7b; current issue is Engineering validator handling of metadata suffixes.",
-      "next_action": "Pipeline validates artifact; Steward stands by for later C5 material identities.",
+      "next_action": "Stand by unless a later eval point needs material revalidation.",
       "nonclaims": [
         "Development-cycle Wave B mechanics and Phase3/4 lineage-clean proof are preserved and frozen",
         "Not 100k/1M Phase2 authority",
@@ -2080,8 +2269,8 @@
         "record_count": 53,
         "schema_version": "polymath_c5_eval_split_identity_v1"
       },
-      "status": "c5_after_c1_eval_split_identity_validated_no_material_regression",
-      "status_classification": "COMPLETE_FOR_C5_AFTER_C1_EVAL_SPLIT_IDENTITY",
+      "status": "c5_eval_split_identity_matrix_complete_no_material_regression",
+      "status_classification": "COMPLETE_FOR_C5_SPLIT_IDENTITIES",
       "thread_id": "019f138b-7bfc-7671-b9fc-22c14ab76342",
       "user_action_required": false
     },
@@ -2264,6 +2453,26 @@
       "owner": "Training Material Steward 019f138b-7bfc-7671-b9fc-22c14ab76342",
       "timestamp_utc": "2026-07-01T01:50:34Z",
       "user_action_required": false
+    },
+    {
+      "action": "normalized central state after Execution real-evaluator surface probe and Engineering evaluator producer implementation start",
+      "artifacts": [
+        "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_real_eval_surface_probe/C5_after_C1/c5_after_c1_real_eval_surface_probe_20260701T014500Z.json",
+        "polymath_ai/polar/c5_heldout_eval.py",
+        "scripts/host/run_c5_heldout_eval.py",
+        "tests/test_c5_heldout_eval.py"
+      ],
+      "at_utc": "2026-07-01T01:58:26Z"
+    },
+    {
+      "action": "Engineering completed C5 heldout evaluator pathset; central state shifted to Repo Custodian freeze request",
+      "artifacts": [
+        "polymath_ai/polar/c5_heldout_eval.py",
+        "scripts/host/run_c5_heldout_eval.py",
+        "tests/test_c5_heldout_eval.py",
+        "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_real_eval_surface_probe/C5_after_C1/c5_after_c1_real_eval_surface_probe_20260701T014500Z.json"
+      ],
+      "at_utc": "2026-07-01T02:00:26Z"
     }
   ],
   "owner_thread": {
@@ -2275,31 +2484,30 @@
   },
   "prd_watchdog": {
     "artifact_waiting_on": [
-      "Real executed local/device C5_after_C1 metrics JSON with schema polymath_c5_executed_metrics_v1",
-      "Exact evaluator command surface capable of consuming the heldout QA split plus candidate and stable checkpoint/adapter payloads, or Engineering pathset if that surface is absent",
-      "Outside-git heldout split payload and candidate/stable checkpoint or adapter payloads matching the accepted identity SHAs; no raw payloads in git"
+      "Repo Custodian freeze of C5 heldout evaluator producer pathset plus metadata-only execution probe and central state mirrors",
+      "After freeze: outside-git heldout QA plus candidate/stable prediction JSONL with per-record record_id, prediction, loss, confidence, and matching accepted identity hashes",
+      "After execution: polymath_c5_executed_metrics_v1 JSON consumed by scripts/host/run_c5_eval.py"
     ],
     "current_gate": "WaveB_C5_after_C1_executed_metrics_json_pending_evaluator_run",
-    "first_missing_green_field": "executed_metrics_C5_after_C1.json from a real heldout evaluator run",
-    "last_concrete_action": "Phase3/4 searched runtime artifacts and found zero executed local C5 metrics JSON files with schema polymath_c5_executed_metrics_v1. Execution and Pipeline already validated C5_after_C1 material split identity, candidate checkpoint identity, stable baseline identity, and the identity-ready preflight; the only remaining green field is a real evaluator run. Metrics such as loss, accuracy, F1, perplexity, calibration, Brier, overfit gap, and learning_score cannot be derived from metadata.",
-    "next_concrete_action": "Engineering identifies or implements the real heldout C5 evaluator surface; Execution verifies outside-git split/checkpoint/baseline payload identities and runs the evaluator when the command surface is present; Pipeline validates the emitted metrics JSON and C5 preflight. Material Steward prepares the remaining C5 split identity matrix in parallel.",
+    "dominant_failure_domain": "phase5_eval_failure",
+    "drift_deleted_or_pending": "producer pathset ready for custody; validator-only C5 surface no longer accepted as evaluator",
+    "first_missing_green_field": "repo_custody_freeze_of_c5_heldout_evaluator_pathset",
+    "last_concrete_action": "Engineering completed the canonical C5 heldout evaluator producer pathset: c5_heldout_eval.py, run_c5_heldout_eval.py, and tests/test_c5_heldout_eval.py. Focused verification passed in Engineering: py_compile, --print-prediction-schema, pytest over C5 eval/heldout/metrics tests with 19 passed, git diff --check, and bounded secret scan. Execution previously proved the old C5 surface was validator-only and produced a metadata-only probe.",
+    "next_concrete_action": "Repo Custodian verifies and freezes only the exact scoped C5 evaluator pathset, the metadata-only surface probe, and central state mirrors if clean. Then Execution consumes the frozen command surface, verifies outside-git heldout/prediction payload identities, runs C5_after_C1, and feeds the emitted metrics JSON into run_c5_eval.py.",
     "nonclaims_preserved": [
       "development-cycle evidence only unless stronger gates pass",
       "no C5 pass",
-      "no Comet-backed accepted run claim",
       "no learning/model-quality claim",
       "no Phase3 readiness claim",
       "no Phase4 readiness claim",
-      "not 100k/1M Phase2 authority"
+      "not 100k/1M Phase2 authority",
+      "no Comet-backed accepted run claim yet"
     ],
-    "owner": "Engineering Orchestrator 019f138b-d229-7640-98b7-2f185d6beae0 + Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c",
-    "status_classification": "PENDING_ACTION_C5_EVALUATOR_EXECUTION_OR_IMPLEMENTATION",
+    "owner": "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050 for evaluator pathset freeze; Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c after freeze",
+    "recursive_improvement_next_step": "freeze producer -> run C5_after_C1 -> validate metrics -> route measured repair",
+    "status_classification": "PENDING_ACTION_REPO_CUSTODY_THEN_EXECUTION_PAYLOADS",
     "threads_nudged_this_tick": [
-      "Engineering Orchestrator 019f138b-d229-7640-98b7-2f185d6beae0: identify/implement real C5 evaluator surface",
-      "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: verify outside-git inputs and run real evaluator if surface exists",
-      "Pipeline Integrator 019f138c-35b6-73e1-b26d-3db8c59cf850: enforce polymath_c5_executed_metrics_v1 receiving contract",
-      "Training Material Steward 019f138b-7bfc-7671-b9fc-22c14ab76342: prepare remaining C5 split identity matrix",
-      "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: verify/freeze PRD and central state pathset only if clean"
+      "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: freeze exact C5 heldout evaluator producer pathset, probe report, and central state mirrors if clean"
     ],
     "user_action_required": false
   },
@@ -2319,5 +2527,5 @@
     ]
   },
   "schema_version": "polymath_executive_delivery_state_v1",
-  "updated_at_utc": "2026-07-01T01:50:34Z"
+  "updated_at_utc": "2026-07-01T02:00:26Z"
 }

@@ -1,72 +1,70 @@
 # Executive Delivery State
 
-Updated UTC: `2026-07-01T01:50:34Z`
+Updated UTC: `2026-07-01T02:00:26Z`
 
 ## Current Gate
 
 `WaveB_C5_after_C1_executed_metrics_json_pending_evaluator_run`
 
-Status classification: `PENDING_ACTION_C5_EVALUATOR_EXECUTION_OR_IMPLEMENTATION`
+Status classification: `PENDING_ACTION_REPO_CUSTODY_THEN_EXECUTION_PAYLOADS`
 
-Owner: `Engineering Orchestrator 019f138b-d229-7640-98b7-2f185d6beae0 + Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c`
+Owner: `Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050 for evaluator pathset freeze; Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c after freeze`
 
 User action required: `false`
 
+Dominant failure domain: `phase5_eval_failure`
+
 ## Artifact Waiting On
 
-- Real executed local/device `C5_after_C1` metrics JSON with schema `polymath_c5_executed_metrics_v1`.
-- Exact evaluator command surface capable of consuming the heldout QA split plus candidate and stable checkpoint/adapter payloads, or an Engineering pathset if that surface is absent.
-- Outside-git heldout split payload and candidate/stable checkpoint or adapter payloads matching the accepted identity SHAs. No raw payloads in git.
+- Repo Custodian freeze of the C5 heldout evaluator producer pathset, metadata-only execution probe, and central state mirrors.
+- After freeze: outside-git heldout QA plus candidate/stable prediction JSONL with per-record `record_id`, `prediction`, `loss`, and `confidence` matching the accepted identities.
+- After execution: `polymath_c5_executed_metrics_v1` JSON consumed by `scripts/host/run_c5_eval.py`.
 
 ## Last Concrete Action
 
-Phase3/4 searched runtime artifacts and found zero executed local C5 metrics JSON files with schema `polymath_c5_executed_metrics_v1`. Execution and Pipeline already validated `C5_after_C1` material split identity, candidate checkpoint identity, stable baseline identity, and the identity-ready preflight. The only remaining green field is a real evaluator run.
+Engineering completed the canonical C5 heldout evaluator producer pathset: c5_heldout_eval.py, run_c5_heldout_eval.py, and tests/test_c5_heldout_eval.py. Focused verification passed in Engineering: py_compile, --print-prediction-schema, pytest over C5 eval/heldout/metrics tests with 19 passed, git diff --check, and bounded secret scan. Execution previously proved the old C5 surface was validator-only and produced a metadata-only probe.
 
-Metrics such as loss, accuracy, F1, perplexity, calibration, Brier, overfit gap, and `learning_score` cannot be derived from metadata.
+Engineering pathset ready for custody:
 
-Validated inputs already available:
+- `polymath_ai/polar/c5_heldout_eval.py` `0095c2ded45e2b02e68888562635e59026963bb85e385b48b42cb6e3275a05eb`
+- `scripts/host/run_c5_heldout_eval.py` `32e2f2c2d2d3ba4965a6869d0f97793bc990b40421c7292bab5deba2633842c9`
+- `tests/test_c5_heldout_eval.py` `e8993da430ae8c86880d21edf96c3d44d969e73aace7be26c38e7f6864dbeccf`
 
-- Eval split identity SHA: `ea8bf6e9876febad8b125e78deed2d8ef534daaa7dd1e38126a07027cc6c8ca9`
-- Eval split payload SHA: `da41c5362398f24e0e0dd9df9a5cf0594435a455871fa77ab74d9312e6c8e9b2`
-- Candidate identity SHA: `92dbfe9d6db7d905b069ca4af3d7dda0a01ce7a179e8fae640465397d0f4cfc1`
-- Candidate checkpoint SHA: `1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f`
-- Stable baseline identity SHA: `7f65b37e8acc7659b6912fe7de3e46b3cffb9abca8a1c76331f1e48fd6c59fec`
-- Stable baseline checkpoint SHA: `e0d1c66ac876c2b6fbbe9e88f1b02dd37201d8ffba10afcd44f1c558fc32f7c9`
-- Identity-ready preflight SHA: `4563da9632624c4b32c18dc0e3a75a88f4bf5dbf129555e8681cf794e806db0f`
+Execution probe evidence:
+
+- Probe report: `/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_real_eval_surface_probe/C5_after_C1/c5_after_c1_real_eval_surface_probe_20260701T014500Z.json`
+- Probe SHA: `fc14671c9b53f2fa476d6b777351486a6e048f725ddd408421491918236ebeac`
+- Verified heldout split outside git SHA: `da41c5362398f24e0e0dd9df9a5cf0594435a455871fa77ab74d9312e6c8e9b2`
+- Real executable candidates before Engineering pathset: `0`
 
 ## Next Concrete Action
 
-Engineering identifies or implements the real heldout C5 evaluator surface. Execution verifies outside-git split/checkpoint/baseline payload identities and runs the evaluator when the command surface is present. Pipeline validates the emitted metrics JSON and C5 preflight. Material Steward prepares the remaining C5 split identity matrix in parallel.
+Repo Custodian verifies and freezes only the exact scoped C5 evaluator pathset, the metadata-only surface probe, and central state mirrors if clean. Then Execution consumes the frozen command surface, verifies outside-git heldout/prediction payload identities, runs C5_after_C1, and feeds the emitted metrics JSON into run_c5_eval.py.
+
+## Drift Deletion / Hardening
+
+Engineering deleted the validator-as-evaluator drift by adding a producer pathset. The old `run_c5_eval.py` remains the validator/report builder; the new heldout producer must generate the executed metrics JSON it consumes.
+
+Recursive improvement next step: freeze producer, run `C5_after_C1`, validate emitted metrics, compare candidate against stable baseline, then route one falsifiable repair from the measured failure domain.
 
 ## Threads Nudged This Tick
 
-- Engineering Orchestrator: identify or implement real `C5_after_C1` evaluator surface.
-- Execution Orchestrator: verify outside-git inputs and run real evaluator if the surface exists.
-- Pipeline Integrator: enforce the `polymath_c5_executed_metrics_v1` receiving contract.
-- Training Material Steward: completed remaining C5 eval split identity matrix.
-- Repo Custodian: verify and freeze only the exact PRD plus central state pathset if clean.
-
-## Material Matrix
-
-Remaining planned C5 evaluation split identities are metadata-ready:
-
-- Artifact: `/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/c5_eval_split_identity_matrix.json`
-- SHA: `db026c4af238af375798a0f17452331f5458170f037593621b156a43a8a36bf6`
-- HF revision: `504dd91c5a7c8365882d690d52f3de20697c4f7b`
-- Covered eval points: `C5_after_C2`, `C5_after_C2_5`, `C5_after_C3`, `C5_after_C4`, `C5_full_curriculum_postrun`
-- Boundary: metadata unions only; no raw union JSONL written.
+- Repo Custodian `019f1ac2-0f0f-7721-bf46-ad402dbd9050`: freeze exact C5 heldout evaluator producer pathset, probe report, and central state mirrors if clean.
 
 ## First Missing Green Field
 
-`executed_metrics_C5_after_C1.json` from a real heldout evaluator run.
+`repo_custody_freeze_of_c5_heldout_evaluator_pathset`
 
 ## Nonclaims Preserved
 
-- Development-cycle Wave B mechanics only unless stronger gates pass.
-- Not 100k/1M Phase2 authority.
+- Development-cycle evidence only unless stronger gates pass.
+- No C5 pass.
+- No learning/model-quality claim.
 - No Phase3 readiness claim.
 - No Phase4 readiness claim.
-- No C5 eval pass.
+- Not 100k/1M Phase2 authority.
 - No Comet-backed accepted run claim yet.
-- No learning claim.
-- No model-quality claim.
+
+## State Hash
+
+`EXECUTIVE_DELIVERY_STATE.json` SHA after this update: `4c535816d6e4b930f799485903e02410761468e70d88c2d8bf7cb7da73dcbd42`
