@@ -1,26 +1,26 @@
 {
   "active_bottleneck": {
-    "current_gate": "WaveB_C5_after_C1_exporter_k_norm_layout_repair_custody_pending",
-    "status_classification": "PENDING_ACTION_REPO_CUSTODY_EXPORTER_K_NORM_LAYOUT_REPAIR",
-    "first_missing_green_field": "repo_custody_freeze_exporter_k_norm_layout_repair",
+    "current_gate": "WaveB_C5_after_C1_phone_exporter_rerun_after_k_norm_layout_repair_pending",
+    "status_classification": "PENDING_ACTION_EXECUTION_PHONE_EXPORTER_RERUN_AFTER_K_NORM_LAYOUT_REPAIR",
+    "first_missing_green_field": "phone_exporter_rerun_after_k_norm_layout_repair_pending",
     "blocked_prior_edge": "WaveB_C5_after_C1_phone_exporter_rerun_after_q_norm_layout_repair_pending",
     "blocked_prior_failure": "decoder_layer_0_self_attn_k_norm_shape_mismatch_expected_actual_[256]",
-    "custody_commit_to_follow": "11801cbd360786e707fde58c70a5e82a65de0ed7",
-    "next_after_custody": "phone_exporter_rerun_after_k_norm_layout_repair_pending",
+    "custody_commit_to_follow": "a27900b18aa7f26c2ecfffa87df746a7dec4a3db",
+    "next_after_custody": "complete",
     "next_after_export": "full_decoder_logits_generation_not_implemented_until_native_compute_body_lands",
     "artifact_waiting_on": [
-      "repo custody freeze of k_norm repair pathset",
-      "post-custody phone exporter rerun"
+      "Execution phone exporter rerun after k_norm repair custody",
+      "schema-complete component-pack identities or the next expected/actual shape-bearing blocker"
     ]
   },
-  "active_edge": "WaveB_C5_after_C1_exporter_k_norm_layout_repair_custody_pending",
+  "active_edge": "WaveB_C5_after_C1_phone_exporter_rerun_after_k_norm_layout_repair_pending",
   "active_watchdog_state": {
     "adapter_site_policy_sha256": "f38bd8109bbb77e9e94a5b4b34a238bc0ec0a39e7736870c97defe5aecc93357",
     "additional_missing_runtime_field_after_contract_patch": "decoder_manifest_tensor_role_inventory_missing",
     "artifact_waiting_on": [
-      "Repo Custodian verifies, stages, commits, and pushes the exact k_norm layout repair pathset plus central mirrors.",
+      "Repo Custodian committed and pushed the exact k_norm layout repair pathset at a27900b18aa7f26c2ecfffa87df746a7dec4a3db.",
       "Engineering report runtime/reports/orchestration/c5_after_c1_exporter_k_norm_layout_repair_20260701T_engineering.json SHA ece0e2660e8b6dc71c8588da88acc435c6f9089b405b8a29a851ec29cf444f5b describes the repaired blocker decoder_layer_0_self_attn_k_norm_shape_mismatch_expected_actual_[256].",
-      "After custody, Execution consumes the commit on the phone, verifies the frozen exporter SHA, and reruns the same phone-local exporter against model SHA 43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651.",
+      "Execution must consume commit a27900b18aa7f26c2ecfffa87df746a7dec4a3db on the phone, verify the frozen exporter SHA b3b6ba1f364aa3b78a3b152398dfff24794293bd3f5a2547f8422ab397c46d4c, and rerun the same phone-local exporter against model SHA 43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651.",
       "If the exporter still rejects, Execution returns the next expected/actual shape-bearing blocker JSON; if green, it returns schema-complete decoder_manifest.json, adapter_site_policy.json, and export_report.json identities."
     ],
     "authorization_needed": "none; native implementation work is under current GO and must preserve raw/secrets boundary",
@@ -984,12 +984,12 @@
       "status": "c5_full_decoder_failure_artifacts_and_state_pending_custody",
       "user_action_required": false
     },
-    "current_gate": "WaveB_C5_after_C1_exporter_k_norm_layout_repair_custody_pending",
+    "current_gate": "WaveB_C5_after_C1_phone_exporter_rerun_after_k_norm_layout_repair_pending",
     "custody_commit_latest": "bb8105a2bc91b6c9b0993603e14b49d0a5730f8d",
     "custody_status_latest": "c5_decoder_runtime_owner_state_committed_pushed",
     "decoder_manifest_sha256": "6700f3c2912bfdcb659b9e7de3cdb0831d58f3708a0f841c181ec446b3a83a5f",
     "dominant_failure_domain": "phase5_eval_failure",
-    "drift_deleted_or_pending": "Hard-coded attention projection row-count drift is frozen at 9e6d5086aaabf24e0e08e69656ba39c074c4dfbc. q_norm/k_norm equality drift is repaired in the k_norm pathset and pending custody. Old pre-runtime-fields component-pack hashes remain superseded. Native full-decoder compute remains fail-closed until a real logits implementation lands.",
+    "drift_deleted_or_pending": "Hard-coded attention projection row-count drift is frozen at 9e6d5086aaabf24e0e08e69656ba39c074c4dfbc. q_norm/k_norm equality drift is repaired and frozen at a27900b18aa7f26c2ecfffa87df746a7dec4a3db. Old pre-runtime-fields component-pack hashes remain superseded until Execution reruns the phone exporter. Native full-decoder compute remains fail-closed until a real logits implementation lands.",
     "engineering_evaluator_implementation": {
       "artifact_paths_in_progress": [
         "polymath_ai/polar/c5_heldout_eval.py",
@@ -1313,7 +1313,7 @@
     "native_logits_contract_patch_custody_commit": "2151dbada9012a5f54806cf689e806001180521f",
     "native_probe_exit_code": 13,
     "native_probe_report_path": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe/candidate_probe_stdout.json",
-    "next_concrete_action": "Repo Custodian freezes the exact seven-file k_norm repair pathset. After custody, Execution reruns the phone-local exporter from the frozen commit against the existing phone-held model and returns schema-complete component-pack identities or the next shape-bearing blocker.",
+    "next_concrete_action": "Execution consumes k_norm repair commit a27900b18aa7f26c2ecfffa87df746a7dec4a3db on the phone, verifies exporter SHA b3b6ba1f364aa3b78a3b152398dfff24794293bd3f5a2547f8422ab397c46d4c and existing model SHA 43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651, then reruns the phone-local exporter and returns schema-complete component-pack identities or the next shape-bearing blocker.",
     "nonclaims": [
       "development-cycle evidence only unless stronger gates pass",
       "no C5 pass",
@@ -2002,11 +2002,11 @@
     ]
   },
   "candidate_adapter_sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f",
-  "current_gate": "WaveB_C5_after_C1_exporter_k_norm_layout_repair_custody_pending",
-  "current_highest_valid_state": "C1-C4 Wave B Phase1->Phase2->Phase3->Phase4 development-cycle mechanics remain frozen as metadata evidence. Phone-local model download, original component-pack export, C5-capable runner build, heldout QA staging, native C5 probe, and native manifest-contract guard are metadata evidence only. No C5 pass or executed metrics exist; the active edge is custody of Engineering exporter runtime-field emission before phone exporter rerun.",
+  "current_gate": "WaveB_C5_after_C1_phone_exporter_rerun_after_k_norm_layout_repair_pending",
+  "current_highest_valid_state": "C1-C4 Wave B Phase1->Phase2->Phase3->Phase4 development-cycle mechanics remain frozen as metadata evidence. Phone-local model download, original component-pack export, C5-capable runner build, heldout QA staging, native C5 probe, and native manifest-contract guard are metadata evidence only. No C5 pass or executed metrics exist; the active edge is Execution consuming k_norm repair commit a27900b18aa7f26c2ecfffa87df746a7dec4a3db and rerunning the phone exporter.",
   "decoder_manifest_sha256": "6700f3c2912bfdcb659b9e7de3cdb0831d58f3708a0f841c181ec446b3a83a5f",
   "dominant_failure_domain": "phase5_eval_failure",
-  "drift_deleted_or_pending": "Hard-coded attention projection row-count drift is frozen at 9e6d5086aaabf24e0e08e69656ba39c074c4dfbc. q_norm/k_norm equality drift is repaired in the k_norm pathset and pending custody. Old pre-runtime-fields component-pack hashes remain superseded. Native full-decoder compute remains fail-closed until a real logits implementation lands.",
+  "drift_deleted_or_pending": "Hard-coded attention projection row-count drift is frozen at 9e6d5086aaabf24e0e08e69656ba39c074c4dfbc. q_norm/k_norm equality drift is repaired and frozen at a27900b18aa7f26c2ecfffa87df746a7dec4a3db. Old pre-runtime-fields component-pack hashes remain superseded until Execution reruns the phone exporter. Native full-decoder compute remains fail-closed until a real logits implementation lands.",
   "driver_tick_history": [
     {
       "artifact_waiting_on": [
@@ -2737,7 +2737,7 @@
   "export_report_sha256": "06fe8e91b5938ff3235cad5fa96e7b25d5b20fb3c4e456c249c84d53bf839d0f",
   "exporter_runtime_fields_freeze_commit": "43cf3c4130dc902fc8fd69183bac1056f0596626",
   "exporter_runtime_fields_freeze_status": "committed_pushed",
-  "first_missing_green_field": "repo_custody_freeze_exporter_k_norm_layout_repair",
+  "first_missing_green_field": "phone_exporter_rerun_after_k_norm_layout_repair_pending",
   "first_missing_green_field_after_contract_patch": "decoder_manifest_architecture_config_missing",
   "first_missing_green_field_after_download": "full_decoder_logits_generation_not_implemented",
   "first_missing_green_field_after_export": "c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land",
@@ -2746,7 +2746,7 @@
   "first_missing_green_field_after_runner": "heldout_qa_jsonl_staging_or_c5_predict_probe_pending",
   "first_unresolved_technical_failure_after_schema_complete_export": "c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land",
   "first_unresolved_technical_failure_after_valid_schema_paths": "c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land",
-  "governing_edge": "WaveB_C5_after_C1_exporter_k_norm_layout_repair_custody_pending",
+  "governing_edge": "WaveB_C5_after_C1_phone_exporter_rerun_after_k_norm_layout_repair_pending",
   "governing_objective": {
     "nonclaims": [
       "diagnostics_are_not_100k_or_1M_authority_unless_specific_authority_gate_passes",
@@ -3927,7 +3927,7 @@
   "model_safetensors_size_bytes": 15992595884,
   "native_probe_exit_code": 13,
   "native_probe_report_path": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe/candidate_probe_stdout.json",
-  "next_concrete_action": "Repo Custodian freezes the exact seven-file k_norm repair pathset. After custody, Execution reruns the phone-local exporter from the frozen commit against the existing phone-held model and returns schema-complete component-pack identities or the next shape-bearing blocker.",
+  "next_concrete_action": "Execution consumes k_norm repair commit a27900b18aa7f26c2ecfffa87df746a7dec4a3db on the phone, verifies exporter SHA b3b6ba1f364aa3b78a3b152398dfff24794293bd3f5a2547f8422ab397c46d4c and existing model SHA 43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651, then reruns the phone-local exporter and returns schema-complete component-pack identities or the next shape-bearing blocker.",
   "owner": "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050 owns k_norm repair freeze; Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c owns the post-custody phone exporter rerun.",
   "owner_thread": "019f1ac2-0f0f-7721-bf46-ad402dbd9050",
   "phone_exporter_rerun_required_after_commit": "43cf3c4130dc902fc8fd69183bac1056f0596626",
@@ -4240,14 +4240,14 @@
   "runner_sha256": "a5a6f9a3b93d167d9cd69eddbe2f3404443ae1c2222e1c6a0782398c9ff09e84",
   "runner_size_bytes": 369536,
   "schema_version": "polymath_executive_delivery_state_v1",
-  "status": "exporter_k_norm_layout_repair_pathset_ready_for_custody",
-  "status_classification": "PENDING_ACTION_REPO_CUSTODY_EXPORTER_K_NORM_LAYOUT_REPAIR",
+  "status": "exporter_k_norm_layout_repair_committed_pushed_execution_rerun_pending",
+  "status_classification": "PENDING_ACTION_EXECUTION_PHONE_EXPORTER_RERUN_AFTER_K_NORM_LAYOUT_REPAIR",
   "threads_nudged_this_tick": [
-    "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: k_norm repair pathset freeze requested.",
-    "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: post-custody rerun remains next owner after freeze."
+    "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: k_norm repair pathset freeze completed at a27900b18aa7f26c2ecfffa87df746a7dec4a3db.",
+    "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: post-k_norm phone exporter rerun command package sent."
   ],
-  "updated_at": "2026-07-01T14:28:51Z",
-  "updated_at_utc": "2026-07-01T14:28:51Z",
+  "updated_at": "2026-07-01T14:36:48Z",
+  "updated_at_utc": "2026-07-01T14:36:48Z",
   "user_action_required": false,
   "c5_after_c1_exporter_attention_layout_repair_post_custody_20260701T135407Z": {
     "schema_version": "polymath_c5_after_c1_exporter_attention_layout_repair_post_custody_v1",
@@ -4356,6 +4356,30 @@
     "model_safetensors_size_bytes": 15992595884,
     "first_missing_green_field": "phone_exporter_rerun_after_q_norm_layout_repair_pending",
     "next_owner_action": "Execution consumes commit 11801cbd360786e707fde58c70a5e82a65de0ed7 on the phone, verifies exporter SHA 0ce0a3dc8fc2d53b8c71964ed732abaedcda0d4a8938d359fc53b5ed2bca78e7 and model SHA 43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651, reruns the exporter, and returns schema-complete component-pack identities or the next expected/actual shape-bearing blocker.",
+    "nonclaims": [
+      "no C5 pass",
+      "no executed C5 metrics",
+      "no prediction JSONL",
+      "no logits, loss, confidence, or candidate_train_loss",
+      "no bridge MSE relabeled as C5 loss",
+      "no learning/model-quality claim",
+      "no Phase3 readiness claim",
+      "no Phase4 readiness claim",
+      "no raw payload copied to repo",
+      "no secrets printed"
+    ]
+  },
+  "c5_after_c1_exporter_k_norm_layout_repair_post_custody_20260701T143648Z": {
+    "schema_version": "polymath_c5_after_c1_exporter_k_norm_layout_repair_post_custody_v1",
+    "status": "exporter_k_norm_layout_repair_committed_pushed_execution_rerun_pending",
+    "custody_commit": "a27900b18aa7f26c2ecfffa87df746a7dec4a3db",
+    "pushed_branch": "origin/gemma4-megakernel-native-training",
+    "exporter_sha256": "b3b6ba1f364aa3b78a3b152398dfff24794293bd3f5a2547f8422ab397c46d4c",
+    "engineering_report_sha256": "ece0e2660e8b6dc71c8588da88acc435c6f9089b405b8a29a851ec29cf444f5b",
+    "model_safetensors_sha256": "43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651",
+    "model_safetensors_size_bytes": 15992595884,
+    "first_missing_green_field": "phone_exporter_rerun_after_k_norm_layout_repair_pending",
+    "next_owner_action": "Execution consumes commit a27900b18aa7f26c2ecfffa87df746a7dec4a3db on the phone, verifies exporter SHA b3b6ba1f364aa3b78a3b152398dfff24794293bd3f5a2547f8422ab397c46d4c and model SHA 43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651, reruns the exporter, and returns schema-complete component-pack identities or the next expected/actual shape-bearing blocker.",
     "nonclaims": [
       "no C5 pass",
       "no executed C5 metrics",
