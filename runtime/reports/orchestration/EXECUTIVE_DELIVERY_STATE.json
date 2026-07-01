@@ -1,25 +1,26 @@
 {
   "active_bottleneck": {
-    "current_gate": "WaveB_C5_after_C1_single_layer_streamed_runtime_slice_in_progress_after_ple_math_boundary_custody",
-    "status_classification": "PENDING_ACTION_PHASE34_SINGLE_LAYER_STREAMED_RUNTIME_SLICE_AFTER_PLE_CONTRACT",
-    "first_missing_green_field": "c5_full_decoder_streamed_attention_mlp_kernel_body_missing_after_ple_contract",
-    "completed_prior_edge": "WaveB_C5_after_C1_streamed_decoder_compute_runtime_in_progress_after_tokenizer_tensor_loader_custody",
-    "custody_commit_to_follow": "7f62882a72610b52094040aa0ab24b718e4b7006",
-    "next_after_custody": "Phase3/4 single-layer streamed runtime slice, then 42-layer orchestration and chunked LM-head/NLL writer",
+    "current_gate": "WaveB_C5_after_C1_single_layer_attention_mlp_body_in_progress_after_ple_slice_custody",
+    "status_classification": "PENDING_ACTION_PHASE34_SINGLE_LAYER_ATTENTION_MLP_BODY_AFTER_PLE_SLICE_CUSTODY",
+    "first_missing_green_field": "c5_full_decoder_single_layer_attention_mlp_kernel_missing_after_ple_derivation",
+    "completed_prior_edge": "WaveB_C5_after_C1_native_ple_single_layer_slice_custody_pending",
+    "custody_commit_to_follow": "955730e88c500fff9517d0a22d0f5bbd207ecaa9",
     "artifact_waiting_on": [
-      "Phase3/4 returns a custody-ready pathset or precise blocker for deriving PLE per-layer inputs from token IDs using per_layer_input_runtime roles.",
-      "Phase3/4 wires a bounded single-layer streamed CPU/OpenCL parity path behind run_c5_full_decoder_runtime, then continues to 42-layer orchestration plus chunked LM-head/NLL writer.",
-      "Execution remains parked until a real streamed compute implementation is frozen; no C5 QA predict rerun is authorized for pass claims before then."
+      "Phase3/4 returns a custody-ready streamed single-layer attention/MLP body pathset or a precise implementation blocker from the active run_c5_full_decoder_runtime work.",
+      "The implementation must stay behind the existing --run-c5-qa-predict path and preserve fail-closed no-prediction behavior until real logits emit prediction JSONL.",
+      "After the single-layer body lands, remaining work is OpenCL parity dispatch, rank-16 adapter stream injection, 42-layer orchestration, chunked LM-head/NLL writer, outside-git prediction JSONL, and executed C5 metrics.",
+      "Execution remains parked until a real streamed runtime implementation is frozen; no C5 QA predict rerun is authorized for pass claims before then."
     ]
   },
-  "active_edge": "WaveB_C5_after_C1_single_layer_streamed_runtime_slice_in_progress_after_ple_math_boundary_custody",
+  "active_edge": "WaveB_C5_after_C1_single_layer_attention_mlp_body_in_progress_after_ple_slice_custody",
   "active_watchdog_state": {
     "adapter_site_policy_sha256": "f38bd8109bbb77e9e94a5b4b34a238bc0ec0a39e7736870c97defe5aecc93357",
     "additional_missing_runtime_field_after_contract_patch": "decoder_manifest_tensor_role_inventory_missing",
     "artifact_waiting_on": [
-      "Phase3/4 returns a custody-ready pathset or precise blocker for deriving PLE per-layer inputs from token IDs using per_layer_input_runtime roles.",
-      "Phase3/4 wires a bounded single-layer streamed CPU/OpenCL parity path behind run_c5_full_decoder_runtime, then continues to 42-layer orchestration plus chunked LM-head/NLL writer.",
-      "Execution remains parked until a real streamed compute implementation is frozen; no C5 QA predict rerun is authorized for pass claims before then."
+      "Phase3/4 returns a custody-ready streamed single-layer attention/MLP body pathset or a precise implementation blocker from the active run_c5_full_decoder_runtime work.",
+      "The implementation must stay behind the existing --run-c5-qa-predict path and preserve fail-closed no-prediction behavior until real logits emit prediction JSONL.",
+      "After the single-layer body lands, remaining work is OpenCL parity dispatch, rank-16 adapter stream injection, 42-layer orchestration, chunked LM-head/NLL writer, outside-git prediction JSONL, and executed C5 metrics.",
+      "Execution remains parked until a real streamed runtime implementation is frozen; no C5 QA predict rerun is authorized for pass claims before then."
     ],
     "authorization_needed": "none; native implementation work is under current GO and must preserve raw/secrets boundary",
     "c5_after_c1_c5_qa_runtime_fail_closed_pathset": {
@@ -982,12 +983,12 @@
       "status": "c5_full_decoder_failure_artifacts_and_state_pending_custody",
       "user_action_required": false
     },
-    "current_gate": "WaveB_C5_after_C1_single_layer_streamed_runtime_slice_in_progress_after_ple_math_boundary_custody",
+    "current_gate": "WaveB_C5_after_C1_single_layer_attention_mlp_body_in_progress_after_ple_slice_custody",
     "custody_commit_latest": "bb8105a2bc91b6c9b0993603e14b49d0a5730f8d",
     "custody_status_latest": "c5_decoder_runtime_owner_state_committed_pushed",
     "decoder_manifest_sha256": "6700f3c2912bfdcb659b9e7de3cdb0831d58f3708a0f841c181ec446b3a83a5f",
     "dominant_failure_domain": "phase5_eval_failure",
-    "drift_deleted_or_pending": "PLE contract validation, bounded tensor slicing, adapter payload validation, and decoder math primitives are frozen at 7f62882. Remaining drift is the native streamed runtime body: token-to-PLE derivation must feed a single-layer attention/MLP path, then 42-layer orchestration, rank-16 adapter application, chunked LM-head/NLL, and outside-git prediction JSONL emission must be real before any C5 prediction/loss claim.",
+    "drift_deleted_or_pending": "PLE contract/decoder math and PLE derivation/layer-0 input normalization are frozen. Remaining drift is streamed single-layer attention/MLP, OpenCL parity dispatch, rank-16 adapter stream injection, 42-layer orchestration, chunked LM-head/NLL, prediction JSONL, and executed C5 metrics.",
     "engineering_evaluator_implementation": {
       "artifact_paths_in_progress": [
         "polymath_ai/polar/c5_heldout_eval.py",
@@ -1095,9 +1096,9 @@
       "status": "c5_after_c1_real_evaluator_surface_missing"
     },
     "export_report_sha256": "06fe8e91b5938ff3235cad5fa96e7b25d5b20fb3c4e456c249c84d53bf839d0f",
-    "first_missing_green_field": "c5_full_decoder_streamed_attention_mlp_kernel_body_missing_after_ple_contract",
+    "first_missing_green_field": "c5_full_decoder_single_layer_attention_mlp_kernel_missing_after_ple_derivation",
     "first_missing_green_field_after_contract_patch": "decoder_manifest_architecture_config_missing",
-    "first_missing_green_field_after_custody": "phone_termux_model_safetensors_download_pending",
+    "first_missing_green_field_after_custody": "c5_full_decoder_single_layer_attention_mlp_kernel_missing_after_ple_derivation",
     "first_missing_green_field_after_export": "phone_c5_runner_rebuild_or_copy_missing",
     "first_missing_green_field_after_exporter_patch_custody": "phone_exporter_rerun_for_schema_complete_component_pack_pending",
     "first_missing_green_field_after_patch": "bounded_c5_qa_predict_rerun_pending",
@@ -1136,7 +1137,7 @@
       "training_material_steward": "complete for material identities",
       "ui_engineer": "not nudged until C5 evidence-backed status exists"
     },
-    "last_concrete_action": "Repo Custodian froze and pushed the native C5 PLE contract + decoder math boundary at 7f62882a72610b52094040aa0ab24b718e4b7006, including runtime validation for PLE metadata, bounded tensor slicing, adapter payload validation, and decoder math primitives. Phase3/4 accepted the handoff and is actively patching the next runtime slice; no duplicate Phase3/4 nudge was sent.",
+    "last_concrete_action": "Repo Custodian froze a superseded two-file central mirror at 495767ac5cc89a36fac47a05c12517b2d762bb56, then froze and pushed the native C5 PLE single-layer slice at 955730e88c500fff9517d0a22d0f5bbd207ecaa9. The slice derives bounded PLE inputs and layer-0 input normalization without emitting predictions/loss/metrics. Phase3/4 accepted the handoff and is actively implementing the streamed single-layer attention/MLP body.",
     "lineage_drift_repair_status": {
       "commit": "ee74ae572322e05624deac6f6f8788c2c6e2f692",
       "proof_required": [
@@ -1311,7 +1312,7 @@
     "native_logits_contract_patch_custody_commit": "2151dbada9012a5f54806cf689e806001180521f",
     "native_probe_exit_code": 13,
     "native_probe_report_path": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe/candidate_probe_stdout.json",
-    "next_concrete_action": "Phase3/4 continues the active implementation and returns either a custody-ready single-layer streamed runtime pathset or a precise blocker. If a pathset lands, Engineering updates central state metadata-only and routes it to Repo Custodian. Execution resumes only after the real runtime implementation is frozen.",
+    "next_concrete_action": "Phase3/4 continues the active implementation and returns either a custody-ready streamed single-layer attention/MLP pathset or a precise blocker. If a pathset lands, Engineering updates central state metadata-only and routes it to Repo Custodian. Execution resumes only after real runtime implementation is frozen.",
     "nonclaims": [
       "development-cycle evidence only unless stronger gates pass",
       "no C5 pass",
@@ -1339,7 +1340,7 @@
       "no Comet/API call",
       "no secrets sourced"
     ],
-    "owner": "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 owns the next single-layer streamed runtime slice behind --run-c5-qa-predict. Repo Custodian froze the PLE contract + decoder math boundary at 7f62882a72610b52094040aa0ab24b718e4b7006. Execution remains parked until a real runtime implementation is frozen.",
+    "owner": "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 owns the streamed single-layer attention/MLP body behind run_c5_full_decoder_runtime. Repo Custodian froze the PLE single-layer slice at 955730e88c500fff9517d0a22d0f5bbd207ecaa9 and sent the handoff. Execution remains parked until a real runtime implementation is frozen.",
     "phase2_status_by_phase": {
       "C1": {
         "packets": 5180,
@@ -1551,7 +1552,7 @@
       "phase34": "raw PJP1, HTP raw output, OpenCL tensors, and adapters remain on device/Termux; repair must keep compact JSON only",
       "report_root_scan": "metadata-freeze report root had 179 tracked files and clean forbidden suffix scans; raw payloads not committed"
     },
-    "recursive_improvement_next_step": "Phase3/4 single-layer runtime pathset or blocker -> Custodian freezes implementation evidence -> Phase3/4 extends to full 42-layer/chunked LM-head body -> Custodian freezes -> Execution runs bounded C5_after_C1 --run-c5-qa-predict proof -> Pipeline validates executed evidence.",
+    "recursive_improvement_next_step": "Phase3/4 single-layer attention/MLP pathset or blocker -> Custodian freezes implementation evidence -> Phase3/4 extends to OpenCL parity/adapter/42-layer/chunked LM-head -> Execution runs bounded C5_after_C1 proof only after runtime implementation is frozen.",
     "repo_custody_state_freeze": {
       "branch": "origin/gemma4-megakernel-native-training",
       "commit": "7290fbec13c6a13e88710afddfe4af70637096f9",
@@ -1566,8 +1567,8 @@
     "run_root": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z",
     "runner_sha256": "a5a6f9a3b93d167d9cd69eddbe2f3404443ae1c2222e1c6a0782398c9ff09e84",
     "runner_size_bytes": 369536,
-    "status": "phase34_single_layer_streamed_runtime_slice_in_progress_after_ple_contract_custody",
-    "status_classification": "PENDING_ACTION_PHASE34_SINGLE_LAYER_STREAMED_RUNTIME_SLICE_AFTER_PLE_CONTRACT",
+    "status": "phase34_single_layer_attention_mlp_body_implementation_in_progress",
+    "status_classification": "PENDING_ACTION_PHASE34_SINGLE_LAYER_ATTENTION_MLP_BODY_AFTER_PLE_SLICE_CUSTODY",
     "threads_nudged_this_tick": [
       "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: completed prerequisite custody at 4472e3dee86d88d83031eecfc94b91008e5215e0 and central mirror custody at 59567735db38a4680c60a7f9c0182d90d7ffb38e.",
       "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4: active on streamed decoder compute runtime implementation; no duplicate nudge sent."
@@ -1664,8 +1665,8 @@
     "native_tokenizer_tensor_loader_prereq_central_mirror_commit": "59567735db38a4680c60a7f9c0182d90d7ffb38e",
     "phase34_streamed_decoder_compute_runtime_status": "implementation_in_progress",
     "updated_at_utc": "2026-07-01T15:30:07Z",
-    "active_edge": "WaveB_C5_after_C1_single_layer_streamed_runtime_slice_in_progress_after_ple_math_boundary_custody",
-    "governing_edge": "WaveB_C5_after_C1_single_layer_streamed_runtime_slice_in_progress_after_ple_math_boundary_custody",
+    "active_edge": "WaveB_C5_after_C1_single_layer_attention_mlp_body_in_progress_after_ple_slice_custody",
+    "governing_edge": "WaveB_C5_after_C1_single_layer_attention_mlp_body_in_progress_after_ple_slice_custody",
     "c5_after_c1_native_ple_contract_decoder_math_boundary_custody_20260701T153007Z": {
       "status": "c5_ple_decoder_math_boundary_committed_pushed",
       "commit_sha": "7f62882a72610b52094040aa0ab24b718e4b7006",
@@ -1712,14 +1713,101 @@
         "no raw payload copied to repo",
         "no secrets printed"
       ]
+    },
+    "c5_after_c1_native_ple_single_layer_slice_custody_request_20260701T153007Z": {
+      "status": "native_ple_single_layer_slice_pathset_ready_for_custodian",
+      "custody_status": "repo_custodian_active",
+      "base_commit": "7f62882a72610b52094040aa0ab24b718e4b7006",
+      "report_path": "runtime/reports/orchestration/c5_after_c1_native_ple_single_layer_slice_20260701T_phase34.json",
+      "report_sha256": "f1ad7df8d951e1519dfbd64930d5f58f85862563fedc3740f755173dfefdf412",
+      "pathset_sha256": {
+        "runtime/reports/orchestration/c5_after_c1_native_ple_single_layer_slice_20260701T_phase34.json": "f1ad7df8d951e1519dfbd64930d5f58f85862563fedc3740f755173dfefdf412",
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/include/polymath/gemma4/c5_decoder_math.h": "cdbf9b0c624b563df9676747bdd1497bd29fa92ceda1a816e9146a0ffb011b6c",
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_decoder_math.cpp": "deb1ea6573e9fe464fb96a29a45fd1fc33552ded24a65d47ee356a348857a629",
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp": "0789359c3a58d08f59625943dc284ea614e44a1dc12058d41e8ea0e475ea2015",
+        "tests/test_c5_native_runtime_contract.py": "8fec25efce5a4f5b22ce7f8a6900b67ea8aab40c52a8912538772a79624fe8d7"
+      },
+      "verification_commands": [
+        "Phase3/4: cmake configure/build gemma4_layer_runner with warnings-as-errors -> pass",
+        "Phase3/4: python3.11 -m pytest -q tests/test_c5_native_runtime_contract.py -> 10 passed",
+        "Phase3/4: broader C5 suite -> 36 passed",
+        "Phase3/4: ctest --test-dir build/gemma4_megakernel_host --output-on-failure -> 4/4 passed",
+        "Phase3/4: git diff --check on PLE single-layer slice pathset -> passed",
+        "Meta: local report JSON parses and pathset hashes match the custody request"
+      ],
+      "semantics": [
+        "Adds bf16 round-trip helper used for Gemma embedding scale.",
+        "Derives source-model token embedding rows from safetensors row slices using bf16_round(sqrt(hidden_size)).",
+        "Derives Gemma 4 per-layer 256-wide PLE row from token IDs using per_layer_input_runtime roles.",
+        "Reads bounded slices only: token embedding row, PLE token identity row, layer-specific PLE projection rows, PLE norm vector, and layer-0 input layernorm.",
+        "Prepares a layer-0 CPU input-normalization slice behind run_c5_full_decoder_runtime.",
+        "Keeps prediction_jsonl_written false and emits no loss/confidence/candidate_train_loss."
+      ],
+      "first_missing_green_field": "native_ple_single_layer_slice_custody_pending",
+      "first_missing_green_field_after_custody": "c5_full_decoder_single_layer_attention_mlp_kernel_missing_after_ple_derivation",
+      "next_action_after_custody": "Phase3/4 implements streamed single-layer attention/MLP body behind run_c5_full_decoder_runtime using the already-derived layer input and PLE row.",
+      "raw_boundary": "metadata/code/test evidence only; no raw model/checkpoint/adapter/tensor/prediction payload was copied into git",
+      "nonclaims": [
+        "no C5 pass",
+        "no executed C5 metrics",
+        "no prediction JSONL",
+        "no logits, loss, confidence, or candidate_train_loss",
+        "no bridge MSE relabeled as C5 loss",
+        "no learning/model-quality claim",
+        "no Phase3 readiness claim",
+        "no Phase4 readiness claim",
+        "no raw payload copied to repo",
+        "no secrets printed"
+      ]
+    },
+    "research_escalation": "none",
+    "c5_after_c1_native_ple_single_layer_slice_custody_20260701T153007Z": {
+      "status": "c5_native_ple_single_layer_slice_committed_pushed",
+      "commit_sha": "955730e88c500fff9517d0a22d0f5bbd207ecaa9",
+      "branch": "origin/gemma4-megakernel-native-training",
+      "superseded_prior_central_mirror_commit": "495767ac5cc89a36fac47a05c12517b2d762bb56",
+      "pathset_sha256": {
+        "runtime/reports/orchestration/c5_after_c1_native_ple_single_layer_slice_20260701T_phase34.json": "f1ad7df8d951e1519dfbd64930d5f58f85862563fedc3740f755173dfefdf412",
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/include/polymath/gemma4/c5_decoder_math.h": "cdbf9b0c624b563df9676747bdd1497bd29fa92ceda1a816e9146a0ffb011b6c",
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_decoder_math.cpp": "deb1ea6573e9fe464fb96a29a45fd1fc33552ded24a65d47ee356a348857a629",
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp": "0789359c3a58d08f59625943dc284ea614e44a1dc12058d41e8ea0e475ea2015",
+        "tests/test_c5_native_runtime_contract.py": "8fec25efce5a4f5b22ce7f8a6900b67ea8aab40c52a8912538772a79624fe8d7"
+      },
+      "verification_commands": [
+        "Repo Custodian: JSON report validation passed",
+        "Repo Custodian: exact pathset git diff --check passed",
+        "Repo Custodian: cmake configure/build with warnings-as-errors passed",
+        "Repo Custodian: tests/test_c5_native_runtime_contract.py -> 10 passed",
+        "Repo Custodian: broader C5 suite -> 36 passed",
+        "Repo Custodian: ctest -> 4/4 passed",
+        "Repo Custodian: raw suffix/path and value-shaped secret scans clean",
+        "Repo Custodian: staged pathset exactly five requested files"
+      ],
+      "first_missing_green_field_after_custody": "c5_full_decoder_single_layer_attention_mlp_kernel_missing_after_ple_derivation",
+      "next_action": "Phase3/4 implements streamed single-layer attention/MLP body behind run_c5_full_decoder_runtime, then OpenCL parity dispatch, rank-16 adapter stream injection, 42-layer orchestration, and chunked LM-head NLL writer.",
+      "research_escalation": "none; first_missing_green_field is advancing, so no broad research detour is authorized unless it repeats after two implementation/custody cycles, hits a Gemma 4 contradiction, or hits an unresolved memory/throughput envelope failure.",
+      "raw_boundary": "metadata/code/test evidence only; no raw model/checkpoint/adapter/tensor/prediction payload was copied into git",
+      "nonclaims": [
+        "no C5 pass",
+        "no executed C5 metrics",
+        "no prediction JSONL",
+        "no logits, loss, confidence, or candidate_train_loss",
+        "no bridge MSE relabeled as C5 loss",
+        "no learning/model-quality claim",
+        "no Phase3 readiness claim",
+        "no Phase4 readiness claim",
+        "no raw payload copied to repo",
+        "no secrets printed"
+      ]
     }
   },
   "adapter_site_policy_sha256": "f38bd8109bbb77e9e94a5b4b34a238bc0ec0a39e7736870c97defe5aecc93357",
   "additional_missing_runtime_field_after_contract_patch": "decoder_manifest_tensor_role_inventory_missing",
   "artifact_waiting_on": [
-    "Phase3/4 returns a custody-ready pathset or precise blocker for deriving PLE per-layer inputs from token IDs using per_layer_input_runtime roles.",
-    "Phase3/4 wires a bounded single-layer streamed CPU/OpenCL parity path behind run_c5_full_decoder_runtime, then continues to 42-layer orchestration plus chunked LM-head/NLL writer.",
-    "Execution remains parked until a real streamed compute implementation is frozen; no C5 QA predict rerun is authorized for pass claims before then."
+    "Phase3/4 returns a custody-ready streamed single-layer attention/MLP body pathset or a precise implementation blocker from the active run_c5_full_decoder_runtime work.",
+    "The implementation must stay behind the existing --run-c5-qa-predict path and preserve fail-closed no-prediction behavior until real logits emit prediction JSONL.",
+    "After the single-layer body lands, remaining work is OpenCL parity dispatch, rank-16 adapter stream injection, 42-layer orchestration, chunked LM-head/NLL writer, outside-git prediction JSONL, and executed C5 metrics.",
+    "Execution remains parked until a real streamed runtime implementation is frozen; no C5 QA predict rerun is authorized for pass claims before then."
   ],
   "authorization_needed": "none; native implementation work is under current GO and must preserve raw/secrets boundary",
   "c5_after_c1_exporter_attention_layout_repair_20260701T_engineering": {
@@ -2055,11 +2143,11 @@
     ]
   },
   "candidate_adapter_sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f",
-  "current_gate": "WaveB_C5_after_C1_single_layer_streamed_runtime_slice_in_progress_after_ple_math_boundary_custody",
-  "current_highest_valid_state": "C1-C4 Wave B Phase1->Phase2->Phase3->Phase4 development-cycle mechanics remain frozen as metadata evidence. Phone-local model download, schema-complete component-pack export, C5-capable runner build, heldout QA staging, native C5 probe, tokenizer/tensor-loader custody, and PLE contract/decoder math custody are metadata/code evidence only. No C5 pass, prediction JSONL, or executed metrics exist; the active edge is Phase3/4 implementing the single-layer streamed runtime slice after PLE/math custody.",
+  "current_gate": "WaveB_C5_after_C1_single_layer_attention_mlp_body_in_progress_after_ple_slice_custody",
+  "current_highest_valid_state": "C1-C4 Wave B mechanics, phone-local model/exporter evidence, C5-capable runner build, heldout QA staging, native C5 probe, tokenizer/tensor-loader custody, PLE contract/decoder math custody, and PLE derivation/layer-0 normalization custody are development-cycle metadata/code evidence only. No C5 pass, prediction JSONL, or executed metrics exist. The active edge is Phase3/4 implementing the streamed single-layer attention/MLP body.",
   "decoder_manifest_sha256": "6700f3c2912bfdcb659b9e7de3cdb0831d58f3708a0f841c181ec446b3a83a5f",
   "dominant_failure_domain": "phase5_eval_failure",
-  "drift_deleted_or_pending": "PLE contract validation, bounded tensor slicing, adapter payload validation, and decoder math primitives are frozen at 7f62882. Remaining drift is the native streamed runtime body: token-to-PLE derivation must feed a single-layer attention/MLP path, then 42-layer orchestration, rank-16 adapter application, chunked LM-head/NLL, and outside-git prediction JSONL emission must be real before any C5 prediction/loss claim.",
+  "drift_deleted_or_pending": "PLE contract/decoder math and PLE derivation/layer-0 input normalization are frozen. Remaining drift is streamed single-layer attention/MLP, OpenCL parity dispatch, rank-16 adapter stream injection, 42-layer orchestration, chunked LM-head/NLL, prediction JSONL, and executed C5 metrics.",
   "driver_tick_history": [
     {
       "artifact_waiting_on": [
@@ -2839,12 +2927,53 @@
         "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4: active on token-to-PLE and single-layer streamed runtime slice; no duplicate nudge sent."
       ],
       "user_action_required": false
+    },
+    {
+      "utc": "2026-07-01T15:30:07Z",
+      "current_gate": "WaveB_C5_after_C1_native_ple_single_layer_slice_custody_pending",
+      "status_classification": "PENDING_ACTION_REPO_CUSTODY_NATIVE_PLE_SINGLE_LAYER_SLICE_PATHSET",
+      "owner": "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050 owns the active five-file native PLE single-layer slice freeze. Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 has returned the custody-ready pathset and should resume implementation only after custody result. Execution remains parked until a real runtime implementation is frozen.",
+      "action": "recorded Phase3/4 native PLE single-layer slice pathset, shifted active edge to Repo Custodian custody pending, and sent supplemental drift-hardening note so the earlier central-mirror-only request is superseded",
+      "artifact_waiting_on": [
+        "Repo Custodian verifies, stages only, commits, and pushes the five-file native PLE single-layer slice pathset.",
+        "Frozen report expected: runtime/reports/orchestration/c5_after_c1_native_ple_single_layer_slice_20260701T_phase34.json SHA f1ad7df8d951e1519dfbd64930d5f58f85862563fedc3740f755173dfefdf412.",
+        "After custody, Phase3/4 implements the streamed single-layer attention/MLP body behind run_c5_full_decoder_runtime using the already-derived layer input and PLE row, then wires OpenCL parity dispatch, rank-16 adapter stream injection, 42-layer orchestration, and chunked LM-head NLL writer.",
+        "Execution remains parked until a real streamed runtime implementation is frozen; no C5 QA predict rerun is authorized for pass claims before then."
+      ],
+      "first_missing_green_field": "native_ple_single_layer_slice_custody_pending",
+      "first_missing_green_field_after_custody": "c5_full_decoder_single_layer_attention_mlp_kernel_missing_after_ple_derivation",
+      "threads_nudged_this_tick": [
+        "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: active verifying the five-file native PLE single-layer slice pathset; supplemental drift-hardening note sent to supersede the earlier two-file post-PLE central-mirror-only request.",
+        "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4: returned custody-ready PLE single-layer slice and routed Custodian; no duplicate nudge sent.",
+        "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: not nudged; parked until real runtime implementation is frozen."
+      ],
+      "user_action_required": false
+    },
+    {
+      "utc": "2026-07-01T15:30:07Z",
+      "current_gate": "WaveB_C5_after_C1_single_layer_attention_mlp_body_in_progress_after_ple_slice_custody",
+      "status_classification": "PENDING_ACTION_PHASE34_SINGLE_LAYER_ATTENTION_MLP_BODY_AFTER_PLE_SLICE_CUSTODY",
+      "owner": "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 owns the streamed single-layer attention/MLP body behind run_c5_full_decoder_runtime. Repo Custodian froze the PLE single-layer slice at 955730e88c500fff9517d0a22d0f5bbd207ecaa9 and sent the handoff. Execution remains parked until a real runtime implementation is frozen.",
+      "action": "recorded Repo Custodian PLE single-layer slice custody at 955730e and shifted active edge to Phase3/4 streamed single-layer attention/MLP body implementation",
+      "artifact_waiting_on": [
+        "Phase3/4 returns a custody-ready streamed single-layer attention/MLP body pathset or a precise implementation blocker from the active run_c5_full_decoder_runtime work.",
+        "The implementation must stay behind the existing --run-c5-qa-predict path and preserve fail-closed no-prediction behavior until real logits emit prediction JSONL.",
+        "After the single-layer body lands, remaining work is OpenCL parity dispatch, rank-16 adapter stream injection, 42-layer orchestration, chunked LM-head/NLL writer, outside-git prediction JSONL, and executed C5 metrics.",
+        "Execution remains parked until a real streamed runtime implementation is frozen; no C5 QA predict rerun is authorized for pass claims before then."
+      ],
+      "first_missing_green_field": "c5_full_decoder_single_layer_attention_mlp_kernel_missing_after_ple_derivation",
+      "threads_nudged_this_tick": [
+        "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: completed PLE slice custody at 955730e88c500fff9517d0a22d0f5bbd207ecaa9; will be nudged for this post-custody two-file central mirror freeze.",
+        "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4: active on streamed single-layer attention/MLP body; no duplicate nudge sent.",
+        "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: not nudged; parked until real runtime implementation is frozen."
+      ],
+      "user_action_required": false
     }
   ],
   "export_report_sha256": "06fe8e91b5938ff3235cad5fa96e7b25d5b20fb3c4e456c249c84d53bf839d0f",
   "exporter_runtime_fields_freeze_commit": "43cf3c4130dc902fc8fd69183bac1056f0596626",
   "exporter_runtime_fields_freeze_status": "committed_pushed",
-  "first_missing_green_field": "c5_full_decoder_streamed_attention_mlp_kernel_body_missing_after_ple_contract",
+  "first_missing_green_field": "c5_full_decoder_single_layer_attention_mlp_kernel_missing_after_ple_derivation",
   "first_missing_green_field_after_contract_patch": "decoder_manifest_architecture_config_missing",
   "first_missing_green_field_after_download": "full_decoder_logits_generation_not_implemented",
   "first_missing_green_field_after_export": "c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land",
@@ -2853,7 +2982,7 @@
   "first_missing_green_field_after_runner": "heldout_qa_jsonl_staging_or_c5_predict_probe_pending",
   "first_unresolved_technical_failure_after_schema_complete_export": "c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land",
   "first_unresolved_technical_failure_after_valid_schema_paths": "c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land",
-  "governing_edge": "WaveB_C5_after_C1_single_layer_streamed_runtime_slice_in_progress_after_ple_math_boundary_custody",
+  "governing_edge": "WaveB_C5_after_C1_single_layer_attention_mlp_body_in_progress_after_ple_slice_custody",
   "governing_objective": {
     "nonclaims": [
       "diagnostics_are_not_100k_or_1M_authority_unless_specific_authority_gate_passes",
@@ -3427,9 +3556,9 @@
         "OUTSIDE_GIT_PHASE4_ADAPTER_PRE_PAYLOAD_PATH_REDACTED_SHA_ONLY"
       ],
       "authorization_needed": false,
-      "first_missing_green_field": "c5_full_decoder_streamed_attention_mlp_kernel_body_missing_after_ple_contract",
+      "first_missing_green_field": "c5_full_decoder_single_layer_attention_mlp_kernel_missing_after_ple_derivation",
       "last_update_utc": "2026-07-01T15:30:07Z",
-      "next_action": "Resume only after Custodian freezes a real native streamed runtime implementation. Expected next command is the smallest C5_after_C1 --run-c5-qa-predict proof against the schema-complete component pack and accepted heldout/checkpoint identities.",
+      "next_action": "Resume only after Custodian freezes a real native streamed runtime implementation. Expected future command remains the smallest C5_after_C1 --run-c5-qa-predict proof against accepted identities.",
       "nonclaims": [
         "no C5 pass",
         "no executed C5 metrics",
@@ -3479,24 +3608,21 @@
     },
     "phase34_engineer": {
       "thread_id": "019f13da-d897-7ba2-8ed1-b959892f5ed4",
-      "status": "active_single_layer_streamed_runtime_slice_after_ple_contract_custody",
-      "status_classification": "PENDING_ACTION_PHASE34_SINGLE_LAYER_STREAMED_RUNTIME_SLICE_AFTER_PLE_CONTRACT",
+      "status": "active_single_layer_attention_mlp_body_implementation",
+      "status_classification": "PENDING_ACTION_PHASE34_SINGLE_LAYER_ATTENTION_MLP_BODY_AFTER_PLE_SLICE_CUSTODY",
       "last_update_utc": "2026-07-01T15:30:07Z",
-      "custody_commit": "7f62882a72610b52094040aa0ab24b718e4b7006",
+      "base_commit": "955730e88c500fff9517d0a22d0f5bbd207ecaa9",
       "artifact_paths": [
-        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/include/polymath/gemma4/c5_decoder_math.h",
-        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_decoder_math.cpp",
-        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp",
-        "tests/test_c5_native_runtime_contract.py"
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp"
       ],
       "sha256_or_identity_fields": {
-        "custody_report_sha256": "ca22117497425552cbb3ed33adb6c25eccc5be5c992ba3db15a940b9ba501c9b",
-        "custody_commit": "7f62882a72610b52094040aa0ab24b718e4b7006",
+        "base_custody_commit": "955730e88c500fff9517d0a22d0f5bbd207ecaa9",
         "current_worktree_note": "Phase3/4 has active post-custody edits; current file hashes are not frozen evidence until Custodian freezes the next pathset."
       },
-      "first_missing_green_field": "c5_full_decoder_streamed_attention_mlp_kernel_body_missing_after_ple_contract",
-      "current_observed_subproblem": "derive PLE per-layer inputs from token IDs using per_layer_input_runtime roles and wire a bounded single-layer streamed runtime path under run_c5_full_decoder_runtime",
-      "next_action": "Return one of: custody-ready single-layer streamed runtime pathset, exact build/source failure, or exact first missing runtime contract field. Preserve fail-closed no-prediction behavior until real logits emit prediction JSONL.",
+      "first_missing_green_field": "c5_full_decoder_single_layer_attention_mlp_kernel_missing_after_ple_derivation",
+      "current_observed_subproblem": "manifest-backed first-token layer-0 CPU attention/MLP body under run_c5_full_decoder_runtime",
+      "research_escalation": "none",
+      "next_action": "Return one of: custody-ready streamed single-layer attention/MLP body pathset, exact build/source failure, or exact first missing runtime contract field. Preserve fail-closed no-prediction behavior until real logits emit prediction JSONL.",
       "authorization_needed": false,
       "user_action_required": false,
       "nonclaims": [
@@ -3532,53 +3658,29 @@
     },
     "repo_custodian": {
       "thread_id": "019f1ac2-0f0f-7721-bf46-ad402dbd9050",
-      "status": "idle_after_c5_ple_decoder_math_boundary_custody",
+      "status": "idle_after_c5_native_ple_single_layer_slice_custody",
       "status_classification": "COMPLETED_PATHSET_CUSTODY_AND_WAITING_FOR_NEXT_FREEZE_REQUEST",
       "last_update_utc": "2026-07-01T15:30:07Z",
       "branch": "origin/gemma4-megakernel-native-training",
-      "commit_sha": "7f62882a72610b52094040aa0ab24b718e4b7006",
-      "current_gate": "WaveB_C5_after_C1_single_layer_streamed_runtime_slice_in_progress_after_ple_math_boundary_custody",
+      "commit_sha": "955730e88c500fff9517d0a22d0f5bbd207ecaa9",
+      "prior_central_mirror_commit": "495767ac5cc89a36fac47a05c12517b2d762bb56",
+      "current_gate": "WaveB_C5_after_C1_single_layer_attention_mlp_body_in_progress_after_ple_slice_custody",
       "artifact_paths": [
-        "runtime/reports/orchestration/c5_after_c1_native_ple_contract_decoder_math_pathset_20260701T_phase34.json",
-        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/CMakeLists.txt",
+        "runtime/reports/orchestration/c5_after_c1_native_ple_single_layer_slice_20260701T_phase34.json",
         "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/include/polymath/gemma4/c5_decoder_math.h",
         "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_decoder_math.cpp",
-        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/include/polymath/gemma4/safetensors_reader.h",
-        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/model/safetensors_reader.cpp",
         "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp",
-        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py",
-        "scripts/host/run_c5_phase34_qa_inference_producer.py",
-        "tests/test_c5_native_runtime_contract.py",
-        "tests/test_c5_full_decoder_exporter.py",
-        "tests/test_c5_phase34_qa_inference_producer.py"
+        "tests/test_c5_native_runtime_contract.py"
       ],
       "sha256_or_identity_fields": {
-        "runtime/reports/orchestration/c5_after_c1_native_ple_contract_decoder_math_pathset_20260701T_phase34.json": "ca22117497425552cbb3ed33adb6c25eccc5be5c992ba3db15a940b9ba501c9b",
-        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/CMakeLists.txt": "d5e5f629495fc1c86c1225b063ebc5f6a22d65e48cd8b9cec05071e6a98dbe2a",
-        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/include/polymath/gemma4/c5_decoder_math.h": "fa76059e4377c26c9152039f5b1957814bd84b8bb3d28c66578e746ee5499991",
-        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_decoder_math.cpp": "e42ae3a3a67ed66c45cd2975608a457b2c75b89da83700a24372186f1f4a48b0",
-        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/include/polymath/gemma4/safetensors_reader.h": "1305efde1157f1b08f32fb8c0404136f03b6f203328be514d2721a9e5d4951cd",
-        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/model/safetensors_reader.cpp": "7646ead0c363e4fd84aacd257f7dd9c2055b697031b008012508394be76864a4",
-        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp": "3a4fa3db8eceefadff13cf71a3d9f6d6674ce8a729a3dbff03b7d1bae5d28515",
-        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py": "9878c1aaf94b6270cb0b238395a41acff1a401ef94840dd29af2096c45111e87",
-        "scripts/host/run_c5_phase34_qa_inference_producer.py": "dcff49577776b943ffd201b7b949cd7c041aee93c559ba40a98ffd63bea33801",
-        "tests/test_c5_native_runtime_contract.py": "8d3883f923a8825bd9984100c0228d6d1b795d13d4057e01d5f130244cfb1ff1",
-        "tests/test_c5_full_decoder_exporter.py": "ddeaf60caed4bae746cc22f5d508a8a7f0e01ed9e4c3c5b4318e93fd89911ca0",
-        "tests/test_c5_phase34_qa_inference_producer.py": "8fd2d2300087f34a5b30ff3d279f3f6021326e8d05e6b2a6e69396cdd4053b33"
+        "runtime/reports/orchestration/c5_after_c1_native_ple_single_layer_slice_20260701T_phase34.json": "f1ad7df8d951e1519dfbd64930d5f58f85862563fedc3740f755173dfefdf412",
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/include/polymath/gemma4/c5_decoder_math.h": "cdbf9b0c624b563df9676747bdd1497bd29fa92ceda1a816e9146a0ffb011b6c",
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_decoder_math.cpp": "deb1ea6573e9fe464fb96a29a45fd1fc33552ded24a65d47ee356a348857a629",
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp": "0789359c3a58d08f59625943dc284ea614e44a1dc12058d41e8ea0e475ea2015",
+        "tests/test_c5_native_runtime_contract.py": "8fec25efce5a4f5b22ce7f8a6900b67ea8aab40c52a8912538772a79624fe8d7"
       },
-      "verification_commands": [
-        "Repo Custodian: branch and remote pushed to 7f62882a72610b52094040aa0ab24b718e4b7006",
-        "Repo Custodian: report JSON parsed and exact requested pathset hashes matched at custody time",
-        "Repo Custodian: cmake configure/build gemma4_layer_runner with warnings-as-errors -> built",
-        "Repo Custodian: focused Phase3/4 tests -> 29 passed",
-        "Repo Custodian: broader C5 suite -> 36 passed",
-        "Repo Custodian: ctest --test-dir build/gemma4_megakernel_host --output-on-failure -> 4/4 passed",
-        "Repo Custodian: exact pathset git diff --check -> passed",
-        "Repo Custodian: staged pathset exactly 12 requested files",
-        "Repo Custodian: staged raw suffix path scan, secret value scan, and unapproved absolute raw/log path scan -> 0 hits"
-      ],
-      "first_missing_green_field": "c5_full_decoder_streamed_attention_mlp_kernel_body_missing_after_ple_contract",
-      "next_action": "Freeze the two-file central mirror for this post-7f62882 state when routed by Engineering; otherwise wait for Phase3/4 implementation pathset.",
+      "first_missing_green_field": "c5_full_decoder_single_layer_attention_mlp_kernel_missing_after_ple_derivation",
+      "next_action": "Freeze this post-955730e two-file central mirror if routed by Engineering; otherwise wait for Phase3/4 implementation pathset.",
       "authorization_needed": false,
       "user_action_required": false,
       "nonclaims": [
@@ -3656,8 +3758,49 @@
       "user_action_required": false
     }
   },
-  "last_concrete_action": "Repo Custodian froze and pushed the native C5 PLE contract + decoder math boundary at 7f62882a72610b52094040aa0ab24b718e4b7006, including runtime validation for PLE metadata, bounded tensor slicing, adapter payload validation, and decoder math primitives. Phase3/4 accepted the handoff and is actively patching the next runtime slice; no duplicate Phase3/4 nudge was sent.",
+  "last_concrete_action": "Repo Custodian froze a superseded two-file central mirror at 495767ac5cc89a36fac47a05c12517b2d762bb56, then froze and pushed the native C5 PLE single-layer slice at 955730e88c500fff9517d0a22d0f5bbd207ecaa9. The slice derives bounded PLE inputs and layer-0 input normalization without emitting predictions/loss/metrics. Phase3/4 accepted the handoff and is actively implementing the streamed single-layer attention/MLP body.",
   "last_driver_actions": [
+    {
+      "utc": "2026-07-01T15:30:07Z",
+      "current_gate": "WaveB_C5_after_C1_single_layer_attention_mlp_body_in_progress_after_ple_slice_custody",
+      "status_classification": "PENDING_ACTION_PHASE34_SINGLE_LAYER_ATTENTION_MLP_BODY_AFTER_PLE_SLICE_CUSTODY",
+      "owner": "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 owns the streamed single-layer attention/MLP body behind run_c5_full_decoder_runtime. Repo Custodian froze the PLE single-layer slice at 955730e88c500fff9517d0a22d0f5bbd207ecaa9 and sent the handoff. Execution remains parked until a real runtime implementation is frozen.",
+      "action": "recorded Repo Custodian PLE single-layer slice custody at 955730e and shifted active edge to Phase3/4 streamed single-layer attention/MLP body implementation",
+      "artifact_waiting_on": [
+        "Phase3/4 returns a custody-ready streamed single-layer attention/MLP body pathset or a precise implementation blocker from the active run_c5_full_decoder_runtime work.",
+        "The implementation must stay behind the existing --run-c5-qa-predict path and preserve fail-closed no-prediction behavior until real logits emit prediction JSONL.",
+        "After the single-layer body lands, remaining work is OpenCL parity dispatch, rank-16 adapter stream injection, 42-layer orchestration, chunked LM-head/NLL writer, outside-git prediction JSONL, and executed C5 metrics.",
+        "Execution remains parked until a real streamed runtime implementation is frozen; no C5 QA predict rerun is authorized for pass claims before then."
+      ],
+      "first_missing_green_field": "c5_full_decoder_single_layer_attention_mlp_kernel_missing_after_ple_derivation",
+      "threads_nudged_this_tick": [
+        "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: completed PLE slice custody at 955730e88c500fff9517d0a22d0f5bbd207ecaa9; will be nudged for this post-custody two-file central mirror freeze.",
+        "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4: active on streamed single-layer attention/MLP body; no duplicate nudge sent.",
+        "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: not nudged; parked until real runtime implementation is frozen."
+      ],
+      "user_action_required": false
+    },
+    {
+      "utc": "2026-07-01T15:30:07Z",
+      "current_gate": "WaveB_C5_after_C1_native_ple_single_layer_slice_custody_pending",
+      "status_classification": "PENDING_ACTION_REPO_CUSTODY_NATIVE_PLE_SINGLE_LAYER_SLICE_PATHSET",
+      "owner": "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050 owns the active five-file native PLE single-layer slice freeze. Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 has returned the custody-ready pathset and should resume implementation only after custody result. Execution remains parked until a real runtime implementation is frozen.",
+      "action": "recorded Phase3/4 native PLE single-layer slice pathset, shifted active edge to Repo Custodian custody pending, and sent supplemental drift-hardening note so the earlier central-mirror-only request is superseded",
+      "artifact_waiting_on": [
+        "Repo Custodian verifies, stages only, commits, and pushes the five-file native PLE single-layer slice pathset.",
+        "Frozen report expected: runtime/reports/orchestration/c5_after_c1_native_ple_single_layer_slice_20260701T_phase34.json SHA f1ad7df8d951e1519dfbd64930d5f58f85862563fedc3740f755173dfefdf412.",
+        "After custody, Phase3/4 implements the streamed single-layer attention/MLP body behind run_c5_full_decoder_runtime using the already-derived layer input and PLE row, then wires OpenCL parity dispatch, rank-16 adapter stream injection, 42-layer orchestration, and chunked LM-head NLL writer.",
+        "Execution remains parked until a real streamed runtime implementation is frozen; no C5 QA predict rerun is authorized for pass claims before then."
+      ],
+      "first_missing_green_field": "native_ple_single_layer_slice_custody_pending",
+      "first_missing_green_field_after_custody": "c5_full_decoder_single_layer_attention_mlp_kernel_missing_after_ple_derivation",
+      "threads_nudged_this_tick": [
+        "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: active verifying the five-file native PLE single-layer slice pathset; supplemental drift-hardening note sent to supersede the earlier two-file post-PLE central-mirror-only request.",
+        "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4: returned custody-ready PLE single-layer slice and routed Custodian; no duplicate nudge sent.",
+        "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: not nudged; parked until real runtime implementation is frozen."
+      ],
+      "user_action_required": false
+    },
     {
       "utc": "2026-07-01T15:30:07Z",
       "current_gate": "WaveB_C5_after_C1_single_layer_streamed_runtime_slice_in_progress_after_ple_math_boundary_custody",
@@ -3737,34 +3880,23 @@
       "owner": "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050",
       "timestamp_utc": "2026-07-01T03:25:17Z",
       "user_action_required": false
-    },
-    {
-      "action": "recorded Execution pending real-inference payload probe f00951a83523e7fd19c4e2dc6db3103fb1d8107dab6f09d2f80d8bde37405036; reclassified owner from Execution to Phase3/4 payload paths/train loss plus Engineering producer command; nudged both existing threads",
-      "owner": "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 + Engineering Orchestrator 019f138b-d229-7640-98b7-2f185d6beae0",
-      "timestamp_utc": "2026-07-01T02:35:16Z",
-      "user_action_required": false
-    },
-    {
-      "action": "recorded Repo Custodian prediction-payload contract freeze at 634a06a6e66f7d99f88bcf5bba7cc83c916fd9e1; shifted active owner to Execution and nudged Execution with the real inference payload production plus heldout scoring plus C5 validation chain",
-      "owner": "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c",
-      "timestamp_utc": "2026-07-01T02:27:57Z",
-      "user_action_required": false
     }
   ],
   "model_safetensors_sha256": "43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651",
   "model_safetensors_size_bytes": 15992595884,
   "native_probe_exit_code": 13,
   "native_probe_report_path": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe/candidate_probe_stdout.json",
-  "next_concrete_action": "Phase3/4 continues the active implementation and returns either a custody-ready single-layer streamed runtime pathset or a precise blocker. If a pathset lands, Engineering updates central state metadata-only and routes it to Repo Custodian. Execution resumes only after the real runtime implementation is frozen.",
-  "owner": "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 owns the next single-layer streamed runtime slice behind --run-c5-qa-predict. Repo Custodian froze the PLE contract + decoder math boundary at 7f62882a72610b52094040aa0ab24b718e4b7006. Execution remains parked until a real runtime implementation is frozen.",
+  "next_concrete_action": "Phase3/4 continues the active implementation and returns either a custody-ready streamed single-layer attention/MLP pathset or a precise blocker. If a pathset lands, Engineering updates central state metadata-only and routes it to Repo Custodian. Execution resumes only after real runtime implementation is frozen.",
+  "owner": "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 owns the streamed single-layer attention/MLP body behind run_c5_full_decoder_runtime. Repo Custodian froze the PLE single-layer slice at 955730e88c500fff9517d0a22d0f5bbd207ecaa9 and sent the handoff. Execution remains parked until a real runtime implementation is frozen.",
   "owner_thread": "019f13da-d897-7ba2-8ed1-b959892f5ed4",
   "phone_exporter_rerun_required_after_commit": "43cf3c4130dc902fc8fd69183bac1056f0596626",
   "prd_watchdog": {
     "adapter_site_policy_sha256": "f38bd8109bbb77e9e94a5b4b34a238bc0ec0a39e7736870c97defe5aecc93357",
     "artifact_waiting_on": [
-      "Phase3/4 returns a custody-ready pathset or precise blocker for deriving PLE per-layer inputs from token IDs using per_layer_input_runtime roles.",
-      "Phase3/4 wires a bounded single-layer streamed CPU/OpenCL parity path behind run_c5_full_decoder_runtime, then continues to 42-layer orchestration plus chunked LM-head/NLL writer.",
-      "Execution remains parked until a real streamed compute implementation is frozen; no C5 QA predict rerun is authorized for pass claims before then."
+      "Phase3/4 returns a custody-ready streamed single-layer attention/MLP body pathset or a precise implementation blocker from the active run_c5_full_decoder_runtime work.",
+      "The implementation must stay behind the existing --run-c5-qa-predict path and preserve fail-closed no-prediction behavior until real logits emit prediction JSONL.",
+      "After the single-layer body lands, remaining work is OpenCL parity dispatch, rank-16 adapter stream injection, 42-layer orchestration, chunked LM-head/NLL writer, outside-git prediction JSONL, and executed C5 metrics.",
+      "Execution remains parked until a real streamed runtime implementation is frozen; no C5 QA predict rerun is authorized for pass claims before then."
     ],
     "authorization_needed": "none; native implementation work is under current GO and must preserve raw/secrets boundary",
     "c5_after_c1_payload_paths_hash_probe": {
@@ -3968,13 +4100,13 @@
       "schema_version": "polymath_c5_qa_runtime_post_custody_v1"
     },
     "candidate_adapter_sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f",
-    "current_gate": "WaveB_C5_after_C1_single_layer_streamed_runtime_slice_in_progress_after_ple_math_boundary_custody",
+    "current_gate": "WaveB_C5_after_C1_single_layer_attention_mlp_body_in_progress_after_ple_slice_custody",
     "decoder_manifest_sha256": "6700f3c2912bfdcb659b9e7de3cdb0831d58f3708a0f841c181ec446b3a83a5f",
     "dominant_failure_domain": "phase5_eval_failure",
-    "drift_deleted_or_pending": "PLE contract validation, bounded tensor slicing, adapter payload validation, and decoder math primitives are frozen at 7f62882. Remaining drift is the native streamed runtime body: token-to-PLE derivation must feed a single-layer attention/MLP path, then 42-layer orchestration, rank-16 adapter application, chunked LM-head/NLL, and outside-git prediction JSONL emission must be real before any C5 prediction/loss claim.",
+    "drift_deleted_or_pending": "PLE contract/decoder math and PLE derivation/layer-0 input normalization are frozen. Remaining drift is streamed single-layer attention/MLP, OpenCL parity dispatch, rank-16 adapter stream injection, 42-layer orchestration, chunked LM-head/NLL, prediction JSONL, and executed C5 metrics.",
     "export_report_sha256": "06fe8e91b5938ff3235cad5fa96e7b25d5b20fb3c4e456c249c84d53bf839d0f",
-    "first_missing_green_field": "c5_full_decoder_streamed_attention_mlp_kernel_body_missing_after_ple_contract",
-    "first_missing_green_field_after_custody": "phone_termux_model_safetensors_download_pending",
+    "first_missing_green_field": "c5_full_decoder_single_layer_attention_mlp_kernel_missing_after_ple_derivation",
+    "first_missing_green_field_after_custody": "c5_full_decoder_single_layer_attention_mlp_kernel_missing_after_ple_derivation",
     "first_missing_green_field_after_custody_until_model_source_available": "model_safetensors_missing",
     "first_missing_green_field_after_export": "phone_c5_runner_rebuild_or_copy_missing",
     "first_missing_green_field_after_patch": "bounded_c5_qa_predict_rerun_pending",
@@ -3984,12 +4116,12 @@
     "heldout_qa_sha256": "da41c5362398f24e0e0dd9df9a5cf0594435a455871fa77ab74d9312e6c8e9b2",
     "heldout_qa_size_bytes": 153158,
     "known_downstream_access_issue_after_custody": "termux_command_channel_missing",
-    "last_concrete_action": "Repo Custodian froze and pushed the native C5 PLE contract + decoder math boundary at 7f62882a72610b52094040aa0ab24b718e4b7006, including runtime validation for PLE metadata, bounded tensor slicing, adapter payload validation, and decoder math primitives. Phase3/4 accepted the handoff and is actively patching the next runtime slice; no duplicate Phase3/4 nudge was sent.",
+    "last_concrete_action": "Repo Custodian froze a superseded two-file central mirror at 495767ac5cc89a36fac47a05c12517b2d762bb56, then froze and pushed the native C5 PLE single-layer slice at 955730e88c500fff9517d0a22d0f5bbd207ecaa9. The slice derives bounded PLE inputs and layer-0 input normalization without emitting predictions/loss/metrics. Phase3/4 accepted the handoff and is actively implementing the streamed single-layer attention/MLP body.",
     "model_safetensors_sha256": "43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651",
     "model_safetensors_size_bytes": 15992595884,
     "native_probe_exit_code": 13,
     "native_probe_report_path": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe/candidate_probe_stdout.json",
-    "next_concrete_action": "Phase3/4 continues the active implementation and returns either a custody-ready single-layer streamed runtime pathset or a precise blocker. If a pathset lands, Engineering updates central state metadata-only and routes it to Repo Custodian. Execution resumes only after the real runtime implementation is frozen.",
+    "next_concrete_action": "Phase3/4 continues the active implementation and returns either a custody-ready streamed single-layer attention/MLP pathset or a precise blocker. If a pathset lands, Engineering updates central state metadata-only and routes it to Repo Custodian. Execution resumes only after real runtime implementation is frozen.",
     "nonclaims_preserved": [
       "no C5 pass",
       "no executed C5 metrics",
@@ -4004,7 +4136,7 @@
       "no Comet/API call",
       "no secrets sourced"
     ],
-    "owner": "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 owns the next single-layer streamed runtime slice behind --run-c5-qa-predict. Repo Custodian froze the PLE contract + decoder math boundary at 7f62882a72610b52094040aa0ab24b718e4b7006. Execution remains parked until a real runtime implementation is frozen.",
+    "owner": "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 owns the streamed single-layer attention/MLP body behind run_c5_full_decoder_runtime. Repo Custodian froze the PLE single-layer slice at 955730e88c500fff9517d0a22d0f5bbd207ecaa9 and sent the handoff. Execution remains parked until a real runtime implementation is frozen.",
     "post_custody_c5_qa_runtime_status": {
       "branch": "origin/gemma4-megakernel-native-training",
       "custody_commit": "9f6a27f3640078d81a303445d7ab29c7ce3a2db8",
@@ -4030,11 +4162,11 @@
     },
     "probe_stderr_sha256": "d2f647b4efae9fe021b2e0d5ce9f79f88d87853e4f40cf0d660cf6d5d5c2d819",
     "probe_stdout_metadata_sha256": "8be05287d47bb148054bd26425f41f7f0c2cded8b98110d956c0f3e778cb86e6",
-    "recursive_improvement_next_step": "Phase3/4 single-layer runtime pathset or blocker -> Custodian freezes implementation evidence -> Phase3/4 extends to full 42-layer/chunked LM-head body -> Custodian freezes -> Execution runs bounded C5_after_C1 --run-c5-qa-predict proof -> Pipeline validates executed evidence.",
+    "recursive_improvement_next_step": "Phase3/4 single-layer attention/MLP pathset or blocker -> Custodian freezes implementation evidence -> Phase3/4 extends to OpenCL parity/adapter/42-layer/chunked LM-head -> Execution runs bounded C5_after_C1 proof only after runtime implementation is frozen.",
     "runner_sha256": "a5a6f9a3b93d167d9cd69eddbe2f3404443ae1c2222e1c6a0782398c9ff09e84",
     "runner_size_bytes": 369536,
-    "status": "phase34_single_layer_streamed_runtime_slice_in_progress_after_ple_contract_custody",
-    "status_classification": "PENDING_ACTION_PHASE34_SINGLE_LAYER_STREAMED_RUNTIME_SLICE_AFTER_PLE_CONTRACT",
+    "status": "phase34_single_layer_attention_mlp_body_implementation_in_progress",
+    "status_classification": "PENDING_ACTION_PHASE34_SINGLE_LAYER_ATTENTION_MLP_BODY_AFTER_PLE_SLICE_CUSTODY",
     "threads_nudged_this_tick": [
       "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: completed prerequisite custody at 4472e3dee86d88d83031eecfc94b91008e5215e0 and central mirror custody at 59567735db38a4680c60a7f9c0182d90d7ffb38e.",
       "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4: active on streamed decoder compute runtime implementation; no duplicate nudge sent."
@@ -4049,8 +4181,8 @@
     "native_tokenizer_tensor_loader_prereq_central_mirror_commit": "59567735db38a4680c60a7f9c0182d90d7ffb38e",
     "phase34_streamed_decoder_compute_runtime_status": "implementation_in_progress",
     "updated_at_utc": "2026-07-01T15:30:07Z",
-    "active_edge": "WaveB_C5_after_C1_single_layer_streamed_runtime_slice_in_progress_after_ple_math_boundary_custody",
-    "governing_edge": "WaveB_C5_after_C1_single_layer_streamed_runtime_slice_in_progress_after_ple_math_boundary_custody",
+    "active_edge": "WaveB_C5_after_C1_single_layer_attention_mlp_body_in_progress_after_ple_slice_custody",
+    "governing_edge": "WaveB_C5_after_C1_single_layer_attention_mlp_body_in_progress_after_ple_slice_custody",
     "c5_after_c1_native_ple_contract_decoder_math_boundary_custody_20260701T153007Z": {
       "status": "c5_ple_decoder_math_boundary_committed_pushed",
       "commit_sha": "7f62882a72610b52094040aa0ab24b718e4b7006",
@@ -4097,6 +4229,92 @@
         "no raw payload copied to repo",
         "no secrets printed"
       ]
+    },
+    "c5_after_c1_native_ple_single_layer_slice_custody_request_20260701T153007Z": {
+      "status": "native_ple_single_layer_slice_pathset_ready_for_custodian",
+      "custody_status": "repo_custodian_active",
+      "base_commit": "7f62882a72610b52094040aa0ab24b718e4b7006",
+      "report_path": "runtime/reports/orchestration/c5_after_c1_native_ple_single_layer_slice_20260701T_phase34.json",
+      "report_sha256": "f1ad7df8d951e1519dfbd64930d5f58f85862563fedc3740f755173dfefdf412",
+      "pathset_sha256": {
+        "runtime/reports/orchestration/c5_after_c1_native_ple_single_layer_slice_20260701T_phase34.json": "f1ad7df8d951e1519dfbd64930d5f58f85862563fedc3740f755173dfefdf412",
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/include/polymath/gemma4/c5_decoder_math.h": "cdbf9b0c624b563df9676747bdd1497bd29fa92ceda1a816e9146a0ffb011b6c",
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_decoder_math.cpp": "deb1ea6573e9fe464fb96a29a45fd1fc33552ded24a65d47ee356a348857a629",
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp": "0789359c3a58d08f59625943dc284ea614e44a1dc12058d41e8ea0e475ea2015",
+        "tests/test_c5_native_runtime_contract.py": "8fec25efce5a4f5b22ce7f8a6900b67ea8aab40c52a8912538772a79624fe8d7"
+      },
+      "verification_commands": [
+        "Phase3/4: cmake configure/build gemma4_layer_runner with warnings-as-errors -> pass",
+        "Phase3/4: python3.11 -m pytest -q tests/test_c5_native_runtime_contract.py -> 10 passed",
+        "Phase3/4: broader C5 suite -> 36 passed",
+        "Phase3/4: ctest --test-dir build/gemma4_megakernel_host --output-on-failure -> 4/4 passed",
+        "Phase3/4: git diff --check on PLE single-layer slice pathset -> passed",
+        "Meta: local report JSON parses and pathset hashes match the custody request"
+      ],
+      "semantics": [
+        "Adds bf16 round-trip helper used for Gemma embedding scale.",
+        "Derives source-model token embedding rows from safetensors row slices using bf16_round(sqrt(hidden_size)).",
+        "Derives Gemma 4 per-layer 256-wide PLE row from token IDs using per_layer_input_runtime roles.",
+        "Reads bounded slices only: token embedding row, PLE token identity row, layer-specific PLE projection rows, PLE norm vector, and layer-0 input layernorm.",
+        "Prepares a layer-0 CPU input-normalization slice behind run_c5_full_decoder_runtime.",
+        "Keeps prediction_jsonl_written false and emits no loss/confidence/candidate_train_loss."
+      ],
+      "first_missing_green_field": "native_ple_single_layer_slice_custody_pending",
+      "first_missing_green_field_after_custody": "c5_full_decoder_single_layer_attention_mlp_kernel_missing_after_ple_derivation",
+      "next_action_after_custody": "Phase3/4 implements streamed single-layer attention/MLP body behind run_c5_full_decoder_runtime using the already-derived layer input and PLE row.",
+      "raw_boundary": "metadata/code/test evidence only; no raw model/checkpoint/adapter/tensor/prediction payload was copied into git",
+      "nonclaims": [
+        "no C5 pass",
+        "no executed C5 metrics",
+        "no prediction JSONL",
+        "no logits, loss, confidence, or candidate_train_loss",
+        "no bridge MSE relabeled as C5 loss",
+        "no learning/model-quality claim",
+        "no Phase3 readiness claim",
+        "no Phase4 readiness claim",
+        "no raw payload copied to repo",
+        "no secrets printed"
+      ]
+    },
+    "research_escalation": "none",
+    "c5_after_c1_native_ple_single_layer_slice_custody_20260701T153007Z": {
+      "status": "c5_native_ple_single_layer_slice_committed_pushed",
+      "commit_sha": "955730e88c500fff9517d0a22d0f5bbd207ecaa9",
+      "branch": "origin/gemma4-megakernel-native-training",
+      "superseded_prior_central_mirror_commit": "495767ac5cc89a36fac47a05c12517b2d762bb56",
+      "pathset_sha256": {
+        "runtime/reports/orchestration/c5_after_c1_native_ple_single_layer_slice_20260701T_phase34.json": "f1ad7df8d951e1519dfbd64930d5f58f85862563fedc3740f755173dfefdf412",
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/include/polymath/gemma4/c5_decoder_math.h": "cdbf9b0c624b563df9676747bdd1497bd29fa92ceda1a816e9146a0ffb011b6c",
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_decoder_math.cpp": "deb1ea6573e9fe464fb96a29a45fd1fc33552ded24a65d47ee356a348857a629",
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp": "0789359c3a58d08f59625943dc284ea614e44a1dc12058d41e8ea0e475ea2015",
+        "tests/test_c5_native_runtime_contract.py": "8fec25efce5a4f5b22ce7f8a6900b67ea8aab40c52a8912538772a79624fe8d7"
+      },
+      "verification_commands": [
+        "Repo Custodian: JSON report validation passed",
+        "Repo Custodian: exact pathset git diff --check passed",
+        "Repo Custodian: cmake configure/build with warnings-as-errors passed",
+        "Repo Custodian: tests/test_c5_native_runtime_contract.py -> 10 passed",
+        "Repo Custodian: broader C5 suite -> 36 passed",
+        "Repo Custodian: ctest -> 4/4 passed",
+        "Repo Custodian: raw suffix/path and value-shaped secret scans clean",
+        "Repo Custodian: staged pathset exactly five requested files"
+      ],
+      "first_missing_green_field_after_custody": "c5_full_decoder_single_layer_attention_mlp_kernel_missing_after_ple_derivation",
+      "next_action": "Phase3/4 implements streamed single-layer attention/MLP body behind run_c5_full_decoder_runtime, then OpenCL parity dispatch, rank-16 adapter stream injection, 42-layer orchestration, and chunked LM-head NLL writer.",
+      "research_escalation": "none; first_missing_green_field is advancing, so no broad research detour is authorized unless it repeats after two implementation/custody cycles, hits a Gemma 4 contradiction, or hits an unresolved memory/throughput envelope failure.",
+      "raw_boundary": "metadata/code/test evidence only; no raw model/checkpoint/adapter/tensor/prediction payload was copied into git",
+      "nonclaims": [
+        "no C5 pass",
+        "no executed C5 metrics",
+        "no prediction JSONL",
+        "no logits, loss, confidence, or candidate_train_loss",
+        "no bridge MSE relabeled as C5 loss",
+        "no learning/model-quality claim",
+        "no Phase3 readiness claim",
+        "no Phase4 readiness claim",
+        "no raw payload copied to repo",
+        "no secrets printed"
+      ]
     }
   },
   "probe_stderr_sha256": "d2f647b4efae9fe021b2e0d5ce9f79f88d87853e4f40cf0d660cf6d5d5c2d819",
@@ -4107,7 +4325,7 @@
     "scope": "metadata mirror only",
     "status": "central_state_phone_filesystem_paths_redacted"
   },
-  "recursive_improvement_next_step": "Phase3/4 single-layer runtime pathset or blocker -> Custodian freezes implementation evidence -> Phase3/4 extends to full 42-layer/chunked LM-head body -> Custodian freezes -> Execution runs bounded C5_after_C1 --run-c5-qa-predict proof -> Pipeline validates executed evidence.",
+  "recursive_improvement_next_step": "Phase3/4 single-layer attention/MLP pathset or blocker -> Custodian freezes implementation evidence -> Phase3/4 extends to OpenCL parity/adapter/42-layer/chunked LM-head -> Execution runs bounded C5_after_C1 proof only after runtime implementation is frozen.",
   "required_lane_update_protocol": {
     "block_name": "CENTRAL_STATE_UPDATE",
     "meta_action": "on every heartbeat, read active threads, update this file, route the next concrete edge, and notify Execution only when both keys are green",
@@ -4126,11 +4344,12 @@
   "runner_sha256": "a5a6f9a3b93d167d9cd69eddbe2f3404443ae1c2222e1c6a0782398c9ff09e84",
   "runner_size_bytes": 369536,
   "schema_version": "polymath_executive_delivery_state_v1",
-  "status": "phase34_single_layer_streamed_runtime_slice_in_progress_after_ple_contract_custody",
-  "status_classification": "PENDING_ACTION_PHASE34_SINGLE_LAYER_STREAMED_RUNTIME_SLICE_AFTER_PLE_CONTRACT",
+  "status": "phase34_single_layer_attention_mlp_body_implementation_in_progress",
+  "status_classification": "PENDING_ACTION_PHASE34_SINGLE_LAYER_ATTENTION_MLP_BODY_AFTER_PLE_SLICE_CUSTODY",
   "threads_nudged_this_tick": [
-    "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: completed PLE contract + decoder math custody at 7f62882a72610b52094040aa0ab24b718e4b7006; will be nudged for this two-file central mirror freeze.",
-    "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4: active on token-to-PLE and single-layer streamed runtime slice; no duplicate nudge sent."
+    "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: completed PLE slice custody at 955730e88c500fff9517d0a22d0f5bbd207ecaa9; will be nudged for this post-custody two-file central mirror freeze.",
+    "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4: active on streamed single-layer attention/MLP body; no duplicate nudge sent.",
+    "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: not nudged; parked until real runtime implementation is frozen."
   ],
   "updated_at": "2026-07-01T15:30:07Z",
   "updated_at_utc": "2026-07-01T15:30:07Z",
@@ -4610,6 +4829,93 @@
     ],
     "first_missing_green_field_after_custody": "c5_full_decoder_streamed_attention_mlp_kernel_body_missing_after_ple_contract",
     "next_action": "Phase3/4 derives PLE per-layer inputs from token IDs and wires a bounded single-layer streamed runtime path under run_c5_full_decoder_runtime before extending to 42-layer orchestration and chunked LM-head/NLL.",
+    "raw_boundary": "metadata/code/test evidence only; no raw model/checkpoint/adapter/tensor/prediction payload was copied into git",
+    "nonclaims": [
+      "no C5 pass",
+      "no executed C5 metrics",
+      "no prediction JSONL",
+      "no logits, loss, confidence, or candidate_train_loss",
+      "no bridge MSE relabeled as C5 loss",
+      "no learning/model-quality claim",
+      "no Phase3 readiness claim",
+      "no Phase4 readiness claim",
+      "no raw payload copied to repo",
+      "no secrets printed"
+    ]
+  },
+  "first_missing_green_field_after_custody": "c5_full_decoder_single_layer_attention_mlp_kernel_missing_after_ple_derivation",
+  "c5_after_c1_native_ple_single_layer_slice_custody_request_20260701T153007Z": {
+    "status": "native_ple_single_layer_slice_pathset_ready_for_custodian",
+    "custody_status": "repo_custodian_active",
+    "base_commit": "7f62882a72610b52094040aa0ab24b718e4b7006",
+    "report_path": "runtime/reports/orchestration/c5_after_c1_native_ple_single_layer_slice_20260701T_phase34.json",
+    "report_sha256": "f1ad7df8d951e1519dfbd64930d5f58f85862563fedc3740f755173dfefdf412",
+    "pathset_sha256": {
+      "runtime/reports/orchestration/c5_after_c1_native_ple_single_layer_slice_20260701T_phase34.json": "f1ad7df8d951e1519dfbd64930d5f58f85862563fedc3740f755173dfefdf412",
+      "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/include/polymath/gemma4/c5_decoder_math.h": "cdbf9b0c624b563df9676747bdd1497bd29fa92ceda1a816e9146a0ffb011b6c",
+      "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_decoder_math.cpp": "deb1ea6573e9fe464fb96a29a45fd1fc33552ded24a65d47ee356a348857a629",
+      "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp": "0789359c3a58d08f59625943dc284ea614e44a1dc12058d41e8ea0e475ea2015",
+      "tests/test_c5_native_runtime_contract.py": "8fec25efce5a4f5b22ce7f8a6900b67ea8aab40c52a8912538772a79624fe8d7"
+    },
+    "verification_commands": [
+      "Phase3/4: cmake configure/build gemma4_layer_runner with warnings-as-errors -> pass",
+      "Phase3/4: python3.11 -m pytest -q tests/test_c5_native_runtime_contract.py -> 10 passed",
+      "Phase3/4: broader C5 suite -> 36 passed",
+      "Phase3/4: ctest --test-dir build/gemma4_megakernel_host --output-on-failure -> 4/4 passed",
+      "Phase3/4: git diff --check on PLE single-layer slice pathset -> passed",
+      "Meta: local report JSON parses and pathset hashes match the custody request"
+    ],
+    "semantics": [
+      "Adds bf16 round-trip helper used for Gemma embedding scale.",
+      "Derives source-model token embedding rows from safetensors row slices using bf16_round(sqrt(hidden_size)).",
+      "Derives Gemma 4 per-layer 256-wide PLE row from token IDs using per_layer_input_runtime roles.",
+      "Reads bounded slices only: token embedding row, PLE token identity row, layer-specific PLE projection rows, PLE norm vector, and layer-0 input layernorm.",
+      "Prepares a layer-0 CPU input-normalization slice behind run_c5_full_decoder_runtime.",
+      "Keeps prediction_jsonl_written false and emits no loss/confidence/candidate_train_loss."
+    ],
+    "first_missing_green_field": "native_ple_single_layer_slice_custody_pending",
+    "first_missing_green_field_after_custody": "c5_full_decoder_single_layer_attention_mlp_kernel_missing_after_ple_derivation",
+    "next_action_after_custody": "Phase3/4 implements streamed single-layer attention/MLP body behind run_c5_full_decoder_runtime using the already-derived layer input and PLE row.",
+    "raw_boundary": "metadata/code/test evidence only; no raw model/checkpoint/adapter/tensor/prediction payload was copied into git",
+    "nonclaims": [
+      "no C5 pass",
+      "no executed C5 metrics",
+      "no prediction JSONL",
+      "no logits, loss, confidence, or candidate_train_loss",
+      "no bridge MSE relabeled as C5 loss",
+      "no learning/model-quality claim",
+      "no Phase3 readiness claim",
+      "no Phase4 readiness claim",
+      "no raw payload copied to repo",
+      "no secrets printed"
+    ]
+  },
+  "research_escalation": "none",
+  "c5_after_c1_native_ple_single_layer_slice_custody_20260701T153007Z": {
+    "status": "c5_native_ple_single_layer_slice_committed_pushed",
+    "commit_sha": "955730e88c500fff9517d0a22d0f5bbd207ecaa9",
+    "branch": "origin/gemma4-megakernel-native-training",
+    "superseded_prior_central_mirror_commit": "495767ac5cc89a36fac47a05c12517b2d762bb56",
+    "pathset_sha256": {
+      "runtime/reports/orchestration/c5_after_c1_native_ple_single_layer_slice_20260701T_phase34.json": "f1ad7df8d951e1519dfbd64930d5f58f85862563fedc3740f755173dfefdf412",
+      "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/include/polymath/gemma4/c5_decoder_math.h": "cdbf9b0c624b563df9676747bdd1497bd29fa92ceda1a816e9146a0ffb011b6c",
+      "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_decoder_math.cpp": "deb1ea6573e9fe464fb96a29a45fd1fc33552ded24a65d47ee356a348857a629",
+      "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp": "0789359c3a58d08f59625943dc284ea614e44a1dc12058d41e8ea0e475ea2015",
+      "tests/test_c5_native_runtime_contract.py": "8fec25efce5a4f5b22ce7f8a6900b67ea8aab40c52a8912538772a79624fe8d7"
+    },
+    "verification_commands": [
+      "Repo Custodian: JSON report validation passed",
+      "Repo Custodian: exact pathset git diff --check passed",
+      "Repo Custodian: cmake configure/build with warnings-as-errors passed",
+      "Repo Custodian: tests/test_c5_native_runtime_contract.py -> 10 passed",
+      "Repo Custodian: broader C5 suite -> 36 passed",
+      "Repo Custodian: ctest -> 4/4 passed",
+      "Repo Custodian: raw suffix/path and value-shaped secret scans clean",
+      "Repo Custodian: staged pathset exactly five requested files"
+    ],
+    "first_missing_green_field_after_custody": "c5_full_decoder_single_layer_attention_mlp_kernel_missing_after_ple_derivation",
+    "next_action": "Phase3/4 implements streamed single-layer attention/MLP body behind run_c5_full_decoder_runtime, then OpenCL parity dispatch, rank-16 adapter stream injection, 42-layer orchestration, and chunked LM-head NLL writer.",
+    "research_escalation": "none; first_missing_green_field is advancing, so no broad research detour is authorized unless it repeats after two implementation/custody cycles, hits a Gemma 4 contradiction, or hits an unresolved memory/throughput envelope failure.",
     "raw_boundary": "metadata/code/test evidence only; no raw model/checkpoint/adapter/tensor/prediction payload was copied into git",
     "nonclaims": [
       "no C5 pass",
