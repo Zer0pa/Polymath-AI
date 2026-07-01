@@ -1,39 +1,31 @@
 {
   "active_bottleneck": {
-    "current_gate": "WaveB_C5_after_C1_execution_exporter_rerun_and_bounded_phone_probe_after_per_layer_input_runtime_repair_custody",
-    "status_classification": "PENDING_ACTION_EXECUTION_EXPORTER_RERUN_AND_BOUNDED_PHONE_PROBE_AFTER_REPAIR_CUSTODY",
-    "first_missing_green_field": "PENDING_ACTION_EXECUTION_EXPORTER_RERUN_AND_BOUNDED_PHONE_PROBE",
-    "completed_prior_edge": "WaveB_C5_after_C1_decoder_manifest_per_layer_input_runtime_repair_pathset_custody_pending",
-    "custody_commit_to_follow": "58872fdc3dd7ff6efb73321252d58f3447eb0e2b",
+    "current_gate": "WaveB_C5_after_C1_opencl_runtime_availability_repair_pending_after_repaired_manifest_phone_probe",
+    "status_classification": "PENDING_ACTION_PHASE34_OPENCL_RUNTIME_DISCOVERY_REPAIR_AFTER_PHONE_RESOURCE_FAILURE",
+    "first_missing_green_field": "c5_full_decoder_opencl_parity_runtime_unavailable:opencl_single_token_layer_runtime_unavailable:clGetPlatformIDs count failed with OpenCL error -1001",
+    "completed_prior_edge": "WaveB_C5_after_C1_execution_exporter_rerun_and_bounded_phone_probe_after_per_layer_input_runtime_repair_custody",
+    "custody_commit_to_follow": null,
     "artifact_waiting_on": [
-      "Execution consumes frozen repair commit 58872fdc3dd7ff6efb73321252d58f3447eb0e2b in a clean Termux worktree, verifies the five frozen pathset hashes, and reruns the phone-local exporter against the accepted phone-held model.",
-      "Exporter rerun must regenerate decoder_manifest.json with top-level per_layer_input_runtime.roles and manifest_contract_checks; no raw model/checkpoint/adapter/tensor payloads may be copied into git.",
-      "If exporter succeeds, Execution rebuilds/copies the C5 runner if needed and reruns only the bounded C5_after_C1 native phone probe through the existing --run-c5-qa-predict surface.",
-      "If exporter/probe fails, Execution returns exact command, commit, binary hash, first failing field, stderr/log SHA, memory/latency/throughput if available, and semantic/resource/scheduling classification.",
-      "Prediction JSONL remains not claimable unless the real runtime emits it; no logits/loss/confidence/candidate_train_loss or C5 metrics are claimable yet."
+      "Phase3/4/Engineering patches the existing OpenCL runtime discovery/loading path used by run_c5_full_decoder_runtime and --run-c5-qa-predict so the RedMagic/Termux runtime can discover a platform instead of failing clGetPlatformIDs with OpenCL error -1001.",
+      "Repair must stay behind the existing native C5 runner path; do not create a parallel evaluator or bypass the frozen C5 surface.",
+      "Return either a custody-ready source/test/report pathset with exact hashes and verification, or a precise source/build/runtime blocker for OpenCL discovery/loading.",
+      "Execution resumes only after the repair is frozen or Phase3/4 supplies a bounded phone probe command; prediction JSONL/logits/loss/confidence/candidate_train_loss remain unclaimable until real runtime emits them."
     ],
     "evidence_freeze_commit": "58872fdc3dd7ff6efb73321252d58f3447eb0e2b",
-    "evidence_freeze_status": "decoder_manifest_per_layer_input_runtime_repair_committed_pushed",
-    "active_repair_pathset_status": "decoder_manifest_per_layer_input_runtime_repair_custody_pending",
-    "active_repair_pathset_sha256": {
-      "runtime/reports/orchestration/c5_after_c1_decoder_manifest_per_layer_input_runtime_repair_20260701T_phase34.json": "7571f6e22ecee84cff44def6b48715405cab5b87fa76620dc1d3a1d9c80ceaa0",
-      "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py": "2e875146b8dbf58aa977f468cdd9cb03679039afe9f3f9321b5c512bed15a03a",
-      "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp": "45f9112cadfc9f43ba17cce780b2ad2c0f0d80f1419f2d56546db107ebf3f580",
-      "tests/test_c5_full_decoder_exporter.py": "3e85411471df37c62b5e201c88caa3803faeeca761734d10ceac698b654b6a81",
-      "tests/test_c5_native_runtime_contract.py": "9f65a5635046501fcd83dbed23131a69e969f13f750499ca41357410275da572"
-    },
-    "active_execution_status": "phone_exporter_rerun_and_bounded_probe_active"
+    "evidence_freeze_status": "per_layer_input_runtime_repair_committed_pushed_and_execution_probe_completed",
+    "active_repair_pathset_status": "opencl_runtime_discovery_loading_repair_pending_phase34",
+    "active_repair_pathset_sha256": {},
+    "active_execution_status": "completed_repaired_manifest_probe_opencl_runtime_availability_failure"
   },
-  "active_edge": "WaveB_C5_after_C1_execution_exporter_rerun_and_bounded_phone_probe_after_per_layer_input_runtime_repair_custody",
+  "active_edge": "WaveB_C5_after_C1_opencl_runtime_availability_repair_pending_after_repaired_manifest_phone_probe",
   "active_watchdog_state": {
     "adapter_site_policy_sha256": "f38bd8109bbb77e9e94a5b4b34a238bc0ec0a39e7736870c97defe5aecc93357",
     "additional_missing_runtime_field_after_contract_patch": "decoder_manifest_tensor_role_inventory_missing",
     "artifact_waiting_on": [
-      "Execution consumes frozen repair commit 58872fdc3dd7ff6efb73321252d58f3447eb0e2b in a clean Termux worktree, verifies the five frozen pathset hashes, and reruns the phone-local exporter against the accepted phone-held model.",
-      "Exporter rerun must regenerate decoder_manifest.json with top-level per_layer_input_runtime.roles and manifest_contract_checks; no raw model/checkpoint/adapter/tensor payloads may be copied into git.",
-      "If exporter succeeds, Execution rebuilds/copies the C5 runner if needed and reruns only the bounded C5_after_C1 native phone probe through the existing --run-c5-qa-predict surface.",
-      "If exporter/probe fails, Execution returns exact command, commit, binary hash, first failing field, stderr/log SHA, memory/latency/throughput if available, and semantic/resource/scheduling classification.",
-      "Prediction JSONL remains not claimable unless the real runtime emits it; no logits/loss/confidence/candidate_train_loss or C5 metrics are claimable yet."
+      "Phase3/4/Engineering patches the existing OpenCL runtime discovery/loading path used by run_c5_full_decoder_runtime and --run-c5-qa-predict so the RedMagic/Termux runtime can discover a platform instead of failing clGetPlatformIDs with OpenCL error -1001.",
+      "Repair must stay behind the existing native C5 runner path; do not create a parallel evaluator or bypass the frozen C5 surface.",
+      "Return either a custody-ready source/test/report pathset with exact hashes and verification, or a precise source/build/runtime blocker for OpenCL discovery/loading.",
+      "Execution resumes only after the repair is frozen or Phase3/4 supplies a bounded phone probe command; prediction JSONL/logits/loss/confidence/candidate_train_loss remain unclaimable until real runtime emits them."
     ],
     "authorization_needed": "none; native implementation work is under current GO and must preserve raw/secrets boundary",
     "c5_after_c1_c5_qa_runtime_fail_closed_pathset": {
@@ -981,27 +973,24 @@
     },
     "candidate_adapter_sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f",
     "central_state_update_pathset_for_custodian": {
+      "status": "opencl_runtime_availability_repair_state_pending_custody",
       "artifact_paths": [
-        "runtime/reports/orchestration/c5_after_c1_full_decoder_logits_runtime_failure_20260701T_engineering.json",
-        "runtime/reports/orchestration/c5_after_c1_native_full_decoder_logits_unresolved_after_abf94a_20260701T_phase34.json",
         "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json",
         "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md"
       ],
       "sha256_or_identity_fields": {
         "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json": "verify after meta update",
-        "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md": "verify after meta update",
-        "runtime/reports/orchestration/c5_after_c1_full_decoder_logits_runtime_failure_20260701T_engineering.json": "6cf8b31689cfaaa247198063fde4ff129f0bc6de391232317571db5a45178931",
-        "runtime/reports/orchestration/c5_after_c1_native_full_decoder_logits_unresolved_after_abf94a_20260701T_phase34.json": "eede821fb7a4202161deaccf820aa2d15449066bd46f6846c8b96883075e9285"
+        "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md": "verify after meta update"
       },
-      "status": "c5_full_decoder_failure_artifacts_and_state_pending_custody",
+      "first_missing_green_field": "c5_full_decoder_opencl_parity_runtime_unavailable:opencl_single_token_layer_runtime_unavailable:clGetPlatformIDs count failed with OpenCL error -1001",
       "user_action_required": false
     },
-    "current_gate": "WaveB_C5_after_C1_execution_exporter_rerun_and_bounded_phone_probe_after_per_layer_input_runtime_repair_custody",
+    "current_gate": "WaveB_C5_after_C1_opencl_runtime_availability_repair_pending_after_repaired_manifest_phone_probe",
     "custody_commit_latest": "05bb56437b83138547301e69af14ab0fce7d4b1a",
     "custody_status_latest": "c5_opencl_parity_dispatch_committed_pushed",
-    "decoder_manifest_sha256": "2384cd0331423c46a8e0f4a510add39990c16275e5adcd72a00ef56be820bea5",
+    "decoder_manifest_sha256": "52fcb53666bb4b06d0118cb825b983afc54624a630f667bbfa5af278640e28f8",
     "dominant_failure_domain": "phase5_eval_failure",
-    "drift_deleted_or_pending": "The first per_layer_input_runtime manifest/runtime drift is source-frozen at 58872fdc3dd7ff6efb73321252d58f3447eb0e2b. Pending drift is phone exporter rerun with regenerated manifest_contract_checks, bounded probe evidence, bounded multi-token QA prompt orchestration, rank-16 adapter stream injection, 42-layer orchestration, chunked LM-head/NLL writer, outside-git prediction JSONL, and executed C5 metrics.",
+    "drift_deleted_or_pending": "per_layer_input_runtime drift is repaired and verified by the regenerated 58872fd manifest. Current drift is OpenCL platform discovery/loading under Termux/RedMagic: the C5 path reaches OpenCL parity and fails at clGetPlatformIDs -1001 before predictions/logits/loss can be emitted.",
     "engineering_evaluator_implementation": {
       "artifact_paths_in_progress": [
         "polymath_ai/polar/c5_heldout_eval.py",
@@ -1108,8 +1097,8 @@
       "existing_surface_role": "run_c5_eval.py validates supplied metrics JSON; it does not compute metrics",
       "status": "c5_after_c1_real_evaluator_surface_missing"
     },
-    "export_report_sha256": "3313602e8ac2ebf259c36c7aa7a9107e1536e79fea9bf7d0b275434bcda17358",
-    "first_missing_green_field": "PENDING_ACTION_EXECUTION_EXPORTER_RERUN_AND_BOUNDED_PHONE_PROBE",
+    "export_report_sha256": "4774d31953a58ad6ae1f64e4196405ba820e5be75d36880ac863cfb9dae00b6c",
+    "first_missing_green_field": "c5_full_decoder_opencl_parity_runtime_unavailable:opencl_single_token_layer_runtime_unavailable:clGetPlatformIDs count failed with OpenCL error -1001",
     "first_missing_green_field_after_contract_patch": "decoder_manifest_architecture_config_missing",
     "first_missing_green_field_after_custody": "PENDING_ACTION_EXECUTION_EXPORTER_RERUN_AND_BOUNDED_PHONE_PROBE",
     "first_missing_green_field_after_export": "phone_c5_runner_rebuild_or_copy_missing",
@@ -1142,15 +1131,13 @@
       "local_workspace_mounted": false
     },
     "lane_poll": {
-      "engineering_orchestrator": "completed runtime design: extend gemma4_layer_runner --run-c5-qa-predict; no accepted runtime exists yet",
-      "execution_orchestrator": "completed bounded hash-only payload path probe; waiting for C5 QA runtime/producer and candidate_train_loss",
-      "phase34_engineer": "nudged to implement C5 QA logits/generation runtime pathset or return exact source blocker",
-      "pipeline_integrator": "waiting for emitted prediction payloads and polymath_c5_executed_metrics_v1 artifact",
-      "repo_custodian_replacement": "previous state/probe freeze complete at 7290fbec13c6a13e88710afddfe4af70637096f9; new state mirror will need custody after meta validation",
-      "training_material_steward": "complete for material identities",
-      "ui_engineer": "not nudged until C5 evidence-backed status exists"
+      "repo_custodian": "polled complete at e1b7aa4976a5b45222b3c490a89b874a3191a9fd for prior central mirror; new two-file mirror requires custody after this update",
+      "execution_orchestrator": "completed repaired-manifest exporter rerun and bounded phone probe; returned OpenCL runtime availability failure",
+      "phase34_engineer": "runnable owner for OpenCL discovery/loading repair; nudge required this tick",
+      "pipeline_integrator": "waiting for real prediction payloads and polymath_c5_executed_metrics_v1",
+      "ui_engineer": "not nudged until evidence-backed C5 status surfaces exist"
     },
-    "last_concrete_action": "Repo Custodian froze and pushed the five-file decoder_manifest per_layer_input_runtime repair at 58872fdc3dd7ff6efb73321252d58f3447eb0e2b. Execution accepted the handoff, verified the frozen pathset and phone-held model identity, created a clean Termux worktree at 58872fd, and started rerunning the phone exporter to regenerate a component pack with per_layer_input_runtime and manifest_contract_checks.",
+    "last_concrete_action": "Execution consumed repair commit 58872fdc3dd7ff6efb73321252d58f3447eb0e2b, regenerated the phone component pack successfully, rebuilt runner gemma4_layer_runner_c5_58872fd, and ran the bounded C5_after_C1 phone probe. The exporter rerun was green with decoder_manifest SHA 52fcb53666bb4b06d0118cb825b983afc54624a630f667bbfa5af278640e28f8 and manifest_contract_checks/per_layer_input_runtime present. The bounded probe exited 13 after 97s at OpenCL platform discovery: clGetPlatformIDs returned OpenCL error -1001. Prediction JSONL was not written.",
     "lineage_drift_repair_status": {
       "commit": "ee74ae572322e05624deac6f6f8788c2c6e2f692",
       "proof_required": [
@@ -1324,8 +1311,8 @@
     },
     "native_logits_contract_patch_custody_commit": "2151dbada9012a5f54806cf689e806001180521f",
     "native_probe_exit_code": 13,
-    "native_probe_report_path": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe/candidate_probe_stdout.json",
-    "next_concrete_action": "Execution completes the phone-local exporter rerun and bounded C5_after_C1 probe, then returns either schema-complete regenerated component-pack identities plus probe result, or a precise exporter/schema/source/build/runtime blocker. Do not route Phase3/4 unless Execution reports a new repair field.",
+    "native_probe_report_path": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_58872fd_perlayer/candidate_probe_stdout.json",
+    "next_concrete_action": "Nudge Phase3/4 to inspect and patch the OpenCL runtime discovery/loading path, then return a custody-ready pathset or precise blocker. Route the updated two-file central mirror to Repo Custodian. Do not reroute Execution until a real repair is frozen or a bounded follow-up probe command exists.",
     "nonclaims": [
       "development-cycle evidence only unless stronger gates pass",
       "no C5 pass",
@@ -1353,7 +1340,7 @@
       "no Comet/API call",
       "no secrets sourced"
     ],
-    "owner": "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c owns the phone/Termux exporter rerun and bounded C5_after_C1 native probe after Repo Custodian froze the per_layer_input_runtime repair at 58872fdc3dd7ff6efb73321252d58f3447eb0e2b. Repo Custodian will freeze this metadata-only central mirror; Phase3/4 is parked unless Execution returns a new source/schema/runtime failure.",
+    "owner": "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 + Engineering Orchestrator own the OpenCL runtime discovery/loading repair; Execution is parked after completing the repaired-manifest phone proof.",
     "phase2_status_by_phase": {
       "C1": {
         "packets": 5180,
@@ -1558,14 +1545,14 @@
       },
       "schema_version": "polymath_c5_qa_runtime_post_custody_v1"
     },
-    "probe_stderr_sha256": "d2f647b4efae9fe021b2e0d5ce9f79f88d87853e4f40cf0d660cf6d5d5c2d819",
-    "probe_stdout_metadata_sha256": "8be05287d47bb148054bd26425f41f7f0c2cded8b98110d956c0f3e778cb86e6",
+    "probe_stderr_sha256": "090f6c91104f21f2e00715c1e02032811043d8710ae22bb671949a5b99f1872f",
+    "probe_stdout_metadata_sha256": "ad87aeaab55902d6fc2e62ed761010ee759386964e5f2927210998a08b9885c2",
     "raw_payload_boundary": {
       "phase2": "raw PJP1 remains under Termux home outside repo; repo stores compact metadata only",
       "phase34": "raw PJP1, HTP raw output, OpenCL tensors, and adapters remain on device/Termux; repair must keep compact JSON only",
       "report_root_scan": "metadata-freeze report root had 179 tracked files and clean forbidden suffix scans; raw payloads not committed"
     },
-    "recursive_improvement_next_step": "Let Execution finish the smallest falsifiable proof: phone-local exporter rerun plus bounded C5_after_C1 native probe. If the same per_layer_input_runtime field repeats after this repair/custody, escalate to bounded_sprint_required; otherwise route the next concrete first failing field.",
+    "recursive_improvement_next_step": "First occurrence of this repaired-manifest OpenCL platform availability field; research escalation remains none. If the same OpenCL discovery field repeats after one repair/custody/probe cycle, escalate to bounded_sprint_required focused on Android/Termux OpenCL ICD loading.",
     "repo_custody_state_freeze": {
       "branch": "origin/gemma4-megakernel-native-training",
       "commit": "7290fbec13c6a13e88710afddfe4af70637096f9",
@@ -1581,11 +1568,11 @@
     "runner_sha256": "a5a6f9a3b93d167d9cd69eddbe2f3404443ae1c2222e1c6a0782398c9ff09e84",
     "runner_size_bytes": 369536,
     "status": "execution_exporter_rerun_and_bounded_phone_probe_active_after_repair_custody",
-    "status_classification": "PENDING_ACTION_EXECUTION_EXPORTER_RERUN_AND_BOUNDED_PHONE_PROBE_AFTER_REPAIR_CUSTODY",
+    "status_classification": "PENDING_ACTION_PHASE34_OPENCL_RUNTIME_DISCOVERY_REPAIR_AFTER_PHONE_RESOURCE_FAILURE",
     "threads_nudged_this_tick": [
-      "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: polled complete at 58872fdc3dd7ff6efb73321252d58f3447eb0e2b; will receive two-file central mirror freeze request only.",
-      "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: polled active on phone exporter rerun after repair custody; no duplicate nudge sent.",
-      "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4: not nudged; parked after custody-ready repair and Custodian freeze."
+      "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: polled complete at e1b7aa4976a5b45222b3c490a89b874a3191a9fd for the prior execution-rerun central mirror; will receive this new two-file central mirror freeze request.",
+      "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: polled complete with exporter_green_bounded_phone_probe_resource_failure_opencl_runtime_unavailable; no duplicate rerun nudge sent.",
+      "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4: to be nudged with the exact OpenCL discovery/loading repair request and fail-fast boundary."
     ],
     "timestamp_utc": "2026-07-01T15:19:37Z",
     "updated_utc": "2026-07-01T16:18:07Z",
@@ -1774,7 +1761,7 @@
         "no secrets printed"
       ]
     },
-    "research_escalation": "none; Execution is actively running the post-custody exporter/probe proof.",
+    "research_escalation": "none_first_occurrence_current_repaired_manifest_path",
     "c5_after_c1_native_ple_single_layer_slice_custody_20260701T153007Z": {
       "status": "c5_native_ple_single_layer_slice_committed_pushed",
       "commit_sha": "955730e88c500fff9517d0a22d0f5bbd207ecaa9",
@@ -1814,7 +1801,7 @@
         "no secrets printed"
       ]
     },
-    "owner_thread": "019f138c-fb51-7c53-a41a-ab8eac950d9c",
+    "owner_thread": "019f13da-d897-7ba2-8ed1-b959892f5ed4",
     "c5_after_c1_opencl_parity_dispatch_custody_20260701T160607Z": {
       "status": "c5_opencl_parity_dispatch_committed_pushed",
       "commit_sha": "05bb56437b83138547301e69af14ab0fce7d4b1a",
@@ -1913,16 +1900,51 @@
       "tests/test_c5_native_runtime_contract.py": "9f65a5635046501fcd83dbed23131a69e969f13f750499ca41357410275da572"
     },
     "repo_custodian_per_layer_input_runtime_repair_commit": "58872fdc3dd7ff6efb73321252d58f3447eb0e2b",
-    "execution_post_repair_rerun_status": "phone_exporter_rerun_active"
+    "execution_post_repair_rerun_status": "phone_exporter_rerun_active",
+    "c5_after_c1_repaired_manifest_phone_probe_opencl_runtime_failure": {
+      "schema_version": "polymath_c5_after_c1_repaired_manifest_phone_probe_opencl_runtime_failure_v1",
+      "status": "exporter_green_bounded_phone_probe_resource_failure_opencl_runtime_unavailable",
+      "consumed_commit": "58872fdc3dd7ff6efb73321252d58f3447eb0e2b",
+      "runner_sha256": "efc18e811b4edff6ca4af5baad5fc9bab3db0f707a36ad3aba114d3994303a01",
+      "runner_size_bytes": 515072,
+      "exporter_rerun_exit_code": 0,
+      "decoder_manifest_sha256": "52fcb53666bb4b06d0118cb825b983afc54624a630f667bbfa5af278640e28f8",
+      "adapter_site_policy_sha256": "f38bd8109bbb77e9e94a5b4b34a238bc0ec0a39e7736870c97defe5aecc93357",
+      "export_report_sha256": "4774d31953a58ad6ae1f64e4196405ba820e5be75d36880ac863cfb9dae00b6c",
+      "source_model_safetensors_sha256": "43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651",
+      "manifest_contract_proof": {
+        "per_layer_input_runtime": "present",
+        "roles": [
+          "embed_tokens_per_layer",
+          "per_layer_model_projection",
+          "per_layer_projection_norm"
+        ],
+        "manifest_contract_checks": "present",
+        "tensor_role_layers": 42,
+        "attention_layouts": 42
+      },
+      "probe_exit_code": 13,
+      "probe_elapsed_seconds": 97,
+      "failure_classification": "resource/runtime_availability",
+      "first_missing_green_field": "c5_full_decoder_opencl_parity_runtime_unavailable:opencl_single_token_layer_runtime_unavailable:clGetPlatformIDs count failed with OpenCL error -1001",
+      "probe_stdout_sha256": "ad87aeaab55902d6fc2e62ed761010ee759386964e5f2927210998a08b9885c2",
+      "probe_stderr_sha256": "090f6c91104f21f2e00715c1e02032811043d8710ae22bb671949a5b99f1872f",
+      "meminfo_before_sha256": "baecb005b2984f5b73b34efb8f55c89a0fa73ca401d9d755e2e32753205360e8",
+      "meminfo_after_sha256": "02f37282e1c3485a56ea6fab416fc443807058ca05cd3c993e648899eff6e55e",
+      "prediction_jsonl_written": false,
+      "export_report_root": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/exporter_58872fd_per_layer_input_runtime_rerun",
+      "probe_report_root": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_58872fd_perlayer",
+      "raw_suffix_scan": "clean",
+      "research_escalation": "none_first_occurrence_current_repaired_manifest_path"
+    }
   },
   "adapter_site_policy_sha256": "f38bd8109bbb77e9e94a5b4b34a238bc0ec0a39e7736870c97defe5aecc93357",
   "additional_missing_runtime_field_after_contract_patch": "decoder_manifest_tensor_role_inventory_missing",
   "artifact_waiting_on": [
-    "Execution consumes frozen repair commit 58872fdc3dd7ff6efb73321252d58f3447eb0e2b in a clean Termux worktree, verifies the five frozen pathset hashes, and reruns the phone-local exporter against the accepted phone-held model.",
-    "Exporter rerun must regenerate decoder_manifest.json with top-level per_layer_input_runtime.roles and manifest_contract_checks; no raw model/checkpoint/adapter/tensor payloads may be copied into git.",
-    "If exporter succeeds, Execution rebuilds/copies the C5 runner if needed and reruns only the bounded C5_after_C1 native phone probe through the existing --run-c5-qa-predict surface.",
-    "If exporter/probe fails, Execution returns exact command, commit, binary hash, first failing field, stderr/log SHA, memory/latency/throughput if available, and semantic/resource/scheduling classification.",
-    "Prediction JSONL remains not claimable unless the real runtime emits it; no logits/loss/confidence/candidate_train_loss or C5 metrics are claimable yet."
+    "Phase3/4/Engineering patches the existing OpenCL runtime discovery/loading path used by run_c5_full_decoder_runtime and --run-c5-qa-predict so the RedMagic/Termux runtime can discover a platform instead of failing clGetPlatformIDs with OpenCL error -1001.",
+    "Repair must stay behind the existing native C5 runner path; do not create a parallel evaluator or bypass the frozen C5 surface.",
+    "Return either a custody-ready source/test/report pathset with exact hashes and verification, or a precise source/build/runtime blocker for OpenCL discovery/loading.",
+    "Execution resumes only after the repair is frozen or Phase3/4 supplies a bounded phone probe command; prediction JSONL/logits/loss/confidence/candidate_train_loss remain unclaimable until real runtime emits them."
   ],
   "authorization_needed": "none; native implementation work is under current GO and must preserve raw/secrets boundary",
   "c5_after_c1_exporter_attention_layout_repair_20260701T_engineering": {
@@ -2258,11 +2280,11 @@
     ]
   },
   "candidate_adapter_sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f",
-  "current_gate": "WaveB_C5_after_C1_execution_exporter_rerun_and_bounded_phone_probe_after_per_layer_input_runtime_repair_custody",
+  "current_gate": "WaveB_C5_after_C1_opencl_runtime_availability_repair_pending_after_repaired_manifest_phone_probe",
   "current_highest_valid_state": "C1-C4 Wave B mechanics, phone-local model/exporter evidence, C5-capable runner build, heldout QA staging, native C5 probe, tokenizer/tensor-loader custody, PLE contract/decoder math custody, PLE derivation/layer-0 normalization custody, CPU single-layer attention/MLP custody, OpenCL parity dispatch custody, phone OpenCL probe failure evidence custody, and per_layer_input_runtime repair custody are development-cycle metadata/code evidence only. No C5 pass, prediction JSONL, or executed metrics exist. The active edge is Execution rerunning the phone exporter and bounded C5_after_C1 probe after repair custody.",
-  "decoder_manifest_sha256": "2384cd0331423c46a8e0f4a510add39990c16275e5adcd72a00ef56be820bea5",
+  "decoder_manifest_sha256": "52fcb53666bb4b06d0118cb825b983afc54624a630f667bbfa5af278640e28f8",
   "dominant_failure_domain": "phase5_eval_failure",
-  "drift_deleted_or_pending": "The first per_layer_input_runtime manifest/runtime drift is source-frozen at 58872fdc3dd7ff6efb73321252d58f3447eb0e2b. Pending drift is phone exporter rerun with regenerated manifest_contract_checks, bounded probe evidence, bounded multi-token QA prompt orchestration, rank-16 adapter stream injection, 42-layer orchestration, chunked LM-head/NLL writer, outside-git prediction JSONL, and executed C5 metrics.",
+  "drift_deleted_or_pending": "per_layer_input_runtime drift is repaired and verified by the regenerated 58872fd manifest. Current drift is OpenCL platform discovery/loading under Termux/RedMagic: the C5 path reaches OpenCL parity and fails at clGetPlatformIDs -1001 before predictions/logits/loss can be emitted.",
   "driver_tick_history": [
     {
       "artifact_waiting_on": [
@@ -3148,10 +3170,10 @@
       "user_action_required": false
     }
   ],
-  "export_report_sha256": "3313602e8ac2ebf259c36c7aa7a9107e1536e79fea9bf7d0b275434bcda17358",
+  "export_report_sha256": "4774d31953a58ad6ae1f64e4196405ba820e5be75d36880ac863cfb9dae00b6c",
   "exporter_runtime_fields_freeze_commit": "43cf3c4130dc902fc8fd69183bac1056f0596626",
   "exporter_runtime_fields_freeze_status": "committed_pushed",
-  "first_missing_green_field": "PENDING_ACTION_EXECUTION_EXPORTER_RERUN_AND_BOUNDED_PHONE_PROBE",
+  "first_missing_green_field": "c5_full_decoder_opencl_parity_runtime_unavailable:opencl_single_token_layer_runtime_unavailable:clGetPlatformIDs count failed with OpenCL error -1001",
   "first_missing_green_field_after_contract_patch": "decoder_manifest_architecture_config_missing",
   "first_missing_green_field_after_download": "full_decoder_logits_generation_not_implemented",
   "first_missing_green_field_after_export": "c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land",
@@ -3160,7 +3182,7 @@
   "first_missing_green_field_after_runner": "heldout_qa_jsonl_staging_or_c5_predict_probe_pending",
   "first_unresolved_technical_failure_after_schema_complete_export": "c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land",
   "first_unresolved_technical_failure_after_valid_schema_paths": "c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land",
-  "governing_edge": "WaveB_C5_after_C1_execution_exporter_rerun_and_bounded_phone_probe_after_per_layer_input_runtime_repair_custody",
+  "governing_edge": "WaveB_C5_after_C1_opencl_runtime_availability_repair_pending_after_repaired_manifest_phone_probe",
   "governing_objective": {
     "nonclaims": [
       "diagnostics_are_not_100k_or_1M_authority_unless_specific_authority_gate_passes",
@@ -3866,7 +3888,7 @@
       "user_action_required": false
     }
   },
-  "last_concrete_action": "Repo Custodian froze and pushed the five-file decoder_manifest per_layer_input_runtime repair at 58872fdc3dd7ff6efb73321252d58f3447eb0e2b. Execution accepted the handoff, verified the frozen pathset and phone-held model identity, created a clean Termux worktree at 58872fd, and started rerunning the phone exporter to regenerate a component pack with per_layer_input_runtime and manifest_contract_checks.",
+  "last_concrete_action": "Execution consumed repair commit 58872fdc3dd7ff6efb73321252d58f3447eb0e2b, regenerated the phone component pack successfully, rebuilt runner gemma4_layer_runner_c5_58872fd, and ran the bounded C5_after_C1 phone probe. The exporter rerun was green with decoder_manifest SHA 52fcb53666bb4b06d0118cb825b983afc54624a630f667bbfa5af278640e28f8 and manifest_contract_checks/per_layer_input_runtime present. The bounded probe exited 13 after 97s at OpenCL platform discovery: clGetPlatformIDs returned OpenCL error -1001. Prediction JSONL was not written.",
   "last_driver_actions": [
     {
       "utc": "2026-07-01T15:30:07Z",
@@ -4039,10 +4061,10 @@
   "model_safetensors_sha256": "43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651",
   "model_safetensors_size_bytes": 15992595884,
   "native_probe_exit_code": 13,
-  "native_probe_report_path": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe/candidate_probe_stdout.json",
-  "next_concrete_action": "Execution completes the phone-local exporter rerun and bounded C5_after_C1 probe, then returns either schema-complete regenerated component-pack identities plus probe result, or a precise exporter/schema/source/build/runtime blocker. Do not route Phase3/4 unless Execution reports a new repair field.",
-  "owner": "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c owns the phone/Termux exporter rerun and bounded C5_after_C1 native probe after Repo Custodian froze the per_layer_input_runtime repair at 58872fdc3dd7ff6efb73321252d58f3447eb0e2b. Repo Custodian will freeze this metadata-only central mirror; Phase3/4 is parked unless Execution returns a new source/schema/runtime failure.",
-  "owner_thread": "019f138c-fb51-7c53-a41a-ab8eac950d9c",
+  "native_probe_report_path": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_58872fd_perlayer/candidate_probe_stdout.json",
+  "next_concrete_action": "Nudge Phase3/4 to inspect and patch the OpenCL runtime discovery/loading path, then return a custody-ready pathset or precise blocker. Route the updated two-file central mirror to Repo Custodian. Do not reroute Execution until a real repair is frozen or a bounded follow-up probe command exists.",
+  "owner": "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 + Engineering Orchestrator own the OpenCL runtime discovery/loading repair; Execution is parked after completing the repaired-manifest phone proof.",
+  "owner_thread": "019f13da-d897-7ba2-8ed1-b959892f5ed4",
   "phone_exporter_rerun_required_after_commit": "43cf3c4130dc902fc8fd69183bac1056f0596626",
   "prd_watchdog": {
     "adapter_site_policy_sha256": "f38bd8109bbb77e9e94a5b4b34a238bc0ec0a39e7736870c97defe5aecc93357",
@@ -4471,15 +4493,15 @@
       ]
     }
   },
-  "probe_stderr_sha256": "d2f647b4efae9fe021b2e0d5ce9f79f88d87853e4f40cf0d660cf6d5d5c2d819",
-  "probe_stdout_metadata_sha256": "8be05287d47bb148054bd26425f41f7f0c2cded8b98110d956c0f3e778cb86e6",
+  "probe_stderr_sha256": "090f6c91104f21f2e00715c1e02032811043d8710ae22bb671949a5b99f1872f",
+  "probe_stdout_metadata_sha256": "ad87aeaab55902d6fc2e62ed761010ee759386964e5f2927210998a08b9885c2",
   "raw_phone_path_hardening_20260701T094236Z": {
     "preserved": "artifact identities, hashes, lane status, nonclaims, and outside-git source requirements",
     "reason": "Prevent stale phone filesystem strings from being treated as C5 runtime evidence or raw payload routes.",
     "scope": "metadata mirror only",
     "status": "central_state_phone_filesystem_paths_redacted"
   },
-  "recursive_improvement_next_step": "Let Execution finish the smallest falsifiable proof: phone-local exporter rerun plus bounded C5_after_C1 native probe. If the same per_layer_input_runtime field repeats after this repair/custody, escalate to bounded_sprint_required; otherwise route the next concrete first failing field.",
+  "recursive_improvement_next_step": "First occurrence of this repaired-manifest OpenCL platform availability field; research escalation remains none. If the same OpenCL discovery field repeats after one repair/custody/probe cycle, escalate to bounded_sprint_required focused on Android/Termux OpenCL ICD loading.",
   "required_lane_update_protocol": {
     "block_name": "CENTRAL_STATE_UPDATE",
     "meta_action": "on every heartbeat, read active threads, update this file, route the next concrete edge, and notify Execution only when both keys are green",
@@ -4499,11 +4521,11 @@
   "runner_size_bytes": 369536,
   "schema_version": "polymath_executive_delivery_state_v1",
   "status": "execution_exporter_rerun_and_bounded_phone_probe_active_after_repair_custody",
-  "status_classification": "PENDING_ACTION_EXECUTION_EXPORTER_RERUN_AND_BOUNDED_PHONE_PROBE_AFTER_REPAIR_CUSTODY",
+  "status_classification": "PENDING_ACTION_PHASE34_OPENCL_RUNTIME_DISCOVERY_REPAIR_AFTER_PHONE_RESOURCE_FAILURE",
   "threads_nudged_this_tick": [
-    "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: polled complete at 58872fdc3dd7ff6efb73321252d58f3447eb0e2b; will receive two-file central mirror freeze request only.",
-    "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: polled active on phone exporter rerun after repair custody; no duplicate nudge sent.",
-    "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4: not nudged; parked after custody-ready repair and Custodian freeze."
+    "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: polled complete at e1b7aa4976a5b45222b3c490a89b874a3191a9fd for the prior execution-rerun central mirror; will receive this new two-file central mirror freeze request.",
+    "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: polled complete with exporter_green_bounded_phone_probe_resource_failure_opencl_runtime_unavailable; no duplicate rerun nudge sent.",
+    "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4: to be nudged with the exact OpenCL discovery/loading repair request and fail-fast boundary."
   ],
   "updated_at": "2026-07-01T16:28:37Z",
   "updated_at_utc": "2026-07-01T16:28:37Z",
@@ -5044,7 +5066,7 @@
       "no secrets printed"
     ]
   },
-  "research_escalation": "none; Execution is actively running the post-custody exporter/probe proof.",
+  "research_escalation": "none_first_occurrence_current_repaired_manifest_path",
   "c5_after_c1_native_ple_single_layer_slice_custody_20260701T153007Z": {
     "status": "c5_native_ple_single_layer_slice_committed_pushed",
     "commit_sha": "955730e88c500fff9517d0a22d0f5bbd207ecaa9",
@@ -5372,5 +5394,51 @@
       "no 100k/1M authority",
       "no Comet-backed accepted run"
     ]
-  }
+  },
+  "c5_after_c1_repaired_manifest_phone_probe_opencl_runtime_failure": {
+    "schema_version": "polymath_c5_after_c1_repaired_manifest_phone_probe_opencl_runtime_failure_v1",
+    "status": "exporter_green_bounded_phone_probe_resource_failure_opencl_runtime_unavailable",
+    "consumed_commit": "58872fdc3dd7ff6efb73321252d58f3447eb0e2b",
+    "runner_sha256": "efc18e811b4edff6ca4af5baad5fc9bab3db0f707a36ad3aba114d3994303a01",
+    "runner_size_bytes": 515072,
+    "exporter_rerun_exit_code": 0,
+    "decoder_manifest_sha256": "52fcb53666bb4b06d0118cb825b983afc54624a630f667bbfa5af278640e28f8",
+    "adapter_site_policy_sha256": "f38bd8109bbb77e9e94a5b4b34a238bc0ec0a39e7736870c97defe5aecc93357",
+    "export_report_sha256": "4774d31953a58ad6ae1f64e4196405ba820e5be75d36880ac863cfb9dae00b6c",
+    "source_model_safetensors_sha256": "43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651",
+    "manifest_contract_proof": {
+      "per_layer_input_runtime": "present",
+      "roles": [
+        "embed_tokens_per_layer",
+        "per_layer_model_projection",
+        "per_layer_projection_norm"
+      ],
+      "manifest_contract_checks": "present",
+      "tensor_role_layers": 42,
+      "attention_layouts": 42
+    },
+    "probe_exit_code": 13,
+    "probe_elapsed_seconds": 97,
+    "failure_classification": "resource/runtime_availability",
+    "first_missing_green_field": "c5_full_decoder_opencl_parity_runtime_unavailable:opencl_single_token_layer_runtime_unavailable:clGetPlatformIDs count failed with OpenCL error -1001",
+    "probe_stdout_sha256": "ad87aeaab55902d6fc2e62ed761010ee759386964e5f2927210998a08b9885c2",
+    "probe_stderr_sha256": "090f6c91104f21f2e00715c1e02032811043d8710ae22bb671949a5b99f1872f",
+    "meminfo_before_sha256": "baecb005b2984f5b73b34efb8f55c89a0fa73ca401d9d755e2e32753205360e8",
+    "meminfo_after_sha256": "02f37282e1c3485a56ea6fab416fc443807058ca05cd3c993e648899eff6e55e",
+    "prediction_jsonl_written": false,
+    "export_report_root": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/exporter_58872fd_per_layer_input_runtime_rerun",
+    "probe_report_root": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_58872fd_perlayer",
+    "raw_suffix_scan": "clean",
+    "research_escalation": "none_first_occurrence_current_repaired_manifest_path"
+  },
+  "central_state_update_pending_custody": {
+    "status": "opencl_runtime_availability_repair_state_pending_custody",
+    "artifact_paths": [
+      "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json",
+      "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md"
+    ],
+    "first_missing_green_field": "c5_full_decoder_opencl_parity_runtime_unavailable:opencl_single_token_layer_runtime_unavailable:clGetPlatformIDs count failed with OpenCL error -1001",
+    "user_action_required": false
+  },
+  "updated_utc": "2026-07-01T16:38:37Z"
 }
