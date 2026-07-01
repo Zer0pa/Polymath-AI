@@ -1,0 +1,76 @@
+{
+  "schema_version": "polymath_c5_prediction_payload_probe_v1",
+  "status": "c5_after_c1_pending_real_inference_payloads",
+  "status_classification": "PENDING_ACTION",
+  "run_label": "c1_c4_waveB_rerun_20260630T230411Z",
+  "eval_point": "C5_after_C1",
+  "timestamp_utc": "2026-07-01T02:30:07Z",
+  "freeze_commit_consumed": {
+    "commit": "634a06a6e66f7d99f88bcf5bba7cc83c916fd9e1",
+    "branch": "origin/gemma4-megakernel-native-training",
+    "status": "c5_prediction_payload_contract_committed_pushed"
+  },
+  "frozen_pathset": {
+    "polymath_ai/polar/c5_prediction_payloads.py": "5dcdfdb67d63ef02a467e7c414cb559f4b701133947b992cf7623d997629f966",
+    "scripts/host/run_c5_prediction_payloads.py": "7cfa7d8d543da7a2d38a375b74ec18df9eb10e808d485447650d51a509967e4d",
+    "tests/test_c5_prediction_payloads.py": "fb305fc44106a92e72eca83022f1b94223b68746b86f4db8d1cc9a6efe67df48"
+  },
+  "verified_inputs": {
+    "eval_split_identity_path": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/c5_eval_split_identity_C5_after_C1.json",
+    "eval_split_identity_sha256": "ea8bf6e9876febad8b125e78deed2d8ef534daaa7dd1e38126a07027cc6c8ca9",
+    "heldout_qa_jsonl_path": "/tmp/polymath_c5/C5_after_C1/phase_C1_test.qa.jsonl",
+    "heldout_qa_jsonl_is_symlink": true,
+    "heldout_qa_jsonl_resolved_path": "/Users/Zer0pa/Polymat AI/runtime/tmp/c1_c4_integrated_20260630T164809Z/hf_packages/packages/C1/qa_bridge/phase_C1_test.qa.jsonl",
+    "heldout_qa_jsonl_sha256": "da41c5362398f24e0e0dd9df9a5cf0594435a455871fa77ab74d9312e6c8e9b2",
+    "heldout_qa_record_count": 53,
+    "candidate_checkpoint_identity_path": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/checkpoint_identities/candidate_checkpoint_identity_C5_after_C1.json",
+    "candidate_checkpoint_identity_file_sha256": "92dbfe9d6db7d905b069ca4af3d7dda0a01ce7a179e8fae640465397d0f4cfc1",
+    "candidate_checkpoint_sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f",
+    "stable_baseline_identity_path": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/checkpoint_identities/stable_baseline_checkpoint_identity_C5_after_C1.json",
+    "stable_baseline_identity_file_sha256": "7f65b37e8acc7659b6912fe7de3e46b3cffb9abca8a1c76331f1e48fd6c59fec",
+    "stable_baseline_sha256": "e0d1c66ac876c2b6fbbe9e88f1b02dd37201d8ffba10afcd44f1c558fc32f7c9"
+  },
+  "missing_inputs": {
+    "candidate_checkpoint_payload_path": null,
+    "stable_baseline_checkpoint_payload_path": null,
+    "producer_command": null,
+    "candidate_train_loss": null,
+    "candidate_predictions_jsonl_path": "/tmp/polymath_c5/C5_after_C1/candidate_predictions.jsonl",
+    "stable_baseline_predictions_jsonl_path": "/tmp/polymath_c5/C5_after_C1/stable_baseline_predictions.jsonl"
+  },
+  "first_missing_green_field": "candidate_checkpoint_payload_path_missing",
+  "blockers": [
+    "candidate_checkpoint_payload_path_missing",
+    "stable_baseline_checkpoint_payload_path_missing",
+    "producer_command_missing",
+    "candidate_train_loss_missing"
+  ],
+  "verification_commands": [
+    "git rev-parse HEAD",
+    "git rev-parse origin/gemma4-megakernel-native-training",
+    "python3.11 scripts/host/run_c5_prediction_payloads.py --print-contract"
+  ],
+  "verification_results": {
+    "head_commit": "634a06a6e66f7d99f88bcf5bba7cc83c916fd9e1",
+    "origin_commit": "634a06a6e66f7d99f88bcf5bba7cc83c916fd9e1",
+    "contract_printed": true,
+    "prediction_output_root_present": true,
+    "prediction_jsonl_present": false
+  },
+  "raw_boundary_confirmation": {
+    "repo_metadata_only": true,
+    "raw_payloads_copied_into_repo": false,
+    "heldout_qa_jsonl_staged_outside_git": true,
+    "prediction_jsonl_in_repo": false
+  },
+  "next_owner_action": "Engineering or Phase3/4 must provide the accepted real inference producer command prefix, the outside-git candidate checkpoint payload path matching SHA 1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f, the outside-git stable baseline payload path matching SHA e0d1c66ac876c2b6fbbe9e88f1b02dd37201d8ffba10afcd44f1c558fc32f7c9, and a finite candidate_train_loss aligned to the candidate checkpoint.",
+  "user_action_required": false,
+  "nonclaims": [
+    "no_c5_pass",
+    "no_learning_or_model_quality_claim",
+    "no_remote_comet",
+    "no_phase3_readiness_claim",
+    "no_phase4_readiness_claim",
+    "not_100k_or_1m_phase2_authority"
+  ]
+}

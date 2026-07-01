@@ -1,13 +1,12 @@
 {
   "active_bottleneck": {
     "artifact_waiting_on": [
-      "Execution consumes Custodian freeze commit 634a06a6e66f7d99f88bcf5bba7cc83c916fd9e1 and verifies the three-file C5 prediction-payload contract pathset.",
-      "Heldout QA JSONL staged outside git at /tmp/polymath_c5/C5_after_C1/phase_C1_test.qa.jsonl or copied/symlinked outside git from the verified split SHA da41c5362398f24e0e0dd9df9a5cf0594435a455871fa77ab74d9312e6c8e9b2 with 53 rows.",
-      "Accepted real inference producer command implementing the appended argv protocol printed by scripts/host/run_c5_prediction_payloads.py --print-contract.",
-      "Outside-git candidate checkpoint payload path with SHA 1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f.",
-      "Outside-git stable baseline checkpoint payload path with SHA e0d1c66ac876c2b6fbbe9e88f1b02dd37201d8ffba10afcd44f1c558fc32f7c9.",
-      "Finite numeric candidate_train_loss aligned to the candidate checkpoint identity.",
-      "If inputs verify, outside-git candidate_predictions.jsonl and stable_baseline_predictions.jsonl, then polymath_c5_executed_metrics_v1 JSON and C5 validation report."
+      "Phase3/4 locates or declares the outside-git candidate checkpoint/adapter payload path whose file SHA is 1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f.",
+      "Phase3/4 locates or declares the outside-git stable-baseline checkpoint/adapter payload path whose file SHA is e0d1c66ac876c2b6fbbe9e88f1b02dd37201d8ffba10afcd44f1c558fc32f7c9.",
+      "Phase3/4 provides a finite candidate_train_loss aligned to the candidate checkpoint identity, or returns the exact report/command needed to recover it.",
+      "Engineering identifies an accepted real inference producer command prefix implementing the argv contract printed by scripts/host/run_c5_prediction_payloads.py --print-contract, or returns a smallest implementation pathset / exact runtime gap.",
+      "Execution reruns run_c5_prediction_payloads.py after payload paths, producer command, and train loss are ready, producing outside-git candidate_predictions.jsonl and stable_baseline_predictions.jsonl.",
+      "Execution then runs run_c5_heldout_eval.py and run_c5_eval.py to emit and validate polymath_c5_executed_metrics_v1 metadata."
     ],
     "c5_after_c1_eval_split_identity": {
       "artifact_path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/c5_eval_split_identity_C5_after_C1.json",
@@ -57,30 +56,34 @@
       "status": "pending_real_evaluator_run"
     },
     "c5_after_c1_execution_payload_probe": {
-      "commit_consumed": "bfe2cc642cfd6fe48255b30901d4f5461c817e32",
-      "first_missing_green_field": "candidate_predictions_jsonl_missing",
-      "heldout_split_verified_outside_git": {
-        "path": "/Users/Zer0pa/Polymat AI/runtime/tmp/c1_c4_integrated_20260630T164809Z/hf_packages/packages/C1/qa_bridge/phase_C1_test.qa.jsonl",
-        "rows": 53,
-        "sha256": "da41c5362398f24e0e0dd9df9a5cf0594435a455871fa77ab74d9312e6c8e9b2"
+      "schema_version": "polymath_c5_prediction_payload_probe_v1",
+      "artifact_path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/prediction_payload_probe/c5_prediction_payload_probe_20260701T023007Z.json",
+      "artifact_sha256": "f00951a83523e7fd19c4e2dc6db3103fb1d8107dab6f09d2f80d8bde37405036",
+      "status": "c5_after_c1_pending_real_inference_payloads",
+      "status_classification": "PENDING_ACTION",
+      "freeze_commit_consumed": "634a06a6e66f7d99f88bcf5bba7cc83c916fd9e1",
+      "first_missing_green_field": "candidate_checkpoint_payload_path_missing",
+      "verified_inputs": {
+        "heldout_qa_jsonl_path": "/tmp/polymath_c5/C5_after_C1/phase_C1_test.qa.jsonl",
+        "heldout_qa_jsonl_is_symlink": true,
+        "heldout_qa_jsonl_resolved_path": "/Users/Zer0pa/Polymat AI/runtime/tmp/c1_c4_integrated_20260630T164809Z/hf_packages/packages/C1/qa_bridge/phase_C1_test.qa.jsonl",
+        "heldout_qa_jsonl_sha256": "da41c5362398f24e0e0dd9df9a5cf0594435a455871fa77ab74d9312e6c8e9b2",
+        "heldout_qa_record_count": 53,
+        "candidate_checkpoint_identity_file_sha256": "92dbfe9d6db7d905b069ca4af3d7dda0a01ce7a179e8fae640465397d0f4cfc1",
+        "candidate_checkpoint_sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f",
+        "stable_baseline_identity_file_sha256": "7f65b37e8acc7659b6912fe7de3e46b3cffb9abca8a1c76331f1e48fd6c59fec",
+        "stable_baseline_sha256": "e0d1c66ac876c2b6fbbe9e88f1b02dd37201d8ffba10afcd44f1c558fc32f7c9"
       },
       "missing_inputs": [
-        "/tmp/polymath_c5/C5_after_C1/phase_C1_test.qa.jsonl",
+        "outside-git candidate checkpoint payload path matching SHA 1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f",
+        "outside-git stable baseline checkpoint payload path matching SHA e0d1c66ac876c2b6fbbe9e88f1b02dd37201d8ffba10afcd44f1c558fc32f7c9",
+        "accepted real inference producer command prefix",
+        "finite candidate_train_loss aligned to the candidate checkpoint",
         "/tmp/polymath_c5/C5_after_C1/candidate_predictions.jsonl",
-        "/tmp/polymath_c5/C5_after_C1/stable_baseline_predictions.jsonl",
-        "candidate_train_loss numeric value for --candidate-train-loss"
+        "/tmp/polymath_c5/C5_after_C1/stable_baseline_predictions.jsonl"
       ],
-      "nonclaims": [
-        "development-cycle evidence only unless stronger gates pass",
-        "no C5 pass",
-        "no learning/model-quality claim",
-        "no Phase3 readiness claim",
-        "no Phase4 readiness claim",
-        "not 100k/1M Phase2 authority",
-        "no Comet-backed accepted run claim yet"
-      ],
-      "raw_boundary": "No raw payloads copied into git. No phone/ADB/Termux, secrets, HF, or Comet used by Execution for this probe.",
-      "status": "c5_after_c1_pending_execution_payloads"
+      "raw_boundary": "No raw QA/prediction/checkpoint/adapter payloads copied into git. Heldout QA is symlinked outside git; prediction JSONL remains absent/outside git.",
+      "user_action_required": false
     },
     "c5_after_c1_fail_closed_preflight": {
       "artifact_path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/c5_eval_C5_after_C1_c1_c4_waveB_rerun_20260630T230411Z.json",
@@ -317,9 +320,9 @@
       "split_count": 5,
       "status": "c5_remaining_eval_split_identity_matrix_ready"
     },
-    "current_gate": "WaveB_C5_after_C1_real_prediction_payloads_pending_execution",
+    "current_gate": "WaveB_C5_after_C1_real_inference_payload_surface_pending",
     "dominant_failure_domain": "phase5_eval_failure",
-    "drift_deleted_or_pending": "Heldout metrics scorer drift is frozen; prediction-payload contract drift is locally implemented and pending custody freeze; real inference producer and outside-git prediction payloads remain pending after custody.",
+    "drift_deleted_or_pending": "C5 scorer and prediction-payload wrapper drift are frozen. Current pending drift/hardening edge is absence of a verified real inference payload/producer surface; stale completed markers are reclassified as orchestration_failure if not mobilized.",
     "engineering_evaluator_implementation": {
       "artifact_paths_in_progress": [
         "polymath_ai/polar/c5_heldout_eval.py",
@@ -416,7 +419,7 @@
       "existing_surface_role": "run_c5_eval.py validates supplied metrics JSON; it does not compute metrics",
       "status": "c5_after_c1_real_evaluator_surface_missing"
     },
-    "first_missing_green_field": "accepted_real_inference_producer_and_outside_git_payloads_for_C5_after_C1",
+    "first_missing_green_field": "candidate_checkpoint_payload_path_missing",
     "hardening_policy": {
       "deleted_or_repaired_drift": [
         "forced_non_packaged_child_exec_default_for_phase1",
@@ -430,15 +433,15 @@
       "next_hardening_surface": "Real C5 evaluator implementation and metrics schema: fail closed on absent command surface, identity mismatch, raw payload leakage, or metadata-derived metric substitution."
     },
     "lane_poll": {
-      "engineering_orchestrator": "complete for implementation: C5 heldout evaluator pathset ready for Custodian",
-      "execution_orchestrator": "waiting after probe: run evaluator after custody freeze and payload verification",
-      "phase34_engineer": "standby for review; no metrics from metadata",
+      "engineering_orchestrator": "nudged for real inference producer command/implementation",
+      "execution_orchestrator": "completed probe; waiting for payload paths, producer command, and train loss",
+      "phase34_engineer": "nudged for payload paths and candidate_train_loss",
       "pipeline_integrator": "waiting for emitted polymath_c5_executed_metrics_v1 artifact",
       "repo_custodian_replacement": "nudged: freeze exact C5 evaluator producer pathset plus probe/state mirrors if clean",
       "training_material_steward": "complete for material identities",
       "ui_engineer": "not nudged until C5 evidence-backed status exists"
     },
-    "last_concrete_action": "Repo Custodian committed and pushed the C5 prediction-payload contract at 634a06a6e66f7d99f88bcf5bba7cc83c916fd9e1 with the exact three-file contract pathset plus executive state mirror. Meta routed the post-custody Execution GO with frozen command surfaces, accepted hashes, fail-fast raw-boundary rules, and run_c5_prediction_payloads.py -> run_c5_heldout_eval.py -> run_c5_eval.py command chain.",
+    "last_concrete_action": "Execution consumed frozen C5 prediction-payload contract commit 634a06a6e66f7d99f88bcf5bba7cc83c916fd9e1, verified the contract and accepted C5_after_C1 identities, staged heldout QA outside git at /tmp with SHA da41c5362398f24e0e0dd9df9a5cf0594435a455871fa77ab74d9312e6c8e9b2 and 53 rows, and wrote metadata-only pending-input probe SHA f00951a83523e7fd19c4e2dc6db3103fb1d8107dab6f09d2f80d8bde37405036. No predictions or metrics were fabricated.",
     "lineage_drift_repair_status": {
       "commit": "ee74ae572322e05624deac6f6f8788c2c6e2f692",
       "proof_required": [
@@ -454,7 +457,7 @@
       ],
       "status": "source_repair_frozen_pending_execution_proof"
     },
-    "next_concrete_action": "Execution verifies commit 634a06a6e66f7d99f88bcf5bba7cc83c916fd9e1, the frozen prediction-payload contract hashes, the outside-git heldout split, candidate/stable checkpoint payload hashes, real inference producer command, and finite candidate_train_loss. If all inputs exist, Execution runs scripts/host/run_c5_prediction_payloads.py to generate outside-git candidate/stable prediction JSONL, then runs scripts/host/run_c5_heldout_eval.py and scripts/host/run_c5_eval.py. If any input is absent, Execution returns c5_after_c1_pending_real_inference_payloads with the exact missing field/path/action; identity mismatch is a true blocker.",
+    "next_concrete_action": "Phase3/4 returns exact outside-git candidate/stable payload paths matching the accepted hashes plus finite candidate_train_loss, or an exact PENDING_ACTION_EXECUTION_HASH_PROBE. Engineering returns an accepted real inference producer command prefix or a narrow implementation/runtime gap. When both are green, Execution runs run_c5_prediction_payloads.py, then run_c5_heldout_eval.py, then run_c5_eval.py.",
     "nonclaims": [
       "development-cycle evidence only unless stronger gates pass",
       "no C5 pass",
@@ -473,7 +476,7 @@
       "not 100k/1M Phase2 authority",
       "no Comet-backed accepted run claim yet"
     ],
-    "owner": "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c",
+    "owner": "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 for payload paths/train loss; Engineering Orchestrator 019f138b-d229-7640-98b7-2f185d6beae0 for producer command; Execution Orchestrator after both are green",
     "phase2_status_by_phase": {
       "C1": {
         "packets": 5180,
@@ -653,7 +656,7 @@
       "phase34": "raw PJP1, HTP raw output, OpenCL tensors, and adapters remain on device/Termux; repair must keep compact JSON only",
       "report_root_scan": "metadata-freeze report root had 179 tracked files and clean forbidden suffix scans; raw payloads not committed"
     },
-    "recursive_improvement_next_step": "Execution produces or fail-fast-locates real C5 prediction payload inputs; after executed metrics exist, Pipeline validates, Custodian freezes metadata, then route the measured weakest failure domain and rerun the smallest proof path.",
+    "recursive_improvement_next_step": "payload paths + producer command + train loss -> Execution generates prediction JSONL outside git -> heldout scorer emits polymath_c5_executed_metrics_v1 -> Pipeline validates -> Custodian freezes metadata -> route the measured weakest failure domain and rerun smallest proof path.",
     "repo_custody_state_freeze": {
       "branch": "origin/gemma4-megakernel-native-training",
       "commit": "3de535adec9219017565f71eddb5cf324d995528",
@@ -666,22 +669,22 @@
     },
     "run_label": "c1_c4_waveB_rerun_20260630T230411Z",
     "run_root": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z",
-    "status_classification": "PENDING_ACTION_EXECUTION_C5_REAL_INFERENCE_PAYLOADS",
+    "status_classification": "PENDING_ACTION_PHASE34_ENGINEERING_C5_REAL_INFERENCE_PAYLOADS",
     "threads_nudged_this_tick": [
-      "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: consume 634a06a freeze and run/fail-fast the C5_after_C1 prediction-payload -> heldout metrics -> C5 validation chain."
+      "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4: provide outside-git candidate/stable payload paths and candidate_train_loss, or exact hash-probe action.",
+      "Engineering Orchestrator 019f138b-d229-7640-98b7-2f185d6beae0: provide accepted real inference producer command prefix or exact implementation/runtime gap."
     ],
-    "timestamp_utc": "2026-07-01T02:27:57Z",
+    "timestamp_utc": "2026-07-01T02:35:16Z",
     "user_action_required": false
   },
   "active_watchdog_state": {
     "artifact_waiting_on": [
-      "Execution consumes Custodian freeze commit 634a06a6e66f7d99f88bcf5bba7cc83c916fd9e1 and verifies the three-file C5 prediction-payload contract pathset.",
-      "Heldout QA JSONL staged outside git at /tmp/polymath_c5/C5_after_C1/phase_C1_test.qa.jsonl or copied/symlinked outside git from the verified split SHA da41c5362398f24e0e0dd9df9a5cf0594435a455871fa77ab74d9312e6c8e9b2 with 53 rows.",
-      "Accepted real inference producer command implementing the appended argv protocol printed by scripts/host/run_c5_prediction_payloads.py --print-contract.",
-      "Outside-git candidate checkpoint payload path with SHA 1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f.",
-      "Outside-git stable baseline checkpoint payload path with SHA e0d1c66ac876c2b6fbbe9e88f1b02dd37201d8ffba10afcd44f1c558fc32f7c9.",
-      "Finite numeric candidate_train_loss aligned to the candidate checkpoint identity.",
-      "If inputs verify, outside-git candidate_predictions.jsonl and stable_baseline_predictions.jsonl, then polymath_c5_executed_metrics_v1 JSON and C5 validation report."
+      "Phase3/4 locates or declares the outside-git candidate checkpoint/adapter payload path whose file SHA is 1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f.",
+      "Phase3/4 locates or declares the outside-git stable-baseline checkpoint/adapter payload path whose file SHA is e0d1c66ac876c2b6fbbe9e88f1b02dd37201d8ffba10afcd44f1c558fc32f7c9.",
+      "Phase3/4 provides a finite candidate_train_loss aligned to the candidate checkpoint identity, or returns the exact report/command needed to recover it.",
+      "Engineering identifies an accepted real inference producer command prefix implementing the argv contract printed by scripts/host/run_c5_prediction_payloads.py --print-contract, or returns a smallest implementation pathset / exact runtime gap.",
+      "Execution reruns run_c5_prediction_payloads.py after payload paths, producer command, and train loss are ready, producing outside-git candidate_predictions.jsonl and stable_baseline_predictions.jsonl.",
+      "Execution then runs run_c5_heldout_eval.py and run_c5_eval.py to emit and validate polymath_c5_executed_metrics_v1 metadata."
     ],
     "c5_after_c1_eval_split_identity": {
       "artifact_path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/c5_eval_split_identity_C5_after_C1.json",
@@ -731,30 +734,34 @@
       "status": "pending_real_evaluator_run"
     },
     "c5_after_c1_execution_payload_probe": {
-      "commit_consumed": "bfe2cc642cfd6fe48255b30901d4f5461c817e32",
-      "first_missing_green_field": "candidate_predictions_jsonl_missing",
-      "heldout_split_verified_outside_git": {
-        "path": "/Users/Zer0pa/Polymat AI/runtime/tmp/c1_c4_integrated_20260630T164809Z/hf_packages/packages/C1/qa_bridge/phase_C1_test.qa.jsonl",
-        "rows": 53,
-        "sha256": "da41c5362398f24e0e0dd9df9a5cf0594435a455871fa77ab74d9312e6c8e9b2"
+      "schema_version": "polymath_c5_prediction_payload_probe_v1",
+      "artifact_path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/prediction_payload_probe/c5_prediction_payload_probe_20260701T023007Z.json",
+      "artifact_sha256": "f00951a83523e7fd19c4e2dc6db3103fb1d8107dab6f09d2f80d8bde37405036",
+      "status": "c5_after_c1_pending_real_inference_payloads",
+      "status_classification": "PENDING_ACTION",
+      "freeze_commit_consumed": "634a06a6e66f7d99f88bcf5bba7cc83c916fd9e1",
+      "first_missing_green_field": "candidate_checkpoint_payload_path_missing",
+      "verified_inputs": {
+        "heldout_qa_jsonl_path": "/tmp/polymath_c5/C5_after_C1/phase_C1_test.qa.jsonl",
+        "heldout_qa_jsonl_is_symlink": true,
+        "heldout_qa_jsonl_resolved_path": "/Users/Zer0pa/Polymat AI/runtime/tmp/c1_c4_integrated_20260630T164809Z/hf_packages/packages/C1/qa_bridge/phase_C1_test.qa.jsonl",
+        "heldout_qa_jsonl_sha256": "da41c5362398f24e0e0dd9df9a5cf0594435a455871fa77ab74d9312e6c8e9b2",
+        "heldout_qa_record_count": 53,
+        "candidate_checkpoint_identity_file_sha256": "92dbfe9d6db7d905b069ca4af3d7dda0a01ce7a179e8fae640465397d0f4cfc1",
+        "candidate_checkpoint_sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f",
+        "stable_baseline_identity_file_sha256": "7f65b37e8acc7659b6912fe7de3e46b3cffb9abca8a1c76331f1e48fd6c59fec",
+        "stable_baseline_sha256": "e0d1c66ac876c2b6fbbe9e88f1b02dd37201d8ffba10afcd44f1c558fc32f7c9"
       },
       "missing_inputs": [
-        "/tmp/polymath_c5/C5_after_C1/phase_C1_test.qa.jsonl",
+        "outside-git candidate checkpoint payload path matching SHA 1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f",
+        "outside-git stable baseline checkpoint payload path matching SHA e0d1c66ac876c2b6fbbe9e88f1b02dd37201d8ffba10afcd44f1c558fc32f7c9",
+        "accepted real inference producer command prefix",
+        "finite candidate_train_loss aligned to the candidate checkpoint",
         "/tmp/polymath_c5/C5_after_C1/candidate_predictions.jsonl",
-        "/tmp/polymath_c5/C5_after_C1/stable_baseline_predictions.jsonl",
-        "candidate_train_loss numeric value for --candidate-train-loss"
+        "/tmp/polymath_c5/C5_after_C1/stable_baseline_predictions.jsonl"
       ],
-      "nonclaims": [
-        "development-cycle evidence only unless stronger gates pass",
-        "no C5 pass",
-        "no learning/model-quality claim",
-        "no Phase3 readiness claim",
-        "no Phase4 readiness claim",
-        "not 100k/1M Phase2 authority",
-        "no Comet-backed accepted run claim yet"
-      ],
-      "raw_boundary": "No raw payloads copied into git. No phone/ADB/Termux, secrets, HF, or Comet used by Execution for this probe.",
-      "status": "c5_after_c1_pending_execution_payloads"
+      "raw_boundary": "No raw QA/prediction/checkpoint/adapter payloads copied into git. Heldout QA is symlinked outside git; prediction JSONL remains absent/outside git.",
+      "user_action_required": false
     },
     "c5_after_c1_fail_closed_preflight": {
       "artifact_path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/c5_eval_C5_after_C1_c1_c4_waveB_rerun_20260630T230411Z.json",
@@ -1025,9 +1032,9 @@
       "split_count": 5,
       "status": "c5_remaining_eval_split_identity_matrix_ready"
     },
-    "current_gate": "WaveB_C5_after_C1_real_prediction_payloads_pending_execution",
+    "current_gate": "WaveB_C5_after_C1_real_inference_payload_surface_pending",
     "dominant_failure_domain": "phase5_eval_failure",
-    "drift_deleted_or_pending": "Heldout metrics scorer drift is deleted and frozen; remaining drift is absence of a canonical prediction-payload producer/runtime contract for C5_after_C1.",
+    "drift_deleted_or_pending": "C5 scorer and prediction-payload wrapper drift are frozen. Current pending drift/hardening edge is absence of a verified real inference payload/producer surface; stale completed markers are reclassified as orchestration_failure if not mobilized.",
     "engineering_evaluator_implementation": {
       "artifact_paths_in_progress": [
         "polymath_ai/polar/c5_heldout_eval.py",
@@ -1126,7 +1133,7 @@
       "existing_surface_role": "run_c5_eval.py validates supplied metrics JSON; it does not compute metrics",
       "status": "c5_after_c1_real_evaluator_surface_missing"
     },
-    "first_missing_green_field": "accepted_real_inference_producer_and_outside_git_payloads_for_C5_after_C1",
+    "first_missing_green_field": "candidate_checkpoint_payload_path_missing",
     "hardening_policy": {
       "deleted_or_repaired_drift": [
         "forced_non_packaged_child_exec_default_for_phase1",
@@ -1140,15 +1147,15 @@
       "next_hardening_surface": "Real C5 evaluator implementation and metrics schema: fail closed on absent command surface, identity mismatch, raw payload leakage, or metadata-derived metric substitution."
     },
     "lane_poll": {
-      "engineering_orchestrator": "complete for implementation: C5 heldout evaluator pathset ready for Custodian",
-      "execution_orchestrator": "waiting after probe: run evaluator after custody freeze and payload verification",
-      "phase34_engineer": "standby for review; no metrics from metadata",
+      "engineering_orchestrator": "nudged for real inference producer command/implementation",
+      "execution_orchestrator": "completed probe; waiting for payload paths, producer command, and train loss",
+      "phase34_engineer": "nudged for payload paths and candidate_train_loss",
       "pipeline_integrator": "waiting for emitted polymath_c5_executed_metrics_v1 artifact",
       "repo_custodian_replacement": "nudged: freeze exact C5 evaluator producer pathset plus probe/state mirrors if clean",
       "training_material_steward": "complete for material identities",
       "ui_engineer": "not nudged until C5 evidence-backed status exists"
     },
-    "last_concrete_action": "Repo Custodian committed and pushed the C5 prediction-payload contract at 634a06a6e66f7d99f88bcf5bba7cc83c916fd9e1 with the exact three-file contract pathset plus executive state mirror. Meta routed the post-custody Execution GO with frozen command surfaces, accepted hashes, fail-fast raw-boundary rules, and run_c5_prediction_payloads.py -> run_c5_heldout_eval.py -> run_c5_eval.py command chain.",
+    "last_concrete_action": "Execution consumed frozen C5 prediction-payload contract commit 634a06a6e66f7d99f88bcf5bba7cc83c916fd9e1, verified the contract and accepted C5_after_C1 identities, staged heldout QA outside git at /tmp with SHA da41c5362398f24e0e0dd9df9a5cf0594435a455871fa77ab74d9312e6c8e9b2 and 53 rows, and wrote metadata-only pending-input probe SHA f00951a83523e7fd19c4e2dc6db3103fb1d8107dab6f09d2f80d8bde37405036. No predictions or metrics were fabricated.",
     "lineage_drift_repair_status": {
       "commit": "ee74ae572322e05624deac6f6f8788c2c6e2f692",
       "proof_required": [
@@ -1164,7 +1171,7 @@
       ],
       "status": "source_repair_frozen_pending_execution_proof"
     },
-    "next_concrete_action": "Execution verifies commit 634a06a6e66f7d99f88bcf5bba7cc83c916fd9e1, the frozen prediction-payload contract hashes, the outside-git heldout split, candidate/stable checkpoint payload hashes, real inference producer command, and finite candidate_train_loss. If all inputs exist, Execution runs scripts/host/run_c5_prediction_payloads.py to generate outside-git candidate/stable prediction JSONL, then runs scripts/host/run_c5_heldout_eval.py and scripts/host/run_c5_eval.py. If any input is absent, Execution returns c5_after_c1_pending_real_inference_payloads with the exact missing field/path/action; identity mismatch is a true blocker.",
+    "next_concrete_action": "Phase3/4 returns exact outside-git candidate/stable payload paths matching the accepted hashes plus finite candidate_train_loss, or an exact PENDING_ACTION_EXECUTION_HASH_PROBE. Engineering returns an accepted real inference producer command prefix or a narrow implementation/runtime gap. When both are green, Execution runs run_c5_prediction_payloads.py, then run_c5_heldout_eval.py, then run_c5_eval.py.",
     "nonclaims": [
       "development-cycle evidence only unless stronger gates pass",
       "no C5 pass",
@@ -1183,7 +1190,7 @@
       "not 100k/1M Phase2 authority",
       "no Comet-backed accepted run claim yet"
     ],
-    "owner": "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c",
+    "owner": "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 for payload paths/train loss; Engineering Orchestrator 019f138b-d229-7640-98b7-2f185d6beae0 for producer command; Execution Orchestrator after both are green",
     "phase2_status_by_phase": {
       "C1": {
         "packets": 5180,
@@ -1363,7 +1370,7 @@
       "phase34": "raw PJP1, HTP raw output, OpenCL tensors, and adapters remain on device/Termux; repair must keep compact JSON only",
       "report_root_scan": "metadata-freeze report root had 179 tracked files and clean forbidden suffix scans; raw payloads not committed"
     },
-    "recursive_improvement_next_step": "Execution produces or fail-fast-locates real C5 prediction payload inputs; after executed metrics exist, Pipeline validates, Custodian freezes metadata, then route the measured weakest failure domain and rerun the smallest proof path.",
+    "recursive_improvement_next_step": "payload paths + producer command + train loss -> Execution generates prediction JSONL outside git -> heldout scorer emits polymath_c5_executed_metrics_v1 -> Pipeline validates -> Custodian freezes metadata -> route the measured weakest failure domain and rerun smallest proof path.",
     "repo_custody_state_freeze": {
       "branch": "origin/gemma4-megakernel-native-training",
       "commit": "3de535adec9219017565f71eddb5cf324d995528",
@@ -1376,11 +1383,12 @@
     },
     "run_label": "c1_c4_waveB_rerun_20260630T230411Z",
     "run_root": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z",
-    "status_classification": "PENDING_ACTION_EXECUTION_C5_REAL_INFERENCE_PAYLOADS",
+    "status_classification": "PENDING_ACTION_PHASE34_ENGINEERING_C5_REAL_INFERENCE_PAYLOADS",
     "threads_nudged_this_tick": [
-      "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: consume 634a06a freeze and run/fail-fast the C5_after_C1 prediction-payload -> heldout metrics -> C5 validation chain."
+      "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4: provide outside-git candidate/stable payload paths and candidate_train_loss, or exact hash-probe action.",
+      "Engineering Orchestrator 019f138b-d229-7640-98b7-2f185d6beae0: provide accepted real inference producer command prefix or exact implementation/runtime gap."
     ],
-    "timestamp_utc": "2026-07-01T02:27:57Z",
+    "timestamp_utc": "2026-07-01T02:35:16Z",
     "user_action_required": false
   },
   "driver_tick_history": [
@@ -2561,6 +2569,12 @@
   },
   "last_driver_actions": [
     {
+      "timestamp_utc": "2026-07-01T02:35:16Z",
+      "owner": "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 + Engineering Orchestrator 019f138b-d229-7640-98b7-2f185d6beae0",
+      "action": "recorded Execution pending real-inference payload probe f00951a83523e7fd19c4e2dc6db3103fb1d8107dab6f09d2f80d8bde37405036; reclassified owner from Execution to Phase3/4 payload paths/train loss plus Engineering producer command; nudged both existing threads",
+      "user_action_required": false
+    },
+    {
       "action": "recorded Repo Custodian prediction-payload contract freeze at 634a06a6e66f7d99f88bcf5bba7cc83c916fd9e1; shifted active owner to Execution and nudged Execution with the real inference payload production plus heldout scoring plus C5 validation chain",
       "owner": "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c",
       "timestamp_utc": "2026-07-01T02:27:57Z",
@@ -2764,12 +2778,11 @@
   },
   "prd_watchdog": {
     "artifact_waiting_on": [
-      "Repo Custodian freeze of the three-file C5_after_C1 prediction-payload contract pathset",
-      "After custody: accepted real inference producer command implementing the appended argv protocol",
-      "After custody: outside-git candidate payload path with SHA 1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f",
-      "After custody: outside-git stable baseline payload path with SHA e0d1c66ac876c2b6fbbe9e88f1b02dd37201d8ffba10afcd44f1c558fc32f7c9",
-      "After custody: heldout QA temp path matching SHA da41c5362398f24e0e0dd9df9a5cf0594435a455871fa77ab74d9312e6c8e9b2",
-      "After custody: finite numeric candidate_train_loss aligned to candidate checkpoint identity"
+      "outside-git candidate/stable payload paths",
+      "finite candidate_train_loss",
+      "accepted real inference producer command",
+      "outside-git prediction JSONL",
+      "polymath_c5_executed_metrics_v1 JSON"
     ],
     "c5_prediction_payload_contract": {
       "contract_policy": "guarded bridge only; it runs a supplied real inference producer twice, hash-checks outside-git candidate/stable payloads against identities, validates prediction JSONL schema and heldout record coverage, requires finite candidate_train_loss, and emits metadata-only report while raw prediction JSONL remains outside git",
@@ -2791,12 +2804,12 @@
       "status": "pathset_ready_for_custodian",
       "status_classification": "PENDING_ACTION_REPO_CUSTODY_C5_PREDICTION_PAYLOAD_CONTRACT"
     },
-    "current_gate": "WaveB_C5_after_C1_prediction_payload_contract_pending_custody_freeze",
+    "current_gate": "WaveB_C5_after_C1_real_inference_payload_surface_pending",
     "dominant_failure_domain": "phase5_eval_failure",
-    "drift_deleted_or_pending": "Heldout metrics scorer drift is frozen; prediction-payload contract drift is locally implemented and pending custody freeze; real inference producer and outside-git prediction payloads remain pending after custody.",
-    "first_missing_green_field": "repo_custody_freeze_of_c5_prediction_payload_contract_pathset",
-    "last_concrete_action": "Engineering found no existing valid C5 QA prediction producer: older Phase13/14 tools evaluate top-k/KL over token caches and teacher shards and do not emit C1 QA record_id,prediction,loss,confidence JSONL. Engineering implemented a fail-closed canonical prediction-payload contract pathset, verified py_compile, diff check, --print-contract, 23 focused tests, clean secret scan, and a contract-only probe that exits 2 by design without an inference producer.",
-    "next_concrete_action": "Repo Custodian verifies/stages/commits/pushes exactly polymath_ai/polar/c5_prediction_payloads.py, scripts/host/run_c5_prediction_payloads.py, and tests/test_c5_prediction_payloads.py. After custody, Execution consumes the frozen runner, verifies outside-git heldout/checkpoint/baseline payloads plus candidate_train_loss and accepted inference producer command, generates candidate/stable prediction JSONL under /tmp, then runs the frozen C5 heldout scorer and validator.",
+    "drift_deleted_or_pending": "pending real inference payload/producer surface; no metrics may be derived from metadata",
+    "first_missing_green_field": "candidate_checkpoint_payload_path_missing",
+    "last_concrete_action": "Execution produced pending real-inference payload probe f00951a83523e7fd19c4e2dc6db3103fb1d8107dab6f09d2f80d8bde37405036 after consuming 634a06a and verifying heldout/identity inputs.",
+    "next_concrete_action": "Phase3/4 supplies payload paths/train loss; Engineering supplies producer command; Execution runs prediction payloads and C5 scorer after those green fields exist.",
     "nonclaims_preserved": [
       "development-cycle evidence only unless stronger gates pass",
       "no C5 pass",
@@ -2806,11 +2819,12 @@
       "not 100k/1M Phase2 authority",
       "no Comet-backed accepted run claim yet"
     ],
-    "owner": "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050",
-    "recursive_improvement_next_step": "freeze prediction contract -> Execution generates prediction payloads via real inference producer -> run heldout scorer -> Pipeline validates C5 metrics -> route measured repair -> rerun smallest proof path",
-    "status_classification": "PENDING_ACTION_REPO_CUSTODY_C5_PREDICTION_PAYLOAD_CONTRACT",
+    "owner": "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 + Engineering Orchestrator 019f138b-d229-7640-98b7-2f185d6beae0",
+    "recursive_improvement_next_step": "produce prediction payloads -> score C5 -> validate -> route measured repair -> rerun smallest proof path",
+    "status_classification": "PENDING_ACTION_PHASE34_ENGINEERING_C5_REAL_INFERENCE_PAYLOADS",
     "threads_nudged_this_tick": [
-      "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: freeze C5_after_C1 prediction-payload contract pathset after Engineering returned custody-ready implementation"
+      "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4",
+      "Engineering Orchestrator 019f138b-d229-7640-98b7-2f185d6beae0"
     ],
     "user_action_required": false
   },
@@ -2830,5 +2844,5 @@
     ]
   },
   "schema_version": "polymath_executive_delivery_state_v1",
-  "updated_at_utc": "2026-07-01T02:27:57Z"
+  "updated_at_utc": "2026-07-01T02:35:16Z"
 }
