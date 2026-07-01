@@ -14,7 +14,6 @@ import argparse
 import hashlib
 import json
 import re
-import sys
 from pathlib import Path
 from typing import Any
 
@@ -85,6 +84,20 @@ def sha256_bytes(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 
 
+def sha256_file_range(path: Path, start: int, length: int) -> str:
+    hasher = hashlib.sha256()
+    remaining = length
+    with path.open("rb") as handle:
+        handle.seek(start)
+        while remaining:
+            chunk = handle.read(min(1024 * 1024, remaining))
+            if not chunk:
+                raise ValueError("safetensors_tensor_range_truncated")
+            hasher.update(chunk)
+            remaining -= len(chunk)
+    return hasher.hexdigest()
+
+
 def write_json(path: Path, payload: dict[str, Any]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
@@ -140,6 +153,11 @@ def schema_contract() -> dict[str, Any]:
             "model_safetensors": "outside-git single safetensors snapshot",
             "output_dir": "outside-git metadata-only component pack directory",
         },
+        "runtime_dependencies": {
+            "python": "stdlib only for safetensors metadata/range parsing",
+            "torch_required": False,
+            "safetensors_python_package_required": False,
+        },
         "decoder_manifest_schema": {
             "schema_version": DECODER_MANIFEST_SCHEMA,
             "model_id": MODEL_ID,
@@ -171,26 +189,83 @@ def schema_contract() -> dict[str, Any]:
     }
 
 
-def normalize_torch_dtype(dtype: Any) -> str:
-    value = str(dtype).replace("torch.", "")
-    if value in {"bfloat16", "bf16"}:
+def normalize_safetensors_dtype(dtype: Any) -> str:
+    value = str(dtype).replace("torch.", "").upper()
+    if value in {"BF16", "BFloat16".upper()}:
         return "bf16"
-    if value in {"float16", "half", "f16"}:
+    if value in {"F16", "FLOAT16", "HALF"}:
         return "f16"
-    if value in {"float32", "float", "f32"}:
+    if value in {"F32", "FLOAT32", "FLOAT"}:
         return "f32"
-    return value
+    return value.lower()
 
 
-def tensor_bytes_for_identity(tensor: Any, dtype: str) -> bytes:
-    import torch
+def read_safetensors_header(path: Path) -> tuple[dict[str, Any], int]:
+    with path.open("rb") as handle:
+        header_len_bytes = handle.read(8)
+        if len(header_len_bytes) != 8:
+            raise ValueError("safetensors_header_length_missing")
+        header_len = int.from_bytes(header_len_bytes, "little", signed=False)
+        if header_len <= 0:
+            raise ValueError("safetensors_header_length_invalid")
+        if header_len > 256 * 1024 * 1024:
+            raise ValueError("safetensors_header_length_unbounded")
+        header_bytes = handle.read(header_len)
+        if len(header_bytes) != header_len:
+            raise ValueError("safetensors_header_truncated")
+    try:
+        header = json.loads(header_bytes.decode("utf-8"))
+    except (UnicodeDecodeError, json.JSONDecodeError) as error:
+        raise ValueError("safetensors_header_json_invalid") from error
+    if not isinstance(header, dict):
+        raise ValueError("safetensors_header_not_object")
+    return header, 8 + header_len
 
-    contiguous = tensor.detach().cpu().contiguous()
-    if dtype in {"bf16", "f16"}:
-        return contiguous.view(torch.int16).numpy().astype("<i2", copy=False).tobytes()
-    if dtype == "f32":
-        return contiguous.to(torch.float32).numpy().astype("<f4", copy=False).tobytes()
-    return contiguous.numpy().tobytes()
+
+def tensor_entry(header: dict[str, Any], key: str) -> dict[str, Any]:
+    entry = header.get(key)
+    if not isinstance(entry, dict):
+        raise ValueError(f"{key}_missing")
+    dtype = normalize_safetensors_dtype(entry.get("dtype"))
+    shape = entry.get("shape")
+    offsets = entry.get("data_offsets")
+    if not isinstance(shape, list) or not all(isinstance(value, int) for value in shape):
+        raise ValueError(f"{key}_shape_invalid")
+    if (
+        not isinstance(offsets, list)
+        or len(offsets) != 2
+        or not all(isinstance(value, int) for value in offsets)
+        or offsets[0] < 0
+        or offsets[1] < offsets[0]
+    ):
+        raise ValueError(f"{key}_data_offsets_invalid")
+    return {
+        "dtype": dtype,
+        "shape": shape,
+        "data_offsets": offsets,
+    }
+
+
+def extract_model_metadata(path: Path) -> tuple[list[dict[str, Any]], str, str]:
+    header, tensor_data_start = read_safetensors_header(path)
+    keys = [key for key in header if key != "__metadata__"]
+    if EMBED_TOKENS_KEY not in keys:
+        raise ValueError("embed_tokens_weight_missing")
+    layers = build_layer_inventory(keys)
+    entry = tensor_entry(header, EMBED_TOKENS_KEY)
+    shape = entry["shape"]
+    dtype = entry["dtype"]
+    if shape != [VOCAB_SIZE, HIDDEN_SIZE]:
+        raise ValueError("embed_tokens_shape_mismatch")
+    if dtype not in {"bf16", "f16", "f32"}:
+        raise ValueError("embed_tokens_dtype_unsupported")
+    start, stop = entry["data_offsets"]
+    absolute_start = tensor_data_start + start
+    length = stop - start
+    if path.stat().st_size < tensor_data_start + stop:
+        raise ValueError("embed_tokens_range_exceeds_file_size")
+    tensor_sha256 = sha256_file_range(path, absolute_start, length)
+    return layers, dtype, tensor_sha256
 
 
 def build_layer_inventory(keys: list[str]) -> list[dict[str, Any]]:
@@ -224,6 +299,7 @@ def build_lm_head_identity(
         "dtype": dtype,
         "shape": [VOCAB_SIZE, HIDDEN_SIZE],
         "sha256": tensor_sha256,
+        "sha256_kind": "safetensors_raw_tensor_bytes",
         "vocab_size": VOCAB_SIZE,
         "logits_vocabulary_alignment": {
             "tokenizer_vocab_hex_tsv_sha256": tokenizer_vocab_sha256,
@@ -349,40 +425,12 @@ def export_component_pack(args: argparse.Namespace) -> int:
     assert args.model_safetensors is not None
     assert args.out is not None
     try:
-        from safetensors import safe_open
-    except ImportError:
-        return fail_closed("safetensors_python_package_missing", ["safetensors_python_package_missing"])
-
-    try:
-        with safe_open(args.model_safetensors, framework="pt", device="cpu") as model:
-            keys = list(model.keys())
-            if EMBED_TOKENS_KEY not in keys:
-                return fail_closed("embed_tokens_weight_missing", ["embed_tokens_weight_missing"])
-            try:
-                layers = build_layer_inventory(keys)
-            except ValueError as error:
-                return fail_closed(str(error), [str(error)])
-
-            embed_tokens = model.get_tensor(EMBED_TOKENS_KEY)
-            shape = list(embed_tokens.shape)
-            dtype = normalize_torch_dtype(embed_tokens.dtype)
-            if shape != [VOCAB_SIZE, HIDDEN_SIZE]:
-                return fail_closed(
-                    "embed_tokens_shape_mismatch",
-                    ["embed_tokens_shape_mismatch"],
-                    extra={"observed_shape": shape},
-                )
-            if dtype not in {"bf16", "f16", "f32"}:
-                return fail_closed(
-                    "embed_tokens_dtype_unsupported",
-                    ["embed_tokens_dtype_unsupported"],
-                    extra={"observed_dtype": dtype},
-                )
-            lm_head_sha256 = sha256_bytes(tensor_bytes_for_identity(embed_tokens, dtype))
+        layers, dtype, lm_head_sha256 = extract_model_metadata(args.model_safetensors)
     except Exception as error:  # noqa: BLE001 - exporter must convert runtime failures into metadata.
+        first_missing = str(error) if str(error) else "model_safetensors_read_failed"
         return fail_closed(
-            "model_safetensors_read_failed",
-            ["model_safetensors_read_failed"],
+            first_missing,
+            [first_missing],
             extra={"error": str(error)},
         )
 
@@ -433,6 +481,7 @@ def export_component_pack(args: argparse.Namespace) -> int:
         },
         "source_model_safetensors_sha256": source_model_sha256,
         "lm_head_unembedding_sha256": lm_head_sha256,
+        "lm_head_unembedding_sha256_kind": "safetensors_raw_tensor_bytes",
         "raw_boundary_proof": {
             "raw_model_payload_copied_to_git": False,
             "raw_tensor_payload_copied_to_git": False,

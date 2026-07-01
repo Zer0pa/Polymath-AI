@@ -1,0 +1,98 @@
+{
+  "schema_version": "polymath_c5_after_c1_phone_termux_hf_export_route_v1",
+  "lane": "engineering_model_source_export_route",
+  "status": "c5_after_c1_phone_termux_exporter_hardening_ready_for_custodian",
+  "status_classification": "PENDING_ACTION_CUSTODY_THEN_EXECUTION_PHONE_TERMUX_DOWNLOAD_EXPORT",
+  "current_gate": "WaveB_C5_after_C1_model_source_export_pending",
+  "route_correction": {
+    "old_drift": "Mac-local model-source waiting path; Mac has no space and phone is the correct execution/storage surface.",
+    "new_route": "Phone/Termux-owned HF model.safetensors download and metadata-only component export.",
+    "hf_metadata_probe_result": {
+      "model_id": "google/gemma-4-E4B",
+      "revision": "7aa32e6889efd6300124851b164f8b364314c3d8",
+      "gated": false,
+      "model_safetensors_exists": true,
+      "model_safetensors_size_bytes": 15992595884,
+      "token_required_for_metadata_head": false
+    }
+  },
+  "mobilized_threads": {
+    "execution_orchestrator": "019f138c-fb51-7c53-a41a-ab8eac950d9c",
+    "phase34_engineer": "019f13da-d897-7ba2-8ed1-b959892f5ed4",
+    "pipeline_integrator": "019f138c-35b6-73e1-b26d-3db8c59cf850",
+    "repo_custodian": "019f1ac2-0f0f-7721-bf46-ad402dbd9050"
+  },
+  "custody_pathset": {
+    "exporter": {
+      "path": "/Users/Zer0pa/Polymat AI/Polymath-AI/integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py",
+      "sha256": "1f119fac8d654fdb3a8e8357c5de131190e8de04dc67f904c5e28143c6012143"
+    },
+    "test": {
+      "path": "/Users/Zer0pa/Polymat AI/Polymath-AI/tests/test_c5_full_decoder_exporter.py",
+      "sha256": "3386b13f52b2e6d7b357c50a8da3789fecffda94d5f096d1e214e59f0c0f7d42"
+    }
+  },
+  "exporter_hardening": {
+    "torch_required": false,
+    "safetensors_python_package_required": false,
+    "implementation": "stdlib safetensors header parsing plus direct byte-range SHA-256 for model.language_model.embed_tokens.weight",
+    "lm_head_sha256_kind": "safetensors_raw_tensor_bytes",
+    "raw_payload_written_to_git": false
+  },
+  "phone_inventory_before_download": {
+    "adb_device": "FY25013101C8",
+    "public_roots_result": "only historical layer0/layer1 and streamed two-layer assets found",
+    "termux_private_result": "no full model/component manifests; one 16-byte pytest smoke.safetensors false positive",
+    "full_model_present_before_download": false
+  },
+  "execution_termux_command_plan": {
+    "storage_probe": "df -h \"$HOME\" /data/local/tmp /sdcard/Download",
+    "preferred_model_dir": "$HOME/polymath_model_sources/gemma4_e4b_7aa32e6889efd6300124851b164f8b364314c3d8",
+    "fallback_model_dir_if_home_space_low": "/sdcard/Download/polymath_model_sources/gemma4_e4b_7aa32e6889efd6300124851b164f8b364314c3d8",
+    "download_url": "https://huggingface.co/google/gemma-4-E4B/resolve/7aa32e6889efd6300124851b164f8b364314c3d8/model.safetensors",
+    "download_command_no_token_first": "mkdir -p \"$MODEL_DIR\" && cd \"$MODEL_DIR\" && curl -L -C - --fail --retry 5 --retry-delay 15 -o model.safetensors https://huggingface.co/google/gemma-4-E4B/resolve/7aa32e6889efd6300124851b164f8b364314c3d8/model.safetensors",
+    "download_token_rule": "HF metadata says gated=false; use no-token curl first. If HTTP 401/403 occurs, use Termux-local HF token without printing it; do not copy token into reports.",
+    "post_download_metadata": "ls -ln model.safetensors && sha256sum model.safetensors > model.safetensors.sha256",
+    "export_command_after_custody": "python3 ~/Polymath-AI/integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py --model-safetensors \"$MODEL_DIR/model.safetensors\" --out \"$HOME/polymath_c5/C5_after_C1/full_decoder_component_pack\" --candidate-adapter-sha 1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f --stable-baseline-sha e0d1c66ac876c2b6fbbe9e88f1b02dd37201d8ffba10afcd44f1c558fc32f7c9",
+    "expected_export_outputs": [
+      "$HOME/polymath_c5/C5_after_C1/full_decoder_component_pack/decoder_manifest.json",
+      "$HOME/polymath_c5/C5_after_C1/full_decoder_component_pack/adapter_site_policy.json",
+      "$HOME/polymath_c5/C5_after_C1/full_decoder_component_pack/export_report.json"
+    ]
+  },
+  "first_missing_green_field": "custody_freeze_for_phone_compatible_exporter",
+  "first_missing_green_field_after_custody": "phone_termux_model_safetensors_download_pending",
+  "first_unresolved_technical_failure_after_valid_schema_paths": "full_decoder_logits_generation_not_implemented_after_valid_schema_paths",
+  "next_action": {
+    "repo_custodian": "Freeze exporter/test pathset so Execution runs a committed phone-compatible exporter.",
+    "execution_orchestrator": "Run Termux storage probe, download pinned model.safetensors to phone outside git, run exporter, return metadata hashes only.",
+    "phase34_engineer": "Prepare/verify native --run-c5-qa-predict consumer once decoder_manifest and adapter_site_policy exist.",
+    "pipeline_integrator": "Track green fields for phone-termux download/export rather than Mac-local model source."
+  },
+  "verification_commands": [
+    "python3.11 -m py_compile integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py tests/test_c5_full_decoder_exporter.py -> pass",
+    "git diff --check -- integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py tests/test_c5_full_decoder_exporter.py -> pass",
+    "python3.11 -m pytest -q tests/test_c5_full_decoder_exporter.py -> 7 passed",
+    "python3.11 -m pytest -q tests/test_c5_full_decoder_exporter.py tests/test_c5_phase34_qa_inference_producer.py -> 14 passed",
+    "python3.11 integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py --print-schema -> reports torch_required=false and safetensors_python_package_required=false"
+  ],
+  "raw_boundary_proof": {
+    "raw_model_payload_pulled_to_mac": false,
+    "raw_model_payload_copied_to_git": false,
+    "raw_tensor_payload_copied_to_git": false,
+    "repo_pathset_contains_source_and_tests_only": true
+  },
+  "user_action_required": false,
+  "nonclaims": [
+    "no phone model download completed in Engineering lane",
+    "no decoder component pack exported yet",
+    "no decoder_manifest emitted from the real model yet",
+    "no logits emitted",
+    "no prediction JSONL emitted",
+    "no C5 pass",
+    "no loss, confidence, candidate_train_loss, or C5 metrics fabricated",
+    "no bridge MSE relabeled as C5 loss",
+    "no HF token printed or sourced into reports",
+    "no Comet/API call"
+  ]
+}

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import importlib.util
+import hashlib
 import json
 import subprocess
 from pathlib import Path
@@ -42,6 +43,8 @@ def test_c5_full_decoder_exporter_prints_schema_contract() -> None:
     assert contract["decoder_manifest_schema"]["decoder"]["logits_vocabulary_size"] == 262144
     assert contract["decoder_manifest_schema"]["lm_head"]["source"] == "tied_word_embeddings"
     assert contract["adapter_site_policy_schema"]["bridge_mse_is_c5_loss"] is False
+    assert contract["runtime_dependencies"]["torch_required"] is False
+    assert contract["runtime_dependencies"]["safetensors_python_package_required"] is False
 
 
 def test_c5_full_decoder_exporter_missing_model_fails_closed(tmp_path: Path) -> None:
@@ -100,6 +103,46 @@ def test_c5_full_decoder_exporter_rejects_repo_output() -> None:
     blockers = json.loads(result.stdout)["blockers"]
     assert "output_dir_inside_git_worktree" in blockers
     assert not repo_output.exists()
+
+
+def test_c5_full_decoder_exporter_writes_metadata_from_mock_safetensors(tmp_path: Path) -> None:
+    model = tmp_path / "model.safetensors"
+    output_dir = tmp_path / "component_pack"
+    _write_mock_full_decoder_safetensors(model, embed_bytes=b"abcd")
+
+    result = subprocess.run(
+        [
+            "python3.11",
+            str(EXPORTER),
+            "--model-safetensors",
+            str(model),
+            "--out",
+            str(output_dir),
+            "--candidate-adapter-sha",
+            VALID_SHA,
+            "--stable-baseline-sha",
+            VALID_STABLE_SHA,
+        ],
+        cwd=ROOT,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+
+    assert result.returncode == 0, result.stderr + result.stdout
+    stdout = json.loads(result.stdout)
+    assert stdout["status"] == "created"
+    decoder_manifest = json.loads((output_dir / "decoder_manifest.json").read_text())
+    adapter_policy = json.loads((output_dir / "adapter_site_policy.json").read_text())
+    export_report = json.loads((output_dir / "export_report.json").read_text())
+
+    assert decoder_manifest["schema_version"] == "polymath_c5_full_decoder_manifest_v1"
+    assert decoder_manifest["decoder"]["num_hidden_layers"] == 42
+    assert len(decoder_manifest["decoder"]["layer_inventory"]) == 42
+    assert decoder_manifest["lm_head"]["sha256"] == hashlib.sha256(b"abcd").hexdigest()
+    assert decoder_manifest["lm_head"]["sha256_kind"] == "safetensors_raw_tensor_bytes"
+    assert adapter_policy["bridge_mse_is_c5_loss"] is False
+    assert export_report["lm_head_unembedding_sha256_kind"] == "safetensors_raw_tensor_bytes"
 
 
 def test_c5_full_decoder_manifest_builder_schema() -> None:
@@ -170,3 +213,21 @@ def test_c5_full_decoder_adapter_policy_preserves_bridge_mse_nonclaim() -> None:
     assert policy["output_shape"] == [1, 16, 2560]
     assert policy["bridge_mse_is_c5_loss"] is False
     assert policy["qa_loss_source"] == "teacher_forced_answer_token_nll_from_full_decoder_logits"
+
+
+def _write_mock_full_decoder_safetensors(path: Path, *, embed_bytes: bytes) -> None:
+    header = {
+        "model.language_model.embed_tokens.weight": {
+            "dtype": "BF16",
+            "shape": [262144, 2560],
+            "data_offsets": [0, len(embed_bytes)],
+        }
+    }
+    for layer_index in range(42):
+        header[f"model.language_model.layers.{layer_index}.mock.weight"] = {
+            "dtype": "BF16",
+            "shape": [1],
+            "data_offsets": [len(embed_bytes), len(embed_bytes)],
+        }
+    header_bytes = json.dumps(header, separators=(",", ":")).encode("utf-8")
+    path.write_bytes(len(header_bytes).to_bytes(8, "little") + header_bytes + embed_bytes)
