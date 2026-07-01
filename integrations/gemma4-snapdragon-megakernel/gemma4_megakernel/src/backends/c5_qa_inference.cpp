@@ -255,6 +255,18 @@ void append_decoder_manifest_blockers(std::vector<std::string>& blockers,
     if (!contains_json_unsigned_pair(text, "logits_vocabulary_size", kGemma4E4bVocabSize)) {
       blockers.push_back("decoder_manifest_decoder_logits_vocabulary_size_mismatch");
     }
+    if (!contains_json_key(text, "layer_inventory")) {
+      blockers.push_back("decoder_manifest_layer_inventory_missing_or_incomplete");
+    }
+    if (!contains_json_key(text, "source_model_safetensors")) {
+      blockers.push_back("decoder_manifest_source_model_safetensors_missing");
+    }
+    if (!contains_json_key(text, "architecture_config")) {
+      blockers.push_back("decoder_manifest_architecture_config_missing");
+    }
+    if (!contains_json_key(text, "tensor_role_inventory")) {
+      blockers.push_back("decoder_manifest_tensor_role_inventory_missing");
+    }
     if (contains_json_bool_pair(text, "materializes_full_bsv_logits", true)) {
       blockers.push_back("decoder_manifest_full_bsv_logits_materialization_forbidden");
     }

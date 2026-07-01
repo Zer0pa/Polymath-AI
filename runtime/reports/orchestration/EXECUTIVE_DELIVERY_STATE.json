@@ -1,9 +1,10 @@
 {
   "active_bottleneck": {
     "artifact_waiting_on": [
-      "Phase3/4/Engineering implement the native full-decoder logits runtime path behind the existing C5 QA predict runner surface.",
-      "Repo Custodian freezes the metadata-only native probe report and central state mirror.",
-      "Execution reruns the same bounded C5 QA predict probe after the native logits patch and custody freeze."
+      "Repo Custodian freeze of EXECUTIVE_DELIVERY_STATE.json, EXECUTIVE_DELIVERY_STATE.md, and the Phase3/4 native logits contract patch pathset.",
+      "Engineering exporter emits a schema-complete full decoder component pack with source_model_safetensors, architecture_config, and tensor_role_inventory.",
+      "Phase3/4 lands safetensors_reader plus streamed/chunked c5_full_decoder_runtime and replaces only the terminal full_decoder_logits_generation_not_implemented branch.",
+      "Execution rebuilds/copies the runner and reruns the same bounded C5_after_C1 native QA predict probe after custody and runtime patch."
     ],
     "authorization_needed": "none; native implementation work is under current GO and must preserve raw/secrets boundary",
     "c5_after_c1_c5_qa_runtime_fail_closed_pathset": {
@@ -851,11 +852,11 @@
       "status": "c5_full_decoder_failure_artifacts_and_state_pending_custody",
       "user_action_required": false
     },
-    "current_gate": "WaveB_C5_after_C1_native_full_decoder_logits_implementation_failure",
+    "current_gate": "WaveB_C5_after_C1_native_logits_contract_patch_custody_pending",
     "custody_commit_latest": "bb8105a2bc91b6c9b0993603e14b49d0a5730f8d",
     "custody_status_latest": "c5_decoder_runtime_owner_state_committed_pushed",
     "dominant_failure_domain": "phase5_eval_failure",
-    "drift_deleted_or_pending": "Runner build, heldout staging, model download, and component-pack export blockers are superseded by hashes and a real probe. The remaining drift is the deliberate native fail-closed logits body; bridge MSE remains forbidden as C5 loss.",
+    "drift_deleted_or_pending": "The generic native full_decoder_logits_generation_not_implemented stop is now hardened into explicit manifest-contract fields: decoder_manifest_architecture_config_missing and decoder_manifest_tensor_role_inventory_missing. Remaining drift is pending exporter/runtime work for architecture/tensor-role inventory, safetensors range reading, and streamed decoder logits; bridge MSE remains forbidden as C5 loss.",
     "engineering_evaluator_implementation": {
       "artifact_paths_in_progress": [
         "polymath_ai/polar/c5_heldout_eval.py",
@@ -962,10 +963,10 @@
       "existing_surface_role": "run_c5_eval.py validates supplied metrics JSON; it does not compute metrics",
       "status": "c5_after_c1_real_evaluator_surface_missing"
     },
-    "first_missing_green_field": "full_decoder_logits_generation_not_implemented",
+    "first_missing_green_field": "repo_custody_freeze_native_full_decoder_logits_contract_patch",
     "first_missing_green_field_after_custody_until_model_source_available": "model_safetensors_missing",
     "first_unresolved_technical_failure_after_schema_paths": "full_decoder_logits_generation_not_implemented_after_valid_schema_paths",
-    "first_unresolved_technical_failure_after_valid_schema_paths": "full_decoder_logits_generation_not_implemented_after_valid_schema_paths",
+    "first_unresolved_technical_failure_after_valid_schema_paths": "c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land",
     "hardening_policy": {
       "deleted_or_repaired_drift": [
         "forced_non_packaged_child_exec_default_for_phase1",
@@ -993,7 +994,7 @@
       "training_material_steward": "complete for material identities",
       "ui_engineer": "not nudged until C5 evidence-backed status exists"
     },
-    "last_concrete_action": "Execution built the Termux C5 runner from frozen source commit 090417c75b19573146e26c77e663ac605981fae3, verified runner SHA a5a6f9a3b93d167d9cd69eddbe2f3404443ae1c2222e1c6a0782398c9ff09e84 with 369536 bytes and help flags --run-c5-qa-predict, --decoder-component-pack, --vocab-chunk-size, and --max-generation-tokens. Execution staged the accepted C5_after_C1 heldout QA with SHA da41c5362398f24e0e0dd9df9a5cf0594435a455871fa77ab74d9312e6c8e9b2, 153158 bytes, 53 rows, then ran the smallest native C5 QA predict probe. The probe verified candidate adapter SHA 1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f and failed closed with exit code 13 at full_decoder_logits_generation_not_implemented; probe stdout metadata SHA 8be05287d47bb148054bd26425f41f7f0c2cded8b98110d956c0f3e778cb86e6 and stderr SHA d2f647b4efae9fe021b2e0d5ce9f79f88d87853e4f40cf0d660cf6d5d5c2d819.",
+    "last_concrete_action": "Repo Custodian froze the native C5 probe failure central state at commit a6ddd7e98ad43fb1c7325590eeb725d0e30e4fbe. Phase3/4 then produced a native/host contract patch that hardens metadata-only decoder manifests before native invocation: report SHA 9128d334bac560f98d55a86d5be18f032e2d549121d3fce85e89accf452d1963; c5_qa_inference.cpp SHA 9edefbdfe569edd8add9d711e0ae5e1e4813b190e9d4e5f355e6ce7c35cbf7b0; run_c5_phase34_qa_inference_producer.py SHA 26d8b99f8d5a8b930b90296c89f0c98e51537dcbaf2d302f8923c6b1dce3cf2e; tests/test_c5_phase34_qa_inference_producer.py SHA eeea0c89882a087cf945058244ccc55aa8ea37901b1116baf15e0356aab97b3b. Verification reported by Phase3/4: git diff --check passed, py_compile passed, pytest tests/test_c5_phase34_qa_inference_producer.py tests/test_c5_prediction_payloads.py returned 12 passed, gemma4_layer_runner build completed, and ctest returned 4/4 passed.",
     "lineage_drift_repair_status": {
       "commit": "ee74ae572322e05624deac6f6f8788c2c6e2f692",
       "proof_required": [
@@ -1009,7 +1010,7 @@
       ],
       "status": "source_repair_frozen_pending_execution_proof"
     },
-    "next_concrete_action": "Phase3/4/Engineering patch the existing native C5 QA predict surface to replace only the full_decoder_logits_generation_not_implemented branch with a streamed/chunked full-decoder logits path using the exported decoder component pack and adapter policy. The patch must emit real prediction JSONL, finite answer loss/confidence from runtime logits, and fail closed on schema/shape/hash errors; after custody, Execution reruns the same bounded probe.",
+    "next_concrete_action": "Repo Custodian verifies and commits/pushes the exact central-state plus Phase3/4 contract pathset. After custody, the current metadata-only component pack must fail closed at decoder_manifest_architecture_config_missing and decoder_manifest_tensor_role_inventory_missing; with schema-complete paths but no runtime body, the fail-fast boundary remains c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land. Engineering/Phase3/4 then extend the exporter/runtime pathset rather than creating a new C5 pathway.",
     "nonclaims": [
       "development-cycle evidence only unless stronger gates pass",
       "no C5 pass",
@@ -1037,7 +1038,7 @@
       "no Comet/API call",
       "no secrets sourced"
     ],
-    "owner": "Phase3/4 Engineer and Engineering own the native full-decoder logits implementation; Execution owns rerun after the patch is frozen.",
+    "owner": "Repo Custodian owns the Phase3/4 native logits contract patch freeze; Engineering/Phase3/4 own exporter/runtime implementation after custody; Execution owns the bounded rerun after a runnable patch exists.",
     "phase2_status_by_phase": {
       "C1": {
         "packets": 5180,
@@ -1247,7 +1248,7 @@
       "phase34": "raw PJP1, HTP raw output, OpenCL tensors, and adapters remain on device/Termux; repair must keep compact JSON only",
       "report_root_scan": "metadata-freeze report root had 179 tracked files and clean forbidden suffix scans; raw payloads not committed"
     },
-    "recursive_improvement_next_step": "Implement one native logits patch pathset, freeze it, rerun the exact bounded probe, then only proceed to executed metrics if prediction JSONL and finite runtime loss/confidence exist.",
+    "recursive_improvement_next_step": "Freeze the Phase3/4 contract patch, then implement the smallest falsifiable exporter plus safetensors_reader plus c5_full_decoder_runtime path, rerun the bounded native QA predict probe, and only proceed to executed metrics after real prediction JSONL and finite runtime loss/confidence exist.",
     "repo_custody_state_freeze": {
       "branch": "origin/gemma4-megakernel-native-training",
       "commit": "7290fbec13c6a13e88710afddfe4af70637096f9",
@@ -1260,13 +1261,13 @@
     },
     "run_label": "c1_c4_waveB_rerun_20260630T230411Z",
     "run_root": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z",
-    "status_classification": "PENDING_ACTION_PHASE34_ENGINEERING_NATIVE_FULL_DECODER_LOGITS_IMPLEMENTATION",
+    "status_classification": "PENDING_ACTION_REPO_CUSTODY_NATIVE_LOGITS_CONTRACT_PATCH",
     "threads_nudged_this_tick": [
       "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 native logits implementation follow-up sent",
       "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050 central/probe report freeze requested"
     ],
-    "timestamp_utc": "2026-07-01T05:06:47Z",
-    "updated_utc": "2026-07-01T05:06:47Z",
+    "timestamp_utc": "2026-07-01T12:40:37Z",
+    "updated_utc": "2026-07-01T12:40:37Z",
     "user_action_required": false,
     "c5_full_decoder_exporter_custody": {
       "schema_version": "polymath_c5_full_decoder_exporter_post_custody_v1",
@@ -1549,7 +1550,7 @@
       "first_unresolved_technical_failure_after_valid_schema_paths": "full_decoder_logits_generation_not_implemented",
       "next_action": "Execution runs Termux command package to build/copy/verify C5-capable runner; Phase3/4 then patches c5_qa_inference.cpp::run_c5_qa_predict fail-closed branch after exported manifests exist."
     },
-    "status": "native_full_decoder_logits_implementation_failure",
+    "status": "native_logits_contract_patch_custody_pending",
     "model_safetensors_sha256": "43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651",
     "model_safetensors_size_bytes": 15992595884,
     "first_missing_green_field_after_export": "phone_c5_runner_rebuild_or_copy_missing",
@@ -1567,14 +1568,171 @@
     "probe_stderr_sha256": "d2f647b4efae9fe021b2e0d5ce9f79f88d87853e4f40cf0d660cf6d5d5c2d819",
     "native_probe_report_path": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe/candidate_probe_stdout.json",
     "native_probe_exit_code": 13,
-    "first_missing_green_field_after_patch": "bounded_c5_qa_predict_rerun_pending"
+    "first_missing_green_field_after_patch": "bounded_c5_qa_predict_rerun_pending",
+    "first_missing_green_field_after_contract_patch": "decoder_manifest_architecture_config_missing",
+    "additional_missing_runtime_field_after_contract_patch": "decoder_manifest_tensor_role_inventory_missing",
+    "native_full_decoder_logits_contract_patch_20260701T_phase34": {
+      "schema_version": "polymath_c5_after_c1_native_full_decoder_logits_contract_patch_v1",
+      "lane": "phase34_native_full_decoder_logits_runtime",
+      "status": "native_c5_logits_pathset_required",
+      "artifact_paths": [
+        "runtime/reports/orchestration/c5_after_c1_native_full_decoder_logits_contract_patch_20260701T_phase34.json",
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_qa_inference.cpp",
+        "scripts/host/run_c5_phase34_qa_inference_producer.py",
+        "tests/test_c5_phase34_qa_inference_producer.py"
+      ],
+      "pathset_sha256": {
+        "runtime/reports/orchestration/c5_after_c1_native_full_decoder_logits_contract_patch_20260701T_phase34.json": "9128d334bac560f98d55a86d5be18f032e2d549121d3fce85e89accf452d1963",
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_qa_inference.cpp": "9edefbdfe569edd8add9d711e0ae5e1e4813b190e9d4e5f355e6ce7c35cbf7b0",
+        "scripts/host/run_c5_phase34_qa_inference_producer.py": "26d8b99f8d5a8b930b90296c89f0c98e51537dcbaf2d302f8923c6b1dce3cf2e",
+        "tests/test_c5_phase34_qa_inference_producer.py": "eeea0c89882a087cf945058244ccc55aa8ea37901b1116baf15e0356aab97b3b"
+      },
+      "first_missing_green_field_current": "repo_custody_freeze_native_full_decoder_logits_contract_patch",
+      "first_missing_green_field_after_custody": "decoder_manifest_architecture_config_missing",
+      "additional_missing_runtime_field": "decoder_manifest_tensor_role_inventory_missing",
+      "first_unresolved_technical_failure_after_valid_schema_paths": "c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land",
+      "required_manifest_fields_for_real_native_runtime": {
+        "decoder_manifest_schema": "polymath_c5_full_decoder_manifest_v1",
+        "required_top_level_fields_added": [
+          "source_model_safetensors",
+          "architecture_config",
+          "tensor_role_inventory"
+        ],
+        "source_model_safetensors_required_fields": [
+          "path",
+          "sha256",
+          "size_bytes"
+        ],
+        "decoder_required_fields": [
+          "num_layers=42",
+          "hidden_size=2560",
+          "vocab_size=262144",
+          "logits_vocabulary_size=262144",
+          "layer_inventory length=42"
+        ],
+        "architecture_config_minimum_semantics": [
+          "attention head count",
+          "kv head count",
+          "head_dim",
+          "intermediate size",
+          "normalization epsilon",
+          "RoPE/theta and position semantics",
+          "dtype policy"
+        ],
+        "tensor_role_inventory_minimum_semantics": [
+          "per-layer q_proj/k_proj/v_proj/o_proj tensor key, dtype, shape, and byte range",
+          "per-layer gate_proj/up_proj/down_proj tensor key, dtype, shape, and byte range",
+          "per-layer input/post-attention norm tensor key, dtype, shape, and byte range",
+          "LM-head/unembedding tied or separate tensor key, dtype, shape, and byte range",
+          "token embedding tensor key, dtype, shape, and byte range"
+        ]
+      },
+      "native_logits_implementation_pathset_required": {
+        "files_to_add_or_modify": [
+          {
+            "path": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/include/polymath/gemma4/safetensors_reader.h",
+            "purpose": "Declare bounded safetensors header parsing, SHA validation, tensor metadata lookup, and range-read interfaces."
+          },
+          {
+            "path": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/model/safetensors_reader.cpp",
+            "purpose": "Implement stdlib-only safetensors metadata and tensor range reader; never emit tensor bytes to reports."
+          },
+          {
+            "path": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/include/polymath/gemma4/c5_full_decoder_runtime.h",
+            "purpose": "Expose the native full-decoder C5 QA runtime contract for prediction JSONL rows and compact telemetry."
+          },
+          {
+            "path": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp",
+            "purpose": "Implement streamed/chunked Gemma 4 E4B decoder execution, answer-token NLL, confidence, and greedy prediction without full B*S*V logits materialization."
+          },
+          {
+            "path": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_qa_inference.cpp",
+            "purpose": "Replace only the terminal full_decoder_logits_generation_not_implemented branch with a call into c5_full_decoder_runtime after existing guards pass."
+          },
+          {
+            "path": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/CMakeLists.txt",
+            "purpose": "Link safetensors_reader.cpp and c5_full_decoder_runtime.cpp into gemma4_megakernel_core."
+          },
+          {
+            "path": "tests/test_c5_native_full_decoder_runtime.py",
+            "purpose": "Exercise safetensors metadata parsing, schema/path/SHA failure surfaces, adapter SHA binding, vocab chunk bounds, and prediction JSONL contract."
+          }
+        ],
+        "runtime_algorithm_contract": [
+          "Load and validate tokenizer identity, decoder manifest, adapter policy, candidate/stable adapter SHA, heldout QA SHA, and output path boundary.",
+          "Open source_model_safetensors through a bounded reader and verify manifest SHA/size before any tensor role lookup.",
+          "Map tensor_role_inventory entries into the decoder layer loop; reject missing/unsupported dtype/shape/range before execution.",
+          "Run prompt prefill plus answer teacher forcing through all 42 layers using bounded memory and the configured max_generation_tokens.",
+          "Apply the rank-16 Phase4 adapter only at the adapter_site_policy layer/site and only for the checkpoint role being evaluated.",
+          "Project logits in chunks no larger than --vocab-chunk-size; compute per-answer-token NLL, perplexity input, and confidence without materializing full B*S*V logits.",
+          "Emit outside-git JSONL rows with record_id, prediction, finite nonnegative loss, and confidence in [0,1]."
+        ],
+        "fail_closed_cases": [
+          "decoder manifest schema mismatch",
+          "missing architecture_config",
+          "missing tensor_role_inventory",
+          "missing or SHA-mismatched source_model_safetensors",
+          "unsupported dtype",
+          "tensor shape/key/byte-range mismatch",
+          "adapter policy SHA/site mismatch",
+          "unsupported full logits materialization request",
+          "OOM or chunk allocation failure",
+          "absent logits or nonfinite loss/confidence"
+        ]
+      },
+      "verification_commands": [
+        {
+          "command": "git diff --check -- integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_qa_inference.cpp scripts/host/run_c5_phase34_qa_inference_producer.py tests/test_c5_phase34_qa_inference_producer.py",
+          "result": "passed"
+        },
+        {
+          "command": "python3.11 -m py_compile scripts/host/run_c5_phase34_qa_inference_producer.py",
+          "result": "passed"
+        },
+        {
+          "command": "python3.11 -m pytest -q tests/test_c5_phase34_qa_inference_producer.py tests/test_c5_prediction_payloads.py",
+          "result": "12 passed in 4.00s"
+        },
+        {
+          "command": "cmake --build build/gemma4_megakernel_host --target gemma4_layer_runner -j 8",
+          "result": "built"
+        },
+        {
+          "command": "ctest --test-dir build/gemma4_megakernel_host --output-on-failure",
+          "result": "4/4 passed"
+        }
+      ],
+      "raw_boundary_proof": {
+        "raw_qa_jsonl_copied_to_git": false,
+        "raw_prediction_jsonl_copied_to_git": false,
+        "raw_checkpoint_or_adapter_payload_copied_to_git": false,
+        "raw_model_or_tensor_payload_copied_to_git": false,
+        "hf_or_comet_called": false,
+        "secrets_printed": false,
+        "phone_gate_run": false,
+        "staged_or_committed": false
+      },
+      "nonclaims": [
+        "no C5 pass",
+        "no real prediction JSONL emitted",
+        "no logits, prediction, loss, confidence, candidate_train_loss, or C5 metric fabricated",
+        "no bridge MSE relabeled as C5 loss",
+        "no old layer0/layer1 asset accepted as a full decoder",
+        "no learning or model-quality claim",
+        "no Phase3 readiness claim",
+        "no Phase4 readiness claim",
+        "not 100k or 1M Phase2 authority",
+        "no Comet-backed accepted run"
+      ]
+    }
   },
-  "active_edge": "WaveB_C5_after_C1_native_full_decoder_logits_implementation_failure",
+  "active_edge": "WaveB_C5_after_C1_native_logits_contract_patch_custody_pending",
   "active_watchdog_state": {
     "artifact_waiting_on": [
-      "Phase3/4/Engineering implement the native full-decoder logits runtime path behind the existing C5 QA predict runner surface.",
-      "Repo Custodian freezes the metadata-only native probe report and central state mirror.",
-      "Execution reruns the same bounded C5 QA predict probe after the native logits patch and custody freeze."
+      "Repo Custodian freeze of EXECUTIVE_DELIVERY_STATE.json, EXECUTIVE_DELIVERY_STATE.md, and the Phase3/4 native logits contract patch pathset.",
+      "Engineering exporter emits a schema-complete full decoder component pack with source_model_safetensors, architecture_config, and tensor_role_inventory.",
+      "Phase3/4 lands safetensors_reader plus streamed/chunked c5_full_decoder_runtime and replaces only the terminal full_decoder_logits_generation_not_implemented branch.",
+      "Execution rebuilds/copies the runner and reruns the same bounded C5_after_C1 native QA predict probe after custody and runtime patch."
     ],
     "authorization_needed": "none; native implementation work is under current GO and must preserve raw/secrets boundary",
     "c5_after_c1_c5_qa_runtime_fail_closed_pathset": {
@@ -2422,11 +2580,11 @@
       "status": "c5_full_decoder_failure_artifacts_and_state_pending_custody",
       "user_action_required": false
     },
-    "current_gate": "WaveB_C5_after_C1_native_full_decoder_logits_implementation_failure",
+    "current_gate": "WaveB_C5_after_C1_native_logits_contract_patch_custody_pending",
     "custody_commit_latest": "bb8105a2bc91b6c9b0993603e14b49d0a5730f8d",
     "custody_status_latest": "c5_decoder_runtime_owner_state_committed_pushed",
     "dominant_failure_domain": "phase5_eval_failure",
-    "drift_deleted_or_pending": "Runner build, heldout staging, model download, and component-pack export blockers are superseded by hashes and a real probe. The remaining drift is the deliberate native fail-closed logits body; bridge MSE remains forbidden as C5 loss.",
+    "drift_deleted_or_pending": "The generic native full_decoder_logits_generation_not_implemented stop is now hardened into explicit manifest-contract fields: decoder_manifest_architecture_config_missing and decoder_manifest_tensor_role_inventory_missing. Remaining drift is pending exporter/runtime work for architecture/tensor-role inventory, safetensors range reading, and streamed decoder logits; bridge MSE remains forbidden as C5 loss.",
     "engineering_evaluator_implementation": {
       "artifact_paths_in_progress": [
         "polymath_ai/polar/c5_heldout_eval.py",
@@ -2533,9 +2691,9 @@
       "existing_surface_role": "run_c5_eval.py validates supplied metrics JSON; it does not compute metrics",
       "status": "c5_after_c1_real_evaluator_surface_missing"
     },
-    "first_missing_green_field": "full_decoder_logits_generation_not_implemented",
+    "first_missing_green_field": "repo_custody_freeze_native_full_decoder_logits_contract_patch",
     "first_unresolved_technical_failure_after_schema_paths": "full_decoder_logits_generation_not_implemented_after_valid_schema_paths",
-    "first_unresolved_technical_failure_after_valid_schema_paths": "full_decoder_logits_generation_not_implemented_after_valid_schema_paths",
+    "first_unresolved_technical_failure_after_valid_schema_paths": "c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land",
     "hardening_policy": {
       "deleted_or_repaired_drift": [
         "forced_non_packaged_child_exec_default_for_phase1",
@@ -2563,7 +2721,7 @@
       "training_material_steward": "complete for material identities",
       "ui_engineer": "not nudged until C5 evidence-backed status exists"
     },
-    "last_concrete_action": "Execution built the Termux C5 runner from frozen source commit 090417c75b19573146e26c77e663ac605981fae3, verified runner SHA a5a6f9a3b93d167d9cd69eddbe2f3404443ae1c2222e1c6a0782398c9ff09e84 with 369536 bytes and help flags --run-c5-qa-predict, --decoder-component-pack, --vocab-chunk-size, and --max-generation-tokens. Execution staged the accepted C5_after_C1 heldout QA with SHA da41c5362398f24e0e0dd9df9a5cf0594435a455871fa77ab74d9312e6c8e9b2, 153158 bytes, 53 rows, then ran the smallest native C5 QA predict probe. The probe verified candidate adapter SHA 1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f and failed closed with exit code 13 at full_decoder_logits_generation_not_implemented; probe stdout metadata SHA 8be05287d47bb148054bd26425f41f7f0c2cded8b98110d956c0f3e778cb86e6 and stderr SHA d2f647b4efae9fe021b2e0d5ce9f79f88d87853e4f40cf0d660cf6d5d5c2d819.",
+    "last_concrete_action": "Repo Custodian froze the native C5 probe failure central state at commit a6ddd7e98ad43fb1c7325590eeb725d0e30e4fbe. Phase3/4 then produced a native/host contract patch that hardens metadata-only decoder manifests before native invocation: report SHA 9128d334bac560f98d55a86d5be18f032e2d549121d3fce85e89accf452d1963; c5_qa_inference.cpp SHA 9edefbdfe569edd8add9d711e0ae5e1e4813b190e9d4e5f355e6ce7c35cbf7b0; run_c5_phase34_qa_inference_producer.py SHA 26d8b99f8d5a8b930b90296c89f0c98e51537dcbaf2d302f8923c6b1dce3cf2e; tests/test_c5_phase34_qa_inference_producer.py SHA eeea0c89882a087cf945058244ccc55aa8ea37901b1116baf15e0356aab97b3b. Verification reported by Phase3/4: git diff --check passed, py_compile passed, pytest tests/test_c5_phase34_qa_inference_producer.py tests/test_c5_prediction_payloads.py returned 12 passed, gemma4_layer_runner build completed, and ctest returned 4/4 passed.",
     "lineage_drift_repair_status": {
       "commit": "ee74ae572322e05624deac6f6f8788c2c6e2f692",
       "proof_required": [
@@ -2579,7 +2737,7 @@
       ],
       "status": "source_repair_frozen_pending_execution_proof"
     },
-    "next_concrete_action": "Phase3/4/Engineering patch the existing native C5 QA predict surface to replace only the full_decoder_logits_generation_not_implemented branch with a streamed/chunked full-decoder logits path using the exported decoder component pack and adapter policy. The patch must emit real prediction JSONL, finite answer loss/confidence from runtime logits, and fail closed on schema/shape/hash errors; after custody, Execution reruns the same bounded probe.",
+    "next_concrete_action": "Repo Custodian verifies and commits/pushes the exact central-state plus Phase3/4 contract pathset. After custody, the current metadata-only component pack must fail closed at decoder_manifest_architecture_config_missing and decoder_manifest_tensor_role_inventory_missing; with schema-complete paths but no runtime body, the fail-fast boundary remains c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land. Engineering/Phase3/4 then extend the exporter/runtime pathset rather than creating a new C5 pathway.",
     "nonclaims": [
       "development-cycle evidence only unless stronger gates pass",
       "no C5 pass",
@@ -2607,7 +2765,7 @@
       "no Comet/API call",
       "no secrets sourced"
     ],
-    "owner": "Phase3/4 Engineer and Engineering own the native full-decoder logits implementation; Execution owns rerun after the patch is frozen.",
+    "owner": "Repo Custodian owns the Phase3/4 native logits contract patch freeze; Engineering/Phase3/4 own exporter/runtime implementation after custody; Execution owns the bounded rerun after a runnable patch exists.",
     "phase2_status_by_phase": {
       "C1": {
         "packets": 5180,
@@ -2817,7 +2975,7 @@
       "phase34": "raw PJP1, HTP raw output, OpenCL tensors, and adapters remain on device/Termux; repair must keep compact JSON only",
       "report_root_scan": "metadata-freeze report root had 179 tracked files and clean forbidden suffix scans; raw payloads not committed"
     },
-    "recursive_improvement_next_step": "Implement one native logits patch pathset, freeze it, rerun the exact bounded probe, then only proceed to executed metrics if prediction JSONL and finite runtime loss/confidence exist.",
+    "recursive_improvement_next_step": "Freeze the Phase3/4 contract patch, then implement the smallest falsifiable exporter plus safetensors_reader plus c5_full_decoder_runtime path, rerun the bounded native QA predict probe, and only proceed to executed metrics after real prediction JSONL and finite runtime loss/confidence exist.",
     "repo_custody_state_freeze": {
       "branch": "origin/gemma4-megakernel-native-training",
       "commit": "7290fbec13c6a13e88710afddfe4af70637096f9",
@@ -2830,15 +2988,15 @@
     },
     "run_label": "c1_c4_waveB_rerun_20260630T230411Z",
     "run_root": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z",
-    "status_classification": "PENDING_ACTION_PHASE34_ENGINEERING_NATIVE_FULL_DECODER_LOGITS_IMPLEMENTATION",
+    "status_classification": "PENDING_ACTION_REPO_CUSTODY_NATIVE_LOGITS_CONTRACT_PATCH",
     "threads_nudged_this_tick": [
       "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 native logits implementation follow-up sent",
       "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050 central/probe report freeze requested"
     ],
-    "timestamp_utc": "2026-07-01T03:45:47Z",
-    "updated_utc": "2026-07-01T04:05:47Z",
+    "timestamp_utc": "2026-07-01T12:40:37Z",
+    "updated_utc": "2026-07-01T12:40:37Z",
     "user_action_required": false,
-    "status": "native_full_decoder_logits_implementation_failure",
+    "status": "native_logits_contract_patch_custody_pending",
     "first_missing_green_field_after_custody": "phone_termux_model_safetensors_download_pending",
     "known_downstream_access_issue_after_custody": "termux_command_channel_missing",
     "model_safetensors_sha256": "43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651",
@@ -2858,11 +3016,201 @@
     "probe_stderr_sha256": "d2f647b4efae9fe021b2e0d5ce9f79f88d87853e4f40cf0d660cf6d5d5c2d819",
     "native_probe_report_path": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe/candidate_probe_stdout.json",
     "native_probe_exit_code": 13,
-    "first_missing_green_field_after_patch": "bounded_c5_qa_predict_rerun_pending"
+    "first_missing_green_field_after_patch": "bounded_c5_qa_predict_rerun_pending",
+    "first_missing_green_field_after_contract_patch": "decoder_manifest_architecture_config_missing",
+    "additional_missing_runtime_field_after_contract_patch": "decoder_manifest_tensor_role_inventory_missing",
+    "native_full_decoder_logits_contract_patch_20260701T_phase34": {
+      "schema_version": "polymath_c5_after_c1_native_full_decoder_logits_contract_patch_v1",
+      "lane": "phase34_native_full_decoder_logits_runtime",
+      "status": "native_c5_logits_pathset_required",
+      "artifact_paths": [
+        "runtime/reports/orchestration/c5_after_c1_native_full_decoder_logits_contract_patch_20260701T_phase34.json",
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_qa_inference.cpp",
+        "scripts/host/run_c5_phase34_qa_inference_producer.py",
+        "tests/test_c5_phase34_qa_inference_producer.py"
+      ],
+      "pathset_sha256": {
+        "runtime/reports/orchestration/c5_after_c1_native_full_decoder_logits_contract_patch_20260701T_phase34.json": "9128d334bac560f98d55a86d5be18f032e2d549121d3fce85e89accf452d1963",
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_qa_inference.cpp": "9edefbdfe569edd8add9d711e0ae5e1e4813b190e9d4e5f355e6ce7c35cbf7b0",
+        "scripts/host/run_c5_phase34_qa_inference_producer.py": "26d8b99f8d5a8b930b90296c89f0c98e51537dcbaf2d302f8923c6b1dce3cf2e",
+        "tests/test_c5_phase34_qa_inference_producer.py": "eeea0c89882a087cf945058244ccc55aa8ea37901b1116baf15e0356aab97b3b"
+      },
+      "first_missing_green_field_current": "repo_custody_freeze_native_full_decoder_logits_contract_patch",
+      "first_missing_green_field_after_custody": "decoder_manifest_architecture_config_missing",
+      "additional_missing_runtime_field": "decoder_manifest_tensor_role_inventory_missing",
+      "first_unresolved_technical_failure_after_valid_schema_paths": "c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land",
+      "required_manifest_fields_for_real_native_runtime": {
+        "decoder_manifest_schema": "polymath_c5_full_decoder_manifest_v1",
+        "required_top_level_fields_added": [
+          "source_model_safetensors",
+          "architecture_config",
+          "tensor_role_inventory"
+        ],
+        "source_model_safetensors_required_fields": [
+          "path",
+          "sha256",
+          "size_bytes"
+        ],
+        "decoder_required_fields": [
+          "num_layers=42",
+          "hidden_size=2560",
+          "vocab_size=262144",
+          "logits_vocabulary_size=262144",
+          "layer_inventory length=42"
+        ],
+        "architecture_config_minimum_semantics": [
+          "attention head count",
+          "kv head count",
+          "head_dim",
+          "intermediate size",
+          "normalization epsilon",
+          "RoPE/theta and position semantics",
+          "dtype policy"
+        ],
+        "tensor_role_inventory_minimum_semantics": [
+          "per-layer q_proj/k_proj/v_proj/o_proj tensor key, dtype, shape, and byte range",
+          "per-layer gate_proj/up_proj/down_proj tensor key, dtype, shape, and byte range",
+          "per-layer input/post-attention norm tensor key, dtype, shape, and byte range",
+          "LM-head/unembedding tied or separate tensor key, dtype, shape, and byte range",
+          "token embedding tensor key, dtype, shape, and byte range"
+        ]
+      },
+      "native_logits_implementation_pathset_required": {
+        "files_to_add_or_modify": [
+          {
+            "path": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/include/polymath/gemma4/safetensors_reader.h",
+            "purpose": "Declare bounded safetensors header parsing, SHA validation, tensor metadata lookup, and range-read interfaces."
+          },
+          {
+            "path": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/model/safetensors_reader.cpp",
+            "purpose": "Implement stdlib-only safetensors metadata and tensor range reader; never emit tensor bytes to reports."
+          },
+          {
+            "path": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/include/polymath/gemma4/c5_full_decoder_runtime.h",
+            "purpose": "Expose the native full-decoder C5 QA runtime contract for prediction JSONL rows and compact telemetry."
+          },
+          {
+            "path": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp",
+            "purpose": "Implement streamed/chunked Gemma 4 E4B decoder execution, answer-token NLL, confidence, and greedy prediction without full B*S*V logits materialization."
+          },
+          {
+            "path": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_qa_inference.cpp",
+            "purpose": "Replace only the terminal full_decoder_logits_generation_not_implemented branch with a call into c5_full_decoder_runtime after existing guards pass."
+          },
+          {
+            "path": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/CMakeLists.txt",
+            "purpose": "Link safetensors_reader.cpp and c5_full_decoder_runtime.cpp into gemma4_megakernel_core."
+          },
+          {
+            "path": "tests/test_c5_native_full_decoder_runtime.py",
+            "purpose": "Exercise safetensors metadata parsing, schema/path/SHA failure surfaces, adapter SHA binding, vocab chunk bounds, and prediction JSONL contract."
+          }
+        ],
+        "runtime_algorithm_contract": [
+          "Load and validate tokenizer identity, decoder manifest, adapter policy, candidate/stable adapter SHA, heldout QA SHA, and output path boundary.",
+          "Open source_model_safetensors through a bounded reader and verify manifest SHA/size before any tensor role lookup.",
+          "Map tensor_role_inventory entries into the decoder layer loop; reject missing/unsupported dtype/shape/range before execution.",
+          "Run prompt prefill plus answer teacher forcing through all 42 layers using bounded memory and the configured max_generation_tokens.",
+          "Apply the rank-16 Phase4 adapter only at the adapter_site_policy layer/site and only for the checkpoint role being evaluated.",
+          "Project logits in chunks no larger than --vocab-chunk-size; compute per-answer-token NLL, perplexity input, and confidence without materializing full B*S*V logits.",
+          "Emit outside-git JSONL rows with record_id, prediction, finite nonnegative loss, and confidence in [0,1]."
+        ],
+        "fail_closed_cases": [
+          "decoder manifest schema mismatch",
+          "missing architecture_config",
+          "missing tensor_role_inventory",
+          "missing or SHA-mismatched source_model_safetensors",
+          "unsupported dtype",
+          "tensor shape/key/byte-range mismatch",
+          "adapter policy SHA/site mismatch",
+          "unsupported full logits materialization request",
+          "OOM or chunk allocation failure",
+          "absent logits or nonfinite loss/confidence"
+        ]
+      },
+      "verification_commands": [
+        {
+          "command": "git diff --check -- integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_qa_inference.cpp scripts/host/run_c5_phase34_qa_inference_producer.py tests/test_c5_phase34_qa_inference_producer.py",
+          "result": "passed"
+        },
+        {
+          "command": "python3.11 -m py_compile scripts/host/run_c5_phase34_qa_inference_producer.py",
+          "result": "passed"
+        },
+        {
+          "command": "python3.11 -m pytest -q tests/test_c5_phase34_qa_inference_producer.py tests/test_c5_prediction_payloads.py",
+          "result": "12 passed in 4.00s"
+        },
+        {
+          "command": "cmake --build build/gemma4_megakernel_host --target gemma4_layer_runner -j 8",
+          "result": "built"
+        },
+        {
+          "command": "ctest --test-dir build/gemma4_megakernel_host --output-on-failure",
+          "result": "4/4 passed"
+        }
+      ],
+      "raw_boundary_proof": {
+        "raw_qa_jsonl_copied_to_git": false,
+        "raw_prediction_jsonl_copied_to_git": false,
+        "raw_checkpoint_or_adapter_payload_copied_to_git": false,
+        "raw_model_or_tensor_payload_copied_to_git": false,
+        "hf_or_comet_called": false,
+        "secrets_printed": false,
+        "phone_gate_run": false,
+        "staged_or_committed": false
+      },
+      "nonclaims": [
+        "no C5 pass",
+        "no real prediction JSONL emitted",
+        "no logits, prediction, loss, confidence, candidate_train_loss, or C5 metric fabricated",
+        "no bridge MSE relabeled as C5 loss",
+        "no old layer0/layer1 asset accepted as a full decoder",
+        "no learning or model-quality claim",
+        "no Phase3 readiness claim",
+        "no Phase4 readiness claim",
+        "not 100k or 1M Phase2 authority",
+        "no Comet-backed accepted run"
+      ]
+    }
   },
-  "current_gate": "WaveB_C5_after_C1_native_full_decoder_logits_implementation_failure",
-  "current_highest_valid_state": "C1-C4 Wave B Phase1->Phase2->Phase3->Phase4 development-cycle mechanics remain frozen as metadata evidence; C5_after_C1 is now waiting on exact outside-git model-source authorization or mount after Repo Custodian completed the metadata custody mirror at 9d1c171ea72cef391e2bbcf550ea3e0f84632f27.",
+  "current_gate": "WaveB_C5_after_C1_native_logits_contract_patch_custody_pending",
+  "current_highest_valid_state": "C1-C4 Wave B Phase1->Phase2->Phase3->Phase4 development-cycle mechanics remain frozen as metadata evidence. Phone-local model download, component-pack export, C5-capable runner build, heldout QA staging, and the native C5 probe are metadata evidence only. No C5 pass or executed metrics exist; the active edge is custody of the Phase3/4 manifest-contract hardening before exporter/runtime implementation.",
   "driver_tick_history": [
+    {
+      "timestamp_utc": "2026-07-01T12:40:37Z",
+      "current_gate": "WaveB_C5_after_C1_native_logits_contract_patch_custody_pending",
+      "status_classification": "PENDING_ACTION_REPO_CUSTODY_NATIVE_LOGITS_CONTRACT_PATCH",
+      "owner": "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050",
+      "artifact_waiting_on": [
+        "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json",
+        "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md",
+        "runtime/reports/orchestration/c5_after_c1_native_full_decoder_logits_contract_patch_20260701T_phase34.json",
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_qa_inference.cpp",
+        "scripts/host/run_c5_phase34_qa_inference_producer.py",
+        "tests/test_c5_phase34_qa_inference_producer.py"
+      ],
+      "first_missing_green_field": "repo_custody_freeze_native_full_decoder_logits_contract_patch",
+      "last_concrete_action": "Repo Custodian froze the native C5 probe failure central state at commit a6ddd7e98ad43fb1c7325590eeb725d0e30e4fbe. Phase3/4 then produced a native/host contract patch that hardens metadata-only decoder manifests before native invocation: report SHA 9128d334bac560f98d55a86d5be18f032e2d549121d3fce85e89accf452d1963; c5_qa_inference.cpp SHA 9edefbdfe569edd8add9d711e0ae5e1e4813b190e9d4e5f355e6ce7c35cbf7b0; run_c5_phase34_qa_inference_producer.py SHA 26d8b99f8d5a8b930b90296c89f0c98e51537dcbaf2d302f8923c6b1dce3cf2e; tests/test_c5_phase34_qa_inference_producer.py SHA eeea0c89882a087cf945058244ccc55aa8ea37901b1116baf15e0356aab97b3b. Verification reported by Phase3/4: git diff --check passed, py_compile passed, pytest tests/test_c5_phase34_qa_inference_producer.py tests/test_c5_prediction_payloads.py returned 12 passed, gemma4_layer_runner build completed, and ctest returned 4/4 passed.",
+      "next_concrete_action": "Repo Custodian verifies and commits/pushes the exact central-state plus Phase3/4 contract pathset. After custody, the current metadata-only component pack must fail closed at decoder_manifest_architecture_config_missing and decoder_manifest_tensor_role_inventory_missing; with schema-complete paths but no runtime body, the fail-fast boundary remains c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land. Engineering/Phase3/4 then extend the exporter/runtime pathset rather than creating a new C5 pathway.",
+      "dominant_failure_domain": "phase5_eval_failure",
+      "threads_nudged_this_tick": [
+        "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: freeze exact central-state plus Phase3/4 native logits contract patch pathset."
+      ],
+      "user_action_required": false,
+      "nonclaims": [
+        "no C5 pass",
+        "no real prediction JSONL emitted",
+        "no logits, prediction, loss, confidence, candidate_train_loss, or C5 metric fabricated",
+        "no bridge MSE relabeled as C5 loss",
+        "no old layer0/layer1 asset accepted as a full decoder",
+        "no learning or model-quality claim",
+        "no Phase3 readiness claim",
+        "no Phase4 readiness claim",
+        "not 100k or 1M Phase2 authority",
+        "no Comet-backed accepted run"
+      ]
+    },
     {
       "artifact_waiting_on": [
         "Execution consumes Custodian freeze commit 634a06a6e66f7d99f88bcf5bba7cc83c916fd9e1 and verifies the three-file C5 prediction-payload contract pathset.",
@@ -3520,7 +3868,7 @@
       "user_action_required": false
     }
   ],
-  "governing_edge": "WaveB_C5_after_C1_native_full_decoder_logits_implementation_failure",
+  "governing_edge": "WaveB_C5_after_C1_native_logits_contract_patch_custody_pending",
   "governing_objective": {
     "nonclaims": [
       "diagnostics_are_not_100k_or_1M_authority_unless_specific_authority_gate_passes",
@@ -4040,16 +4388,17 @@
   "lane_status": {
     "engineering_orchestrator": {
       "artifact_paths": [
-        "runtime/reports/orchestration/c5_after_c1_phone_termux_hf_export_route_20260701T_engineering.json",
-        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py",
-        "tests/test_c5_full_decoder_exporter.py"
+        "runtime/reports/orchestration/c5_after_c1_native_full_decoder_logits_contract_patch_20260701T_phase34.json",
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_qa_inference.cpp",
+        "scripts/host/run_c5_phase34_qa_inference_producer.py",
+        "tests/test_c5_phase34_qa_inference_producer.py"
       ],
       "authorization_needed": false,
-      "first_missing_green_field": "full_decoder_logits_generation_not_implemented",
+      "first_missing_green_field": "repo_custody_freeze_native_full_decoder_logits_contract_patch",
       "first_missing_green_field_at_export_execution_until_model_source_is_available": "model_safetensors_missing",
-      "first_unresolved_technical_failure_after_valid_schema_paths": "full_decoder_logits_generation_not_implemented_after_valid_schema_paths",
-      "last_update_utc": "2026-07-01T12:28:07Z",
-      "next_action": "Phase3/4/Engineering patch the existing native C5 QA predict surface to replace only the full_decoder_logits_generation_not_implemented branch with a streamed/chunked full-decoder logits path using the exported decoder component pack and adapter policy. The patch must emit real prediction JSONL, finite answer loss/confidence from runtime logits, and fail closed on schema/shape/hash errors; after custody, Execution reruns the same bounded probe.",
+      "first_unresolved_technical_failure_after_valid_schema_paths": "c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land",
+      "last_update_utc": "2026-07-01T12:40:37Z",
+      "next_action": "Repo Custodian verifies and commits/pushes the exact central-state plus Phase3/4 contract pathset. After custody, the current metadata-only component pack must fail closed at decoder_manifest_architecture_config_missing and decoder_manifest_tensor_role_inventory_missing; with schema-complete paths but no runtime body, the fail-fast boundary remains c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land. Engineering/Phase3/4 then extend the exporter/runtime pathset rather than creating a new C5 pathway.",
       "nonclaims": [
         "no C5 pass",
         "no executed C5 metrics",
@@ -4082,8 +4431,8 @@
         "native_probe_report_path": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe/candidate_probe_stdout.json",
         "native_probe_exit_code": 13
       },
-      "status": "native_full_decoder_logits_implementation_failure",
-      "status_classification": "PENDING_ACTION_PHASE34_ENGINEERING_NATIVE_FULL_DECODER_LOGITS_IMPLEMENTATION",
+      "status": "native_logits_contract_patch_custody_pending",
+      "status_classification": "PENDING_ACTION_REPO_CUSTODY_NATIVE_LOGITS_CONTRACT_PATCH",
       "thread_id": "019f138b-d229-7640-98b7-2f185d6beae0",
       "user_action_required": false,
       "verification_commands": [
@@ -4107,7 +4456,8 @@
         "Execution: heldout QA staged with accepted SHA da41c5362398f24e0e0dd9df9a5cf0594435a455871fa77ab74d9312e6c8e9b2, 53 rows",
         "Execution: native C5 QA probe exited 13 at full_decoder_logits_generation_not_implemented"
       ],
-      "first_missing_green_field_after_custody": "phone_termux_model_safetensors_download_pending"
+      "first_missing_green_field_after_custody": "decoder_manifest_architecture_config_missing",
+      "additional_missing_runtime_field": "decoder_manifest_tensor_role_inventory_missing"
     },
     "execution_orchestrator": {
       "artifact_paths": [
@@ -4117,9 +4467,9 @@
         "OUTSIDE_GIT_PHASE4_ADAPTER_PRE_PAYLOAD_PATH_REDACTED_SHA_ONLY"
       ],
       "authorization_needed": false,
-      "first_missing_green_field": "native_c5_qa_predict_runner_build_or_verification_pending",
-      "last_update_utc": "2026-07-01T12:18:07Z",
-      "next_action": "Execution uses the Phase3/4 Termux command package to build/copy a C5-capable gemma4_layer_runner, verifies --run-c5-qa-predict and decoder-component flags, stages the C5_after_C1 heldout QA JSONL metadata-only, then runs the smallest C5 QA predict probe. If the probe stops at full_decoder_logits_generation_not_implemented, Phase3/4/Engineering patch the exact native logits/generation body rather than creating a new pathway.",
+      "first_missing_green_field": "repo_custody_freeze_native_full_decoder_logits_contract_patch",
+      "last_update_utc": "2026-07-01T12:40:37Z",
+      "next_action": "After Custodian freezes the contract patch and Phase3/4 lands a runnable safetensors/full-decoder runtime, rebuild/copy runner and rerun the bounded C5_after_C1 native QA predict probe.",
       "nonclaims": [
         "no C5 pass",
         "no executed C5 metrics",
@@ -4149,8 +4499,8 @@
         "adapter_site_policy_sha256": "f38bd8109bbb77e9e94a5b4b34a238bc0ec0a39e7736870c97defe5aecc93357",
         "export_report_sha256": "06fe8e91b5938ff3235cad5fa96e7b25d5b20fb3c4e456c249c84d53bf839d0f"
       },
-      "status": "phone_termux_model_download_and_export_green_runner_build_pending",
-      "status_classification": "PENDING_ACTION_EXECUTION_C5_RUNNER_BUILD_AND_HELDOUT_QA_STAGING",
+      "status": "waiting_on_native_logits_contract_patch_custody_and_runtime_body",
+      "status_classification": "WAITING_ON_REPO_CUSTODY_AND_PHASE34_RUNTIME_PATCH",
       "thread_id": "019f138c-fb51-7c53-a41a-ab8eac950d9c",
       "user_action_required": false,
       "verification_commands": [
@@ -4169,55 +4519,53 @@
     },
     "phase34_engineer": {
       "artifact_paths": [
-        "runtime/reports/orchestration/c5_after_c1_phone_runner_rebuild_and_native_logits_pathset_20260701T_phase34.json"
+        "runtime/reports/orchestration/c5_after_c1_native_full_decoder_logits_contract_patch_20260701T_phase34.json",
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_qa_inference.cpp",
+        "scripts/host/run_c5_phase34_qa_inference_producer.py",
+        "tests/test_c5_phase34_qa_inference_producer.py"
       ],
       "custody_commit": "9f6a27f3640078d81a303445d7ab29c7ce3a2db8",
-      "first_missing_green_field": "full_decoder_logits_generation_not_implemented",
-      "first_unresolved_technical_failure_after_valid_schema_paths": "full_decoder_logits_generation_not_implemented",
-      "last_update_utc": "2026-07-01T12:28:07Z",
-      "next_action": "Phase3/4/Engineering patch the existing native C5 QA predict surface to replace only the full_decoder_logits_generation_not_implemented branch with a streamed/chunked full-decoder logits path using the exported decoder component pack and adapter policy. The patch must emit real prediction JSONL, finite answer loss/confidence from runtime logits, and fail closed on schema/shape/hash errors; after custody, Execution reruns the same bounded probe.",
+      "first_missing_green_field": "repo_custody_freeze_native_full_decoder_logits_contract_patch",
+      "first_unresolved_technical_failure_after_valid_schema_paths": "c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land",
+      "last_update_utc": "2026-07-01T12:40:37Z",
+      "next_action": "Hold for Custodian freeze, then implement exporter architecture_config and tensor_role_inventory plus safetensors_reader/c5_full_decoder_runtime pathset.",
       "nonclaims": [
         "no C5 pass",
-        "no executed C5 metrics",
-        "no prediction JSONL emitted",
-        "no logits emitted",
-        "no loss, confidence, or candidate_train_loss emitted",
+        "no real prediction JSONL emitted",
+        "no logits, prediction, loss, confidence, candidate_train_loss, or C5 metric fabricated",
         "no bridge MSE relabeled as C5 loss",
-        "no learning/model-quality claim",
+        "no old layer0/layer1 asset accepted as a full decoder",
+        "no learning or model-quality claim",
         "no Phase3 readiness claim",
         "no Phase4 readiness claim",
-        "not 100k/1M Phase2 authority",
-        "no Comet/API call",
-        "no secrets sourced"
+        "not 100k or 1M Phase2 authority",
+        "no Comet-backed accepted run"
       ],
       "sha256_or_identity_fields": {
-        "runner_rebuild_native_logits_report_sha256": "90b0575ba56edf9cd4ec7031c24d32b7242c9af0d510201323a729f18abd9f47",
+        "contract_report_sha256": "9128d334bac560f98d55a86d5be18f032e2d549121d3fce85e89accf452d1963",
+        "native_guard_sha256": "9edefbdfe569edd8add9d711e0ae5e1e4813b190e9d4e5f355e6ce7c35cbf7b0",
+        "producer_sha256": "26d8b99f8d5a8b930b90296c89f0c98e51537dcbaf2d302f8923c6b1dce3cf2e",
+        "tests_sha256": "eeea0c89882a087cf945058244ccc55aa8ea37901b1116baf15e0356aab97b3b",
         "runner_sha256": "a5a6f9a3b93d167d9cd69eddbe2f3404443ae1c2222e1c6a0782398c9ff09e84",
         "heldout_qa_sha256": "da41c5362398f24e0e0dd9df9a5cf0594435a455871fa77ab74d9312e6c8e9b2",
-        "probe_stdout_metadata_sha256": "8be05287d47bb148054bd26425f41f7f0c2cded8b98110d956c0f3e778cb86e6",
-        "probe_stderr_sha256": "d2f647b4efae9fe021b2e0d5ce9f79f88d87853e4f40cf0d660cf6d5d5c2d819",
-        "native_probe_report_path": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe/candidate_probe_stdout.json",
-        "native_probe_exit_code": 13
+        "candidate_adapter_sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f",
+        "native_probe_stdout_metadata_sha256": "8be05287d47bb148054bd26425f41f7f0c2cded8b98110d956c0f3e778cb86e6",
+        "native_probe_stderr_sha256": "d2f647b4efae9fe021b2e0d5ce9f79f88d87853e4f40cf0d660cf6d5d5c2d819"
       },
-      "status": "native_full_decoder_logits_implementation_failure",
-      "status_classification": "PENDING_ACTION_PHASE34_ENGINEERING_NATIVE_FULL_DECODER_LOGITS_IMPLEMENTATION",
+      "status": "native_c5_logits_contract_patch_handoff_to_custodian",
+      "status_classification": "HANDOFF_TO_REPO_CUSTODY_NATIVE_LOGITS_CONTRACT_PATCH",
       "thread_id": "019f13da-d897-7ba2-8ed1-b959892f5ed4",
       "user_action_required": false,
       "verification_commands": [
-        "Phase3/4: python3.11 -m pytest tests/test_c5_phase34_qa_inference_producer.py tests/test_c5_prediction_payloads.py -q -> 7 passed",
-        "Phase3/4: cmake configure/build for gemma4_megakernel with warnings-as-errors -> passed",
-        "Phase3/4: ctest --test-dir /tmp/polymath_c5qa_build --output-on-failure -> 4 passed",
-        "Phase3/4: direct producer invocation through built gemma4_layer_runner -> blocked with first_missing_green_field tokenizer_dir_missing",
-        "Meta: shasum -a 256 on six-file pathset matched Phase3/4 report",
-        "Meta: git diff --check on six-file pathset passed",
-        "Meta: python3.11 -m py_compile on host producer/test passed",
-        "Meta: raw-payload filename suffix scan over exact pathset clean",
-        "Meta: tight literal secret/token scan over exact pathset clean",
-        "Execution: C5 runner built from 090417c and help flags verified",
-        "Execution: heldout QA staged with accepted SHA da41c5362398f24e0e0dd9df9a5cf0594435a455871fa77ab74d9312e6c8e9b2, 53 rows",
-        "Execution: native C5 QA probe exited 13 at full_decoder_logits_generation_not_implemented"
+        "git diff --check -- integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_qa_inference.cpp scripts/host/run_c5_phase34_qa_inference_producer.py tests/test_c5_phase34_qa_inference_producer.py -> passed",
+        "python3.11 -m py_compile scripts/host/run_c5_phase34_qa_inference_producer.py -> passed",
+        "python3.11 -m pytest -q tests/test_c5_phase34_qa_inference_producer.py tests/test_c5_prediction_payloads.py -> 12 passed in 4.00s",
+        "cmake --build build/gemma4_megakernel_host --target gemma4_layer_runner -j 8 -> built",
+        "ctest --test-dir build/gemma4_megakernel_host --output-on-failure -> 4/4 passed"
       ],
-      "authorization_needed": false
+      "authorization_needed": false,
+      "first_missing_green_field_after_custody": "decoder_manifest_architecture_config_missing",
+      "additional_missing_runtime_field": "decoder_manifest_tensor_role_inventory_missing"
     },
     "pipeline_integrator": {
       "artifact_paths": [
@@ -4239,44 +4587,49 @@
     },
     "repo_custodian": {
       "artifact_paths": [
-        "runtime/reports/orchestration/c5_after_c1_phone_termux_hf_export_route_20260701T_engineering.json",
-        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py",
-        "tests/test_c5_full_decoder_exporter.py",
         "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json",
-        "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md"
+        "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md",
+        "runtime/reports/orchestration/c5_after_c1_native_full_decoder_logits_contract_patch_20260701T_phase34.json",
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_qa_inference.cpp",
+        "scripts/host/run_c5_phase34_qa_inference_producer.py",
+        "tests/test_c5_phase34_qa_inference_producer.py"
       ],
       "authorization_needed": false,
-      "first_missing_green_field": "custody_freeze_for_phone_compatible_exporter",
-      "last_update_utc": "2026-07-01T10:02:37Z",
-      "next_action": "No custody action runnable until the next metadata/code pathset lands from Execution or Phase3/4.",
+      "first_missing_green_field": "repo_custody_freeze_native_full_decoder_logits_contract_patch",
+      "last_update_utc": "2026-07-01T12:40:37Z",
+      "next_action": "Verify exact six-file pathset, commit/push only that pathset, and return commit SHA plus final SHA-256 identities.",
       "nonclaims": [
-        "custody completion is not C5 pass",
-        "no model source found",
-        "no decoder_manifest emitted from real model",
-        "no adapter_site_policy emitted from real model",
-        "no logits/prediction/loss/C5 metrics fabricated",
-        "no HF/Comet/API call",
-        "no secrets sourced or printed"
+        "no C5 pass",
+        "no real prediction JSONL emitted",
+        "no logits, prediction, loss, confidence, candidate_train_loss, or C5 metric fabricated",
+        "no bridge MSE relabeled as C5 loss",
+        "no old layer0/layer1 asset accepted as a full decoder",
+        "no learning or model-quality claim",
+        "no Phase3 readiness claim",
+        "no Phase4 readiness claim",
+        "not 100k or 1M Phase2 authority",
+        "no Comet-backed accepted run"
       ],
       "sha256_or_identity_fields": {
-        "commit_sha": "9d1c171ea72cef391e2bbcf550ea3e0f84632f27",
-        "branch": "origin/gemma4-megakernel-native-training",
-        "previous_authorization_state_commit": "abf8e5d744ea02c525c79ddfd50d451d751c67b0"
+        "previous_native_failure_state_commit": "a6ddd7e98ad43fb1c7325590eeb725d0e30e4fbe",
+        "contract_report_sha256": "9128d334bac560f98d55a86d5be18f032e2d549121d3fce85e89accf452d1963",
+        "native_guard_sha256": "9edefbdfe569edd8add9d711e0ae5e1e4813b190e9d4e5f355e6ce7c35cbf7b0",
+        "producer_sha256": "26d8b99f8d5a8b930b90296c89f0c98e51537dcbaf2d302f8923c6b1dce3cf2e",
+        "tests_sha256": "eeea0c89882a087cf945058244ccc55aa8ea37901b1116baf15e0356aab97b3b"
       },
-      "status": "phone_termux_exporter_route_state_committed_pushed",
-      "status_classification": "COMPLETE_FOR_EXPORTER_AND_CENTRAL_ROUTE_CUSTODY",
+      "status": "native_logits_contract_patch_freeze_requested",
+      "status_classification": "PENDING_ACTION_REPO_CUSTODY_NATIVE_LOGITS_CONTRACT_PATCH",
       "thread_id": "019f1ac2-0f0f-7721-bf46-ad402dbd9050",
       "user_action_required": false,
       "verification_commands": [
-        "Verify exact five-file pathset SHA-256 values after meta update.",
-        "python3.11 -m json.tool runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json runtime/reports/orchestration/c5_after_c1_full_decoder_exporter_pathset_20260701T_engineering.json.",
-        "python3.11 -m py_compile integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py tests/test_c5_full_decoder_exporter.py.",
-        "python3.11 -m pytest -q tests/test_c5_full_decoder_exporter.py.",
-        "unstaged and staged git diff --check on exact five-file pathset.",
-        "raw-payload filename suffix scan over exact pathset and staged index.",
-        "tight literal secret/token scan over exact pathset and staged index."
+        "python3.11 -m json.tool runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json runtime/reports/orchestration/c5_after_c1_native_full_decoder_logits_contract_patch_20260701T_phase34.json",
+        "git diff --check -- runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md runtime/reports/orchestration/c5_after_c1_native_full_decoder_logits_contract_patch_20260701T_phase34.json integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_qa_inference.cpp scripts/host/run_c5_phase34_qa_inference_producer.py tests/test_c5_phase34_qa_inference_producer.py",
+        "python3.11 -m py_compile scripts/host/run_c5_phase34_qa_inference_producer.py",
+        "python3.11 -m pytest -q tests/test_c5_phase34_qa_inference_producer.py tests/test_c5_prediction_payloads.py",
+        "raw-payload filename suffix scan over exact pathset and staged index",
+        "tight literal secret/token scan over exact pathset and staged index"
       ],
-      "current_gate": "WaveB_C5_after_C1_model_source_authorization_pending",
+      "current_gate": "WaveB_C5_after_C1_native_logits_contract_patch_custody_pending",
       "commit_sha": "89aad4cdc3e7a5eac1f59c123c5be0479d96afe0",
       "branch": "origin/gemma4-megakernel-native-training",
       "prior_exporter_commit_sha": "090417c75b19573146e26c77e663ac605981fae3"
@@ -4344,6 +4697,20 @@
     }
   },
   "last_driver_actions": [
+    {
+      "timestamp_utc": "2026-07-01T12:40:37Z",
+      "owner": "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050",
+      "action": "recorded Phase3/4 native logits contract patch, verified exact hashes/JSON, shifted active gate to Repo Custodian freeze, and prepared exact central-state plus contract pathset",
+      "artifacts": [
+        "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json",
+        "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md",
+        "runtime/reports/orchestration/c5_after_c1_native_full_decoder_logits_contract_patch_20260701T_phase34.json",
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_qa_inference.cpp",
+        "scripts/host/run_c5_phase34_qa_inference_producer.py",
+        "tests/test_c5_phase34_qa_inference_producer.py"
+      ],
+      "user_action_required": false
+    },
     {
       "action": "recorded Engineering C5 decoder-runtime schema hardening pathset, verified hashes/JSON/tests/scans, shifted active gate to Repo Custodian freeze, and prepared exact custody pathset",
       "artifacts": [
@@ -4997,25 +5364,25 @@
     ]
   },
   "schema_version": "polymath_executive_delivery_state_v1",
-  "status": "native_full_decoder_logits_implementation_failure",
-  "status_classification": "PENDING_ACTION_PHASE34_ENGINEERING_NATIVE_FULL_DECODER_LOGITS_IMPLEMENTATION",
-  "updated_at": "2026-07-01T12:28:07Z",
-  "updated_at_utc": "2026-07-01T12:28:07Z",
+  "status": "native_logits_contract_patch_custody_pending",
+  "status_classification": "PENDING_ACTION_REPO_CUSTODY_NATIVE_LOGITS_CONTRACT_PATCH",
+  "updated_at": "2026-07-01T12:40:37Z",
+  "updated_at_utc": "2026-07-01T12:40:37Z",
   "dominant_failure_domain": "phase5_eval_failure",
   "user_action_required": false,
-  "last_concrete_action": "Execution built the Termux C5 runner from frozen source commit 090417c75b19573146e26c77e663ac605981fae3, verified runner SHA a5a6f9a3b93d167d9cd69eddbe2f3404443ae1c2222e1c6a0782398c9ff09e84 with 369536 bytes and help flags --run-c5-qa-predict, --decoder-component-pack, --vocab-chunk-size, and --max-generation-tokens. Execution staged the accepted C5_after_C1 heldout QA with SHA da41c5362398f24e0e0dd9df9a5cf0594435a455871fa77ab74d9312e6c8e9b2, 153158 bytes, 53 rows, then ran the smallest native C5 QA predict probe. The probe verified candidate adapter SHA 1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f and failed closed with exit code 13 at full_decoder_logits_generation_not_implemented; probe stdout metadata SHA 8be05287d47bb148054bd26425f41f7f0c2cded8b98110d956c0f3e778cb86e6 and stderr SHA d2f647b4efae9fe021b2e0d5ce9f79f88d87853e4f40cf0d660cf6d5d5c2d819.",
-  "next_concrete_action": "Phase3/4/Engineering patch the existing native C5 QA predict surface to replace only the full_decoder_logits_generation_not_implemented branch with a streamed/chunked full-decoder logits path using the exported decoder component pack and adapter policy. The patch must emit real prediction JSONL, finite answer loss/confidence from runtime logits, and fail closed on schema/shape/hash errors; after custody, Execution reruns the same bounded probe.",
+  "last_concrete_action": "Repo Custodian froze the native C5 probe failure central state at commit a6ddd7e98ad43fb1c7325590eeb725d0e30e4fbe. Phase3/4 then produced a native/host contract patch that hardens metadata-only decoder manifests before native invocation: report SHA 9128d334bac560f98d55a86d5be18f032e2d549121d3fce85e89accf452d1963; c5_qa_inference.cpp SHA 9edefbdfe569edd8add9d711e0ae5e1e4813b190e9d4e5f355e6ce7c35cbf7b0; run_c5_phase34_qa_inference_producer.py SHA 26d8b99f8d5a8b930b90296c89f0c98e51537dcbaf2d302f8923c6b1dce3cf2e; tests/test_c5_phase34_qa_inference_producer.py SHA eeea0c89882a087cf945058244ccc55aa8ea37901b1116baf15e0356aab97b3b. Verification reported by Phase3/4: git diff --check passed, py_compile passed, pytest tests/test_c5_phase34_qa_inference_producer.py tests/test_c5_prediction_payloads.py returned 12 passed, gemma4_layer_runner build completed, and ctest returned 4/4 passed.",
+  "next_concrete_action": "Repo Custodian verifies and commits/pushes the exact central-state plus Phase3/4 contract pathset. After custody, the current metadata-only component pack must fail closed at decoder_manifest_architecture_config_missing and decoder_manifest_tensor_role_inventory_missing; with schema-complete paths but no runtime body, the fail-fast boundary remains c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land. Engineering/Phase3/4 then extend the exporter/runtime pathset rather than creating a new C5 pathway.",
   "artifact_waiting_on": [
-    "Phase3/4/Engineering implement the native full-decoder logits runtime path behind the existing C5 QA predict runner surface.",
-    "Repo Custodian freezes the metadata-only native probe report and central state mirror.",
-    "Execution reruns the same bounded C5 QA predict probe after the native logits patch and custody freeze."
+    "Repo Custodian freeze of EXECUTIVE_DELIVERY_STATE.json, EXECUTIVE_DELIVERY_STATE.md, and the Phase3/4 native logits contract patch pathset.",
+    "Engineering exporter emits a schema-complete full decoder component pack with source_model_safetensors, architecture_config, and tensor_role_inventory.",
+    "Phase3/4 lands safetensors_reader plus streamed/chunked c5_full_decoder_runtime and replaces only the terminal full_decoder_logits_generation_not_implemented branch.",
+    "Execution rebuilds/copies the runner and reruns the same bounded C5_after_C1 native QA predict probe after custody and runtime patch."
   ],
-  "drift_deleted_or_pending": "Runner build, heldout staging, model download, and component-pack export blockers are superseded by hashes and a real probe. The remaining drift is the deliberate native fail-closed logits body; bridge MSE remains forbidden as C5 loss.",
-  "recursive_improvement_next_step": "Implement one native logits patch pathset, freeze it, rerun the exact bounded probe, then only proceed to executed metrics if prediction JSONL and finite runtime loss/confidence exist.",
-  "owner": "Phase3/4 Engineer and Engineering own the native full-decoder logits implementation; Execution owns rerun after the patch is frozen.",
+  "drift_deleted_or_pending": "The generic native full_decoder_logits_generation_not_implemented stop is now hardened into explicit manifest-contract fields: decoder_manifest_architecture_config_missing and decoder_manifest_tensor_role_inventory_missing. Remaining drift is pending exporter/runtime work for architecture/tensor-role inventory, safetensors range reading, and streamed decoder logits; bridge MSE remains forbidden as C5 loss.",
+  "recursive_improvement_next_step": "Freeze the Phase3/4 contract patch, then implement the smallest falsifiable exporter plus safetensors_reader plus c5_full_decoder_runtime path, rerun the bounded native QA predict probe, and only proceed to executed metrics after real prediction JSONL and finite runtime loss/confidence exist.",
+  "owner": "Repo Custodian owns the Phase3/4 native logits contract patch freeze; Engineering/Phase3/4 own exporter/runtime implementation after custody; Execution owns the bounded rerun after a runnable patch exists.",
   "threads_nudged_this_tick": [
-    "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 native logits implementation follow-up sent",
-    "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050 central/probe report freeze requested"
+    "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: freeze exact central-state plus Phase3/4 native logits contract patch pathset."
   ],
   "raw_phone_path_hardening_20260701T094236Z": {
     "status": "central_state_phone_filesystem_paths_redacted",
@@ -5023,7 +5390,7 @@
     "reason": "Prevent stale phone filesystem strings from being treated as C5 runtime evidence or raw payload routes.",
     "preserved": "artifact identities, hashes, lane status, nonclaims, and outside-git source requirements"
   },
-  "first_missing_green_field": "full_decoder_logits_generation_not_implemented",
+  "first_missing_green_field": "repo_custody_freeze_native_full_decoder_logits_contract_patch",
   "first_missing_green_field_after_download": "full_decoder_logits_generation_not_implemented",
   "known_downstream_access_issue_after_download": "native_full_decoder_logits_implementation_failure",
   "authorization_needed": "none; native implementation work is under current GO and must preserve raw/secrets boundary",
@@ -5044,5 +5411,162 @@
   "probe_stderr_sha256": "d2f647b4efae9fe021b2e0d5ce9f79f88d87853e4f40cf0d660cf6d5d5c2d819",
   "native_probe_report_path": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe/candidate_probe_stdout.json",
   "native_probe_exit_code": 13,
-  "first_missing_green_field_after_patch": "bounded_c5_qa_predict_rerun_pending"
+  "first_missing_green_field_after_patch": "bounded_c5_qa_predict_rerun_pending",
+  "first_missing_green_field_after_contract_patch": "decoder_manifest_architecture_config_missing",
+  "additional_missing_runtime_field_after_contract_patch": "decoder_manifest_tensor_role_inventory_missing",
+  "first_unresolved_technical_failure_after_valid_schema_paths": "c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land",
+  "c5_after_c1_native_full_decoder_logits_contract_patch_20260701T_phase34": {
+    "schema_version": "polymath_c5_after_c1_native_full_decoder_logits_contract_patch_v1",
+    "lane": "phase34_native_full_decoder_logits_runtime",
+    "status": "native_c5_logits_pathset_required",
+    "artifact_paths": [
+      "runtime/reports/orchestration/c5_after_c1_native_full_decoder_logits_contract_patch_20260701T_phase34.json",
+      "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_qa_inference.cpp",
+      "scripts/host/run_c5_phase34_qa_inference_producer.py",
+      "tests/test_c5_phase34_qa_inference_producer.py"
+    ],
+    "pathset_sha256": {
+      "runtime/reports/orchestration/c5_after_c1_native_full_decoder_logits_contract_patch_20260701T_phase34.json": "9128d334bac560f98d55a86d5be18f032e2d549121d3fce85e89accf452d1963",
+      "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_qa_inference.cpp": "9edefbdfe569edd8add9d711e0ae5e1e4813b190e9d4e5f355e6ce7c35cbf7b0",
+      "scripts/host/run_c5_phase34_qa_inference_producer.py": "26d8b99f8d5a8b930b90296c89f0c98e51537dcbaf2d302f8923c6b1dce3cf2e",
+      "tests/test_c5_phase34_qa_inference_producer.py": "eeea0c89882a087cf945058244ccc55aa8ea37901b1116baf15e0356aab97b3b"
+    },
+    "first_missing_green_field_current": "repo_custody_freeze_native_full_decoder_logits_contract_patch",
+    "first_missing_green_field_after_custody": "decoder_manifest_architecture_config_missing",
+    "additional_missing_runtime_field": "decoder_manifest_tensor_role_inventory_missing",
+    "first_unresolved_technical_failure_after_valid_schema_paths": "c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land",
+    "required_manifest_fields_for_real_native_runtime": {
+      "decoder_manifest_schema": "polymath_c5_full_decoder_manifest_v1",
+      "required_top_level_fields_added": [
+        "source_model_safetensors",
+        "architecture_config",
+        "tensor_role_inventory"
+      ],
+      "source_model_safetensors_required_fields": [
+        "path",
+        "sha256",
+        "size_bytes"
+      ],
+      "decoder_required_fields": [
+        "num_layers=42",
+        "hidden_size=2560",
+        "vocab_size=262144",
+        "logits_vocabulary_size=262144",
+        "layer_inventory length=42"
+      ],
+      "architecture_config_minimum_semantics": [
+        "attention head count",
+        "kv head count",
+        "head_dim",
+        "intermediate size",
+        "normalization epsilon",
+        "RoPE/theta and position semantics",
+        "dtype policy"
+      ],
+      "tensor_role_inventory_minimum_semantics": [
+        "per-layer q_proj/k_proj/v_proj/o_proj tensor key, dtype, shape, and byte range",
+        "per-layer gate_proj/up_proj/down_proj tensor key, dtype, shape, and byte range",
+        "per-layer input/post-attention norm tensor key, dtype, shape, and byte range",
+        "LM-head/unembedding tied or separate tensor key, dtype, shape, and byte range",
+        "token embedding tensor key, dtype, shape, and byte range"
+      ]
+    },
+    "native_logits_implementation_pathset_required": {
+      "files_to_add_or_modify": [
+        {
+          "path": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/include/polymath/gemma4/safetensors_reader.h",
+          "purpose": "Declare bounded safetensors header parsing, SHA validation, tensor metadata lookup, and range-read interfaces."
+        },
+        {
+          "path": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/model/safetensors_reader.cpp",
+          "purpose": "Implement stdlib-only safetensors metadata and tensor range reader; never emit tensor bytes to reports."
+        },
+        {
+          "path": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/include/polymath/gemma4/c5_full_decoder_runtime.h",
+          "purpose": "Expose the native full-decoder C5 QA runtime contract for prediction JSONL rows and compact telemetry."
+        },
+        {
+          "path": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp",
+          "purpose": "Implement streamed/chunked Gemma 4 E4B decoder execution, answer-token NLL, confidence, and greedy prediction without full B*S*V logits materialization."
+        },
+        {
+          "path": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_qa_inference.cpp",
+          "purpose": "Replace only the terminal full_decoder_logits_generation_not_implemented branch with a call into c5_full_decoder_runtime after existing guards pass."
+        },
+        {
+          "path": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/CMakeLists.txt",
+          "purpose": "Link safetensors_reader.cpp and c5_full_decoder_runtime.cpp into gemma4_megakernel_core."
+        },
+        {
+          "path": "tests/test_c5_native_full_decoder_runtime.py",
+          "purpose": "Exercise safetensors metadata parsing, schema/path/SHA failure surfaces, adapter SHA binding, vocab chunk bounds, and prediction JSONL contract."
+        }
+      ],
+      "runtime_algorithm_contract": [
+        "Load and validate tokenizer identity, decoder manifest, adapter policy, candidate/stable adapter SHA, heldout QA SHA, and output path boundary.",
+        "Open source_model_safetensors through a bounded reader and verify manifest SHA/size before any tensor role lookup.",
+        "Map tensor_role_inventory entries into the decoder layer loop; reject missing/unsupported dtype/shape/range before execution.",
+        "Run prompt prefill plus answer teacher forcing through all 42 layers using bounded memory and the configured max_generation_tokens.",
+        "Apply the rank-16 Phase4 adapter only at the adapter_site_policy layer/site and only for the checkpoint role being evaluated.",
+        "Project logits in chunks no larger than --vocab-chunk-size; compute per-answer-token NLL, perplexity input, and confidence without materializing full B*S*V logits.",
+        "Emit outside-git JSONL rows with record_id, prediction, finite nonnegative loss, and confidence in [0,1]."
+      ],
+      "fail_closed_cases": [
+        "decoder manifest schema mismatch",
+        "missing architecture_config",
+        "missing tensor_role_inventory",
+        "missing or SHA-mismatched source_model_safetensors",
+        "unsupported dtype",
+        "tensor shape/key/byte-range mismatch",
+        "adapter policy SHA/site mismatch",
+        "unsupported full logits materialization request",
+        "OOM or chunk allocation failure",
+        "absent logits or nonfinite loss/confidence"
+      ]
+    },
+    "verification_commands": [
+      {
+        "command": "git diff --check -- integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_qa_inference.cpp scripts/host/run_c5_phase34_qa_inference_producer.py tests/test_c5_phase34_qa_inference_producer.py",
+        "result": "passed"
+      },
+      {
+        "command": "python3.11 -m py_compile scripts/host/run_c5_phase34_qa_inference_producer.py",
+        "result": "passed"
+      },
+      {
+        "command": "python3.11 -m pytest -q tests/test_c5_phase34_qa_inference_producer.py tests/test_c5_prediction_payloads.py",
+        "result": "12 passed in 4.00s"
+      },
+      {
+        "command": "cmake --build build/gemma4_megakernel_host --target gemma4_layer_runner -j 8",
+        "result": "built"
+      },
+      {
+        "command": "ctest --test-dir build/gemma4_megakernel_host --output-on-failure",
+        "result": "4/4 passed"
+      }
+    ],
+    "raw_boundary_proof": {
+      "raw_qa_jsonl_copied_to_git": false,
+      "raw_prediction_jsonl_copied_to_git": false,
+      "raw_checkpoint_or_adapter_payload_copied_to_git": false,
+      "raw_model_or_tensor_payload_copied_to_git": false,
+      "hf_or_comet_called": false,
+      "secrets_printed": false,
+      "phone_gate_run": false,
+      "staged_or_committed": false
+    },
+    "nonclaims": [
+      "no C5 pass",
+      "no real prediction JSONL emitted",
+      "no logits, prediction, loss, confidence, candidate_train_loss, or C5 metric fabricated",
+      "no bridge MSE relabeled as C5 loss",
+      "no old layer0/layer1 asset accepted as a full decoder",
+      "no learning or model-quality claim",
+      "no Phase3 readiness claim",
+      "no Phase4 readiness claim",
+      "not 100k or 1M Phase2 authority",
+      "no Comet-backed accepted run"
+    ]
+  }
 }

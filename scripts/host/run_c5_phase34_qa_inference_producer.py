@@ -125,6 +125,18 @@ def producer_contract() -> dict[str, Any]:
                 "hidden_size": GEMMA4_E4B_HIDDEN_SIZE,
                 "vocab_size": GEMMA4_E4B_VOCAB_SIZE,
                 "logits_vocabulary_size": GEMMA4_E4B_VOCAB_SIZE,
+                "layer_inventory": "required 42-layer inventory",
+            },
+            "architecture_config": {
+                "required": True,
+                "purpose": "Native full-decoder runtime dimensions and attention/MLP/norm/RoPE parameters.",
+            },
+            "tensor_role_inventory": {
+                "required": True,
+                "purpose": "Map every decoder tensor role to safetensors key, dtype, shape, and byte range.",
+            },
+            "source_model_safetensors": {
+                "required_fields": ["path", "sha256", "size_bytes"],
             },
             "lm_head": {
                 "embedded_in_decoder": "true if --lm-head is intentionally omitted",
@@ -231,6 +243,23 @@ def validate_decoder_manifest(path: Path, blockers: list[str]) -> bool:
         for field, expected in decoder_checks:
             if decoder.get(field) != expected:
                 blockers.append(f"decoder_manifest_decoder_{field}_mismatch")
+        layer_inventory = decoder.get("layer_inventory")
+        if not isinstance(layer_inventory, list) or len(layer_inventory) != GEMMA4_E4B_LAYERS:
+            blockers.append("decoder_manifest_layer_inventory_missing_or_incomplete")
+    source_model = payload.get("source_model_safetensors")
+    if not isinstance(source_model, dict):
+        blockers.append("decoder_manifest_source_model_safetensors_missing")
+    else:
+        if not source_model.get("path"):
+            blockers.append("decoder_manifest_source_model_safetensors_path_missing")
+        if not is_sha256(str(source_model.get("sha256", ""))):
+            blockers.append("decoder_manifest_source_model_safetensors_sha256_invalid")
+        if not isinstance(source_model.get("size_bytes"), int) or source_model.get("size_bytes", 0) <= 0:
+            blockers.append("decoder_manifest_source_model_safetensors_size_invalid")
+    if not isinstance(payload.get("architecture_config"), dict):
+        blockers.append("decoder_manifest_architecture_config_missing")
+    if not isinstance(payload.get("tensor_role_inventory"), dict):
+        blockers.append("decoder_manifest_tensor_role_inventory_missing")
 
     lm_head = payload.get("lm_head")
     if lm_head is not None:
