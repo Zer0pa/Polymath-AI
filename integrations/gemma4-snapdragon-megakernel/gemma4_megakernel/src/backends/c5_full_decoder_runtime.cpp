@@ -593,6 +593,16 @@ void append_tensor_role_blockers(const std::string& manifest,
   }
 }
 
+void append_full_decoder_compute_kernel_blockers(
+    C5FullDecoderRuntimeResult& result) {
+  result.blockers.push_back("c5_full_decoder_streamed_compute_kernel_missing");
+  result.blockers.push_back("c5_full_decoder_tensor_value_loader_missing");
+  result.blockers.push_back("c5_full_decoder_qa_prompt_token_runtime_missing");
+  result.blockers.push_back("c5_full_decoder_attention_mlp_kernel_missing");
+  result.blockers.push_back("c5_full_decoder_rank16_adapter_injection_missing");
+  result.blockers.push_back("c5_full_decoder_chunked_lm_head_nll_writer_missing");
+}
+
 }  // namespace
 
 C5FullDecoderRuntimeResult run_c5_full_decoder_runtime(
@@ -613,7 +623,7 @@ C5FullDecoderRuntimeResult run_c5_full_decoder_runtime(
   }
 
   if (result.blockers.empty()) {
-    result.blockers.push_back("full_decoder_logits_generation_kernel_not_implemented");
+    append_full_decoder_compute_kernel_blockers(result);
   }
   return result;
 }
