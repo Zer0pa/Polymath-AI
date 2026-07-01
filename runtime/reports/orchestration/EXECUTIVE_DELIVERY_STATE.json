@@ -1,11 +1,10 @@
 {
   "active_bottleneck": {
     "artifact_waiting_on": [
-      "Repo Custodian freeze of the phone-compatible C5 full-decoder exporter hardening pathset and route report.",
-      "After custody, Execution must run the phone/Termux model download and metadata-only component export route without Mac model staging.",
-      "Execution has already found the next downstream access issue: no safe non-interactive Termux command channel is currently available; repair sshd/RunCommand or use an Engineering-approved ADB-runner path before download/export.",
-      "Phase3/4 found the public phone runner is stale and must be rebuilt or copied from the frozen C5-capable runner before it can consume exported manifests.",
-      "After exported manifests and runner are available, Phase3/4 still must replace full_decoder_logits_generation_not_implemented with streamed/chunked logits generation plus teacher-forced answer loss."
+      "Execution completes the phone-local pinned HF model download in outside-git Termux storage and reports size plus SHA-256 metadata only.",
+      "Execution runs the frozen stdlib exporter on phone and reports decoder_manifest.json, adapter_site_policy.json, and export_report.json hashes.",
+      "Execution consumes the Phase3/4 runner command package to build/copy a C5-capable phone runner and verify C5 help flags.",
+      "Phase3/4/Engineering replace full_decoder_logits_generation_not_implemented with streamed/chunked full-decoder logits after valid exported manifests exist."
     ],
     "authorization_needed": "exact model source route required after bounded phone and Mac probes: restore/mount the historical outside-git Gemma 4 E4B model snapshot or authorize bounded HF read/download/export for google/gemma-4-E4B revision 7aa32e6889efd6300124851b164f8b364314c3d8 without printing secrets",
     "c5_after_c1_c5_qa_runtime_fail_closed_pathset": {
@@ -964,7 +963,7 @@
       "existing_surface_role": "run_c5_eval.py validates supplied metrics JSON; it does not compute metrics",
       "status": "c5_after_c1_real_evaluator_surface_missing"
     },
-    "first_missing_green_field": "custody_freeze_for_phone_compatible_exporter",
+    "first_missing_green_field": "phone_termux_model_safetensors_download_in_progress",
     "first_missing_green_field_after_custody_until_model_source_available": "model_safetensors_missing",
     "first_unresolved_technical_failure_after_schema_paths": "full_decoder_logits_generation_not_implemented_after_valid_schema_paths",
     "first_unresolved_technical_failure_after_valid_schema_paths": "full_decoder_logits_generation_not_implemented_after_valid_schema_paths",
@@ -1498,16 +1497,45 @@
       "status": "phone_native_runtime_support_report_ready",
       "summary": "Frozen source has C5 component-pack flags, but public phone runner binaries are stale and do not expose the C5 entrypoint. Valid manifests still stop at full_decoder_logits_generation_not_implemented.",
       "first_missing_green_field": "phone_c5_runner_rebuild_or_copy_missing_after_exporter_custody"
+    },
+    "first_missing_green_field_after_download": "phone_termux_decoder_component_pack_export_pending",
+    "known_downstream_access_issue_after_download": "phone_c5_runner_rebuild_or_copy_missing",
+    "custody_completion_20260701T100237Z": {
+      "exporter_hardening_commit": "090417c75b19573146e26c77e663ac605981fae3",
+      "central_route_mirror_commit": "89aad4cdc3e7a5eac1f59c123c5be0479d96afe0",
+      "repo_custodian_thread": "019f1ac2-0f0f-7721-bf46-ad402dbd9050",
+      "status": "custody_complete"
+    },
+    "execution_phone_download_20260701T100237Z": {
+      "thread_id": "019f138c-fb51-7c53-a41a-ab8eac950d9c",
+      "status": "phone_termux_hf_model_download_running",
+      "termux_command_channel": "ssh_channel_recovered_by_execution",
+      "download_process_id": "15243",
+      "downloaded_bytes_observed": 114221056,
+      "expected_size_bytes": 15992595884,
+      "storage_result": "sufficient_phone_storage_reported_by_execution",
+      "token_handling": "no token printed; no-token public curl started successfully",
+      "raw_boundary": "model bytes remain phone-local outside git and are not copied through Mac or repo",
+      "first_missing_green_field": "phone_termux_model_safetensors_download_in_progress",
+      "user_action_required": false
+    },
+    "phase34_runner_and_logits_package_20260701T100237Z": {
+      "thread_id": "019f13da-d897-7ba2-8ed1-b959892f5ed4",
+      "artifact_path": "runtime/reports/orchestration/c5_after_c1_phone_runner_rebuild_and_native_logits_pathset_20260701T_phase34.json",
+      "artifact_sha256": "90b0575ba56edf9cd4ec7031c24d32b7242c9af0d510201323a729f18abd9f47",
+      "status": "native_c5_logits_pathset_required",
+      "first_missing_green_field": "termux_command_channel_for_runner_build_resolved_by_execution_but_runner_build_pending",
+      "first_unresolved_technical_failure_after_valid_schema_paths": "full_decoder_logits_generation_not_implemented",
+      "next_action": "Execution runs Termux command package to build/copy/verify C5-capable runner; Phase3/4 then patches c5_qa_inference.cpp::run_c5_qa_predict fail-closed branch after exported manifests exist."
     }
   },
-  "active_edge": "WaveB_C5_after_C1_phone_termux_exporter_hardening_pending_custody",
+  "active_edge": "WaveB_C5_after_C1_phone_termux_hf_model_download_in_progress",
   "active_watchdog_state": {
     "artifact_waiting_on": [
-      "Repo Custodian freeze of the phone-compatible C5 full-decoder exporter hardening pathset and route report.",
-      "After custody, Execution must run the phone/Termux model download and metadata-only component export route without Mac model staging.",
-      "Execution has already found the next downstream access issue: no safe non-interactive Termux command channel is currently available; repair sshd/RunCommand or use an Engineering-approved ADB-runner path before download/export.",
-      "Phase3/4 found the public phone runner is stale and must be rebuilt or copied from the frozen C5-capable runner before it can consume exported manifests.",
-      "After exported manifests and runner are available, Phase3/4 still must replace full_decoder_logits_generation_not_implemented with streamed/chunked logits generation plus teacher-forced answer loss."
+      "Execution completes the phone-local pinned HF model download in outside-git Termux storage and reports size plus SHA-256 metadata only.",
+      "Execution runs the frozen stdlib exporter on phone and reports decoder_manifest.json, adapter_site_policy.json, and export_report.json hashes.",
+      "Execution consumes the Phase3/4 runner command package to build/copy a C5-capable phone runner and verify C5 help flags.",
+      "Phase3/4/Engineering replace full_decoder_logits_generation_not_implemented with streamed/chunked full-decoder logits after valid exported manifests exist."
     ],
     "authorization_needed": "exact model source route required: mount/restore /workspace/models/gemma4_e4b/snapshot/model.safetensors outside git, or authorize bounded HF read/download/export for google/gemma-4-E4B revision 7aa32e6889efd6300124851b164f8b364314c3d8 without printing secrets",
     "c5_after_c1_c5_qa_runtime_fail_closed_pathset": {
@@ -2355,11 +2383,11 @@
       "status": "c5_full_decoder_failure_artifacts_and_state_pending_custody",
       "user_action_required": false
     },
-    "current_gate": "WaveB_C5_after_C1_phone_termux_exporter_hardening_pending_custody",
+    "current_gate": "WaveB_C5_after_C1_phone_termux_hf_model_download_in_progress",
     "custody_commit_latest": "bb8105a2bc91b6c9b0993603e14b49d0a5730f8d",
     "custody_status_latest": "c5_decoder_runtime_owner_state_committed_pushed",
     "dominant_failure_domain": "phase5_eval_failure",
-    "drift_deleted_or_pending": "Deleted the stale Mac-model-source authorization wait as the active edge. Current pending hardening is custody of phone-compatible no-Torch exporter plus central mirror. Downstream drift remains: Termux command channel unavailable, public phone runner lacks C5 flags, and native logits body remains fail-closed.",
+    "drift_deleted_or_pending": "Deleted custody-wait and Termux-channel blocker as current active edge: exporter custody landed and SSH channel is working. Pending drift hardening remains for model download/export completion, C5-capable phone runner deployment, and native logits implementation.",
     "engineering_evaluator_implementation": {
       "artifact_paths_in_progress": [
         "polymath_ai/polar/c5_heldout_eval.py",
@@ -2466,7 +2494,7 @@
       "existing_surface_role": "run_c5_eval.py validates supplied metrics JSON; it does not compute metrics",
       "status": "c5_after_c1_real_evaluator_surface_missing"
     },
-    "first_missing_green_field": "custody_freeze_for_phone_compatible_exporter",
+    "first_missing_green_field": "phone_termux_model_safetensors_download_in_progress",
     "first_unresolved_technical_failure_after_schema_paths": "full_decoder_logits_generation_not_implemented_after_valid_schema_paths",
     "first_unresolved_technical_failure_after_valid_schema_paths": "full_decoder_logits_generation_not_implemented_after_valid_schema_paths",
     "hardening_policy": {
@@ -2496,7 +2524,7 @@
       "training_material_steward": "complete for material identities",
       "ui_engineer": "not nudged until C5 evidence-backed status exists"
     },
-    "last_concrete_action": "Engineering produced a phone/Termux-compatible exporter hardening route report and pathset after confirming HF model metadata and Mac storage unsuitability. Pipeline reclassified the route to phone/Termux download/export. Execution found a downstream Termux command-channel failure. Phase3/4 found public phone runners are stale for C5 flags. Repo Custodian previously froze central state at 14ca3fb1ed92684073759df9696ab7b17189b6ad.",
+    "last_concrete_action": "Repo Custodian froze the phone-compatible exporter pathset at 090417c75b19573146e26c77e663ac605981fae3 and the central route mirror at 89aad4cdc3e7a5eac1f59c123c5be0479d96afe0. Execution restored a usable Termux SSH command channel, verified the frozen exporter surface on phone, found sufficient phone storage, and started the pinned HF model download as phone-local process 15243. Phase3/4 produced the runner rebuild/native logits command package SHA 90b0575ba56edf9cd4ec7031c24d32b7242c9af0d510201323a729f18abd9f47.",
     "lineage_drift_repair_status": {
       "commit": "ee74ae572322e05624deac6f6f8788c2c6e2f692",
       "proof_required": [
@@ -2512,7 +2540,7 @@
       ],
       "status": "source_repair_frozen_pending_execution_proof"
     },
-    "next_concrete_action": "Repo Custodian freezes the exporter/test/report plus central mirror pathset; after custody, Execution repairs or uses a safe Termux command channel, downloads the pinned model to phone outside git, runs the hardened exporter, and returns metadata-only manifest/policy/export identities.",
+    "next_concrete_action": "Execution polls the phone-local download until complete, computes model SHA metadata, runs the frozen exporter on phone, and returns decoder manifest, adapter-site policy, and export report hashes. In parallel or immediately after, Execution uses the Phase3/4 command package to build/copy a C5-capable runner and verify help flags.",
     "nonclaims": [
       "development-cycle evidence only unless stronger gates pass",
       "no C5 pass",
@@ -2538,7 +2566,7 @@
       "not 100k/1M Phase2 authority",
       "no Comet-backed accepted run claim"
     ],
-    "owner": "Repo Custodian owns the immediate exporter hardening freeze; Execution owns phone/Termux download/export after custody; Engineering remains active until the handoff is fully frozen; Phase3/4 owns native runner and logits boundary.",
+    "owner": "Execution Orchestrator owns the active phone/Termux HF download and exporter run; Phase3/4 owns the C5-capable runner package and native logits boundary after export.",
     "phase2_status_by_phase": {
       "C1": {
         "packets": 5180,
@@ -2748,7 +2776,7 @@
       "phase34": "raw PJP1, HTP raw output, OpenCL tensors, and adapters remain on device/Termux; repair must keep compact JSON only",
       "report_root_scan": "metadata-freeze report root had 179 tracked files and clean forbidden suffix scans; raw payloads not committed"
     },
-    "recursive_improvement_next_step": "Freeze phone-compatible exporter, execute phone/Termux model download/export, rebuild/copy C5-capable runner, then replace the fail-closed logits branch and run the smallest real C5 metrics proof.",
+    "recursive_improvement_next_step": "After export and runner verification, run a bounded C5 QA predict probe; if it stops at the known fail-closed branch, patch the exact native logits/generation body and rerun the smallest real C5 metrics proof.",
     "repo_custody_state_freeze": {
       "branch": "origin/gemma4-megakernel-native-training",
       "commit": "7290fbec13c6a13e88710afddfe4af70637096f9",
@@ -2761,18 +2789,18 @@
     },
     "run_label": "c1_c4_waveB_rerun_20260630T230411Z",
     "run_root": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z",
-    "status_classification": "PENDING_ACTION_CUSTODY_THEN_EXECUTION_PHONE_TERMUX_DOWNLOAD_EXPORT",
+    "status_classification": "PENDING_ACTION_EXECUTION_PHONE_TERMUX_MODEL_DOWNLOAD_EXPORT",
     "threads_nudged_this_tick": [
       "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050"
     ],
     "timestamp_utc": "2026-07-01T03:45:47Z",
     "updated_utc": "2026-07-01T04:05:47Z",
     "user_action_required": false,
-    "status": "c5_after_c1_phone_termux_exporter_hardening_ready_for_custodian",
+    "status": "phone_termux_hf_model_download_running",
     "first_missing_green_field_after_custody": "phone_termux_model_safetensors_download_pending",
     "known_downstream_access_issue_after_custody": "termux_command_channel_missing"
   },
-  "current_gate": "WaveB_C5_after_C1_phone_termux_exporter_hardening_pending_custody",
+  "current_gate": "WaveB_C5_after_C1_phone_termux_hf_model_download_in_progress",
   "current_highest_valid_state": "C1-C4 Wave B Phase1->Phase2->Phase3->Phase4 development-cycle mechanics remain frozen as metadata evidence; C5_after_C1 is now waiting on exact outside-git model-source authorization or mount after Repo Custodian completed the metadata custody mirror at 9d1c171ea72cef391e2bbcf550ea3e0f84632f27.",
   "driver_tick_history": [
     {
@@ -3419,9 +3447,20 @@
       ],
       "user_action_required": false,
       "known_downstream_user_action_after_custody": "termux_command_channel_missing may require restoring SSH/RunCommand unless Engineering supplies an ADB-runner fallback"
+    },
+    {
+      "utc": "2026-07-01T10:02:37Z",
+      "action": "recorded custody completion, Execution Termux SSH recovery and active phone-local HF model download, plus Phase3/4 runner/native logits command package",
+      "current_gate": "WaveB_C5_after_C1_phone_termux_hf_model_download_in_progress",
+      "status_classification": "PENDING_ACTION_EXECUTION_PHONE_TERMUX_MODEL_DOWNLOAD_EXPORT",
+      "owner": "Execution Orchestrator owns the active phone/Termux HF download and exporter run; Phase3/4 owns the C5-capable runner package and native logits boundary after export.",
+      "artifact": "runtime/reports/orchestration/c5_after_c1_phone_runner_rebuild_and_native_logits_pathset_20260701T_phase34.json",
+      "artifact_sha256": "90b0575ba56edf9cd4ec7031c24d32b7242c9af0d510201323a729f18abd9f47",
+      "threads_nudged_this_tick": [],
+      "user_action_required": false
     }
   ],
-  "governing_edge": "WaveB_C5_after_C1_phone_termux_exporter_hardening_pending_custody",
+  "governing_edge": "WaveB_C5_after_C1_phone_termux_hf_model_download_in_progress",
   "governing_objective": {
     "nonclaims": [
       "diagnostics_are_not_100k_or_1M_authority_unless_specific_authority_gate_passes",
@@ -3912,15 +3951,19 @@
       ]
     },
     "stage0_code_commit_or_manifest": "ea2cf60ff4ceccf7e5d8b9ab67d26c13240b508d",
-    "current_gate": "WaveB_C5_after_C1_phone_termux_exporter_hardening_pending_custody",
-    "status_classification": "PENDING_ACTION_CUSTODY_THEN_EXECUTION_PHONE_TERMUX_DOWNLOAD_EXPORT",
-    "first_missing_green_field": "custody_freeze_for_phone_compatible_exporter",
+    "current_gate": "WaveB_C5_after_C1_phone_termux_hf_model_download_in_progress",
+    "status_classification": "PENDING_ACTION_EXECUTION_PHONE_TERMUX_MODEL_DOWNLOAD_EXPORT",
+    "first_missing_green_field": "phone_termux_model_safetensors_download_in_progress",
     "phone_model_source_probe_report_sha256": "132e707f140221d11486efaa9d00acfe402743882c0291066172f5f41b63edfd",
     "first_missing_green_field_after_custody": "phone_termux_model_safetensors_download_pending",
     "known_downstream_access_issue_after_custody": "termux_command_channel_missing",
     "engineering_phone_termux_route_report_sha256": "a5c93c1df54638c1b846602dde6e58143b4b33ae999d3a79b2223ed4c41d356c",
     "phone_exporter_sha256": "1f119fac8d654fdb3a8e8357c5de131190e8de04dc67f904c5e28143c6012143",
-    "phone_exporter_test_sha256": "3386b13f52b2e6d7b357c50a8da3789fecffda94d5f096d1e214e59f0c0f7d42"
+    "phone_exporter_test_sha256": "3386b13f52b2e6d7b357c50a8da3789fecffda94d5f096d1e214e59f0c0f7d42",
+    "exporter_hardening_commit": "090417c75b19573146e26c77e663ac605981fae3",
+    "central_route_mirror_commit": "89aad4cdc3e7a5eac1f59c123c5be0479d96afe0",
+    "execution_download_pid": "15243",
+    "phase34_runner_native_logits_report_sha256": "90b0575ba56edf9cd4ec7031c24d32b7242c9af0d510201323a729f18abd9f47"
   },
   "lane_status": {
     "engineering_orchestrator": {
@@ -3930,11 +3973,11 @@
         "tests/test_c5_full_decoder_exporter.py"
       ],
       "authorization_needed": "exact model source route required: mount/restore /workspace/models/gemma4_e4b/snapshot/model.safetensors outside git, or authorize bounded HF read/download/export for google/gemma-4-E4B revision 7aa32e6889efd6300124851b164f8b364314c3d8 without printing secrets",
-      "first_missing_green_field": "custody_freeze_for_phone_compatible_exporter",
+      "first_missing_green_field": "phone_termux_model_safetensors_download_in_progress",
       "first_missing_green_field_at_export_execution_until_model_source_is_available": "model_safetensors_missing",
       "first_unresolved_technical_failure_after_valid_schema_paths": "full_decoder_logits_generation_not_implemented_after_valid_schema_paths",
-      "last_update_utc": "2026-07-01T09:52:37Z",
-      "next_action": "Repo Custodian freezes the pathset; Engineering remains available for exporter custody issues and an ADB-runner fallback if Termux command-channel repair is needed.",
+      "last_update_utc": "2026-07-01T10:02:37Z",
+      "next_action": "Monitor Execution download/export and support exact native logits patch route after manifests land.",
       "nonclaims": [
         "no full model source found on phone",
         "no decoder component pack exported",
@@ -3952,8 +3995,8 @@
         "exporter_sha256": "1f119fac8d654fdb3a8e8357c5de131190e8de04dc67f904c5e28143c6012143",
         "test_sha256": "3386b13f52b2e6d7b357c50a8da3789fecffda94d5f096d1e214e59f0c0f7d42"
       },
-      "status": "c5_after_c1_phone_termux_exporter_hardening_ready_for_custodian",
-      "status_classification": "PENDING_ACTION_CUSTODY_THEN_EXECUTION_PHONE_TERMUX_DOWNLOAD_EXPORT",
+      "status": "phone_termux_route_mobilized_execution_download_running",
+      "status_classification": "PENDING_ACTION_EXECUTION_PHONE_TERMUX_MODEL_DOWNLOAD_EXPORT",
       "thread_id": "019f138b-d229-7640-98b7-2f185d6beae0",
       "user_action_required": false,
       "verification_commands": [
@@ -3976,12 +4019,12 @@
         "OUTSIDE_GIT_PHASE4_ADAPTER_PRE_PAYLOAD_PATH_REDACTED_SHA_ONLY"
       ],
       "authorization_needed": false,
-      "first_missing_green_field": "termux_command_channel_missing_after_exporter_custody",
-      "last_update_utc": "2026-07-01T09:52:37Z",
-      "next_action": "After custody, restore SSH/RunCommand/non-interactive Termux execution or consume an Engineering-approved ADB-runner path; then run phone-side download/export metadata route.",
+      "first_missing_green_field": "phone_termux_model_safetensors_download_in_progress",
+      "last_update_utc": "2026-07-01T10:02:37Z",
+      "next_action": "Poll download metadata until complete, compute model SHA, run frozen exporter, and report decoder_manifest/adapter_site_policy/export_report hashes.",
       "nonclaims": [
-        "no model download started",
-        "no exporter run",
+        "no model download completed yet",
+        "no decoder component pack exported yet",
         "no C5 pass",
         "no executed metrics"
       ],
@@ -3993,10 +4036,10 @@
         "stable_baseline_payload_path": "OUTSIDE_GIT_PHASE4_ADAPTER_PRE_PAYLOAD_PATH_REDACTED_SHA_ONLY",
         "stable_checkpoint_baseline_sha256": "e0d1c66ac876c2b6fbbe9e88f1b02dd37201d8ffba10afcd44f1c558fc32f7c9"
       },
-      "status": "BLOCKER_TERMUX_COMMAND_CHANNEL_UNAVAILABLE_AFTER_MOBILIZATION",
-      "status_classification": "BLOCKER_TERMUX_COMMAND_CHANNEL_UNAVAILABLE_AFTER_CUSTODY",
+      "status": "phone_termux_hf_model_download_running",
+      "status_classification": "PENDING_ACTION_EXECUTION_PHONE_TERMUX_MODEL_DOWNLOAD_EXPORT",
       "thread_id": "019f138c-fb51-7c53-a41a-ab8eac950d9c",
-      "user_action_required": true,
+      "user_action_required": false,
       "verification_commands": [
         "verified frozen scorer pathset hashes at bfe2cc642cfd6fe48255b30901d4f5461c817e32",
         "verified outside-git heldout split SHA and 53 rows",
@@ -4005,13 +4048,13 @@
     },
     "phase34_engineer": {
       "artifact_paths": [
-        "runtime/reports/orchestration/c5_after_c1_phone_native_runtime_support_20260701T_phase34.json"
+        "runtime/reports/orchestration/c5_after_c1_phone_runner_rebuild_and_native_logits_pathset_20260701T_phase34.json"
       ],
       "custody_commit": "9f6a27f3640078d81a303445d7ab29c7ce3a2db8",
-      "first_missing_green_field": "phone_c5_runner_rebuild_or_copy_missing_after_exporter_custody",
-      "first_unresolved_technical_failure_after_valid_schema_paths": "full_decoder_logits_generation_not_implemented_after_valid_schema_paths",
-      "last_update_utc": "2026-07-01T09:52:37Z",
-      "next_action": "After exporter custody and component export, provide/copy a C5-capable runner and implement streamed/chunked logits generation.",
+      "first_missing_green_field": "phone_c5_runner_rebuild_or_copy_missing",
+      "first_unresolved_technical_failure_after_valid_schema_paths": "full_decoder_logits_generation_not_implemented",
+      "last_update_utc": "2026-07-01T10:02:37Z",
+      "next_action": "Execution runs runner command package; Phase3/4 implements native logits body after exported manifests exist.",
       "nonclaims": [
         "development-cycle evidence only unless stronger gates pass",
         "no C5 pass",
@@ -4026,9 +4069,9 @@
         "no HF/Comet call"
       ],
       "sha256_or_identity_fields": {
-        "phone_native_runtime_support_report_sha256": "1b4456cd4d55ae218de0acdf75d854ffb03412a1f57a142878f9376a048b31a0"
+        "runner_rebuild_native_logits_report_sha256": "90b0575ba56edf9cd4ec7031c24d32b7242c9af0d510201323a729f18abd9f47"
       },
-      "status": "phone_native_runtime_support_report_ready_runner_rebuild_needed",
+      "status": "native_c5_logits_pathset_required_runner_command_package_ready",
       "status_classification": "PENDING_ACTION_ENGINEERING_FULL_DECODER_EXPORTER_AND_MODEL_SOURCE_ROUTE",
       "thread_id": "019f13da-d897-7ba2-8ed1-b959892f5ed4",
       "user_action_required": false,
@@ -4072,8 +4115,8 @@
       ],
       "authorization_needed": false,
       "first_missing_green_field": "custody_freeze_for_phone_compatible_exporter",
-      "last_update_utc": "2026-07-01T09:52:37Z",
-      "next_action": "Verify hashes/scans, stage only exact pathset, commit, and push.",
+      "last_update_utc": "2026-07-01T10:02:37Z",
+      "next_action": "No custody action runnable until the next metadata/code pathset lands from Execution or Phase3/4.",
       "nonclaims": [
         "custody completion is not C5 pass",
         "no model source found",
@@ -4088,8 +4131,8 @@
         "branch": "origin/gemma4-megakernel-native-training",
         "previous_authorization_state_commit": "abf8e5d744ea02c525c79ddfd50d451d751c67b0"
       },
-      "status": "custody_requested_for_phone_compatible_exporter_hardening",
-      "status_classification": "PENDING_ACTION_REPO_CUSTODY",
+      "status": "phone_termux_exporter_route_state_committed_pushed",
+      "status_classification": "COMPLETE_FOR_EXPORTER_AND_CENTRAL_ROUTE_CUSTODY",
       "thread_id": "019f1ac2-0f0f-7721-bf46-ad402dbd9050",
       "user_action_required": false,
       "verification_commands": [
@@ -4102,8 +4145,9 @@
         "tight literal secret/token scan over exact pathset and staged index."
       ],
       "current_gate": "WaveB_C5_after_C1_model_source_authorization_pending",
-      "commit_sha": "9d1c171ea72cef391e2bbcf550ea3e0f84632f27",
-      "branch": "origin/gemma4-megakernel-native-training"
+      "commit_sha": "89aad4cdc3e7a5eac1f59c123c5be0479d96afe0",
+      "branch": "origin/gemma4-megakernel-native-training",
+      "prior_exporter_commit_sha": "090417c75b19573146e26c77e663ac605981fae3"
     },
     "training_material_steward": {
       "artifact_paths": [
@@ -4525,11 +4569,10 @@
   },
   "prd_watchdog": {
     "artifact_waiting_on": [
-      "Repo Custodian freeze of the phone-compatible C5 full-decoder exporter hardening pathset and route report.",
-      "After custody, Execution must run the phone/Termux model download and metadata-only component export route without Mac model staging.",
-      "Execution has already found the next downstream access issue: no safe non-interactive Termux command channel is currently available; repair sshd/RunCommand or use an Engineering-approved ADB-runner path before download/export.",
-      "Phase3/4 found the public phone runner is stale and must be rebuilt or copied from the frozen C5-capable runner before it can consume exported manifests.",
-      "After exported manifests and runner are available, Phase3/4 still must replace full_decoder_logits_generation_not_implemented with streamed/chunked logits generation plus teacher-forced answer loss."
+      "Execution completes the phone-local pinned HF model download in outside-git Termux storage and reports size plus SHA-256 metadata only.",
+      "Execution runs the frozen stdlib exporter on phone and reports decoder_manifest.json, adapter_site_policy.json, and export_report.json hashes.",
+      "Execution consumes the Phase3/4 runner command package to build/copy a C5-capable phone runner and verify C5 help flags.",
+      "Phase3/4/Engineering replace full_decoder_logits_generation_not_implemented with streamed/chunked full-decoder logits after valid exported manifests exist."
     ],
     "c5_after_c1_payload_paths_hash_probe": {
       "canonical_candidate_payload": {
@@ -4731,14 +4774,14 @@
       },
       "schema_version": "polymath_c5_qa_runtime_post_custody_v1"
     },
-    "current_gate": "WaveB_C5_after_C1_phone_termux_exporter_hardening_pending_custody",
+    "current_gate": "WaveB_C5_after_C1_phone_termux_hf_model_download_in_progress",
     "dominant_failure_domain": "phase5_eval_failure",
-    "drift_deleted_or_pending": "Deleted the stale Mac-model-source authorization wait as the active edge. Current pending hardening is custody of phone-compatible no-Torch exporter plus central mirror. Downstream drift remains: Termux command channel unavailable, public phone runner lacks C5 flags, and native logits body remains fail-closed.",
-    "first_missing_green_field": "custody_freeze_for_phone_compatible_exporter",
+    "drift_deleted_or_pending": "Deleted custody-wait and Termux-channel blocker as current active edge: exporter custody landed and SSH channel is working. Pending drift hardening remains for model download/export completion, C5-capable phone runner deployment, and native logits implementation.",
+    "first_missing_green_field": "phone_termux_model_safetensors_download_in_progress",
     "first_missing_green_field_after_custody_until_model_source_available": "model_safetensors_missing",
     "first_unresolved_technical_failure_after_valid_schema_paths": "full_decoder_logits_generation_not_implemented_after_valid_schema_paths",
-    "last_concrete_action": "Engineering produced a phone/Termux-compatible exporter hardening route report and pathset after confirming HF model metadata and Mac storage unsuitability. Pipeline reclassified the route to phone/Termux download/export. Execution found a downstream Termux command-channel failure. Phase3/4 found public phone runners are stale for C5 flags. Repo Custodian previously froze central state at 14ca3fb1ed92684073759df9696ab7b17189b6ad.",
-    "next_concrete_action": "Repo Custodian freezes the exporter/test/report plus central mirror pathset; after custody, Execution repairs or uses a safe Termux command channel, downloads the pinned model to phone outside git, runs the hardened exporter, and returns metadata-only manifest/policy/export identities.",
+    "last_concrete_action": "Repo Custodian froze the phone-compatible exporter pathset at 090417c75b19573146e26c77e663ac605981fae3 and the central route mirror at 89aad4cdc3e7a5eac1f59c123c5be0479d96afe0. Execution restored a usable Termux SSH command channel, verified the frozen exporter surface on phone, found sufficient phone storage, and started the pinned HF model download as phone-local process 15243. Phase3/4 produced the runner rebuild/native logits command package SHA 90b0575ba56edf9cd4ec7031c24d32b7242c9af0d510201323a729f18abd9f47.",
+    "next_concrete_action": "Execution polls the phone-local download until complete, computes model SHA metadata, runs the frozen exporter on phone, and returns decoder manifest, adapter-site policy, and export report hashes. In parallel or immediately after, Execution uses the Phase3/4 command package to build/copy a C5-capable runner and verify help flags.",
     "nonclaims_preserved": [
       "no C5 pass",
       "no decoder_manifest emitted from a real model yet",
@@ -4753,7 +4796,7 @@
       "no HF/Comet call",
       "no secrets sourced"
     ],
-    "owner": "Repo Custodian owns the immediate exporter hardening freeze; Execution owns phone/Termux download/export after custody; Engineering remains active until the handoff is fully frozen; Phase3/4 owns native runner and logits boundary.",
+    "owner": "Execution Orchestrator owns the active phone/Termux HF download and exporter run; Phase3/4 owns the C5-capable runner package and native logits boundary after export.",
     "post_custody_c5_qa_runtime_status": {
       "branch": "origin/gemma4-megakernel-native-training",
       "custody_commit": "9f6a27f3640078d81a303445d7ab29c7ce3a2db8",
@@ -4777,14 +4820,14 @@
       },
       "schema_version": "polymath_c5_qa_runtime_post_custody_v1"
     },
-    "recursive_improvement_next_step": "Freeze phone-compatible exporter, execute phone/Termux model download/export, rebuild/copy C5-capable runner, then replace the fail-closed logits branch and run the smallest real C5 metrics proof.",
-    "status_classification": "PENDING_ACTION_CUSTODY_THEN_EXECUTION_PHONE_TERMUX_DOWNLOAD_EXPORT",
+    "recursive_improvement_next_step": "After export and runner verification, run a bounded C5 QA predict probe; if it stops at the known fail-closed branch, patch the exact native logits/generation body and rerun the smallest real C5 metrics proof.",
+    "status_classification": "PENDING_ACTION_EXECUTION_PHONE_TERMUX_MODEL_DOWNLOAD_EXPORT",
     "threads_nudged_this_tick": [
       "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050"
     ],
     "user_action_required": false,
     "authorization_needed": "exact model source route required: mount/restore /workspace/models/gemma4_e4b/snapshot/model.safetensors outside git, or authorize bounded HF read/download/export for google/gemma-4-E4B revision 7aa32e6889efd6300124851b164f8b364314c3d8 without printing secrets",
-    "status": "c5_after_c1_phone_termux_exporter_hardening_ready_for_custodian",
+    "status": "phone_termux_hf_model_download_running",
     "first_missing_green_field_after_custody": "phone_termux_model_safetensors_download_pending",
     "known_downstream_access_issue_after_custody": "termux_command_channel_missing"
   },
@@ -4804,31 +4847,33 @@
     ]
   },
   "schema_version": "polymath_executive_delivery_state_v1",
-  "status": "c5_after_c1_phone_termux_exporter_hardening_ready_for_custodian",
-  "status_classification": "PENDING_ACTION_CUSTODY_THEN_EXECUTION_PHONE_TERMUX_DOWNLOAD_EXPORT",
-  "updated_at": "2026-07-01T09:52:37Z",
-  "updated_at_utc": "2026-07-01T09:52:37Z",
+  "status": "phone_termux_hf_model_download_running",
+  "status_classification": "PENDING_ACTION_EXECUTION_PHONE_TERMUX_MODEL_DOWNLOAD_EXPORT",
+  "updated_at": "2026-07-01T10:02:37Z",
+  "updated_at_utc": "2026-07-01T10:02:37Z",
   "dominant_failure_domain": "phase5_eval_failure",
   "user_action_required": false,
-  "last_concrete_action": "Engineering produced a phone/Termux-compatible exporter hardening route report and pathset after confirming HF model metadata and Mac storage unsuitability. Pipeline reclassified the route to phone/Termux download/export. Execution found a downstream Termux command-channel failure. Phase3/4 found public phone runners are stale for C5 flags. Repo Custodian previously froze central state at 14ca3fb1ed92684073759df9696ab7b17189b6ad.",
-  "next_concrete_action": "Repo Custodian freezes the exporter/test/report plus central mirror pathset; after custody, Execution repairs or uses a safe Termux command channel, downloads the pinned model to phone outside git, runs the hardened exporter, and returns metadata-only manifest/policy/export identities.",
+  "last_concrete_action": "Repo Custodian froze the phone-compatible exporter pathset at 090417c75b19573146e26c77e663ac605981fae3 and the central route mirror at 89aad4cdc3e7a5eac1f59c123c5be0479d96afe0. Execution restored a usable Termux SSH command channel, verified the frozen exporter surface on phone, found sufficient phone storage, and started the pinned HF model download as phone-local process 15243. Phase3/4 produced the runner rebuild/native logits command package SHA 90b0575ba56edf9cd4ec7031c24d32b7242c9af0d510201323a729f18abd9f47.",
+  "next_concrete_action": "Execution polls the phone-local download until complete, computes model SHA metadata, runs the frozen exporter on phone, and returns decoder manifest, adapter-site policy, and export report hashes. In parallel or immediately after, Execution uses the Phase3/4 command package to build/copy a C5-capable runner and verify help flags.",
   "artifact_waiting_on": [
-    "Repo Custodian freeze of the phone-compatible C5 full-decoder exporter hardening pathset and route report.",
-    "After custody, Execution must run the phone/Termux model download and metadata-only component export route without Mac model staging.",
-    "Execution has already found the next downstream access issue: no safe non-interactive Termux command channel is currently available; repair sshd/RunCommand or use an Engineering-approved ADB-runner path before download/export.",
-    "Phase3/4 found the public phone runner is stale and must be rebuilt or copied from the frozen C5-capable runner before it can consume exported manifests.",
-    "After exported manifests and runner are available, Phase3/4 still must replace full_decoder_logits_generation_not_implemented with streamed/chunked logits generation plus teacher-forced answer loss."
+    "Execution completes the phone-local pinned HF model download in outside-git Termux storage and reports size plus SHA-256 metadata only.",
+    "Execution runs the frozen stdlib exporter on phone and reports decoder_manifest.json, adapter_site_policy.json, and export_report.json hashes.",
+    "Execution consumes the Phase3/4 runner command package to build/copy a C5-capable phone runner and verify C5 help flags.",
+    "Phase3/4/Engineering replace full_decoder_logits_generation_not_implemented with streamed/chunked full-decoder logits after valid exported manifests exist."
   ],
-  "drift_deleted_or_pending": "Deleted the stale Mac-model-source authorization wait as the active edge. Current pending hardening is custody of phone-compatible no-Torch exporter plus central mirror. Downstream drift remains: Termux command channel unavailable, public phone runner lacks C5 flags, and native logits body remains fail-closed.",
-  "recursive_improvement_next_step": "Freeze phone-compatible exporter, execute phone/Termux model download/export, rebuild/copy C5-capable runner, then replace the fail-closed logits branch and run the smallest real C5 metrics proof.",
-  "owner": "Repo Custodian owns the immediate exporter hardening freeze; Execution owns phone/Termux download/export after custody; Engineering remains active until the handoff is fully frozen; Phase3/4 owns native runner and logits boundary.",
+  "drift_deleted_or_pending": "Deleted custody-wait and Termux-channel blocker as current active edge: exporter custody landed and SSH channel is working. Pending drift hardening remains for model download/export completion, C5-capable phone runner deployment, and native logits implementation.",
+  "recursive_improvement_next_step": "After export and runner verification, run a bounded C5 QA predict probe; if it stops at the known fail-closed branch, patch the exact native logits/generation body and rerun the smallest real C5 metrics proof.",
+  "owner": "Execution Orchestrator owns the active phone/Termux HF download and exporter run; Phase3/4 owns the C5-capable runner package and native logits boundary after export.",
   "threads_nudged_this_tick": [
-    "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050"
+    "none; Execution is active and Phase3/4 has returned command package"
   ],
   "raw_phone_path_hardening_20260701T094236Z": {
     "status": "central_state_phone_filesystem_paths_redacted",
     "scope": "metadata mirror only",
     "reason": "Prevent stale phone filesystem strings from being treated as C5 runtime evidence or raw payload routes.",
     "preserved": "artifact identities, hashes, lane status, nonclaims, and outside-git source requirements"
-  }
+  },
+  "first_missing_green_field": "phone_termux_model_safetensors_download_in_progress",
+  "first_missing_green_field_after_download": "phone_termux_decoder_component_pack_export_pending",
+  "known_downstream_access_issue_after_download": "phone_c5_runner_rebuild_or_copy_missing"
 }
