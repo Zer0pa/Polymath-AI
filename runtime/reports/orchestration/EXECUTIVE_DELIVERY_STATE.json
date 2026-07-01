@@ -1,12 +1,12 @@
 {
   "active_bottleneck": {
     "artifact_waiting_on": [
-      "Outside-git full Gemma4 E4B model source: /workspace/models/gemma4_e4b/snapshot/model.safetensors restored/mounted locally, or separately authorized bounded HF read/export for google/gemma-4-E4B revision 7aa32e6889efd6300124851b164f8b364314c3d8.",
-      "Frozen exporter run outside git to produce decoder_manifest.json and adapter_site_policy.json.",
-      "Native replacement of full_decoder_logits_generation_not_implemented with streamed/chunked logits generation plus teacher-forced answer loss.",
-      "Outside-git prediction JSONL, finite candidate_train_loss, and polymath_c5_executed_metrics_v1 after real runtime execution."
+      "Exact model source route: restore or mount /workspace/models/gemma4_e4b/snapshot/model.safetensors outside git, or explicitly authorize bounded HF read/download of google/gemma-4-E4B revision 7aa32e6889efd6300124851b164f8b364314c3d8 into outside-git storage.",
+      "After source is available, Engineering runs the frozen exporter outside git to produce decoder_manifest.json and adapter_site_policy.json.",
+      "After exporter output exists, Phase3/4 replaces full_decoder_logits_generation_not_implemented with streamed/chunked logits generation plus teacher-forced answer loss.",
+      "Execution resumes only after outside-git prediction JSONL, finite candidate_train_loss, and polymath_c5_executed_metrics_v1 can be emitted by real runtime execution."
     ],
-    "authorization_needed": "none for immediate custody; later exact model-source authorization only if historical model cannot be mounted locally",
+    "authorization_needed": "exact model source route required: mount/restore /workspace/models/gemma4_e4b/snapshot/model.safetensors outside git, or authorize bounded HF read/download/export for google/gemma-4-E4B revision 7aa32e6889efd6300124851b164f8b364314c3d8 without printing secrets",
     "c5_after_c1_c5_qa_runtime_fail_closed_pathset": {
       "artifact_paths": [
         "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/include/polymath/gemma4/c5_qa_inference.h",
@@ -315,19 +315,19 @@
         "outside-git stable baseline checkpoint payload path matching SHA e0d1c66ac876c2b6fbbe9e88f1b02dd37201d8ffba10afcd44f1c558fc32f7c9",
         "accepted real inference producer command prefix",
         "finite candidate_train_loss aligned to the candidate checkpoint",
-        "/tmp/polymath_c5/C5_after_C1/candidate_predictions.jsonl",
-        "/tmp/polymath_c5/C5_after_C1/stable_baseline_predictions.jsonl"
+        "OUTSIDE_GIT_C5_CANDIDATE_PREDICTIONS_JSONL_PATH_REDACTED_SHA_ONLY",
+        "OUTSIDE_GIT_C5_STABLE_BASELINE_PREDICTIONS_JSONL_PATH_REDACTED_SHA_ONLY"
       ],
       "raw_boundary": "No raw QA/prediction/checkpoint/adapter payloads copied into git. Heldout QA is symlinked outside git; prediction JSONL remains absent/outside git.",
       "resolved_payloads": {
         "canonical_candidate_payload": {
           "bytes": 327680,
-          "path": "/sdcard/Download/polymath_phase34_lineage_repair/c1_c4_waveB_rerun_20260630T230411Z_C1_lineage_repair/phase4_bridge_cell/adapter_post_rank16.f32.bin",
+          "path": "OUTSIDE_GIT_PHASE4_ADAPTER_POST_PAYLOAD_PATH_REDACTED_SHA_ONLY",
           "sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f"
         },
         "canonical_stable_baseline_payload": {
           "bytes": 327680,
-          "path": "/sdcard/Download/polymath_phase34_lineage_repair/c1_c4_waveB_rerun_20260630T230411Z_C1_lineage_repair/phase4_bridge_cell/adapter_pre_rank16.f32.bin",
+          "path": "OUTSIDE_GIT_PHASE4_ADAPTER_PRE_PAYLOAD_PATH_REDACTED_SHA_ONLY",
           "sha256": "e0d1c66ac876c2b6fbbe9e88f1b02dd37201d8ffba10afcd44f1c558fc32f7c9"
         },
         "device_access": "FY25013101C8 device",
@@ -354,8 +354,8 @@
         "candidate_checkpoint_identity_file_sha256": "92dbfe9d6db7d905b069ca4af3d7dda0a01ce7a179e8fae640465397d0f4cfc1",
         "candidate_checkpoint_sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f",
         "heldout_qa_jsonl_is_symlink": true,
-        "heldout_qa_jsonl_path": "/tmp/polymath_c5/C5_after_C1/phase_C1_test.qa.jsonl",
-        "heldout_qa_jsonl_resolved_path": "/Users/Zer0pa/Polymat AI/runtime/tmp/c1_c4_integrated_20260630T164809Z/hf_packages/packages/C1/qa_bridge/phase_C1_test.qa.jsonl",
+        "heldout_qa_jsonl_path": "OUTSIDE_GIT_C5_HELDOUT_QA_JSONL_STAGING_PATH_REDACTED_SHA_ONLY",
+        "heldout_qa_jsonl_resolved_path": "OUTSIDE_GIT_C5_HELDOUT_QA_JSONL_RESOLVED_PATH_REDACTED_SHA_ONLY",
         "heldout_qa_jsonl_sha256": "da41c5362398f24e0e0dd9df9a5cf0594435a455871fa77ab74d9312e6c8e9b2",
         "heldout_qa_record_count": 53,
         "stable_baseline_identity_file_sha256": "7f65b37e8acc7659b6912fe7de3e46b3cffb9abca8a1c76331f1e48fd6c59fec",
@@ -436,12 +436,12 @@
     "c5_after_c1_payload_paths_hash_probe": {
       "canonical_candidate_payload": {
         "bytes": 327680,
-        "path": "/sdcard/Download/polymath_phase34_lineage_repair/c1_c4_waveB_rerun_20260630T230411Z_C1_lineage_repair/phase4_bridge_cell/adapter_post_rank16.f32.bin",
+        "path": "OUTSIDE_GIT_PHASE4_ADAPTER_POST_PAYLOAD_PATH_REDACTED_SHA_ONLY",
         "sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f"
       },
       "canonical_stable_baseline_payload": {
         "bytes": 327680,
-        "path": "/sdcard/Download/polymath_phase34_lineage_repair/c1_c4_waveB_rerun_20260630T230411Z_C1_lineage_repair/phase4_bridge_cell/adapter_pre_rank16.f32.bin",
+        "path": "OUTSIDE_GIT_PHASE4_ADAPTER_PRE_PAYLOAD_PATH_REDACTED_SHA_ONLY",
         "sha256": "e0d1c66ac876c2b6fbbe9e88f1b02dd37201d8ffba10afcd44f1c558fc32f7c9"
       },
       "device_access": "FY25013101C8 device",
@@ -587,7 +587,7 @@
         "adb shell find public phone roots for tokenizer/decoder/lm-head/adapter-policy -> tokenizer tables found; decoder/lm-head/adapter-policy not found",
         "adb shell sha256sum/wc tokenizer tables -> vocab 0e43... size 6618632; merges 6c99... size 13758174",
         "adb shell sha256sum/wc candidate/stable payloads -> accepted hashes and 327680 bytes each",
-        "shasum -a 256 /tmp/polymath_c5/C5_after_C1/phase_C1_test.qa.jsonl -> accepted heldout hash; 53 rows"
+        "shasum -a 256 OUTSIDE_GIT_C5_HELDOUT_QA_JSONL_STAGING_PATH_REDACTED_SHA_ONLY -> accepted heldout hash; 53 rows"
       ]
     },
     "c5_comet_readiness": {
@@ -852,11 +852,11 @@
       "status": "c5_full_decoder_failure_artifacts_and_state_pending_custody",
       "user_action_required": false
     },
-    "current_gate": "WaveB_C5_after_C1_model_source_export_pending",
+    "current_gate": "WaveB_C5_after_C1_model_source_authorization_pending",
     "custody_commit_latest": "bb8105a2bc91b6c9b0993603e14b49d0a5730f8d",
     "custody_status_latest": "c5_decoder_runtime_owner_state_committed_pushed",
     "dominant_failure_domain": "phase5_eval_failure",
-    "drift_deleted_or_pending": "Exporter and native consumer custody are complete; remaining drift risk is treating metadata-only schemas or bridge MSE as C5 runtime evidence. That is guarded by the frozen fail-closed exporter and native consumer; real model-source export is still pending.",
+    "drift_deleted_or_pending": "Deleted stale exporter-custody routing in central state; pending drift hardening is source-bound: do not allow historical path strings, metadata-only manifests, bridge MSE, or placeholder schemas to substitute for a real outside-git model export and C5 runtime metrics. Historical phone raw-payload path strings in central state were redacted to metadata-only labels while preserving hashes/identity fields. Custodian-discovered local/absolute .jsonl payload path strings were redacted to metadata-only labels while preserving split/checkpoint hashes and relative HF split identities.",
     "engineering_evaluator_implementation": {
       "artifact_paths_in_progress": [
         "polymath_ai/polar/c5_heldout_eval.py",
@@ -994,7 +994,7 @@
       "training_material_steward": "complete for material identities",
       "ui_engineer": "not nudged until C5 evidence-backed status exists"
     },
-    "last_concrete_action": "Repo Custodian froze and pushed the Phase3/4 native full-decoder consumer pathset at d375265006b809f34314de0c8c59962ec40053cf. Meta bounded local search found no model.safetensors, safetensors shard, decoder_manifest.json, or adapter_site_policy.json under /Users/Zer0pa/Polymat AI, /tmp, or /Users/prinivenpillay/.cache/huggingface.",
+    "last_concrete_action": "Repo Custodian hit a fail-fast boundary on repo-local raw .jsonl path references in EXECUTIVE_DELIVERY_STATE.json; meta redacted the local/absolute JSONL payload path strings to metadata-only labels, preserved identity hashes, and kept the active model-source authorization edge.",
     "lineage_drift_repair_status": {
       "commit": "ee74ae572322e05624deac6f6f8788c2c6e2f692",
       "proof_required": [
@@ -1010,7 +1010,7 @@
       ],
       "status": "source_repair_frozen_pending_execution_proof"
     },
-    "next_concrete_action": "Engineering Orchestrator verifies the frozen exporter/native commits, performs a bounded model-source search, runs integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py against a real outside-git model.safetensors if present, or returns an exact model_safetensors_missing authorization artifact. Execution remains parked until decoder_manifest.json and adapter_site_policy.json exist outside git.",
+    "next_concrete_action": "Repo Custodian freezes the updated metadata-only state/report pathset if clean. Separately, user/meta still supplies the exact model source route: mount/restore /workspace/models/gemma4_e4b/snapshot/model.safetensors or authorize bounded HF read/download/export for google/gemma-4-E4B revision 7aa32e6889efd6300124851b164f8b364314c3d8 without printing secrets.",
     "nonclaims": [
       "development-cycle evidence only unless stronger gates pass",
       "no C5 pass",
@@ -1038,7 +1038,7 @@
       "no HF/Comet call",
       "no secrets sourced"
     ],
-    "owner": "Engineering Orchestrator 019f138b-d229-7640-98b7-2f185d6beae0 owns model-source resolution and exporter run path; Execution Orchestrator owns prediction/eval only after decoder_manifest and adapter_site_policy exist outside git.",
+    "owner": "User/meta for exact model-source route; Engineering Orchestrator 019f138b-d229-7640-98b7-2f185d6beae0 resumes exporter run after source is mounted or HF read/download is explicitly authorized; Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050 owns metadata-only freeze of the new report/state pathset.",
     "phase2_status_by_phase": {
       "C1": {
         "packets": 5180,
@@ -1155,7 +1155,7 @@
         "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/phase34_lineage_repair/phase34_lineage_repair_summary.json": "1348895a1d5ca8e7e5276de1ab2022d9f64a300b288aa7169550263b27a0e304"
       },
       "proof_root": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/phase34_lineage_repair",
-      "raw_suffix_scan": "clean for .qai1/.pqa1/.pjp1/.bin/.raw/.f16/.apk/.aab/.jsonl",
+      "raw_suffix_scan": "clean for raw-payload path references; suffix policy literals excluded",
       "stale_pre_repair_evidence_policy": "superseded; must not be promoted",
       "status": "custody_committed_pushed",
       "summary_path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/phase34_lineage_repair/phase34_lineage_repair_summary.json",
@@ -1248,7 +1248,7 @@
       "phase34": "raw PJP1, HTP raw output, OpenCL tensors, and adapters remain on device/Termux; repair must keep compact JSON only",
       "report_root_scan": "metadata-freeze report root had 179 tracked files and clean forbidden suffix scans; raw payloads not committed"
     },
-    "recursive_improvement_next_step": "resolve model source -> run frozen exporter outside git -> freeze or record manifest/policy identities -> implement native logits/loss -> Execution emits prediction JSONL and heldout metrics -> Pipeline validates -> Custodian freezes metadata/code only.",
+    "recursive_improvement_next_step": "authorize or mount model source -> Engineering runs frozen exporter outside git -> Custodian freezes metadata identities -> Phase3/4 implements real logits/loss -> Execution emits prediction JSONL and heldout metrics -> Pipeline validates -> Custodian freezes metadata/code only.",
     "repo_custody_state_freeze": {
       "branch": "origin/gemma4-megakernel-native-training",
       "commit": "7290fbec13c6a13e88710afddfe4af70637096f9",
@@ -1261,13 +1261,13 @@
     },
     "run_label": "c1_c4_waveB_rerun_20260630T230411Z",
     "run_root": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z",
-    "status_classification": "PENDING_ACTION_ENGINEERING_MODEL_SOURCE_EXPORT_ROUTE",
+    "status_classification": "AUTHORIZATION_PENDING_MODEL_SOURCE_OR_REMOTE_MOUNT",
     "threads_nudged_this_tick": [
-      "Engineering Orchestrator 019f138b-d229-7640-98b7-2f185d6beae0"
+      "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050"
     ],
-    "timestamp_utc": "2026-07-01T03:45:47Z",
-    "updated_utc": "2026-07-01T04:05:47Z",
-    "user_action_required": false,
+    "timestamp_utc": "2026-07-01T04:56:47Z",
+    "updated_utc": "2026-07-01T04:56:47Z",
+    "user_action_required": true,
     "c5_full_decoder_exporter_custody": {
       "schema_version": "polymath_c5_full_decoder_exporter_post_custody_v1",
       "custody_status": "c5_full_decoder_exporter_route_committed_pushed",
@@ -1359,6 +1359,69 @@
       "raw_payloads_copied_to_git": false,
       "hf_or_comet_called": false,
       "first_missing_green_field": "model_safetensors_missing"
+    },
+    "model_source_authorization_20260701T044647Z": {
+      "schema_version": "polymath_c5_after_c1_model_source_authorization_v1",
+      "status": "model_safetensors_missing_exact_source_authorization_required",
+      "status_classification": "AUTHORIZATION_PENDING_MODEL_SOURCE_OR_REMOTE_MOUNT",
+      "artifact_path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/orchestration/c5_after_c1_model_safetensors_missing_exact_source_authorization_20260701T_engineering.json",
+      "sha256": "9d92cbdd9994b66808a6bd5541ea139ddb3f18f78f5f4f05a082088ba37b3f16",
+      "head_commit_consumed_by_engineering": "d375265006b809f34314de0c8c59962ec40053cf",
+      "prior_state_mirror_custody_commit": "68dac3959f01987ed03b013473284dc2d5afbc67",
+      "preferred_source_route": "/workspace/models/gemma4_e4b/snapshot/model.safetensors restored or mounted outside git",
+      "alternative_source_route": "explicitly authorized bounded HF read/download/export for google/gemma-4-E4B revision 7aa32e6889efd6300124851b164f8b364314c3d8 into outside-git storage",
+      "first_missing_green_field": "model_safetensors_missing",
+      "first_unresolved_technical_failure_after_valid_schema_paths": "full_decoder_logits_generation_not_implemented_after_valid_schema_paths",
+      "user_action_required": true,
+      "raw_boundary": "No raw model/checkpoint/adapter/tensor payload copied into git; the report is metadata-only.",
+      "nonclaims": [
+        "no model source found",
+        "no decoder component pack exported",
+        "no decoder_manifest emitted from a real model",
+        "no adapter_site_policy emitted from a real model",
+        "no logits emitted",
+        "no prediction JSONL emitted",
+        "no loss, confidence, candidate_train_loss, or C5 metrics fabricated",
+        "no C5 pass",
+        "no learning/model-quality claim",
+        "no HF/Comet/API call made in this tick",
+        "no secrets sourced or printed"
+      ]
+    },
+    "raw_path_redaction_20260701T044647Z": {
+      "status": "stale_raw_payload_path_strings_redacted_from_central_state",
+      "redacted_values": [
+        "OUTSIDE_GIT_PHASE4_ADAPTER_POST_PAYLOAD_PATH_REDACTED_SHA_ONLY",
+        "OUTSIDE_GIT_PHASE4_ADAPTER_PRE_PAYLOAD_PATH_REDACTED_SHA_ONLY"
+      ],
+      "preserved_fields": [
+        "sha256_or_identity_fields",
+        "candidate_payload_sha256",
+        "stable_baseline_payload_sha256"
+      ],
+      "reason": "central state must remain metadata-only and must not carry raw payload locations",
+      "user_action_required": false
+    },
+    "custodian_blocker_resolution_20260701T045647Z": {
+      "status": "resolved_locally_pending_custodian_freeze",
+      "custodian_thread": "019f1ac2-0f0f-7721-bf46-ad402dbd9050",
+      "custodian_reported_status": "blocked_on_repo_local_raw_jsonl_path_references",
+      "redacted_values": [
+        "OUTSIDE_GIT_C5_HELDOUT_QA_JSONL_RESOLVED_PATH_REDACTED_SHA_ONLY",
+        "OUTSIDE_GIT_C5_HELDOUT_QA_JSONL_STAGING_PATH_REDACTED_SHA_ONLY",
+        "OUTSIDE_GIT_C5_CANDIDATE_PREDICTIONS_JSONL_PATH_REDACTED_SHA_ONLY",
+        "OUTSIDE_GIT_C5_STABLE_BASELINE_PREDICTIONS_JSONL_PATH_REDACTED_SHA_ONLY"
+      ],
+      "preserved_metadata": [
+        "accepted eval split sha256 da41c5362398f24e0e0dd9df9a5cf0594435a455871fa77ab74d9312e6c8e9b2",
+        "relative HF package split identity fields such as packages/C1/qa_bridge/phase_C1_test.qa.jsonl",
+        "candidate checkpoint sha256 1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f",
+        "stable baseline sha256 e0d1c66ac876c2b6fbbe9e88f1b02dd37201d8ffba10afcd44f1c558fc32f7c9"
+      ],
+      "first_missing_green_field": "model_safetensors_missing",
+      "next_action": "Repo Custodian re-runs metadata-only checks and freezes the three-file pathset if clean.",
+      "user_action_required_for_redaction": false,
+      "user_action_required_for_model_source": true
     }
   },
   "active_edge": "WaveB_C5_after_C1_full_decoder_exporter_pathset_pending_custody",
@@ -1679,19 +1742,19 @@
         "outside-git stable baseline checkpoint payload path matching SHA e0d1c66ac876c2b6fbbe9e88f1b02dd37201d8ffba10afcd44f1c558fc32f7c9",
         "accepted real inference producer command prefix",
         "finite candidate_train_loss aligned to the candidate checkpoint",
-        "/tmp/polymath_c5/C5_after_C1/candidate_predictions.jsonl",
-        "/tmp/polymath_c5/C5_after_C1/stable_baseline_predictions.jsonl"
+        "OUTSIDE_GIT_C5_CANDIDATE_PREDICTIONS_JSONL_PATH_REDACTED_SHA_ONLY",
+        "OUTSIDE_GIT_C5_STABLE_BASELINE_PREDICTIONS_JSONL_PATH_REDACTED_SHA_ONLY"
       ],
       "raw_boundary": "No raw QA/prediction/checkpoint/adapter payloads copied into git. Heldout QA is symlinked outside git; prediction JSONL remains absent/outside git.",
       "resolved_payloads": {
         "canonical_candidate_payload": {
           "bytes": 327680,
-          "path": "/sdcard/Download/polymath_phase34_lineage_repair/c1_c4_waveB_rerun_20260630T230411Z_C1_lineage_repair/phase4_bridge_cell/adapter_post_rank16.f32.bin",
+          "path": "OUTSIDE_GIT_PHASE4_ADAPTER_POST_PAYLOAD_PATH_REDACTED_SHA_ONLY",
           "sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f"
         },
         "canonical_stable_baseline_payload": {
           "bytes": 327680,
-          "path": "/sdcard/Download/polymath_phase34_lineage_repair/c1_c4_waveB_rerun_20260630T230411Z_C1_lineage_repair/phase4_bridge_cell/adapter_pre_rank16.f32.bin",
+          "path": "OUTSIDE_GIT_PHASE4_ADAPTER_PRE_PAYLOAD_PATH_REDACTED_SHA_ONLY",
           "sha256": "e0d1c66ac876c2b6fbbe9e88f1b02dd37201d8ffba10afcd44f1c558fc32f7c9"
         },
         "device_access": "FY25013101C8 device",
@@ -1718,8 +1781,8 @@
         "candidate_checkpoint_identity_file_sha256": "92dbfe9d6db7d905b069ca4af3d7dda0a01ce7a179e8fae640465397d0f4cfc1",
         "candidate_checkpoint_sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f",
         "heldout_qa_jsonl_is_symlink": true,
-        "heldout_qa_jsonl_path": "/tmp/polymath_c5/C5_after_C1/phase_C1_test.qa.jsonl",
-        "heldout_qa_jsonl_resolved_path": "/Users/Zer0pa/Polymat AI/runtime/tmp/c1_c4_integrated_20260630T164809Z/hf_packages/packages/C1/qa_bridge/phase_C1_test.qa.jsonl",
+        "heldout_qa_jsonl_path": "OUTSIDE_GIT_C5_HELDOUT_QA_JSONL_STAGING_PATH_REDACTED_SHA_ONLY",
+        "heldout_qa_jsonl_resolved_path": "OUTSIDE_GIT_C5_HELDOUT_QA_JSONL_RESOLVED_PATH_REDACTED_SHA_ONLY",
         "heldout_qa_jsonl_sha256": "da41c5362398f24e0e0dd9df9a5cf0594435a455871fa77ab74d9312e6c8e9b2",
         "heldout_qa_record_count": 53,
         "stable_baseline_identity_file_sha256": "7f65b37e8acc7659b6912fe7de3e46b3cffb9abca8a1c76331f1e48fd6c59fec",
@@ -1800,12 +1863,12 @@
     "c5_after_c1_payload_paths_hash_probe": {
       "canonical_candidate_payload": {
         "bytes": 327680,
-        "path": "/sdcard/Download/polymath_phase34_lineage_repair/c1_c4_waveB_rerun_20260630T230411Z_C1_lineage_repair/phase4_bridge_cell/adapter_post_rank16.f32.bin",
+        "path": "OUTSIDE_GIT_PHASE4_ADAPTER_POST_PAYLOAD_PATH_REDACTED_SHA_ONLY",
         "sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f"
       },
       "canonical_stable_baseline_payload": {
         "bytes": 327680,
-        "path": "/sdcard/Download/polymath_phase34_lineage_repair/c1_c4_waveB_rerun_20260630T230411Z_C1_lineage_repair/phase4_bridge_cell/adapter_pre_rank16.f32.bin",
+        "path": "OUTSIDE_GIT_PHASE4_ADAPTER_PRE_PAYLOAD_PATH_REDACTED_SHA_ONLY",
         "sha256": "e0d1c66ac876c2b6fbbe9e88f1b02dd37201d8ffba10afcd44f1c558fc32f7c9"
       },
       "device_access": "FY25013101C8 device",
@@ -1951,7 +2014,7 @@
         "adb shell find public phone roots for tokenizer/decoder/lm-head/adapter-policy -> tokenizer tables found; decoder/lm-head/adapter-policy not found",
         "adb shell sha256sum/wc tokenizer tables -> vocab 0e43... size 6618632; merges 6c99... size 13758174",
         "adb shell sha256sum/wc candidate/stable payloads -> accepted hashes and 327680 bytes each",
-        "shasum -a 256 /tmp/polymath_c5/C5_after_C1/phase_C1_test.qa.jsonl -> accepted heldout hash; 53 rows"
+        "shasum -a 256 OUTSIDE_GIT_C5_HELDOUT_QA_JSONL_STAGING_PATH_REDACTED_SHA_ONLY -> accepted heldout hash; 53 rows"
       ]
     },
     "c5_comet_readiness": {
@@ -2516,7 +2579,7 @@
         "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/phase34_lineage_repair/phase34_lineage_repair_summary.json": "1348895a1d5ca8e7e5276de1ab2022d9f64a300b288aa7169550263b27a0e304"
       },
       "proof_root": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/phase34_lineage_repair",
-      "raw_suffix_scan": "clean for .qai1/.pqa1/.pjp1/.bin/.raw/.f16/.apk/.aab/.jsonl",
+      "raw_suffix_scan": "clean for raw-payload path references; suffix policy literals excluded",
       "stale_pre_repair_evidence_policy": "superseded; must not be promoted",
       "status": "custody_committed_pushed",
       "summary_path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/phase34_lineage_repair/phase34_lineage_repair_summary.json",
@@ -2632,13 +2695,13 @@
     "updated_utc": "2026-07-01T04:05:47Z",
     "user_action_required": false
   },
-  "current_gate": "WaveB_C5_after_C1_full_decoder_exporter_pathset_pending_custody",
+  "current_gate": "WaveB_C5_after_C1_model_source_authorization_pending",
   "current_highest_valid_state": "C1-C4 Wave B Phase1->Phase2->Phase3->Phase4 development-cycle mechanics remain frozen as metadata evidence; C5_after_C1 is pending custody of the full-decoder exporter route, then outside-git model-source export and native logits implementation.",
   "driver_tick_history": [
     {
       "artifact_waiting_on": [
         "Execution consumes Custodian freeze commit 634a06a6e66f7d99f88bcf5bba7cc83c916fd9e1 and verifies the three-file C5 prediction-payload contract pathset.",
-        "Heldout QA JSONL staged outside git at /tmp/polymath_c5/C5_after_C1/phase_C1_test.qa.jsonl or copied/symlinked outside git from the verified split SHA da41c5362398f24e0e0dd9df9a5cf0594435a455871fa77ab74d9312e6c8e9b2 with 53 rows.",
+        "Heldout QA JSONL staged outside git at OUTSIDE_GIT_C5_HELDOUT_QA_JSONL_STAGING_PATH_REDACTED_SHA_ONLY or copied/symlinked outside git from the verified split SHA da41c5362398f24e0e0dd9df9a5cf0594435a455871fa77ab74d9312e6c8e9b2 with 53 rows.",
         "Accepted real inference producer command implementing the appended argv protocol printed by scripts/host/run_c5_prediction_payloads.py --print-contract.",
         "Outside-git candidate checkpoint payload path with SHA 1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f.",
         "Outside-git stable baseline checkpoint payload path with SHA e0d1c66ac876c2b6fbbe9e88f1b02dd37201d8ffba10afcd44f1c558fc32f7c9.",
@@ -3153,6 +3216,59 @@
       "status_classification": "PENDING_ACTION_ENGINEERING_FULL_DECODER_EXPORTER_AND_MODEL_SOURCE_ROUTE",
       "user_action_required": false,
       "utc": "2026-07-01T04:05:47Z"
+    },
+    {
+      "utc": "2026-07-01T04:46:47Z",
+      "current_gate": "WaveB_C5_after_C1_model_source_authorization_pending",
+      "status_classification": "AUTHORIZATION_PENDING_MODEL_SOURCE_OR_REMOTE_MOUNT",
+      "owner": "User/meta for exact model-source route; Engineering Orchestrator 019f138b-d229-7640-98b7-2f185d6beae0 resumes exporter run after source is mounted or HF read/download is explicitly authorized; Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050 owns metadata-only freeze of the new report/state pathset.",
+      "artifact_waiting_on": [
+        "Exact model source route: restore or mount /workspace/models/gemma4_e4b/snapshot/model.safetensors outside git, or explicitly authorize bounded HF read/download of google/gemma-4-E4B revision 7aa32e6889efd6300124851b164f8b364314c3d8 into outside-git storage.",
+        "After source is available, Engineering runs the frozen exporter outside git to produce decoder_manifest.json and adapter_site_policy.json.",
+        "After exporter output exists, Phase3/4 replaces full_decoder_logits_generation_not_implemented with streamed/chunked logits generation plus teacher-forced answer loss.",
+        "Execution resumes only after outside-git prediction JSONL, finite candidate_train_loss, and polymath_c5_executed_metrics_v1 can be emitted by real runtime execution."
+      ],
+      "last_concrete_action": "Engineering completed the exact model-source authorization report: local bounded search found no model.safetensors, safetensors shard, decoder_manifest.json, or adapter_site_policy.json under the declared roots; the frozen exporter failed closed at model_safetensors_missing; report sha256 9d92cbdd9994b66808a6bd5541ea139ddb3f18f78f5f4f05a082088ba37b3f16. Repo Custodian also froze the prior model-source state mirror at commit 68dac3959f01987ed03b013473284dc2d5afbc67.",
+      "next_concrete_action": "User/meta supplies one exact model source route: restore or mount the historical outside-git /workspace/models/gemma4_e4b/snapshot/model.safetensors, or authorize a bounded HF read/download/export for google/gemma-4-E4B revision 7aa32e6889efd6300124851b164f8b364314c3d8 without printing secrets. Once available, Engineering reruns integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py and returns the decoder_manifest/adapter_site_policy identities for custody.",
+      "dominant_failure_domain": "phase5_eval_failure",
+      "drift_deleted_or_pending": "Deleted stale exporter-custody routing in central state; pending drift hardening is source-bound: do not allow historical path strings, metadata-only manifests, bridge MSE, or placeholder schemas to substitute for a real outside-git model export and C5 runtime metrics.",
+      "recursive_improvement_next_step": "authorize or mount model source -> Engineering runs frozen exporter outside git -> Custodian freezes metadata identities -> Phase3/4 implements real logits/loss -> Execution emits prediction JSONL and heldout metrics -> Pipeline validates -> Custodian freezes metadata/code only.",
+      "user_action_required": true,
+      "threads_nudged_this_tick": [
+        "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050"
+      ],
+      "engineering_report_sha256": "9d92cbdd9994b66808a6bd5541ea139ddb3f18f78f5f4f05a082088ba37b3f16"
+    },
+    {
+      "utc": "2026-07-01T04:46:47Z",
+      "action": "redacted historical raw phone payload path strings from central state while preserving identity hashes",
+      "current_gate": "WaveB_C5_after_C1_model_source_authorization_pending",
+      "status_classification": "AUTHORIZATION_PENDING_MODEL_SOURCE_OR_REMOTE_MOUNT",
+      "dominant_failure_domain": "phase5_eval_failure",
+      "drift_deleted_or_pending": "Deleted stale exporter-custody routing in central state; pending drift hardening is source-bound: do not allow historical path strings, metadata-only manifests, bridge MSE, or placeholder schemas to substitute for a real outside-git model export and C5 runtime metrics. Historical phone raw-payload path strings in central state were redacted to metadata-only labels while preserving hashes/identity fields.",
+      "user_action_required": true
+    },
+    {
+      "utc": "2026-07-01T04:56:47Z",
+      "current_gate": "WaveB_C5_after_C1_model_source_authorization_pending",
+      "status_classification": "AUTHORIZATION_PENDING_MODEL_SOURCE_OR_REMOTE_MOUNT",
+      "owner": "User/meta for exact model-source route; Engineering Orchestrator 019f138b-d229-7640-98b7-2f185d6beae0 resumes exporter run after source is mounted or HF read/download is explicitly authorized; Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050 owns metadata-only freeze of the new report/state pathset.",
+      "artifact_waiting_on": [
+        "Exact model source route: restore or mount /workspace/models/gemma4_e4b/snapshot/model.safetensors outside git, or explicitly authorize bounded HF read/download of google/gemma-4-E4B revision 7aa32e6889efd6300124851b164f8b364314c3d8 into outside-git storage.",
+        "After source is available, Engineering runs the frozen exporter outside git to produce decoder_manifest.json and adapter_site_policy.json.",
+        "After exporter output exists, Phase3/4 replaces full_decoder_logits_generation_not_implemented with streamed/chunked logits generation plus teacher-forced answer loss.",
+        "Execution resumes only after outside-git prediction JSONL, finite candidate_train_loss, and polymath_c5_executed_metrics_v1 can be emitted by real runtime execution."
+      ],
+      "last_concrete_action": "Repo Custodian hit a fail-fast boundary on repo-local raw .jsonl path references in EXECUTIVE_DELIVERY_STATE.json; meta redacted the local/absolute JSONL payload path strings to metadata-only labels, preserved identity hashes, and kept the active model-source authorization edge.",
+      "next_concrete_action": "Repo Custodian freezes the updated metadata-only state/report pathset if clean. Separately, user/meta still supplies the exact model source route: mount/restore /workspace/models/gemma4_e4b/snapshot/model.safetensors or authorize bounded HF read/download/export for google/gemma-4-E4B revision 7aa32e6889efd6300124851b164f8b364314c3d8 without printing secrets.",
+      "dominant_failure_domain": "phase5_eval_failure",
+      "drift_deleted_or_pending": "Deleted stale exporter-custody routing in central state; pending drift hardening is source-bound: do not allow historical path strings, metadata-only manifests, bridge MSE, or placeholder schemas to substitute for a real outside-git model export and C5 runtime metrics. Historical phone raw-payload path strings in central state were redacted to metadata-only labels while preserving hashes/identity fields. Custodian-discovered local/absolute .jsonl payload path strings were redacted to metadata-only labels while preserving split/checkpoint hashes and relative HF split identities.",
+      "recursive_improvement_next_step": "authorize or mount model source -> Engineering runs frozen exporter outside git -> Custodian freezes metadata identities -> Phase3/4 implements real logits/loss -> Execution emits prediction JSONL and heldout metrics -> Pipeline validates -> Custodian freezes metadata/code only.",
+      "user_action_required": true,
+      "threads_nudged_this_tick": [
+        "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050"
+      ],
+      "custodian_blocker_reclassified": "solvable drift redaction completed locally; custody reissued"
     }
   ],
   "governing_edge": "WaveB_C5_after_C1_full_decoder_exporter_pathset_pending_custody",
@@ -3667,16 +3783,14 @@
   "lane_status": {
     "engineering_orchestrator": {
       "artifact_paths": [
-        "/Users/Zer0pa/Polymat AI/Polymath-AI/integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py",
-        "/Users/Zer0pa/Polymat AI/Polymath-AI/tests/test_c5_full_decoder_exporter.py",
-        "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/orchestration/c5_after_c1_full_decoder_exporter_pathset_20260701T_engineering.json"
+        "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/orchestration/c5_after_c1_model_safetensors_missing_exact_source_authorization_20260701T_engineering.json"
       ],
-      "authorization_needed": false,
-      "first_missing_green_field": "decoder_manifest_missing",
+      "authorization_needed": "exact model source route required: mount/restore /workspace/models/gemma4_e4b/snapshot/model.safetensors outside git, or authorize bounded HF read/download/export for google/gemma-4-E4B revision 7aa32e6889efd6300124851b164f8b364314c3d8 without printing secrets",
+      "first_missing_green_field": "model_safetensors_missing",
       "first_missing_green_field_at_export_execution_until_model_source_is_available": "model_safetensors_missing",
       "first_unresolved_technical_failure_after_valid_schema_paths": "full_decoder_logits_generation_not_implemented_after_valid_schema_paths",
       "last_update_utc": "2026-07-01T04:16:17Z",
-      "next_action": "Repo Custodian freezes the three-file exporter pathset plus refreshed central state. After custody, restore/mount outside-git /workspace/models/gemma4_e4b/snapshot/model.safetensors or separately authorize bounded HF read/export for google/gemma-4-E4B revision 7aa32e6889efd6300124851b164f8b364314c3d8, then run the exporter outside git.",
+      "next_action": "User/meta supplies one exact model source route: restore or mount the historical outside-git /workspace/models/gemma4_e4b/snapshot/model.safetensors, or authorize a bounded HF read/download/export for google/gemma-4-E4B revision 7aa32e6889efd6300124851b164f8b364314c3d8 without printing secrets. Once available, Engineering reruns integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py and returns the decoder_manifest/adapter_site_policy identities for custody.",
       "nonclaims": [
         "no C5 pass",
         "no decoder_manifest emitted from a real model yet",
@@ -3692,18 +3806,12 @@
         "no secrets sourced"
       ],
       "sha256_or_identity_fields": {
-        "adapter_site_policy_schema": "polymath_c5_adapter_site_policy_v1",
-        "decoder_manifest_schema": "polymath_c5_full_decoder_manifest_v1",
-        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py": "b89fece1509aadd3448ef7c2747cee74113cc3a3733c816d015a6286280d3b4c",
-        "model_id": "google/gemma-4-E4B",
-        "model_revision": "7aa32e6889efd6300124851b164f8b364314c3d8",
-        "runtime/reports/orchestration/c5_after_c1_full_decoder_exporter_pathset_20260701T_engineering.json": "f4f6ffa5ef5dd3aa8013e722b2b42fc9e48cf4ce53fc4aad931eb327fa86fdf8",
-        "tests/test_c5_full_decoder_exporter.py": "ab056b50d700fa52100199b768142dc001e75f0b157666466a36ff52906414c7"
+        "report_sha256": "9d92cbdd9994b66808a6bd5541ea139ddb3f18f78f5f4f05a082088ba37b3f16"
       },
-      "status": "c5_after_c1_full_decoder_exporter_pathset_ready_for_custodian",
-      "status_classification": "PENDING_ACTION_REPO_CUSTODY_THEN_MODEL_SOURCE_EXPORT",
+      "status": "model_safetensors_missing_exact_source_authorization_required",
+      "status_classification": "AUTHORIZATION_PENDING_MODEL_SOURCE_OR_REMOTE_MOUNT",
       "thread_id": "019f138b-d229-7640-98b7-2f185d6beae0",
-      "user_action_required": false,
+      "user_action_required": true,
       "verification_commands": [
         "python3.11 -m py_compile integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py tests/test_c5_full_decoder_exporter.py -> pass",
         "git diff --check -- integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py tests/test_c5_full_decoder_exporter.py -> pass",
@@ -3717,10 +3825,10 @@
     },
     "execution_orchestrator": {
       "artifact_paths": [
-        "/Users/Zer0pa/Polymat AI/runtime/tmp/c1_c4_integrated_20260630T164809Z/hf_packages/packages/C1/qa_bridge/phase_C1_test.qa.jsonl",
+        "OUTSIDE_GIT_C5_HELDOUT_QA_JSONL_RESOLVED_PATH_REDACTED_SHA_ONLY",
         "scripts/host/run_c5_heldout_eval.py",
-        "/sdcard/Download/polymath_phase34_lineage_repair/c1_c4_waveB_rerun_20260630T230411Z_C1_lineage_repair/phase4_bridge_cell/adapter_post_rank16.f32.bin",
-        "/sdcard/Download/polymath_phase34_lineage_repair/c1_c4_waveB_rerun_20260630T230411Z_C1_lineage_repair/phase4_bridge_cell/adapter_pre_rank16.f32.bin"
+        "OUTSIDE_GIT_PHASE4_ADAPTER_POST_PAYLOAD_PATH_REDACTED_SHA_ONLY",
+        "OUTSIDE_GIT_PHASE4_ADAPTER_PRE_PAYLOAD_PATH_REDACTED_SHA_ONLY"
       ],
       "authorization_needed": false,
       "first_missing_green_field": "decoder_manifest_missing",
@@ -3741,10 +3849,10 @@
       ],
       "sha256_or_identity_fields": {
         "candidate_checkpoint_sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f",
-        "candidate_payload_path": "/sdcard/Download/polymath_phase34_lineage_repair/c1_c4_waveB_rerun_20260630T230411Z_C1_lineage_repair/phase4_bridge_cell/adapter_post_rank16.f32.bin",
+        "candidate_payload_path": "OUTSIDE_GIT_PHASE4_ADAPTER_POST_PAYLOAD_PATH_REDACTED_SHA_ONLY",
         "commit_consumed": "bfe2cc642cfd6fe48255b30901d4f5461c817e32",
         "heldout_split_sha256": "da41c5362398f24e0e0dd9df9a5cf0594435a455871fa77ab74d9312e6c8e9b2",
-        "stable_baseline_payload_path": "/sdcard/Download/polymath_phase34_lineage_repair/c1_c4_waveB_rerun_20260630T230411Z_C1_lineage_repair/phase4_bridge_cell/adapter_pre_rank16.f32.bin",
+        "stable_baseline_payload_path": "OUTSIDE_GIT_PHASE4_ADAPTER_PRE_PAYLOAD_PATH_REDACTED_SHA_ONLY",
         "stable_checkpoint_baseline_sha256": "e0d1c66ac876c2b6fbbe9e88f1b02dd37201d8ffba10afcd44f1c558fc32f7c9"
       },
       "status": "waiting_for_exporter_pathset_and_outside_git_decoder_component_pack",
@@ -3826,7 +3934,7 @@
       "authorization_needed": false,
       "first_missing_green_field": "repo_custody_freeze_of_full_decoder_exporter_pathset",
       "last_update_utc": "2026-07-01T04:16:17Z",
-      "next_action": "Freeze exactly the exporter, exporter tests, exporter report, and refreshed central state mirror. Do not stage active Phase3/4 consumer edits or unrelated dirty files.",
+      "next_action": "Freeze the Engineering model-source authorization report plus refreshed central state mirrors as metadata-only pathset; do not include raw payloads.",
       "nonclaims": [
         "no C5 pass",
         "no decoder_manifest emitted from a real model yet",
@@ -3849,7 +3957,7 @@
         "tests/test_c5_full_decoder_exporter.py": "ab056b50d700fa52100199b768142dc001e75f0b157666466a36ff52906414c7"
       },
       "status": "engineering_full_decoder_exporter_pathset_pending_custody",
-      "status_classification": "PENDING_ACTION_REPO_CUSTODY_ENGINEERING_EXPORTER_PATHSET_FREEZE",
+      "status_classification": "PENDING_ACTION_REPO_CUSTODY_MODEL_SOURCE_AUTHORIZATION_REPORT_STATESET",
       "thread_id": "019f1ac2-0f0f-7721-bf46-ad402dbd9050",
       "user_action_required": false,
       "verification_commands": [
@@ -4163,8 +4271,8 @@
     {
       "action": "normalized active edge after Execution payload hash probe and Engineering C5 QA runtime design; nudged Phase3/4 to implement fail-closed real QA logits/generation producer",
       "artifacts": [
-        "/sdcard/Download/polymath_phase34_lineage_repair/c1_c4_waveB_rerun_20260630T230411Z_C1_lineage_repair/phase4_bridge_cell/adapter_post_rank16.f32.bin",
-        "/sdcard/Download/polymath_phase34_lineage_repair/c1_c4_waveB_rerun_20260630T230411Z_C1_lineage_repair/phase4_bridge_cell/adapter_pre_rank16.f32.bin",
+        "OUTSIDE_GIT_PHASE4_ADAPTER_POST_PAYLOAD_PATH_REDACTED_SHA_ONLY",
+        "OUTSIDE_GIT_PHASE4_ADAPTER_PRE_PAYLOAD_PATH_REDACTED_SHA_ONLY",
         "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/runner/main.cpp",
         "scripts/host/run_c5_phase34_qa_inference_producer.py"
       ],
@@ -4271,12 +4379,12 @@
     "c5_after_c1_payload_paths_hash_probe": {
       "canonical_candidate_payload": {
         "bytes": 327680,
-        "path": "/sdcard/Download/polymath_phase34_lineage_repair/c1_c4_waveB_rerun_20260630T230411Z_C1_lineage_repair/phase4_bridge_cell/adapter_post_rank16.f32.bin",
+        "path": "OUTSIDE_GIT_PHASE4_ADAPTER_POST_PAYLOAD_PATH_REDACTED_SHA_ONLY",
         "sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f"
       },
       "canonical_stable_baseline_payload": {
         "bytes": 327680,
-        "path": "/sdcard/Download/polymath_phase34_lineage_repair/c1_c4_waveB_rerun_20260630T230411Z_C1_lineage_repair/phase4_bridge_cell/adapter_pre_rank16.f32.bin",
+        "path": "OUTSIDE_GIT_PHASE4_ADAPTER_PRE_PAYLOAD_PATH_REDACTED_SHA_ONLY",
         "sha256": "e0d1c66ac876c2b6fbbe9e88f1b02dd37201d8ffba10afcd44f1c558fc32f7c9"
       },
       "device_access": "FY25013101C8 device",
@@ -4422,7 +4530,7 @@
         "adb shell find public phone roots for tokenizer/decoder/lm-head/adapter-policy -> tokenizer tables found; decoder/lm-head/adapter-policy not found",
         "adb shell sha256sum/wc tokenizer tables -> vocab 0e43... size 6618632; merges 6c99... size 13758174",
         "adb shell sha256sum/wc candidate/stable payloads -> accepted hashes and 327680 bytes each",
-        "shasum -a 256 /tmp/polymath_c5/C5_after_C1/phase_C1_test.qa.jsonl -> accepted heldout hash; 53 rows"
+        "shasum -a 256 OUTSIDE_GIT_C5_HELDOUT_QA_JSONL_STAGING_PATH_REDACTED_SHA_ONLY -> accepted heldout hash; 53 rows"
       ]
     },
     "c5_prediction_payload_contract": {
@@ -4538,7 +4646,7 @@
   },
   "schema_version": "polymath_executive_delivery_state_v1",
   "status": "PENDING_ACTION_ENGINEERING_MODEL_SOURCE_EXPORT_ROUTE",
-  "status_classification": "PENDING_ACTION_ENGINEERING_MODEL_SOURCE_EXPORT_ROUTE",
-  "updated_at": "2026-07-01T04:36:17Z",
-  "updated_at_utc": "2026-07-01T04:36:17Z"
+  "status_classification": "AUTHORIZATION_PENDING_MODEL_SOURCE_OR_REMOTE_MOUNT",
+  "updated_at": "2026-07-01T04:56:47Z",
+  "updated_at_utc": "2026-07-01T04:56:47Z"
 }

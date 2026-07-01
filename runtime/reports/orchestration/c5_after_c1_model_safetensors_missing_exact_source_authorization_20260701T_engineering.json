@@ -1,0 +1,105 @@
+{
+  "schema_version": "polymath_c5_after_c1_model_source_export_route_v1",
+  "lane": "engineering_model_source_export_route",
+  "status": "c5_after_c1_model_safetensors_missing_exact_source_authorization",
+  "status_classification": "AUTHORIZATION_PENDING_MODEL_SOURCE_OR_REMOTE_MOUNT",
+  "current_gate": "WaveB_C5_after_C1_model_source_export_pending",
+  "branch": "gemma4-megakernel-native-training",
+  "head_commit": "d375265006b809f34314de0c8c59962ec40053cf",
+  "frozen_commits_verified": {
+    "exporter_route_commit": "f4791ae09b31b738ef2642cd58b9b1b4097d36c2",
+    "exporter_route_commit_is_ancestor_of_head": true,
+    "native_full_decoder_consumer_commit": "d375265006b809f34314de0c8c59962ec40053cf",
+    "native_full_decoder_consumer_commit_is_ancestor_of_head": true
+  },
+  "artifact_paths": {
+    "exporter": "/Users/Zer0pa/Polymat AI/Polymath-AI/integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py",
+    "native_consumer": "/Users/Zer0pa/Polymat AI/Polymath-AI/integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_qa_inference.cpp",
+    "native_header": "/Users/Zer0pa/Polymat AI/Polymath-AI/integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/include/polymath/gemma4/c5_qa_inference.h",
+    "host_producer": "/Users/Zer0pa/Polymat AI/Polymath-AI/scripts/host/run_c5_phase34_qa_inference_producer.py",
+    "this_report": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/orchestration/c5_after_c1_model_safetensors_missing_exact_source_authorization_20260701T_engineering.json"
+  },
+  "sha256_or_identity_fields": {
+    "exporter_sha256": "b89fece1509aadd3448ef7c2747cee74113cc3a3733c816d015a6286280d3b4c",
+    "native_consumer_sha256": "aaa899673cd09616557e5977558a5633af2366fff72479ea80d5d7b5ae54d7e4",
+    "native_header_sha256": "aeaa7b1f14b09aa686f04e833bc3fa7812858a794dfed3210719c64e833c2fb1",
+    "host_producer_sha256": "8476ecfa9ee8b5aa12822a1222245aff18e4e9d4536a775957960e9d38f4bd20",
+    "model_id": "google/gemma-4-E4B",
+    "hf_revision": "7aa32e6889efd6300124851b164f8b364314c3d8",
+    "required_model_source_path_preferred": "/workspace/models/gemma4_e4b/snapshot/model.safetensors"
+  },
+  "bounded_model_source_probe": {
+    "searched_roots": [
+      "/workspace/models/gemma4_e4b/snapshot/model.safetensors",
+      "/Users/Zer0pa/Polymat AI/runtime",
+      "/Users/Zer0pa/Polymat AI outside /Users/Zer0pa/Polymat AI/Polymath-AI and outside /Users/Zer0pa/Polymat AI/runtime",
+      "/tmp",
+      "/Users/prinivenpillay/.cache/huggingface"
+    ],
+    "searched_patterns": [
+      "model.safetensors",
+      "*.safetensors",
+      "decoder_manifest.json",
+      "adapter_site_policy.json"
+    ],
+    "model_safetensors_found": false,
+    "safetensors_shard_found": false,
+    "decoder_manifest_found": false,
+    "adapter_site_policy_found": false,
+    "raw_payload_copied_to_git": false
+  },
+  "historical_remote_source": {
+    "path": "/workspace/models/gemma4_e4b/snapshot/model.safetensors",
+    "local_mount_available_now": false,
+    "source_report": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/gemma4_megakernel/runpod/20260517T013707Z_gemma4_megakernel_setup/gemma4_model_cache_report.txt"
+  },
+  "exporter_fail_closed_probe": {
+    "command": "python3.11 integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py --model-safetensors /workspace/models/gemma4_e4b/snapshot/model.safetensors --out /tmp/polymath_c5/C5_after_C1/full_decoder_component_pack --candidate-adapter-sha 1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f --stable-baseline-sha e0d1c66ac876c2b6fbbe9e88f1b02dd37201d8ffba10afcd44f1c558fc32f7c9",
+    "exit_code": 2,
+    "first_missing_green_field": "model_safetensors_missing",
+    "component_pack_created": false
+  },
+  "first_missing_green_field": "model_safetensors_missing",
+  "first_unresolved_technical_failure_after_valid_schema_paths": "full_decoder_logits_generation_not_implemented_after_valid_schema_paths",
+  "exact_authorization_request": {
+    "preferred": "Restore or mount the historical RunPod model source so this local path exists: /workspace/models/gemma4_e4b/snapshot/model.safetensors.",
+    "alternative": "Authorize bounded HF read/download/export of google/gemma-4-E4B at revision 7aa32e6889efd6300124851b164f8b364314c3d8 into an outside-git model-source directory. Do not write the model snapshot into the repository. If the HF snapshot resolves to safetensors shards instead of a single model.safetensors, Engineering must add shard-aware export support before rerunning C5.",
+    "secrets_needed_if_hf_route_is_chosen": "HF token access, but no token should be printed or copied into reports."
+  },
+  "command_to_run_once_model_source_is_available": "python3.11 integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py --model-safetensors <outside_git_model.safetensors> --out /tmp/polymath_c5/C5_after_C1/full_decoder_component_pack --candidate-adapter-sha 1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f --stable-baseline-sha e0d1c66ac876c2b6fbbe9e88f1b02dd37201d8ffba10afcd44f1c558fc32f7c9",
+  "next_action": {
+    "owner": "Meta/User or Execution environment owner for model-source mount/HF read authorization; Engineering resumes after a real outside-git model.safetensors path exists.",
+    "after_export": "Verify /tmp/polymath_c5/C5_after_C1/full_decoder_component_pack/decoder_manifest.json and adapter_site_policy.json hashes, then hand the paths to Phase3/4 native C5 QA producer for the real logits path.",
+    "do_not_do": "Do not fabricate decoder manifests, logits, prediction JSONL, loss, confidence, candidate_train_loss, or C5 metrics from metadata."
+  },
+  "user_action_required": true,
+  "verification_commands": [
+    "git rev-parse --abbrev-ref HEAD -> gemma4-megakernel-native-training",
+    "git rev-parse HEAD -> d375265006b809f34314de0c8c59962ec40053cf",
+    "git merge-base --is-ancestor d375265006b809f34314de0c8c59962ec40053cf HEAD -> pass",
+    "git merge-base --is-ancestor f4791ae09b31b738ef2642cd58b9b1b4097d36c2 HEAD -> pass",
+    "shasum -a 256 exporter/native/header/host producer -> recorded above",
+    "test -f /workspace/models/gemma4_e4b/snapshot/model.safetensors -> not found",
+    "find /Users/Zer0pa/Polymat AI/runtime for model.safetensors, *.safetensors, decoder_manifest.json, adapter_site_policy.json -> no matches",
+    "find /Users/Zer0pa/Polymat AI excluding Polymath-AI and runtime for model.safetensors, *.safetensors, decoder_manifest.json, adapter_site_policy.json -> no matches",
+    "find /tmp for model.safetensors, *.safetensors, decoder_manifest.json, adapter_site_policy.json -> no matches",
+    "find /Users/prinivenpillay/.cache/huggingface for model.safetensors, *.safetensors, decoder_manifest.json, adapter_site_policy.json -> no matches",
+    "python3.11 exporter with historical /workspace model path -> exit 2, model_safetensors_missing",
+    "python3.11 -m py_compile exporter -> pass"
+  ],
+  "nonclaims": [
+    "no model source found",
+    "no decoder component pack exported",
+    "no decoder_manifest emitted",
+    "no adapter_site_policy emitted",
+    "no logits emitted",
+    "no prediction JSONL emitted",
+    "no loss, confidence, candidate_train_loss, or C5 metrics fabricated",
+    "no bridge MSE relabeled as C5 loss",
+    "no C5 pass",
+    "no learning or model-quality claim",
+    "no HF, Comet, or API call",
+    "no secrets sourced or printed",
+    "no raw model/checkpoint/adapter/tensor payload copied into git"
+  ]
+}
