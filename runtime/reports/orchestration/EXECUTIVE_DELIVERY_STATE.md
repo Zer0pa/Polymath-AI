@@ -1,14 +1,14 @@
 # Executive Delivery State
 
-Updated UTC: `2026-07-01T03:05:16Z`
+Updated UTC: `2026-07-01T03:25:17Z`
 
 ## Current Gate
 
-`WaveB_C5_after_C1_tokenizer_decoder_lmhead_runtime_inputs_missing`
+`WaveB_C5_after_C1_c5_qa_component_validation_hardening_pending_custody`
 
-Status classification: `PENDING_ACTION_ENGINEERING_PHASE34_C5_QA_RUNTIME_COMPONENT_WIRING`
+Status classification: `PENDING_ACTION_REPO_CUSTODY_C5_QA_COMPONENT_VALIDATION_HARDENING`
 
-Owner: `Engineering Orchestrator 019f138b-d229-7640-98b7-2f185d6beae0 owns tokenizer/decoder/LM-head/adapter-policy inventory and real logits-generation design; Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 owns native runner implementation support; Execution resumes after runtime inputs and candidate_train_loss are green.`
+Owner: `Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050 owns freeze of the Engineering C5 QA runtime component-validation hardening pathset; Phase3/4 resumes tokenizer/decoder/LM-head/adapter-policy plus real logits generation after custody.`
 
 User action required: `false`
 
@@ -16,55 +16,55 @@ Dominant failure domain: `phase5_eval_failure`
 
 ## Artifact Waiting On
 
-- Outside-git Gemma `tokenizer_dir` compatible with the runtime loader, including `vocab.hex.tsv` and `merges.hex.tsv` or a parity manifest proving the equivalent tokenizer surface.
-- Outside-git `decoder_manifest` or layer-pack manifest for the real full-decoder logits path.
-- Outside-git LM head/unembedding identity and path, or a manifest proving it is already embedded in the decoder path.
-- Adapter-site policy mapping the Phase4 rank-16 adapter payload into the decoder path without relabeling bridge MSE as QA loss.
-- Native full-decoder logits/generation body behind `gemma4_layer_runner --run-c5-qa-predict` that emits per-record prediction/loss/confidence JSONL through the frozen producer contract.
-- Finite `candidate_train_loss` from the same real logits/training objective, then outside-git candidate/stable prediction JSONL and `polymath_c5_executed_metrics_v1`.
+- Repo Custodian freeze of the Engineering C5 QA runtime component-validation hardening pathset with exact SHA-256 checks.
+- After custody: outside-git Gemma `tokenizer_dir` compatible with the runtime loader, including `vocab.hex.tsv` and `merges.hex.tsv` or a parity manifest proving the equivalent tokenizer surface.
+- After custody: outside-git `decoder_manifest` or layer-pack manifest for the real full-decoder logits path.
+- After custody: outside-git LM head/unembedding identity and path, or a manifest proving it is already embedded in the decoder path.
+- After custody: adapter-site policy mapping the Phase4 rank-16 adapter payload into the decoder path without relabeling bridge MSE as QA loss.
+- After custody: native full-decoder logits/generation body behind `gemma4_layer_runner --run-c5-qa-predict` that emits per-record prediction/loss/confidence JSONL through the frozen producer contract.
+- After custody: finite `candidate_train_loss` from the same real logits/training objective, then outside-git candidate/stable prediction JSONL and `polymath_c5_executed_metrics_v1`.
 
 ## Last Concrete Action
 
-Repo Custodian froze and pushed the fail-closed C5 QA runtime producer pathset plus central state mirror at commit `9f6a27f3640078d81a303445d7ab29c7ce3a2db8`. The pathset verifies C5 heldout/checkpoint/hash boundaries and fails closed without emitting predictions; local and remote HEAD match the custody commit.
+Engineering completed and verified a four-file C5 QA runtime component-validation hardening pathset. Meta verified the handoff SHA-256 values and inventory JSON validity, then nudged Repo Custodian with the exact freeze contract and fail-fast boundary.
 
-Custodian verification included:
+Engineering verification reported:
 
-- `python3.11 -m pytest tests/test_c5_phase34_qa_inference_producer.py tests/test_c5_prediction_payloads.py -q` -> `7 passed`.
-- `cmake -S integrations/gemma4-snapdragon-megakernel/gemma4_megakernel -B /tmp/polymath_c5qa_build` passed.
-- `cmake --build /tmp/polymath_c5qa_build` passed.
-- `ctest --test-dir /tmp/polymath_c5qa_build --output-on-failure` -> `4/4 passed`.
-- Raw-payload filename suffix scan and tight literal secret/token scan were clean.
-- Local HEAD and remote HEAD both read back as `9f6a27f3640078d81a303445d7ab29c7ce3a2db8`.
+- `python3.11 -m pytest -q tests/test_c5_phase34_qa_inference_producer.py tests/test_c5_prediction_payloads.py` -> `8 passed`.
+- `python3.11 -m py_compile scripts/host/run_c5_phase34_qa_inference_producer.py polymath_ai/polar/c5_prediction_payloads.py` -> passed.
+- `git diff --check` on the hardening pathset -> clean.
+- `cmake --build build/gemma4_megakernel_host --target gemma4_layer_runner -j 8` -> built.
+- Native probe without components -> `tokenizer_dir_missing`.
+- Native probe with fake component paths -> `tokenizer_vocab_hex_missing` plus decoder/LM-head/policy path failures.
 
-## Frozen C5 QA Runtime Pathset
+## Pending Custody Pathset
 
-- `integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/include/polymath/gemma4/c5_qa_inference.h` `d03a1350b90c202ba1337402ef775dd9ec330b778a33d9790f0fe7ee1cbfba51`
-- `integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_qa_inference.cpp` `0eebe509727da3d517889962a3892cd1e71c726a464d619812e4c73af08db63d`
-- `integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/runner/main.cpp` `c7c96bfddb9dba22cc247170ceb2df028210425e6a957788c4ae7b409c96e21e`
-- `integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/CMakeLists.txt` `263375132dbd171a068c2420600f802628ce3e9038c806f98593fe537c9927e8`
-- `scripts/host/run_c5_phase34_qa_inference_producer.py` `2fad432ea3b7f23bb738b91da88997e41248154dcbbde3627a7f36e08f165d0c`
-- `tests/test_c5_phase34_qa_inference_producer.py` `164d08779bf0328d30d0c5baed5c3f7402a66fe9a3a6f71a6305bc64a2839ae0`
-
-## Next Concrete Action
-
-Engineering must inventory or implement the real Gemma C5 QA runtime components now: `tokenizer_dir`, `decoder_manifest`, LM head/unembedding, adapter-site policy, and native logits/generation. Return a custody-ready pathset, a runtime-component manifest ready for Execution, or an exact unresolved technical failure. Execution should not rerun C5 scoring until this surface and `candidate_train_loss` exist.
+- `scripts/host/run_c5_phase34_qa_inference_producer.py` `93a2137ccc8c8e37e1541ebe61f34f5cfe35b63de2289f759c6cdcfca02290dd`
+- `integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_qa_inference.cpp` `09cba8af0efb0fec1a8b84f55515c8bd145bb381f436bbe9b52581cc98793e0d`
+- `tests/test_c5_phase34_qa_inference_producer.py` `c2bb18f1560ab1b760d09a4f53bf18065e36feed0706aff28a1e69599d8e8a7e`
+- `runtime/reports/orchestration/c5_after_c1_runtime_component_inventory_20260701T_engineering.json` `1a06cb7b28589877e7b1e3d7e3b1c47cb375a92dacd8b1632326bba11bc467c6`
 
 ## Drift Deletion / Hardening
 
-Repo-custody drift deleted: central state no longer treats the C5 QA fail-closed pathset as pending custody. Remaining drift/pending hardening is the missing real decoder/logits runtime; bridge MSE and fail-closed producer reports remain forbidden as substitutes for C5 loss, prediction JSONL, or learning metrics.
+Deleted/hardened the drift where bogus non-empty tokenizer/decoder/LM-head/adapter-policy paths could pass the C5 QA runtime boundary. The host wrapper now rejects bad component paths before native invocation, and native `--run-c5-qa-predict` verifies tokenizer `vocab.hex.tsv`/`merges.hex.tsv`, decoder manifest file, LM-head/unembedding file, and adapter policy file.
 
-Recursive improvement next step: runtime component inventory -> implement real logits/generation behind frozen producer -> Execution produces outside-git prediction JSONL -> heldout C5 metrics JSON -> Pipeline validation -> smallest measured repair loop.
+Remaining runtime drift is the missing real decoder/logits path. Bridge MSE, fail-closed producer reports, and metadata-only identity reports remain forbidden as substitutes for C5 loss, prediction JSONL, `candidate_train_loss`, or learning metrics.
+
+## Next Concrete Action
+
+Repo Custodian freezes exactly the four-file hardening pathset plus this central state mirror if clean. After custody, Phase3/4 wires outside-git `tokenizer_dir`, `decoder_manifest`, LM head/unembedding, adapter-site policy, and real full-decoder logits/generation. Execution resumes only after finite `candidate_train_loss` and outside-git prediction JSONL exist.
+
+Recursive improvement next step: Custodian freeze -> Phase3/4 real runtime components/logits -> Execution outside-git prediction JSONL and C5 metrics -> Pipeline validation -> smallest measured repair loop.
 
 ## Threads Nudged This Tick
 
-- Engineering Orchestrator `019f138b-d229-7640-98b7-2f185d6beae0`: inventory or implement real Gemma decoder/logits runtime components after custody.
-- Repo Custodian `019f1ac2-0f0f-7721-bf46-ad402dbd9050`: freeze this two-file central state mirror if clean.
+- Repo Custodian `019f1ac2-0f0f-7721-bf46-ad402dbd9050`: exact hardening pathset freeze request with verification and fail-fast boundary.
 
 ## First Missing Green Field
 
-`tokenizer_dir_missing`
+`repo_custody_freeze_of_c5_component_validation_hardening_pathset`
 
-Then: `decoder_manifest_missing`, `lm_head_or_unembedding_missing`, `adapter_site_policy_missing`, native full-decoder logits generation, finite `candidate_train_loss`, outside-git prediction JSONL, and `polymath_c5_executed_metrics_v1`.
+After custody: `tokenizer_dir_missing`, then `decoder_manifest_missing`, `lm_head_or_unembedding_missing`, `adapter_site_policy_missing`, native full-decoder logits generation, finite `candidate_train_loss`, outside-git prediction JSONL, and `polymath_c5_executed_metrics_v1`.
 
 ## Nonclaims Preserved
 
@@ -81,4 +81,4 @@ Then: `decoder_manifest_missing`, `lm_head_or_unembedding_missing`, `adapter_sit
 
 ## State Hash
 
-`EXECUTIVE_DELIVERY_STATE.json` SHA after this update: `203fea9e6a13d8e96a964d5d8b1e6523e1608cd60c1351ef8a0430dfd11ffa64`
+`EXECUTIVE_DELIVERY_STATE.json` SHA after this update: `a8ffb25c274ad62a2fa3294a96502fd6d3e7a6347c762e9e60e75e1098c9ae3c`
