@@ -1,0 +1,122 @@
+{
+  "schema_version": "polymath_phase34_native_c5_runtime_pathset_report_v1",
+  "lane": "phase34_native_c5_runtime",
+  "status": "native_prediction_jsonl_writer_after_lm_head_nll_pathset_ready_for_custodian",
+  "base_commit": "499cd1739a3402fc498a70500e2efef081f97e46",
+  "branch": "gemma4-megakernel-native-training",
+  "governing_gate": "WaveB_C5_after_C1_prediction_jsonl_writer_pending_after_prompt_shape_repair_probe_green",
+  "repaired_field": "c5_full_decoder_prediction_jsonl_writer_missing_after_lm_head_nll",
+  "first_missing_green_field_after_repair_expected": "prediction_jsonl_execution_probe_pending",
+  "pathset": [
+    {
+      "path": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/include/polymath/gemma4/gemma_bpe_tokenizer.h",
+      "sha256": "31416e0c21fdbb7a098581d93948672718020dcb76bbf75177c3b4f821e942de",
+      "role": "native tokenizer interface exposing inverse token-piece lookup for real argmax prediction text"
+    },
+    {
+      "path": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/data/gemma_bpe_tokenizer.cpp",
+      "sha256": "135186a622660ad502499916accb836abe9cd95b9bd4a979868e7eb133cc93fe",
+      "role": "native tokenizer implementation maintaining token id to piece mapping from vocab.hex.tsv"
+    },
+    {
+      "path": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp",
+      "sha256": "3997732a48c00cd71a8e5742b2584aa97e96149661d8d63e1c8c8a86ed88a583",
+      "role": "existing native C5 runtime writing prediction JSONL only after finite chunked LM-head NLL"
+    },
+    {
+      "path": "tests/test_c5_native_runtime_contract.py",
+      "sha256": "0aa321695bd004ed9850ace6acd0a1629c3906aec8bee91aaea3cc61056a5e03",
+      "role": "focused native runtime regression coverage for the writer contract"
+    }
+  ],
+  "local_build_identity": {
+    "path": "build/gemma4_megakernel_host/gemma4_layer_runner",
+    "sha256": "b8cc2dbb062c2c861397f18d8267a883455d34229823bde9ffca6364e253f400"
+  },
+  "implementation_summary": [
+    "Removes the terminal prediction JSONL writer missing blocker after successful LM-head NLL.",
+    "Writes exactly one metadata-free prediction JSONL row for the first heldout QA record from real runtime outputs.",
+    "Requires record_id, finite nonnegative loss, confidence in [0,1], in-vocab predicted token, and writable output path.",
+    "Uses native tokenizer inverse vocab mapping to decode the actual argmax token piece into the prediction field.",
+    "Emits loss from teacher-forced answer-token NLL and prediction from argmax chunked LM-head logits; bridge MSE remains forbidden."
+  ],
+  "prediction_jsonl_row_contract": {
+    "schema_version": "polymath_c5_prediction_payload_row_v1",
+    "required_fields": [
+      "record_id",
+      "prediction",
+      "prediction_token_id",
+      "target_token_id",
+      "loss",
+      "confidence",
+      "loss_source",
+      "prediction_source",
+      "bridge_mse_is_c5_loss"
+    ],
+    "loss_source": "teacher_forced_answer_token_nll_from_full_decoder_logits",
+    "prediction_source": "argmax_token_from_chunked_lm_head_logits",
+    "bridge_mse_is_c5_loss": false
+  },
+  "verification": [
+    {
+      "command": "cmake --build build/gemma4_megakernel_host --target gemma4_layer_runner -- -j2",
+      "result": "passed"
+    },
+    {
+      "command": "python3 -m pytest tests/test_c5_native_runtime_contract.py -q",
+      "result": "19 passed in 131.56s"
+    },
+    {
+      "command": "python3 -m pytest tests/test_c5_*.py -q",
+      "result": "54 passed in 139.08s"
+    },
+    {
+      "command": "ctest --test-dir build/gemma4_megakernel_host --output-on-failure",
+      "result": "4/4 passed"
+    },
+    {
+      "command": "git diff --check over prediction JSONL writer pathset",
+      "result": "passed"
+    }
+  ],
+  "bounded_follow_up_phone_probe": {
+    "runner_destination": "/data/data/com.termux/files/home/polymath_c5/C5_after_C1/bin/gemma4_layer_runner_c5_prediction_jsonl_writer",
+    "command_template": "cd \"$HOME/polymath_c5/C5_after_C1\" && ./bin/gemma4_layer_runner_c5_prediction_jsonl_writer --run-c5-qa-predict --run-label c1_c4_waveB_rerun_20260630T230411Z --eval-point C5_after_C1 --checkpoint-role candidate --checkpoint-payload \"$CANDIDATE_ADAPTER_PAYLOAD\" --checkpoint-sha256 1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f --heldout-qa-jsonl \"$HELDOUT_QA_JSONL\" --output-jsonl \"$PREDICTION_JSONL_OUT\" --tokenizer-dir \"$TOKENIZER_DIR\" --decoder-component-pack \"$DECODER_COMPONENT_PACK\" --vocab-chunk-size 4096 --max-generation-tokens 1 --opencl-library /vendor/lib64/libOpenCL.so",
+    "raw_boundary": "Raw runtime paths are supplied by Execution-owned Termux environment variables and are not frozen into this git report.",
+    "expected_green_fields": [
+      "native_status_pass",
+      "prediction_jsonl_written_true",
+      "prediction_jsonl_row_has_record_id_prediction_loss_confidence"
+    ],
+    "possible_runtime_fail_fields": [
+      "c5_full_decoder_prediction_jsonl_record_id_missing",
+      "c5_full_decoder_prediction_jsonl_predicted_token_not_in_vocab",
+      "c5_full_decoder_prediction_jsonl_open_failed",
+      "c5_full_decoder_prediction_jsonl_write_failed",
+      "c5_full_decoder_lm_head_logit_nonfinite"
+    ]
+  },
+  "accepted_probe_identity_fields": {
+    "probe_stdout_sha256": "6bc5a58af7b8ef7f304f7e37d39102bc05235269e0e2dc6fb92679a01bfa34c4",
+    "probe_stderr_sha256": "3b3698633c2ee470be9f3a0db40d8e0f35bef5720b37392ba0a94dfb5c260085",
+    "probe_meminfo_before_sha256": "d624b705739005cf0b03a89ae93e03d8d9167305b8ce14f321836dc9fc05eb2a",
+    "probe_meminfo_after_sha256": "35f9d7825819094f6fc11ad8b4fadbbd08f7afe8ca38ace055e06e90380f219a",
+    "probe_metadata_sha256": "c1a8f2fa8ef1b31795bc28c559304f9b2b20be3cce864d0327bec4c4713fdf7d"
+  },
+  "raw_boundary_proof": {
+    "raw_payload_bytes_in_report": false,
+    "raw_runtime_paths_frozen_in_report": false,
+    "checkpoint_payload_copied_to_repo": false,
+    "prediction_jsonl_copied_to_repo": false
+  },
+  "research_escalation": "none",
+  "next_action": "Repo Custodian freezes this four-source-file plus report pathset, then Execution rebuilds/copies the runner and runs the bounded C5_after_C1 phone probe.",
+  "nonclaims": [
+    "no C5 pass",
+    "no executed C5 metrics",
+    "no learning or model-quality claim",
+    "no Phase3/4 readiness claim",
+    "no 100k/1M Phase2 authority claim",
+    "no Comet-backed accepted run"
+  ]
+}

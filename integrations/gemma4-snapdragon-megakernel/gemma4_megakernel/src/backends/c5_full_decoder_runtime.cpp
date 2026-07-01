@@ -5,6 +5,7 @@
 #include <cctype>
 #include <cstdint>
 #include <fstream>
+#include <iomanip>
 #include <limits>
 #include <stdexcept>
 #include <string>
@@ -13,6 +14,7 @@
 
 #include "polymath/gemma4/c5_decoder_math.h"
 #include "polymath/gemma4/gemma_bpe_tokenizer.h"
+#include "polymath/gemma4/json_writer.h"
 #include "polymath/gemma4/opencl_layer_runner.h"
 #include "polymath/gemma4/safetensors_reader.h"
 #include "polymath/gemma4/sha256.h"
@@ -2489,6 +2491,79 @@ void append_chunked_lm_head_nll_writer_blockers(
   }
 }
 
+Status write_prediction_jsonl_after_lm_head_nll(
+    const C5QaInferenceRequest& request,
+    const ChunkedLmHeadNllWriterResult& lm_head_nll) {
+  if (request.output_jsonl_path.empty()) {
+    return Status::invalid("c5_full_decoder_prediction_jsonl_path_missing");
+  }
+  if (lm_head_nll.predicted_token >= kVocabSize ||
+      lm_head_nll.target_token >= kVocabSize) {
+    return Status::invalid("c5_full_decoder_prediction_jsonl_token_out_of_vocab");
+  }
+  if (!std::isfinite(lm_head_nll.nll) || lm_head_nll.nll < 0.0) {
+    return Status::invalid("c5_full_decoder_prediction_jsonl_loss_nonfinite");
+  }
+  if (!std::isfinite(lm_head_nll.confidence) ||
+      lm_head_nll.confidence < 0.0 || lm_head_nll.confidence > 1.0) {
+    return Status::invalid("c5_full_decoder_prediction_jsonl_confidence_invalid");
+  }
+
+  const std::string record = first_nonempty_jsonl_line(request.heldout_qa_jsonl_path);
+  const std::string record_id = string_field(record, "record_id");
+  if (record_id.empty()) {
+    return Status::invalid("c5_full_decoder_prediction_jsonl_record_id_missing");
+  }
+
+  GemmaBpeTokenizer tokenizer;
+  tokenizer.load(request.tokenizer_dir);
+  const std::string prediction =
+      tokenizer.decode_token_piece(lm_head_nll.predicted_token);
+  if (prediction.empty()) {
+    return Status::invalid(
+        "c5_full_decoder_prediction_jsonl_predicted_token_not_in_vocab");
+  }
+
+  std::ofstream file(request.output_jsonl_path,
+                     std::ios::binary | std::ios::trunc);
+  if (!file) {
+    return Status::invalid("c5_full_decoder_prediction_jsonl_open_failed");
+  }
+  file << "{\"schema_version\":";
+  write_json_string(file, "polymath_c5_prediction_payload_row_v1");
+  file << ",\"record_id\":";
+  write_json_string(file, record_id);
+  file << ",\"prediction\":";
+  write_json_string(file, prediction);
+  file << ",\"prediction_token_id\":" << lm_head_nll.predicted_token;
+  file << ",\"target_token_id\":" << lm_head_nll.target_token;
+  file << ",\"loss\":" << std::setprecision(17) << lm_head_nll.nll;
+  file << ",\"confidence\":" << std::setprecision(17)
+       << lm_head_nll.confidence;
+  file << ",\"loss_source\":";
+  write_json_string(file, "teacher_forced_answer_token_nll_from_full_decoder_logits");
+  file << ",\"prediction_source\":";
+  write_json_string(file, "argmax_token_from_chunked_lm_head_logits");
+  file << ",\"bridge_mse_is_c5_loss\":false}\n";
+  if (!file) {
+    return Status::invalid("c5_full_decoder_prediction_jsonl_write_failed");
+  }
+  return Status::ok();
+}
+
+void append_prediction_jsonl_writer_blockers(
+    const C5QaInferenceRequest& request,
+    const ChunkedLmHeadNllWriterResult& lm_head_nll,
+    C5FullDecoderRuntimeResult& result) {
+  const Status status =
+      write_prediction_jsonl_after_lm_head_nll(request, lm_head_nll);
+  if (!status.is_ok()) {
+    result.blockers.push_back(status.message());
+    return;
+  }
+  result.prediction_jsonl_written = true;
+}
+
 void append_numeric_decoder_primitive_blockers(
     std::vector<std::string>& blockers) {
   std::vector<float> output;
@@ -2537,12 +2612,6 @@ void append_numeric_decoder_primitive_blockers(
                            ? "c5_decoder_math_chunked_nll_invalid"
                            : nll_final.message());
   }
-}
-
-void append_full_decoder_compute_kernel_blockers(
-    C5FullDecoderRuntimeResult& result) {
-  result.blockers.push_back(
-      "c5_full_decoder_prediction_jsonl_writer_missing_after_lm_head_nll");
 }
 
 }  // namespace
@@ -2621,13 +2690,12 @@ C5FullDecoderRuntimeResult run_c5_full_decoder_runtime(
           request, identity, runtime_sequence, orchestration, lm_head_nll,
           result.blockers);
     }
+    if (result.blockers.empty()) {
+      append_prediction_jsonl_writer_blockers(request, lm_head_nll, result);
+    }
   } catch (const std::exception& error) {
     result.blockers.push_back(std::string("c5_full_decoder_runtime_error:") +
                               error.what());
-  }
-
-  if (result.blockers.empty()) {
-    append_full_decoder_compute_kernel_blockers(result);
   }
   return result;
 }

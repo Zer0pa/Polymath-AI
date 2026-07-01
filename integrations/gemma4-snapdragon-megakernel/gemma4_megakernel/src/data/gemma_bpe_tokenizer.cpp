@@ -149,6 +149,14 @@ std::vector<std::uint32_t> GemmaBpeTokenizer::encode(
   return ids;
 }
 
+std::string GemmaBpeTokenizer::decode_token_piece(std::uint32_t token_id) const {
+  const auto found = id_to_piece_.find(token_id);
+  if (found == id_to_piece_.end()) {
+    return {};
+  }
+  return found->second;
+}
+
 void GemmaBpeTokenizer::load_vocab(const std::string& path) {
   std::ifstream file(path);
   if (!file) {
@@ -163,8 +171,11 @@ void GemmaBpeTokenizer::load_vocab(const std::string& path) {
     if (fields.size() != 2U) {
       throw std::runtime_error("malformed vocab line in " + path);
     }
-    vocab_[decode_hex(fields[0])] =
+    const std::string piece = decode_hex(fields[0]);
+    const std::uint32_t token_id =
         static_cast<std::uint32_t>(std::stoul(fields[1]));
+    vocab_[piece] = token_id;
+    id_to_piece_[token_id] = piece;
   }
 }
 
