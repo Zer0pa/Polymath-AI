@@ -1,60 +1,62 @@
 # Executive Delivery State
 
-Updated UTC: `2026-07-01T22:06:08Z`
+Updated UTC: `2026-07-01T22:23:08Z`
 
 ## Current Gate
 
-`WaveB_C5_after_C1_final_hidden_stream_implementation_active_after_lm_head_fail_closed_custody`
+`WaveB_C5_after_C1_native_final_hidden_stream_custody_pending_after_phase34_pathset`
 
-Status classification: `PENDING_ACTION_PHASE34_FINAL_HIDDEN_STREAM_IMPLEMENTATION_ACTIVE_AFTER_LM_HEAD_CUSTODY`
+Status classification: `PENDING_ACTION_REPO_CUSTODIAN_NATIVE_FINAL_HIDDEN_STREAM_FREEZE`
 
-Owner: Phase3/4 Engineer `019f13da-d897-7ba2-8ed1-b959892f5ed4` is active implementing real final decoder hidden stream emission in the existing 42-layer runtime after LM-head fail-closed custody.
+Owner: Repo Custodian `019f1ac2-0f0f-7721-bf46-ad402dbd9050` owns the seven-file custody freeze for the Phase3/4 native final hidden stream pathset plus this central mirror. Execution remains parked until the freeze includes a bounded phone probe command.
 
 User action required: `false`
 
 Dominant failure domain: `phase5_eval_failure`
 
-Research escalation: `none` - the first missing field is still narrowing and Phase3/4 is active on the implementation edge.
+Research escalation: `none` - the first missing field advanced, and the current work is a custody freeze followed by one bounded phone proof.
 
 ## Artifact Waiting On
 
-- Repo Custodian froze the five-file chunked LM-head/NLL fail-closed boundary at commit `a78c57fa059e2ff2718360d24fb37f58859243f2` on `origin/gemma4-megakernel-native-training`.
-- Frozen source/test/report pathset:
-  - `integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp` SHA `5bb98d0d9d1ffac628e233a7a2efabb65951d6738506d17ec33fcf984b00bd91`
-  - `tests/test_c5_native_runtime_contract.py` SHA `fed39a953b1d66c6e4b789a7c2a34de3aa146c468d438e7418717fcdf7bc048d`
-  - `runtime/reports/orchestration/c5_after_c1_native_chunked_lm_head_nll_writer_blocker_20260701T_phase34.json` SHA `48ab36724077208b1c963f9203d27e1b94e007b8b543048efe86ab3592563aae`
-- Custodian verification passed: JSON validation, ZPP lint exit `0` with warning debt only, diff hygiene, exact staged pathset, raw/secret boundary scans, native runner build, focused native contract `17 passed`, broad C5 `52 passed`, and `ctest` `4/4`.
-- Phase3/4 accepted the handoff and is active on the next implementation edge: emit real final decoder hidden rows from the existing 42-layer runtime before rerouting any LM-head/NLL phone proof.
-- Execution remains parked. Do not route a phone probe until Phase3/4 returns a frozen final-hidden-stream implementation pathset or a bounded probe command.
-- This central JSON/MD mirror correction is metadata-only and awaits Repo Custodian freeze as a two-file pathset.
+- Phase3/4 returned `native_final_hidden_stream_pathset_ready_for_custodian` with NEXT_HANDOFF and green verification.
+- Pathset awaiting Custodian freeze:
+  - `integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/include/polymath/gemma4/opencl_layer_runner.h` SHA `f51576f9ab1970894f6937e94a706c423fd3f93bc2f1466dd0bbd439cb46ca6e`
+  - `integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/opencl_layer_runner.cpp` SHA `ede2d3382bd5c52bfa38e09b10dfe9d6854f390209d4e4565c197036564e623a`
+  - `integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp` SHA `5793e3447b17f8b88277ffc8d148fa1d81e2359b4aebc8666640d78e91a16c4b`
+  - `tests/test_c5_native_runtime_contract.py` SHA `3f6b54a89757c89ff725a488d55b37af6ab852e9feb1bb9a05e8d0fb4f21ae62`
+  - `runtime/reports/orchestration/c5_after_c1_native_final_hidden_stream_20260702T_phase34.json` SHA `bcf697beb9a1045297aef45445857afd4ea94fd287372810c670639cb3043def`
+  - `runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json` after this update.
+  - `runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md` after this update.
+- Phase3/4 verification reported: host `gemma4_layer_runner` build passed, focused native contract `17 passed`, broad C5 `52 passed`, `ctest` `4/4`, `git diff --check`, and raw suffix/value-shaped secret scan clean.
+- Implementation scope: OpenCL layer runner processes bounded prompt rows; scheduled 42-layer stack runs over prompt stream; rank-16 adapter applies at the declared post-layer residual site; final hidden rows feed the existing chunked LM-head/NLL boundary.
 
 ## Last Concrete Action
 
-Repo Custodian verified, committed, and pushed the chunked LM-head/NLL fail-closed boundary at a78c57fa059e2ff2718360d24fb37f58859243f2, then directly handed off to Phase3/4. Phase3/4 accepted the handoff and started implementing real final decoder hidden stream emission; no Execution probe is valid yet.
+Phase3/4 completed the native final-hidden-stream implementation pathset and emitted NEXT_HANDOFF to Custodian. Prior central mirror freeze completed at `4e4d3376f6cab78ae43edec2d26bc3fd17085f3d`. This update moves the active edge from implementation-active to custody-pending.
 
 ## First Missing Green Field
 
-Current runtime field: `c5_full_decoder_final_hidden_stream_missing_for_lm_head_nll`
+Custody field: `native_final_hidden_stream_custody_commit_missing`
 
-Custody field: `post_lm_head_fail_closed_custody_central_mirror_freeze_pending`
+Expected next runtime field after custody/probe: `c5_full_decoder_prediction_jsonl_writer_missing_after_lm_head_nll` unless the phone run exposes a narrower failure.
 
 ## Next Concrete Action
 
-Phase3/4 must implement real final decoder hidden stream emission in the existing 42-layer runtime or return the exact source/runtime blocker. Repo Custodian should freeze this two-file central mirror correction in parallel; Execution remains parked until a frozen implementation or bounded probe command exists.
+Repo Custodian must verify and freeze the seven-file pathset exactly, then route Execution with the bounded phone probe command to rebuild/copy `gemma4_layer_runner_c5_final_hidden_stream` and run the smallest `C5_after_C1` phone proof.
 
 ## Drift Deletion / Hardening
 
-Deleted stale custody-pending drift: chunked LM-head/NLL fail-closed boundary is frozen at a78c57fa059e2ff2718360d24fb37f58859243f2. Active work is now final decoder hidden stream emission, not LM-head custody, OpenCL/SP-HAL, rank16, 42-layer orchestration, or generic LM-head missing.
+Updated stale implementation-active drift. Older OpenCL/SP-HAL, multi-token QA orchestration, rank16 injection, 42-layer orchestration, generic LM-head, and final-hidden-stream-in-progress wording is superseded by this custody edge.
 
 ## Recursive Improvement Next Step
 
-Run one falsifiable Phase3/4 implementation slice for real final decoder hidden stream emission. If it returns a custody-ready pathset, freeze it and then run one bounded phone proof; if it returns a blocker, route that exact smallest runtime contract repair.
+Freeze the final-hidden-stream source/test/report plus central mirror, then run one bounded phone proof. If it advances, route the prediction JSONL writer boundary; if it fails, route the exact runtime/device field back to the owning implementation lane.
 
 ## Threads Nudged This Tick
 
-- Repo Custodian `019f1ac2-0f0f-7721-bf46-ad402dbd9050`: completed five-file fail-closed boundary freeze at `a78c57fa059e2ff2718360d24fb37f58859243f2`; routed this two-file central mirror correction for freeze.
-- Phase3/4 Engineer `019f13da-d897-7ba2-8ed1-b959892f5ed4`: received Custodian handoff and is active on `c5_full_decoder_final_hidden_stream_missing_for_lm_head_nll`; no churn nudge.
-- Execution Orchestrator `019f138c-fb51-7c53-a41a-ab8eac950d9c`: parked; no valid phone probe command exists until final hidden stream implementation is frozen.
+- Repo Custodian `019f1ac2-0f0f-7721-bf46-ad402dbd9050`: routed seven-file final-hidden-stream custody request after central update.
+- Phase3/4 Engineer `019f13da-d897-7ba2-8ed1-b959892f5ed4`: completed custody-ready pathset with NEXT_HANDOFF; no churn nudge.
+- Execution Orchestrator `019f138c-fb51-7c53-a41a-ab8eac950d9c`: parked until Custodian freeze includes bounded phone probe command.
 - Training Material Steward, Pipeline Integrator, UI Engineer, Engineering Orchestrator: not current owner; no nudge.
 
 ## Nonclaims Preserved

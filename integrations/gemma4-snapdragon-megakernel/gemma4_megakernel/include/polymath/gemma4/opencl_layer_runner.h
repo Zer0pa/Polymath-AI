@@ -43,6 +43,22 @@ struct OpenClSingleTokenLayerResult {
   std::uint64_t max_resident_set_kb = 0;
 };
 
+struct OpenClPromptLayerInput {
+  std::uint32_t layer_index = 0;
+  std::uint32_t active_tokens = 0;
+  std::vector<float> layer_input_rows;
+  std::vector<float> per_layer_input_rows;
+  std::vector<std::uint8_t> attention_mask;
+  std::vector<std::uint32_t> position_ids;
+};
+
+struct OpenClPromptLayerResult {
+  std::vector<float> output_rows;
+  std::string opencl_library;
+  double elapsed_seconds = 0.0;
+  std::uint64_t max_resident_set_kb = 0;
+};
+
 struct OpenClRuntimeDiscoveryConfig {
   std::string opencl_library;
   std::vector<std::string> opencl_library_candidates;
@@ -59,6 +75,11 @@ Status run_opencl_single_token_layer_forward(
     const OpenClSingleTokenLayerWeights& weights,
     const OpenClSingleTokenLayerInput& input,
     OpenClSingleTokenLayerResult& result,
+    const OpenClRuntimeDiscoveryConfig& config = OpenClRuntimeDiscoveryConfig{});
+Status run_opencl_prompt_layer_forward(
+    const OpenClSingleTokenLayerWeights& weights,
+    const OpenClPromptLayerInput& input,
+    OpenClPromptLayerResult& result,
     const OpenClRuntimeDiscoveryConfig& config = OpenClRuntimeDiscoveryConfig{});
 
 }  // namespace polymath::gemma4

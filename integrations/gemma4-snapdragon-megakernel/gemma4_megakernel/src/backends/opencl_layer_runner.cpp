@@ -4044,6 +4044,78 @@ Status run_opencl_single_token_layer_forward(
   }
 }
 
+Status run_opencl_prompt_layer_forward(
+    const OpenClSingleTokenLayerWeights& weights,
+    const OpenClPromptLayerInput& input,
+    OpenClPromptLayerResult& result,
+    const OpenClRuntimeDiscoveryConfig& config) {
+  result = OpenClPromptLayerResult{};
+  try {
+    if (input.active_tokens == 0U || input.active_tokens > kSequence ||
+        input.layer_input_rows.size() !=
+            static_cast<std::size_t>(input.active_tokens * kHidden) ||
+        input.per_layer_input_rows.size() !=
+            static_cast<std::size_t>(input.active_tokens * kSmallInput) ||
+        input.attention_mask.size() != input.active_tokens ||
+        input.position_ids.size() != input.active_tokens) {
+      return Status::invalid("opencl_prompt_layer_input_shape_mismatch");
+    }
+
+    TensorData loaded;
+    loaded.input_layernorm_weight = weights.input_layernorm_weight;
+    loaded.layer_scalar = weights.layer_scalar;
+    loaded.mlp_down_proj_weight = weights.mlp_down_proj_weight;
+    loaded.mlp_gate_proj_weight = weights.mlp_gate_proj_weight;
+    loaded.mlp_up_proj_weight = weights.mlp_up_proj_weight;
+    loaded.per_layer_input_gate_weight = weights.per_layer_input_gate_weight;
+    loaded.per_layer_projection_weight = weights.per_layer_projection_weight;
+    loaded.post_attention_layernorm_weight =
+        weights.post_attention_layernorm_weight;
+    loaded.post_feedforward_layernorm_weight =
+        weights.post_feedforward_layernorm_weight;
+    loaded.post_per_layer_input_norm_weight =
+        weights.post_per_layer_input_norm_weight;
+    loaded.pre_feedforward_layernorm_weight =
+        weights.pre_feedforward_layernorm_weight;
+    loaded.self_attn_k_norm_weight = weights.self_attn_k_norm_weight;
+    loaded.self_attn_k_proj_weight = weights.self_attn_k_proj_weight;
+    loaded.self_attn_o_proj_weight = weights.self_attn_o_proj_weight;
+    loaded.self_attn_q_norm_weight = weights.self_attn_q_norm_weight;
+    loaded.self_attn_q_proj_weight = weights.self_attn_q_proj_weight;
+    loaded.self_attn_v_proj_weight = weights.self_attn_v_proj_weight;
+
+    std::vector<float> layer_input(kTokens * kHidden, 0.0F);
+    std::copy(input.layer_input_rows.begin(), input.layer_input_rows.end(),
+              layer_input.begin());
+    std::vector<float> per_layer_input(kTokens * kSmallInput, 0.0F);
+    std::copy(input.per_layer_input_rows.begin(),
+              input.per_layer_input_rows.end(), per_layer_input.begin());
+    std::vector<std::uint8_t> attention_mask(kTokens, 0U);
+    std::copy(input.attention_mask.begin(), input.attention_mask.end(),
+              attention_mask.begin());
+    std::vector<std::uint32_t> position_ids(kTokens, 0U);
+    std::copy(input.position_ids.begin(), input.position_ids.end(),
+              position_ids.begin());
+
+    const LayerForwardResult forward = run_opencl_layer_values_loaded(
+        input.layer_index, std::move(loaded), std::move(layer_input),
+        std::move(per_layer_input), std::move(attention_mask),
+        std::move(position_ids), config);
+    const std::size_t output_count =
+        static_cast<std::size_t>(input.active_tokens * kHidden);
+    result.output_rows.assign(forward.output_values.begin(),
+                              forward.output_values.begin() + output_count);
+    result.opencl_library = forward.opencl_library;
+    result.elapsed_seconds = forward.elapsed_seconds;
+    result.max_resident_set_kb =
+        static_cast<std::uint64_t>(forward.max_rss_kb);
+    return Status::ok();
+  } catch (const std::exception& error) {
+    return Status::invalid(std::string("opencl_prompt_layer_error:") +
+                           error.what());
+  }
+}
+
 Status run_opencl_layer_forward(const std::string& pack_dir, const std::string& output_dir) {
   try {
     ensure_directory(output_dir);

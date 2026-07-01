@@ -2109,6 +2109,247 @@ void append_42_layer_orchestration_blockers(
   }
 }
 
+Status adapter_site_layer_index(const C5QaInferenceRequest& request,
+                                std::uint32_t& layer_index) {
+  try {
+    const std::string policy = read_text_file(request.adapter_site_policy_path);
+    const std::string site = string_field(policy, "adapter_site");
+    const std::uint64_t layer = unsigned_field(policy, "decoder_layer_index");
+    if (site == "post_layer0_residual" && layer == 0U) {
+      layer_index = 0U;
+      return Status::ok();
+    }
+    if (site == "post_layer1_residual" && layer == 1U) {
+      layer_index = 1U;
+      return Status::ok();
+    }
+    return Status::invalid(
+        "c5_full_decoder_final_hidden_adapter_site_unsupported");
+  } catch (const std::exception& error) {
+    return Status::invalid(
+        std::string("c5_full_decoder_final_hidden_adapter_policy_read_error:") +
+        error.what());
+  }
+}
+
+Status validate_opencl_prompt_layer_weights(
+    std::uint32_t layer_index,
+    const OpenClSingleTokenLayerWeights& weights) {
+  const std::size_t hidden = kHiddenSize;
+  const std::size_t small = kSmallInputSize;
+  const std::size_t intermediate = kIntermediateSize;
+  const std::size_t query_width = kAttentionHeads * kHeadDim;
+  const std::size_t kv_width = kKeyValueHeads * kHeadDim;
+  const bool fixed_shape_supported =
+      weights.input_layernorm_weight.size() == hidden &&
+      weights.layer_scalar.size() == 1U &&
+      weights.mlp_down_proj_weight.size() == hidden * intermediate &&
+      weights.mlp_gate_proj_weight.size() == intermediate * hidden &&
+      weights.mlp_up_proj_weight.size() == intermediate * hidden &&
+      weights.per_layer_input_gate_weight.size() == small * hidden &&
+      weights.per_layer_projection_weight.size() == hidden * small &&
+      weights.post_attention_layernorm_weight.size() == hidden &&
+      weights.post_feedforward_layernorm_weight.size() == hidden &&
+      weights.post_per_layer_input_norm_weight.size() == hidden &&
+      weights.pre_feedforward_layernorm_weight.size() == hidden &&
+      weights.self_attn_k_proj_weight.size() == kv_width * hidden &&
+      weights.self_attn_o_proj_weight.size() == hidden * query_width &&
+      weights.self_attn_q_proj_weight.size() == query_width * hidden &&
+      weights.self_attn_v_proj_weight.size() == kv_width * hidden;
+  if (!fixed_shape_supported) {
+    return Status::invalid(
+        "c5_full_decoder_final_hidden_opencl_prompt_weight_shape_unsupported:" +
+        std::to_string(layer_index));
+  }
+  if (weights.self_attn_q_norm_weight.empty() ||
+      weights.self_attn_k_norm_weight.empty() ||
+      (query_width % weights.self_attn_q_norm_weight.size()) != 0U ||
+      (kv_width % weights.self_attn_k_norm_weight.size()) != 0U) {
+    return Status::invalid(
+        "c5_full_decoder_final_hidden_opencl_prompt_norm_shape_unsupported:" +
+        std::to_string(layer_index));
+  }
+  return Status::ok();
+}
+
+Status build_layer_ple_rows(const SafetensorsReader& reader,
+                            const QaRuntimeSequence& sequence,
+                            const std::vector<float>& layer_input_rows,
+                            std::uint32_t layer_index,
+                            std::vector<float>& ple_rows) {
+  ple_rows.clear();
+  const std::uint64_t rows =
+      static_cast<std::uint64_t>(sequence.prompt_tokens.size());
+  if (rows == 0U || layer_input_rows.size() !=
+                         static_cast<std::size_t>(rows * kHiddenSize) ||
+      layer_index >= kLayerCount) {
+    return Status::invalid(
+        "c5_full_decoder_final_hidden_ple_input_shape_mismatch");
+  }
+  ple_rows.reserve(static_cast<std::size_t>(rows * kSmallInputSize));
+  for (std::uint64_t row = 0U; row < rows; ++row) {
+    const std::size_t begin = static_cast<std::size_t>(row * kHiddenSize);
+    std::vector<float> layer_row(
+        layer_input_rows.begin() + static_cast<std::ptrdiff_t>(begin),
+        layer_input_rows.begin() +
+            static_cast<std::ptrdiff_t>(begin + kHiddenSize));
+    std::vector<float> ple_row;
+    Status status =
+        derive_ple_input_row(reader, layer_row,
+                             sequence.prompt_tokens[static_cast<std::size_t>(row)],
+                             layer_index, ple_row);
+    if (!status.is_ok()) {
+      return status;
+    }
+    status = append_row(ple_rows, ple_row, kSmallInputSize,
+                        "c5_full_decoder_final_hidden_ple_row");
+    if (!status.is_ok()) {
+      return status;
+    }
+  }
+  return Status::ok();
+}
+
+Status ensure_hidden_rows_finite(const std::vector<float>& rows,
+                                 std::uint64_t active_tokens,
+                                 const std::string& label) {
+  if (active_tokens == 0U || rows.size() !=
+                                static_cast<std::size_t>(active_tokens *
+                                                         kHiddenSize)) {
+    return Status::invalid(label + "_shape_mismatch");
+  }
+  for (const float value : rows) {
+    if (!std::isfinite(value)) {
+      return Status::invalid(label + "_nonfinite");
+    }
+  }
+  return Status::ok();
+}
+
+Status emit_final_hidden_stream(
+    const C5QaInferenceRequest& request,
+    const SourceModelIdentity& identity,
+    const QaRuntimeSequence& sequence,
+    const Rank16AdapterPayload& adapter_payload,
+    DecoderLayerOrchestration& orchestration) {
+  const std::uint64_t rows =
+      static_cast<std::uint64_t>(sequence.prompt_tokens.size());
+  if (orchestration.scheduled_layers.size() != kLayerCount || rows == 0U ||
+      sequence.layer_input_rows.size() !=
+          static_cast<std::size_t>(rows * kHiddenSize) ||
+      sequence.attention_mask.size() != sequence.prompt_tokens.size() ||
+      sequence.position_ids.size() != sequence.prompt_tokens.size()) {
+    return Status::invalid(
+        "c5_full_decoder_final_hidden_orchestration_input_missing");
+  }
+  if (rows > kQaPromptWindowTokens) {
+    return Status::invalid(
+        "c5_full_decoder_final_hidden_prompt_window_overflow");
+  }
+
+  std::uint32_t adapter_layer = 0U;
+  Status status = adapter_site_layer_index(request, adapter_layer);
+  if (!status.is_ok()) {
+    return status;
+  }
+
+  SafetensorsReader reader;
+  status = reader.open(identity.path);
+  if (!status.is_ok()) {
+    return status;
+  }
+  std::vector<float> current_rows = sequence.layer_input_rows;
+  OpenClRuntimeDiscoveryConfig opencl_config;
+  opencl_config.opencl_library = request.opencl_library;
+  bool adapter_applied = false;
+  for (const std::uint32_t layer : orchestration.scheduled_layers) {
+    std::vector<float> ple_rows;
+    status = build_layer_ple_rows(reader, sequence, current_rows, layer,
+                                  ple_rows);
+    if (!status.is_ok()) {
+      return status;
+    }
+
+    OpenClSingleTokenLayerWeights weights;
+    status = load_opencl_single_token_weights(reader, layer, weights);
+    if (!status.is_ok()) {
+      return status;
+    }
+    status = validate_opencl_prompt_layer_weights(layer, weights);
+    if (!status.is_ok()) {
+      return status;
+    }
+
+    OpenClPromptLayerInput input;
+    input.layer_index = layer;
+    input.active_tokens = static_cast<std::uint32_t>(rows);
+    input.layer_input_rows = current_rows;
+    input.per_layer_input_rows = std::move(ple_rows);
+    input.attention_mask = sequence.attention_mask;
+    input.position_ids = sequence.position_ids;
+    OpenClPromptLayerResult layer_result;
+    status = run_opencl_prompt_layer_forward(weights, input, layer_result,
+                                             opencl_config);
+    if (!status.is_ok()) {
+      return Status::invalid(
+          "c5_full_decoder_final_hidden_opencl_prompt_layer_failed:" +
+          status.message());
+    }
+    status = ensure_hidden_rows_finite(
+        layer_result.output_rows, rows,
+        "c5_full_decoder_final_hidden_opencl_prompt_output");
+    if (!status.is_ok()) {
+      return status;
+    }
+    current_rows = std::move(layer_result.output_rows);
+
+    if (layer == adapter_layer) {
+      std::vector<float> adapted_rows;
+      status = adapter_rank16_residual(current_rows, adapter_payload.adapter_a,
+                                       adapter_payload.adapter_b, rows,
+                                       kHiddenSize, adapted_rows);
+      if (!status.is_ok()) {
+        return status;
+      }
+      status = ensure_hidden_rows_finite(
+          adapted_rows, rows,
+          "c5_full_decoder_final_hidden_rank16_adapter_output");
+      if (!status.is_ok()) {
+        return status;
+      }
+      current_rows = std::move(adapted_rows);
+      adapter_applied = true;
+    }
+  }
+  if (!adapter_applied) {
+    return Status::invalid(
+        "c5_full_decoder_final_hidden_rank16_adapter_site_not_reached");
+  }
+
+  status = ensure_hidden_rows_finite(
+      current_rows, rows, "c5_full_decoder_final_hidden_rows");
+  if (!status.is_ok()) {
+    return status;
+  }
+  orchestration.final_hidden_rows = std::move(current_rows);
+  orchestration.final_hidden_stream_available = true;
+  return Status::ok();
+}
+
+void append_final_hidden_stream_blockers(
+    const C5QaInferenceRequest& request,
+    const SourceModelIdentity& identity,
+    const QaRuntimeSequence& sequence,
+    const Rank16AdapterPayload& adapter_payload,
+    DecoderLayerOrchestration& orchestration,
+    std::vector<std::string>& blockers) {
+  const Status status = emit_final_hidden_stream(
+      request, identity, sequence, adapter_payload, orchestration);
+  if (!status.is_ok()) {
+    blockers.push_back(status.message());
+  }
+}
+
 Status run_chunked_lm_head_nll_writer(
     const C5QaInferenceRequest& request,
     const SourceModelIdentity& identity,
@@ -2283,7 +2524,8 @@ void append_numeric_decoder_primitive_blockers(
 
 void append_full_decoder_compute_kernel_blockers(
     C5FullDecoderRuntimeResult& result) {
-  result.blockers.push_back("c5_full_decoder_chunked_lm_head_nll_writer_missing");
+  result.blockers.push_back(
+      "c5_full_decoder_prediction_jsonl_writer_missing_after_lm_head_nll");
 }
 
 }  // namespace
@@ -2351,6 +2593,11 @@ C5FullDecoderRuntimeResult run_c5_full_decoder_runtime(
       append_42_layer_orchestration_blockers(identity, runtime_sequence,
                                              adapter_stream, orchestration,
                                              result.blockers);
+    }
+    if (result.blockers.empty()) {
+      append_final_hidden_stream_blockers(request, identity, runtime_sequence,
+                                          adapter_payload, orchestration,
+                                          result.blockers);
     }
     if (result.blockers.empty()) {
       append_chunked_lm_head_nll_writer_blockers(

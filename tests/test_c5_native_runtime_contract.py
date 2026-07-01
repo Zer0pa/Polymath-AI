@@ -74,14 +74,16 @@ def test_native_c5_runtime_terminal_blocker_advances_to_lm_head_nll_writer() -> 
     ).read_text(encoding="utf-8")
 
     assert "append_42_layer_orchestration_blockers" in source
+    assert "append_final_hidden_stream_blockers" in source
     assert "append_chunked_lm_head_nll_writer_blockers" in source
+    assert "run_opencl_prompt_layer_forward" in source
     assert "c5_full_decoder_final_hidden_stream_missing_for_lm_head_nll" in source
     assert (
         'result.blockers.push_back("c5_full_decoder_42_layer_orchestration_missing")'
         not in source
     )
     assert (
-        'result.blockers.push_back("c5_full_decoder_chunked_lm_head_nll_writer_missing")'
+        '"c5_full_decoder_prediction_jsonl_writer_missing_after_lm_head_nll"'
         in source
     )
 
