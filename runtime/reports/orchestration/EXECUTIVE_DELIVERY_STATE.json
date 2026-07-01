@@ -1,19 +1,18 @@
 {
   "active_bottleneck": "c5_full_decoder_chunked_lm_head_nll_writer_missing",
-  "active_edge": "WaveB_C5_after_C1_chunked_lm_head_nll_writer_pending_after_42_layer_orchestration_green",
+  "active_edge": "WaveB_C5_after_C1_chunked_lm_head_nll_writer_implementation_active_after_42_layer_evidence_freeze",
   "active_watchdog_state": {
     "active_bottleneck": "c5_full_decoder_chunked_lm_head_nll_writer_missing",
-    "active_edge": "WaveB_C5_after_C1_chunked_lm_head_nll_writer_pending_after_42_layer_orchestration_green",
+    "active_edge": "WaveB_C5_after_C1_chunked_lm_head_nll_writer_implementation_active_after_42_layer_evidence_freeze",
     "adapter_site_policy_sha256": "f38bd8109bbb77e9e94a5b4b34a238bc0ec0a39e7736870c97defe5aecc93357",
     "additional_missing_runtime_field_after_contract_patch": "decoder_manifest_tensor_role_inventory_missing",
     "artifact_waiting_on": [
-      "Execution completed the bounded 42-layer phone probe after consuming custody commit 412f705acb0add7ee33d80947568722054932896.",
-      "Phone runner: /data/data/com.termux/files/home/polymath_c5/C5_after_C1/bin/gemma4_layer_runner_c5_42_layer_orchestration; SHA 31015b6844e20d74cd67f69cbb152fa4ccba4200992d3d60cc458d145afda23c; bytes 554312.",
-      "Probe ran exactly once with --opencl-library /vendor/lib64/libOpenCL.so; exit code 13; elapsed 104 seconds; native status blocked; prediction JSONL written false.",
-      "First missing green field advanced to c5_full_decoder_chunked_lm_head_nll_writer_missing; 42-layer orchestration is green for this bounded proof.",
-      "Metadata-only evidence root: runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_42_layer_orchestration_20260701T213036Z.",
-      "Repo Custodian must freeze the seven metadata evidence files plus central JSON/MD; this supersedes the earlier two-file probe-active mirror request unless it has already committed.",
-      "Phase3/4 must implement or return a precise blocker for the chunked LM-head/NLL writer behind the existing --run-c5-qa-predict path; no new evaluator or metrics shortcut."
+      "Repo Custodian completed the superseding 42-layer probe evidence and central mirror freeze at commit 3df47a394f022112ade79c7b33ad5bbc0c0e08ac on origin/gemma4-megakernel-native-training.",
+      "Superseded two-file probe-active mirror had already been committed at 48f2ad4ef248c6cd1713dfda009e1a8c27eecafb; the nine-file evidence packet is the governing freeze.",
+      "Frozen evidence confirms the bounded 42-layer phone proof advanced first_missing_green_field to c5_full_decoder_chunked_lm_head_nll_writer_missing; no prediction JSONL, loss, confidence, candidate_train_loss, or executed metrics were emitted.",
+      "Phase3/4 is active: it added chunked LM-head/NLL writer wiring behind a real-final-hidden precondition, updated regression guard to c5_full_decoder_final_hidden_stream_missing_for_lm_head_nll, build passed, and focused native C5 contract suite is running.",
+      "Current artifact waiting on is Phase3/4 return of exactly one artifact: native_chunked_lm_head_nll_writer_pathset_ready_for_custodian, bounded_chunked_lm_head_nll_writer_probe_command_ready_for_custodian, or native_chunked_lm_head_nll_writer_blocker.",
+      "This central mirror correction must be frozen by Repo Custodian as two metadata files only; do not route Execution until a real Phase3/4 pathset/probe command is frozen."
     ],
     "authorization_needed": false,
     "c5_after_c1_bounded_opencl_probe_command_identity_repair_20260701T171907Z": {
@@ -1535,7 +1534,7 @@
       "status": "c5_remaining_eval_split_identity_matrix_ready"
     },
     "candidate_adapter_sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f",
-    "central_mirror_local_update_status": "updated_after_42_layer_probe_chunked_lm_head_nll_writer_pending",
+    "central_mirror_local_update_status": "updated_after_42_layer_evidence_freeze_phase34_chunked_lm_head_active",
     "central_state_update_pathset_for_custodian": {
       "artifact_paths": [
         "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json",
@@ -1550,13 +1549,13 @@
       "user_action_required": false
     },
     "central_state_update_pending_custody": true,
-    "current_gate": "WaveB_C5_after_C1_chunked_lm_head_nll_writer_pending_after_42_layer_orchestration_green",
-    "current_highest_valid_state": "C1-C4 Wave B mechanics, phone-local model/exporter evidence, C5-capable runner build, heldout QA staging, native C5 probes through SP-HAL OpenCL route, multi-token QA prompt orchestration, rank-16 adapter stream injection, and native 42-layer orchestration are development-cycle metadata/code evidence only. The bounded 42-layer phone proof advanced to chunked LM-head/NLL writer missing; no C5 pass, prediction JSONL, loss, confidence, candidate_train_loss, or executed metrics exist.",
+    "current_gate": "WaveB_C5_after_C1_chunked_lm_head_nll_writer_implementation_active_after_42_layer_evidence_freeze",
+    "current_highest_valid_state": "C1-C4 Wave B mechanics, phone-local model/exporter evidence, C5-capable runner build, heldout QA staging, native C5 probes through SP-HAL OpenCL route, multi-token QA prompt orchestration, rank-16 adapter stream injection, native 42-layer orchestration, and frozen 42-layer proof evidence are development-cycle metadata/code evidence only. Phase3/4 is actively working the chunked LM-head/NLL writer boundary; no C5 pass, prediction JSONL, loss, confidence, candidate_train_loss, or executed metrics exist.",
     "custody_commit_latest": "05bb56437b83138547301e69af14ab0fce7d4b1a",
     "custody_status_latest": "c5_opencl_parity_dispatch_committed_pushed",
     "decoder_manifest_sha256": "52fcb53666bb4b06d0118cb825b983afc54624a630f667bbfa5af278640e28f8",
     "dominant_failure_domain": "phase5_eval_failure",
-    "drift_deleted_or_pending": "Hardened stale probe-active mirror drift: Execution completed the bounded 42-layer probe, so the active edge is now chunked LM-head/NLL writer implementation. The prior two-file central mirror custody request is superseded by the metadata evidence plus central mirror freeze unless already committed. Do not regress to model source, exporter schema, tokenizer/tensor loader, PLE, SP-HAL/OpenCL, multi-token orchestration, rank16 injection, or 42-layer orchestration blockers without new evidence.",
+    "drift_deleted_or_pending": "Hardened stale custody wait: 42-layer probe evidence is frozen at 3df47a394f022112ade79c7b33ad5bbc0c0e08ac. Active work is not OpenCL/SP-HAL, rank16, 42-layer orchestration, or evidence custody; it is the chunked LM-head/NLL writer and the newly exposed real-final-hidden-stream precondition.",
     "engineering_evaluator_implementation": {
       "artifact_paths_in_progress": [
         "polymath_ai/polar/c5_heldout_eval.py",
@@ -1683,7 +1682,7 @@
     "first_unresolved_technical_failure_after_schema_complete_export": "c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land",
     "first_unresolved_technical_failure_after_schema_paths": "full_decoder_logits_generation_not_implemented_after_valid_schema_paths",
     "first_unresolved_technical_failure_after_valid_schema_paths": "c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land",
-    "governing_edge": "WaveB_C5_after_C1_chunked_lm_head_nll_writer_pending_after_42_layer_orchestration_green",
+    "governing_edge": "WaveB_C5_after_C1_chunked_lm_head_nll_writer_implementation_active_after_42_layer_evidence_freeze",
     "hardening_policy": {
       "deleted_or_repaired_drift": [
         "forced_non_packaged_child_exec_default_for_phase1",
@@ -1713,7 +1712,7 @@
       "repo_custodian": "polled complete at e1b7aa4976a5b45222b3c490a89b874a3191a9fd for prior central mirror; new two-file mirror requires custody after this update",
       "ui_engineer": "not nudged until evidence-backed C5 status surfaces exist"
     },
-    "last_concrete_action": "Execution consumed native 42-layer custody commit 412f705acb0add7ee33d80947568722054932896, rebuilt/copied runner gemma4_layer_runner_c5_42_layer_orchestration on Termux, ran exactly one bounded C5_after_C1 forced-vendor OpenCL probe, and returned metadata-only evidence. The probe failed closed with exit 13 after 104 seconds, did not write prediction JSONL, and advanced the first missing green field to c5_full_decoder_chunked_lm_head_nll_writer_missing.",
+    "last_concrete_action": "Repo Custodian froze the nine-file 42-layer probe evidence and central mirror at 3df47a394f022112ade79c7b33ad5bbc0c0e08ac. Phase3/4 consumed the 42-layer proof, started the chunked LM-head/NLL writer implementation, wired the writer behind a real-final-hidden-stream precondition instead of fabricating loss, updated the native regression guard, and passed the native runner build; focused native tests are in progress.",
     "lineage_drift_repair_status": {
       "commit": "ee74ae572322e05624deac6f6f8788c2c6e2f692",
       "proof_required": [
@@ -1894,7 +1893,7 @@
     "native_tokenizer_tensor_loader_prereq_custody_commit": "4472e3dee86d88d83031eecfc94b91008e5215e0",
     "native_tokenizer_tensor_loader_prereq_report_sha256": "1e4a087354d8a917ec9fba7747a5e2410d9fb01f36e991c902e00adf8764e422",
     "native_tokenizer_tensor_loader_prereq_status": "native_full_decoder_prereq_pathset_ready_for_custodian",
-    "next_concrete_action": "Phase3/4 must implement the bounded chunked LM-head/NLL writer slice or return the exact source/runtime blocker. In parallel, Repo Custodian freezes the central mirror and seven metadata-only probe evidence files; Execution remains parked until a frozen Phase3/4 pathset or bounded probe command exists.",
+    "next_concrete_action": "Phase3/4 must complete focused/broad local validation and return a custody-ready chunked LM-head/NLL writer source/test/report pathset, a bounded probe command, or a precise blocker. If pathset-ready, Meta updates state and routes Custodian; Execution remains parked until custody freezes a real probe command.",
     "nonclaims": [
       "no C5 pass",
       "no executed C5 metrics",
@@ -1917,7 +1916,7 @@
       "no 100k/1M authority",
       "no Comet-backed accepted run"
     ],
-    "owner": "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 owns the next bounded native C5 runtime implementation slice: chunked LM-head/NLL writer. Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050 owns the metadata-only probe evidence and central mirror freeze in parallel.",
+    "owner": "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 is active implementing the bounded chunked LM-head/NLL writer path behind the existing native --run-c5-qa-predict surface.",
     "owner_thread": "019f13da-d897-7ba2-8ed1-b959892f5ed4",
     "phase2_status_by_phase": {
       "C1": {
@@ -2138,7 +2137,7 @@
       "phase34": "raw PJP1, HTP raw output, OpenCL tensors, and adapters remain on device/Termux; repair must keep compact JSON only",
       "report_root_scan": "metadata-freeze report root had 179 tracked files and clean forbidden suffix scans; raw payloads not committed"
     },
-    "recursive_improvement_next_step": "Route exactly one falsifiable implementation slice for chunked LM-head/NLL writer. If it returns a custody-ready pathset, freeze it and run one bounded phone proof; if it returns a blocker, route that smallest source/runtime contract repair. Research escalation remains none while the first missing field is advancing.",
+    "recursive_improvement_next_step": "Let Phase3/4 finish the smallest falsifiable implementation loop. If it returns c5_full_decoder_final_hidden_stream_missing_for_lm_head_nll, route that exact runtime contract repair; if it returns a custody-ready LM-head/NLL pathset, freeze it and run one bounded phone proof.",
     "repo_custodian_per_layer_input_runtime_repair_commit": "58872fdc3dd7ff6efb73321252d58f3447eb0e2b",
     "repo_custodian_post_phone_probe_central_mirror_commit": "5802ea1e25222c068dd3fcb5050c91f20f72357b",
     "repo_custody_state_freeze": {
@@ -2156,18 +2155,18 @@
     "run_root": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z",
     "runner_sha256": "31015b6844e20d74cd67f69cbb152fa4ccba4200992d3d60cc458d145afda23c",
     "runner_size_bytes": 554312,
-    "status": "PENDING_ACTION_PHASE34_CHUNKED_LM_HEAD_NLL_WRITER_AFTER_42_LAYER_GREEN",
-    "status_classification": "PENDING_ACTION_PHASE34_CHUNKED_LM_HEAD_NLL_WRITER_AFTER_42_LAYER_GREEN",
+    "status": "PENDING_ACTION_PHASE34_CHUNKED_LM_HEAD_NLL_WRITER_IMPLEMENTATION_ACTIVE",
+    "status_classification": "PENDING_ACTION_PHASE34_CHUNKED_LM_HEAD_NLL_WRITER_IMPLEMENTATION_ACTIVE",
     "threads_nudged_this_tick": [
-      "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: routed superseding nine-file metadata evidence plus central mirror freeze; previous two-file probe-active mirror request is stale unless already committed.",
-      "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4: nudged to implement/return precise blocker for c5_full_decoder_chunked_lm_head_nll_writer_missing.",
-      "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: completed bounded 42-layer proof; parked until next frozen implementation/probe command.",
+      "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: completed nine-file 42-layer evidence freeze; routed two-file central mirror correction for current Phase3/4-active state.",
+      "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4: active on chunked LM-head/NLL writer implementation; no churn nudge.",
+      "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: parked after bounded proof; no nudge.",
       "Training Material Steward, Pipeline Integrator, UI Engineer, Engineering Orchestrator: not current owner; no nudge."
     ],
-    "timestamp_utc": "2026-07-01T21:32:38Z",
-    "updated_at": "2026-07-01T21:32:38Z",
-    "updated_at_utc": "2026-07-01T21:32:38Z",
-    "updated_utc": "2026-07-01T21:32:38Z",
+    "timestamp_utc": "2026-07-01T21:42:38Z",
+    "updated_at": "2026-07-01T21:42:38Z",
+    "updated_at_utc": "2026-07-01T21:42:38Z",
+    "updated_utc": "2026-07-01T21:42:38Z",
     "user_action_required": false,
     "last_driver_actions": [
       "Loaded central state and polled current owner lanes.",
@@ -2332,7 +2331,7 @@
       ]
     },
     "first_missing_green_field_after_probe_expected": "c5_full_decoder_42_layer_orchestration_missing",
-    "secondary_missing_green_field": null,
+    "secondary_missing_green_field": "c5_full_decoder_final_hidden_stream_missing_for_lm_head_nll_if_phase34_confirms_current_precondition",
     "c5_after_c1_rank16_adapter_stream_probe_20260701T205548Z": {
       "status": "rank16_adapter_stream_injection_green_next_runtime_field_42_layer_orchestration_missing",
       "consumed_custody_commit": "268c1414a03085b206532743fe957da0d9bb06c1",
@@ -2831,19 +2830,58 @@
           "no secrets printed",
           "no Comet-backed accepted run"
         ]
+      },
+      {
+        "timestamp_utc": "2026-07-01T21:42:38Z",
+        "current_gate": "WaveB_C5_after_C1_chunked_lm_head_nll_writer_implementation_active_after_42_layer_evidence_freeze",
+        "status_classification": "PENDING_ACTION_PHASE34_CHUNKED_LM_HEAD_NLL_WRITER_IMPLEMENTATION_ACTIVE",
+        "owner": "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 is active implementing the bounded chunked LM-head/NLL writer path behind the existing native --run-c5-qa-predict surface.",
+        "artifact_waiting_on": [
+          "Repo Custodian completed the superseding 42-layer probe evidence and central mirror freeze at commit 3df47a394f022112ade79c7b33ad5bbc0c0e08ac on origin/gemma4-megakernel-native-training.",
+          "Superseded two-file probe-active mirror had already been committed at 48f2ad4ef248c6cd1713dfda009e1a8c27eecafb; the nine-file evidence packet is the governing freeze.",
+          "Frozen evidence confirms the bounded 42-layer phone proof advanced first_missing_green_field to c5_full_decoder_chunked_lm_head_nll_writer_missing; no prediction JSONL, loss, confidence, candidate_train_loss, or executed metrics were emitted.",
+          "Phase3/4 is active: it added chunked LM-head/NLL writer wiring behind a real-final-hidden precondition, updated regression guard to c5_full_decoder_final_hidden_stream_missing_for_lm_head_nll, build passed, and focused native C5 contract suite is running.",
+          "Current artifact waiting on is Phase3/4 return of exactly one artifact: native_chunked_lm_head_nll_writer_pathset_ready_for_custodian, bounded_chunked_lm_head_nll_writer_probe_command_ready_for_custodian, or native_chunked_lm_head_nll_writer_blocker.",
+          "This central mirror correction must be frozen by Repo Custodian as two metadata files only; do not route Execution until a real Phase3/4 pathset/probe command is frozen."
+        ],
+        "first_missing_green_field": "c5_full_decoder_chunked_lm_head_nll_writer_missing",
+        "last_concrete_action": "Repo Custodian froze the nine-file 42-layer probe evidence and central mirror at 3df47a394f022112ade79c7b33ad5bbc0c0e08ac. Phase3/4 consumed the 42-layer proof, started the chunked LM-head/NLL writer implementation, wired the writer behind a real-final-hidden-stream precondition instead of fabricating loss, updated the native regression guard, and passed the native runner build; focused native tests are in progress.",
+        "next_concrete_action": "Phase3/4 must complete focused/broad local validation and return a custody-ready chunked LM-head/NLL writer source/test/report pathset, a bounded probe command, or a precise blocker. If pathset-ready, Meta updates state and routes Custodian; Execution remains parked until custody freezes a real probe command.",
+        "dominant_failure_domain": "phase5_eval_failure",
+        "drift_deleted_or_pending": "Hardened stale custody wait: 42-layer probe evidence is frozen at 3df47a394f022112ade79c7b33ad5bbc0c0e08ac. Active work is not OpenCL/SP-HAL, rank16, 42-layer orchestration, or evidence custody; it is the chunked LM-head/NLL writer and the newly exposed real-final-hidden-stream precondition.",
+        "recursive_improvement_next_step": "Let Phase3/4 finish the smallest falsifiable implementation loop. If it returns c5_full_decoder_final_hidden_stream_missing_for_lm_head_nll, route that exact runtime contract repair; if it returns a custody-ready LM-head/NLL pathset, freeze it and run one bounded phone proof.",
+        "user_action_required": false,
+        "central_state_updated": true,
+        "threads_nudged_this_tick": [
+          "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: completed nine-file 42-layer evidence freeze; routed two-file central mirror correction for current Phase3/4-active state.",
+          "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4: active on chunked LM-head/NLL writer implementation; no churn nudge.",
+          "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: parked after bounded proof; no nudge.",
+          "Training Material Steward, Pipeline Integrator, UI Engineer, Engineering Orchestrator: not current owner; no nudge."
+        ],
+        "nonclaims": [
+          "no C5 pass",
+          "no executed C5 metrics",
+          "no prediction JSONL/logits/loss/confidence/candidate_train_loss unless real runtime emits them",
+          "no bridge-MSE-as-C5-loss",
+          "no learning/model-quality claim",
+          "no Phase3/4 readiness",
+          "no 100k/1M authority",
+          "no raw payloads in git",
+          "no secrets printed",
+          "no Comet-backed accepted run"
+        ]
       }
     ]
   },
   "adapter_site_policy_sha256": "f38bd8109bbb77e9e94a5b4b34a238bc0ec0a39e7736870c97defe5aecc93357",
   "additional_missing_runtime_field_after_contract_patch": "decoder_manifest_tensor_role_inventory_missing",
   "artifact_waiting_on": [
-    "Execution completed the bounded 42-layer phone probe after consuming custody commit 412f705acb0add7ee33d80947568722054932896.",
-    "Phone runner: /data/data/com.termux/files/home/polymath_c5/C5_after_C1/bin/gemma4_layer_runner_c5_42_layer_orchestration; SHA 31015b6844e20d74cd67f69cbb152fa4ccba4200992d3d60cc458d145afda23c; bytes 554312.",
-    "Probe ran exactly once with --opencl-library /vendor/lib64/libOpenCL.so; exit code 13; elapsed 104 seconds; native status blocked; prediction JSONL written false.",
-    "First missing green field advanced to c5_full_decoder_chunked_lm_head_nll_writer_missing; 42-layer orchestration is green for this bounded proof.",
-    "Metadata-only evidence root: runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_42_layer_orchestration_20260701T213036Z.",
-    "Repo Custodian must freeze the seven metadata evidence files plus central JSON/MD; this supersedes the earlier two-file probe-active mirror request unless it has already committed.",
-    "Phase3/4 must implement or return a precise blocker for the chunked LM-head/NLL writer behind the existing --run-c5-qa-predict path; no new evaluator or metrics shortcut."
+    "Repo Custodian completed the superseding 42-layer probe evidence and central mirror freeze at commit 3df47a394f022112ade79c7b33ad5bbc0c0e08ac on origin/gemma4-megakernel-native-training.",
+    "Superseded two-file probe-active mirror had already been committed at 48f2ad4ef248c6cd1713dfda009e1a8c27eecafb; the nine-file evidence packet is the governing freeze.",
+    "Frozen evidence confirms the bounded 42-layer phone proof advanced first_missing_green_field to c5_full_decoder_chunked_lm_head_nll_writer_missing; no prediction JSONL, loss, confidence, candidate_train_loss, or executed metrics were emitted.",
+    "Phase3/4 is active: it added chunked LM-head/NLL writer wiring behind a real-final-hidden precondition, updated regression guard to c5_full_decoder_final_hidden_stream_missing_for_lm_head_nll, build passed, and focused native C5 contract suite is running.",
+    "Current artifact waiting on is Phase3/4 return of exactly one artifact: native_chunked_lm_head_nll_writer_pathset_ready_for_custodian, bounded_chunked_lm_head_nll_writer_probe_command_ready_for_custodian, or native_chunked_lm_head_nll_writer_blocker.",
+    "This central mirror correction must be frozen by Repo Custodian as two metadata files only; do not route Execution until a real Phase3/4 pathset/probe command is frozen."
   ],
   "authorization_needed": false,
   "c5_after_c1_bounded_opencl_probe_command_identity_repair_20260701T171907Z": {
@@ -4374,13 +4412,13 @@
     "status": "bounded_phone_probe_repeated_resource_runtime_failure_after_opencl_discovery_repair"
   },
   "candidate_adapter_sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f",
-  "central_mirror_local_update_status": "updated_after_42_layer_probe_chunked_lm_head_nll_writer_pending",
+  "central_mirror_local_update_status": "updated_after_42_layer_evidence_freeze_phase34_chunked_lm_head_active",
   "central_state_update_pending_custody": true,
-  "current_gate": "WaveB_C5_after_C1_chunked_lm_head_nll_writer_pending_after_42_layer_orchestration_green",
-  "current_highest_valid_state": "C1-C4 Wave B mechanics, phone-local model/exporter evidence, C5-capable runner build, heldout QA staging, native C5 probes through SP-HAL OpenCL route, multi-token QA prompt orchestration, rank-16 adapter stream injection, and native 42-layer orchestration are development-cycle metadata/code evidence only. The bounded 42-layer phone proof advanced to chunked LM-head/NLL writer missing; no C5 pass, prediction JSONL, loss, confidence, candidate_train_loss, or executed metrics exist.",
+  "current_gate": "WaveB_C5_after_C1_chunked_lm_head_nll_writer_implementation_active_after_42_layer_evidence_freeze",
+  "current_highest_valid_state": "C1-C4 Wave B mechanics, phone-local model/exporter evidence, C5-capable runner build, heldout QA staging, native C5 probes through SP-HAL OpenCL route, multi-token QA prompt orchestration, rank-16 adapter stream injection, native 42-layer orchestration, and frozen 42-layer proof evidence are development-cycle metadata/code evidence only. Phase3/4 is actively working the chunked LM-head/NLL writer boundary; no C5 pass, prediction JSONL, loss, confidence, candidate_train_loss, or executed metrics exist.",
   "decoder_manifest_sha256": "52fcb53666bb4b06d0118cb825b983afc54624a630f667bbfa5af278640e28f8",
   "dominant_failure_domain": "phase5_eval_failure",
-  "drift_deleted_or_pending": "Hardened stale probe-active mirror drift: Execution completed the bounded 42-layer probe, so the active edge is now chunked LM-head/NLL writer implementation. The prior two-file central mirror custody request is superseded by the metadata evidence plus central mirror freeze unless already committed. Do not regress to model source, exporter schema, tokenizer/tensor loader, PLE, SP-HAL/OpenCL, multi-token orchestration, rank16 injection, or 42-layer orchestration blockers without new evidence.",
+  "drift_deleted_or_pending": "Hardened stale custody wait: 42-layer probe evidence is frozen at 3df47a394f022112ade79c7b33ad5bbc0c0e08ac. Active work is not OpenCL/SP-HAL, rank16, 42-layer orchestration, or evidence custody; it is the chunked LM-head/NLL writer and the newly exposed real-final-hidden-stream precondition.",
   "driver_tick_history": [
     {
       "artifact_waiting_on": [
@@ -5511,6 +5549,46 @@
         "no secrets printed",
         "no Comet-backed accepted run"
       ]
+    },
+    {
+      "timestamp_utc": "2026-07-01T21:42:38Z",
+      "current_gate": "WaveB_C5_after_C1_chunked_lm_head_nll_writer_implementation_active_after_42_layer_evidence_freeze",
+      "status_classification": "PENDING_ACTION_PHASE34_CHUNKED_LM_HEAD_NLL_WRITER_IMPLEMENTATION_ACTIVE",
+      "owner": "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 is active implementing the bounded chunked LM-head/NLL writer path behind the existing native --run-c5-qa-predict surface.",
+      "artifact_waiting_on": [
+        "Repo Custodian completed the superseding 42-layer probe evidence and central mirror freeze at commit 3df47a394f022112ade79c7b33ad5bbc0c0e08ac on origin/gemma4-megakernel-native-training.",
+        "Superseded two-file probe-active mirror had already been committed at 48f2ad4ef248c6cd1713dfda009e1a8c27eecafb; the nine-file evidence packet is the governing freeze.",
+        "Frozen evidence confirms the bounded 42-layer phone proof advanced first_missing_green_field to c5_full_decoder_chunked_lm_head_nll_writer_missing; no prediction JSONL, loss, confidence, candidate_train_loss, or executed metrics were emitted.",
+        "Phase3/4 is active: it added chunked LM-head/NLL writer wiring behind a real-final-hidden precondition, updated regression guard to c5_full_decoder_final_hidden_stream_missing_for_lm_head_nll, build passed, and focused native C5 contract suite is running.",
+        "Current artifact waiting on is Phase3/4 return of exactly one artifact: native_chunked_lm_head_nll_writer_pathset_ready_for_custodian, bounded_chunked_lm_head_nll_writer_probe_command_ready_for_custodian, or native_chunked_lm_head_nll_writer_blocker.",
+        "This central mirror correction must be frozen by Repo Custodian as two metadata files only; do not route Execution until a real Phase3/4 pathset/probe command is frozen."
+      ],
+      "first_missing_green_field": "c5_full_decoder_chunked_lm_head_nll_writer_missing",
+      "last_concrete_action": "Repo Custodian froze the nine-file 42-layer probe evidence and central mirror at 3df47a394f022112ade79c7b33ad5bbc0c0e08ac. Phase3/4 consumed the 42-layer proof, started the chunked LM-head/NLL writer implementation, wired the writer behind a real-final-hidden-stream precondition instead of fabricating loss, updated the native regression guard, and passed the native runner build; focused native tests are in progress.",
+      "next_concrete_action": "Phase3/4 must complete focused/broad local validation and return a custody-ready chunked LM-head/NLL writer source/test/report pathset, a bounded probe command, or a precise blocker. If pathset-ready, Meta updates state and routes Custodian; Execution remains parked until custody freezes a real probe command.",
+      "dominant_failure_domain": "phase5_eval_failure",
+      "drift_deleted_or_pending": "Hardened stale custody wait: 42-layer probe evidence is frozen at 3df47a394f022112ade79c7b33ad5bbc0c0e08ac. Active work is not OpenCL/SP-HAL, rank16, 42-layer orchestration, or evidence custody; it is the chunked LM-head/NLL writer and the newly exposed real-final-hidden-stream precondition.",
+      "recursive_improvement_next_step": "Let Phase3/4 finish the smallest falsifiable implementation loop. If it returns c5_full_decoder_final_hidden_stream_missing_for_lm_head_nll, route that exact runtime contract repair; if it returns a custody-ready LM-head/NLL pathset, freeze it and run one bounded phone proof.",
+      "user_action_required": false,
+      "central_state_updated": true,
+      "threads_nudged_this_tick": [
+        "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: completed nine-file 42-layer evidence freeze; routed two-file central mirror correction for current Phase3/4-active state.",
+        "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4: active on chunked LM-head/NLL writer implementation; no churn nudge.",
+        "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: parked after bounded proof; no nudge.",
+        "Training Material Steward, Pipeline Integrator, UI Engineer, Engineering Orchestrator: not current owner; no nudge."
+      ],
+      "nonclaims": [
+        "no C5 pass",
+        "no executed C5 metrics",
+        "no prediction JSONL/logits/loss/confidence/candidate_train_loss unless real runtime emits them",
+        "no bridge-MSE-as-C5-loss",
+        "no learning/model-quality claim",
+        "no Phase3/4 readiness",
+        "no 100k/1M authority",
+        "no raw payloads in git",
+        "no secrets printed",
+        "no Comet-backed accepted run"
+      ]
     }
   ],
   "export_report_sha256": "4774d31953a58ad6ae1f64e4196405ba820e5be75d36880ac863cfb9dae00b6c",
@@ -5526,7 +5604,7 @@
   "first_missing_green_field_after_runner": "heldout_qa_jsonl_staging_or_c5_predict_probe_pending",
   "first_unresolved_technical_failure_after_schema_complete_export": "c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land",
   "first_unresolved_technical_failure_after_valid_schema_paths": "c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land",
-  "governing_edge": "WaveB_C5_after_C1_chunked_lm_head_nll_writer_pending_after_42_layer_orchestration_green",
+  "governing_edge": "WaveB_C5_after_C1_chunked_lm_head_nll_writer_implementation_active_after_42_layer_evidence_freeze",
   "governing_objective": {
     "nonclaims": [
       "diagnostics_are_not_100k_or_1M_authority_unless_specific_authority_gate_passes",
@@ -6075,21 +6153,25 @@
     },
     "execution_orchestrator": {
       "thread_id": "019f138c-fb51-7c53-a41a-ab8eac950d9c",
-      "status": "forced_vendor_opencl_probe_result_42_layer_orchestration_green_next_chunked_lm_head_missing",
-      "status_classification": "COMPLETED_HANDOFF_TO_PHASE34",
-      "first_missing_green_field": "c5_full_decoder_chunked_lm_head_nll_writer_missing",
-      "last_update_utc": "2026-07-01T21:32:38Z",
-      "next_action": "Park until Phase3/4 implementation pathset or bounded probe command is frozen.",
-      "consumed_commit": "412f705acb0add7ee33d80947568722054932896",
-      "evidence_root": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_42_layer_orchestration_20260701T213036Z"
+      "status": "parked_after_42_layer_probe_until_next_frozen_pathset",
+      "status_classification": "PARKED_UNTIL_PHASE34_CUSTODY_OR_PROBE_COMMAND",
+      "first_missing_green_field": "none for execution this tick",
+      "last_update_utc": "2026-07-01T21:42:38Z",
+      "next_action": "Wait for frozen Phase3/4 implementation/probe command."
     },
     "phase34_engineer": {
       "thread_id": "019f13da-d897-7ba2-8ed1-b959892f5ed4",
-      "status": "pending_chunked_lm_head_nll_writer_implementation_after_42_layer_green",
-      "status_classification": "PENDING_ACTION_PHASE34_CHUNKED_LM_HEAD_NLL_WRITER_AFTER_42_LAYER_GREEN",
+      "status": "chunked_lm_head_nll_writer_implementation_active",
+      "status_classification": "PENDING_ACTION_PHASE34_CHUNKED_LM_HEAD_NLL_WRITER_IMPLEMENTATION_ACTIVE",
       "first_missing_green_field": "c5_full_decoder_chunked_lm_head_nll_writer_missing",
-      "last_update_utc": "2026-07-01T21:32:38Z",
-      "next_action": "Implement bounded chunked LM-head/NLL writer behind existing --run-c5-qa-predict path, or return exact source/runtime blocker."
+      "last_update_utc": "2026-07-01T21:42:38Z",
+      "next_action": "Finish local validation and return pathset/probe command/blocker for chunked LM-head/NLL writer.",
+      "observed_progress": [
+        "source patch added chunked writer behind real-final-hidden precondition",
+        "regression guard updated to c5_full_decoder_final_hidden_stream_missing_for_lm_head_nll",
+        "native runner build passed",
+        "focused native C5 tests running"
+      ]
     },
     "pipeline_integrator": {
       "artifact_paths": [
@@ -6111,11 +6193,13 @@
     },
     "repo_custodian": {
       "thread_id": "019f1ac2-0f0f-7721-bf46-ad402dbd9050",
-      "status": "superseding_42_layer_probe_evidence_and_central_mirror_custody_requested",
-      "status_classification": "PENDING_ACTION_REPO_CUSTODIAN_METADATA_EVIDENCE_FREEZE_IN_PARALLEL",
-      "first_missing_green_field": "42_layer_probe_evidence_and_chunked_lm_head_central_mirror_freeze_pending",
-      "last_update_utc": "2026-07-01T21:32:38Z",
-      "next_action": "Freeze seven metadata evidence files plus central JSON/MD; do not run phone gates."
+      "status": "42_layer_probe_chunked_lm_head_state_committed_pushed",
+      "status_classification": "COMPLETED_METADATA_EVIDENCE_FREEZE",
+      "first_missing_green_field": "none for 42-layer evidence custody; central mirror correction pending custody",
+      "last_update_utc": "2026-07-01T21:42:38Z",
+      "commit": "3df47a394f022112ade79c7b33ad5bbc0c0e08ac",
+      "superseded_two_file_mirror_commit": "48f2ad4ef248c6cd1713dfda009e1a8c27eecafb",
+      "next_action": "Freeze this two-file current-state mirror only; do not run phone gates."
     },
     "training_material_steward": {
       "artifact_paths": [
@@ -6179,18 +6263,18 @@
       "user_action_required": false
     }
   },
-  "last_concrete_action": "Execution consumed native 42-layer custody commit 412f705acb0add7ee33d80947568722054932896, rebuilt/copied runner gemma4_layer_runner_c5_42_layer_orchestration on Termux, ran exactly one bounded C5_after_C1 forced-vendor OpenCL probe, and returned metadata-only evidence. The probe failed closed with exit 13 after 104 seconds, did not write prediction JSONL, and advanced the first missing green field to c5_full_decoder_chunked_lm_head_nll_writer_missing.",
+  "last_concrete_action": "Repo Custodian froze the nine-file 42-layer probe evidence and central mirror at 3df47a394f022112ade79c7b33ad5bbc0c0e08ac. Phase3/4 consumed the 42-layer proof, started the chunked LM-head/NLL writer implementation, wired the writer behind a real-final-hidden-stream precondition instead of fabricating loss, updated the native regression guard, and passed the native runner build; focused native tests are in progress.",
   "last_driver_actions": [
-    "Detected Execution completed the bounded 42-layer phone proof and advanced first_missing_green_field to c5_full_decoder_chunked_lm_head_nll_writer_missing.",
-    "Updated central state from probe metadata pending to Phase3/4 chunked LM-head/NLL writer pending.",
-    "Routed Phase3/4 implementation nudge and superseding Repo Custodian metadata evidence freeze; no user action required."
+    "Detected Repo Custodian froze 42-layer probe/chunked LM-head state at 3df47a394f022112ade79c7b33ad5bbc0c0e08ac.",
+    "Detected Phase3/4 is active on chunked LM-head/NLL writer and has already passed the native runner build.",
+    "Updated central mirror metadata-only and routed Repo Custodian a two-file current-state freeze; no Execution nudge."
   ],
   "model_safetensors_sha256": "43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651",
   "model_safetensors_size_bytes": 15992595884,
   "native_probe_elapsed_seconds": 104,
   "native_probe_exit_code": 13,
   "native_probe_report_path": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_42_layer_orchestration_20260701T213036Z",
-  "next_concrete_action": "Phase3/4 must implement the bounded chunked LM-head/NLL writer slice or return the exact source/runtime blocker. In parallel, Repo Custodian freezes the central mirror and seven metadata-only probe evidence files; Execution remains parked until a frozen Phase3/4 pathset or bounded probe command exists.",
+  "next_concrete_action": "Phase3/4 must complete focused/broad local validation and return a custody-ready chunked LM-head/NLL writer source/test/report pathset, a bounded probe command, or a precise blocker. If pathset-ready, Meta updates state and routes Custodian; Execution remains parked until custody freezes a real probe command.",
   "nonclaims": [
     "no C5 pass",
     "no executed C5 metrics",
@@ -6203,7 +6287,7 @@
     "no secrets printed",
     "no Comet-backed accepted run"
   ],
-  "owner": "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 owns the next bounded native C5 runtime implementation slice: chunked LM-head/NLL writer. Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050 owns the metadata-only probe evidence and central mirror freeze in parallel.",
+  "owner": "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 is active implementing the bounded chunked LM-head/NLL writer path behind the existing native --run-c5-qa-predict surface.",
   "owner_thread": "019f13da-d897-7ba2-8ed1-b959892f5ed4",
   "phone_exporter_rerun_required_after_commit": "43cf3c4130dc902fc8fd69183bac1056f0596626",
   "prd_watchdog": {
@@ -6795,7 +6879,7 @@
     "scope": "metadata mirror only",
     "status": "central_state_phone_filesystem_paths_redacted"
   },
-  "recursive_improvement_next_step": "Route exactly one falsifiable implementation slice for chunked LM-head/NLL writer. If it returns a custody-ready pathset, freeze it and run one bounded phone proof; if it returns a blocker, route that smallest source/runtime contract repair. Research escalation remains none while the first missing field is advancing.",
+  "recursive_improvement_next_step": "Let Phase3/4 finish the smallest falsifiable implementation loop. If it returns c5_full_decoder_final_hidden_stream_missing_for_lm_head_nll, route that exact runtime contract repair; if it returns a custody-ready LM-head/NLL pathset, freeze it and run one bounded phone proof.",
   "required_lane_update_protocol": {
     "block_name": "CENTRAL_STATE_UPDATE",
     "meta_action": "on every heartbeat, read active threads, update this file, route the next concrete edge, and notify Execution only when both keys are green",
@@ -6815,18 +6899,18 @@
   "runner_sha256": "31015b6844e20d74cd67f69cbb152fa4ccba4200992d3d60cc458d145afda23c",
   "runner_size_bytes": 554312,
   "schema_version": "polymath_executive_delivery_state_v1",
-  "status": "PENDING_ACTION_PHASE34_CHUNKED_LM_HEAD_NLL_WRITER_AFTER_42_LAYER_GREEN",
-  "status_classification": "PENDING_ACTION_PHASE34_CHUNKED_LM_HEAD_NLL_WRITER_AFTER_42_LAYER_GREEN",
+  "status": "PENDING_ACTION_PHASE34_CHUNKED_LM_HEAD_NLL_WRITER_IMPLEMENTATION_ACTIVE",
+  "status_classification": "PENDING_ACTION_PHASE34_CHUNKED_LM_HEAD_NLL_WRITER_IMPLEMENTATION_ACTIVE",
   "threads_nudged_this_tick": [
-    "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: routed superseding nine-file metadata evidence plus central mirror freeze; previous two-file probe-active mirror request is stale unless already committed.",
-    "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4: nudged to implement/return precise blocker for c5_full_decoder_chunked_lm_head_nll_writer_missing.",
-    "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: completed bounded 42-layer proof; parked until next frozen implementation/probe command.",
+    "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: completed nine-file 42-layer evidence freeze; routed two-file central mirror correction for current Phase3/4-active state.",
+    "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4: active on chunked LM-head/NLL writer implementation; no churn nudge.",
+    "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: parked after bounded proof; no nudge.",
     "Training Material Steward, Pipeline Integrator, UI Engineer, Engineering Orchestrator: not current owner; no nudge."
   ],
-  "timestamp_utc": "2026-07-01T21:32:38Z",
-  "updated_at": "2026-07-01T21:32:38Z",
-  "updated_at_utc": "2026-07-01T21:32:38Z",
-  "updated_utc": "2026-07-01T21:32:38Z",
+  "timestamp_utc": "2026-07-01T21:42:38Z",
+  "updated_at": "2026-07-01T21:42:38Z",
+  "updated_at_utc": "2026-07-01T21:42:38Z",
+  "updated_utc": "2026-07-01T21:42:38Z",
   "user_action_required": false,
   "c5_after_c1_forced_vendor_opencl_sphal_probe_result_20260701T193641Z": {
     "status": "forced_vendor_opencl_probe_result_sphal_route_green_next_runtime_orchestration_missing",
@@ -7037,7 +7121,7 @@
       "no Comet-backed accepted run"
     ]
   },
-  "secondary_missing_green_field": null,
+  "secondary_missing_green_field": "c5_full_decoder_final_hidden_stream_missing_for_lm_head_nll_if_phase34_confirms_current_precondition",
   "c5_after_c1_rank16_adapter_stream_probe_20260701T205548Z": {
     "status": "rank16_adapter_stream_injection_green_next_runtime_field_42_layer_orchestration_missing",
     "consumed_custody_commit": "268c1414a03085b206532743fe957da0d9bb06c1",
@@ -7292,6 +7376,33 @@
     "next_owner": "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4",
     "next_action": "Implement/freeze chunked LM-head NLL writer or return the exact source/runtime blocker.",
     "raw_boundary": "Metadata-only evidence copied to git report tree; no raw model/checkpoint/adapter/tensor/prediction payloads copied.",
+    "nonclaims": [
+      "no C5 pass",
+      "no executed C5 metrics",
+      "no prediction JSONL/logits/loss/confidence/candidate_train_loss unless real runtime emits them",
+      "no bridge-MSE-as-C5-loss",
+      "no learning/model-quality claim",
+      "no Phase3/4 readiness",
+      "no 100k/1M authority",
+      "no raw payloads in git",
+      "no secrets printed",
+      "no Comet-backed accepted run"
+    ]
+  },
+  "c5_after_c1_chunked_lm_head_nll_writer_implementation_active_20260701T214238Z": {
+    "status": "chunked_lm_head_nll_writer_implementation_active_after_42_layer_evidence_freeze",
+    "custody_commit_for_42_layer_probe_evidence": "3df47a394f022112ade79c7b33ad5bbc0c0e08ac",
+    "superseded_two_file_mirror_commit": "48f2ad4ef248c6cd1713dfda009e1a8c27eecafb",
+    "owner_thread": "019f13da-d897-7ba2-8ed1-b959892f5ed4",
+    "first_missing_green_field": "c5_full_decoder_chunked_lm_head_nll_writer_missing",
+    "observed_phase34_progress": [
+      "chunked LM-head/NLL writer wiring behind real-final-hidden precondition",
+      "regression guard now expects c5_full_decoder_final_hidden_stream_missing_for_lm_head_nll",
+      "native runner build passed",
+      "focused native C5 tests in progress"
+    ],
+    "expected_artifact": "native_chunked_lm_head_nll_writer_pathset_ready_for_custodian OR bounded probe command OR precise blocker",
+    "raw_boundary": "No raw payloads copied by central mirror update.",
     "nonclaims": [
       "no C5 pass",
       "no executed C5 metrics",
