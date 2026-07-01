@@ -1,14 +1,14 @@
 # Executive Delivery State
 
-Updated UTC: `2026-07-01T12:06:07Z`
+Updated UTC: `2026-07-01T12:18:07Z`
 
 ## Current Gate
 
-`WaveB_C5_after_C1_phone_termux_full_decoder_component_pack_export_completed_metadata_pending`
+`WaveB_C5_after_C1_phone_export_hashes_ready_runner_build_pending`
 
-Status classification: `PENDING_ACTION_EXECUTION_EXPORT_HASH_REPORT_AND_RUNNER_BUILD`
+Status classification: `PENDING_ACTION_EXECUTION_C5_RUNNER_BUILD_AND_HELDOUT_QA_STAGING`
 
-Owner: Execution Orchestrator owns export hash publication and C5 runner build/copy next. Phase3/4 owns the native logits boundary after exported manifests are consumed.
+Owner: Execution Orchestrator owns C5-capable runner build/copy, heldout QA staging, and the next bounded predict probe. Phase3/4 owns the native logits implementation if the probe reaches the fail-closed branch.
 
 User action required: `false`
 
@@ -16,33 +16,34 @@ Dominant failure domain: `phase5_eval_failure`
 
 ## Artifact Waiting On
 
-- Execution returns metadata-only hashes and schema summary for `decoder_manifest.json`, `adapter_site_policy.json`, and `export_report.json` from the completed phone export.
-- Execution consumes the Phase3/4 runner command package to build/copy a C5-capable phone runner and verify C5 help flags.
-- Phase3/4/Engineering replace `full_decoder_logits_generation_not_implemented` with streamed/chunked full-decoder logits after valid exported manifests exist.
+- Execution builds or copies a C5-capable phone runner and verifies `--run-c5-qa-predict` plus decoder-component help flags.
+- Execution stages the `C5_after_C1` heldout QA JSONL into phone-accessible outside-git storage and reports metadata-only identity.
+- Execution runs a bounded C5 QA predict probe using the exported decoder component pack; if it reaches the known fail-closed branch, Phase3/4/Engineering replace `full_decoder_logits_generation_not_implemented` with streamed/chunked full-decoder logits.
 
 ## Last Concrete Action
 
-Repo Custodian froze the phone-compatible exporter pathset at `090417c75b19573146e26c77e663ac605981fae3` and the central route mirror at `4356d537b48f8ecce1230be898dd8428ecb3858a`. Execution restored a usable Termux SSH command channel, completed the phone-local pinned HF model download, verified size `15992595884` bytes, captured model SHA-256 `43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651`, ran the frozen stdlib exporter on phone with exit `0`, created the component pack, observed empty exporter stderr, and restored SSH again after a timeout. Phase3/4 produced the runner rebuild/native logits command package SHA `90b0575ba56edf9cd4ec7031c24d32b7242c9af0d510201323a729f18abd9f47`.
+Repo Custodian froze the phone-compatible exporter pathset at `090417c75b19573146e26c77e663ac605981fae3` and the export-complete central mirror at `b7a1dbde480eac4571ece61cf4576f688297b3b8`. Execution completed the phone-local pinned HF model download, verified size `15992595884` bytes and model SHA-256 `43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651`, ran the frozen stdlib exporter on phone with exit `0`, and reported `decoder_manifest.json` SHA `6700f3c2912bfdcb659b9e7de3cdb0831d58f3708a0f841c181ec446b3a83a5f`, `adapter_site_policy.json` SHA `f38bd8109bbb77e9e94a5b4b34a238bc0ec0a39e7736870c97defe5aecc93357`, and `export_report.json` SHA `06fe8e91b5938ff3235cad5fa96e7b25d5b20fb3c4e456c249c84d53bf839d0f`. Execution also restored the Termux SSH channel again after a timeout and identified the next missing green field as the native C5 QA predict runner build/verification.
 
 ## First Missing Green Field
 
-Current: `phone_termux_decoder_component_pack_hash_report_pending`
+Current: `native_c5_qa_predict_runner_build_or_verification_pending`
 
-After export: `phone_c5_runner_rebuild_or_copy_missing`
+After runner: `heldout_qa_jsonl_staging_or_c5_predict_probe_pending`
 
 After valid schema paths: `full_decoder_logits_generation_not_implemented_after_valid_schema_paths`
 
 ## Next Concrete Action
 
-Execution returns the completed export metadata-only hashes for `decoder_manifest.json`, `adapter_site_policy.json`, and `export_report.json`, then uses the Phase3/4 command package to build/copy a C5-capable runner and verify help flags. If the next producer probe reaches the known fail-closed branch, Phase3/4/Engineering patch the exact native logits/generation body rather than creating a new pathway.
+Execution uses the Phase3/4 Termux command package to build/copy a C5-capable `gemma4_layer_runner`, verifies `--run-c5-qa-predict` and decoder-component flags, stages the `C5_after_C1` heldout QA JSONL metadata-only, then runs the smallest C5 QA predict probe. If the probe stops at `full_decoder_logits_generation_not_implemented`, Phase3/4/Engineering patch the exact native logits/generation body rather than creating a new pathway.
 
 ## Drift Deletion / Hardening
 
-Model-source authorization, Termux command-channel, phone model-download, and exporter-execution blockers are superseded by model SHA plus exporter exit `0`. Pending drift hardening remains for export hash/schema publication, C5-capable phone runner deployment, and native logits implementation.
+Model-source authorization, Termux command-channel, phone model-download, and exporter-output blockers are superseded by model and export metadata hashes. Pending drift hardening remains for C5-capable phone runner deployment, heldout QA staging, and native full-decoder logits implementation.
 
 ## Threads Nudged This Tick
 
-Repo Custodian `019f1ac2-0f0f-7721-bf46-ad402dbd9050` for the two-file central mirror freeze.
+- Execution Orchestrator `019f138c-fb51-7c53-a41a-ab8eac950d9c` for runner build/heldout staging.
+- Repo Custodian `019f1ac2-0f0f-7721-bf46-ad402dbd9050` for the two-file central mirror freeze.
 
 ## Nonclaims Preserved
 

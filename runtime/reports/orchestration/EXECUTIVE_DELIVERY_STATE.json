@@ -1,11 +1,11 @@
 {
   "active_bottleneck": {
     "artifact_waiting_on": [
-      "Execution returns metadata-only hashes and schema summary for decoder_manifest.json, adapter_site_policy.json, and export_report.json from the completed phone export.",
-      "Execution consumes the Phase3/4 runner command package to build/copy a C5-capable phone runner and verify C5 help flags.",
-      "Phase3/4/Engineering replace full_decoder_logits_generation_not_implemented with streamed/chunked full-decoder logits after valid exported manifests exist."
+      "Execution builds or copies a C5-capable phone runner and verifies --run-c5-qa-predict plus decoder-component help flags.",
+      "Execution stages the C5_after_C1 heldout QA JSONL into phone-accessible outside-git storage and reports metadata-only identity.",
+      "Execution runs a bounded C5 QA predict probe using the exported decoder component pack; if it reaches the known fail-closed branch, Phase3/4/Engineering replace full_decoder_logits_generation_not_implemented with streamed/chunked full-decoder logits."
     ],
-    "authorization_needed": "none for model-source acquisition or exporter execution; export metadata hashes and runner build are pending",
+    "authorization_needed": "none for model download/export; runner build/copy and heldout QA staging are pending under existing authority",
     "c5_after_c1_c5_qa_runtime_fail_closed_pathset": {
       "artifact_paths": [
         "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/include/polymath/gemma4/c5_qa_inference.h",
@@ -851,11 +851,11 @@
       "status": "c5_full_decoder_failure_artifacts_and_state_pending_custody",
       "user_action_required": false
     },
-    "current_gate": "WaveB_C5_after_C1_phone_termux_full_decoder_component_pack_export_completed_metadata_pending",
+    "current_gate": "WaveB_C5_after_C1_phone_export_hashes_ready_runner_build_pending",
     "custody_commit_latest": "bb8105a2bc91b6c9b0993603e14b49d0a5730f8d",
     "custody_status_latest": "c5_decoder_runtime_owner_state_committed_pushed",
     "dominant_failure_domain": "phase5_eval_failure",
-    "drift_deleted_or_pending": "Model-source authorization, Termux command-channel, phone model-download, and exporter-execution blockers are superseded by model SHA plus exporter exit 0. Pending drift hardening remains for export hash/schema publication, C5-capable phone runner deployment, and native logits implementation.",
+    "drift_deleted_or_pending": "Model-source authorization, Termux command-channel, phone model-download, and exporter-output blockers are superseded by model and export metadata hashes. Pending drift hardening remains for C5-capable phone runner deployment, heldout QA staging, and native full-decoder logits implementation.",
     "engineering_evaluator_implementation": {
       "artifact_paths_in_progress": [
         "polymath_ai/polar/c5_heldout_eval.py",
@@ -962,7 +962,7 @@
       "existing_surface_role": "run_c5_eval.py validates supplied metrics JSON; it does not compute metrics",
       "status": "c5_after_c1_real_evaluator_surface_missing"
     },
-    "first_missing_green_field": "phone_termux_decoder_component_pack_hash_report_pending",
+    "first_missing_green_field": "native_c5_qa_predict_runner_build_or_verification_pending",
     "first_missing_green_field_after_custody_until_model_source_available": "model_safetensors_missing",
     "first_unresolved_technical_failure_after_schema_paths": "full_decoder_logits_generation_not_implemented_after_valid_schema_paths",
     "first_unresolved_technical_failure_after_valid_schema_paths": "full_decoder_logits_generation_not_implemented_after_valid_schema_paths",
@@ -993,7 +993,7 @@
       "training_material_steward": "complete for material identities",
       "ui_engineer": "not nudged until C5 evidence-backed status exists"
     },
-    "last_concrete_action": "Repo Custodian froze the phone-compatible exporter pathset at 090417c75b19573146e26c77e663ac605981fae3 and the central route mirror at 4356d537b48f8ecce1230be898dd8428ecb3858a. Execution restored a usable Termux SSH command channel, completed the phone-local pinned HF model download, verified size 15992595884 bytes, captured model SHA-256 43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651, ran the frozen stdlib exporter on phone with exit 0, created the component pack, observed empty exporter stderr, and restored SSH again after a timeout. Phase3/4 produced the runner rebuild/native logits command package SHA 90b0575ba56edf9cd4ec7031c24d32b7242c9af0d510201323a729f18abd9f47.",
+    "last_concrete_action": "Repo Custodian froze the phone-compatible exporter pathset at 090417c75b19573146e26c77e663ac605981fae3 and the export-complete central mirror at b7a1dbde480eac4571ece61cf4576f688297b3b8. Execution completed the phone-local pinned HF model download, verified size 15992595884 bytes and model SHA-256 43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651, ran the frozen stdlib exporter on phone with exit 0, and reported decoder_manifest.json SHA 6700f3c2912bfdcb659b9e7de3cdb0831d58f3708a0f841c181ec446b3a83a5f, adapter_site_policy.json SHA f38bd8109bbb77e9e94a5b4b34a238bc0ec0a39e7736870c97defe5aecc93357, and export_report.json SHA 06fe8e91b5938ff3235cad5fa96e7b25d5b20fb3c4e456c249c84d53bf839d0f. Execution also restored the Termux SSH channel again after a timeout and identified the next missing green field as the native C5 QA predict runner build/verification.",
     "lineage_drift_repair_status": {
       "commit": "ee74ae572322e05624deac6f6f8788c2c6e2f692",
       "proof_required": [
@@ -1009,7 +1009,7 @@
       ],
       "status": "source_repair_frozen_pending_execution_proof"
     },
-    "next_concrete_action": "Execution returns the completed export metadata-only hashes for decoder_manifest.json, adapter_site_policy.json, and export_report.json, then uses the Phase3/4 command package to build/copy a C5-capable runner and verify help flags. If the next producer probe reaches the known fail-closed branch, Phase3/4/Engineering patch the exact native logits/generation body rather than creating a new pathway.",
+    "next_concrete_action": "Execution uses the Phase3/4 Termux command package to build/copy a C5-capable gemma4_layer_runner, verifies --run-c5-qa-predict and decoder-component flags, stages the C5_after_C1 heldout QA JSONL metadata-only, then runs the smallest C5 QA predict probe. If the probe stops at full_decoder_logits_generation_not_implemented, Phase3/4/Engineering patch the exact native logits/generation body rather than creating a new pathway.",
     "nonclaims": [
       "development-cycle evidence only unless stronger gates pass",
       "no C5 pass",
@@ -1037,7 +1037,7 @@
       "no Comet/API call",
       "no secrets sourced"
     ],
-    "owner": "Execution Orchestrator owns export hash publication and C5 runner build/copy next; Phase3/4 owns the native logits boundary after exported manifests are consumed.",
+    "owner": "Execution Orchestrator owns C5-capable runner build/copy, heldout QA staging, and the next bounded predict probe; Phase3/4 owns the native logits implementation if the probe reaches the fail-closed branch.",
     "phase2_status_by_phase": {
       "C1": {
         "packets": 5180,
@@ -1247,7 +1247,7 @@
       "phase34": "raw PJP1, HTP raw output, OpenCL tensors, and adapters remain on device/Termux; repair must keep compact JSON only",
       "report_root_scan": "metadata-freeze report root had 179 tracked files and clean forbidden suffix scans; raw payloads not committed"
     },
-    "recursive_improvement_next_step": "After export hash publication and runner verification, run a bounded C5 QA predict probe; if it stops at the known fail-closed branch, patch the exact native logits/generation body and rerun the smallest real C5 metrics proof.",
+    "recursive_improvement_next_step": "Build/copy the runner and stage heldout QA first; then run a bounded C5 QA predict probe and, if it stops at the known fail-closed branch, patch the exact native logits/generation body and rerun the smallest real C5 metrics proof.",
     "repo_custody_state_freeze": {
       "branch": "origin/gemma4-megakernel-native-training",
       "commit": "7290fbec13c6a13e88710afddfe4af70637096f9",
@@ -1260,8 +1260,9 @@
     },
     "run_label": "c1_c4_waveB_rerun_20260630T230411Z",
     "run_root": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z",
-    "status_classification": "PENDING_ACTION_EXECUTION_EXPORT_HASH_REPORT_AND_RUNNER_BUILD",
+    "status_classification": "PENDING_ACTION_EXECUTION_C5_RUNNER_BUILD_AND_HELDOUT_QA_STAGING",
     "threads_nudged_this_tick": [
+      "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c runner build/heldout staging follow-up sent",
       "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050 central mirror freeze requested"
     ],
     "timestamp_utc": "2026-07-01T05:06:47Z",
@@ -1507,7 +1508,7 @@
     },
     "execution_phone_download_20260701T100237Z": {
       "thread_id": "019f138c-fb51-7c53-a41a-ab8eac950d9c",
-      "status": "phone_termux_decoder_component_pack_export_complete_metadata_hashes_pending",
+      "status": "phone_termux_model_download_and_export_green_runner_build_pending",
       "termux_command_channel": "ssh_channel_recovered_by_execution",
       "download_process_id": "15243",
       "downloaded_bytes_observed": 114221056,
@@ -1515,12 +1516,12 @@
       "storage_result": "sufficient_phone_storage_reported_by_execution",
       "token_handling": "no token printed; no-token public curl started successfully",
       "raw_boundary": "model bytes remain phone-local outside git and are not copied through Mac or repo",
-      "first_missing_green_field": "phone_termux_decoder_component_pack_hash_report_pending",
+      "first_missing_green_field": "native_c5_qa_predict_runner_build_or_verification_pending",
       "user_action_required": false,
-      "status_classification": "PENDING_ACTION_EXECUTION_EXPORT_HASH_REPORT_AND_RUNNER_BUILD",
+      "status_classification": "PENDING_ACTION_EXECUTION_C5_RUNNER_BUILD_AND_HELDOUT_QA_STAGING",
       "model_safetensors_sha256": "43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651",
       "model_safetensors_size_bytes": 15992595884,
-      "exporter_status": "exit_0_metadata_hashes_pending",
+      "exporter_status": "exit_0_hashes_reported",
       "nonclaims": [
         "no C5 pass",
         "no executed C5 metrics",
@@ -1534,7 +1535,10 @@
         "not 100k/1M Phase2 authority",
         "no Comet/API call",
         "no secrets sourced"
-      ]
+      ],
+      "decoder_manifest_sha256": "6700f3c2912bfdcb659b9e7de3cdb0831d58f3708a0f841c181ec446b3a83a5f",
+      "adapter_site_policy_sha256": "f38bd8109bbb77e9e94a5b4b34a238bc0ec0a39e7736870c97defe5aecc93357",
+      "export_report_sha256": "06fe8e91b5938ff3235cad5fa96e7b25d5b20fb3c4e456c249c84d53bf839d0f"
     },
     "phase34_runner_and_logits_package_20260701T100237Z": {
       "thread_id": "019f13da-d897-7ba2-8ed1-b959892f5ed4",
@@ -1545,19 +1549,23 @@
       "first_unresolved_technical_failure_after_valid_schema_paths": "full_decoder_logits_generation_not_implemented",
       "next_action": "Execution runs Termux command package to build/copy/verify C5-capable runner; Phase3/4 then patches c5_qa_inference.cpp::run_c5_qa_predict fail-closed branch after exported manifests exist."
     },
-    "status": "phone_termux_decoder_component_pack_export_complete_metadata_hashes_pending",
+    "status": "phone_termux_model_download_and_export_green_runner_build_pending",
     "model_safetensors_sha256": "43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651",
     "model_safetensors_size_bytes": 15992595884,
-    "first_missing_green_field_after_export": "phone_c5_runner_rebuild_or_copy_missing"
+    "first_missing_green_field_after_export": "phone_c5_runner_rebuild_or_copy_missing",
+    "decoder_manifest_sha256": "6700f3c2912bfdcb659b9e7de3cdb0831d58f3708a0f841c181ec446b3a83a5f",
+    "adapter_site_policy_sha256": "f38bd8109bbb77e9e94a5b4b34a238bc0ec0a39e7736870c97defe5aecc93357",
+    "export_report_sha256": "06fe8e91b5938ff3235cad5fa96e7b25d5b20fb3c4e456c249c84d53bf839d0f",
+    "first_missing_green_field_after_runner": "heldout_qa_jsonl_staging_or_c5_predict_probe_pending"
   },
-  "active_edge": "WaveB_C5_after_C1_phone_termux_full_decoder_component_pack_export_completed_metadata_pending",
+  "active_edge": "WaveB_C5_after_C1_phone_export_hashes_ready_runner_build_pending",
   "active_watchdog_state": {
     "artifact_waiting_on": [
-      "Execution returns metadata-only hashes and schema summary for decoder_manifest.json, adapter_site_policy.json, and export_report.json from the completed phone export.",
-      "Execution consumes the Phase3/4 runner command package to build/copy a C5-capable phone runner and verify C5 help flags.",
-      "Phase3/4/Engineering replace full_decoder_logits_generation_not_implemented with streamed/chunked full-decoder logits after valid exported manifests exist."
+      "Execution builds or copies a C5-capable phone runner and verifies --run-c5-qa-predict plus decoder-component help flags.",
+      "Execution stages the C5_after_C1 heldout QA JSONL into phone-accessible outside-git storage and reports metadata-only identity.",
+      "Execution runs a bounded C5 QA predict probe using the exported decoder component pack; if it reaches the known fail-closed branch, Phase3/4/Engineering replace full_decoder_logits_generation_not_implemented with streamed/chunked full-decoder logits."
     ],
-    "authorization_needed": "none for model-source acquisition or exporter execution; export metadata hashes and runner build are pending",
+    "authorization_needed": "none for model download/export; runner build/copy and heldout QA staging are pending under existing authority",
     "c5_after_c1_c5_qa_runtime_fail_closed_pathset": {
       "artifact_paths": [
         "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/include/polymath/gemma4/c5_qa_inference.h",
@@ -2403,11 +2411,11 @@
       "status": "c5_full_decoder_failure_artifacts_and_state_pending_custody",
       "user_action_required": false
     },
-    "current_gate": "WaveB_C5_after_C1_phone_termux_full_decoder_component_pack_export_completed_metadata_pending",
+    "current_gate": "WaveB_C5_after_C1_phone_export_hashes_ready_runner_build_pending",
     "custody_commit_latest": "bb8105a2bc91b6c9b0993603e14b49d0a5730f8d",
     "custody_status_latest": "c5_decoder_runtime_owner_state_committed_pushed",
     "dominant_failure_domain": "phase5_eval_failure",
-    "drift_deleted_or_pending": "Model-source authorization, Termux command-channel, phone model-download, and exporter-execution blockers are superseded by model SHA plus exporter exit 0. Pending drift hardening remains for export hash/schema publication, C5-capable phone runner deployment, and native logits implementation.",
+    "drift_deleted_or_pending": "Model-source authorization, Termux command-channel, phone model-download, and exporter-output blockers are superseded by model and export metadata hashes. Pending drift hardening remains for C5-capable phone runner deployment, heldout QA staging, and native full-decoder logits implementation.",
     "engineering_evaluator_implementation": {
       "artifact_paths_in_progress": [
         "polymath_ai/polar/c5_heldout_eval.py",
@@ -2514,7 +2522,7 @@
       "existing_surface_role": "run_c5_eval.py validates supplied metrics JSON; it does not compute metrics",
       "status": "c5_after_c1_real_evaluator_surface_missing"
     },
-    "first_missing_green_field": "phone_termux_decoder_component_pack_hash_report_pending",
+    "first_missing_green_field": "native_c5_qa_predict_runner_build_or_verification_pending",
     "first_unresolved_technical_failure_after_schema_paths": "full_decoder_logits_generation_not_implemented_after_valid_schema_paths",
     "first_unresolved_technical_failure_after_valid_schema_paths": "full_decoder_logits_generation_not_implemented_after_valid_schema_paths",
     "hardening_policy": {
@@ -2544,7 +2552,7 @@
       "training_material_steward": "complete for material identities",
       "ui_engineer": "not nudged until C5 evidence-backed status exists"
     },
-    "last_concrete_action": "Repo Custodian froze the phone-compatible exporter pathset at 090417c75b19573146e26c77e663ac605981fae3 and the central route mirror at 4356d537b48f8ecce1230be898dd8428ecb3858a. Execution restored a usable Termux SSH command channel, completed the phone-local pinned HF model download, verified size 15992595884 bytes, captured model SHA-256 43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651, ran the frozen stdlib exporter on phone with exit 0, created the component pack, observed empty exporter stderr, and restored SSH again after a timeout. Phase3/4 produced the runner rebuild/native logits command package SHA 90b0575ba56edf9cd4ec7031c24d32b7242c9af0d510201323a729f18abd9f47.",
+    "last_concrete_action": "Repo Custodian froze the phone-compatible exporter pathset at 090417c75b19573146e26c77e663ac605981fae3 and the export-complete central mirror at b7a1dbde480eac4571ece61cf4576f688297b3b8. Execution completed the phone-local pinned HF model download, verified size 15992595884 bytes and model SHA-256 43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651, ran the frozen stdlib exporter on phone with exit 0, and reported decoder_manifest.json SHA 6700f3c2912bfdcb659b9e7de3cdb0831d58f3708a0f841c181ec446b3a83a5f, adapter_site_policy.json SHA f38bd8109bbb77e9e94a5b4b34a238bc0ec0a39e7736870c97defe5aecc93357, and export_report.json SHA 06fe8e91b5938ff3235cad5fa96e7b25d5b20fb3c4e456c249c84d53bf839d0f. Execution also restored the Termux SSH channel again after a timeout and identified the next missing green field as the native C5 QA predict runner build/verification.",
     "lineage_drift_repair_status": {
       "commit": "ee74ae572322e05624deac6f6f8788c2c6e2f692",
       "proof_required": [
@@ -2560,7 +2568,7 @@
       ],
       "status": "source_repair_frozen_pending_execution_proof"
     },
-    "next_concrete_action": "Execution returns the completed export metadata-only hashes for decoder_manifest.json, adapter_site_policy.json, and export_report.json, then uses the Phase3/4 command package to build/copy a C5-capable runner and verify help flags. If the next producer probe reaches the known fail-closed branch, Phase3/4/Engineering patch the exact native logits/generation body rather than creating a new pathway.",
+    "next_concrete_action": "Execution uses the Phase3/4 Termux command package to build/copy a C5-capable gemma4_layer_runner, verifies --run-c5-qa-predict and decoder-component flags, stages the C5_after_C1 heldout QA JSONL metadata-only, then runs the smallest C5 QA predict probe. If the probe stops at full_decoder_logits_generation_not_implemented, Phase3/4/Engineering patch the exact native logits/generation body rather than creating a new pathway.",
     "nonclaims": [
       "development-cycle evidence only unless stronger gates pass",
       "no C5 pass",
@@ -2588,7 +2596,7 @@
       "no Comet/API call",
       "no secrets sourced"
     ],
-    "owner": "Execution Orchestrator owns export hash publication and C5 runner build/copy next; Phase3/4 owns the native logits boundary after exported manifests are consumed.",
+    "owner": "Execution Orchestrator owns C5-capable runner build/copy, heldout QA staging, and the next bounded predict probe; Phase3/4 owns the native logits implementation if the probe reaches the fail-closed branch.",
     "phase2_status_by_phase": {
       "C1": {
         "packets": 5180,
@@ -2798,7 +2806,7 @@
       "phase34": "raw PJP1, HTP raw output, OpenCL tensors, and adapters remain on device/Termux; repair must keep compact JSON only",
       "report_root_scan": "metadata-freeze report root had 179 tracked files and clean forbidden suffix scans; raw payloads not committed"
     },
-    "recursive_improvement_next_step": "After export hash publication and runner verification, run a bounded C5 QA predict probe; if it stops at the known fail-closed branch, patch the exact native logits/generation body and rerun the smallest real C5 metrics proof.",
+    "recursive_improvement_next_step": "Build/copy the runner and stage heldout QA first; then run a bounded C5 QA predict probe and, if it stops at the known fail-closed branch, patch the exact native logits/generation body and rerun the smallest real C5 metrics proof.",
     "repo_custody_state_freeze": {
       "branch": "origin/gemma4-megakernel-native-training",
       "commit": "7290fbec13c6a13e88710afddfe4af70637096f9",
@@ -2811,21 +2819,26 @@
     },
     "run_label": "c1_c4_waveB_rerun_20260630T230411Z",
     "run_root": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z",
-    "status_classification": "PENDING_ACTION_EXECUTION_EXPORT_HASH_REPORT_AND_RUNNER_BUILD",
+    "status_classification": "PENDING_ACTION_EXECUTION_C5_RUNNER_BUILD_AND_HELDOUT_QA_STAGING",
     "threads_nudged_this_tick": [
+      "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c runner build/heldout staging follow-up sent",
       "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050 central mirror freeze requested"
     ],
     "timestamp_utc": "2026-07-01T03:45:47Z",
     "updated_utc": "2026-07-01T04:05:47Z",
     "user_action_required": false,
-    "status": "phone_termux_decoder_component_pack_export_complete_metadata_hashes_pending",
+    "status": "phone_termux_model_download_and_export_green_runner_build_pending",
     "first_missing_green_field_after_custody": "phone_termux_model_safetensors_download_pending",
     "known_downstream_access_issue_after_custody": "termux_command_channel_missing",
     "model_safetensors_sha256": "43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651",
     "model_safetensors_size_bytes": 15992595884,
-    "first_missing_green_field_after_export": "phone_c5_runner_rebuild_or_copy_missing"
+    "first_missing_green_field_after_export": "phone_c5_runner_rebuild_or_copy_missing",
+    "decoder_manifest_sha256": "6700f3c2912bfdcb659b9e7de3cdb0831d58f3708a0f841c181ec446b3a83a5f",
+    "adapter_site_policy_sha256": "f38bd8109bbb77e9e94a5b4b34a238bc0ec0a39e7736870c97defe5aecc93357",
+    "export_report_sha256": "06fe8e91b5938ff3235cad5fa96e7b25d5b20fb3c4e456c249c84d53bf839d0f",
+    "first_missing_green_field_after_runner": "heldout_qa_jsonl_staging_or_c5_predict_probe_pending"
   },
-  "current_gate": "WaveB_C5_after_C1_phone_termux_full_decoder_component_pack_export_completed_metadata_pending",
+  "current_gate": "WaveB_C5_after_C1_phone_export_hashes_ready_runner_build_pending",
   "current_highest_valid_state": "C1-C4 Wave B Phase1->Phase2->Phase3->Phase4 development-cycle mechanics remain frozen as metadata evidence; C5_after_C1 is now waiting on exact outside-git model-source authorization or mount after Repo Custodian completed the metadata custody mirror at 9d1c171ea72cef391e2bbcf550ea3e0f84632f27.",
   "driver_tick_history": [
     {
@@ -3485,7 +3498,7 @@
       "user_action_required": false
     }
   ],
-  "governing_edge": "WaveB_C5_after_C1_phone_termux_full_decoder_component_pack_export_completed_metadata_pending",
+  "governing_edge": "WaveB_C5_after_C1_phone_export_hashes_ready_runner_build_pending",
   "governing_objective": {
     "nonclaims": [
       "diagnostics_are_not_100k_or_1M_authority_unless_specific_authority_gate_passes",
@@ -3976,11 +3989,11 @@
       ]
     },
     "stage0_code_commit_or_manifest": "ea2cf60ff4ceccf7e5d8b9ab67d26c13240b508d",
-    "current_gate": "WaveB_C5_after_C1_phone_termux_full_decoder_component_pack_export_completed_metadata_pending",
-    "status_classification": "PENDING_ACTION_EXECUTION_EXPORT_HASH_REPORT_AND_RUNNER_BUILD",
-    "first_missing_green_field": "phone_termux_decoder_component_pack_hash_report_pending",
+    "current_gate": "WaveB_C5_after_C1_phone_export_hashes_ready_runner_build_pending",
+    "status_classification": "PENDING_ACTION_EXECUTION_C5_RUNNER_BUILD_AND_HELDOUT_QA_STAGING",
+    "first_missing_green_field": "native_c5_qa_predict_runner_build_or_verification_pending",
     "phone_model_source_probe_report_sha256": "132e707f140221d11486efaa9d00acfe402743882c0291066172f5f41b63edfd",
-    "first_missing_green_field_after_custody": "phone_termux_decoder_component_pack_hash_report_pending",
+    "first_missing_green_field_after_custody": "native_c5_qa_predict_runner_build_or_verification_pending",
     "known_downstream_access_issue_after_custody": "termux_command_channel_missing",
     "engineering_phone_termux_route_report_sha256": "a5c93c1df54638c1b846602dde6e58143b4b33ae999d3a79b2223ed4c41d356c",
     "phone_exporter_sha256": "1f119fac8d654fdb3a8e8357c5de131190e8de04dc67f904c5e28143c6012143",
@@ -3991,7 +4004,10 @@
     "phase34_runner_native_logits_report_sha256": "90b0575ba56edf9cd4ec7031c24d32b7242c9af0d510201323a729f18abd9f47",
     "phone_model_safetensors_sha256": "43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651",
     "phone_model_safetensors_size_bytes": 15992595884,
-    "execution_exporter_status": "exit_0_metadata_hashes_pending"
+    "execution_exporter_status": "exit_0_hashes_reported",
+    "decoder_manifest_sha256": "6700f3c2912bfdcb659b9e7de3cdb0831d58f3708a0f841c181ec446b3a83a5f",
+    "adapter_site_policy_sha256": "f38bd8109bbb77e9e94a5b4b34a238bc0ec0a39e7736870c97defe5aecc93357",
+    "export_report_sha256": "06fe8e91b5938ff3235cad5fa96e7b25d5b20fb3c4e456c249c84d53bf839d0f"
   },
   "lane_status": {
     "engineering_orchestrator": {
@@ -4001,11 +4017,11 @@
         "tests/test_c5_full_decoder_exporter.py"
       ],
       "authorization_needed": false,
-      "first_missing_green_field": "phone_termux_decoder_component_pack_hash_report_pending",
+      "first_missing_green_field": "native_c5_qa_predict_runner_build_or_verification_pending",
       "first_missing_green_field_at_export_execution_until_model_source_is_available": "model_safetensors_missing",
       "first_unresolved_technical_failure_after_valid_schema_paths": "full_decoder_logits_generation_not_implemented_after_valid_schema_paths",
-      "last_update_utc": "2026-07-01T12:06:07Z",
-      "next_action": "Execution returns the completed export metadata-only hashes for decoder_manifest.json, adapter_site_policy.json, and export_report.json, then uses the Phase3/4 command package to build/copy a C5-capable runner and verify help flags. If the next producer probe reaches the known fail-closed branch, Phase3/4/Engineering patch the exact native logits/generation body rather than creating a new pathway.",
+      "last_update_utc": "2026-07-01T12:18:07Z",
+      "next_action": "Execution uses the Phase3/4 Termux command package to build/copy a C5-capable gemma4_layer_runner, verifies --run-c5-qa-predict and decoder-component flags, stages the C5_after_C1 heldout QA JSONL metadata-only, then runs the smallest C5 QA predict probe. If the probe stops at full_decoder_logits_generation_not_implemented, Phase3/4/Engineering patch the exact native logits/generation body rather than creating a new pathway.",
       "nonclaims": [
         "no C5 pass",
         "no executed C5 metrics",
@@ -4027,10 +4043,13 @@
         "phone_model_safetensors_sha256": "43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651",
         "phone_model_safetensors_size_bytes": 15992595884,
         "phone_exporter_exit_code": 0,
-        "export_metadata_hashes_status": "pending"
+        "export_metadata_hashes_status": "pending",
+        "decoder_manifest_sha256": "6700f3c2912bfdcb659b9e7de3cdb0831d58f3708a0f841c181ec446b3a83a5f",
+        "adapter_site_policy_sha256": "f38bd8109bbb77e9e94a5b4b34a238bc0ec0a39e7736870c97defe5aecc93357",
+        "export_report_sha256": "06fe8e91b5938ff3235cad5fa96e7b25d5b20fb3c4e456c249c84d53bf839d0f"
       },
-      "status": "phone_termux_decoder_component_pack_export_complete_metadata_hashes_pending",
-      "status_classification": "PENDING_ACTION_EXECUTION_EXPORT_HASH_REPORT_AND_RUNNER_BUILD",
+      "status": "phone_termux_model_download_and_export_green_runner_build_pending",
+      "status_classification": "PENDING_ACTION_EXECUTION_C5_RUNNER_BUILD_AND_HELDOUT_QA_STAGING",
       "thread_id": "019f138b-d229-7640-98b7-2f185d6beae0",
       "user_action_required": false,
       "verification_commands": [
@@ -4045,7 +4064,11 @@
         "Execution: phone-local model download completed with size 15992595884 bytes and SHA-256 43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651",
         "Execution: frozen stdlib exporter started on phone; exporter output hashes pending",
         "Execution: frozen stdlib exporter completed on phone with exit 0; stderr empty; component pack created",
-        "Execution: export metadata hashes for decoder_manifest.json, adapter_site_policy.json, export_report.json still pending"
+        "Execution: export metadata hashes for decoder_manifest.json, adapter_site_policy.json, export_report.json still pending",
+        "Execution: decoder_manifest.json SHA-256 6700f3c2912bfdcb659b9e7de3cdb0831d58f3708a0f841c181ec446b3a83a5f",
+        "Execution: adapter_site_policy.json SHA-256 f38bd8109bbb77e9e94a5b4b34a238bc0ec0a39e7736870c97defe5aecc93357",
+        "Execution: export_report.json SHA-256 06fe8e91b5938ff3235cad5fa96e7b25d5b20fb3c4e456c249c84d53bf839d0f",
+        "Execution: next missing runner build/copy plus heldout QA staging; no C5 prediction JSONL emitted yet"
       ],
       "first_missing_green_field_after_custody": "phone_termux_model_safetensors_download_pending"
     },
@@ -4057,9 +4080,9 @@
         "OUTSIDE_GIT_PHASE4_ADAPTER_PRE_PAYLOAD_PATH_REDACTED_SHA_ONLY"
       ],
       "authorization_needed": false,
-      "first_missing_green_field": "phone_termux_decoder_component_pack_hash_report_pending",
-      "last_update_utc": "2026-07-01T12:06:07Z",
-      "next_action": "Execution returns the completed export metadata-only hashes for decoder_manifest.json, adapter_site_policy.json, and export_report.json, then uses the Phase3/4 command package to build/copy a C5-capable runner and verify help flags. If the next producer probe reaches the known fail-closed branch, Phase3/4/Engineering patch the exact native logits/generation body rather than creating a new pathway.",
+      "first_missing_green_field": "native_c5_qa_predict_runner_build_or_verification_pending",
+      "last_update_utc": "2026-07-01T12:18:07Z",
+      "next_action": "Execution uses the Phase3/4 Termux command package to build/copy a C5-capable gemma4_layer_runner, verifies --run-c5-qa-predict and decoder-component flags, stages the C5_after_C1 heldout QA JSONL metadata-only, then runs the smallest C5 QA predict probe. If the probe stops at full_decoder_logits_generation_not_implemented, Phase3/4/Engineering patch the exact native logits/generation body rather than creating a new pathway.",
       "nonclaims": [
         "no C5 pass",
         "no executed C5 metrics",
@@ -4084,10 +4107,13 @@
         "phone_model_safetensors_sha256": "43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651",
         "phone_model_safetensors_size_bytes": 15992595884,
         "phone_exporter_exit_code": 0,
-        "export_metadata_hashes_status": "pending"
+        "export_metadata_hashes_status": "pending",
+        "decoder_manifest_sha256": "6700f3c2912bfdcb659b9e7de3cdb0831d58f3708a0f841c181ec446b3a83a5f",
+        "adapter_site_policy_sha256": "f38bd8109bbb77e9e94a5b4b34a238bc0ec0a39e7736870c97defe5aecc93357",
+        "export_report_sha256": "06fe8e91b5938ff3235cad5fa96e7b25d5b20fb3c4e456c249c84d53bf839d0f"
       },
-      "status": "phone_termux_decoder_component_pack_export_complete_metadata_hashes_pending",
-      "status_classification": "PENDING_ACTION_EXECUTION_EXPORT_HASH_REPORT_AND_RUNNER_BUILD",
+      "status": "phone_termux_model_download_and_export_green_runner_build_pending",
+      "status_classification": "PENDING_ACTION_EXECUTION_C5_RUNNER_BUILD_AND_HELDOUT_QA_STAGING",
       "thread_id": "019f138c-fb51-7c53-a41a-ab8eac950d9c",
       "user_action_required": false,
       "verification_commands": [
@@ -4097,7 +4123,11 @@
         "Execution: phone-local model download completed with size 15992595884 bytes and SHA-256 43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651",
         "Execution: frozen stdlib exporter started on phone; exporter output hashes pending",
         "Execution: frozen stdlib exporter completed on phone with exit 0; stderr empty; component pack created",
-        "Execution: export metadata hashes for decoder_manifest.json, adapter_site_policy.json, export_report.json still pending"
+        "Execution: export metadata hashes for decoder_manifest.json, adapter_site_policy.json, export_report.json still pending",
+        "Execution: decoder_manifest.json SHA-256 6700f3c2912bfdcb659b9e7de3cdb0831d58f3708a0f841c181ec446b3a83a5f",
+        "Execution: adapter_site_policy.json SHA-256 f38bd8109bbb77e9e94a5b4b34a238bc0ec0a39e7736870c97defe5aecc93357",
+        "Execution: export_report.json SHA-256 06fe8e91b5938ff3235cad5fa96e7b25d5b20fb3c4e456c249c84d53bf839d0f",
+        "Execution: next missing runner build/copy plus heldout QA staging; no C5 prediction JSONL emitted yet"
       ]
     },
     "phase34_engineer": {
@@ -4623,9 +4653,9 @@
   },
   "prd_watchdog": {
     "artifact_waiting_on": [
-      "Execution returns metadata-only hashes and schema summary for decoder_manifest.json, adapter_site_policy.json, and export_report.json from the completed phone export.",
-      "Execution consumes the Phase3/4 runner command package to build/copy a C5-capable phone runner and verify C5 help flags.",
-      "Phase3/4/Engineering replace full_decoder_logits_generation_not_implemented with streamed/chunked full-decoder logits after valid exported manifests exist."
+      "Execution builds or copies a C5-capable phone runner and verifies --run-c5-qa-predict plus decoder-component help flags.",
+      "Execution stages the C5_after_C1 heldout QA JSONL into phone-accessible outside-git storage and reports metadata-only identity.",
+      "Execution runs a bounded C5 QA predict probe using the exported decoder component pack; if it reaches the known fail-closed branch, Phase3/4/Engineering replace full_decoder_logits_generation_not_implemented with streamed/chunked full-decoder logits."
     ],
     "c5_after_c1_payload_paths_hash_probe": {
       "canonical_candidate_payload": {
@@ -4827,14 +4857,14 @@
       },
       "schema_version": "polymath_c5_qa_runtime_post_custody_v1"
     },
-    "current_gate": "WaveB_C5_after_C1_phone_termux_full_decoder_component_pack_export_completed_metadata_pending",
+    "current_gate": "WaveB_C5_after_C1_phone_export_hashes_ready_runner_build_pending",
     "dominant_failure_domain": "phase5_eval_failure",
-    "drift_deleted_or_pending": "Model-source authorization, Termux command-channel, phone model-download, and exporter-execution blockers are superseded by model SHA plus exporter exit 0. Pending drift hardening remains for export hash/schema publication, C5-capable phone runner deployment, and native logits implementation.",
-    "first_missing_green_field": "phone_termux_decoder_component_pack_hash_report_pending",
+    "drift_deleted_or_pending": "Model-source authorization, Termux command-channel, phone model-download, and exporter-output blockers are superseded by model and export metadata hashes. Pending drift hardening remains for C5-capable phone runner deployment, heldout QA staging, and native full-decoder logits implementation.",
+    "first_missing_green_field": "native_c5_qa_predict_runner_build_or_verification_pending",
     "first_missing_green_field_after_custody_until_model_source_available": "model_safetensors_missing",
     "first_unresolved_technical_failure_after_valid_schema_paths": "full_decoder_logits_generation_not_implemented_after_valid_schema_paths",
-    "last_concrete_action": "Repo Custodian froze the phone-compatible exporter pathset at 090417c75b19573146e26c77e663ac605981fae3 and the central route mirror at 4356d537b48f8ecce1230be898dd8428ecb3858a. Execution restored a usable Termux SSH command channel, completed the phone-local pinned HF model download, verified size 15992595884 bytes, captured model SHA-256 43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651, ran the frozen stdlib exporter on phone with exit 0, created the component pack, observed empty exporter stderr, and restored SSH again after a timeout. Phase3/4 produced the runner rebuild/native logits command package SHA 90b0575ba56edf9cd4ec7031c24d32b7242c9af0d510201323a729f18abd9f47.",
-    "next_concrete_action": "Execution returns the completed export metadata-only hashes for decoder_manifest.json, adapter_site_policy.json, and export_report.json, then uses the Phase3/4 command package to build/copy a C5-capable runner and verify help flags. If the next producer probe reaches the known fail-closed branch, Phase3/4/Engineering patch the exact native logits/generation body rather than creating a new pathway.",
+    "last_concrete_action": "Repo Custodian froze the phone-compatible exporter pathset at 090417c75b19573146e26c77e663ac605981fae3 and the export-complete central mirror at b7a1dbde480eac4571ece61cf4576f688297b3b8. Execution completed the phone-local pinned HF model download, verified size 15992595884 bytes and model SHA-256 43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651, ran the frozen stdlib exporter on phone with exit 0, and reported decoder_manifest.json SHA 6700f3c2912bfdcb659b9e7de3cdb0831d58f3708a0f841c181ec446b3a83a5f, adapter_site_policy.json SHA f38bd8109bbb77e9e94a5b4b34a238bc0ec0a39e7736870c97defe5aecc93357, and export_report.json SHA 06fe8e91b5938ff3235cad5fa96e7b25d5b20fb3c4e456c249c84d53bf839d0f. Execution also restored the Termux SSH channel again after a timeout and identified the next missing green field as the native C5 QA predict runner build/verification.",
+    "next_concrete_action": "Execution uses the Phase3/4 Termux command package to build/copy a C5-capable gemma4_layer_runner, verifies --run-c5-qa-predict and decoder-component flags, stages the C5_after_C1 heldout QA JSONL metadata-only, then runs the smallest C5 QA predict probe. If the probe stops at full_decoder_logits_generation_not_implemented, Phase3/4/Engineering patch the exact native logits/generation body rather than creating a new pathway.",
     "nonclaims_preserved": [
       "no C5 pass",
       "no executed C5 metrics",
@@ -4849,7 +4879,7 @@
       "no Comet/API call",
       "no secrets sourced"
     ],
-    "owner": "Execution Orchestrator owns export hash publication and C5 runner build/copy next; Phase3/4 owns the native logits boundary after exported manifests are consumed.",
+    "owner": "Execution Orchestrator owns C5-capable runner build/copy, heldout QA staging, and the next bounded predict probe; Phase3/4 owns the native logits implementation if the probe reaches the fail-closed branch.",
     "post_custody_c5_qa_runtime_status": {
       "branch": "origin/gemma4-megakernel-native-training",
       "custody_commit": "9f6a27f3640078d81a303445d7ab29c7ce3a2db8",
@@ -4873,19 +4903,24 @@
       },
       "schema_version": "polymath_c5_qa_runtime_post_custody_v1"
     },
-    "recursive_improvement_next_step": "After export hash publication and runner verification, run a bounded C5 QA predict probe; if it stops at the known fail-closed branch, patch the exact native logits/generation body and rerun the smallest real C5 metrics proof.",
-    "status_classification": "PENDING_ACTION_EXECUTION_EXPORT_HASH_REPORT_AND_RUNNER_BUILD",
+    "recursive_improvement_next_step": "Build/copy the runner and stage heldout QA first; then run a bounded C5 QA predict probe and, if it stops at the known fail-closed branch, patch the exact native logits/generation body and rerun the smallest real C5 metrics proof.",
+    "status_classification": "PENDING_ACTION_EXECUTION_C5_RUNNER_BUILD_AND_HELDOUT_QA_STAGING",
     "threads_nudged_this_tick": [
+      "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c runner build/heldout staging follow-up sent",
       "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050 central mirror freeze requested"
     ],
     "user_action_required": false,
-    "authorization_needed": "none for model-source acquisition or exporter execution; export metadata hashes and runner build are pending",
-    "status": "phone_termux_decoder_component_pack_export_complete_metadata_hashes_pending",
+    "authorization_needed": "none for model download/export; runner build/copy and heldout QA staging are pending under existing authority",
+    "status": "phone_termux_model_download_and_export_green_runner_build_pending",
     "first_missing_green_field_after_custody": "phone_termux_model_safetensors_download_pending",
     "known_downstream_access_issue_after_custody": "termux_command_channel_missing",
     "model_safetensors_sha256": "43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651",
     "model_safetensors_size_bytes": 15992595884,
-    "first_missing_green_field_after_export": "phone_c5_runner_rebuild_or_copy_missing"
+    "first_missing_green_field_after_export": "phone_c5_runner_rebuild_or_copy_missing",
+    "decoder_manifest_sha256": "6700f3c2912bfdcb659b9e7de3cdb0831d58f3708a0f841c181ec446b3a83a5f",
+    "adapter_site_policy_sha256": "f38bd8109bbb77e9e94a5b4b34a238bc0ec0a39e7736870c97defe5aecc93357",
+    "export_report_sha256": "06fe8e91b5938ff3235cad5fa96e7b25d5b20fb3c4e456c249c84d53bf839d0f",
+    "first_missing_green_field_after_runner": "heldout_qa_jsonl_staging_or_c5_predict_probe_pending"
   },
   "required_lane_update_protocol": {
     "block_name": "CENTRAL_STATE_UPDATE",
@@ -4903,23 +4938,24 @@
     ]
   },
   "schema_version": "polymath_executive_delivery_state_v1",
-  "status": "phone_termux_decoder_component_pack_export_complete_metadata_hashes_pending",
-  "status_classification": "PENDING_ACTION_EXECUTION_EXPORT_HASH_REPORT_AND_RUNNER_BUILD",
-  "updated_at": "2026-07-01T12:06:07Z",
-  "updated_at_utc": "2026-07-01T12:06:07Z",
+  "status": "phone_termux_model_download_and_export_green_runner_build_pending",
+  "status_classification": "PENDING_ACTION_EXECUTION_C5_RUNNER_BUILD_AND_HELDOUT_QA_STAGING",
+  "updated_at": "2026-07-01T12:18:07Z",
+  "updated_at_utc": "2026-07-01T12:18:07Z",
   "dominant_failure_domain": "phase5_eval_failure",
   "user_action_required": false,
-  "last_concrete_action": "Repo Custodian froze the phone-compatible exporter pathset at 090417c75b19573146e26c77e663ac605981fae3 and the central route mirror at 4356d537b48f8ecce1230be898dd8428ecb3858a. Execution restored a usable Termux SSH command channel, completed the phone-local pinned HF model download, verified size 15992595884 bytes, captured model SHA-256 43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651, ran the frozen stdlib exporter on phone with exit 0, created the component pack, observed empty exporter stderr, and restored SSH again after a timeout. Phase3/4 produced the runner rebuild/native logits command package SHA 90b0575ba56edf9cd4ec7031c24d32b7242c9af0d510201323a729f18abd9f47.",
-  "next_concrete_action": "Execution returns the completed export metadata-only hashes for decoder_manifest.json, adapter_site_policy.json, and export_report.json, then uses the Phase3/4 command package to build/copy a C5-capable runner and verify help flags. If the next producer probe reaches the known fail-closed branch, Phase3/4/Engineering patch the exact native logits/generation body rather than creating a new pathway.",
+  "last_concrete_action": "Repo Custodian froze the phone-compatible exporter pathset at 090417c75b19573146e26c77e663ac605981fae3 and the export-complete central mirror at b7a1dbde480eac4571ece61cf4576f688297b3b8. Execution completed the phone-local pinned HF model download, verified size 15992595884 bytes and model SHA-256 43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651, ran the frozen stdlib exporter on phone with exit 0, and reported decoder_manifest.json SHA 6700f3c2912bfdcb659b9e7de3cdb0831d58f3708a0f841c181ec446b3a83a5f, adapter_site_policy.json SHA f38bd8109bbb77e9e94a5b4b34a238bc0ec0a39e7736870c97defe5aecc93357, and export_report.json SHA 06fe8e91b5938ff3235cad5fa96e7b25d5b20fb3c4e456c249c84d53bf839d0f. Execution also restored the Termux SSH channel again after a timeout and identified the next missing green field as the native C5 QA predict runner build/verification.",
+  "next_concrete_action": "Execution uses the Phase3/4 Termux command package to build/copy a C5-capable gemma4_layer_runner, verifies --run-c5-qa-predict and decoder-component flags, stages the C5_after_C1 heldout QA JSONL metadata-only, then runs the smallest C5 QA predict probe. If the probe stops at full_decoder_logits_generation_not_implemented, Phase3/4/Engineering patch the exact native logits/generation body rather than creating a new pathway.",
   "artifact_waiting_on": [
-    "Execution returns metadata-only hashes and schema summary for decoder_manifest.json, adapter_site_policy.json, and export_report.json from the completed phone export.",
-    "Execution consumes the Phase3/4 runner command package to build/copy a C5-capable phone runner and verify C5 help flags.",
-    "Phase3/4/Engineering replace full_decoder_logits_generation_not_implemented with streamed/chunked full-decoder logits after valid exported manifests exist."
+    "Execution builds or copies a C5-capable phone runner and verifies --run-c5-qa-predict plus decoder-component help flags.",
+    "Execution stages the C5_after_C1 heldout QA JSONL into phone-accessible outside-git storage and reports metadata-only identity.",
+    "Execution runs a bounded C5 QA predict probe using the exported decoder component pack; if it reaches the known fail-closed branch, Phase3/4/Engineering replace full_decoder_logits_generation_not_implemented with streamed/chunked full-decoder logits."
   ],
-  "drift_deleted_or_pending": "Model-source authorization, Termux command-channel, phone model-download, and exporter-execution blockers are superseded by model SHA plus exporter exit 0. Pending drift hardening remains for export hash/schema publication, C5-capable phone runner deployment, and native logits implementation.",
-  "recursive_improvement_next_step": "After export hash publication and runner verification, run a bounded C5 QA predict probe; if it stops at the known fail-closed branch, patch the exact native logits/generation body and rerun the smallest real C5 metrics proof.",
-  "owner": "Execution Orchestrator owns export hash publication and C5 runner build/copy next; Phase3/4 owns the native logits boundary after exported manifests are consumed.",
+  "drift_deleted_or_pending": "Model-source authorization, Termux command-channel, phone model-download, and exporter-output blockers are superseded by model and export metadata hashes. Pending drift hardening remains for C5-capable phone runner deployment, heldout QA staging, and native full-decoder logits implementation.",
+  "recursive_improvement_next_step": "Build/copy the runner and stage heldout QA first; then run a bounded C5 QA predict probe and, if it stops at the known fail-closed branch, patch the exact native logits/generation body and rerun the smallest real C5 metrics proof.",
+  "owner": "Execution Orchestrator owns C5-capable runner build/copy, heldout QA staging, and the next bounded predict probe; Phase3/4 owns the native logits implementation if the probe reaches the fail-closed branch.",
   "threads_nudged_this_tick": [
+    "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c runner build/heldout staging follow-up sent",
     "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050 central mirror freeze requested"
   ],
   "raw_phone_path_hardening_20260701T094236Z": {
@@ -4928,11 +4964,15 @@
     "reason": "Prevent stale phone filesystem strings from being treated as C5 runtime evidence or raw payload routes.",
     "preserved": "artifact identities, hashes, lane status, nonclaims, and outside-git source requirements"
   },
-  "first_missing_green_field": "phone_termux_decoder_component_pack_hash_report_pending",
-  "first_missing_green_field_after_download": "phone_termux_decoder_component_pack_hash_report_pending",
-  "known_downstream_access_issue_after_download": "phone_c5_runner_rebuild_or_copy_missing",
-  "authorization_needed": "none for model-source acquisition or exporter execution; export metadata hashes and runner build are pending",
+  "first_missing_green_field": "native_c5_qa_predict_runner_build_or_verification_pending",
+  "first_missing_green_field_after_download": "native_c5_qa_predict_runner_build_or_verification_pending",
+  "known_downstream_access_issue_after_download": "heldout_qa_jsonl_staging_missing_and_native_logits_fail_closed_after_runner",
+  "authorization_needed": "none for model download/export; runner build/copy and heldout QA staging are pending under existing authority",
   "model_safetensors_sha256": "43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651",
   "model_safetensors_size_bytes": 15992595884,
-  "first_missing_green_field_after_export": "phone_c5_runner_rebuild_or_copy_missing"
+  "first_missing_green_field_after_export": "native_c5_qa_predict_runner_build_or_verification_pending",
+  "decoder_manifest_sha256": "6700f3c2912bfdcb659b9e7de3cdb0831d58f3708a0f841c181ec446b3a83a5f",
+  "adapter_site_policy_sha256": "f38bd8109bbb77e9e94a5b4b34a238bc0ec0a39e7736870c97defe5aecc93357",
+  "export_report_sha256": "06fe8e91b5938ff3235cad5fa96e7b25d5b20fb3c4e456c249c84d53bf839d0f",
+  "first_missing_green_field_after_runner": "heldout_qa_jsonl_staging_or_c5_predict_probe_pending"
 }
