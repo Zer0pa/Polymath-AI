@@ -1,14 +1,14 @@
 # Executive Delivery State
 
-Updated UTC: `2026-07-01T04:26:17Z`
+Updated UTC: `2026-07-01T04:36:17Z`
 
 ## Current Gate
 
-`WaveB_C5_after_C1_native_full_decoder_consumer_pathset_pending_custody`
+`WaveB_C5_after_C1_model_source_export_pending`
 
-Status classification: `PENDING_ACTION_REPO_CUSTODY_PHASE34_NATIVE_CONSUMER_PATHSET_THEN_MODEL_SOURCE_EXPORT`
+Status classification: `PENDING_ACTION_ENGINEERING_MODEL_SOURCE_EXPORT_ROUTE`
 
-Owner: `Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050` owns the Phase3/4 native consumer pathset/state freeze. Engineering and Execution own model-source export and real C5 prediction payloads after custody.
+Owner: `Engineering Orchestrator 019f138b-d229-7640-98b7-2f185d6beae0` owns model-source resolution and the frozen exporter run path. Execution owns prediction/eval only after `decoder_manifest.json` and `adapter_site_policy.json` exist outside git.
 
 User action required: `false`
 
@@ -16,46 +16,40 @@ Dominant failure domain: `phase5_eval_failure`
 
 ## Artifact Waiting On
 
-- Repo Custodian freeze of the Phase3/4 native full-decoder consumer source/test/report pathset plus refreshed executive state mirror.
-- Outside-git model source for actual export: restored or mounted `/workspace/models/gemma4_e4b/snapshot/model.safetensors`, or separately authorized bounded HF read/export.
-- Outside-git decoder manifest, adapter-site policy, LM-head/unembedding proof, prediction JSONL, finite `candidate_train_loss`, and `polymath_c5_executed_metrics_v1` after real runtime execution.
+- Outside-git full Gemma4 E4B model source: restored or mounted `/workspace/models/gemma4_e4b/snapshot/model.safetensors`, or separately authorized bounded HF read/export for `google/gemma-4-E4B` revision `7aa32e6889efd6300124851b164f8b364314c3d8`.
+- Frozen exporter run outside git to produce `decoder_manifest.json` and `adapter_site_policy.json`.
+- Native replacement of `full_decoder_logits_generation_not_implemented` with streamed/chunked logits generation plus teacher-forced answer loss.
+- Outside-git prediction JSONL, finite `candidate_train_loss`, and `polymath_c5_executed_metrics_v1` after real runtime execution.
 
 ## Last Concrete Action
 
-Repo Custodian froze and pushed the full-decoder exporter route at `f4791ae09b31b738ef2642cd58b9b1b4097d36c2`.
+Repo Custodian froze and pushed the Phase3/4 native full-decoder consumer pathset at `d375265006b809f34314de0c8c59962ec40053cf`.
 
-Phase3/4 produced the native full-decoder consumer pathset report `c5_after_c1_native_full_decoder_consumer_pathset_20260701T_phase34.json` SHA `3073f17d529ee432a2088eea8e3c1fc79f1ee58a140d40059d1ca768dddce942`.
+Meta bounded local search found no `model.safetensors`, safetensors shard, `decoder_manifest.json`, or `adapter_site_policy.json` under `/Users/Zer0pa/Polymat AI`, `/tmp`, or `/Users/prinivenpillay/.cache/huggingface`.
 
-Native consumer source/test/report pathset:
-- `include/polymath/gemma4/c5_qa_inference.h` SHA `aeaa7b1f14b09aa686f04e833bc3fa7812858a794dfed3210719c64e833c2fb1`
-- `src/backends/c5_qa_inference.cpp` SHA `aaa899673cd09616557e5977558a5633af2366fff72479ea80d5d7b5ae54d7e4`
-- `src/runner/main.cpp` SHA `01b60b73fb21146474b3838f30a9ecaef163504c415aa3a50e4de949cf6d934e`
-- `scripts/host/run_c5_phase34_qa_inference_producer.py` SHA `8476ecfa9ee8b5aa12822a1222245aff18e4e9d4536a775957960e9d38f4bd20`
-- `tests/test_c5_phase34_qa_inference_producer.py` SHA `7d89d55afd5b8dde1a2cc29e0544af67bc3e59e8a14148dd0adf583529c1c988`
-
-Exporter custody pathset is frozen at `f4791ae09b31b738ef2642cd58b9b1b4097d36c2`; after custody the first model-source field is `model_safetensors_missing`.
+Exporter custody pathset is frozen at `f4791ae09b31b738ef2642cd58b9b1b4097d36c2`; native consumer custody pathset is frozen at `d375265006b809f34314de0c8c59962ec40053cf`.
 
 ## First Missing Green Field
 
-Before custody: `repo_custody_freeze_of_native_full_decoder_consumer_pathset`
+Current: `model_safetensors_missing`
 
-After native consumer custody until model source is available: `model_safetensors_missing`
+After model source and exporter run: `decoder_manifest.json` plus `adapter_site_policy.json` identities required outside git.
 
 After valid schema paths: `full_decoder_logits_generation_not_implemented_after_valid_schema_paths`
 
 ## Drift Deletion / Hardening
 
-The exporter-route custody deleted the missing-model narrative drift by freezing a fail-closed model exporter. The exporter rejects absent model snapshots and refuses repo-contained output. It does not emit a real decoder manifest, logits, prediction JSONL, loss, confidence, train loss, or metrics without a real outside-git model source.
+Exporter and native consumer custody are complete. The exporter rejects absent model snapshots and refuses repo-contained output. The native consumer rejects fake component packs and still fails closed at the real unresolved logits branch.
 
-Pending hardening: freeze the Phase3/4 component-pack consumer pathset. Older nested state references remain non-authoritative until refreshed after Custodian returns.
+Pending hardening: do not allow metadata-only schemas, bridge MSE, or placeholder manifests to become C5 runtime evidence. Real model-source export is still pending.
 
 ## Next Concrete Action
 
-Repo Custodian freezes exactly the Phase3/4 native consumer source/test/report pathset plus these central-state mirrors. After custody and real model source availability, run the exporter outside git, then route native/Execution for real prediction JSONL and C5 metrics.
+Engineering verifies the frozen exporter/native commits, performs a bounded model-source search, runs `export_c5_full_decoder_component_pack.py` against a real outside-git `model.safetensors` if present, or returns an exact `model_safetensors_missing` authorization artifact. Execution remains parked until `decoder_manifest.json` and `adapter_site_policy.json` exist outside git.
 
 ## Threads Nudged This Tick
 
-- Repo Custodian `019f1ac2-0f0f-7721-bf46-ad402dbd9050` for exact Phase3/4 native consumer pathset/state freeze.
+- Engineering Orchestrator `019f138b-d229-7640-98b7-2f185d6beae0` for model-source/export route.
 
 ## Nonclaims Preserved
 
