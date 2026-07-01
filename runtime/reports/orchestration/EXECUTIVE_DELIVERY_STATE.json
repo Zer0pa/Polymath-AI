@@ -1,17 +1,18 @@
 {
-  "active_bottleneck": "opencl_configured_library_load_repair_custody_pending",
-  "active_edge": "WaveB_C5_after_C1_opencl_configured_library_load_repair_custody_pending_after_phase34_pathset",
+  "active_bottleneck": "opencl_linker_namespace_or_permission_repair_pending",
+  "active_edge": "WaveB_C5_after_C1_vendor_opencl_linker_namespace_repair_pending_after_dlopen_detail_probe",
   "active_watchdog_state": {
-    "active_bottleneck": "opencl_configured_library_load_repair_custody_pending",
-    "active_edge": "WaveB_C5_after_C1_opencl_configured_library_load_repair_custody_pending_after_phase34_pathset",
+    "active_bottleneck": "opencl_linker_namespace_or_permission_repair_pending",
+    "active_edge": "WaveB_C5_after_C1_vendor_opencl_linker_namespace_repair_pending_after_dlopen_detail_probe",
     "adapter_site_policy_sha256": "f38bd8109bbb77e9e94a5b4b34a238bc0ec0a39e7736870c97defe5aecc93357",
     "additional_missing_runtime_field_after_contract_patch": "decoder_manifest_tensor_role_inventory_missing",
     "artifact_waiting_on": [
-      "Repo Custodian freezes the Phase3/4 configured vendor OpenCL library load repair pathset plus this central mirror; exact repair pathset is runtime/reports/orchestration/c5_after_c1_opencl_configured_library_load_repair_20260701T_phase34.json, integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/opencl_layer_runner.cpp, and tests/test_c5_native_runtime_contract.py.",
-      "Repair report SHA cd2931e786fc2c66b7ee0babdb25da0ec3c2dbb17c97debe215841fd1da0d13b; opencl_layer_runner.cpp SHA 67ef50fcf155cede9e7fa4c30a44022b52361073d4ff3c4e8032d5abfcf27b1b; tests/test_c5_native_runtime_contract.py SHA 6a49ac7ad1a0af51203fc5e86eecb5ca4dc84209b5c0e5cf7d503cc01ce565ed.",
-      "Phase3/4 verification passed: CMake runner build, focused native runtime contract 14 passed, broader C5 suite 49 passed, ctest 4/4, git diff --check, JSON validation, strict raw-suffix scan, and credential-pattern scan.",
-      "After custody, Execution rebuilds/copies a repaired phone runner and reruns exactly one forced vendor OpenCL C5_after_C1 probe with --opencl-library /vendor/lib64/libOpenCL.so.",
-      "Do not reroute Execution before the repair pathset is frozen by Repo Custodian."
+      "Phase3/4 must repair/freeze a bounded Android/Termux OpenCL loader route that avoids the Termux/default linker namespace restriction for the existing --run-c5-qa-predict/OpenCL path, or return one explicit next loader probe command or precise source/runtime blocker.",
+      "Execution proof root: runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_vendor_opencl_dlopen_detail_20260701T180904Z.",
+      "Execution consumed custody commit af8fc62cc54926d0df838270c388f303aae0d9ae and rebuilt runner /data/data/com.termux/files/home/polymath_c5/C5_after_C1/bin/gemma4_layer_runner_c5_opencl_dlopen_detail with SHA a2378e109c811ae2fbc6219a7fd39b1d2141f5a6033cbfce76e914214e5d2a5c and 529720 bytes.",
+      "Forced probe configured --opencl-library /vendor/lib64/libOpenCL.so, exited 13 after 100s, wrote no prediction JSONL, and produced dlerror_category=linker_namespace_or_permission with redacted detail and dlerror_redacted_sha256 4c6bcb2f08feefeea9a3b043cce1d289a9c3f6ba8a1f6f06d6a80c8171c6cbf4.",
+      "Metadata evidence hashes: stdout 5f60271cf0f3d20708fdd88a6ed020ab8ab0844dcb5094a54bf370a32706fb5e; stderr 153ae145a59c2dd1c073551daf1c038442e9c00a4b108f187b56f57e52671e19; meminfo_before 308c10e1195186441fe2f85e8c07eb848124aa32564ec3e8d07520ceecc849f4; meminfo_after 7adcd7642e31a8c8b70f0c740b15d56718d97217c28919406ad563a32a6a5c4d.",
+      "Do not route Execution again until Phase3/4 returns a custody-ready repair pathset or a single bounded next probe command. Do not create a parallel evaluator or bypass C5/OpenCL parity."
     ],
     "authorization_needed": false,
     "c5_after_c1_bounded_opencl_probe_command_identity_repair_20260701T171907Z": {
@@ -1470,7 +1471,7 @@
       "status": "c5_remaining_eval_split_identity_matrix_ready"
     },
     "candidate_adapter_sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f",
-    "central_mirror_local_update_status": "updated_after_forced_vendor_opencl_probe_result_pending_repo_custodian_freeze",
+    "central_mirror_local_update_status": "updated_after_opencl_linker_namespace_probe_pending_repo_custodian_freeze",
     "central_state_update_pathset_for_custodian": {
       "artifact_paths": [
         "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json",
@@ -1485,13 +1486,13 @@
       "user_action_required": false
     },
     "central_state_update_pending_custody": true,
-    "current_gate": "WaveB_C5_after_C1_opencl_configured_library_load_repair_custody_pending_after_phase34_pathset",
+    "current_gate": "WaveB_C5_after_C1_vendor_opencl_linker_namespace_repair_pending_after_dlopen_detail_probe",
     "current_highest_valid_state": "C1-C4 Wave B mechanics, phone-local model/exporter evidence, C5-capable runner build, heldout QA staging, native C5 probe, tokenizer/tensor-loader custody, PLE contract/decoder math custody, PLE derivation/layer-0 normalization custody, CPU single-layer attention/MLP custody, OpenCL parity dispatch custody, phone OpenCL probe failure evidence custody, and per_layer_input_runtime repair custody are development-cycle metadata/code evidence only. No C5 pass, prediction JSONL, or executed metrics exist. The active edge is Execution rerunning the phone exporter and bounded C5_after_C1 probe after repair custody.",
     "custody_commit_latest": "05bb56437b83138547301e69af14ab0fce7d4b1a",
     "custody_status_latest": "c5_opencl_parity_dispatch_committed_pushed",
     "decoder_manifest_sha256": "52fcb53666bb4b06d0118cb825b983afc54624a630f667bbfa5af278640e28f8",
     "dominant_failure_domain": "phase5_eval_failure",
-    "drift_deleted_or_pending": "Drift hardened: the previous opaque opencl_library_configured_load_failed field is superseded by a custody-ready diagnostic repair pathset that preserves raw boundaries and redacts configured paths. Prior Execution-pending and clGetPlatformIDs -1001 edges remain superseded.",
+    "drift_deleted_or_pending": "Drift hardened: the stale Repo-Custodian custody-pending edge is superseded by commit af8fc62 and the post-custody Execution probe. The previous opaque opencl_library_configured_load_failed field is now concrete linker_namespace_or_permission evidence with redacted dlerror detail. Prior clGetPlatformIDs -1001 and pre-diagnostic dlopen states remain superseded.",
     "engineering_evaluator_implementation": {
       "artifact_paths_in_progress": [
         "polymath_ai/polar/c5_heldout_eval.py",
@@ -1608,7 +1609,7 @@
       "next_owner": "execution_orchestrator",
       "status": "committed_pushed"
     },
-    "first_missing_green_field": "opencl_configured_library_load_repair_custody_commit_missing",
+    "first_missing_green_field": "c5_full_decoder_opencl_parity_runtime_unavailable:opencl_single_token_layer_runtime_unavailable:opencl_library_configured_load_failed:dlerror_category=linker_namespace_or_permission",
     "first_missing_green_field_after_contract_patch": "decoder_manifest_architecture_config_missing",
     "first_missing_green_field_after_custody": "PENDING_ACTION_EXECUTION_EXPORTER_RERUN_AND_BOUNDED_PHONE_PROBE",
     "first_missing_green_field_after_export": "phone_c5_runner_rebuild_or_copy_missing",
@@ -1618,7 +1619,7 @@
     "first_unresolved_technical_failure_after_schema_complete_export": "c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land",
     "first_unresolved_technical_failure_after_schema_paths": "full_decoder_logits_generation_not_implemented_after_valid_schema_paths",
     "first_unresolved_technical_failure_after_valid_schema_paths": "c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land",
-    "governing_edge": "WaveB_C5_after_C1_configured_vendor_opencl_library_load_repair_pending_after_forced_probe",
+    "governing_edge": "WaveB_C5_after_C1_vendor_opencl_linker_namespace_repair_pending_after_dlopen_detail_probe",
     "hardening_policy": {
       "deleted_or_repaired_drift": [
         "forced_non_packaged_child_exec_default_for_phase1",
@@ -1648,7 +1649,7 @@
       "repo_custodian": "polled complete at e1b7aa4976a5b45222b3c490a89b874a3191a9fd for prior central mirror; new two-file mirror requires custody after this update",
       "ui_engineer": "not nudged until evidence-backed C5 status surfaces exist"
     },
-    "last_concrete_action": "Phase3/4 returned opencl_configured_library_load_repair_pathset_ready_for_custodian. The repair keeps the existing --run-c5-qa-predict/OpenCL path, preserves configured path redaction, and changes opaque configured dlopen failures into bounded dlerror_category, dlerror_redacted_sha256, and redacted dlerror_detail evidence. Repo Custodian also froze the prior forced vendor probe result central mirror at 856e116caf67a4891e3d72fe3a79949d0289b1ff.",
+    "last_concrete_action": "Repo Custodian froze the configured OpenCL library load diagnostics repair at af8fc62cc54926d0df838270c388f303aae0d9ae. Execution consumed it, rebuilt the repaired phone runner with SHA a2378e109c811ae2fbc6219a7fd39b1d2141f5a6033cbfce76e914214e5d2a5c, and ran exactly one forced /vendor/lib64/libOpenCL.so C5_after_C1 probe. The probe exited 13 after 100s, configured the CLI OpenCL path, wrote no prediction JSONL, and exposed dlerror_category=linker_namespace_or_permission with redacted detail. Raw-boundary scan was clean.",
     "lineage_drift_repair_status": {
       "commit": "ee74ae572322e05624deac6f6f8788c2c6e2f692",
       "proof_required": [
@@ -1822,14 +1823,14 @@
       ]
     },
     "native_logits_contract_patch_custody_commit": "2151dbada9012a5f54806cf689e806001180521f",
-    "native_probe_elapsed_seconds": 98,
+    "native_probe_elapsed_seconds": 100,
     "native_probe_exit_code": 13,
-    "native_probe_report_path": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_vendor_opencl_20260701T173345Z",
+    "native_probe_report_path": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_vendor_opencl_dlopen_detail_20260701T180904Z",
     "native_tokenizer_tensor_loader_prereq_central_mirror_commit": "59567735db38a4680c60a7f9c0182d90d7ffb38e",
     "native_tokenizer_tensor_loader_prereq_custody_commit": "4472e3dee86d88d83031eecfc94b91008e5215e0",
     "native_tokenizer_tensor_loader_prereq_report_sha256": "1e4a087354d8a917ec9fba7747a5e2410d9fb01f36e991c902e00adf8764e422",
     "native_tokenizer_tensor_loader_prereq_status": "native_full_decoder_prereq_pathset_ready_for_custodian",
-    "next_concrete_action": "Repo Custodian must verify hashes, run focused local checks, stage only the three repair files plus EXECUTIVE_DELIVERY_STATE.json and EXECUTIVE_DELIVERY_STATE.md, commit/push the custody freeze, and return opencl_configured_library_load_repair_committed_pushed or a precise blocker. Execution resumes only after that freeze.",
+    "next_concrete_action": "Phase3/4 must repair the existing Android/Termux OpenCL loader route so C5/OpenCL can load a usable OpenCL runtime outside the default namespace restriction, or return a single explicit next probe command or precise source/runtime blocker. If it returns a pathset, Engineering updates central state and Repo Custodian freezes it before Execution reruns one bounded forced-vendor probe.",
     "nonclaims": [
       "no C5 pass",
       "no executed C5 metrics",
@@ -1850,7 +1851,7 @@
       "no 100k/1M authority",
       "no Comet-backed accepted run"
     ],
-    "owner": "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050 owns the five-file custody freeze for the Phase3/4 configured OpenCL library load repair plus central mirror. Execution remains parked until this repair is frozen.",
+    "owner": "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 owns the bounded Android/Termux OpenCL loader route repair after Execution proved the configured vendor library fails with linker_namespace_or_permission. Execution is parked after the proof.",
     "owner_thread": "019f13da-d897-7ba2-8ed1-b959892f5ed4",
     "phase2_status_by_phase": {
       "C1": {
@@ -2064,14 +2065,14 @@
       },
       "schema_version": "polymath_c5_qa_runtime_post_custody_v1"
     },
-    "probe_stderr_sha256": "1f2e0b2bba5aeaa398c3f13fd8c6cbc1722c7dab98658f756adab82a64aef134",
-    "probe_stdout_metadata_sha256": "2670839669b0b91ca4a042f6ba9921f75987ecf77c962866935c754445370de2",
+    "probe_stderr_sha256": "153ae145a59c2dd1c073551daf1c038442e9c00a4b108f187b56f57e52671e19",
+    "probe_stdout_metadata_sha256": "5f60271cf0f3d20708fdd88a6ed020ab8ab0844dcb5094a54bf370a32706fb5e",
     "raw_payload_boundary": {
       "phase2": "raw PJP1 remains under Termux home outside repo; repo stores compact metadata only",
       "phase34": "raw PJP1, HTP raw output, OpenCL tensors, and adapters remain on device/Termux; repair must keep compact JSON only",
       "report_root_scan": "metadata-freeze report root had 179 tracked files and clean forbidden suffix scans; raw payloads not committed"
     },
-    "recursive_improvement_next_step": "Freeze the configured-library dlopen diagnostic repair through Repo Custodian, then run one bounded forced vendor probe to expose dlopen detail or advance past OpenCL library loading.",
+    "recursive_improvement_next_step": "Use the concrete linker namespace proof to implement or select the smallest Android/Termux OpenCL loader route; freeze the source/test/report pathset through Custodian; then Execution reruns exactly one bounded forced vendor probe. If the same namespace field repeats after repair, keep research bounded to Android linker namespace/OpenCL ICD loading mechanics and the existing C5/OpenCL path.",
     "repo_custodian_per_layer_input_runtime_repair_commit": "58872fdc3dd7ff6efb73321252d58f3447eb0e2b",
     "repo_custodian_post_phone_probe_central_mirror_commit": "5802ea1e25222c068dd3fcb5050c91f20f72357b",
     "repo_custody_state_freeze": {
@@ -2084,33 +2085,62 @@
       ],
       "status": "executive_state_c5_inference_payload_edge_committed_pushed"
     },
-    "research_escalation": "bounded_sprint_required: configured vendor OpenCL library dlopen failed after forced path proof; boundary is existing OpenCL loader and c5_full_decoder_runtime path",
+    "research_escalation": "bounded_sprint_required: configured /vendor/lib64/libOpenCL.so cannot be loaded from the Termux/default linker namespace; boundary is the existing OpenCL loader and run_c5_full_decoder_runtime path.",
     "run_label": "c1_c4_waveB_rerun_20260630T230411Z",
     "run_root": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z",
-    "runner_sha256": "6bbad7d28dc3c4716444cd1c9e55448087755e2dcd1c03eb2a4bab4d051df363",
-    "runner_size_bytes": 522560,
-    "status": "PENDING_ACTION_PHASE34_REPAIR_CONFIGURED_VENDOR_OPENCL_LIBRARY_LOADING",
-    "status_classification": "PENDING_ACTION_REPO_CUSTODIAN_OPENCL_CONFIGURED_LIBRARY_LOAD_REPAIR_FREEZE",
+    "runner_sha256": "a2378e109c811ae2fbc6219a7fd39b1d2141f5a6033cbfce76e914214e5d2a5c",
+    "runner_size_bytes": 529720,
+    "status": "PENDING_ACTION_PHASE34_REPAIR_ANDROID_TERMUX_OPENCL_LINKER_NAMESPACE_LOADER_ROUTE",
+    "status_classification": "PENDING_ACTION_PHASE34_REPAIR_ANDROID_TERMUX_OPENCL_LINKER_NAMESPACE_LOADER_ROUTE",
     "threads_nudged_this_tick": [
-      "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4: routed configured vendor OpenCL library load repair or bounded dlopen diagnostic request.",
-      "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: routed two-file central mirror freeze for the forced vendor probe result state.",
-      "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: polled complete forced vendor proof; parked until repair/diagnostic is frozen or supplied.",
+      "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: will be routed the two-file central mirror freeze for the post-custody linker-namespace probe state.",
+      "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4: will be routed the concrete linker_namespace_or_permission repair/probe request.",
+      "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: polled complete proof; parked until repair or one bounded next probe is frozen/supplied.",
       "Training Material Steward, Pipeline Integrator, UI Engineer, Engineering Orchestrator: polled/not current owner; no nudge."
     ],
-    "timestamp_utc": "2026-07-01T17:39:37Z",
-    "updated_at": "2026-07-01T17:29:07Z",
-    "updated_at_utc": "2026-07-01T17:29:07Z",
-    "updated_utc": "2026-07-01T18:00:07Z",
-    "user_action_required": false
+    "timestamp_utc": "2026-07-01T18:10:07Z",
+    "updated_at": "2026-07-01T18:10:07Z",
+    "updated_at_utc": "2026-07-01T18:10:07Z",
+    "updated_utc": "2026-07-01T18:10:07Z",
+    "user_action_required": false,
+    "c5_after_c1_forced_vendor_opencl_dlopen_detail_probe_result_20260701T180904Z": {
+      "status": "forced_vendor_opencl_probe_result_linker_namespace_or_permission",
+      "classification": "resource/runtime_availability_android_linker_namespace",
+      "consumed_repair_commit": "af8fc62cc54926d0df838270c388f303aae0d9ae",
+      "consumed_repair_report_sha256": "cd2931e786fc2c66b7ee0babdb25da0ec3c2dbb17c97debe215841fd1da0d13b",
+      "runner_path": "/data/data/com.termux/files/home/polymath_c5/C5_after_C1/bin/gemma4_layer_runner_c5_opencl_dlopen_detail",
+      "runner_sha256": "a2378e109c811ae2fbc6219a7fd39b1d2141f5a6033cbfce76e914214e5d2a5c",
+      "runner_size_bytes": 529720,
+      "command_included_opencl_library": true,
+      "configured_opencl_library_path_sha256": "59a8850fb37433061fd59e105ee6af8547f7149e8711d42d2cb37f70e27cf5c2",
+      "opencl_library_cli_path_configured": true,
+      "exit_code": 13,
+      "elapsed_seconds": 100,
+      "prediction_jsonl_written": false,
+      "first_missing_green_field": "c5_full_decoder_opencl_parity_runtime_unavailable:opencl_single_token_layer_runtime_unavailable:opencl_library_configured_load_failed:dlerror_category=linker_namespace_or_permission:dlerror_redacted_sha256=4c6bcb2f08feefeea9a3b043cce1d289a9c3f6ba8a1f6f06d6a80c8171c6cbf4",
+      "dlerror_category": "linker_namespace_or_permission",
+      "dlerror_redacted_sha256": "4c6bcb2f08feefeea9a3b043cce1d289a9c3f6ba8a1f6f06d6a80c8171c6cbf4",
+      "dlerror_detail_redacted": "dlopen failed: library \"<configured_opencl_library>\" needed or dlopened by \"<absolute_path>\" is not accessible for the namespace \"(default)\"",
+      "report_root": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_vendor_opencl_dlopen_detail_20260701T180904Z",
+      "candidate_probe_stdout_sha256": "5f60271cf0f3d20708fdd88a6ed020ab8ab0844dcb5094a54bf370a32706fb5e",
+      "candidate_probe_stderr_sha256": "153ae145a59c2dd1c073551daf1c038442e9c00a4b108f187b56f57e52671e19",
+      "meminfo_before_sha256": "308c10e1195186441fe2f85e8c07eb848124aa32564ec3e8d07520ceecc849f4",
+      "meminfo_after_sha256": "7adcd7642e31a8c8b70f0c740b15d56718d97217c28919406ad563a32a6a5c4d",
+      "raw_suffix_scan": "clean",
+      "research_escalation": "bounded_sprint_required: configured /vendor/lib64/libOpenCL.so cannot be loaded from the Termux/default linker namespace; boundary is the existing OpenCL loader and run_c5_full_decoder_runtime path.",
+      "next_owner": "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 plus Engineering Orchestrator oversight",
+      "next_action": "Repair/freeze a bounded Android/Termux OpenCL loader route that avoids default namespace restriction, or provide a single explicit probe for the next loader mechanism."
+    }
   },
   "adapter_site_policy_sha256": "f38bd8109bbb77e9e94a5b4b34a238bc0ec0a39e7736870c97defe5aecc93357",
   "additional_missing_runtime_field_after_contract_patch": "decoder_manifest_tensor_role_inventory_missing",
   "artifact_waiting_on": [
-    "Repo Custodian freezes the Phase3/4 configured vendor OpenCL library load repair pathset plus this central mirror; exact repair pathset is runtime/reports/orchestration/c5_after_c1_opencl_configured_library_load_repair_20260701T_phase34.json, integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/opencl_layer_runner.cpp, and tests/test_c5_native_runtime_contract.py.",
-    "Repair report SHA cd2931e786fc2c66b7ee0babdb25da0ec3c2dbb17c97debe215841fd1da0d13b; opencl_layer_runner.cpp SHA 67ef50fcf155cede9e7fa4c30a44022b52361073d4ff3c4e8032d5abfcf27b1b; tests/test_c5_native_runtime_contract.py SHA 6a49ac7ad1a0af51203fc5e86eecb5ca4dc84209b5c0e5cf7d503cc01ce565ed.",
-    "Phase3/4 verification passed: CMake runner build, focused native runtime contract 14 passed, broader C5 suite 49 passed, ctest 4/4, git diff --check, JSON validation, strict raw-suffix scan, and credential-pattern scan.",
-    "After custody, Execution rebuilds/copies a repaired phone runner and reruns exactly one forced vendor OpenCL C5_after_C1 probe with --opencl-library /vendor/lib64/libOpenCL.so.",
-    "Do not reroute Execution before the repair pathset is frozen by Repo Custodian."
+    "Phase3/4 must repair/freeze a bounded Android/Termux OpenCL loader route that avoids the Termux/default linker namespace restriction for the existing --run-c5-qa-predict/OpenCL path, or return one explicit next loader probe command or precise source/runtime blocker.",
+    "Execution proof root: runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_vendor_opencl_dlopen_detail_20260701T180904Z.",
+    "Execution consumed custody commit af8fc62cc54926d0df838270c388f303aae0d9ae and rebuilt runner /data/data/com.termux/files/home/polymath_c5/C5_after_C1/bin/gemma4_layer_runner_c5_opencl_dlopen_detail with SHA a2378e109c811ae2fbc6219a7fd39b1d2141f5a6033cbfce76e914214e5d2a5c and 529720 bytes.",
+    "Forced probe configured --opencl-library /vendor/lib64/libOpenCL.so, exited 13 after 100s, wrote no prediction JSONL, and produced dlerror_category=linker_namespace_or_permission with redacted detail and dlerror_redacted_sha256 4c6bcb2f08feefeea9a3b043cce1d289a9c3f6ba8a1f6f06d6a80c8171c6cbf4.",
+    "Metadata evidence hashes: stdout 5f60271cf0f3d20708fdd88a6ed020ab8ab0844dcb5094a54bf370a32706fb5e; stderr 153ae145a59c2dd1c073551daf1c038442e9c00a4b108f187b56f57e52671e19; meminfo_before 308c10e1195186441fe2f85e8c07eb848124aa32564ec3e8d07520ceecc849f4; meminfo_after 7adcd7642e31a8c8b70f0c740b15d56718d97217c28919406ad563a32a6a5c4d.",
+    "Do not route Execution again until Phase3/4 returns a custody-ready repair pathset or a single bounded next probe command. Do not create a parallel evaluator or bypass C5/OpenCL parity."
   ],
   "authorization_needed": false,
   "c5_after_c1_bounded_opencl_probe_command_identity_repair_20260701T171907Z": {
@@ -3540,49 +3570,14 @@
     "status": "bounded_phone_probe_repeated_resource_runtime_failure_after_opencl_discovery_repair"
   },
   "candidate_adapter_sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f",
-  "central_mirror_local_update_status": "updated_after_forced_vendor_opencl_probe_result_pending_repo_custodian_freeze",
+  "central_mirror_local_update_status": "updated_after_opencl_linker_namespace_probe_pending_repo_custodian_freeze",
   "central_state_update_pending_custody": true,
-  "current_gate": "WaveB_C5_after_C1_opencl_configured_library_load_repair_custody_pending_after_phase34_pathset",
+  "current_gate": "WaveB_C5_after_C1_vendor_opencl_linker_namespace_repair_pending_after_dlopen_detail_probe",
   "current_highest_valid_state": "C1-C4 Wave B mechanics, phone-local model/exporter evidence, C5-capable runner build, heldout QA staging, native C5 probe, tokenizer/tensor-loader custody, PLE contract/decoder math custody, PLE derivation/layer-0 normalization custody, CPU single-layer attention/MLP custody, OpenCL parity dispatch custody, phone OpenCL probe failure evidence custody, and per_layer_input_runtime repair custody are development-cycle metadata/code evidence only. No C5 pass, prediction JSONL, or executed metrics exist. The active edge is Execution rerunning the phone exporter and bounded C5_after_C1 probe after repair custody.",
   "decoder_manifest_sha256": "52fcb53666bb4b06d0118cb825b983afc54624a630f667bbfa5af278640e28f8",
   "dominant_failure_domain": "phase5_eval_failure",
-  "drift_deleted_or_pending": "Drift hardened: the previous opaque opencl_library_configured_load_failed field is superseded by a custody-ready diagnostic repair pathset that preserves raw boundaries and redacts configured paths. Prior Execution-pending and clGetPlatformIDs -1001 edges remain superseded.",
+  "drift_deleted_or_pending": "Drift hardened: the stale Repo-Custodian custody-pending edge is superseded by commit af8fc62 and the post-custody Execution probe. The previous opaque opencl_library_configured_load_failed field is now concrete linker_namespace_or_permission evidence with redacted dlerror detail. Prior clGetPlatformIDs -1001 and pre-diagnostic dlopen states remain superseded.",
   "driver_tick_history": [
-    {
-      "artifact_waiting_on": [
-        "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json",
-        "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md",
-        "runtime/reports/orchestration/c5_after_c1_exporter_runtime_fields_patch_20260701T_engineering.json",
-        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py",
-        "tests/test_c5_full_decoder_exporter.py"
-      ],
-      "current_gate": "WaveB_C5_after_C1_exporter_runtime_fields_patch_custody_pending",
-      "dominant_failure_domain": "phase5_eval_failure",
-      "first_missing_green_field": "repo_custody_freeze_exporter_runtime_fields_patch",
-      "last_concrete_action": "Repo Custodian committed and pushed the native C5 logits contract patch at 2151dbada9012a5f54806cf689e806001180521f. Engineering then patched the phone-compatible stdlib exporter to emit architecture_config and tensor_role_inventory metadata from the safetensors header: report SHA b135ba0c958c7cfea92cbd1c138f42df0cfb5b500485f0416b5167fce6a114f8; exporter SHA e3922085a08703d5ba4f17357f9b71218f8cca5aff1cbc4f395edfb7180599b4; test SHA d8eb5df2c73b470da58f7f37a24ff704bc005d0d58a9eb625cf15cb541a218cb. Focused verification passed: py_compile, exporter --print-schema JSON, pytest tests/test_c5_full_decoder_exporter.py tests/test_c5_phase34_qa_inference_producer.py tests/test_c5_prediction_payloads.py -> 19 passed, and git diff --check.",
-      "next_concrete_action": "Repo Custodian freezes the exact central-state plus exporter runtime-fields pathset. After custody, Execution reruns the phone exporter so the outside-git component pack advances from metadata-only manifest blockers to schema-complete decoder_manifest identities. Phase3/4 then lands safetensors_reader plus c5_full_decoder_runtime and replaces only the terminal full_decoder_logits_generation_not_implemented branch.",
-      "nonclaims": [
-        "no C5 pass",
-        "no executed C5 metrics",
-        "no real prediction JSONL emitted",
-        "no logits, prediction, loss, confidence, candidate_train_loss, or C5 metric fabricated",
-        "no bridge MSE relabeled as C5 loss",
-        "no old layer0/layer1 asset accepted as a full decoder",
-        "no learning or model-quality claim",
-        "no Phase3 readiness claim",
-        "no Phase4 readiness claim",
-        "not 100k or 1M Phase2 authority",
-        "no Comet-backed accepted run"
-      ],
-      "owner": "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050",
-      "status_classification": "PENDING_ACTION_REPO_CUSTODY_EXPORTER_RUNTIME_FIELDS_PATCH",
-      "threads_nudged_this_tick": [
-        "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: freeze exact central-state plus exporter runtime-fields pathset.",
-        "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4: prepare/implement safetensors_reader plus c5_full_decoder_runtime against the now-declared schema contract."
-      ],
-      "timestamp_utc": "2026-07-01T12:50:37Z",
-      "user_action_required": false
-    },
     {
       "artifact_waiting_on": [
         "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json",
@@ -4477,12 +4472,50 @@
       ],
       "timestamp_utc": "2026-07-01T17:39:37Z",
       "user_action_required": false
+    },
+    {
+      "timestamp_utc": "2026-07-01T18:10:07Z",
+      "current_gate": "WaveB_C5_after_C1_vendor_opencl_linker_namespace_repair_pending_after_dlopen_detail_probe",
+      "status_classification": "PENDING_ACTION_PHASE34_REPAIR_ANDROID_TERMUX_OPENCL_LINKER_NAMESPACE_LOADER_ROUTE",
+      "owner": "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 owns the bounded Android/Termux OpenCL loader route repair after Execution proved the configured vendor library fails with linker_namespace_or_permission. Execution is parked after the proof.",
+      "artifact_waiting_on": [
+        "Phase3/4 must repair/freeze a bounded Android/Termux OpenCL loader route that avoids the Termux/default linker namespace restriction for the existing --run-c5-qa-predict/OpenCL path, or return one explicit next loader probe command or precise source/runtime blocker.",
+        "Execution proof root: runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_vendor_opencl_dlopen_detail_20260701T180904Z.",
+        "Execution consumed custody commit af8fc62cc54926d0df838270c388f303aae0d9ae and rebuilt runner /data/data/com.termux/files/home/polymath_c5/C5_after_C1/bin/gemma4_layer_runner_c5_opencl_dlopen_detail with SHA a2378e109c811ae2fbc6219a7fd39b1d2141f5a6033cbfce76e914214e5d2a5c and 529720 bytes.",
+        "Forced probe configured --opencl-library /vendor/lib64/libOpenCL.so, exited 13 after 100s, wrote no prediction JSONL, and produced dlerror_category=linker_namespace_or_permission with redacted detail and dlerror_redacted_sha256 4c6bcb2f08feefeea9a3b043cce1d289a9c3f6ba8a1f6f06d6a80c8171c6cbf4.",
+        "Metadata evidence hashes: stdout 5f60271cf0f3d20708fdd88a6ed020ab8ab0844dcb5094a54bf370a32706fb5e; stderr 153ae145a59c2dd1c073551daf1c038442e9c00a4b108f187b56f57e52671e19; meminfo_before 308c10e1195186441fe2f85e8c07eb848124aa32564ec3e8d07520ceecc849f4; meminfo_after 7adcd7642e31a8c8b70f0c740b15d56718d97217c28919406ad563a32a6a5c4d.",
+        "Do not route Execution again until Phase3/4 returns a custody-ready repair pathset or a single bounded next probe command. Do not create a parallel evaluator or bypass C5/OpenCL parity."
+      ],
+      "last_concrete_action": "Repo Custodian froze the configured OpenCL library load diagnostics repair at af8fc62cc54926d0df838270c388f303aae0d9ae. Execution consumed it, rebuilt the repaired phone runner with SHA a2378e109c811ae2fbc6219a7fd39b1d2141f5a6033cbfce76e914214e5d2a5c, and ran exactly one forced /vendor/lib64/libOpenCL.so C5_after_C1 probe. The probe exited 13 after 100s, configured the CLI OpenCL path, wrote no prediction JSONL, and exposed dlerror_category=linker_namespace_or_permission with redacted detail. Raw-boundary scan was clean.",
+      "next_concrete_action": "Phase3/4 must repair the existing Android/Termux OpenCL loader route so C5/OpenCL can load a usable OpenCL runtime outside the default namespace restriction, or return a single explicit next probe command or precise source/runtime blocker. If it returns a pathset, Engineering updates central state and Repo Custodian freezes it before Execution reruns one bounded forced-vendor probe.",
+      "dominant_failure_domain": "phase5_eval_failure",
+      "drift_deleted_or_pending": "Drift hardened: the stale Repo-Custodian custody-pending edge is superseded by commit af8fc62 and the post-custody Execution probe. The previous opaque opencl_library_configured_load_failed field is now concrete linker_namespace_or_permission evidence with redacted dlerror detail. Prior clGetPlatformIDs -1001 and pre-diagnostic dlopen states remain superseded.",
+      "recursive_improvement_next_step": "Use the concrete linker namespace proof to implement or select the smallest Android/Termux OpenCL loader route; freeze the source/test/report pathset through Custodian; then Execution reruns exactly one bounded forced vendor probe. If the same namespace field repeats after repair, keep research bounded to Android linker namespace/OpenCL ICD loading mechanics and the existing C5/OpenCL path.",
+      "first_missing_green_field": "c5_full_decoder_opencl_parity_runtime_unavailable:opencl_single_token_layer_runtime_unavailable:opencl_library_configured_load_failed:dlerror_category=linker_namespace_or_permission",
+      "central_state_updated": true,
+      "threads_nudged_this_tick": [
+        "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: will be routed the two-file central mirror freeze for the post-custody linker-namespace probe state.",
+        "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4: will be routed the concrete linker_namespace_or_permission repair/probe request.",
+        "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: polled complete proof; parked until repair or one bounded next probe is frozen/supplied.",
+        "Training Material Steward, Pipeline Integrator, UI Engineer, Engineering Orchestrator: polled/not current owner; no nudge."
+      ],
+      "user_action_required": false,
+      "nonclaims": [
+        "no C5 pass",
+        "no executed C5 metrics",
+        "no prediction JSONL/logits/loss/confidence/candidate_train_loss unless real runtime emits them",
+        "no bridge-MSE-as-C5-loss",
+        "no learning/model-quality claim",
+        "no Phase3/4 readiness",
+        "no 100k/1M authority",
+        "no Comet-backed accepted run"
+      ]
     }
   ],
   "export_report_sha256": "4774d31953a58ad6ae1f64e4196405ba820e5be75d36880ac863cfb9dae00b6c",
   "exporter_runtime_fields_freeze_commit": "43cf3c4130dc902fc8fd69183bac1056f0596626",
   "exporter_runtime_fields_freeze_status": "committed_pushed",
-  "first_missing_green_field": "opencl_configured_library_load_repair_custody_commit_missing",
+  "first_missing_green_field": "c5_full_decoder_opencl_parity_runtime_unavailable:opencl_single_token_layer_runtime_unavailable:opencl_library_configured_load_failed:dlerror_category=linker_namespace_or_permission",
   "first_missing_green_field_after_contract_patch": "decoder_manifest_architecture_config_missing",
   "first_missing_green_field_after_custody": "c5_full_decoder_opencl_parity_dispatch_missing_after_cpu_single_layer_slice",
   "first_missing_green_field_after_download": "full_decoder_logits_generation_not_implemented",
@@ -4492,7 +4525,7 @@
   "first_missing_green_field_after_runner": "heldout_qa_jsonl_staging_or_c5_predict_probe_pending",
   "first_unresolved_technical_failure_after_schema_complete_export": "c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land",
   "first_unresolved_technical_failure_after_valid_schema_paths": "c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land",
-  "governing_edge": "WaveB_C5_after_C1_opencl_configured_library_load_repair_custody_pending_after_phase34_pathset",
+  "governing_edge": "WaveB_C5_after_C1_vendor_opencl_linker_namespace_repair_pending_after_dlopen_detail_probe",
   "governing_objective": {
     "nonclaims": [
       "diagnostics_are_not_100k_or_1M_authority_unless_specific_authority_gate_passes",
@@ -5038,12 +5071,28 @@
       ]
     },
     "execution_orchestrator": {
+      "thread_id": "019f138c-fb51-7c53-a41a-ab8eac950d9c",
+      "status": "forced_vendor_opencl_probe_result_linker_namespace_or_permission",
+      "status_classification": "COMPLETE_PROOF_EXECUTION_PARKED_FOR_PHASE34_REPAIR",
+      "last_update_utc": "2026-07-01T18:10:07Z",
       "artifact_paths": [
-        "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_vendor_opencl_20260701T173345Z"
+        "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_vendor_opencl_dlopen_detail_20260701T180904Z/candidate_probe_stdout.json",
+        "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_vendor_opencl_dlopen_detail_20260701T180904Z/candidate_probe_stderr.log",
+        "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_vendor_opencl_dlopen_detail_20260701T180904Z/meminfo_before.txt",
+        "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_vendor_opencl_dlopen_detail_20260701T180904Z/meminfo_after.txt"
       ],
-      "first_missing_green_field": "c5_full_decoder_opencl_parity_runtime_unavailable:opencl_single_token_layer_runtime_unavailable:opencl_library_configured_load_failed",
-      "last_update_utc": "2026-07-01T17:39:37Z",
-      "next_action": "Park until Repo Custodian freezes the configured OpenCL library load repair pathset; then rebuild/copy repaired phone runner and rerun exactly one forced vendor OpenCL probe.",
+      "sha256_or_identity_fields": {
+        "runner_sha256": "a2378e109c811ae2fbc6219a7fd39b1d2141f5a6033cbfce76e914214e5d2a5c",
+        "runner_size_bytes": 529720,
+        "stdout_sha256": "5f60271cf0f3d20708fdd88a6ed020ab8ab0844dcb5094a54bf370a32706fb5e",
+        "stderr_sha256": "153ae145a59c2dd1c073551daf1c038442e9c00a4b108f187b56f57e52671e19",
+        "meminfo_before_sha256": "308c10e1195186441fe2f85e8c07eb848124aa32564ec3e8d07520ceecc849f4",
+        "meminfo_after_sha256": "7adcd7642e31a8c8b70f0c740b15d56718d97217c28919406ad563a32a6a5c4d",
+        "dlerror_redacted_sha256": "4c6bcb2f08feefeea9a3b043cce1d289a9c3f6ba8a1f6f06d6a80c8171c6cbf4"
+      },
+      "first_missing_green_field": "c5_full_decoder_opencl_parity_runtime_unavailable:opencl_single_token_layer_runtime_unavailable:opencl_library_configured_load_failed:dlerror_category=linker_namespace_or_permission:dlerror_redacted_sha256=4c6bcb2f08feefeea9a3b043cce1d289a9c3f6ba8a1f6f06d6a80c8171c6cbf4",
+      "next_action": "Park until Phase3/4 returns a frozen loader-route repair or one explicit bounded next probe command.",
+      "user_action_required": false,
       "nonclaims": [
         "no C5 pass",
         "no executed C5 metrics",
@@ -5053,37 +5102,18 @@
         "no Phase3/4 readiness",
         "no 100k/1M authority",
         "no Comet-backed accepted run"
-      ],
-      "sha256_or_identity_fields": {
-        "meminfo_after_sha256": "d2c7c84a8a5a88374be6cc0acab5b4c525cbc999e6eec614269c5cf0ba928e25",
-        "meminfo_before_sha256": "cf88d06ef54af0cf9d099a495171ee86c6bb24f7f98b02a1058c14a4ac4aed03",
-        "runner_identity_bytes": 522560,
-        "runner_identity_sha256": "6bbad7d28dc3c4716444cd1c9e55448087755e2dcd1c03eb2a4bab4d051df363",
-        "stderr_sha256": "1f2e0b2bba5aeaa398c3f13fd8c6cbc1722c7dab98658f756adab82a64aef134",
-        "stdout_sha256": "2670839669b0b91ca4a042f6ba9921f75987ecf77c962866935c754445370de2"
-      },
-      "status": "forced_vendor_opencl_probe_result_configured_library_dlopen_failed",
-      "status_classification": "COMPLETE_FOR_FORCED_VENDOR_PROBE_EXECUTION_PARKED_WAITING_REPAIR",
-      "thread_id": "019f138c-fb51-7c53-a41a-ab8eac950d9c",
-      "user_action_required": false
+      ]
     },
     "phase34_engineer": {
       "thread_id": "019f13da-d897-7ba2-8ed1-b959892f5ed4",
-      "status": "opencl_configured_library_load_repair_pathset_ready_for_custodian",
-      "status_classification": "COMPLETE_FOR_PHASE34_REPAIR_PATHSET_WAITING_CUSTODY",
-      "last_update_utc": "2026-07-01T18:00:07Z",
+      "status": "pending_android_termux_opencl_linker_namespace_loader_route_repair",
+      "status_classification": "PENDING_ACTION_PHASE34_REPAIR_ANDROID_TERMUX_OPENCL_LINKER_NAMESPACE_LOADER_ROUTE",
+      "last_update_utc": "2026-07-01T18:10:07Z",
       "artifact_paths": [
-        "runtime/reports/orchestration/c5_after_c1_opencl_configured_library_load_repair_20260701T_phase34.json",
-        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/opencl_layer_runner.cpp",
-        "tests/test_c5_native_runtime_contract.py"
+        "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_vendor_opencl_dlopen_detail_20260701T180904Z"
       ],
-      "sha256_or_identity_fields": {
-        "runtime/reports/orchestration/c5_after_c1_opencl_configured_library_load_repair_20260701T_phase34.json": "cd2931e786fc2c66b7ee0babdb25da0ec3c2dbb17c97debe215841fd1da0d13b",
-        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/opencl_layer_runner.cpp": "67ef50fcf155cede9e7fa4c30a44022b52361073d4ff3c4e8032d5abfcf27b1b",
-        "tests/test_c5_native_runtime_contract.py": "6a49ac7ad1a0af51203fc5e86eecb5ca4dc84209b5c0e5cf7d503cc01ce565ed"
-      },
-      "first_missing_green_field": "post_custody_phone_probe_needed_for_configured_opencl_dlopen_detail_or_runtime_advance",
-      "next_action": "Repo Custodian freezes the repair pathset before Execution reruns the forced vendor OpenCL probe.",
+      "first_missing_green_field": "c5_full_decoder_opencl_parity_runtime_unavailable:opencl_single_token_layer_runtime_unavailable:opencl_library_configured_load_failed:dlerror_category=linker_namespace_or_permission",
+      "next_action": "Patch/freeze the existing C5/OpenCL loader path or return one explicit next loader probe command or precise blocker.",
       "user_action_required": false,
       "nonclaims": [
         "no C5 pass",
@@ -5116,18 +5146,16 @@
     },
     "repo_custodian": {
       "thread_id": "019f1ac2-0f0f-7721-bf46-ad402dbd9050",
-      "status": "opencl_configured_library_load_repair_custody_requested",
-      "status_classification": "PENDING_ACTION_REPO_CUSTODIAN_OPENCL_CONFIGURED_LIBRARY_LOAD_REPAIR_FREEZE",
-      "last_update_utc": "2026-07-01T18:00:07Z",
+      "status": "opencl_configured_library_load_repair_committed_pushed_then_central_mirror_freeze_requested",
+      "status_classification": "PENDING_ACTION_REPO_CUSTODIAN_POST_LINKER_NAMESPACE_PROBE_CENTRAL_MIRROR_FREEZE",
+      "last_update_utc": "2026-07-01T18:10:07Z",
+      "last_commit": "af8fc62cc54926d0df838270c388f303aae0d9ae",
+      "first_missing_green_field": "post_linker_namespace_probe_central_mirror_freeze_pending",
       "artifact_paths": [
-        "runtime/reports/orchestration/c5_after_c1_opencl_configured_library_load_repair_20260701T_phase34.json",
-        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/opencl_layer_runner.cpp",
-        "tests/test_c5_native_runtime_contract.py",
         "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json",
         "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md"
       ],
-      "first_missing_green_field": "opencl_configured_library_load_repair_custody_commit_missing",
-      "next_action": "Verify and freeze only the three repair files plus two central mirror files, then return commit/SHA or precise blocker.",
+      "next_action": "Freeze the two-file central mirror that records Execution linker_namespace_or_permission evidence and Phase3/4 as active owner.",
       "user_action_required": false,
       "nonclaims": [
         "no C5 pass",
@@ -5202,19 +5230,19 @@
       "user_action_required": false
     }
   },
-  "last_concrete_action": "Phase3/4 returned opencl_configured_library_load_repair_pathset_ready_for_custodian. The repair keeps the existing --run-c5-qa-predict/OpenCL path, preserves configured path redaction, and changes opaque configured dlopen failures into bounded dlerror_category, dlerror_redacted_sha256, and redacted dlerror_detail evidence. Repo Custodian also froze the prior forced vendor probe result central mirror at 856e116caf67a4891e3d72fe3a79949d0289b1ff.",
+  "last_concrete_action": "Repo Custodian froze the configured OpenCL library load diagnostics repair at af8fc62cc54926d0df838270c388f303aae0d9ae. Execution consumed it, rebuilt the repaired phone runner with SHA a2378e109c811ae2fbc6219a7fd39b1d2141f5a6033cbfce76e914214e5d2a5c, and ran exactly one forced /vendor/lib64/libOpenCL.so C5_after_C1 probe. The probe exited 13 after 100s, configured the CLI OpenCL path, wrote no prediction JSONL, and exposed dlerror_category=linker_namespace_or_permission with redacted detail. Raw-boundary scan was clean.",
   "last_driver_actions": [
     "Loaded central state and polled lane threads.",
-    "Detected Phase3/4 completed with opencl_configured_library_load_repair_pathset_ready_for_custodian.",
-    "Reclassified owner to Repo Custodian for five-file repair plus central mirror custody.",
-    "Execution remains parked until custody freeze completes."
+    "Detected Repo Custodian completed configured OpenCL diagnostic repair at af8fc62.",
+    "Detected Execution completed post-custody forced vendor OpenCL probe with linker_namespace_or_permission evidence.",
+    "Reclassified owner to Phase3/4 for bounded Android/Termux OpenCL loader route repair; Execution parked."
   ],
   "model_safetensors_sha256": "43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651",
   "model_safetensors_size_bytes": 15992595884,
-  "native_probe_elapsed_seconds": 98,
+  "native_probe_elapsed_seconds": 100,
   "native_probe_exit_code": 13,
-  "native_probe_report_path": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_vendor_opencl_20260701T173345Z",
-  "next_concrete_action": "Repo Custodian must verify hashes, run focused local checks, stage only the three repair files plus EXECUTIVE_DELIVERY_STATE.json and EXECUTIVE_DELIVERY_STATE.md, commit/push the custody freeze, and return opencl_configured_library_load_repair_committed_pushed or a precise blocker. Execution resumes only after that freeze.",
+  "native_probe_report_path": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_vendor_opencl_dlopen_detail_20260701T180904Z",
+  "next_concrete_action": "Phase3/4 must repair the existing Android/Termux OpenCL loader route so C5/OpenCL can load a usable OpenCL runtime outside the default namespace restriction, or return a single explicit next probe command or precise source/runtime blocker. If it returns a pathset, Engineering updates central state and Repo Custodian freezes it before Execution reruns one bounded forced-vendor probe.",
   "nonclaims": [
     "no C5 pass",
     "no executed C5 metrics",
@@ -5225,7 +5253,7 @@
     "no 100k/1M authority",
     "no Comet-backed accepted run"
   ],
-  "owner": "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050 owns the five-file custody freeze for the Phase3/4 configured OpenCL library load repair plus central mirror. Execution remains parked until this repair is frozen.",
+  "owner": "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 owns the bounded Android/Termux OpenCL loader route repair after Execution proved the configured vendor library fails with linker_namespace_or_permission. Execution is parked after the proof.",
   "owner_thread": "019f13da-d897-7ba2-8ed1-b959892f5ed4",
   "phone_exporter_rerun_required_after_commit": "43cf3c4130dc902fc8fd69183bac1056f0596626",
   "prd_watchdog": {
@@ -5809,15 +5837,15 @@
     "updated_utc": "2026-07-01T17:29:07Z",
     "user_action_required": false
   },
-  "probe_stderr_sha256": "1f2e0b2bba5aeaa398c3f13fd8c6cbc1722c7dab98658f756adab82a64aef134",
-  "probe_stdout_metadata_sha256": "2670839669b0b91ca4a042f6ba9921f75987ecf77c962866935c754445370de2",
+  "probe_stderr_sha256": "153ae145a59c2dd1c073551daf1c038442e9c00a4b108f187b56f57e52671e19",
+  "probe_stdout_metadata_sha256": "5f60271cf0f3d20708fdd88a6ed020ab8ab0844dcb5094a54bf370a32706fb5e",
   "raw_phone_path_hardening_20260701T094236Z": {
     "preserved": "artifact identities, hashes, lane status, nonclaims, and outside-git source requirements",
     "reason": "Prevent stale phone filesystem strings from being treated as C5 runtime evidence or raw payload routes.",
     "scope": "metadata mirror only",
     "status": "central_state_phone_filesystem_paths_redacted"
   },
-  "recursive_improvement_next_step": "Freeze the configured-library dlopen diagnostic repair through Repo Custodian, then run one bounded forced vendor probe to expose dlopen detail or advance past OpenCL library loading.",
+  "recursive_improvement_next_step": "Use the concrete linker namespace proof to implement or select the smallest Android/Termux OpenCL loader route; freeze the source/test/report pathset through Custodian; then Execution reruns exactly one bounded forced vendor probe. If the same namespace field repeats after repair, keep research bounded to Android linker namespace/OpenCL ICD loading mechanics and the existing C5/OpenCL path.",
   "required_lane_update_protocol": {
     "block_name": "CENTRAL_STATE_UPDATE",
     "meta_action": "on every heartbeat, read active threads, update this file, route the next concrete edge, and notify Execution only when both keys are green",
@@ -5833,22 +5861,22 @@
       "nonclaims"
     ]
   },
-  "research_escalation": "bounded_sprint_required: configured vendor OpenCL library dlopen failed after forced path proof; boundary is existing OpenCL loader and c5_full_decoder_runtime path",
-  "runner_sha256": "6bbad7d28dc3c4716444cd1c9e55448087755e2dcd1c03eb2a4bab4d051df363",
-  "runner_size_bytes": 522560,
+  "research_escalation": "bounded_sprint_required: configured /vendor/lib64/libOpenCL.so cannot be loaded from the Termux/default linker namespace; boundary is the existing OpenCL loader and run_c5_full_decoder_runtime path.",
+  "runner_sha256": "a2378e109c811ae2fbc6219a7fd39b1d2141f5a6033cbfce76e914214e5d2a5c",
+  "runner_size_bytes": 529720,
   "schema_version": "polymath_executive_delivery_state_v1",
-  "status": "PENDING_ACTION_PHASE34_REPAIR_CONFIGURED_VENDOR_OPENCL_LIBRARY_LOADING",
-  "status_classification": "PENDING_ACTION_REPO_CUSTODIAN_OPENCL_CONFIGURED_LIBRARY_LOAD_REPAIR_FREEZE",
+  "status": "PENDING_ACTION_PHASE34_REPAIR_ANDROID_TERMUX_OPENCL_LINKER_NAMESPACE_LOADER_ROUTE",
+  "status_classification": "PENDING_ACTION_PHASE34_REPAIR_ANDROID_TERMUX_OPENCL_LINKER_NAMESPACE_LOADER_ROUTE",
   "threads_nudged_this_tick": [
-    "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4: routed configured vendor OpenCL library load repair or bounded dlopen diagnostic request.",
-    "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: routed two-file central mirror freeze for the forced vendor probe result state.",
-    "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: polled complete forced vendor proof; parked until repair/diagnostic is frozen or supplied.",
+    "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: will be routed the two-file central mirror freeze for the post-custody linker-namespace probe state.",
+    "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4: will be routed the concrete linker_namespace_or_permission repair/probe request.",
+    "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: polled complete proof; parked until repair or one bounded next probe is frozen/supplied.",
     "Training Material Steward, Pipeline Integrator, UI Engineer, Engineering Orchestrator: polled/not current owner; no nudge."
   ],
-  "timestamp_utc": "2026-07-01T17:39:37Z",
-  "updated_at": "2026-07-01T17:29:07Z",
-  "updated_at_utc": "2026-07-01T17:29:07Z",
-  "updated_utc": "2026-07-01T18:00:07Z",
+  "timestamp_utc": "2026-07-01T18:10:07Z",
+  "updated_at": "2026-07-01T18:10:07Z",
+  "updated_at_utc": "2026-07-01T18:10:07Z",
+  "updated_utc": "2026-07-01T18:10:07Z",
   "user_action_required": false,
   "c5_after_c1_opencl_configured_library_load_repair_20260701T_phase34": {
     "status": "opencl_configured_library_load_repair_pathset_ready_for_custodian",
@@ -5887,5 +5915,33 @@
       "no 100k/1M authority",
       "no Comet-backed accepted run"
     ]
+  },
+  "c5_after_c1_forced_vendor_opencl_dlopen_detail_probe_result_20260701T180904Z": {
+    "status": "forced_vendor_opencl_probe_result_linker_namespace_or_permission",
+    "classification": "resource/runtime_availability_android_linker_namespace",
+    "consumed_repair_commit": "af8fc62cc54926d0df838270c388f303aae0d9ae",
+    "consumed_repair_report_sha256": "cd2931e786fc2c66b7ee0babdb25da0ec3c2dbb17c97debe215841fd1da0d13b",
+    "runner_path": "/data/data/com.termux/files/home/polymath_c5/C5_after_C1/bin/gemma4_layer_runner_c5_opencl_dlopen_detail",
+    "runner_sha256": "a2378e109c811ae2fbc6219a7fd39b1d2141f5a6033cbfce76e914214e5d2a5c",
+    "runner_size_bytes": 529720,
+    "command_included_opencl_library": true,
+    "configured_opencl_library_path_sha256": "59a8850fb37433061fd59e105ee6af8547f7149e8711d42d2cb37f70e27cf5c2",
+    "opencl_library_cli_path_configured": true,
+    "exit_code": 13,
+    "elapsed_seconds": 100,
+    "prediction_jsonl_written": false,
+    "first_missing_green_field": "c5_full_decoder_opencl_parity_runtime_unavailable:opencl_single_token_layer_runtime_unavailable:opencl_library_configured_load_failed:dlerror_category=linker_namespace_or_permission:dlerror_redacted_sha256=4c6bcb2f08feefeea9a3b043cce1d289a9c3f6ba8a1f6f06d6a80c8171c6cbf4",
+    "dlerror_category": "linker_namespace_or_permission",
+    "dlerror_redacted_sha256": "4c6bcb2f08feefeea9a3b043cce1d289a9c3f6ba8a1f6f06d6a80c8171c6cbf4",
+    "dlerror_detail_redacted": "dlopen failed: library \"<configured_opencl_library>\" needed or dlopened by \"<absolute_path>\" is not accessible for the namespace \"(default)\"",
+    "report_root": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_vendor_opencl_dlopen_detail_20260701T180904Z",
+    "candidate_probe_stdout_sha256": "5f60271cf0f3d20708fdd88a6ed020ab8ab0844dcb5094a54bf370a32706fb5e",
+    "candidate_probe_stderr_sha256": "153ae145a59c2dd1c073551daf1c038442e9c00a4b108f187b56f57e52671e19",
+    "meminfo_before_sha256": "308c10e1195186441fe2f85e8c07eb848124aa32564ec3e8d07520ceecc849f4",
+    "meminfo_after_sha256": "7adcd7642e31a8c8b70f0c740b15d56718d97217c28919406ad563a32a6a5c4d",
+    "raw_suffix_scan": "clean",
+    "research_escalation": "bounded_sprint_required: configured /vendor/lib64/libOpenCL.so cannot be loaded from the Termux/default linker namespace; boundary is the existing OpenCL loader and run_c5_full_decoder_runtime path.",
+    "next_owner": "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 plus Engineering Orchestrator oversight",
+    "next_action": "Repair/freeze a bounded Android/Termux OpenCL loader route that avoids default namespace restriction, or provide a single explicit probe for the next loader mechanism."
   }
 }

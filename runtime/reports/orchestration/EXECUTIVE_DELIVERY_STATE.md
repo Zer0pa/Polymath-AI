@@ -1,77 +1,56 @@
 # Executive Delivery State
 
-Updated UTC: `2026-07-01T18:00:07Z`
+Updated UTC: `2026-07-01T18:10:07Z`
 
 ## Current Gate
 
-`WaveB_C5_after_C1_opencl_configured_library_load_repair_custody_pending_after_phase34_pathset`
+`WaveB_C5_after_C1_vendor_opencl_linker_namespace_repair_pending_after_dlopen_detail_probe`
 
-Status classification: `PENDING_ACTION_REPO_CUSTODIAN_OPENCL_CONFIGURED_LIBRARY_LOAD_REPAIR_FREEZE`
+Status classification: `PENDING_ACTION_PHASE34_REPAIR_ANDROID_TERMUX_OPENCL_LINKER_NAMESPACE_LOADER_ROUTE`
 
-Owner: Repo Custodian `019f1ac2-0f0f-7721-bf46-ad402dbd9050` owns the five-file custody freeze for the Phase3/4 configured OpenCL library load repair plus central mirror. Execution is parked.
+Owner: Phase3/4 Engineer `019f13da-d897-7ba2-8ed1-b959892f5ed4` owns the bounded Android/Termux OpenCL loader route repair after Execution proved the configured vendor library fails with `linker_namespace_or_permission`. Execution is parked.
 
 User action required: `false`
 
 Dominant failure domain: `phase5_eval_failure`
 
-Research escalation: `bounded_sprint_completed: Phase3/4 produced a custody-ready configured vendor OpenCL dlopen diagnostic repair pathset`
+Research escalation: `bounded_sprint_required: configured /vendor/lib64/libOpenCL.so cannot be loaded from the Termux/default linker namespace; boundary is the existing OpenCL loader and run_c5_full_decoder_runtime path.`
 
 ## Artifact Waiting On
 
-- Repo Custodian freezes the Phase3/4 configured vendor OpenCL library load repair pathset plus this central mirror.
-- Repair report: `runtime/reports/orchestration/c5_after_c1_opencl_configured_library_load_repair_20260701T_phase34.json` SHA `cd2931e786fc2c66b7ee0babdb25da0ec3c2dbb17c97debe215841fd1da0d13b`.
-- Source: `integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/opencl_layer_runner.cpp` SHA `67ef50fcf155cede9e7fa4c30a44022b52361073d4ff3c4e8032d5abfcf27b1b`.
-- Test: `tests/test_c5_native_runtime_contract.py` SHA `6a49ac7ad1a0af51203fc5e86eecb5ca4dc84209b5c0e5cf7d503cc01ce565ed`.
-- After custody, Execution rebuilds/copies a repaired phone runner and reruns exactly one forced vendor OpenCL C5_after_C1 probe with `--opencl-library /vendor/lib64/libOpenCL.so`.
-- Do not reroute Execution before the repair pathset is frozen by Repo Custodian.
+- Phase3/4 must repair/freeze a bounded Android/Termux OpenCL loader route that avoids the Termux/default linker namespace restriction for the existing `--run-c5-qa-predict` / OpenCL path, or return one explicit next loader probe command or precise source/runtime blocker.
+- Execution proof root: `runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_vendor_opencl_dlopen_detail_20260701T180904Z`.
+- Custody consumed: `af8fc62cc54926d0df838270c388f303aae0d9ae`.
+- Rebuilt runner: SHA `a2378e109c811ae2fbc6219a7fd39b1d2141f5a6033cbfce76e914214e5d2a5c`, bytes `529720`.
+- Forced probe configured `--opencl-library /vendor/lib64/libOpenCL.so`, exited `13` after `100s`, wrote no prediction JSONL, and produced `dlerror_category=linker_namespace_or_permission`.
+- Evidence hashes: stdout `5f60271cf0f3d20708fdd88a6ed020ab8ab0844dcb5094a54bf370a32706fb5e`; stderr `153ae145a59c2dd1c073551daf1c038442e9c00a4b108f187b56f57e52671e19`; meminfo before `308c10e1195186441fe2f85e8c07eb848124aa32564ec3e8d07520ceecc849f4`; meminfo after `7adcd7642e31a8c8b70f0c740b15d56718d97217c28919406ad563a32a6a5c4d`.
+- Do not route Execution again until Phase3/4 returns a custody-ready repair pathset or a single bounded next probe command.
 
 ## Last Concrete Action
 
-Phase3/4 returned `opencl_configured_library_load_repair_pathset_ready_for_custodian`.
-
-Patch behavior:
-
-- Keeps the existing `--run-c5-qa-predict` / OpenCL path.
-- Preserves configured OpenCL path redaction.
-- Replaces opaque configured `dlopen` failures with bounded `dlerror_category`, `dlerror_redacted_sha256`, and redacted `dlerror_detail` evidence.
-
-Phase3/4 verification:
-
-- CMake runner build passed.
-- Focused native runtime contract passed: `14 passed`.
-- Broader C5 suite passed: `49 passed`.
-- `ctest` passed: `4/4`.
-- `git diff --check`, JSON validation, strict raw-suffix scan, and credential-pattern scan passed.
-
-Repo Custodian also froze the prior forced vendor probe result central mirror:
-
-- mirror commit: `856e116caf67a4891e3d72fe3a79949d0289b1ff`
+Repo Custodian froze the configured OpenCL library load diagnostics repair at `af8fc62cc54926d0df838270c388f303aae0d9ae`. Execution consumed it, rebuilt the repaired phone runner with SHA `a2378e109c811ae2fbc6219a7fd39b1d2141f5a6033cbfce76e914214e5d2a5c`, and ran exactly one forced `/vendor/lib64/libOpenCL.so` C5_after_C1 probe. The probe exited `13` after `100s`, configured the CLI OpenCL path, wrote no prediction JSONL, and exposed `dlerror_category=linker_namespace_or_permission` with redacted detail. Raw-boundary scan was clean.
 
 ## First Missing Green Field
 
-Current: `opencl_configured_library_load_repair_custody_commit_missing`
-
-Post-custody next field: `post_custody_phone_probe_needed_for_configured_opencl_dlopen_detail_or_runtime_advance`
+Current: `c5_full_decoder_opencl_parity_runtime_unavailable:opencl_single_token_layer_runtime_unavailable:opencl_library_configured_load_failed:dlerror_category=linker_namespace_or_permission`
 
 ## Next Concrete Action
 
-Repo Custodian must verify hashes, run focused local checks, stage only the three repair files plus `EXECUTIVE_DELIVERY_STATE.json` and `EXECUTIVE_DELIVERY_STATE.md`, commit/push the custody freeze, and return `opencl_configured_library_load_repair_committed_pushed` or a precise blocker.
-
-Execution resumes only after that freeze.
+Phase3/4 must repair the existing Android/Termux OpenCL loader route so C5/OpenCL can load a usable OpenCL runtime outside the default namespace restriction, or return a single explicit next probe command or precise source/runtime blocker. If it returns a pathset, Engineering updates central state and Repo Custodian freezes it before Execution reruns one bounded forced-vendor probe.
 
 ## Drift Deletion / Hardening
 
-The previous opaque `opencl_library_configured_load_failed` field is superseded by a custody-ready diagnostic repair pathset that preserves raw boundaries and redacts configured paths. Prior Execution-pending and `clGetPlatformIDs -1001` edges remain superseded.
+The stale Repo-Custodian custody-pending edge is superseded by commit `af8fc62cc54926d0df838270c388f303aae0d9ae` and the post-custody Execution probe. The previous opaque `opencl_library_configured_load_failed` field is now concrete `linker_namespace_or_permission` evidence with redacted `dlerror` detail. Prior `clGetPlatformIDs -1001` and pre-diagnostic `dlopen` states remain superseded.
 
 ## Recursive Improvement Next Step
 
-Freeze the configured-library `dlopen` diagnostic repair through Repo Custodian, then run one bounded forced vendor probe to expose `dlopen` detail or advance past OpenCL library loading.
+Use the concrete linker namespace proof to implement or select the smallest Android/Termux OpenCL loader route; freeze the source/test/report pathset through Custodian; then Execution reruns exactly one bounded forced vendor probe. If the same namespace field repeats after repair, keep research bounded to Android linker namespace/OpenCL ICD loading mechanics and the existing C5/OpenCL path.
 
 ## Threads Nudged This Tick
 
-- Repo Custodian `019f1ac2-0f0f-7721-bf46-ad402dbd9050`: routed five-file custody packet for Phase3/4 repair plus central mirror.
-- Phase3/4 Engineer `019f13da-d897-7ba2-8ed1-b959892f5ed4`: polled complete pathset; no nudge.
-- Execution Orchestrator `019f138c-fb51-7c53-a41a-ab8eac950d9c`: polled parked; no nudge.
+- Repo Custodian `019f1ac2-0f0f-7721-bf46-ad402dbd9050`: routed two-file central mirror freeze for the post-custody linker-namespace probe state.
+- Phase3/4 Engineer `019f13da-d897-7ba2-8ed1-b959892f5ed4`: routed concrete `linker_namespace_or_permission` repair/probe request.
+- Execution Orchestrator `019f138c-fb51-7c53-a41a-ab8eac950d9c`: polled complete proof; parked until repair or one bounded next probe is frozen/supplied.
 - Training Material Steward, Pipeline Integrator, UI Engineer, Engineering Orchestrator: polled/not current owner; no nudge.
 
 ## Nonclaims Preserved
