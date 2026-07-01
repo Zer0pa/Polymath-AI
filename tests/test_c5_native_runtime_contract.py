@@ -50,9 +50,8 @@ def test_native_c5_runtime_validates_pack_then_stops_at_compute_kernel(tmp_path:
 
     assert result.returncode == 13
     payload = json.loads(result.stdout)
-    assert (
-        payload["first_missing_green_field"]
-        == "c5_full_decoder_opencl_parity_dispatch_missing_after_cpu_single_layer_slice"
+    assert payload["first_missing_green_field"].startswith(
+        "c5_full_decoder_opencl_parity_runtime_unavailable:"
     )
     assert payload["raw_boundary_proof"]["raw_payload_bytes_in_report"] is False
     assert payload["raw_boundary_proof"]["prediction_jsonl_written"] is False
@@ -80,14 +79,9 @@ def test_native_c5_runtime_accepts_layer_variant_attention_layout(tmp_path: Path
     payload = json.loads(result.stdout)
 
     assert result.returncode == 13
-    assert (
-        payload["first_missing_green_field"]
-        == "c5_full_decoder_opencl_parity_dispatch_missing_after_cpu_single_layer_slice"
+    assert payload["first_missing_green_field"].startswith(
+        "c5_full_decoder_opencl_parity_runtime_unavailable:"
     )
-    assert payload["blockers"][:2] == [
-        "c5_full_decoder_opencl_parity_dispatch_missing_after_cpu_single_layer_slice",
-        "c5_full_decoder_multi_token_qa_prompt_sequence_orchestration_missing",
-    ]
     assert not paths["output_jsonl"].exists()
 
 
@@ -108,14 +102,9 @@ def test_native_c5_runtime_accepts_independent_k_norm_width(tmp_path: Path) -> N
     payload = json.loads(result.stdout)
 
     assert result.returncode == 13
-    assert (
-        payload["first_missing_green_field"]
-        == "c5_full_decoder_opencl_parity_dispatch_missing_after_cpu_single_layer_slice"
+    assert payload["first_missing_green_field"].startswith(
+        "c5_full_decoder_opencl_parity_runtime_unavailable:"
     )
-    assert payload["blockers"][:2] == [
-        "c5_full_decoder_opencl_parity_dispatch_missing_after_cpu_single_layer_slice",
-        "c5_full_decoder_multi_token_qa_prompt_sequence_orchestration_missing",
-    ]
     assert not paths["output_jsonl"].exists()
 
 

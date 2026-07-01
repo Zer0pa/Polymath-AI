@@ -1,16 +1,19 @@
 #include "polymath/gemma4/c5_full_decoder_runtime.h"
 
 #include <cmath>
+#include <algorithm>
 #include <cctype>
 #include <cstdint>
 #include <fstream>
 #include <limits>
 #include <stdexcept>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "polymath/gemma4/c5_decoder_math.h"
 #include "polymath/gemma4/gemma_bpe_tokenizer.h"
+#include "polymath/gemma4/opencl_layer_runner.h"
 #include "polymath/gemma4/safetensors_reader.h"
 #include "polymath/gemma4/sha256.h"
 
@@ -55,6 +58,8 @@ struct QaTokenization {
 };
 
 struct SingleLayerBody {
+  std::vector<float> layer_input_row;
+  std::vector<float> ple_input_row;
   std::vector<float> output_row;
 };
 
@@ -308,6 +313,134 @@ Status decode_layer_vector(const SafetensorsReader& reader,
   const std::string key = layer_key(layer_index, suffix);
   return decode_full_tensor_f32_limited(
       reader, key, expected_elements, expected_elements * sizeof(float), output);
+}
+
+std::uint64_t tensor_shape_element_count(const SafetensorsTensorInfo& tensor) {
+  if (tensor.shape.empty()) {
+    return 0U;
+  }
+  std::uint64_t count = 1U;
+  for (const std::uint64_t value : tensor.shape) {
+    if (value == 0U ||
+        count > (std::numeric_limits<std::uint64_t>::max() / value)) {
+      return 0U;
+    }
+    count *= value;
+  }
+  return count;
+}
+
+Status decode_layer_tensor_all(const SafetensorsReader& reader,
+                               std::uint32_t layer_index,
+                               const std::string& suffix,
+                               std::vector<float>& output) {
+  output.clear();
+  const std::string key = layer_key(layer_index, suffix);
+  const SafetensorsTensorInfo* tensor = reader.find_tensor(key);
+  if (tensor == nullptr) {
+    return Status::invalid("safetensors_tensor_missing:" + key);
+  }
+  const std::uint64_t elements = tensor_shape_element_count(*tensor);
+  if (elements == 0U) {
+    return Status::invalid("safetensors_tensor_shape_invalid:" + key);
+  }
+  return decode_full_tensor_f32_limited(reader, key, elements,
+                                        elements * sizeof(float), output);
+}
+
+Status load_opencl_single_token_weights(const SafetensorsReader& reader,
+                                        std::uint32_t layer_index,
+                                        OpenClSingleTokenLayerWeights& weights) {
+  weights = OpenClSingleTokenLayerWeights{};
+  Status status = decode_layer_vector(reader, layer_index,
+                                      "input_layernorm.weight", kHiddenSize,
+                                      weights.input_layernorm_weight);
+  if (!status.is_ok()) {
+    return status;
+  }
+  status = decode_layer_vector(reader, layer_index, "layer_scalar", 1U,
+                               weights.layer_scalar);
+  if (!status.is_ok()) {
+    return status;
+  }
+  status = decode_layer_tensor_all(reader, layer_index, "mlp.down_proj.weight",
+                                   weights.mlp_down_proj_weight);
+  if (!status.is_ok()) {
+    return status;
+  }
+  status = decode_layer_tensor_all(reader, layer_index, "mlp.gate_proj.weight",
+                                   weights.mlp_gate_proj_weight);
+  if (!status.is_ok()) {
+    return status;
+  }
+  status = decode_layer_tensor_all(reader, layer_index, "mlp.up_proj.weight",
+                                   weights.mlp_up_proj_weight);
+  if (!status.is_ok()) {
+    return status;
+  }
+  status = decode_layer_tensor_all(reader, layer_index,
+                                   "per_layer_input_gate.weight",
+                                   weights.per_layer_input_gate_weight);
+  if (!status.is_ok()) {
+    return status;
+  }
+  status = decode_layer_tensor_all(reader, layer_index,
+                                   "per_layer_projection.weight",
+                                   weights.per_layer_projection_weight);
+  if (!status.is_ok()) {
+    return status;
+  }
+  status = decode_layer_vector(reader, layer_index,
+                               "post_attention_layernorm.weight", kHiddenSize,
+                               weights.post_attention_layernorm_weight);
+  if (!status.is_ok()) {
+    return status;
+  }
+  status = decode_layer_vector(reader, layer_index,
+                               "post_feedforward_layernorm.weight", kHiddenSize,
+                               weights.post_feedforward_layernorm_weight);
+  if (!status.is_ok()) {
+    return status;
+  }
+  status = decode_layer_vector(reader, layer_index,
+                               "post_per_layer_input_norm.weight", kHiddenSize,
+                               weights.post_per_layer_input_norm_weight);
+  if (!status.is_ok()) {
+    return status;
+  }
+  status = decode_layer_vector(reader, layer_index,
+                               "pre_feedforward_layernorm.weight", kHiddenSize,
+                               weights.pre_feedforward_layernorm_weight);
+  if (!status.is_ok()) {
+    return status;
+  }
+  status = decode_layer_tensor_all(reader, layer_index, "self_attn.k_norm.weight",
+                                   weights.self_attn_k_norm_weight);
+  if (!status.is_ok()) {
+    return status;
+  }
+  status = decode_layer_tensor_all(reader, layer_index, "self_attn.k_proj.weight",
+                                   weights.self_attn_k_proj_weight);
+  if (!status.is_ok()) {
+    return status;
+  }
+  status = decode_layer_tensor_all(reader, layer_index, "self_attn.o_proj.weight",
+                                   weights.self_attn_o_proj_weight);
+  if (!status.is_ok()) {
+    return status;
+  }
+  status = decode_layer_tensor_all(reader, layer_index, "self_attn.q_norm.weight",
+                                   weights.self_attn_q_norm_weight);
+  if (!status.is_ok()) {
+    return status;
+  }
+  status = decode_layer_tensor_all(reader, layer_index, "self_attn.q_proj.weight",
+                                   weights.self_attn_q_proj_weight);
+  if (!status.is_ok()) {
+    return status;
+  }
+  return decode_layer_tensor_all(reader, layer_index, "self_attn.v_proj.weight",
+                                 weights.self_attn_v_proj_weight);
 }
 
 Status linear_row_major_streamed(const SafetensorsReader& reader,
@@ -1451,7 +1584,9 @@ Status run_cpu_single_layer_body_slice(const SafetensorsReader& reader,
 void append_cpu_single_layer_body_blockers(
     const SourceModelIdentity& identity,
     const QaTokenization& tokenization,
+    SingleLayerBody& body,
     std::vector<std::string>& blockers) {
+  body = SingleLayerBody{};
   if (identity.path.empty() || !file_exists(identity.path)) {
     return;
   }
@@ -1487,15 +1622,86 @@ void append_cpu_single_layer_body_blockers(
     return;
   }
 
-  SingleLayerBody body;
   status = run_cpu_single_layer_body_slice(reader, file, 0U, layer_input_row,
                                            ple_input_row, body);
   if (!status.is_ok()) {
     blockers.push_back(status.message());
     return;
   }
+  body.layer_input_row = std::move(layer_input_row);
+  body.ple_input_row = std::move(ple_input_row);
   if (body.output_row.size() != kHiddenSize) {
     blockers.push_back("c5_full_decoder_cpu_single_layer_output_shape_mismatch");
+  }
+}
+
+void append_opencl_single_layer_parity_blockers(
+    const SourceModelIdentity& identity,
+    const SingleLayerBody& cpu_body,
+    std::vector<std::string>& blockers) {
+  if (identity.path.empty() || !file_exists(identity.path)) {
+    return;
+  }
+  if (cpu_body.layer_input_row.size() != kHiddenSize ||
+      cpu_body.ple_input_row.size() != kSmallInputSize ||
+      cpu_body.output_row.size() != kHiddenSize) {
+    blockers.push_back("c5_full_decoder_opencl_parity_cpu_slice_missing");
+    return;
+  }
+
+  const Status runtime_status = probe_opencl_layer_runtime_available();
+  if (!runtime_status.is_ok()) {
+    blockers.push_back("c5_full_decoder_opencl_parity_runtime_unavailable:" +
+                       runtime_status.message());
+    return;
+  }
+
+  SafetensorsReader reader;
+  Status status = reader.open(identity.path);
+  if (!status.is_ok()) {
+    blockers.push_back(status.message());
+    return;
+  }
+  OpenClSingleTokenLayerWeights weights;
+  status = load_opencl_single_token_weights(reader, 0U, weights);
+  if (!status.is_ok()) {
+    blockers.push_back(status.message());
+    return;
+  }
+
+  OpenClSingleTokenLayerInput input;
+  input.layer_index = 0U;
+  input.layer_input_row = cpu_body.layer_input_row;
+  input.per_layer_input_row = cpu_body.ple_input_row;
+  input.position_id = 0U;
+  OpenClSingleTokenLayerResult result;
+  status = run_opencl_single_token_layer_forward(weights, input, result);
+  if (!status.is_ok()) {
+    blockers.push_back("c5_full_decoder_opencl_parity_dispatch_failed:" +
+                       status.message());
+    return;
+  }
+  if (result.output_row.size() != cpu_body.output_row.size()) {
+    blockers.push_back("c5_full_decoder_opencl_parity_output_shape_mismatch");
+    return;
+  }
+
+  double max_abs = 0.0;
+  double max_rel = 0.0;
+  for (std::size_t index = 0U; index < cpu_body.output_row.size(); ++index) {
+    const double cpu = static_cast<double>(cpu_body.output_row[index]);
+    const double gpu = static_cast<double>(result.output_row[index]);
+    if (!std::isfinite(cpu) || !std::isfinite(gpu)) {
+      blockers.push_back("c5_full_decoder_opencl_parity_output_nonfinite");
+      return;
+    }
+    const double abs_diff = std::fabs(cpu - gpu);
+    const double denom = std::max(1.0, std::fabs(cpu));
+    max_abs = std::max(max_abs, abs_diff);
+    max_rel = std::max(max_rel, abs_diff / denom);
+  }
+  if (max_abs > 5.0e-2 && max_rel > 5.0e-2) {
+    blockers.push_back("c5_full_decoder_opencl_parity_output_mismatch");
   }
 }
 
@@ -1611,8 +1817,6 @@ void append_numeric_decoder_primitive_blockers(
 void append_full_decoder_compute_kernel_blockers(
     C5FullDecoderRuntimeResult& result) {
   result.blockers.push_back(
-      "c5_full_decoder_opencl_parity_dispatch_missing_after_cpu_single_layer_slice");
-  result.blockers.push_back(
       "c5_full_decoder_multi_token_qa_prompt_sequence_orchestration_missing");
   result.blockers.push_back("c5_full_decoder_rank16_adapter_stream_injection_missing");
   result.blockers.push_back("c5_full_decoder_42_layer_orchestration_missing");
@@ -1626,6 +1830,7 @@ C5FullDecoderRuntimeResult run_c5_full_decoder_runtime(
   C5FullDecoderRuntimeResult result;
   try {
     QaTokenization tokenization;
+    SingleLayerBody layer0_body;
     const std::string manifest = read_text_file(request.decoder_manifest_path);
     append_architecture_blockers(manifest, result.blockers);
     append_tokenizer_identity_blockers(manifest, request, result.blockers);
@@ -1654,7 +1859,12 @@ C5FullDecoderRuntimeResult run_c5_full_decoder_runtime(
     }
     if (result.blockers.empty()) {
       append_cpu_single_layer_body_blockers(identity, tokenization,
+                                            layer0_body,
                                             result.blockers);
+    }
+    if (result.blockers.empty()) {
+      append_opencl_single_layer_parity_blockers(identity, layer0_body,
+                                                 result.blockers);
     }
   } catch (const std::exception& error) {
     result.blockers.push_back(std::string("c5_full_decoder_runtime_error:") +

@@ -42,13 +42,17 @@ using cl_mem_flags = std::uint64_t;
 using cl_platform_id = void*;
 using cl_program = void*;
 using cl_uint = std::uint32_t;
+using cl_profiling_info = cl_uint;
 
 constexpr cl_int kClSuccess = 0;
 constexpr cl_bool kClTrue = 1;
 constexpr cl_device_type kClDeviceTypeGpu = 1ULL << 2U;
 constexpr cl_mem_flags kClMemReadWrite = 1ULL << 0U;
 constexpr cl_mem_flags kClMemCopyHostPtr = 1ULL << 5U;
+constexpr std::uint64_t kClQueueProfilingEnable = 1ULL << 1U;
 constexpr cl_uint kClProgramBuildLog = 0x1183U;
+constexpr cl_profiling_info kClProfilingCommandStart = 0x1282U;
+constexpr cl_profiling_info kClProfilingCommandEnd = 0x1283U;
 
 constexpr std::uint32_t kCases = 8U;
 constexpr std::uint32_t kSequence = 128U;
@@ -124,7 +128,10 @@ struct OpenClApi {
   using EnqueueReadBuffer = cl_int (*)(cl_command_queue, cl_mem, cl_bool,
                                        std::size_t, std::size_t, void*, cl_uint,
                                        const cl_event*, cl_event*);
+  using GetEventProfilingInfo = cl_int (*)(cl_event, cl_profiling_info,
+                                           std::size_t, void*, std::size_t*);
   using Finish = cl_int (*)(cl_command_queue);
+  using ReleaseEvent = cl_int (*)(cl_event);
   using ReleaseMemObject = cl_int (*)(cl_mem);
   using ReleaseKernel = cl_int (*)(cl_kernel);
   using ReleaseProgram = cl_int (*)(cl_program);
@@ -149,7 +156,10 @@ struct OpenClApi {
             resolve_symbol<EnqueueNDRangeKernel>(library, "clEnqueueNDRangeKernel")),
         enqueue_read_buffer(
             resolve_symbol<EnqueueReadBuffer>(library, "clEnqueueReadBuffer")),
+        get_event_profiling_info(
+            resolve_symbol<GetEventProfilingInfo>(library, "clGetEventProfilingInfo")),
         finish(resolve_symbol<Finish>(library, "clFinish")),
+        release_event(resolve_symbol<ReleaseEvent>(library, "clReleaseEvent")),
         release_mem_object(
             resolve_symbol<ReleaseMemObject>(library, "clReleaseMemObject")),
         release_kernel(resolve_symbol<ReleaseKernel>(library, "clReleaseKernel")),
@@ -170,7 +180,9 @@ struct OpenClApi {
   CreateBuffer create_buffer;
   EnqueueNDRangeKernel enqueue_nd_range_kernel;
   EnqueueReadBuffer enqueue_read_buffer;
+  GetEventProfilingInfo get_event_profiling_info;
   Finish finish;
+  ReleaseEvent release_event;
   ReleaseMemObject release_mem_object;
   ReleaseKernel release_kernel;
   ReleaseProgram release_program;
@@ -209,6 +221,72 @@ class DynamicLibrary {
   std::string loaded_path_;
 };
 
+struct OpenClRuntimeStats {
+  std::uint64_t context_count = 0U;
+  std::uint64_t command_queue_count = 0U;
+  std::uint64_t program_build_count = 0U;
+  std::uint64_t kernel_create_count = 0U;
+  std::uint64_t buffer_create_count = 0U;
+  std::uint64_t buffer_bytes = 0U;
+  std::uint64_t host_copy_buffer_count = 0U;
+  std::uint64_t host_copy_bytes = 0U;
+  std::uint64_t nd_range_enqueue_count = 0U;
+  std::uint64_t nd_range_profiled_count = 0U;
+  std::uint64_t nd_range_elapsed_ns_total = 0U;
+  std::uint64_t finish_count = 0U;
+  std::uint64_t finish_host_elapsed_ns_total = 0U;
+  std::uint64_t blocking_read_count = 0U;
+  std::uint64_t blocking_read_bytes = 0U;
+  std::uint64_t blocking_read_profiled_count = 0U;
+  std::uint64_t blocking_read_event_elapsed_ns_total = 0U;
+  std::uint64_t blocking_read_host_elapsed_ns_total = 0U;
+  std::uint64_t event_profile_error_count = 0U;
+  std::uint64_t command_queue_properties = 0U;
+};
+
+OpenClRuntimeStats sum_opencl_stats(const OpenClRuntimeStats& first,
+                                    const OpenClRuntimeStats& second) {
+  OpenClRuntimeStats stats;
+  stats.context_count = first.context_count + second.context_count;
+  stats.command_queue_count = first.command_queue_count + second.command_queue_count;
+  stats.program_build_count = first.program_build_count + second.program_build_count;
+  stats.kernel_create_count = first.kernel_create_count + second.kernel_create_count;
+  stats.buffer_create_count = first.buffer_create_count + second.buffer_create_count;
+  stats.buffer_bytes = first.buffer_bytes + second.buffer_bytes;
+  stats.host_copy_buffer_count = first.host_copy_buffer_count + second.host_copy_buffer_count;
+  stats.host_copy_bytes = first.host_copy_bytes + second.host_copy_bytes;
+  stats.nd_range_enqueue_count =
+      first.nd_range_enqueue_count + second.nd_range_enqueue_count;
+  stats.nd_range_profiled_count =
+      first.nd_range_profiled_count + second.nd_range_profiled_count;
+  stats.nd_range_elapsed_ns_total =
+      first.nd_range_elapsed_ns_total + second.nd_range_elapsed_ns_total;
+  stats.finish_count = first.finish_count + second.finish_count;
+  stats.finish_host_elapsed_ns_total =
+      first.finish_host_elapsed_ns_total + second.finish_host_elapsed_ns_total;
+  stats.blocking_read_count = first.blocking_read_count + second.blocking_read_count;
+  stats.blocking_read_bytes = first.blocking_read_bytes + second.blocking_read_bytes;
+  stats.blocking_read_profiled_count =
+      first.blocking_read_profiled_count + second.blocking_read_profiled_count;
+  stats.blocking_read_event_elapsed_ns_total =
+      first.blocking_read_event_elapsed_ns_total +
+      second.blocking_read_event_elapsed_ns_total;
+  stats.blocking_read_host_elapsed_ns_total =
+      first.blocking_read_host_elapsed_ns_total +
+      second.blocking_read_host_elapsed_ns_total;
+  stats.event_profile_error_count =
+      first.event_profile_error_count + second.event_profile_error_count;
+  stats.command_queue_properties =
+      first.command_queue_properties | second.command_queue_properties;
+  return stats;
+}
+
+OpenClRuntimeStats sum_opencl_stats(const OpenClRuntimeStats& first,
+                                    const OpenClRuntimeStats& second,
+                                    const OpenClRuntimeStats& third) {
+  return sum_opencl_stats(sum_opencl_stats(first, second), third);
+}
+
 class ClRuntime {
  public:
   explicit ClRuntime(const OpenClApi& api) : api_(api) {
@@ -221,15 +299,20 @@ class ClRuntime {
     if (context_ == nullptr) {
       throw std::runtime_error("clCreateContext returned null context");
     }
+    ++stats_.context_count;
 
-    queue_ = api_.create_command_queue(context_, device_, 0U, &error);
+    constexpr std::uint64_t queue_properties = kClQueueProfilingEnable;
+    queue_ = api_.create_command_queue(context_, device_, queue_properties, &error);
     require(error, "clCreateCommandQueue");
     if (queue_ == nullptr) {
       throw std::runtime_error("clCreateCommandQueue returned null queue");
     }
+    ++stats_.command_queue_count;
+    stats_.command_queue_properties = queue_properties;
   }
 
   ~ClRuntime() {
+    release_pending_events();
     for (cl_kernel kernel : kernels_) {
       api_.release_kernel(kernel);
     }
@@ -260,6 +343,7 @@ class ClRuntime {
     if (build_error != kClSuccess) {
       throw std::runtime_error("clBuildProgram failed: " + program_build_log());
     }
+    ++stats_.program_build_count;
   }
 
   cl_kernel kernel(const char* name) {
@@ -267,6 +351,7 @@ class ClRuntime {
     cl_kernel created = api_.create_kernel(program_, name, &error);
     require(error, std::string("clCreateKernel ") + name);
     kernels_.push_back(created);
+    ++stats_.kernel_create_count;
     return created;
   }
 
@@ -275,16 +360,23 @@ class ClRuntime {
     cl_mem created = api_.create_buffer(context_, kClMemReadWrite, bytes, nullptr, &error);
     require(error, "clCreateBuffer");
     buffers_.push_back(created);
+    ++stats_.buffer_create_count;
+    stats_.buffer_bytes += bytes;
     return created;
   }
 
   template <typename T>
   cl_mem buffer_from_vector(std::vector<T>& values) {
     cl_int error = kClSuccess;
+    const std::size_t bytes = values.size() * sizeof(T);
     cl_mem created = api_.create_buffer(context_, kClMemReadWrite | kClMemCopyHostPtr,
-                                        values.size() * sizeof(T), values.data(), &error);
+                                        bytes, values.data(), &error);
     require(error, "clCreateBuffer host vector");
     buffers_.push_back(created);
+    ++stats_.buffer_create_count;
+    stats_.buffer_bytes += bytes;
+    ++stats_.host_copy_buffer_count;
+    stats_.host_copy_bytes += bytes;
     return created;
   }
 
@@ -296,37 +388,111 @@ class ClRuntime {
   void run_1d(cl_kernel kernel, std::size_t count) {
     const std::size_t global[] = {round_up(count, 256U)};
     const std::size_t local[] = {256U};
+    cl_event event = nullptr;
     require(api_.enqueue_nd_range_kernel(queue_, kernel, 1U, nullptr, global, local, 0U,
-                                         nullptr, nullptr),
+                                         nullptr, &event),
             "clEnqueueNDRangeKernel 1D");
+    ++stats_.nd_range_enqueue_count;
+    pending_nd_range_events_.push_back(event);
   }
 
   void run_1d_exact(cl_kernel kernel, std::size_t count) {
     const std::size_t global[] = {count};
+    cl_event event = nullptr;
     require(api_.enqueue_nd_range_kernel(queue_, kernel, 1U, nullptr, global, nullptr, 0U,
-                                         nullptr, nullptr),
+                                         nullptr, &event),
             "clEnqueueNDRangeKernel exact 1D");
+    ++stats_.nd_range_enqueue_count;
+    pending_nd_range_events_.push_back(event);
   }
 
   void run_linear(cl_kernel kernel, std::size_t rows, std::size_t cols) {
     const std::size_t local[] = {16U, 16U};
     const std::size_t global[] = {round_up(cols, local[0]), round_up(rows, local[1])};
+    cl_event event = nullptr;
     require(api_.enqueue_nd_range_kernel(queue_, kernel, 2U, nullptr, global, local, 0U,
-                                         nullptr, nullptr),
+                                         nullptr, &event),
             "clEnqueueNDRangeKernel linear");
+    ++stats_.nd_range_enqueue_count;
+    pending_nd_range_events_.push_back(event);
   }
 
-  void finish() { require(api_.finish(queue_), "clFinish"); }
+  void finish() {
+    const auto start = std::chrono::steady_clock::now();
+    require(api_.finish(queue_), "clFinish");
+    const auto end = std::chrono::steady_clock::now();
+    ++stats_.finish_count;
+    stats_.finish_host_elapsed_ns_total += static_cast<std::uint64_t>(
+        std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
+    flush_pending_event_profiles();
+  }
 
   template <typename T>
   void read_buffer(cl_mem buffer, std::vector<T>& values) {
+    const std::size_t bytes = values.size() * sizeof(T);
+    cl_event event = nullptr;
+    const auto start = std::chrono::steady_clock::now();
     require(api_.enqueue_read_buffer(queue_, buffer, kClTrue, 0U,
-                                     values.size() * sizeof(T), values.data(), 0U,
-                                     nullptr, nullptr),
+                                     bytes, values.data(), 0U, nullptr, &event),
             "clEnqueueReadBuffer");
+    const auto end = std::chrono::steady_clock::now();
+    ++stats_.blocking_read_count;
+    stats_.blocking_read_bytes += bytes;
+    stats_.blocking_read_host_elapsed_ns_total += static_cast<std::uint64_t>(
+        std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
+    record_event_profile(event, true);
+    if (event != nullptr) {
+      api_.release_event(event);
+    }
   }
 
+  const OpenClRuntimeStats& stats() const { return stats_; }
+
  private:
+  void record_event_profile(cl_event event, bool blocking_read) {
+    if (event == nullptr) {
+      ++stats_.event_profile_error_count;
+      return;
+    }
+    std::uint64_t start_ns = 0U;
+    std::uint64_t end_ns = 0U;
+    const cl_int start_status = api_.get_event_profiling_info(
+        event, kClProfilingCommandStart, sizeof(start_ns), &start_ns, nullptr);
+    const cl_int end_status = api_.get_event_profiling_info(
+        event, kClProfilingCommandEnd, sizeof(end_ns), &end_ns, nullptr);
+    if (start_status != kClSuccess || end_status != kClSuccess || end_ns < start_ns) {
+      ++stats_.event_profile_error_count;
+      return;
+    }
+    const std::uint64_t elapsed = end_ns - start_ns;
+    if (blocking_read) {
+      ++stats_.blocking_read_profiled_count;
+      stats_.blocking_read_event_elapsed_ns_total += elapsed;
+      return;
+    }
+    ++stats_.nd_range_profiled_count;
+    stats_.nd_range_elapsed_ns_total += elapsed;
+  }
+
+  void flush_pending_event_profiles() {
+    for (cl_event event : pending_nd_range_events_) {
+      record_event_profile(event, false);
+      if (event != nullptr) {
+        api_.release_event(event);
+      }
+    }
+    pending_nd_range_events_.clear();
+  }
+
+  void release_pending_events() {
+    for (cl_event event : pending_nd_range_events_) {
+      if (event != nullptr) {
+        api_.release_event(event);
+      }
+    }
+    pending_nd_range_events_.clear();
+  }
+
   cl_platform_id select_platform() const {
     cl_uint platform_count = 0U;
     require(api_.get_platform_ids(0U, nullptr, &platform_count), "clGetPlatformIDs count");
@@ -384,6 +550,8 @@ class ClRuntime {
   cl_program program_ = nullptr;
   std::vector<cl_kernel> kernels_;
   std::vector<cl_mem> buffers_;
+  std::vector<cl_event> pending_nd_range_events_;
+  OpenClRuntimeStats stats_;
 };
 
 struct TensorData {
@@ -1388,6 +1556,7 @@ void dispatch_adapter_grad_a(ClRuntime& runtime, cl_kernel kernel, cl_mem input,
 struct LayerForwardResult {
   std::vector<float> output_values;
   std::string opencl_library;
+  OpenClRuntimeStats opencl_stats;
   double elapsed_seconds;
   std::uint32_t layer_index;
   long max_rss_kb;
@@ -1404,6 +1573,7 @@ struct AdapterStepResult {
   std::vector<float> optimizer_b_v;
   std::string opencl_library;
   std::string optimizer;
+  OpenClRuntimeStats opencl_stats;
   double elapsed_seconds;
   double loss;
   std::uint32_t active_tokens;
@@ -1722,7 +1892,52 @@ std::uint32_t active_token_count(const std::vector<std::uint8_t>& attention_mask
 }
 
 void write_layer_telemetry(const std::string& output_dir, const std::string& opencl_library,
-                           double elapsed_seconds, std::uint32_t layer_index) {
+                           const OpenClRuntimeStats& stats, double elapsed_seconds,
+                           std::uint32_t layer_index);
+void write_opencl_observability(std::ofstream& file,
+                                const OpenClRuntimeStats& stats,
+                                bool trailing_comma);
+
+void write_opencl_observability(std::ofstream& file,
+                                const OpenClRuntimeStats& stats,
+                                bool trailing_comma) {
+  file << "  \"opencl_observability\": {\n";
+  file << "    \"schema_version\": \"phase15_opencl_runtime_observability_v1\",\n";
+  file << "    \"context_count\": " << stats.context_count << ",\n";
+  file << "    \"command_queue_count\": " << stats.command_queue_count << ",\n";
+  file << "    \"program_build_count\": " << stats.program_build_count << ",\n";
+  file << "    \"kernel_create_count\": " << stats.kernel_create_count << ",\n";
+  file << "    \"buffer_create_count\": " << stats.buffer_create_count << ",\n";
+  file << "    \"buffer_bytes\": " << stats.buffer_bytes << ",\n";
+  file << "    \"host_copy_buffer_count\": " << stats.host_copy_buffer_count << ",\n";
+  file << "    \"host_copy_bytes\": " << stats.host_copy_bytes << ",\n";
+  file << "    \"nd_range_enqueue_count\": " << stats.nd_range_enqueue_count << ",\n";
+  file << "    \"nd_range_profiled_count\": " << stats.nd_range_profiled_count << ",\n";
+  file << "    \"nd_range_elapsed_ns_total\": " << stats.nd_range_elapsed_ns_total << ",\n";
+  file << "    \"finish_count\": " << stats.finish_count << ",\n";
+  file << "    \"finish_host_elapsed_ns_total\": "
+       << stats.finish_host_elapsed_ns_total << ",\n";
+  file << "    \"blocking_read_count\": " << stats.blocking_read_count << ",\n";
+  file << "    \"blocking_read_bytes\": " << stats.blocking_read_bytes << ",\n";
+  file << "    \"blocking_read_profiled_count\": "
+       << stats.blocking_read_profiled_count << ",\n";
+  file << "    \"blocking_read_event_elapsed_ns_total\": "
+       << stats.blocking_read_event_elapsed_ns_total << ",\n";
+  file << "    \"blocking_read_host_elapsed_ns_total\": "
+       << stats.blocking_read_host_elapsed_ns_total << ",\n";
+  file << "    \"event_profile_error_count\": "
+       << stats.event_profile_error_count << ",\n";
+  file << "    \"command_queue_properties\": " << stats.command_queue_properties << "\n";
+  file << "  }";
+  if (trailing_comma) {
+    file << ",";
+  }
+  file << "\n";
+}
+
+void write_layer_telemetry(const std::string& output_dir, const std::string& opencl_library,
+                           const OpenClRuntimeStats& stats, double elapsed_seconds,
+                           std::uint32_t layer_index) {
   std::ofstream file(join_path(output_dir, "telemetry.json"));
   if (!file) {
     throw std::runtime_error("unable to create telemetry.json");
@@ -1742,6 +1957,7 @@ void write_layer_telemetry(const std::string& output_dir, const std::string& ope
   file << ",\n";
   file << "  \"elapsed_seconds\": " << std::fixed << std::setprecision(6)
        << elapsed_seconds << ",\n";
+  write_opencl_observability(file, stats, true);
   file << "  \"max_rss_kb\": " << max_resident_set_kb() << "\n";
   file << "}\n";
 }
@@ -1774,6 +1990,8 @@ void write_stack_telemetry(const std::string& output_dir,
        << "],\n";
   file << "  \"elapsed_seconds\": " << std::fixed << std::setprecision(6)
        << (first.elapsed_seconds + second.elapsed_seconds) << ",\n";
+  write_opencl_observability(file, sum_opencl_stats(first.opencl_stats, second.opencl_stats),
+                             true);
   file << "  \"max_rss_kb\": " << max_resident_set_kb() << "\n";
   file << "}\n";
 }
@@ -2215,6 +2433,7 @@ void write_adapter_telemetry(const std::string& output_dir,
   file << ",\n";
   file << "  \"elapsed_seconds\": " << std::fixed << std::setprecision(6)
        << result.elapsed_seconds << ",\n";
+  write_opencl_observability(file, result.opencl_stats, true);
   file << "  \"max_rss_kb\": " << result.max_rss_kb << ",\n";
   file << "  \"input_checkpoint_sha256\": {\n";
   file << "    \"adapter_a\": ";
@@ -2601,6 +2820,9 @@ void write_streamed_training_telemetry(const std::string& output_dir,
        << first.elapsed_seconds << ", " << second.elapsed_seconds << "],\n";
   file << "  \"adapter_elapsed_seconds\": " << std::fixed << std::setprecision(6)
        << adapter.elapsed_seconds << ",\n";
+  write_opencl_observability(
+      file, sum_opencl_stats(first.opencl_stats, second.opencl_stats, adapter.opencl_stats),
+      true);
   file << "  \"max_rss_kb\": " << max_resident_set_kb() << "\n";
   file << "}\n";
 }
@@ -2857,6 +3079,11 @@ void write_topk_training_telemetry(const std::string& output_dir,
        << result.objective.objective_elapsed_seconds << ",\n";
   file << "  \"adapter_elapsed_seconds\": " << std::fixed << std::setprecision(6)
        << result.adapter.elapsed_seconds << ",\n";
+  write_opencl_observability(
+      file,
+      sum_opencl_stats(first.opencl_stats, second.opencl_stats,
+                       result.adapter.opencl_stats),
+      true);
   file << "  \"token_to_hidden_timing\": {\n";
   file << "    \"read_cache_seconds\": " << std::fixed << std::setprecision(6)
        << token_inputs.timing.read_cache_seconds << ",\n";
@@ -2975,6 +3202,7 @@ AdapterStepResult run_adapter_step_from_values(const std::vector<float>& input,
                            std::move(optimizer.b_v),
                            library.loaded_path(),
                            effective_optimizer.optimizer,
+                           runtime.stats(),
                            elapsed_seconds,
                            loss,
                            active_tokens,
@@ -3083,6 +3311,7 @@ TopKAdapterStepResult run_adapter_topk_kl_step_from_values(
                             std::move(optimizer.b_v),
                             library.loaded_path(),
                             effective_optimizer.optimizer,
+                            runtime.stats(),
                             elapsed_seconds,
                             objective.kl_loss,
                             objective.active_tokens,
@@ -3120,12 +3349,174 @@ AdapterStepResult run_adapter_step_values(const std::string& fixture_dir,
                                       learning_rate, adapter_rank, optimizer_config);
 }
 
+LayerForwardResult run_opencl_layer_values_loaded(
+    std::uint32_t layer_index,
+    TensorData weights,
+    std::vector<float> layer_input,
+    std::vector<float> per_layer_input,
+    std::vector<std::uint8_t> attention_mask,
+    std::vector<std::uint32_t> position_ids) {
+  const auto start_time = std::chrono::steady_clock::now();
+  if (layer_input.size() != (kTokens * kHidden)) {
+    throw std::runtime_error("layer input has invalid element count");
+  }
+  if (per_layer_input.size() != (kTokens * kSmallInput)) {
+    throw std::runtime_error("per-layer input has invalid element count");
+  }
+  if (attention_mask.size() != kTokens || position_ids.size() != kTokens) {
+    throw std::runtime_error("mask or position input has invalid token count");
+  }
+  const std::int32_t q_norm_width =
+      static_cast<std::int32_t>(weights.self_attn_q_norm_weight.size());
+  const std::int32_t k_norm_width =
+      static_cast<std::int32_t>(weights.self_attn_k_norm_weight.size());
+  if (q_norm_width <= 0 || k_norm_width <= 0 ||
+      ((kQueryHeads * kHeadDim) % q_norm_width) != 0U ||
+      ((kKeyValueHeads * kHeadDim) % k_norm_width) != 0U) {
+    throw std::runtime_error("q/k norm width is incompatible with projection width");
+  }
+
+  DynamicLibrary library;
+  OpenClApi api(library.handle());
+  ClRuntime runtime(api);
+  runtime.build_program(opencl_source());
+  const KernelSet kernels = create_kernels(runtime);
+
+  cl_mem input = runtime.buffer_from_vector(layer_input);
+  cl_mem per_input = runtime.buffer_from_vector(per_layer_input);
+  cl_mem mask = runtime.buffer_from_vector(attention_mask);
+  cl_mem positions = runtime.buffer_from_vector(position_ids);
+  cl_mem input_ln_w = runtime.buffer_from_vector(weights.input_layernorm_weight);
+  cl_mem down_w = runtime.buffer_from_vector(weights.mlp_down_proj_weight);
+  cl_mem gate_w = runtime.buffer_from_vector(weights.mlp_gate_proj_weight);
+  cl_mem up_w = runtime.buffer_from_vector(weights.mlp_up_proj_weight);
+  cl_mem per_gate_w = runtime.buffer_from_vector(weights.per_layer_input_gate_weight);
+  cl_mem per_proj_w = runtime.buffer_from_vector(weights.per_layer_projection_weight);
+  cl_mem post_attn_ln_w = runtime.buffer_from_vector(weights.post_attention_layernorm_weight);
+  cl_mem post_ff_ln_w = runtime.buffer_from_vector(weights.post_feedforward_layernorm_weight);
+  cl_mem post_per_ln_w = runtime.buffer_from_vector(weights.post_per_layer_input_norm_weight);
+  cl_mem pre_ff_ln_w = runtime.buffer_from_vector(weights.pre_feedforward_layernorm_weight);
+  cl_mem k_norm_w = runtime.buffer_from_vector(weights.self_attn_k_norm_weight);
+  cl_mem k_proj_w = runtime.buffer_from_vector(weights.self_attn_k_proj_weight);
+  cl_mem o_proj_w = runtime.buffer_from_vector(weights.self_attn_o_proj_weight);
+  cl_mem q_norm_w = runtime.buffer_from_vector(weights.self_attn_q_norm_weight);
+  cl_mem q_proj_w = runtime.buffer_from_vector(weights.self_attn_q_proj_weight);
+  cl_mem v_proj_w = runtime.buffer_from_vector(weights.self_attn_v_proj_weight);
+
+  const std::size_t hidden_bytes = kTokens * kHidden * sizeof(float);
+  const std::size_t query_bytes = kTokens * kQueryHeads * kHeadDim * sizeof(float);
+  const std::size_t key_value_bytes = kTokens * kKeyValueHeads * kHeadDim * sizeof(float);
+  const std::size_t intermediate_bytes = kTokens * kIntermediate * sizeof(float);
+  const std::size_t small_bytes = kTokens * kSmallInput * sizeof(float);
+  const std::size_t scores_bytes = kCases * kQueryHeads * kSequence * kSequence * sizeof(float);
+
+  cl_mem attn_in = runtime.buffer(hidden_bytes);
+  cl_mem q = runtime.buffer(query_bytes);
+  cl_mem k = runtime.buffer(key_value_bytes);
+  cl_mem v = runtime.buffer(key_value_bytes);
+  cl_mem qn = runtime.buffer(query_bytes);
+  cl_mem kn = runtime.buffer(key_value_bytes);
+  cl_mem vn = runtime.buffer(key_value_bytes);
+  cl_mem q_rope = runtime.buffer(query_bytes);
+  cl_mem k_rope = runtime.buffer(key_value_bytes);
+  cl_mem scores = runtime.buffer(scores_bytes);
+  cl_mem context = runtime.buffer(query_bytes);
+  cl_mem attn_proj = runtime.buffer(hidden_bytes);
+  cl_mem attn_norm = runtime.buffer(hidden_bytes);
+  cl_mem hidden_state = runtime.buffer(hidden_bytes);
+  cl_mem ff_in = runtime.buffer(hidden_bytes);
+  cl_mem gate = runtime.buffer(intermediate_bytes);
+  cl_mem up = runtime.buffer(intermediate_bytes);
+  cl_mem activation = runtime.buffer(intermediate_bytes);
+  cl_mem down = runtime.buffer(hidden_bytes);
+  cl_mem down_norm = runtime.buffer(hidden_bytes);
+  cl_mem hidden2 = runtime.buffer(hidden_bytes);
+  cl_mem per_gate = runtime.buffer(small_bytes);
+  cl_mem per_activation = runtime.buffer(small_bytes);
+  cl_mem per_proj = runtime.buffer(hidden_bytes);
+  cl_mem per_norm = runtime.buffer(hidden_bytes);
+  cl_mem output = runtime.buffer(hidden_bytes);
+
+  const std::int32_t tokens = static_cast<std::int32_t>(kTokens);
+  const std::int32_t hidden_size = static_cast<std::int32_t>(kHidden);
+  const std::int32_t q_width = static_cast<std::int32_t>(kQueryHeads * kHeadDim);
+  const std::int32_t kv_width = static_cast<std::int32_t>(kKeyValueHeads * kHeadDim);
+  const std::int32_t head_dim = static_cast<std::int32_t>(kHeadDim);
+  const std::int32_t intermediate = static_cast<std::int32_t>(kIntermediate);
+  const std::int32_t small_input = static_cast<std::int32_t>(kSmallInput);
+
+  dispatch_rms_weighted(runtime, kernels.rms_weighted, input, input_ln_w, attn_in, tokens,
+                        hidden_size);
+  dispatch_linear(runtime, kernels.linear_tiled, attn_in, q_proj_w, q, tokens, hidden_size,
+                  q_width);
+  dispatch_linear(runtime, kernels.linear_tiled, attn_in, k_proj_w, k, tokens, hidden_size,
+                  kv_width);
+  dispatch_linear(runtime, kernels.linear_tiled, attn_in, v_proj_w, v, tokens, hidden_size,
+                  kv_width);
+  dispatch_rms_weighted(runtime, kernels.rms_weighted, q, q_norm_w, qn,
+                        tokens * (q_width / q_norm_width), q_norm_width);
+  dispatch_rms_weighted(runtime, kernels.rms_weighted, k, k_norm_w, kn,
+                        tokens * (kv_width / k_norm_width), k_norm_width);
+  dispatch_rms_unweighted(runtime, kernels.rms_unweighted, v, vn,
+                          tokens * static_cast<std::int32_t>(kKeyValueHeads), head_dim);
+  dispatch_rope(runtime, kernels.rope, qn, q_rope, positions, tokens,
+                static_cast<std::int32_t>(kQueryHeads), head_dim);
+  dispatch_rope(runtime, kernels.rope, kn, k_rope, positions, tokens,
+                static_cast<std::int32_t>(kKeyValueHeads), head_dim);
+  dispatch_attention_scores(runtime, kernels.attention_scores, q_rope, k_rope, mask,
+                            scores);
+  dispatch_attention_values(runtime, kernels.attention_values, scores, vn, context);
+  dispatch_linear(runtime, kernels.linear_tiled, context, o_proj_w, attn_proj, tokens,
+                  q_width, hidden_size);
+  dispatch_rms_weighted(runtime, kernels.rms_weighted, attn_proj, post_attn_ln_w,
+                        attn_norm, tokens, hidden_size);
+  dispatch_add(runtime, kernels.add_vectors, input, attn_norm, hidden_state,
+               tokens * hidden_size);
+
+  dispatch_rms_weighted(runtime, kernels.rms_weighted, hidden_state, pre_ff_ln_w, ff_in,
+                        tokens, hidden_size);
+  dispatch_linear(runtime, kernels.linear_tiled, ff_in, gate_w, gate, tokens, hidden_size,
+                  intermediate);
+  dispatch_linear(runtime, kernels.linear_tiled, ff_in, up_w, up, tokens, hidden_size,
+                  intermediate);
+  dispatch_gelu_mul(runtime, kernels.gelu_tanh_mul, gate, up, activation,
+                    tokens * intermediate);
+  dispatch_linear(runtime, kernels.linear_tiled, activation, down_w, down, tokens,
+                  intermediate, hidden_size);
+  dispatch_rms_weighted(runtime, kernels.rms_weighted, down, post_ff_ln_w, down_norm,
+                        tokens, hidden_size);
+  dispatch_add(runtime, kernels.add_vectors, hidden_state, down_norm, hidden2,
+               tokens * hidden_size);
+
+  dispatch_linear(runtime, kernels.linear_tiled, hidden2, per_gate_w, per_gate, tokens,
+                  hidden_size, small_input);
+  dispatch_gelu_mul(runtime, kernels.gelu_tanh_mul, per_gate, per_input, per_activation,
+                    tokens * small_input);
+  dispatch_linear(runtime, kernels.linear_tiled, per_activation, per_proj_w, per_proj,
+                  tokens, small_input, hidden_size);
+  dispatch_rms_weighted(runtime, kernels.rms_weighted, per_proj, post_per_ln_w, per_norm,
+                        tokens, hidden_size);
+  dispatch_add(runtime, kernels.add_vectors, hidden2, per_norm, output,
+               tokens * hidden_size);
+  dispatch_scale(runtime, kernels.scale_inplace, output, weights.layer_scalar[0],
+                 tokens * hidden_size);
+  runtime.finish();
+
+  std::vector<float> output_values(kTokens * kHidden);
+  runtime.read_buffer(output, output_values);
+  const auto end_time = std::chrono::steady_clock::now();
+  const double elapsed_seconds =
+      std::chrono::duration<double>(end_time - start_time).count();
+  return LayerForwardResult{std::move(output_values), library.loaded_path(),
+                            runtime.stats(), elapsed_seconds, layer_index,
+                            max_resident_set_kb()};
+}
+
 LayerForwardResult run_opencl_layer_values(const std::string& pack_dir,
                                            const std::vector<float>* input_override,
                                            const std::vector<float>* per_input_override,
                                            const std::vector<std::uint8_t>* mask_override,
                                            const std::vector<std::uint32_t>* position_override) {
-  const auto start_time = std::chrono::steady_clock::now();
   const std::uint32_t layer_index = parse_layer_index(pack_dir);
   TensorData weights = load_weights(pack_dir, layer_index);
   std::vector<float> layer_input =
@@ -3157,143 +3548,83 @@ LayerForwardResult run_opencl_layer_values(const std::string& pack_dir,
     if (attention_mask.size() != kTokens || position_ids.size() != kTokens) {
       throw std::runtime_error("mask or position override has invalid token count");
     }
-
-    DynamicLibrary library;
-    OpenClApi api(library.handle());
-    ClRuntime runtime(api);
-    runtime.build_program(opencl_source());
-    const KernelSet kernels = create_kernels(runtime);
-
-    cl_mem input = runtime.buffer_from_vector(layer_input);
-    cl_mem per_input = runtime.buffer_from_vector(per_layer_input);
-    cl_mem mask = runtime.buffer_from_vector(attention_mask);
-    cl_mem positions = runtime.buffer_from_vector(position_ids);
-    cl_mem input_ln_w = runtime.buffer_from_vector(weights.input_layernorm_weight);
-    cl_mem down_w = runtime.buffer_from_vector(weights.mlp_down_proj_weight);
-    cl_mem gate_w = runtime.buffer_from_vector(weights.mlp_gate_proj_weight);
-    cl_mem up_w = runtime.buffer_from_vector(weights.mlp_up_proj_weight);
-    cl_mem per_gate_w = runtime.buffer_from_vector(weights.per_layer_input_gate_weight);
-    cl_mem per_proj_w = runtime.buffer_from_vector(weights.per_layer_projection_weight);
-    cl_mem post_attn_ln_w = runtime.buffer_from_vector(weights.post_attention_layernorm_weight);
-    cl_mem post_ff_ln_w = runtime.buffer_from_vector(weights.post_feedforward_layernorm_weight);
-    cl_mem post_per_ln_w = runtime.buffer_from_vector(weights.post_per_layer_input_norm_weight);
-    cl_mem pre_ff_ln_w = runtime.buffer_from_vector(weights.pre_feedforward_layernorm_weight);
-    cl_mem k_norm_w = runtime.buffer_from_vector(weights.self_attn_k_norm_weight);
-    cl_mem k_proj_w = runtime.buffer_from_vector(weights.self_attn_k_proj_weight);
-    cl_mem o_proj_w = runtime.buffer_from_vector(weights.self_attn_o_proj_weight);
-    cl_mem q_norm_w = runtime.buffer_from_vector(weights.self_attn_q_norm_weight);
-    cl_mem q_proj_w = runtime.buffer_from_vector(weights.self_attn_q_proj_weight);
-    cl_mem v_proj_w = runtime.buffer_from_vector(weights.self_attn_v_proj_weight);
-
-    const std::size_t hidden_bytes = kTokens * kHidden * sizeof(float);
-    const std::size_t query_bytes = kTokens * kQueryHeads * kHeadDim * sizeof(float);
-    const std::size_t key_value_bytes = kTokens * kKeyValueHeads * kHeadDim * sizeof(float);
-    const std::size_t intermediate_bytes = kTokens * kIntermediate * sizeof(float);
-    const std::size_t small_bytes = kTokens * kSmallInput * sizeof(float);
-    const std::size_t scores_bytes = kCases * kQueryHeads * kSequence * kSequence * sizeof(float);
-
-    cl_mem attn_in = runtime.buffer(hidden_bytes);
-    cl_mem q = runtime.buffer(query_bytes);
-    cl_mem k = runtime.buffer(key_value_bytes);
-    cl_mem v = runtime.buffer(key_value_bytes);
-    cl_mem qn = runtime.buffer(query_bytes);
-    cl_mem kn = runtime.buffer(key_value_bytes);
-    cl_mem vn = runtime.buffer(key_value_bytes);
-    cl_mem q_rope = runtime.buffer(query_bytes);
-    cl_mem k_rope = runtime.buffer(key_value_bytes);
-    cl_mem scores = runtime.buffer(scores_bytes);
-    cl_mem context = runtime.buffer(query_bytes);
-    cl_mem attn_proj = runtime.buffer(hidden_bytes);
-    cl_mem attn_norm = runtime.buffer(hidden_bytes);
-    cl_mem hidden_state = runtime.buffer(hidden_bytes);
-    cl_mem ff_in = runtime.buffer(hidden_bytes);
-    cl_mem gate = runtime.buffer(intermediate_bytes);
-    cl_mem up = runtime.buffer(intermediate_bytes);
-    cl_mem activation = runtime.buffer(intermediate_bytes);
-    cl_mem down = runtime.buffer(hidden_bytes);
-    cl_mem down_norm = runtime.buffer(hidden_bytes);
-    cl_mem hidden2 = runtime.buffer(hidden_bytes);
-    cl_mem per_gate = runtime.buffer(small_bytes);
-    cl_mem per_activation = runtime.buffer(small_bytes);
-    cl_mem per_proj = runtime.buffer(hidden_bytes);
-    cl_mem per_norm = runtime.buffer(hidden_bytes);
-    cl_mem output = runtime.buffer(hidden_bytes);
-
-    const std::int32_t tokens = static_cast<std::int32_t>(kTokens);
-    const std::int32_t hidden_size = static_cast<std::int32_t>(kHidden);
-    const std::int32_t q_width = static_cast<std::int32_t>(kQueryHeads * kHeadDim);
-    const std::int32_t kv_width = static_cast<std::int32_t>(kKeyValueHeads * kHeadDim);
-    const std::int32_t head_dim = static_cast<std::int32_t>(kHeadDim);
-    const std::int32_t intermediate = static_cast<std::int32_t>(kIntermediate);
-    const std::int32_t small_input = static_cast<std::int32_t>(kSmallInput);
-
-    dispatch_rms_weighted(runtime, kernels.rms_weighted, input, input_ln_w, attn_in, tokens,
-                          hidden_size);
-    dispatch_linear(runtime, kernels.linear_tiled, attn_in, q_proj_w, q, tokens, hidden_size,
-                    q_width);
-    dispatch_linear(runtime, kernels.linear_tiled, attn_in, k_proj_w, k, tokens, hidden_size,
-                    kv_width);
-    dispatch_linear(runtime, kernels.linear_tiled, attn_in, v_proj_w, v, tokens, hidden_size,
-                    kv_width);
-    dispatch_rms_weighted(runtime, kernels.rms_weighted, q, q_norm_w, qn,
-                          tokens * static_cast<std::int32_t>(kQueryHeads), head_dim);
-    dispatch_rms_weighted(runtime, kernels.rms_weighted, k, k_norm_w, kn,
-                          tokens * static_cast<std::int32_t>(kKeyValueHeads), head_dim);
-    dispatch_rms_unweighted(runtime, kernels.rms_unweighted, v, vn,
-                            tokens * static_cast<std::int32_t>(kKeyValueHeads), head_dim);
-    dispatch_rope(runtime, kernels.rope, qn, q_rope, positions, tokens,
-                  static_cast<std::int32_t>(kQueryHeads), head_dim);
-    dispatch_rope(runtime, kernels.rope, kn, k_rope, positions, tokens,
-                  static_cast<std::int32_t>(kKeyValueHeads), head_dim);
-    dispatch_attention_scores(runtime, kernels.attention_scores, q_rope, k_rope, mask,
-                              scores);
-    dispatch_attention_values(runtime, kernels.attention_values, scores, vn, context);
-    dispatch_linear(runtime, kernels.linear_tiled, context, o_proj_w, attn_proj, tokens,
-                    q_width, hidden_size);
-    dispatch_rms_weighted(runtime, kernels.rms_weighted, attn_proj, post_attn_ln_w,
-                          attn_norm, tokens, hidden_size);
-    dispatch_add(runtime, kernels.add_vectors, input, attn_norm, hidden_state,
-                 tokens * hidden_size);
-
-    dispatch_rms_weighted(runtime, kernels.rms_weighted, hidden_state, pre_ff_ln_w, ff_in, tokens,
-                          hidden_size);
-    dispatch_linear(runtime, kernels.linear_tiled, ff_in, gate_w, gate, tokens, hidden_size,
-                    intermediate);
-    dispatch_linear(runtime, kernels.linear_tiled, ff_in, up_w, up, tokens, hidden_size,
-                    intermediate);
-    dispatch_gelu_mul(runtime, kernels.gelu_tanh_mul, gate, up, activation,
-                      tokens * intermediate);
-    dispatch_linear(runtime, kernels.linear_tiled, activation, down_w, down, tokens,
-                    intermediate, hidden_size);
-    dispatch_rms_weighted(runtime, kernels.rms_weighted, down, post_ff_ln_w, down_norm,
-                          tokens, hidden_size);
-    dispatch_add(runtime, kernels.add_vectors, hidden_state, down_norm, hidden2,
-                 tokens * hidden_size);
-
-    dispatch_linear(runtime, kernels.linear_tiled, hidden2, per_gate_w, per_gate, tokens,
-                    hidden_size, small_input);
-    dispatch_gelu_mul(runtime, kernels.gelu_tanh_mul, per_gate, per_input, per_activation,
-                      tokens * small_input);
-    dispatch_linear(runtime, kernels.linear_tiled, per_activation, per_proj_w, per_proj,
-                    tokens, small_input, hidden_size);
-    dispatch_rms_weighted(runtime, kernels.rms_weighted, per_proj, post_per_ln_w, per_norm,
-                          tokens, hidden_size);
-    dispatch_add(runtime, kernels.add_vectors, hidden2, per_norm, output,
-                 tokens * hidden_size);
-    dispatch_scale(runtime, kernels.scale_inplace, output, weights.layer_scalar[0],
-                   tokens * hidden_size);
-    runtime.finish();
-
-    std::vector<float> output_values(kTokens * kHidden);
-    runtime.read_buffer(output, output_values);
-    const auto end_time = std::chrono::steady_clock::now();
-    const double elapsed_seconds =
-        std::chrono::duration<double>(end_time - start_time).count();
-  return LayerForwardResult{std::move(output_values), library.loaded_path(), elapsed_seconds,
-                            layer_index, max_resident_set_kb()};
+  return run_opencl_layer_values_loaded(
+      layer_index, std::move(weights), std::move(layer_input),
+      std::move(per_layer_input), std::move(attention_mask),
+      std::move(position_ids));
 }
 
 }  // namespace
+
+Status probe_opencl_layer_runtime_available() {
+  try {
+    DynamicLibrary library;
+    OpenClApi api(library.handle());
+    ClRuntime runtime(api);
+    return Status::ok();
+  } catch (const std::exception& error) {
+    return Status::invalid(std::string("opencl_single_token_layer_runtime_unavailable:") +
+                           error.what());
+  }
+}
+
+Status run_opencl_single_token_layer_forward(
+    const OpenClSingleTokenLayerWeights& weights,
+    const OpenClSingleTokenLayerInput& input,
+    OpenClSingleTokenLayerResult& result) {
+  result = OpenClSingleTokenLayerResult{};
+  try {
+    if (input.layer_input_row.size() != kHidden ||
+        input.per_layer_input_row.size() != kSmallInput) {
+      return Status::invalid("opencl_single_token_layer_input_shape_mismatch");
+    }
+
+    TensorData loaded;
+    loaded.input_layernorm_weight = weights.input_layernorm_weight;
+    loaded.layer_scalar = weights.layer_scalar;
+    loaded.mlp_down_proj_weight = weights.mlp_down_proj_weight;
+    loaded.mlp_gate_proj_weight = weights.mlp_gate_proj_weight;
+    loaded.mlp_up_proj_weight = weights.mlp_up_proj_weight;
+    loaded.per_layer_input_gate_weight = weights.per_layer_input_gate_weight;
+    loaded.per_layer_projection_weight = weights.per_layer_projection_weight;
+    loaded.post_attention_layernorm_weight = weights.post_attention_layernorm_weight;
+    loaded.post_feedforward_layernorm_weight = weights.post_feedforward_layernorm_weight;
+    loaded.post_per_layer_input_norm_weight = weights.post_per_layer_input_norm_weight;
+    loaded.pre_feedforward_layernorm_weight = weights.pre_feedforward_layernorm_weight;
+    loaded.self_attn_k_norm_weight = weights.self_attn_k_norm_weight;
+    loaded.self_attn_k_proj_weight = weights.self_attn_k_proj_weight;
+    loaded.self_attn_o_proj_weight = weights.self_attn_o_proj_weight;
+    loaded.self_attn_q_norm_weight = weights.self_attn_q_norm_weight;
+    loaded.self_attn_q_proj_weight = weights.self_attn_q_proj_weight;
+    loaded.self_attn_v_proj_weight = weights.self_attn_v_proj_weight;
+
+    std::vector<float> layer_input(kTokens * kHidden, 0.0F);
+    std::copy(input.layer_input_row.begin(), input.layer_input_row.end(),
+              layer_input.begin());
+    std::vector<float> per_layer_input(kTokens * kSmallInput, 0.0F);
+    std::copy(input.per_layer_input_row.begin(), input.per_layer_input_row.end(),
+              per_layer_input.begin());
+    std::vector<std::uint8_t> attention_mask(kTokens, 0U);
+    attention_mask[0] = 1U;
+    std::vector<std::uint32_t> position_ids(kTokens, 0U);
+    position_ids[0] = input.position_id;
+
+    const LayerForwardResult forward = run_opencl_layer_values_loaded(
+        input.layer_index, std::move(loaded), std::move(layer_input),
+        std::move(per_layer_input), std::move(attention_mask),
+        std::move(position_ids));
+    result.output_row.assign(forward.output_values.begin(),
+                             forward.output_values.begin() + kHidden);
+    result.opencl_library = forward.opencl_library;
+    result.elapsed_seconds = forward.elapsed_seconds;
+    result.max_resident_set_kb =
+        static_cast<std::uint64_t>(forward.max_rss_kb);
+    return Status::ok();
+  } catch (const std::exception& error) {
+    return Status::invalid(std::string("opencl_single_token_layer_error:") +
+                           error.what());
+  }
+}
 
 Status run_opencl_layer_forward(const std::string& pack_dir, const std::string& output_dir) {
   try {
@@ -3301,8 +3632,8 @@ Status run_opencl_layer_forward(const std::string& pack_dir, const std::string& 
     const LayerForwardResult result =
         run_opencl_layer_values(pack_dir, nullptr, nullptr, nullptr, nullptr);
     write_binary_vector(join_path(output_dir, "layer_output.f32.bin"), result.output_values);
-    write_layer_telemetry(output_dir, result.opencl_library, result.elapsed_seconds,
-                          result.layer_index);
+    write_layer_telemetry(output_dir, result.opencl_library, result.opencl_stats,
+                          result.elapsed_seconds, result.layer_index);
     return Status::ok();
   } catch (const std::exception& error) {
     return Status::invalid(error.what());

@@ -1,0 +1,88 @@
+{
+  "schema_version": "polymath_phase34_native_runtime_pathset_report_v1",
+  "lane": "phase34_native_full_decoder_consumer",
+  "status": "opencl_parity_dispatch_pathset_ready_for_custodian_pending_phone_gpu_verification",
+  "base_lineage": {
+    "current_head_observed_before_pathset": "73aad492e92f37a35ba430c69dfb497194a11a99",
+    "custodian_frozen_cpu_single_layer_attention_mlp_slice_commit": "4f4c8d6b6423a6c9f36cbdb26b7e763953a16586"
+  },
+  "implemented_boundary": {
+    "existing_runner_surface": "gemma4_layer_runner --run-c5-qa-predict",
+    "existing_runtime_function": "run_c5_full_decoder_runtime(...)",
+    "new_runtime_slice": "C5 invokes shared OpenCL single-token layer forward after CPU single-layer body success and compares GPU output against CPU output without writing payloads",
+    "shared_opencl_path": "run_opencl_single_token_layer_forward(...) reuses opencl_layer_runner kernel dispatch and internally pads the single token to the existing 8x128 execution shape",
+    "qk_norm_layout": "OpenCL q/k RMS norm dispatch now derives norm width from the actual q_norm/k_norm tensor vectors instead of hard-coding head_dim 256",
+    "raw_payload_output_written": false,
+    "prediction_jsonl_written": false,
+    "bridge_mse_as_c5_loss": false
+  },
+  "source_changes": [
+    {
+      "path": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/include/polymath/gemma4/opencl_layer_runner.h",
+      "sha256": "e550a30c7aafd98dba7f52c6da8f093df01f6b6b921b763a49d6c087408aa2db",
+      "summary": "Adds public single-token OpenCL layer request/result structs, a runtime availability probe, and the shared single-token forward function for C5 parity dispatch."
+    },
+    {
+      "path": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/opencl_layer_runner.cpp",
+      "sha256": "f09c98d0a772892d494457e5d381c95f61273b6e59c760546b3c9ae0b6b33b78",
+      "summary": "Factors the existing OpenCL layer body into a loaded-values helper, derives q/k norm widths from tensor vectors, adds the OpenCL runtime probe, and exposes a single-token wrapper that pads to the existing kernel execution shape."
+    },
+    {
+      "path": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp",
+      "sha256": "2b3be6986b2dfb3cb1db350f22b9ce0bfa95170220fe909f0a93217428749174",
+      "summary": "Loads manifest-backed layer-0 tensors for OpenCL parity only after CPU body success and runtime availability, dispatches the shared OpenCL single-token forward path, and fails closed on runtime absence, dispatch error, shape mismatch, nonfinite output, or CPU/GPU mismatch."
+    },
+    {
+      "path": "tests/test_c5_native_runtime_contract.py",
+      "sha256": "43216f9f9e222e991683a5877381edc8944773279aff5e1a1981219e9d07ce18",
+      "summary": "Updates local host expectations to the precise OpenCL runtime-unavailable fail-closed field while preserving no-prediction behavior and prior schema/tokenizer/tensor rejection guards."
+    }
+  ],
+  "local_first_missing_green_field": "c5_full_decoder_opencl_parity_runtime_unavailable",
+  "phone_expected_first_missing_after_successful_opencl_parity": "c5_full_decoder_multi_token_qa_prompt_sequence_orchestration_missing",
+  "remaining_runtime_work": [
+    "run the C5 native probe on the RedMagic phone with the rebuilt C5-capable runner to prove OpenCL parity against real GPU runtime",
+    "extend QA prompt execution from first-token proof to bounded multi-token sequence orchestration",
+    "inject rank-16 adapter stream at the declared adapter site",
+    "orchestrate all 42 decoder layers without full B*S*V materialization",
+    "stream tied LM-head chunks and emit teacher-forced NLL, confidence, and prediction JSONL only after real logits exist"
+  ],
+  "verification": [
+    {
+      "command": "cmake -S integrations/gemma4-snapdragon-megakernel/gemma4_megakernel -B build/gemma4_megakernel_host -DGEMMA4_MEGAKERNEL_WARNINGS_AS_ERRORS=ON && cmake --build build/gemma4_megakernel_host --target gemma4_layer_runner -j 8",
+      "result": "pass"
+    },
+    {
+      "command": "python3.11 -m pytest -q tests/test_c5_native_runtime_contract.py",
+      "result": "pass: 10 passed in 61.62s"
+    },
+    {
+      "command": "python3.11 -m pytest -q tests/test_c5_full_decoder_exporter.py tests/test_c5_native_runtime_contract.py tests/test_c5_phase34_qa_inference_producer.py tests/test_c5_prediction_payloads.py tests/test_c5_heldout_eval.py",
+      "result": "pass: 36 passed in 67.67s"
+    },
+    {
+      "command": "ctest --test-dir build/gemma4_megakernel_host --output-on-failure",
+      "result": "pass: 4/4 tests passed"
+    },
+    {
+      "command": "git diff --check -- integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/include/polymath/gemma4/opencl_layer_runner.h integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/opencl_layer_runner.cpp integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp tests/test_c5_native_runtime_contract.py",
+      "result": "pass"
+    }
+  ],
+  "research_escalation": "none",
+  "raw_boundary_proof": {
+    "raw_model_checkpoint_adapter_tensor_or_prediction_payloads_added_to_git": false,
+    "metadata_only_report": true
+  },
+  "next_action": "Repo Custodian freeze this pathset, then Execution rebuild/copy the C5 runner on phone and rerun the existing C5_after_C1 native probe to exercise OpenCL parity on the RedMagic GPU.",
+  "nonclaims": [
+    "no C5 pass",
+    "no executed C5 metrics",
+    "no prediction JSONL",
+    "no logits/loss/confidence/candidate_train_loss claim",
+    "no learning or model-quality claim",
+    "no Phase3/4 readiness claim",
+    "no 100k/1M Phase2 authority",
+    "no Comet-backed accepted run"
+  ]
+}
