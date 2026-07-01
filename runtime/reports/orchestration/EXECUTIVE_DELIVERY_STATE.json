@@ -994,7 +994,7 @@
       "training_material_steward": "complete for material identities",
       "ui_engineer": "not nudged until C5 evidence-backed status exists"
     },
-    "last_concrete_action": "Repo Custodian hit a fail-fast boundary on repo-local raw .jsonl path references in EXECUTIVE_DELIVERY_STATE.json; meta redacted the local/absolute JSONL payload path strings to metadata-only labels, preserved identity hashes, and kept the active model-source authorization edge.",
+    "last_concrete_action": "Repo Custodian froze and pushed the corrected metadata-only model-source authorization pathset at abf8e5d744ea02c525c79ddfd50d451d751c67b0 after meta redacted local/absolute JSONL payload path drift.",
     "lineage_drift_repair_status": {
       "commit": "ee74ae572322e05624deac6f6f8788c2c6e2f692",
       "proof_required": [
@@ -1010,7 +1010,7 @@
       ],
       "status": "source_repair_frozen_pending_execution_proof"
     },
-    "next_concrete_action": "Repo Custodian freezes the updated metadata-only state/report pathset if clean. Separately, user/meta still supplies the exact model source route: mount/restore /workspace/models/gemma4_e4b/snapshot/model.safetensors or authorize bounded HF read/download/export for google/gemma-4-E4B revision 7aa32e6889efd6300124851b164f8b364314c3d8 without printing secrets.",
+    "next_concrete_action": "User/meta supplies one exact model source route: restore or mount the historical outside-git /workspace/models/gemma4_e4b/snapshot/model.safetensors, or explicitly authorize bounded HF read/download/export for google/gemma-4-E4B revision 7aa32e6889efd6300124851b164f8b364314c3d8 without printing secrets. Once available, Engineering runs the frozen exporter outside git and returns decoder_manifest/adapter_site_policy identities.",
     "nonclaims": [
       "development-cycle evidence only unless stronger gates pass",
       "no C5 pass",
@@ -1038,7 +1038,7 @@
       "no HF/Comet call",
       "no secrets sourced"
     ],
-    "owner": "User/meta for exact model-source route; Engineering Orchestrator 019f138b-d229-7640-98b7-2f185d6beae0 resumes exporter run after source is mounted or HF read/download is explicitly authorized; Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050 owns metadata-only freeze of the new report/state pathset.",
+    "owner": "User/meta owns the exact model-source route; Engineering Orchestrator 019f138b-d229-7640-98b7-2f185d6beae0 resumes exporter run after source is mounted or HF read/download is explicitly authorized. Repo Custodian completed metadata custody at abf8e5d744ea02c525c79ddfd50d451d751c67b0.",
     "phase2_status_by_phase": {
       "C1": {
         "packets": 5180,
@@ -1262,11 +1262,9 @@
     "run_label": "c1_c4_waveB_rerun_20260630T230411Z",
     "run_root": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z",
     "status_classification": "AUTHORIZATION_PENDING_MODEL_SOURCE_OR_REMOTE_MOUNT",
-    "threads_nudged_this_tick": [
-      "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050"
-    ],
-    "timestamp_utc": "2026-07-01T04:56:47Z",
-    "updated_utc": "2026-07-01T04:56:47Z",
+    "threads_nudged_this_tick": [],
+    "timestamp_utc": "2026-07-01T05:06:47Z",
+    "updated_utc": "2026-07-01T05:06:47Z",
     "user_action_required": true,
     "c5_full_decoder_exporter_custody": {
       "schema_version": "polymath_c5_full_decoder_exporter_post_custody_v1",
@@ -1422,6 +1420,32 @@
       "next_action": "Repo Custodian re-runs metadata-only checks and freezes the three-file pathset if clean.",
       "user_action_required_for_redaction": false,
       "user_action_required_for_model_source": true
+    },
+    "repo_custody_model_source_authorization_20260701T050647Z": {
+      "status": "c5_model_source_authorization_state_committed_pushed",
+      "commit_sha": "abf8e5d744ea02c525c79ddfd50d451d751c67b0",
+      "branch": "origin/gemma4-megakernel-native-training",
+      "artifact_paths": [
+        "runtime/reports/orchestration/c5_after_c1_model_safetensors_missing_exact_source_authorization_20260701T_engineering.json",
+        "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json",
+        "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md"
+      ],
+      "sha256_or_identity_fields": {
+        "engineering_report_sha256": "9d92cbdd9994b66808a6bd5541ea139ddb3f18f78f5f4f05a082088ba37b3f16",
+        "committed_executive_state_json_sha256": "5b1e082bf9a26188cff55d95a6ab2040c39af90e63b6af039cf8c8559d7ca6cc",
+        "committed_executive_state_md_sha256": "a53dd49742c75c193b1270cf571a2655f66248a72d9539bc57be67bd2c641c8d"
+      },
+      "first_missing_green_field": "model_safetensors_missing",
+      "next_action": "model source route required before Engineering can export decoder manifest and adapter-site policy",
+      "nonclaims": [
+        "no C5 pass",
+        "no model source found",
+        "no decoder pack exported",
+        "no decoder_manifest or adapter_site_policy emitted from a real model",
+        "no logits/predictions/loss/confidence/candidate_train_loss/C5 metrics fabricated",
+        "no HF/Comet/API call",
+        "no secrets sourced or printed"
+      ]
     }
   },
   "active_edge": "WaveB_C5_after_C1_full_decoder_exporter_pathset_pending_custody",
@@ -3269,6 +3293,26 @@
         "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050"
       ],
       "custodian_blocker_reclassified": "solvable drift redaction completed locally; custody reissued"
+    },
+    {
+      "utc": "2026-07-01T05:06:47Z",
+      "current_gate": "WaveB_C5_after_C1_model_source_authorization_pending",
+      "status_classification": "AUTHORIZATION_PENDING_MODEL_SOURCE_OR_REMOTE_MOUNT",
+      "owner": "User/meta owns the exact model-source route; Engineering Orchestrator 019f138b-d229-7640-98b7-2f185d6beae0 resumes exporter run after source is mounted or HF read/download is explicitly authorized. Repo Custodian completed metadata custody at abf8e5d744ea02c525c79ddfd50d451d751c67b0.",
+      "artifact_waiting_on": [
+        "Exact model source route: restore or mount /workspace/models/gemma4_e4b/snapshot/model.safetensors outside git, or explicitly authorize bounded HF read/download of google/gemma-4-E4B revision 7aa32e6889efd6300124851b164f8b364314c3d8 into outside-git storage.",
+        "After source is available, Engineering runs the frozen exporter outside git to produce decoder_manifest.json and adapter_site_policy.json.",
+        "After exporter output exists, Phase3/4 replaces full_decoder_logits_generation_not_implemented with streamed/chunked logits generation plus teacher-forced answer loss.",
+        "Execution resumes only after outside-git prediction JSONL, finite candidate_train_loss, and polymath_c5_executed_metrics_v1 can be emitted by real runtime execution."
+      ],
+      "last_concrete_action": "Repo Custodian froze and pushed the corrected metadata-only model-source authorization pathset at abf8e5d744ea02c525c79ddfd50d451d751c67b0 after meta redacted local/absolute JSONL payload path drift.",
+      "next_concrete_action": "User/meta supplies one exact model source route: restore or mount the historical outside-git /workspace/models/gemma4_e4b/snapshot/model.safetensors, or explicitly authorize bounded HF read/download/export for google/gemma-4-E4B revision 7aa32e6889efd6300124851b164f8b364314c3d8 without printing secrets. Once available, Engineering runs the frozen exporter outside git and returns decoder_manifest/adapter_site_policy identities.",
+      "dominant_failure_domain": "phase5_eval_failure",
+      "drift_deleted_or_pending": "Deleted stale exporter-custody routing in central state; pending drift hardening is source-bound: do not allow historical path strings, metadata-only manifests, bridge MSE, or placeholder schemas to substitute for a real outside-git model export and C5 runtime metrics. Historical phone raw-payload path strings in central state were redacted to metadata-only labels while preserving hashes/identity fields. Custodian-discovered local/absolute .jsonl payload path strings were redacted to metadata-only labels while preserving split/checkpoint hashes and relative HF split identities.",
+      "recursive_improvement_next_step": "authorize or mount model source -> Engineering runs frozen exporter outside git -> Custodian freezes metadata identities -> Phase3/4 implements real logits/loss -> Execution emits prediction JSONL and heldout metrics -> Pipeline validates -> Custodian freezes metadata/code only.",
+      "user_action_required": true,
+      "threads_nudged_this_tick": [],
+      "custody_commit": "abf8e5d744ea02c525c79ddfd50d451d751c67b0"
     }
   ],
   "governing_edge": "WaveB_C5_after_C1_full_decoder_exporter_pathset_pending_custody",
@@ -4647,6 +4691,6 @@
   "schema_version": "polymath_executive_delivery_state_v1",
   "status": "PENDING_ACTION_ENGINEERING_MODEL_SOURCE_EXPORT_ROUTE",
   "status_classification": "AUTHORIZATION_PENDING_MODEL_SOURCE_OR_REMOTE_MOUNT",
-  "updated_at": "2026-07-01T04:56:47Z",
-  "updated_at_utc": "2026-07-01T04:56:47Z"
+  "updated_at": "2026-07-01T05:06:47Z",
+  "updated_at_utc": "2026-07-01T05:06:47Z"
 }
