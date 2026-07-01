@@ -1,34 +1,68 @@
 {
-  "active_bottleneck": {
-    "active_execution_status": "completed_repaired_manifest_probe_opencl_runtime_availability_failure",
-    "active_repair_pathset_sha256": {},
-    "active_repair_pathset_status": "opencl_runtime_discovery_loading_repair_pending_phase34",
-    "artifact_waiting_on": [
-      "Phase3/4/Engineering patches the existing OpenCL runtime discovery/loading path used by run_c5_full_decoder_runtime and --run-c5-qa-predict so the RedMagic/Termux runtime can discover a platform instead of failing clGetPlatformIDs with OpenCL error -1001.",
-      "Repair must stay behind the existing native C5 runner path; do not create a parallel evaluator or bypass the frozen C5 surface.",
-      "Return either a custody-ready source/test/report pathset with exact hashes and verification, or a precise source/build/runtime blocker for OpenCL discovery/loading.",
-      "Execution resumes only after the repair is frozen or Phase3/4 supplies a bounded phone probe command; prediction JSONL/logits/loss/confidence/candidate_train_loss remain unclaimable until real runtime emits them."
-    ],
-    "completed_prior_edge": "WaveB_C5_after_C1_execution_exporter_rerun_and_bounded_phone_probe_after_per_layer_input_runtime_repair_custody",
-    "current_gate": "WaveB_C5_after_C1_opencl_runtime_availability_repair_pending_after_repaired_manifest_phone_probe",
-    "custody_commit_to_follow": null,
-    "evidence_freeze_commit": "58872fdc3dd7ff6efb73321252d58f3447eb0e2b",
-    "evidence_freeze_status": "per_layer_input_runtime_repair_committed_pushed_and_execution_probe_completed",
-    "first_missing_green_field": "c5_full_decoder_opencl_parity_runtime_unavailable:opencl_single_token_layer_runtime_unavailable:clGetPlatformIDs count failed with OpenCL error -1001",
-    "status_classification": "PENDING_ACTION_PHASE34_OPENCL_RUNTIME_DISCOVERY_REPAIR_AFTER_PHONE_RESOURCE_FAILURE"
-  },
-  "active_edge": "WaveB_C5_after_C1_bounded_opencl_icd_vendor_loader_sprint_required_after_repeated_clgetplatformids_minus1001",
+  "active_bottleneck": "bounded_opencl_probe_command_runner_identity_mismatch",
+  "active_edge": "WaveB_C5_after_C1_bounded_opencl_vendor_loader_probe_command_identity_repair_pending",
   "active_watchdog_state": {
-    "active_edge": "WaveB_C5_after_C1_opencl_runtime_discovery_repair_custody_pending_after_phase34_pathset",
+    "active_bottleneck": "bounded_opencl_probe_command_runner_identity_mismatch",
+    "active_edge": "WaveB_C5_after_C1_bounded_opencl_vendor_loader_probe_command_identity_repair_pending",
     "adapter_site_policy_sha256": "f38bd8109bbb77e9e94a5b4b34a238bc0ec0a39e7736870c97defe5aecc93357",
     "additional_missing_runtime_field_after_contract_patch": "decoder_manifest_tensor_role_inventory_missing",
     "artifact_waiting_on": [
-      "Phase3/4 Engineer performs a bounded OpenCL ICD/vendor-loader sprint for the repeated RedMagic/Termux clGetPlatformIDs -1001 failure after the frozen discovery repair.",
-      "Use metadata-only phone probe evidence at runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_d9c1fe_opencl_discovery; do not copy raw payloads into git.",
-      "Return one of: custody-ready source/test/report pathset, exact bounded follow-up phone probe command using --opencl-library or POLYMATH_GEMMA4_OPENCL_LIBRARY/POLYMATH_GEMMA4_OPENCL_LIBRARY_PATHS, or a precise source/runtime blocker.",
-      "Execution remains parked until Phase3/4 supplies a frozen repair or exact bounded probe command; no C5 pass or prediction JSONL exists."
+      "Phase3/4 must repair metadata-only command report runtime/reports/orchestration/c5_after_c1_bounded_opencl_vendor_loader_probe_command_20260701T_phase34.json SHA 1534d2ca42034053bc2059b5b94c0f061ba9ad3080c490a606bad5af8de25459 or return a precise blocker.",
+      "Mismatch: Phase3/4 report/command uses runner SHA efc18e811b4edff6ca4af5baad5fc9bab3db0f707a36ad3aba114d3994303a01, while Execution proved the repaired OpenCL-discovery runner built from d9c1fe1 is SHA 6bbad7d28dc3c4716444cd1c9e55448087755e2dcd1c03eb2a4bab4d051df363 and help-verified --opencl-library.",
+      "Required correction: return corrected report SHA and exact bounded phone probe command using the repaired runner identity, or prove the efc18e runner actually has --opencl-library and is the intended repair binary.",
+      "Execution is not routed until the runner identity mismatch is fixed; no raw payloads, prediction JSONL, logits, loss, confidence, or candidate_train_loss are accepted."
     ],
-    "authorization_needed": "none; native implementation work is under current GO and must preserve raw/secrets boundary",
+    "authorization_needed": false,
+    "c5_after_c1_bounded_opencl_probe_command_identity_repair_20260701T171907Z": {
+      "execution_routed": false,
+      "expected_repaired_runner_identity_sha256": "6bbad7d28dc3c4716444cd1c9e55448087755e2dcd1c03eb2a4bab4d051df363",
+      "first_missing_green_field": "bounded_opencl_probe_command_runner_identity_mismatch",
+      "next_action": "Phase3/4 must correct the command handoff: update the report/command to target the repaired OpenCL-discovery runner SHA 6bbad7d28dc3c4716444cd1c9e55448087755e2dcd1c03eb2a4bab4d051df363, or return a precise reason why efc18e811b4edff6ca4af5baad5fc9bab3db0f707a36ad3aba114d3994303a01 is valid and help-proves --opencl-library. After correction, route Execution for one forced vendor OpenCL probe.",
+      "owner_thread": "019f13da-d897-7ba2-8ed1-b959892f5ed4",
+      "report_path": "runtime/reports/orchestration/c5_after_c1_bounded_opencl_vendor_loader_probe_command_20260701T_phase34.json",
+      "report_sha256": "1534d2ca42034053bc2059b5b94c0f061ba9ad3080c490a606bad5af8de25459",
+      "reported_runner_identity_sha256": "efc18e811b4edff6ca4af5baad5fc9bab3db0f707a36ad3aba114d3994303a01",
+      "status": "pending_phase34_command_handoff_repair"
+    },
+    "c5_after_c1_bounded_opencl_vendor_loader_probe_command_20260701T_phase34": {
+      "adapter_site_policy_sha256": "f38bd8109bbb77e9e94a5b4b34a238bc0ec0a39e7736870c97defe5aecc93357",
+      "candidate_adapter_sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f",
+      "command_routing_status": "blocked_until_phase34_corrects_runner_identity",
+      "component_pack_path_sha256": "899a75a735785329fca45fe1e51d5a88d2b9e8a5f2c2c7bd1277751a0623fb98",
+      "configured_opencl_library_path_sha256": "59a8850fb37433061fd59e105ee6af8547f7149e8711d42d2cb37f70e27cf5c2",
+      "consumed_opencl_runtime_discovery_repair_commit": "2c612931b32bef8b9e7ce68cbe42742e0d3bd01b",
+      "consumed_prior_central_mirror_commit": "d9c1fe1f188234ff2c2c5ec14f6ace3e914d08e2",
+      "decoder_manifest_sha256": "52fcb53666bb4b06d0118cb825b983afc54624a630f667bbfa5af278640e28f8",
+      "expected_repaired_runner_identity_sha256_from_execution": "6bbad7d28dc3c4716444cd1c9e55448087755e2dcd1c03eb2a4bab4d051df363",
+      "expected_same_field_after_probe": "opencl_icd_vendor_loader_blocker",
+      "first_missing_green_field": "bounded_opencl_probe_command_runner_identity_mismatch",
+      "heldout_qa_sha256": "da41c5362398f24e0e0dd9df9a5cf0594435a455871fa77ab74d9312e6c8e9b2",
+      "nonclaims": [
+        "no C5 pass",
+        "no executed C5 metrics",
+        "no prediction JSONL",
+        "no logits/loss/confidence/candidate_train_loss claim",
+        "no bridge-MSE-as-C5-loss substitution",
+        "no learning or model-quality claim",
+        "no Phase3/4 readiness claim",
+        "no 100k/1M Phase2 authority",
+        "no Comet-backed accepted run"
+      ],
+      "prediction_jsonl_expected": false,
+      "raw_boundary": {
+        "hf_or_comet_required": false,
+        "metadata_only_report": true,
+        "prediction_jsonl_added_to_git": false,
+        "raw_model_checkpoint_adapter_tensor_or_prediction_payloads_added_to_git": false,
+        "secrets_required": false
+      },
+      "report_path": "runtime/reports/orchestration/c5_after_c1_bounded_opencl_vendor_loader_probe_command_20260701T_phase34.json",
+      "report_sha256": "1534d2ca42034053bc2059b5b94c0f061ba9ad3080c490a606bad5af8de25459",
+      "reported_runner_identity_sha256": "efc18e811b4edff6ca4af5baad5fc9bab3db0f707a36ad3aba114d3994303a01",
+      "research_escalation": "bounded_sprint_required: repeated clGetPlatformIDs -1001 after frozen OpenCL discovery repair; bounded output is exact vendor-library probe command and stop-field classifier",
+      "runner_identity_sha256": "efc18e811b4edff6ca4af5baad5fc9bab3db0f707a36ad3aba114d3994303a01",
+      "status": "bounded_opencl_vendor_loader_probe_command_identity_mismatch_detected_before_execution"
+    },
     "c5_after_c1_c5_qa_runtime_fail_closed_pathset": {
       "artifact_paths": [
         "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/include/polymath/gemma4/c5_qa_inference.h",
@@ -1381,7 +1415,7 @@
       "status": "c5_remaining_eval_split_identity_matrix_ready"
     },
     "candidate_adapter_sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f",
-    "central_mirror_local_update_status": "updated_for_decoder_manifest_per_layer_input_runtime_repair_custody_pending",
+    "central_mirror_local_update_status": "updated_for_phase34_command_identity_repair_pending_repo_custodian_freeze",
     "central_state_update_pathset_for_custodian": {
       "artifact_paths": [
         "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json",
@@ -1395,13 +1429,14 @@
       "status": "opencl_runtime_availability_repair_state_pending_custody",
       "user_action_required": false
     },
-    "current_gate": "WaveB_C5_after_C1_bounded_opencl_icd_vendor_loader_sprint_required_after_repeated_clgetplatformids_minus1001",
+    "central_state_update_pending_custody": true,
+    "current_gate": "WaveB_C5_after_C1_bounded_opencl_vendor_loader_probe_command_identity_repair_pending",
     "current_highest_valid_state": "C1-C4 Wave B mechanics, phone-local model/exporter evidence, C5-capable runner build, heldout QA staging, native C5 probe, tokenizer/tensor-loader custody, PLE contract/decoder math custody, PLE derivation/layer-0 normalization custody, CPU single-layer attention/MLP custody, OpenCL parity dispatch custody, phone OpenCL probe failure evidence custody, and per_layer_input_runtime repair custody are development-cycle metadata/code evidence only. No C5 pass, prediction JSONL, or executed metrics exist. The active edge is Execution rerunning the phone exporter and bounded C5_after_C1 probe after repair custody.",
     "custody_commit_latest": "05bb56437b83138547301e69af14ab0fce7d4b1a",
     "custody_status_latest": "c5_opencl_parity_dispatch_committed_pushed",
     "decoder_manifest_sha256": "52fcb53666bb4b06d0118cb825b983afc54624a630f667bbfa5af278640e28f8",
-    "dominant_failure_domain": "phase5_eval_failure",
-    "drift_deleted_or_pending": "OpenCL runtime discovery/loading remains the active drift: the default Android-vendor-first repair is frozen but still reaches clGetPlatformIDs -1001 under Termux/RedMagic. This is now a repeated same-field runtime/resource failure and requires bounded sprint escalation, not another passive probe.",
+    "dominant_failure_domain": "orchestration_failure",
+    "drift_deleted_or_pending": "Deleted pending drift: do not route the current Phase3/4 command report to Execution because its runner identity points at the wrong/proven-pre-repair binary. Pending drift is a corrected metadata-only command report and exact probe command. The earlier local Execution-owner mirror is superseded before custody.",
     "engineering_evaluator_implementation": {
       "artifact_paths_in_progress": [
         "polymath_ai/polar/c5_heldout_eval.py",
@@ -1518,7 +1553,7 @@
       "next_owner": "execution_orchestrator",
       "status": "committed_pushed"
     },
-    "first_missing_green_field": "bounded_opencl_icd_vendor_loader_sprint_pathset_or_probe_command_missing",
+    "first_missing_green_field": "bounded_opencl_probe_command_runner_identity_mismatch",
     "first_missing_green_field_after_contract_patch": "decoder_manifest_architecture_config_missing",
     "first_missing_green_field_after_custody": "PENDING_ACTION_EXECUTION_EXPORTER_RERUN_AND_BOUNDED_PHONE_PROBE",
     "first_missing_green_field_after_export": "phone_c5_runner_rebuild_or_copy_missing",
@@ -1528,7 +1563,7 @@
     "first_unresolved_technical_failure_after_schema_complete_export": "c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land",
     "first_unresolved_technical_failure_after_schema_paths": "full_decoder_logits_generation_not_implemented_after_valid_schema_paths",
     "first_unresolved_technical_failure_after_valid_schema_paths": "c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land",
-    "governing_edge": "WaveB_C5_after_C1_bounded_opencl_icd_vendor_loader_sprint_required_after_repeated_clgetplatformids_minus1001",
+    "governing_edge": "WaveB_C5_after_C1_bounded_opencl_vendor_loader_probe_command_identity_repair_pending",
     "hardening_policy": {
       "deleted_or_repaired_drift": [
         "forced_non_packaged_child_exec_default_for_phase1",
@@ -1558,7 +1593,7 @@
       "repo_custodian": "polled complete at e1b7aa4976a5b45222b3c490a89b874a3191a9fd for prior central mirror; new two-file mirror requires custody after this update",
       "ui_engineer": "not nudged until evidence-backed C5 status surfaces exist"
     },
-    "last_concrete_action": "Repo Custodian froze the OpenCL runtime discovery repair at 2c612931b32bef8b9e7ce68cbe42742e0d3bd01b and the central mirror at d9c1fe1f188234ff2c2c5ec14f6ace3e914d08e2. Execution consumed the repair, restored Termux SSH, built the repaired runner from d9c1fe1, verified the new --opencl-library surface, and reran the bounded C5_after_C1 phone probe without override. The same clGetPlatformIDs -1001 field repeated with default Android-vendor-first discovery active and no CLI/env override configured. Metadata evidence was copied; raw-suffix scan is clean.",
+    "last_concrete_action": "Repo Custodian froze the repeated OpenCL runtime failure route mirror at 3e4529f5586f485712a96d3a266af0aa0402d0b4. Phase3/4 completed a bounded sprint and produced runtime/reports/orchestration/c5_after_c1_bounded_opencl_vendor_loader_probe_command_20260701T_phase34.json SHA 1534d2ca42034053bc2059b5b94c0f061ba9ad3080c490a606bad5af8de25459, but executive validation found an internal command identity mismatch before routing Execution: the handoff uses runner SHA efc18e811b4edff6ca4af5baad5fc9bab3db0f707a36ad3aba114d3994303a01, while the OpenCL discovery repair actually consumed/proved by Execution used runner SHA 6bbad7d28dc3c4716444cd1c9e55448087755e2dcd1c03eb2a4bab4d051df363 with --opencl-library verified. Execution was not nudged with the inconsistent command.",
     "lineage_drift_repair_status": {
       "commit": "ee74ae572322e05624deac6f6f8788c2c6e2f692",
       "proof_required": [
@@ -1738,35 +1773,28 @@
     "native_tokenizer_tensor_loader_prereq_custody_commit": "4472e3dee86d88d83031eecfc94b91008e5215e0",
     "native_tokenizer_tensor_loader_prereq_report_sha256": "1e4a087354d8a917ec9fba7747a5e2410d9fb01f36e991c902e00adf8764e422",
     "native_tokenizer_tensor_loader_prereq_status": "native_full_decoder_prereq_pathset_ready_for_custodian",
-    "next_concrete_action": "Phase3/4 must run a bounded OpenCL ICD/vendor-loader repair/decomposition sprint: inspect the repeated probe evidence, determine whether Android vendor OpenCL needs an explicit loader path/env/ICD workaround, and return a custody-ready pathset or exact bounded Execution probe command. If a source patch is needed, route it to Repo Custodian before Execution reruns. If only a bounded phone discovery command is needed, route the exact command to Execution.",
+    "next_concrete_action": "Phase3/4 must correct the command handoff: update the report/command to target the repaired OpenCL-discovery runner SHA 6bbad7d28dc3c4716444cd1c9e55448087755e2dcd1c03eb2a4bab4d051df363, or return a precise reason why efc18e811b4edff6ca4af5baad5fc9bab3db0f707a36ad3aba114d3994303a01 is valid and help-proves --opencl-library. After correction, route Execution for one forced vendor OpenCL probe.",
     "nonclaims": [
-      "development-cycle evidence only unless stronger gates pass",
       "no C5 pass",
-      "no prediction JSONL emitted from real runtime yet",
-      "no candidate_train_loss emitted or invented",
-      "no bridge MSE relabeled as C5 loss",
-      "no logits, loss, confidence, or learning metrics fabricated",
+      "no executed C5 metrics",
+      "no prediction JSONL/logits/loss/confidence/candidate_train_loss unless real runtime emits them",
+      "no bridge-MSE-as-C5-loss",
       "no learning/model-quality claim",
-      "no Phase3 readiness claim",
-      "no Phase4 readiness claim",
-      "not 100k/1M Phase2 authority",
-      "no HF/Comet call"
+      "no Phase3/4 readiness",
+      "no 100k/1M authority",
+      "no Comet-backed accepted run"
     ],
     "nonclaims_preserved": [
       "no C5 pass",
       "no executed C5 metrics",
-      "no prediction JSONL emitted",
-      "no logits emitted",
-      "no loss, confidence, or candidate_train_loss emitted",
-      "no bridge MSE relabeled as C5 loss",
+      "no prediction JSONL/logits/loss/confidence/candidate_train_loss unless real runtime emits them",
+      "no bridge-MSE-as-C5-loss",
       "no learning/model-quality claim",
-      "no Phase3 readiness claim",
-      "no Phase4 readiness claim",
-      "not 100k/1M Phase2 authority",
-      "no Comet/API call",
-      "no secrets sourced"
+      "no Phase3/4 readiness",
+      "no 100k/1M authority",
+      "no Comet-backed accepted run"
     ],
-    "owner": "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 owns the bounded OpenCL ICD/vendor-loader sprint; Execution is parked after the repeated same-field phone proof until a repair pathset or exact bounded probe command exists.",
+    "owner": "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 owns repair of the bounded OpenCL vendor-loader command handoff because the report command runner identity does not match the repaired OpenCL-discovery runner proven by Execution.",
     "owner_thread": "019f13da-d897-7ba2-8ed1-b959892f5ed4",
     "phase2_status_by_phase": {
       "C1": {
@@ -1987,7 +2015,7 @@
       "phase34": "raw PJP1, HTP raw output, OpenCL tensors, and adapters remain on device/Termux; repair must keep compact JSON only",
       "report_root_scan": "metadata-freeze report root had 179 tracked files and clean forbidden suffix scans; raw payloads not committed"
     },
-    "recursive_improvement_next_step": "Bounded sprint narrows Android/Termux OpenCL ICD/vendor-loader behavior. Smallest proof is either an explicit --opencl-library/env override probe or a source patch that reports the discovered loader path redacted/hash-only, followed by one bounded C5_after_C1 phone probe.",
+    "recursive_improvement_next_step": "Repair the handoff identity first; then run one forced vendor OpenCL probe. If the configured vendor library path is missing or dlopen fails, route loader/linker failure to Phase3/4. If clGetPlatformIDs -1001 repeats with configured override true, classify opencl_icd_vendor_loader_blocker. No pass claim until real runtime emits evidence.",
     "repo_custodian_per_layer_input_runtime_repair_commit": "58872fdc3dd7ff6efb73321252d58f3447eb0e2b",
     "repo_custodian_post_phone_probe_central_mirror_commit": "5802ea1e25222c068dd3fcb5050c91f20f72357b",
     "repo_custody_state_freeze": {
@@ -2000,33 +2028,84 @@
       ],
       "status": "executive_state_c5_inference_payload_edge_committed_pushed"
     },
-    "research_escalation": "bounded_sprint_required",
+    "research_escalation": "bounded_sprint_handoff_repair_required_due_runner_identity_mismatch",
     "run_label": "c1_c4_waveB_rerun_20260630T230411Z",
     "run_root": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z",
     "runner_sha256": "a5a6f9a3b93d167d9cd69eddbe2f3404443ae1c2222e1c6a0782398c9ff09e84",
     "runner_size_bytes": 369536,
-    "status": "bounded_opencl_icd_vendor_loader_sprint_required_after_repeated_phone_probe_failure",
-    "status_classification": "PENDING_ACTION_PHASE34_BOUNDED_OPENCL_ICD_VENDOR_LOADER_SPRINT",
+    "status": "bounded_opencl_vendor_loader_probe_command_identity_mismatch_detected_before_execution",
+    "status_classification": "PENDING_ACTION_PHASE34_REPAIR_BOUNDED_OPENCL_PROBE_COMMAND_IDENTITY",
     "threads_nudged_this_tick": [
-      "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: polled active on OpenCL runtime discovery repair pathset freeze; queued central mirror custody after this update.",
-      "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4: polled complete with opencl_runtime_discovery_repair_pathset_ready_for_custodian; no duplicate nudge.",
-      "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: polled parked after OpenCL runtime-unavailable proof; no rerun nudge until repair frozen."
+      "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4: routed command handoff repair for runner identity mismatch; exact first missing field bounded_opencl_probe_command_runner_identity_mismatch.",
+      "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: routed two-file central mirror freeze for this corrected owner edge.",
+      "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: polled idle; intentionally not nudged until corrected command exists.",
+      "Training Material Steward, Pipeline Integrator, UI Engineer, Engineering Orchestrator: not current owner; no nudge."
     ],
-    "timestamp_utc": "2026-07-01T16:59:07Z",
-    "updated_at": "2026-07-01T16:28:37Z",
-    "updated_at_utc": "2026-07-01T16:59:07Z",
-    "updated_utc": "2026-07-01T17:09:07Z",
+    "timestamp_utc": "2026-07-01T17:19:07Z",
+    "updated_at": "2026-07-01T17:19:07Z",
+    "updated_at_utc": "2026-07-01T17:19:07Z",
+    "updated_utc": "2026-07-01T17:19:07Z",
     "user_action_required": false
   },
   "adapter_site_policy_sha256": "f38bd8109bbb77e9e94a5b4b34a238bc0ec0a39e7736870c97defe5aecc93357",
   "additional_missing_runtime_field_after_contract_patch": "decoder_manifest_tensor_role_inventory_missing",
   "artifact_waiting_on": [
-    "Phase3/4 Engineer performs a bounded OpenCL ICD/vendor-loader sprint for the repeated RedMagic/Termux clGetPlatformIDs -1001 failure after the frozen discovery repair.",
-    "Use metadata-only phone probe evidence at runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_d9c1fe_opencl_discovery; do not copy raw payloads into git.",
-    "Return one of: custody-ready source/test/report pathset, exact bounded follow-up phone probe command using --opencl-library or POLYMATH_GEMMA4_OPENCL_LIBRARY/POLYMATH_GEMMA4_OPENCL_LIBRARY_PATHS, or a precise source/runtime blocker.",
-    "Execution remains parked until Phase3/4 supplies a frozen repair or exact bounded probe command; no C5 pass or prediction JSONL exists."
+    "Phase3/4 must repair metadata-only command report runtime/reports/orchestration/c5_after_c1_bounded_opencl_vendor_loader_probe_command_20260701T_phase34.json SHA 1534d2ca42034053bc2059b5b94c0f061ba9ad3080c490a606bad5af8de25459 or return a precise blocker.",
+    "Mismatch: Phase3/4 report/command uses runner SHA efc18e811b4edff6ca4af5baad5fc9bab3db0f707a36ad3aba114d3994303a01, while Execution proved the repaired OpenCL-discovery runner built from d9c1fe1 is SHA 6bbad7d28dc3c4716444cd1c9e55448087755e2dcd1c03eb2a4bab4d051df363 and help-verified --opencl-library.",
+    "Required correction: return corrected report SHA and exact bounded phone probe command using the repaired runner identity, or prove the efc18e runner actually has --opencl-library and is the intended repair binary.",
+    "Execution is not routed until the runner identity mismatch is fixed; no raw payloads, prediction JSONL, logits, loss, confidence, or candidate_train_loss are accepted."
   ],
-  "authorization_needed": "none for bounded source/probe design; phone execution remains with Execution Orchestrator and no secrets/HF/Comet are authorized.",
+  "authorization_needed": false,
+  "c5_after_c1_bounded_opencl_probe_command_identity_repair_20260701T171907Z": {
+    "execution_routed": false,
+    "expected_repaired_runner_identity_sha256": "6bbad7d28dc3c4716444cd1c9e55448087755e2dcd1c03eb2a4bab4d051df363",
+    "first_missing_green_field": "bounded_opencl_probe_command_runner_identity_mismatch",
+    "next_action": "Phase3/4 must correct the command handoff: update the report/command to target the repaired OpenCL-discovery runner SHA 6bbad7d28dc3c4716444cd1c9e55448087755e2dcd1c03eb2a4bab4d051df363, or return a precise reason why efc18e811b4edff6ca4af5baad5fc9bab3db0f707a36ad3aba114d3994303a01 is valid and help-proves --opencl-library. After correction, route Execution for one forced vendor OpenCL probe.",
+    "owner_thread": "019f13da-d897-7ba2-8ed1-b959892f5ed4",
+    "report_path": "runtime/reports/orchestration/c5_after_c1_bounded_opencl_vendor_loader_probe_command_20260701T_phase34.json",
+    "report_sha256": "1534d2ca42034053bc2059b5b94c0f061ba9ad3080c490a606bad5af8de25459",
+    "reported_runner_identity_sha256": "efc18e811b4edff6ca4af5baad5fc9bab3db0f707a36ad3aba114d3994303a01",
+    "status": "pending_phase34_command_handoff_repair"
+  },
+  "c5_after_c1_bounded_opencl_vendor_loader_probe_command_20260701T_phase34": {
+    "adapter_site_policy_sha256": "f38bd8109bbb77e9e94a5b4b34a238bc0ec0a39e7736870c97defe5aecc93357",
+    "candidate_adapter_sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f",
+    "command_routing_status": "blocked_until_phase34_corrects_runner_identity",
+    "component_pack_path_sha256": "899a75a735785329fca45fe1e51d5a88d2b9e8a5f2c2c7bd1277751a0623fb98",
+    "configured_opencl_library_path_sha256": "59a8850fb37433061fd59e105ee6af8547f7149e8711d42d2cb37f70e27cf5c2",
+    "consumed_opencl_runtime_discovery_repair_commit": "2c612931b32bef8b9e7ce68cbe42742e0d3bd01b",
+    "consumed_prior_central_mirror_commit": "d9c1fe1f188234ff2c2c5ec14f6ace3e914d08e2",
+    "decoder_manifest_sha256": "52fcb53666bb4b06d0118cb825b983afc54624a630f667bbfa5af278640e28f8",
+    "expected_repaired_runner_identity_sha256_from_execution": "6bbad7d28dc3c4716444cd1c9e55448087755e2dcd1c03eb2a4bab4d051df363",
+    "expected_same_field_after_probe": "opencl_icd_vendor_loader_blocker",
+    "first_missing_green_field": "bounded_opencl_probe_command_runner_identity_mismatch",
+    "heldout_qa_sha256": "da41c5362398f24e0e0dd9df9a5cf0594435a455871fa77ab74d9312e6c8e9b2",
+    "nonclaims": [
+      "no C5 pass",
+      "no executed C5 metrics",
+      "no prediction JSONL",
+      "no logits/loss/confidence/candidate_train_loss claim",
+      "no bridge-MSE-as-C5-loss substitution",
+      "no learning or model-quality claim",
+      "no Phase3/4 readiness claim",
+      "no 100k/1M Phase2 authority",
+      "no Comet-backed accepted run"
+    ],
+    "prediction_jsonl_expected": false,
+    "raw_boundary": {
+      "hf_or_comet_required": false,
+      "metadata_only_report": true,
+      "prediction_jsonl_added_to_git": false,
+      "raw_model_checkpoint_adapter_tensor_or_prediction_payloads_added_to_git": false,
+      "secrets_required": false
+    },
+    "report_path": "runtime/reports/orchestration/c5_after_c1_bounded_opencl_vendor_loader_probe_command_20260701T_phase34.json",
+    "report_sha256": "1534d2ca42034053bc2059b5b94c0f061ba9ad3080c490a606bad5af8de25459",
+    "reported_runner_identity_sha256": "efc18e811b4edff6ca4af5baad5fc9bab3db0f707a36ad3aba114d3994303a01",
+    "research_escalation": "bounded_sprint_required: repeated clGetPlatformIDs -1001 after frozen OpenCL discovery repair; bounded output is exact vendor-library probe command and stop-field classifier",
+    "runner_identity_sha256": "efc18e811b4edff6ca4af5baad5fc9bab3db0f707a36ad3aba114d3994303a01",
+    "status": "bounded_opencl_vendor_loader_probe_command_identity_mismatch_detected_before_execution"
+  },
   "c5_after_c1_decoder_manifest_per_layer_input_runtime_repair_20260701T_phase34": {
     "artifact_paths": [
       "runtime/reports/orchestration/c5_after_c1_decoder_manifest_per_layer_input_runtime_repair_20260701T_phase34.json",
@@ -2504,6 +2583,16 @@
         "result": "passed"
       }
     ]
+  },
+  "c5_after_c1_forced_vendor_opencl_probe_pending_20260701T171907Z": {
+    "command_report_path": "runtime/reports/orchestration/c5_after_c1_bounded_opencl_vendor_loader_probe_command_20260701T_phase34.json",
+    "command_report_sha256": "1534d2ca42034053bc2059b5b94c0f061ba9ad3080c490a606bad5af8de25459",
+    "execution_routed": false,
+    "fail_fast_boundary": "single bounded forced vendor OpenCL probe; same -1001 with configured override true becomes opencl_icd_vendor_loader_blocker",
+    "first_missing_green_field": "PENDING_ACTION_EXECUTION_RUN_FORCED_VENDOR_OPENCL_PROBE",
+    "next_action": "Execution must run the exact forced /vendor/lib64/libOpenCL.so bounded C5_after_C1 probe from the Phase3/4 handoff once, then return stdout/stderr/meminfo hashes, exit code, elapsed time, CLI/env configured status, and first missing green field. A repeated clGetPlatformIDs -1001 under configured override becomes opencl_icd_vendor_loader_blocker.",
+    "owner_thread": "019f138c-fb51-7c53-a41a-ab8eac950d9c",
+    "status": "superseded_before_custody_by_runner_identity_mismatch"
   },
   "c5_after_c1_native_cpu_single_layer_attention_mlp_slice_custody_20260701T155031Z": {
     "branch": "origin/gemma4-megakernel-native-training",
@@ -3339,21 +3428,13 @@
     "status": "bounded_phone_probe_repeated_resource_runtime_failure_after_opencl_discovery_repair"
   },
   "candidate_adapter_sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f",
-  "central_mirror_local_update_status": "updated_for_opencl_runtime_discovery_repair_custody_pending_after_phase34_pathset",
-  "central_state_update_pending_custody": {
-    "first_missing_green_field": "central_mirror_freeze_after_repeated_opencl_runtime_failure_route",
-    "pathset": [
-      "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json",
-      "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md"
-    ],
-    "status": "metadata_only_central_mirror_update_pending_repo_custodian_freeze",
-    "updated_utc": "2026-07-01T17:09:07Z"
-  },
-  "current_gate": "WaveB_C5_after_C1_bounded_opencl_icd_vendor_loader_sprint_required_after_repeated_clgetplatformids_minus1001",
+  "central_mirror_local_update_status": "updated_for_phase34_command_identity_repair_pending_repo_custodian_freeze",
+  "central_state_update_pending_custody": true,
+  "current_gate": "WaveB_C5_after_C1_bounded_opencl_vendor_loader_probe_command_identity_repair_pending",
   "current_highest_valid_state": "C1-C4 Wave B mechanics, phone-local model/exporter evidence, C5-capable runner build, heldout QA staging, native C5 probe, tokenizer/tensor-loader custody, PLE contract/decoder math custody, PLE derivation/layer-0 normalization custody, CPU single-layer attention/MLP custody, OpenCL parity dispatch custody, phone OpenCL probe failure evidence custody, and per_layer_input_runtime repair custody are development-cycle metadata/code evidence only. No C5 pass, prediction JSONL, or executed metrics exist. The active edge is Execution rerunning the phone exporter and bounded C5_after_C1 probe after repair custody.",
   "decoder_manifest_sha256": "52fcb53666bb4b06d0118cb825b983afc54624a630f667bbfa5af278640e28f8",
-  "dominant_failure_domain": "phase5_eval_failure",
-  "drift_deleted_or_pending": "OpenCL runtime discovery/loading remains the active drift: the default Android-vendor-first repair is frozen but still reaches clGetPlatformIDs -1001 under Termux/RedMagic. This is now a repeated same-field runtime/resource failure and requires bounded sprint escalation, not another passive probe.",
+  "dominant_failure_domain": "orchestration_failure",
+  "drift_deleted_or_pending": "Deleted pending drift: do not route the current Phase3/4 command report to Execution because its runner identity points at the wrong/proven-pre-repair binary. Pending drift is a corrected metadata-only command report and exact probe command. The earlier local Execution-owner mirror is superseded before custody.",
   "driver_tick_history": [
     {
       "artifact_waiting_on": [
@@ -4252,7 +4333,7 @@
   "export_report_sha256": "4774d31953a58ad6ae1f64e4196405ba820e5be75d36880ac863cfb9dae00b6c",
   "exporter_runtime_fields_freeze_commit": "43cf3c4130dc902fc8fd69183bac1056f0596626",
   "exporter_runtime_fields_freeze_status": "committed_pushed",
-  "first_missing_green_field": "bounded_opencl_icd_vendor_loader_sprint_pathset_or_probe_command_missing",
+  "first_missing_green_field": "bounded_opencl_probe_command_runner_identity_mismatch",
   "first_missing_green_field_after_contract_patch": "decoder_manifest_architecture_config_missing",
   "first_missing_green_field_after_custody": "c5_full_decoder_opencl_parity_dispatch_missing_after_cpu_single_layer_slice",
   "first_missing_green_field_after_download": "full_decoder_logits_generation_not_implemented",
@@ -4262,7 +4343,7 @@
   "first_missing_green_field_after_runner": "heldout_qa_jsonl_staging_or_c5_predict_probe_pending",
   "first_unresolved_technical_failure_after_schema_complete_export": "c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land",
   "first_unresolved_technical_failure_after_valid_schema_paths": "c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land",
-  "governing_edge": "WaveB_C5_after_C1_bounded_opencl_icd_vendor_loader_sprint_required_after_repeated_clgetplatformids_minus1001",
+  "governing_edge": "WaveB_C5_after_C1_bounded_opencl_vendor_loader_probe_command_identity_repair_pending",
   "governing_objective": {
     "nonclaims": [
       "diagnostics_are_not_100k_or_1M_authority_unless_specific_authority_gate_passes",
@@ -4789,21 +4870,21 @@
         "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json",
         "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md"
       ],
-      "first_missing_green_field": "bounded_opencl_icd_vendor_loader_sprint_pathset_or_probe_command_missing",
-      "last_update_utc": "2026-07-01T17:09:07Z",
-      "next_action": "Route Phase3/4 bounded sprint and Repo Custodian central mirror freeze; continue polling Execution until its final report closes.",
+      "first_missing_green_field": "bounded_opencl_probe_command_runner_identity_mismatch",
+      "last_update_utc": "2026-07-01T17:19:07Z",
+      "next_action": "Route Phase3/4 command handoff repair and Repo Custodian central mirror freeze; do not route Execution yet.",
       "nonclaims": [
         "no C5 pass",
         "no executed C5 metrics",
-        "no prediction JSONL/logits/loss/confidence/candidate_train_loss",
+        "no prediction JSONL/logits/loss/confidence/candidate_train_loss unless real runtime emits them",
         "no bridge-MSE-as-C5-loss",
         "no learning/model-quality claim",
         "no Phase3/4 readiness",
         "no 100k/1M authority",
         "no Comet-backed accepted run"
       ],
-      "status": "central_mirror_updated_for_repeated_opencl_failure_bounded_sprint_route",
-      "status_classification": "ORCHESTRATION_META_UPDATED_PHASE34_OWNER",
+      "status": "central_mirror_updated_for_phase34_command_identity_repair",
+      "status_classification": "ORCHESTRATION_META_HARDENED_BAD_COMMAND_ROUTE_BLOCKED",
       "thread_id": "019f138b-d229-7640-98b7-2f185d6beae0",
       "user_action_required": false
     },
@@ -4811,13 +4892,13 @@
       "artifact_paths": [
         "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_d9c1fe_opencl_discovery"
       ],
-      "first_missing_green_field": "c5_full_decoder_opencl_parity_runtime_unavailable:opencl_single_token_layer_runtime_unavailable:clGetPlatformIDs count failed with OpenCL error -1001",
-      "last_update_utc": "2026-07-01T17:09:07Z",
-      "next_action": "Wait for Phase3/4 bounded ICD/vendor-loader sprint output; rerun only if given a frozen repair or exact bounded probe command.",
+      "first_missing_green_field": "bounded_opencl_probe_command_runner_identity_mismatch",
+      "last_update_utc": "2026-07-01T17:19:07Z",
+      "next_action": "Wait for corrected Phase3/4 command handoff; do not run the inconsistent efc18e runner command.",
       "nonclaims": [
         "no C5 pass",
         "no executed C5 metrics",
-        "no prediction JSONL/logits/loss/confidence/candidate_train_loss",
+        "no prediction JSONL/logits/loss/confidence/candidate_train_loss unless real runtime emits them",
         "no bridge-MSE-as-C5-loss",
         "no learning/model-quality claim",
         "no Phase3/4 readiness",
@@ -4825,23 +4906,20 @@
         "no Comet-backed accepted run"
       ],
       "sha256_or_identity_fields": {
-        "candidate_probe_stderr_log": "090f6c91104f21f2e00715c1e02032811043d8710ae22bb671949a5b99f1872f",
-        "candidate_probe_stdout_json": "de3f059a9c3c038b6bba934eaee7a74c1bd52c0d73bda98852fc20cc9ffabb92",
-        "meminfo_after": "32d877480366340c256efa601e681ebc4147067a72602290b707f3946aa1ff9c",
-        "meminfo_before": "ab97b0e9186fc0d600f32871cda127f10b09c7ed88c5fe14ce4f135e423be4f6"
+        "repaired_runner_sha256_from_execution": "6bbad7d28dc3c4716444cd1c9e55448087755e2dcd1c03eb2a4bab4d051df363"
       },
-      "status": "bounded_phone_probe_repeated_opencl_runtime_failure_evidence_copied_finalizing",
-      "status_classification": "PARKED_AFTER_REPEATED_RESOURCE_RUNTIME_FAILURE",
+      "status": "parked_due_phase34_command_handoff_identity_mismatch",
+      "status_classification": "PARKED_UNTIL_CORRECTED_PROBE_COMMAND_EXISTS",
       "thread_id": "019f138c-fb51-7c53-a41a-ab8eac950d9c",
       "user_action_required": false
     },
     "phase34_engineer": {
       "artifact_paths": [
-        "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_d9c1fe_opencl_discovery"
+        "runtime/reports/orchestration/c5_after_c1_bounded_opencl_vendor_loader_probe_command_20260701T_phase34.json"
       ],
-      "first_missing_green_field": "bounded_opencl_icd_vendor_loader_sprint_pathset_or_probe_command_missing",
-      "last_update_utc": "2026-07-01T17:09:07Z",
-      "next_action": "Produce custody-ready repair pathset, exact bounded phone probe command, or precise source/runtime blocker for repeated clGetPlatformIDs -1001 after vendor-first discovery repair.",
+      "first_missing_green_field": "bounded_opencl_probe_command_runner_identity_mismatch",
+      "last_update_utc": "2026-07-01T17:19:07Z",
+      "next_action": "Phase3/4 must correct the command handoff: update the report/command to target the repaired OpenCL-discovery runner SHA 6bbad7d28dc3c4716444cd1c9e55448087755e2dcd1c03eb2a4bab4d051df363, or return a precise reason why efc18e811b4edff6ca4af5baad5fc9bab3db0f707a36ad3aba114d3994303a01 is valid and help-proves --opencl-library. After correction, route Execution for one forced vendor OpenCL probe.",
       "nonclaims": [
         "no C5 pass",
         "no executed C5 metrics",
@@ -4852,9 +4930,14 @@
         "no 100k/1M authority",
         "no Comet-backed accepted run"
       ],
-      "research_escalation": "bounded_sprint_required",
-      "status": "pending_bounded_opencl_icd_vendor_loader_sprint_after_repeated_same_field_failure",
-      "status_classification": "PENDING_ACTION_PHASE34_BOUNDED_OPENCL_ICD_VENDOR_LOADER_SPRINT",
+      "research_escalation": "bounded_sprint_handoff_repair_required_due_runner_identity_mismatch",
+      "sha256_or_identity_fields": {
+        "expected_repaired_runner_identity_sha256": "6bbad7d28dc3c4716444cd1c9e55448087755e2dcd1c03eb2a4bab4d051df363",
+        "report_sha256": "1534d2ca42034053bc2059b5b94c0f061ba9ad3080c490a606bad5af8de25459",
+        "reported_runner_identity_sha256": "efc18e811b4edff6ca4af5baad5fc9bab3db0f707a36ad3aba114d3994303a01"
+      },
+      "status": "bounded_opencl_vendor_loader_probe_command_identity_repair_pending",
+      "status_classification": "PENDING_ACTION_PHASE34_REPAIR_BOUNDED_OPENCL_PROBE_COMMAND_IDENTITY",
       "thread_id": "019f13da-d897-7ba2-8ed1-b959892f5ed4",
       "user_action_required": false
     },
@@ -4879,12 +4962,12 @@
     "repo_custodian": {
       "branch": "origin/gemma4-megakernel-native-training",
       "central_mirror_commit_sha": "d9c1fe1f188234ff2c2c5ec14f6ace3e914d08e2",
-      "commit_sha": "2c612931b32bef8b9e7ce68cbe42742e0d3bd01b",
-      "first_missing_green_field": "central_mirror_freeze_after_repeated_opencl_runtime_failure_route",
-      "last_update_utc": "2026-07-01T17:09:07Z",
-      "next_action": "Freeze the two-file central mirror update for the repeated OpenCL runtime failure route when received.",
-      "status": "opencl_runtime_discovery_repair_and_prior_central_mirror_committed_pushed",
-      "status_classification": "COMPLETE_FOR_PRIOR_EDGE_STANDBY_FOR_NEW_CENTRAL_MIRROR_FREEZE",
+      "commit_sha": "3e4529f5586f485712a96d3a266af0aa0402d0b4",
+      "first_missing_green_field": "bounded_opencl_probe_command_identity_repair_central_mirror_freeze_pending",
+      "last_update_utc": "2026-07-01T17:19:07Z",
+      "next_action": "Freeze the updated two-file central mirror that rejects the inconsistent command handoff and routes Phase3/4 command repair.",
+      "status": "repeated_opencl_runtime_failure_central_mirror_committed_pushed_waiting_new_identity_repair_mirror_freeze",
+      "status_classification": "COMPLETE_FOR_PRIOR_EDGE_PENDING_NEW_TWO_FILE_MIRROR_FREEZE",
       "thread_id": "019f1ac2-0f0f-7721-bf46-ad402dbd9050",
       "user_action_required": false
     },
@@ -4950,7 +5033,7 @@
       "user_action_required": false
     }
   },
-  "last_concrete_action": "Repo Custodian froze the OpenCL runtime discovery repair at 2c612931b32bef8b9e7ce68cbe42742e0d3bd01b and the central mirror at d9c1fe1f188234ff2c2c5ec14f6ace3e914d08e2. Execution consumed the repair, restored Termux SSH, built the repaired runner from d9c1fe1, verified the new --opencl-library surface, and reran the bounded C5_after_C1 phone probe without override. The same clGetPlatformIDs -1001 field repeated with default Android-vendor-first discovery active and no CLI/env override configured. Metadata evidence was copied; raw-suffix scan is clean.",
+  "last_concrete_action": "Repo Custodian froze the repeated OpenCL runtime failure route mirror at 3e4529f5586f485712a96d3a266af0aa0402d0b4. Phase3/4 completed a bounded sprint and produced runtime/reports/orchestration/c5_after_c1_bounded_opencl_vendor_loader_probe_command_20260701T_phase34.json SHA 1534d2ca42034053bc2059b5b94c0f061ba9ad3080c490a606bad5af8de25459, but executive validation found an internal command identity mismatch before routing Execution: the handoff uses runner SHA efc18e811b4edff6ca4af5baad5fc9bab3db0f707a36ad3aba114d3994303a01, while the OpenCL discovery repair actually consumed/proved by Execution used runner SHA 6bbad7d28dc3c4716444cd1c9e55448087755e2dcd1c03eb2a4bab4d051df363 with --opencl-library verified. Execution was not nudged with the inconsistent command.",
   "last_driver_actions": [
     {
       "action": "recorded Repo Custodian PLE single-layer slice custody at 955730e and shifted active edge to Phase3/4 streamed single-layer attention/MLP body implementation",
@@ -5124,20 +5207,71 @@
   "model_safetensors_size_bytes": 15992595884,
   "native_probe_exit_code": 13,
   "native_probe_report_path": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_58872fd_perlayer/candidate_probe_stdout.json",
-  "next_concrete_action": "Phase3/4 must run a bounded OpenCL ICD/vendor-loader repair/decomposition sprint: inspect the repeated probe evidence, determine whether Android vendor OpenCL needs an explicit loader path/env/ICD workaround, and return a custody-ready pathset or exact bounded Execution probe command. If a source patch is needed, route it to Repo Custodian before Execution reruns. If only a bounded phone discovery command is needed, route the exact command to Execution.",
-  "owner": "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 owns the bounded OpenCL ICD/vendor-loader sprint; Execution is parked after the repeated same-field phone proof until a repair pathset or exact bounded probe command exists.",
+  "next_concrete_action": "Phase3/4 must correct the command handoff: update the report/command to target the repaired OpenCL-discovery runner SHA 6bbad7d28dc3c4716444cd1c9e55448087755e2dcd1c03eb2a4bab4d051df363, or return a precise reason why efc18e811b4edff6ca4af5baad5fc9bab3db0f707a36ad3aba114d3994303a01 is valid and help-proves --opencl-library. After correction, route Execution for one forced vendor OpenCL probe.",
+  "owner": "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 owns repair of the bounded OpenCL vendor-loader command handoff because the report command runner identity does not match the repaired OpenCL-discovery runner proven by Execution.",
   "owner_thread": "019f13da-d897-7ba2-8ed1-b959892f5ed4",
   "phone_exporter_rerun_required_after_commit": "43cf3c4130dc902fc8fd69183bac1056f0596626",
   "prd_watchdog": {
-    "active_edge": "WaveB_C5_after_C1_opencl_runtime_discovery_repair_custody_pending_after_phase34_pathset",
+    "active_bottleneck": "bounded_opencl_probe_command_runner_identity_mismatch",
+    "active_edge": "WaveB_C5_after_C1_bounded_opencl_vendor_loader_probe_command_identity_repair_pending",
     "adapter_site_policy_sha256": "f38bd8109bbb77e9e94a5b4b34a238bc0ec0a39e7736870c97defe5aecc93357",
     "artifact_waiting_on": [
-      "Phase3/4 Engineer performs a bounded OpenCL ICD/vendor-loader sprint for the repeated RedMagic/Termux clGetPlatformIDs -1001 failure after the frozen discovery repair.",
-      "Use metadata-only phone probe evidence at runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_d9c1fe_opencl_discovery; do not copy raw payloads into git.",
-      "Return one of: custody-ready source/test/report pathset, exact bounded follow-up phone probe command using --opencl-library or POLYMATH_GEMMA4_OPENCL_LIBRARY/POLYMATH_GEMMA4_OPENCL_LIBRARY_PATHS, or a precise source/runtime blocker.",
-      "Execution remains parked until Phase3/4 supplies a frozen repair or exact bounded probe command; no C5 pass or prediction JSONL exists."
+      "Phase3/4 must repair metadata-only command report runtime/reports/orchestration/c5_after_c1_bounded_opencl_vendor_loader_probe_command_20260701T_phase34.json SHA 1534d2ca42034053bc2059b5b94c0f061ba9ad3080c490a606bad5af8de25459 or return a precise blocker.",
+      "Mismatch: Phase3/4 report/command uses runner SHA efc18e811b4edff6ca4af5baad5fc9bab3db0f707a36ad3aba114d3994303a01, while Execution proved the repaired OpenCL-discovery runner built from d9c1fe1 is SHA 6bbad7d28dc3c4716444cd1c9e55448087755e2dcd1c03eb2a4bab4d051df363 and help-verified --opencl-library.",
+      "Required correction: return corrected report SHA and exact bounded phone probe command using the repaired runner identity, or prove the efc18e runner actually has --opencl-library and is the intended repair binary.",
+      "Execution is not routed until the runner identity mismatch is fixed; no raw payloads, prediction JSONL, logits, loss, confidence, or candidate_train_loss are accepted."
     ],
-    "authorization_needed": "none; native implementation work is under current GO and must preserve raw/secrets boundary",
+    "authorization_needed": false,
+    "c5_after_c1_bounded_opencl_probe_command_identity_repair_20260701T171907Z": {
+      "execution_routed": false,
+      "expected_repaired_runner_identity_sha256": "6bbad7d28dc3c4716444cd1c9e55448087755e2dcd1c03eb2a4bab4d051df363",
+      "first_missing_green_field": "bounded_opencl_probe_command_runner_identity_mismatch",
+      "next_action": "Phase3/4 must correct the command handoff: update the report/command to target the repaired OpenCL-discovery runner SHA 6bbad7d28dc3c4716444cd1c9e55448087755e2dcd1c03eb2a4bab4d051df363, or return a precise reason why efc18e811b4edff6ca4af5baad5fc9bab3db0f707a36ad3aba114d3994303a01 is valid and help-proves --opencl-library. After correction, route Execution for one forced vendor OpenCL probe.",
+      "owner_thread": "019f13da-d897-7ba2-8ed1-b959892f5ed4",
+      "report_path": "runtime/reports/orchestration/c5_after_c1_bounded_opencl_vendor_loader_probe_command_20260701T_phase34.json",
+      "report_sha256": "1534d2ca42034053bc2059b5b94c0f061ba9ad3080c490a606bad5af8de25459",
+      "reported_runner_identity_sha256": "efc18e811b4edff6ca4af5baad5fc9bab3db0f707a36ad3aba114d3994303a01",
+      "status": "pending_phase34_command_handoff_repair"
+    },
+    "c5_after_c1_bounded_opencl_vendor_loader_probe_command_20260701T_phase34": {
+      "adapter_site_policy_sha256": "f38bd8109bbb77e9e94a5b4b34a238bc0ec0a39e7736870c97defe5aecc93357",
+      "candidate_adapter_sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f",
+      "command_routing_status": "blocked_until_phase34_corrects_runner_identity",
+      "component_pack_path_sha256": "899a75a735785329fca45fe1e51d5a88d2b9e8a5f2c2c7bd1277751a0623fb98",
+      "configured_opencl_library_path_sha256": "59a8850fb37433061fd59e105ee6af8547f7149e8711d42d2cb37f70e27cf5c2",
+      "consumed_opencl_runtime_discovery_repair_commit": "2c612931b32bef8b9e7ce68cbe42742e0d3bd01b",
+      "consumed_prior_central_mirror_commit": "d9c1fe1f188234ff2c2c5ec14f6ace3e914d08e2",
+      "decoder_manifest_sha256": "52fcb53666bb4b06d0118cb825b983afc54624a630f667bbfa5af278640e28f8",
+      "expected_repaired_runner_identity_sha256_from_execution": "6bbad7d28dc3c4716444cd1c9e55448087755e2dcd1c03eb2a4bab4d051df363",
+      "expected_same_field_after_probe": "opencl_icd_vendor_loader_blocker",
+      "first_missing_green_field": "bounded_opencl_probe_command_runner_identity_mismatch",
+      "heldout_qa_sha256": "da41c5362398f24e0e0dd9df9a5cf0594435a455871fa77ab74d9312e6c8e9b2",
+      "nonclaims": [
+        "no C5 pass",
+        "no executed C5 metrics",
+        "no prediction JSONL",
+        "no logits/loss/confidence/candidate_train_loss claim",
+        "no bridge-MSE-as-C5-loss substitution",
+        "no learning or model-quality claim",
+        "no Phase3/4 readiness claim",
+        "no 100k/1M Phase2 authority",
+        "no Comet-backed accepted run"
+      ],
+      "prediction_jsonl_expected": false,
+      "raw_boundary": {
+        "hf_or_comet_required": false,
+        "metadata_only_report": true,
+        "prediction_jsonl_added_to_git": false,
+        "raw_model_checkpoint_adapter_tensor_or_prediction_payloads_added_to_git": false,
+        "secrets_required": false
+      },
+      "report_path": "runtime/reports/orchestration/c5_after_c1_bounded_opencl_vendor_loader_probe_command_20260701T_phase34.json",
+      "report_sha256": "1534d2ca42034053bc2059b5b94c0f061ba9ad3080c490a606bad5af8de25459",
+      "reported_runner_identity_sha256": "efc18e811b4edff6ca4af5baad5fc9bab3db0f707a36ad3aba114d3994303a01",
+      "research_escalation": "bounded_sprint_required: repeated clGetPlatformIDs -1001 after frozen OpenCL discovery repair; bounded output is exact vendor-library probe command and stop-field classifier",
+      "runner_identity_sha256": "efc18e811b4edff6ca4af5baad5fc9bab3db0f707a36ad3aba114d3994303a01",
+      "status": "bounded_opencl_vendor_loader_probe_command_identity_mismatch_detected_before_execution"
+    },
     "c5_after_c1_native_ple_contract_decoder_math_boundary_custody_20260701T153007Z": {
       "branch": "origin/gemma4-megakernel-native-training",
       "commit_sha": "7f62882a72610b52094040aa0ab24b718e4b7006",
@@ -5551,24 +5685,26 @@
       "schema_version": "polymath_c5_qa_runtime_post_custody_v1"
     },
     "candidate_adapter_sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f",
-    "current_gate": "WaveB_C5_after_C1_bounded_opencl_icd_vendor_loader_sprint_required_after_repeated_clgetplatformids_minus1001",
+    "central_mirror_local_update_status": "updated_for_phase34_command_identity_repair_pending_repo_custodian_freeze",
+    "central_state_update_pending_custody": true,
+    "current_gate": "WaveB_C5_after_C1_bounded_opencl_vendor_loader_probe_command_identity_repair_pending",
     "decoder_manifest_sha256": "6700f3c2912bfdcb659b9e7de3cdb0831d58f3708a0f841c181ec446b3a83a5f",
-    "dominant_failure_domain": "phase5_eval_failure",
-    "drift_deleted_or_pending": "OpenCL runtime discovery/loading remains the active drift: the default Android-vendor-first repair is frozen but still reaches clGetPlatformIDs -1001 under Termux/RedMagic. This is now a repeated same-field runtime/resource failure and requires bounded sprint escalation, not another passive probe.",
+    "dominant_failure_domain": "orchestration_failure",
+    "drift_deleted_or_pending": "Deleted pending drift: do not route the current Phase3/4 command report to Execution because its runner identity points at the wrong/proven-pre-repair binary. Pending drift is a corrected metadata-only command report and exact probe command. The earlier local Execution-owner mirror is superseded before custody.",
     "export_report_sha256": "06fe8e91b5938ff3235cad5fa96e7b25d5b20fb3c4e456c249c84d53bf839d0f",
-    "first_missing_green_field": "bounded_opencl_icd_vendor_loader_sprint_pathset_or_probe_command_missing",
+    "first_missing_green_field": "bounded_opencl_probe_command_runner_identity_mismatch",
     "first_missing_green_field_after_custody": "c5_full_decoder_single_layer_attention_mlp_kernel_missing_after_ple_derivation",
     "first_missing_green_field_after_custody_until_model_source_available": "model_safetensors_missing",
     "first_missing_green_field_after_export": "phone_c5_runner_rebuild_or_copy_missing",
     "first_missing_green_field_after_patch": "bounded_c5_qa_predict_rerun_pending",
     "first_missing_green_field_after_runner": "heldout_qa_jsonl_staging_or_c5_predict_probe_pending",
     "first_unresolved_technical_failure_after_valid_schema_paths": "full_decoder_logits_generation_not_implemented_after_valid_schema_paths",
-    "governing_edge": "WaveB_C5_after_C1_bounded_opencl_icd_vendor_loader_sprint_required_after_repeated_clgetplatformids_minus1001",
+    "governing_edge": "WaveB_C5_after_C1_bounded_opencl_vendor_loader_probe_command_identity_repair_pending",
     "heldout_qa_rows": 53,
     "heldout_qa_sha256": "da41c5362398f24e0e0dd9df9a5cf0594435a455871fa77ab74d9312e6c8e9b2",
     "heldout_qa_size_bytes": 153158,
     "known_downstream_access_issue_after_custody": "termux_command_channel_missing",
-    "last_concrete_action": "Repo Custodian froze the OpenCL runtime discovery repair at 2c612931b32bef8b9e7ce68cbe42742e0d3bd01b and the central mirror at d9c1fe1f188234ff2c2c5ec14f6ace3e914d08e2. Execution consumed the repair, restored Termux SSH, built the repaired runner from d9c1fe1, verified the new --opencl-library surface, and reran the bounded C5_after_C1 phone probe without override. The same clGetPlatformIDs -1001 field repeated with default Android-vendor-first discovery active and no CLI/env override configured. Metadata evidence was copied; raw-suffix scan is clean.",
+    "last_concrete_action": "Repo Custodian froze the repeated OpenCL runtime failure route mirror at 3e4529f5586f485712a96d3a266af0aa0402d0b4. Phase3/4 completed a bounded sprint and produced runtime/reports/orchestration/c5_after_c1_bounded_opencl_vendor_loader_probe_command_20260701T_phase34.json SHA 1534d2ca42034053bc2059b5b94c0f061ba9ad3080c490a606bad5af8de25459, but executive validation found an internal command identity mismatch before routing Execution: the handoff uses runner SHA efc18e811b4edff6ca4af5baad5fc9bab3db0f707a36ad3aba114d3994303a01, while the OpenCL discovery repair actually consumed/proved by Execution used runner SHA 6bbad7d28dc3c4716444cd1c9e55448087755e2dcd1c03eb2a4bab4d051df363 with --opencl-library verified. Execution was not nudged with the inconsistent command.",
     "model_safetensors_sha256": "43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651",
     "model_safetensors_size_bytes": 15992595884,
     "native_compute_kernel_failure_surface_custody_commit": "a5b66d0b6eb69a18f67e98afc00aeab6eef3faa8",
@@ -5578,22 +5714,28 @@
     "native_tokenizer_tensor_loader_prereq_custody_commit": "4472e3dee86d88d83031eecfc94b91008e5215e0",
     "native_tokenizer_tensor_loader_prereq_report_sha256": "1e4a087354d8a917ec9fba7747a5e2410d9fb01f36e991c902e00adf8764e422",
     "native_tokenizer_tensor_loader_prereq_status": "native_full_decoder_prereq_pathset_ready_for_custodian",
-    "next_concrete_action": "Phase3/4 must run a bounded OpenCL ICD/vendor-loader repair/decomposition sprint: inspect the repeated probe evidence, determine whether Android vendor OpenCL needs an explicit loader path/env/ICD workaround, and return a custody-ready pathset or exact bounded Execution probe command. If a source patch is needed, route it to Repo Custodian before Execution reruns. If only a bounded phone discovery command is needed, route the exact command to Execution.",
+    "next_concrete_action": "Phase3/4 must correct the command handoff: update the report/command to target the repaired OpenCL-discovery runner SHA 6bbad7d28dc3c4716444cd1c9e55448087755e2dcd1c03eb2a4bab4d051df363, or return a precise reason why efc18e811b4edff6ca4af5baad5fc9bab3db0f707a36ad3aba114d3994303a01 is valid and help-proves --opencl-library. After correction, route Execution for one forced vendor OpenCL probe.",
+    "nonclaims": [
+      "no C5 pass",
+      "no executed C5 metrics",
+      "no prediction JSONL/logits/loss/confidence/candidate_train_loss unless real runtime emits them",
+      "no bridge-MSE-as-C5-loss",
+      "no learning/model-quality claim",
+      "no Phase3/4 readiness",
+      "no 100k/1M authority",
+      "no Comet-backed accepted run"
+    ],
     "nonclaims_preserved": [
       "no C5 pass",
       "no executed C5 metrics",
-      "no prediction JSONL emitted",
-      "no logits emitted",
-      "no loss, confidence, or candidate_train_loss emitted",
-      "no bridge MSE relabeled as C5 loss",
+      "no prediction JSONL/logits/loss/confidence/candidate_train_loss unless real runtime emits them",
+      "no bridge-MSE-as-C5-loss",
       "no learning/model-quality claim",
-      "no Phase3 readiness claim",
-      "no Phase4 readiness claim",
-      "not 100k/1M Phase2 authority",
-      "no Comet/API call",
-      "no secrets sourced"
+      "no Phase3/4 readiness",
+      "no 100k/1M authority",
+      "no Comet-backed accepted run"
     ],
-    "owner": "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 owns the bounded OpenCL ICD/vendor-loader sprint; Execution is parked after the repeated same-field phone proof until a repair pathset or exact bounded probe command exists.",
+    "owner": "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 owns repair of the bounded OpenCL vendor-loader command handoff because the report command runner identity does not match the repaired OpenCL-discovery runner proven by Execution.",
     "owner_thread": "019f13da-d897-7ba2-8ed1-b959892f5ed4",
     "phase34_streamed_decoder_compute_runtime_status": "implementation_in_progress",
     "post_custody_c5_qa_runtime_status": {
@@ -5621,20 +5763,22 @@
     },
     "probe_stderr_sha256": "d2f647b4efae9fe021b2e0d5ce9f79f88d87853e4f40cf0d660cf6d5d5c2d819",
     "probe_stdout_metadata_sha256": "8be05287d47bb148054bd26425f41f7f0c2cded8b98110d956c0f3e778cb86e6",
-    "recursive_improvement_next_step": "Bounded sprint narrows Android/Termux OpenCL ICD/vendor-loader behavior. Smallest proof is either an explicit --opencl-library/env override probe or a source patch that reports the discovered loader path redacted/hash-only, followed by one bounded C5_after_C1 phone probe.",
-    "research_escalation": "bounded_sprint_required",
+    "recursive_improvement_next_step": "Repair the handoff identity first; then run one forced vendor OpenCL probe. If the configured vendor library path is missing or dlopen fails, route loader/linker failure to Phase3/4. If clGetPlatformIDs -1001 repeats with configured override true, classify opencl_icd_vendor_loader_blocker. No pass claim until real runtime emits evidence.",
+    "research_escalation": "bounded_sprint_handoff_repair_required_due_runner_identity_mismatch",
     "runner_sha256": "a5a6f9a3b93d167d9cd69eddbe2f3404443ae1c2222e1c6a0782398c9ff09e84",
     "runner_size_bytes": 369536,
-    "status": "bounded_opencl_icd_vendor_loader_sprint_required_after_repeated_phone_probe_failure",
-    "status_classification": "PENDING_ACTION_PHASE34_BOUNDED_OPENCL_ICD_VENDOR_LOADER_SPRINT",
+    "status": "bounded_opencl_vendor_loader_probe_command_identity_mismatch_detected_before_execution",
+    "status_classification": "PENDING_ACTION_PHASE34_REPAIR_BOUNDED_OPENCL_PROBE_COMMAND_IDENTITY",
     "threads_nudged_this_tick": [
-      "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: polled active on OpenCL runtime discovery repair pathset freeze; queued central mirror custody after this update.",
-      "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4: polled complete with opencl_runtime_discovery_repair_pathset_ready_for_custodian; no duplicate nudge.",
-      "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: polled parked after OpenCL runtime-unavailable proof; no rerun nudge until repair frozen."
+      "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4: routed command handoff repair for runner identity mismatch; exact first missing field bounded_opencl_probe_command_runner_identity_mismatch.",
+      "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: routed two-file central mirror freeze for this corrected owner edge.",
+      "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: polled idle; intentionally not nudged until corrected command exists.",
+      "Training Material Steward, Pipeline Integrator, UI Engineer, Engineering Orchestrator: not current owner; no nudge."
     ],
-    "timestamp_utc": "2026-07-01T16:59:07Z",
-    "updated_at_utc": "2026-07-01T16:59:07Z",
-    "updated_utc": "2026-07-01T17:09:07Z",
+    "timestamp_utc": "2026-07-01T17:19:07Z",
+    "updated_at": "2026-07-01T17:19:07Z",
+    "updated_at_utc": "2026-07-01T17:19:07Z",
+    "updated_utc": "2026-07-01T17:19:07Z",
     "user_action_required": false
   },
   "probe_stderr_sha256": "090f6c91104f21f2e00715c1e02032811043d8710ae22bb671949a5b99f1872f",
@@ -5645,7 +5789,7 @@
     "scope": "metadata mirror only",
     "status": "central_state_phone_filesystem_paths_redacted"
   },
-  "recursive_improvement_next_step": "Bounded sprint narrows Android/Termux OpenCL ICD/vendor-loader behavior. Smallest proof is either an explicit --opencl-library/env override probe or a source patch that reports the discovered loader path redacted/hash-only, followed by one bounded C5_after_C1 phone probe.",
+  "recursive_improvement_next_step": "Repair the handoff identity first; then run one forced vendor OpenCL probe. If the configured vendor library path is missing or dlopen fails, route loader/linker failure to Phase3/4. If clGetPlatformIDs -1001 repeats with configured override true, classify opencl_icd_vendor_loader_blocker. No pass claim until real runtime emits evidence.",
   "required_lane_update_protocol": {
     "block_name": "CENTRAL_STATE_UPDATE",
     "meta_action": "on every heartbeat, read active threads, update this file, route the next concrete edge, and notify Execution only when both keys are green",
@@ -5661,18 +5805,20 @@
       "nonclaims"
     ]
   },
-  "research_escalation": "bounded_sprint_required",
+  "research_escalation": "bounded_sprint_handoff_repair_required_due_runner_identity_mismatch",
   "runner_sha256": "a5a6f9a3b93d167d9cd69eddbe2f3404443ae1c2222e1c6a0782398c9ff09e84",
   "runner_size_bytes": 369536,
   "schema_version": "polymath_executive_delivery_state_v1",
-  "status": "bounded_opencl_icd_vendor_loader_sprint_required_after_repeated_phone_probe_failure",
-  "status_classification": "PENDING_ACTION_PHASE34_BOUNDED_OPENCL_ICD_VENDOR_LOADER_SPRINT",
+  "status": "bounded_opencl_vendor_loader_probe_command_identity_mismatch_detected_before_execution",
+  "status_classification": "PENDING_ACTION_PHASE34_REPAIR_BOUNDED_OPENCL_PROBE_COMMAND_IDENTITY",
   "threads_nudged_this_tick": [
-    "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4: routed bounded OpenCL ICD/vendor-loader sprint with exact repeated failure artifacts and fail-fast boundary.",
-    "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: routed two-file central mirror freeze after this metadata-only update."
+    "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4: routed command handoff repair for runner identity mismatch; exact first missing field bounded_opencl_probe_command_runner_identity_mismatch.",
+    "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: routed two-file central mirror freeze for this corrected owner edge.",
+    "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: polled idle; intentionally not nudged until corrected command exists.",
+    "Training Material Steward, Pipeline Integrator, UI Engineer, Engineering Orchestrator: not current owner; no nudge."
   ],
-  "updated_at": "2026-07-01T17:09:07Z",
-  "updated_at_utc": "2026-07-01T17:09:07Z",
-  "updated_utc": "2026-07-01T17:09:07Z",
+  "updated_at": "2026-07-01T17:19:07Z",
+  "updated_at_utc": "2026-07-01T17:19:07Z",
+  "updated_utc": "2026-07-01T17:19:07Z",
   "user_action_required": false
 }

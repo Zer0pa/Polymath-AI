@@ -1,86 +1,81 @@
 # Executive Delivery State
 
-Updated UTC: `2026-07-01T17:09:07Z`
+Updated UTC: `2026-07-01T17:19:07Z`
 
 ## Current Gate
 
-`WaveB_C5_after_C1_bounded_opencl_icd_vendor_loader_sprint_required_after_repeated_clgetplatformids_minus1001`
+`WaveB_C5_after_C1_bounded_opencl_vendor_loader_probe_command_identity_repair_pending`
 
-Status classification: `PENDING_ACTION_PHASE34_BOUNDED_OPENCL_ICD_VENDOR_LOADER_SPRINT`
+Status classification: `PENDING_ACTION_PHASE34_REPAIR_BOUNDED_OPENCL_PROBE_COMMAND_IDENTITY`
 
-Owner: Phase3/4 Engineer `019f13da-d897-7ba2-8ed1-b959892f5ed4` owns the bounded OpenCL ICD/vendor-loader sprint. Execution is parked after repeated same-field phone proof until Phase3/4 supplies a frozen repair or exact bounded probe command.
+Owner: Phase3/4 Engineer `019f13da-d897-7ba2-8ed1-b959892f5ed4` owns repair of the bounded OpenCL vendor-loader command handoff. Execution remains parked.
 
 User action required: `false`
 
-Dominant failure domain: `phase5_eval_failure`
+Dominant failure domain: `orchestration_failure`
 
-Research escalation: `bounded_sprint_required`
+Research escalation: `bounded_sprint_handoff_repair_required_due_runner_identity_mismatch`
 
 ## Artifact Waiting On
 
-- Phase3/4 bounded OpenCL ICD/vendor-loader sprint for the repeated RedMagic/Termux `clGetPlatformIDs -1001` failure.
-- Metadata-only evidence root: `runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_d9c1fe_opencl_discovery`.
-- Required return: custody-ready source/test/report pathset, exact bounded follow-up phone probe command using `--opencl-library` or `POLYMATH_GEMMA4_OPENCL_LIBRARY`/`POLYMATH_GEMMA4_OPENCL_LIBRARY_PATHS`, or a precise source/runtime blocker.
-- Execution remains parked; no C5 pass, metrics, prediction JSONL, logits, loss, confidence, or `candidate_train_loss` exists.
+- Phase3/4 repairs `runtime/reports/orchestration/c5_after_c1_bounded_opencl_vendor_loader_probe_command_20260701T_phase34.json` SHA `1534d2ca42034053bc2059b5b94c0f061ba9ad3080c490a606bad5af8de25459` or returns a precise blocker.
+- Mismatch found before Execution routing: report/command uses runner SHA `efc18e811b4edff6ca4af5baad5fc9bab3db0f707a36ad3aba114d3994303a01`.
+- Execution evidence from the repaired OpenCL-discovery probe used runner SHA `6bbad7d28dc3c4716444cd1c9e55448087755e2dcd1c03eb2a4bab4d051df363` and help-verified `--opencl-library`.
+- Required correction: return a corrected metadata-only report SHA and exact bounded phone probe command using the repaired runner identity, or prove `efc18e...` is valid and exposes `--opencl-library`.
+- Execution is not routed until the runner identity mismatch is fixed.
 
 ## Last Concrete Action
 
-Repo Custodian froze the OpenCL runtime discovery repair and its prior central mirror:
+Repo Custodian froze the repeated OpenCL runtime failure central mirror:
 
-- repair commit: `2c612931b32bef8b9e7ce68cbe42742e0d3bd01b`
-- central mirror commit: `d9c1fe1f188234ff2c2c5ec14f6ace3e914d08e2`
+- mirror commit: `3e4529f5586f485712a96d3a266af0aa0402d0b4`
 
-Execution consumed the repair, restored Termux SSH, built the repaired runner from `d9c1fe1`, verified the new `--opencl-library` surface, and reran the bounded `C5_after_C1` phone probe without override. The same field repeated with default Android-vendor-first discovery active and no CLI/env override configured:
+Phase3/4 completed a bounded sprint and returned a command handoff:
 
-`c5_full_decoder_opencl_parity_runtime_unavailable:opencl_single_token_layer_runtime_unavailable:clGetPlatformIDs count failed with OpenCL error -1001`
+- report: `runtime/reports/orchestration/c5_after_c1_bounded_opencl_vendor_loader_probe_command_20260701T_phase34.json`
+- report SHA: `1534d2ca42034053bc2059b5b94c0f061ba9ad3080c490a606bad5af8de25459`
+- status: `bounded_opencl_vendor_loader_probe_command_ready_for_execution`
 
-Probe evidence:
-
-- `candidate_probe_stdout.json` SHA `de3f059a9c3c038b6bba934eaee7a74c1bd52c0d73bda98852fc20cc9ffabb92`
-- `candidate_probe_stderr.log` SHA `090f6c91104f21f2e00715c1e02032811043d8710ae22bb671949a5b99f1872f`
-- `meminfo_before.txt` SHA `ab97b0e9186fc0d600f32871cda127f10b09c7ed88c5fe14ce4f135e423be4f6`
-- `meminfo_after.txt` SHA `32d877480366340c256efa601e681ebc4147067a72602290b707f3946aa1ff9c`
-
-Raw boundary remains clean: no prediction JSONL was written, no checkpoint payload was copied into repo, and reports contain metadata only.
+Executive validation rejected routing because the handoff targets the wrong runner identity. The prior Execution proof after OpenCL discovery repair built runner SHA `6bbad7d28dc3c4716444cd1c9e55448087755e2dcd1c03eb2a4bab4d051df363`; the Phase3/4 command searches for SHA `efc18e811b4edff6ca4af5baad5fc9bab3db0f707a36ad3aba114d3994303a01`. Execution was not nudged with this inconsistent command.
 
 ## First Missing Green Field
 
-Current: `bounded_opencl_icd_vendor_loader_sprint_pathset_or_probe_command_missing`
+Current: `bounded_opencl_probe_command_runner_identity_mismatch`
 
 ## Next Concrete Action
 
-Phase3/4 must inspect the repeated probe evidence and return one of:
+Phase3/4 must correct the command handoff:
 
-- a custody-ready OpenCL ICD/vendor-loader repair pathset,
-- an exact bounded Execution probe command using explicit OpenCL loader configuration,
-- or a precise source/runtime blocker.
+- update the report/command to target repaired runner SHA `6bbad7d28dc3c4716444cd1c9e55448087755e2dcd1c03eb2a4bab4d051df363`, or
+- return a precise reason why SHA `efc18e811b4edff6ca4af5baad5fc9bab3db0f707a36ad3aba114d3994303a01` is valid and help-proves `--opencl-library`.
 
-If a source patch is needed, Repo Custodian freezes it before Execution reruns. If only phone discovery is needed, route the exact bounded command to Execution.
+After correction, Execution runs exactly one forced vendor OpenCL probe. If `clGetPlatformIDs -1001` repeats with configured override true, classify `opencl_icd_vendor_loader_blocker`.
 
 ## Drift Deletion / Hardening
 
-OpenCL runtime discovery/loading remains the active drift: the default Android-vendor-first repair is frozen but still reaches clGetPlatformIDs -1001 under Termux/RedMagic. This is now a repeated same-field runtime/resource failure and requires bounded sprint escalation, not another passive probe.
+Deleted pending drift: the current Phase3/4 command report must not be routed to Execution because its runner identity points at the wrong/proven-pre-repair binary. Pending drift is a corrected metadata-only command report and exact probe command. The earlier local Execution-owner mirror was superseded before custody.
 
 ## Recursive Improvement Next Step
 
-Bounded sprint narrows Android/Termux OpenCL ICD/vendor-loader behavior. Smallest proof is either an explicit --opencl-library/env override probe or a source patch that reports the discovered loader path redacted/hash-only, followed by one bounded C5_after_C1 phone probe.
+Repair the handoff identity first, then run one configured-vendor OpenCL proof. If the configured path is missing or `dlopen` fails, route the loader/linker failure to Phase3/4. If `clGetPlatformIDs -1001` repeats with configured override true, classify `opencl_icd_vendor_loader_blocker`. No pass claim until real runtime emits evidence.
 
 ## Threads Nudged This Tick
 
-- Phase3/4 Engineer `019f13da-d897-7ba2-8ed1-b959892f5ed4`: routed bounded OpenCL ICD/vendor-loader sprint with exact repeated failure artifacts and fail-fast boundary.
-- Repo Custodian `019f1ac2-0f0f-7721-bf46-ad402dbd9050`: routed two-file central mirror freeze after this metadata-only update.
-- Execution Orchestrator `019f138c-fb51-7c53-a41a-ab8eac950d9c`: polled active/finalizing repeated probe evidence; not nudged while active.
-- Training Material Steward, Pipeline Integrator, UI Engineer, Engineering Orchestrator: polled/not current owner; no nudge.
+- Phase3/4 Engineer `019f13da-d897-7ba2-8ed1-b959892f5ed4`: routed command handoff repair for runner identity mismatch.
+- Repo Custodian `019f1ac2-0f0f-7721-bf46-ad402dbd9050`: routed the two-file central mirror freeze for this corrected owner edge.
+- Execution Orchestrator `019f138c-fb51-7c53-a41a-ab8eac950d9c`: polled idle; intentionally not nudged until corrected command exists.
+- Training Material Steward, Pipeline Integrator, UI Engineer, Engineering Orchestrator: not current owner; no nudge.
 
 ## Nonclaims Preserved
 
 - no C5 pass.
 - no executed C5 metrics.
 - no prediction JSONL.
-- no logits, loss, confidence, or `candidate_train_loss`.
+- no logits, loss, confidence, or `candidate_train_loss` unless real runtime emits them.
 - no bridge MSE relabeled as C5 loss.
 - no learning/model-quality claim.
 - no Phase3 readiness claim.
 - no Phase4 readiness claim.
+- no 100k/1M Phase2 authority.
 - no raw payload copied to repo.
 - no secrets printed.
