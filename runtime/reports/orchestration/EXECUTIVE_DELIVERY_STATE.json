@@ -1,13 +1,13 @@
 {
-  "active_bottleneck": "final_hidden_opencl_prompt_weight_shape_repair_custody_commit_missing",
-  "active_edge": "WaveB_C5_after_C1_final_hidden_opencl_prompt_weight_shape_repair_custody_pending_after_phase34_pathset",
+  "active_bottleneck": "c5_full_decoder_prediction_jsonl_writer_missing_after_lm_head_nll",
+  "active_edge": "WaveB_C5_after_C1_prediction_jsonl_writer_pending_after_prompt_shape_repair_probe_green",
   "active_watchdog_state": {
-    "active_bottleneck": "final_hidden_opencl_prompt_weight_shape_repair_custody_commit_missing",
-    "active_edge": "WaveB_C5_after_C1_final_hidden_opencl_prompt_weight_shape_repair_custody_pending_after_phase34_pathset",
+    "active_bottleneck": "c5_full_decoder_prediction_jsonl_writer_missing_after_lm_head_nll",
+    "active_edge": "WaveB_C5_after_C1_prediction_jsonl_writer_pending_after_prompt_shape_repair_probe_green",
     "adapter_site_policy_sha256": "f38bd8109bbb77e9e94a5b4b34a238bc0ec0a39e7736870c97defe5aecc93357",
     "additional_missing_runtime_field_after_contract_patch": "decoder_manifest_tensor_role_inventory_missing",
-    "artifact_waiting_on": "Phase3/4 completed final_hidden_opencl_prompt_weight_shape_repair_pathset_ready_for_custodian. Repair pathset: runtime/reports/orchestration/c5_after_c1_final_hidden_opencl_prompt_weight_shape_repair_20260702T_phase34.json SHA 8c49a0a6af89489764b9082e2d5d4c0588cced83c499ab4dc7437e05cb2d324e; integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/opencl_layer_runner.cpp SHA e4bfb3fdbcb6fc6411209fdd80951f178b03f16739f0cf423654d225ca9352d7; integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp SHA 1f8b3199f3bcc52bfc0d6ad5af209ab40f82098724292998c3f1bf6daa0211c3; tests/test_c5_native_runtime_contract.py SHA 306a635d5e05296fff64edcf6879f016f60d187b380b9c3ec34bf1723cfc5fbf. Phase3/4 verification passed: native runner build, focused native runtime contract 18 passed, broad C5 suite 53 passed, ctest 4/4, git diff --check, and raw/secret diff scan. Awaiting Custodian verification/freeze plus this central mirror update.",
-    "authorization_needed": "none",
+    "artifact_waiting_on": "Execution completed the prompt-shape repair bounded phone probe from commit 499cd1739a3402fc498a70500e2efef081f97e46. The probe advanced past the layer-5 prompt weight shape field and failed closed at c5_full_decoder_prediction_jsonl_writer_missing_after_lm_head_nll. Awaiting Phase3/4 return of a custody-ready prediction JSONL writer pathset, a bounded probe command, or a precise source/runtime blocker. In parallel, Repo Custodian should freeze the metadata-only probe evidence plus this central mirror.",
+    "authorization_needed": false,
     "c5_after_c1_bounded_opencl_probe_command_identity_repair_20260701T171907Z": {
       "execution_routed": false,
       "expected_repaired_runner_identity_sha256": "6bbad7d28dc3c4716444cd1c9e55448087755e2dcd1c03eb2a4bab4d051df363",
@@ -1871,14 +1871,14 @@
       "user_action_required": false
     },
     "central_state_update_pending_custody": true,
-    "current_gate": "WaveB_C5_after_C1_final_hidden_opencl_prompt_weight_shape_repair_custody_pending_after_phase34_pathset",
+    "current_gate": "WaveB_C5_after_C1_prediction_jsonl_writer_pending_after_prompt_shape_repair_probe_green",
     "current_highest_valid_state": "C1-C4 Wave B mechanics, phone-local model/exporter evidence, C5-capable runner build, heldout QA staging, native C5 probes through SP-HAL OpenCL route, multi-token QA prompt orchestration, rank-16 adapter stream injection, native 42-layer orchestration, and frozen 42-layer proof evidence are development-cycle metadata/code evidence only. Phase3/4 is actively working the chunked LM-head/NLL writer boundary; no C5 pass, prediction JSONL, loss, confidence, candidate_train_loss, or executed metrics exist.",
-    "current_owner": "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050 owns the six-file final-hidden OpenCL prompt weight shape repair freeze; Execution remains parked until custody freezes the repair and includes the bounded probe command.",
+    "current_owner": "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 owns the next bounded native C5 implementation slice: prediction JSONL writer after LM-head/NLL on the existing --run-c5-qa-predict path.",
     "custody_commit_latest": "05bb56437b83138547301e69af14ab0fce7d4b1a",
     "custody_status_latest": "c5_opencl_parity_dispatch_committed_pushed",
     "decoder_manifest_sha256": "52fcb53666bb4b06d0118cb825b983afc54624a630f667bbfa5af278640e28f8",
     "dominant_failure_domain": "phase5_eval_failure",
-    "drift_deleted_or_pending": "Deleted stale Phase3/4-active drift: the layer-5 prompt weight shape repair pathset is now custody-ready. Do not regress to phone model source, exporter schema, tokenizer/tensor loader, PLE, SP-HAL/OpenCL loader, multi-token, rank16, 42-layer, generic LM-head, or final-hidden-stream blockers without new evidence.",
+    "drift_deleted_or_pending": "Deleted stale Execution-active and layer-5-shape drift: the prompt-shape repair phone proof completed and advanced past c5_full_decoder_final_hidden_opencl_prompt_weight_shape_unsupported:5. Do not regress to phone source/exporter/schema/tokenizer/PLE/SP-HAL/multi-token/rank16/42-layer/final-hidden/layer5-shape blockers without new evidence.",
     "driver_tick_history": [
       {
         "artifact_waiting_on": [
@@ -2119,7 +2119,7 @@
       "next_owner": "execution_orchestrator",
       "status": "committed_pushed"
     },
-    "first_missing_green_field": "final_hidden_opencl_prompt_weight_shape_repair_custody_commit_missing",
+    "first_missing_green_field": "c5_full_decoder_prediction_jsonl_writer_missing_after_lm_head_nll",
     "first_missing_green_field_after_contract_patch": "decoder_manifest_architecture_config_missing",
     "first_missing_green_field_after_custody": "c5_full_decoder_chunked_lm_head_nll_writer_missing",
     "first_missing_green_field_after_export": "phone_c5_runner_rebuild_or_copy_missing",
@@ -2130,7 +2130,7 @@
     "first_unresolved_technical_failure_after_schema_complete_export": "c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land",
     "first_unresolved_technical_failure_after_schema_paths": "full_decoder_logits_generation_not_implemented_after_valid_schema_paths",
     "first_unresolved_technical_failure_after_valid_schema_paths": "c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land",
-    "governing_edge": "WaveB_C5_after_C1_chunked_lm_head_nll_writer_implementation_active_after_42_layer_evidence_freeze",
+    "governing_edge": "WaveB_C5_after_C1_prediction_jsonl_writer_pending_after_prompt_shape_repair_probe_green",
     "hardening_policy": {
       "deleted_or_repaired_drift": [
         "forced_non_packaged_child_exec_default_for_phase1",
@@ -2401,7 +2401,7 @@
         "user_action_required": false
       }
     },
-    "last_concrete_action": "Phase3/4 repaired the layer-5 final-hidden OpenCL prompt weight shape blocker by making OpenCL prompt-layer validation and dispatch derive layer Q/KV widths from actual projection sizes and dynamic head counts, then aligned the C5 prompt weight validator and regression guard. It produced report SHA 8c49a0a6af89489764b9082e2d5d4c0588cced83c499ab4dc7437e05cb2d324e after build/tests/diff/raw-boundary checks passed.",
+    "last_concrete_action": "Execution built/copied gemma4_layer_runner_c5_prompt_shape_repair on the phone, verified C5/OpenCL flags and inputs, ran the single bounded forced-vendor OpenCL C5_after_C1 probe, and returned exit 13 after 251s with prediction JSONL written=false, raw suffix scan=0, runner SHA 1ef49c246a08ab032862f717836f3e098d97640aca75fe9f3e29a63451aa10b1, stdout SHA 6bc5a58af7b8ef7f304f7e37d39102bc05235269e0e2dc6fb92679a01bfa34c4, and first_missing_green_field c5_full_decoder_prediction_jsonl_writer_missing_after_lm_head_nll.",
     "last_driver_actions": [
       "Loaded central state and polled existing Phase3/4 and Custodian threads only.",
       "Detected Phase3/4 completed final_hidden_opencl_prompt_weight_shape_repair_pathset_ready_for_custodian.",
@@ -2589,7 +2589,7 @@
     "native_tokenizer_tensor_loader_prereq_custody_commit": "4472e3dee86d88d83031eecfc94b91008e5215e0",
     "native_tokenizer_tensor_loader_prereq_report_sha256": "1e4a087354d8a917ec9fba7747a5e2410d9fb01f36e991c902e00adf8764e422",
     "native_tokenizer_tensor_loader_prereq_status": "native_full_decoder_prereq_pathset_ready_for_custodian",
-    "next_concrete_action": "Repo Custodian must verify and freeze exactly the four Phase3/4 repair files plus EXECUTIVE_DELIVERY_STATE.json and .md. After custody, Custodian should route Execution to rebuild/copy gemma4_layer_runner_c5_prompt_shape_repair and run one bounded C5_after_C1 phone probe from the report command template. If custody verification fails, return the exact failing command/file to Phase3/4/Engineering.",
+    "next_concrete_action": "Phase3/4 must implement/freeze the prediction JSONL writer after LM-head/NLL on the existing native C5 path, or provide the next bounded probe/precise blocker. Repo Custodian should freeze the two central files plus the seven metadata-only prompt-shape probe evidence files. Execution is parked until a new frozen implementation or bounded probe command exists.",
     "nonclaims": [
       "no C5 pass",
       "no executed C5 metrics",
@@ -2606,14 +2606,16 @@
       "no C5 pass",
       "no executed C5 metrics",
       "no prediction JSONL/logits/loss/confidence/candidate_train_loss unless real runtime emits them",
-      "no bridge MSE relabeled as C5 loss",
+      "no bridge-MSE-as-C5-loss",
       "no learning/model-quality claim",
       "no Phase3/4 readiness",
       "no 100k/1M authority",
+      "no raw payloads in git",
+      "no secrets printed",
       "no Comet-backed accepted run"
     ],
-    "owner": "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050 owns the six-file final-hidden OpenCL prompt weight shape repair freeze; Execution remains parked until custody freezes the repair and includes the bounded probe command.",
-    "owner_thread": "019f1ac2-0f0f-7721-bf46-ad402dbd9050",
+    "owner": "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 owns the next bounded native C5 implementation slice: prediction JSONL writer after LM-head/NLL on the existing --run-c5-qa-predict path.",
+    "owner_thread": "019f13da-d897-7ba2-8ed1-b959892f5ed4",
     "phase2_status_by_phase": {
       "C1": {
         "packets": 5180,
@@ -2835,7 +2837,7 @@
       "phase34": "raw PJP1, HTP raw output, OpenCL tensors, and adapters remain on device/Termux; repair must keep compact JSON only",
       "report_root_scan": "metadata-freeze report root had 179 tracked files and clean forbidden suffix scans; raw payloads not committed"
     },
-    "recursive_improvement_next_step": "Freeze the dynamic layer-width repair, then run one bounded phone proof. Expected next field after successful custody/probe is c5_full_decoder_prediction_jsonl_writer_missing_after_lm_head_nll. If c5_full_decoder_final_hidden_opencl_prompt_weight_shape_unsupported:5 repeats after the frozen repair, trigger a bounded shape/manifest decomposition sprint.",
+    "recursive_improvement_next_step": "Run one falsifiable Phase3/4 implementation slice for prediction JSONL writing after LM-head/NLL. If custody-ready, freeze it and run one bounded phone proof; if blocked, route the exact source/runtime contract field without inventing predictions or metrics.",
     "repo_custodian_per_layer_input_runtime_repair_commit": "58872fdc3dd7ff6efb73321252d58f3447eb0e2b",
     "repo_custodian_post_phone_probe_central_mirror_commit": "5802ea1e25222c068dd3fcb5050c91f20f72357b",
     "repo_custody_state_freeze": {
@@ -2854,17 +2856,18 @@
     "runner_sha256": "31015b6844e20d74cd67f69cbb152fa4ccba4200992d3d60cc458d145afda23c",
     "runner_size_bytes": 554312,
     "secondary_missing_green_field": "c5_full_decoder_final_hidden_stream_missing_for_lm_head_nll_if_phase34_confirms_current_precondition",
-    "status": "PENDING_ACTION_REPO_CUSTODIAN_FINAL_HIDDEN_OPENCL_PROMPT_WEIGHT_SHAPE_REPAIR_FREEZE",
-    "status_classification": "PENDING_ACTION_REPO_CUSTODIAN_FINAL_HIDDEN_OPENCL_PROMPT_WEIGHT_SHAPE_REPAIR_FREEZE",
+    "status": "PENDING_ACTION_PHASE34_PREDICTION_JSONL_WRITER_AFTER_LM_HEAD_NLL",
+    "status_classification": "PENDING_ACTION_PHASE34_PREDICTION_JSONL_WRITER_AFTER_LM_HEAD_NLL",
     "threads_nudged_this_tick": [
-      "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: routed six-file final-hidden OpenCL prompt weight shape repair custody request",
-      "Phase3/4 019f13da-d897-7ba2-8ed1-b959892f5ed4: completed custody-ready pathset; no duplicate nudge",
-      "Execution 019f138c-fb51-7c53-a41a-ab8eac950d9c: parked until Custodian freeze and bounded probe command"
+      "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4: routed prediction JSONL writer after LM-head/NLL implementation handoff.",
+      "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: routed metadata-only prompt-shape probe evidence plus central mirror custody request.",
+      "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: completed bounded prompt-shape repair probe; now parked until next frozen implementation/probe command.",
+      "Training Material Steward, Pipeline Integrator, UI Engineer, Engineering Orchestrator: not current owner; no nudge."
     ],
-    "timestamp_utc": "2026-07-01T22:06:08Z",
-    "updated_at": "2026-07-01T22:06:08Z",
-    "updated_at_utc": "2026-07-01T22:43:08Z",
-    "updated_utc": "2026-07-01T22:06:08Z",
+    "timestamp_utc": "2026-07-01T23:22:56Z",
+    "updated_at": "2026-07-01T23:22:56Z",
+    "updated_at_utc": "2026-07-01T23:22:56Z",
+    "updated_utc": "2026-07-01T23:22:56Z",
     "user_action_required": false,
     "c5_after_c1_final_hidden_opencl_prompt_weight_shape_repair_20260702T_phase34": {
       "status": "final_hidden_opencl_prompt_weight_shape_repair_pathset_ready_for_custodian",
@@ -2964,8 +2967,8 @@
   },
   "adapter_site_policy_sha256": "f38bd8109bbb77e9e94a5b4b34a238bc0ec0a39e7736870c97defe5aecc93357",
   "additional_missing_runtime_field_after_contract_patch": "decoder_manifest_tensor_role_inventory_missing",
-  "artifact_waiting_on": "Phase3/4 completed final_hidden_opencl_prompt_weight_shape_repair_pathset_ready_for_custodian. Repair pathset: runtime/reports/orchestration/c5_after_c1_final_hidden_opencl_prompt_weight_shape_repair_20260702T_phase34.json SHA 8c49a0a6af89489764b9082e2d5d4c0588cced83c499ab4dc7437e05cb2d324e; integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/opencl_layer_runner.cpp SHA e4bfb3fdbcb6fc6411209fdd80951f178b03f16739f0cf423654d225ca9352d7; integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp SHA 1f8b3199f3bcc52bfc0d6ad5af209ab40f82098724292998c3f1bf6daa0211c3; tests/test_c5_native_runtime_contract.py SHA 306a635d5e05296fff64edcf6879f016f60d187b380b9c3ec34bf1723cfc5fbf. Phase3/4 verification passed: native runner build, focused native runtime contract 18 passed, broad C5 suite 53 passed, ctest 4/4, git diff --check, and raw/secret diff scan. Awaiting Custodian verification/freeze plus this central mirror update.",
-  "authorization_needed": "none",
+  "artifact_waiting_on": "Execution completed the prompt-shape repair bounded phone probe from commit 499cd1739a3402fc498a70500e2efef081f97e46. The probe advanced past the layer-5 prompt weight shape field and failed closed at c5_full_decoder_prediction_jsonl_writer_missing_after_lm_head_nll. Awaiting Phase3/4 return of a custody-ready prediction JSONL writer pathset, a bounded probe command, or a precise source/runtime blocker. In parallel, Repo Custodian should freeze the metadata-only probe evidence plus this central mirror.",
+  "authorization_needed": false,
   "c5_after_c1_42_layer_orchestration_probe_20260701T213036Z": {
     "blockers": [
       "c5_full_decoder_chunked_lm_head_nll_writer_missing"
@@ -5278,13 +5281,13 @@
     "status": "bounded_phone_probe_repeated_resource_runtime_failure_after_opencl_discovery_repair"
   },
   "candidate_adapter_sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f",
-  "central_mirror_local_update_status": "updated_after_final_hidden_stream_phone_probe_layer5_shape_blocker",
+  "central_mirror_local_update_status": "updated_after_prompt_shape_repair_probe_prediction_jsonl_writer_missing",
   "central_state_update_pending_custody": true,
-  "current_gate": "WaveB_C5_after_C1_final_hidden_opencl_prompt_weight_shape_repair_custody_pending_after_phase34_pathset",
-  "current_highest_valid_state": "C1-C4 Wave B mechanics, phone-local model/exporter evidence, C5-capable runner build, heldout QA staging, native C5 probes through SP-HAL OpenCL route, multi-token QA prompt orchestration, rank-16 adapter stream injection, native 42-layer orchestration, and frozen 42-layer proof evidence are development-cycle metadata/code evidence only. Phase3/4 is actively working the chunked LM-head/NLL writer boundary; no C5 pass, prediction JSONL, loss, confidence, candidate_train_loss, or executed metrics exist.",
+  "current_gate": "WaveB_C5_after_C1_prediction_jsonl_writer_pending_after_prompt_shape_repair_probe_green",
+  "current_highest_valid_state": "C1-C4 Wave B mechanics, phone-local model/exporter evidence, C5-capable runner build, heldout QA staging, native C5 probes through SP-HAL OpenCL route, multi-token QA prompt orchestration, rank-16 adapter stream injection, native 42-layer orchestration, chunked LM-head/NLL fail-closed boundary, final-hidden-stream implementation, and final-hidden OpenCL prompt weight shape repair are development-cycle metadata/code/runtime evidence only. The latest bounded phone proof advanced to c5_full_decoder_prediction_jsonl_writer_missing_after_lm_head_nll; no C5 pass, prediction JSONL, loss, confidence, candidate_train_loss, or executed C5 metric exists yet.",
   "decoder_manifest_sha256": "52fcb53666bb4b06d0118cb825b983afc54624a630f667bbfa5af278640e28f8",
   "dominant_failure_domain": "phase5_eval_failure",
-  "drift_deleted_or_pending": "Deleted stale Phase3/4-active drift: the layer-5 prompt weight shape repair pathset is now custody-ready. Do not regress to phone model source, exporter schema, tokenizer/tensor loader, PLE, SP-HAL/OpenCL loader, multi-token, rank16, 42-layer, generic LM-head, or final-hidden-stream blockers without new evidence.",
+  "drift_deleted_or_pending": "Deleted stale Execution-active and layer-5-shape drift: the prompt-shape repair phone proof completed and advanced past c5_full_decoder_final_hidden_opencl_prompt_weight_shape_unsupported:5. Do not regress to phone source/exporter/schema/tokenizer/PLE/SP-HAL/multi-token/rank16/42-layer/final-hidden/layer5-shape blockers without new evidence.",
   "driver_tick_history": [
     {
       "artifact_waiting_on": [
@@ -6534,12 +6537,82 @@
       ],
       "timestamp_utc": "2026-07-01T22:06:08Z",
       "user_action_required": false
+    },
+    {
+      "timestamp_utc": "2026-07-01T23:19:45Z",
+      "current_gate": "WaveB_C5_after_C1_prompt_shape_repair_bounded_phone_probe_active_after_custody",
+      "status_classification": "PENDING_ACTION_EXECUTION_PROMPT_SHAPE_REPAIR_BOUNDED_PHONE_PROBE_ACTIVE",
+      "owner": "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c is actively running the single bounded C5_after_C1 phone probe from frozen prompt-shape repair commit 499cd1739a3402fc498a70500e2efef081f97e46; Repo Custodian only needs to freeze this two-file mirror correction.",
+      "artifact_waiting_on": [
+        "Execution consumed Custodian freeze commit 499cd1739a3402fc498a70500e2efef081f97e46, verified the six-file frozen pathset, built/installed gemma4_layer_runner_c5_prompt_shape_repair in Termux, verified required C5/OpenCL flags, and started the single bounded forced-vendor OpenCL C5_after_C1 phone probe. Awaiting metadata-only CENTRAL_STATE_UPDATE with exit code, first_missing_green_field, stdout/stderr/meminfo hashes, prediction JSONL presence flag, and raw-boundary proof."
+      ],
+      "last_concrete_action": "Repo Custodian froze and pushed the final-hidden OpenCL prompt weight shape repair at commit 499cd1739a3402fc498a70500e2efef081f97e46 with report/source/test/central hashes verified, then directly handed Execution the bounded phone probe command. Execution accepted the handoff, verified the freeze, installed the repaired runner, confirmed required flags, and reported the native runtime probe is active after local identity checks.",
+      "next_concrete_action": "Execution must finish the current single bounded phone probe and return metadata-only evidence. If the field advances to c5_full_decoder_prediction_jsonl_writer_missing_after_lm_head_nll, route Phase3/4 to implement that exact writer boundary. If c5_full_decoder_final_hidden_opencl_prompt_weight_shape_unsupported:5 repeats, route the repeated post-repair runtime failure back to Phase3/4 and trigger the bounded shape/manifest decomposition condition. If a different precise runtime field appears, route the smallest falsifiable repair to the owning implementation lane.",
+      "dominant_failure_domain": "phase5_eval_failure",
+      "drift_deleted_or_pending": "Deleted stale custody-pending drift: the final-hidden OpenCL prompt weight shape repair is frozen at 499cd1739a3402fc498a70500e2efef081f97e46 and Execution is already running the bounded phone proof. Do not reroute Phase3/4 or duplicate Execution while the probe is active; do not regress to phone source/exporter/schema/tokenizer/PLE/SP-HAL/multi-token/rank16/42-layer/generic LM-head blockers without new runtime evidence.",
+      "recursive_improvement_next_step": "Let the active phone probe finish, then route exactly one next owner based on the emitted first_missing_green_field. The next likely implementation field is c5_full_decoder_prediction_jsonl_writer_missing_after_lm_head_nll; a repeated layer-5 shape field becomes the bounded decomposition trigger.",
+      "user_action_required": false,
+      "central_state_updated": true,
+      "first_missing_green_field": "c5_after_c1_prompt_shape_repair_bounded_phone_probe_pending",
+      "threads_nudged_this_tick": [
+        "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: completed six-file repair freeze at 499cd1739a3402fc498a70500e2efef081f97e46 and handed Execution the bounded probe; routed this two-file central mirror correction for custody.",
+        "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: active running the prompt-shape repair bounded phone probe; no churn nudge.",
+        "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4: repair pathset frozen; parked until Execution returns a runtime field.",
+        "Training Material Steward, Pipeline Integrator, UI Engineer, Engineering Orchestrator: not current owner; no nudge."
+      ],
+      "nonclaims": [
+        "no C5 pass",
+        "no executed C5 metrics",
+        "no prediction JSONL/logits/loss/confidence/candidate_train_loss unless real runtime emits them",
+        "no bridge-MSE-as-C5-loss",
+        "no learning/model-quality claim",
+        "no Phase3/4 readiness",
+        "no 100k/1M authority",
+        "no raw payloads in git",
+        "no secrets printed",
+        "no Comet-backed accepted run"
+      ]
+    },
+    {
+      "timestamp_utc": "2026-07-01T23:22:56Z",
+      "current_gate": "WaveB_C5_after_C1_prediction_jsonl_writer_pending_after_prompt_shape_repair_probe_green",
+      "status_classification": "PENDING_ACTION_PHASE34_PREDICTION_JSONL_WRITER_AFTER_LM_HEAD_NLL",
+      "owner": "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 owns the next bounded native C5 implementation slice: prediction JSONL writer after LM-head/NLL on the existing --run-c5-qa-predict path.",
+      "artifact_waiting_on": [
+        "Execution completed the prompt-shape repair bounded phone probe from commit 499cd1739a3402fc498a70500e2efef081f97e46. The probe advanced past the layer-5 prompt weight shape field and failed closed at c5_full_decoder_prediction_jsonl_writer_missing_after_lm_head_nll. Awaiting Phase3/4 return of a custody-ready prediction JSONL writer pathset, a bounded probe command, or a precise source/runtime blocker. In parallel, Repo Custodian should freeze the metadata-only probe evidence plus this central mirror."
+      ],
+      "last_concrete_action": "Execution built/copied gemma4_layer_runner_c5_prompt_shape_repair on the phone, verified C5/OpenCL flags and inputs, ran the single bounded forced-vendor OpenCL C5_after_C1 probe, and returned exit 13 after 251s with prediction JSONL written=false, raw suffix scan=0, runner SHA 1ef49c246a08ab032862f717836f3e098d97640aca75fe9f3e29a63451aa10b1, stdout SHA 6bc5a58af7b8ef7f304f7e37d39102bc05235269e0e2dc6fb92679a01bfa34c4, and first_missing_green_field c5_full_decoder_prediction_jsonl_writer_missing_after_lm_head_nll.",
+      "next_concrete_action": "Phase3/4 must implement/freeze the prediction JSONL writer after LM-head/NLL on the existing native C5 path, or provide the next bounded probe/precise blocker. Repo Custodian should freeze the two central files plus the seven metadata-only prompt-shape probe evidence files. Execution is parked until a new frozen implementation or bounded probe command exists.",
+      "dominant_failure_domain": "phase5_eval_failure",
+      "drift_deleted_or_pending": "Deleted stale Execution-active and layer-5-shape drift: the prompt-shape repair phone proof completed and advanced past c5_full_decoder_final_hidden_opencl_prompt_weight_shape_unsupported:5. Do not regress to phone source/exporter/schema/tokenizer/PLE/SP-HAL/multi-token/rank16/42-layer/final-hidden/layer5-shape blockers without new evidence.",
+      "recursive_improvement_next_step": "Run one falsifiable Phase3/4 implementation slice for prediction JSONL writing after LM-head/NLL. If custody-ready, freeze it and run one bounded phone proof; if blocked, route the exact source/runtime contract field without inventing predictions or metrics.",
+      "user_action_required": false,
+      "central_state_updated": true,
+      "first_missing_green_field": "c5_full_decoder_prediction_jsonl_writer_missing_after_lm_head_nll",
+      "threads_nudged_this_tick": [
+        "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4: routed prediction JSONL writer after LM-head/NLL implementation handoff.",
+        "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: routed metadata-only prompt-shape probe evidence plus central mirror custody request.",
+        "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: completed bounded prompt-shape repair probe; now parked until next frozen implementation/probe command.",
+        "Training Material Steward, Pipeline Integrator, UI Engineer, Engineering Orchestrator: not current owner; no nudge."
+      ],
+      "nonclaims": [
+        "no C5 pass",
+        "no executed C5 metrics",
+        "no prediction JSONL/logits/loss/confidence/candidate_train_loss unless real runtime emits them",
+        "no bridge-MSE-as-C5-loss",
+        "no learning/model-quality claim",
+        "no Phase3/4 readiness",
+        "no 100k/1M authority",
+        "no raw payloads in git",
+        "no secrets printed",
+        "no Comet-backed accepted run"
+      ]
     }
   ],
   "export_report_sha256": "4774d31953a58ad6ae1f64e4196405ba820e5be75d36880ac863cfb9dae00b6c",
   "exporter_runtime_fields_freeze_commit": "43cf3c4130dc902fc8fd69183bac1056f0596626",
   "exporter_runtime_fields_freeze_status": "committed_pushed",
-  "first_missing_green_field": "final_hidden_opencl_prompt_weight_shape_repair_custody_commit_missing",
+  "first_missing_green_field": "c5_full_decoder_prediction_jsonl_writer_missing_after_lm_head_nll",
   "first_missing_green_field_after_contract_patch": "decoder_manifest_architecture_config_missing",
   "first_missing_green_field_after_custody": "c5_full_decoder_chunked_lm_head_nll_writer_missing",
   "first_missing_green_field_after_download": "full_decoder_logits_generation_not_implemented",
@@ -6550,7 +6623,7 @@
   "first_missing_green_field_after_runner": "heldout_qa_jsonl_staging_or_c5_predict_probe_pending",
   "first_unresolved_technical_failure_after_schema_complete_export": "c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land",
   "first_unresolved_technical_failure_after_valid_schema_paths": "c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land",
-  "governing_edge": "WaveB_C5_after_C1_final_hidden_stream_implementation_active_after_lm_head_fail_closed_custody",
+  "governing_edge": "WaveB_C5_after_C1_prediction_jsonl_writer_pending_after_prompt_shape_repair_probe_green",
   "governing_objective": {
     "nonclaims": [
       "diagnostics_are_not_100k_or_1M_authority_unless_specific_authority_gate_passes",
@@ -7077,9 +7150,9 @@
         "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json",
         "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md"
       ],
-      "first_missing_green_field": "c5_full_decoder_final_hidden_stream_missing_for_lm_head_nll",
-      "last_update_utc": "2026-07-01T22:06:08Z",
-      "next_action": "Route the two-file central mirror correction to Repo Custodian; keep Execution parked.",
+      "first_missing_green_field": "c5_full_decoder_prediction_jsonl_writer_missing_after_lm_head_nll",
+      "last_update_utc": "2026-07-01T23:22:56Z",
+      "next_action": "Route Phase3/4 implementation handoff and Repo Custodian evidence freeze request.",
       "nonclaims": [
         "no C5 pass",
         "no executed C5 metrics",
@@ -7092,30 +7165,30 @@
         "no secrets printed",
         "no Comet-backed accepted run"
       ],
-      "status": "central_mirror_updated_after_lm_head_fail_closed_custody",
-      "status_classification": "ORCHESTRATION_META_UPDATED_PHASE34_ACTIVE_AND_REPO_MIRROR_CUSTODY_PENDING",
+      "status": "central_mirror_updated_after_prompt_shape_probe_result",
+      "status_classification": "ORCHESTRATION_META_UPDATED_PHASE34_OWNER_AND_EVIDENCE_CUSTODY_PENDING",
       "thread_id": "019f1423-816d-7251-b7d9-945a11441c3f",
       "user_action_required": false
     },
     "execution_orchestrator": {
-      "first_missing_green_field": "none for execution this tick",
-      "last_update_utc": "2026-07-01T22:06:08Z",
-      "next_action": "Wait for frozen Phase3/4 final hidden stream implementation/probe command.",
-      "status": "parked_after_lm_head_fail_closed_custody_until_final_hidden_stream_pathset_frozen",
-      "status_classification": "PARKED_UNTIL_PHASE34_FINAL_HIDDEN_STREAM_CUSTODY_OR_PROBE_COMMAND",
+      "first_missing_green_field": "c5_full_decoder_prediction_jsonl_writer_missing_after_lm_head_nll",
+      "last_update_utc": "2026-07-01T23:22:56Z",
+      "next_action": "Park until Phase3/4/Custodian provide a frozen prediction JSONL writer implementation or bounded probe command.",
+      "status": "prompt_shape_repair_probe_completed_next_prediction_jsonl_writer_missing",
+      "status_classification": "EXECUTION_PROBE_COMPLETE_PHASE34_IMPLEMENTATION_PENDING",
       "thread_id": "019f138c-fb51-7c53-a41a-ab8eac950d9c"
     },
     "phase34_engineer": {
-      "first_missing_green_field": "c5_full_decoder_final_hidden_stream_missing_for_lm_head_nll",
-      "last_update_utc": "2026-07-01T22:06:08Z",
-      "next_action": "Implement real final decoder hidden stream emission in the existing 42-layer runtime or return exact source/runtime blocker.",
+      "first_missing_green_field": "c5_full_decoder_prediction_jsonl_writer_missing_after_lm_head_nll",
+      "last_update_utc": "2026-07-01T23:22:56Z",
+      "next_action": "Implement/freeze prediction JSONL writer after LM-head/NLL on the existing native C5 path, or return exact source/runtime blocker.",
       "observed_progress": [
         "chunked tied-embedding LM-head/NLL writer boundary implemented",
         "writer fails closed without real final decoder hidden stream",
         "build, focused native contract, broad C5 suite, ctest, diff, and raw/secret scans passed"
       ],
-      "status": "active_final_hidden_stream_implementation_after_custody",
-      "status_classification": "PENDING_ACTION_PHASE34_FINAL_HIDDEN_STREAM_IMPLEMENTATION_ACTIVE_AFTER_LM_HEAD_CUSTODY",
+      "status": "prediction_jsonl_writer_after_lm_head_nll_pending",
+      "status_classification": "PENDING_ACTION_PHASE34_PREDICTION_JSONL_WRITER_AFTER_LM_HEAD_NLL",
       "thread_id": "019f13da-d897-7ba2-8ed1-b959892f5ed4"
     },
     "pipeline_integrator": {
@@ -7137,12 +7210,12 @@
       "user_action_required": false
     },
     "repo_custodian": {
-      "commit": "a78c57fa059e2ff2718360d24fb37f58859243f2",
-      "first_missing_green_field": "post_lm_head_fail_closed_custody_central_mirror_freeze_pending",
-      "last_update_utc": "2026-07-01T22:06:08Z",
-      "next_action": "Freeze the two-file central mirror correction routed by Engineering/Meta.",
-      "status": "chunked_lm_head_fail_closed_boundary_committed_pushed",
-      "status_classification": "CUSTODY_COMPLETE_CENTRAL_MIRROR_CORRECTION_PENDING",
+      "commit": "499cd1739a3402fc498a70500e2efef081f97e46",
+      "first_missing_green_field": "prompt_shape_probe_evidence_and_central_mirror_freeze_pending",
+      "last_update_utc": "2026-07-01T23:22:56Z",
+      "next_action": "Freeze the seven metadata-only prompt-shape probe evidence files plus this two-file central mirror; do not route Execution.",
+      "status": "prompt_shape_probe_evidence_and_central_mirror_freeze_pending",
+      "status_classification": "PENDING_ACTION_REPO_CUSTODIAN_PROMPT_SHAPE_PROBE_EVIDENCE_FREEZE",
       "thread_id": "019f1ac2-0f0f-7721-bf46-ad402dbd9050"
     },
     "training_material_steward": {
@@ -7207,20 +7280,20 @@
       "user_action_required": false
     }
   },
-  "last_concrete_action": "Phase3/4 repaired the layer-5 final-hidden OpenCL prompt weight shape blocker by making OpenCL prompt-layer validation and dispatch derive layer Q/KV widths from actual projection sizes and dynamic head counts, then aligned the C5 prompt weight validator and regression guard. It produced report SHA 8c49a0a6af89489764b9082e2d5d4c0588cced83c499ab4dc7437e05cb2d324e after build/tests/diff/raw-boundary checks passed.",
+  "last_concrete_action": "Execution built/copied gemma4_layer_runner_c5_prompt_shape_repair on the phone, verified C5/OpenCL flags and inputs, ran the single bounded forced-vendor OpenCL C5_after_C1 probe, and returned exit 13 after 251s with prediction JSONL written=false, raw suffix scan=0, runner SHA 1ef49c246a08ab032862f717836f3e098d97640aca75fe9f3e29a63451aa10b1, stdout SHA 6bc5a58af7b8ef7f304f7e37d39102bc05235269e0e2dc6fb92679a01bfa34c4, and first_missing_green_field c5_full_decoder_prediction_jsonl_writer_missing_after_lm_head_nll.",
   "last_driver_actions": [
     "Loaded central state and polled existing Phase3/4 and Custodian threads only.",
     "Detected Phase3/4 completed final_hidden_opencl_prompt_weight_shape_repair_pathset_ready_for_custodian.",
     "Updated central state metadata-only to Repo Custodian custody pending for the six-file repair pathset.",
     "Prepared exact Custodian handoff; Execution remains parked."
   ],
-  "last_update_utc": "2026-07-01T23:03:38Z",
+  "last_update_utc": "2026-07-01T23:22:56Z",
   "model_safetensors_sha256": "43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651",
   "model_safetensors_size_bytes": 15992595884,
   "native_probe_elapsed_seconds": 104,
   "native_probe_exit_code": 13,
   "native_probe_report_path": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_42_layer_orchestration_20260701T213036Z",
-  "next_concrete_action": "Repo Custodian must verify and freeze exactly the four Phase3/4 repair files plus EXECUTIVE_DELIVERY_STATE.json and .md. After custody, Custodian should route Execution to rebuild/copy gemma4_layer_runner_c5_prompt_shape_repair and run one bounded C5_after_C1 phone probe from the report command template. If custody verification fails, return the exact failing command/file to Phase3/4/Engineering.",
+  "next_concrete_action": "Phase3/4 must implement/freeze the prediction JSONL writer after LM-head/NLL on the existing native C5 path, or provide the next bounded probe/precise blocker. Repo Custodian should freeze the two central files plus the seven metadata-only prompt-shape probe evidence files. Execution is parked until a new frozen implementation or bounded probe command exists.",
   "nonclaims": [
     "no C5 pass",
     "no executed C5 metrics",
@@ -7237,14 +7310,16 @@
     "no C5 pass",
     "no executed C5 metrics",
     "no prediction JSONL/logits/loss/confidence/candidate_train_loss unless real runtime emits them",
-    "no bridge MSE relabeled as C5 loss",
+    "no bridge-MSE-as-C5-loss",
     "no learning/model-quality claim",
     "no Phase3/4 readiness",
     "no 100k/1M authority",
+    "no raw payloads in git",
+    "no secrets printed",
     "no Comet-backed accepted run"
   ],
-  "owner": "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050 owns the six-file final-hidden OpenCL prompt weight shape repair freeze; Execution remains parked until custody freezes the repair and includes the bounded probe command.",
-  "owner_thread": "019f1ac2-0f0f-7721-bf46-ad402dbd9050",
+  "owner": "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 owns the next bounded native C5 implementation slice: prediction JSONL writer after LM-head/NLL on the existing --run-c5-qa-predict path.",
+  "owner_thread": "019f13da-d897-7ba2-8ed1-b959892f5ed4",
   "phone_exporter_rerun_required_after_commit": "43cf3c4130dc902fc8fd69183bac1056f0596626",
   "prd_watchdog": {
     "active_bottleneck": "forced_vendor_opencl_probe_result_missing",
@@ -7835,7 +7910,7 @@
     "scope": "metadata mirror only",
     "status": "central_state_phone_filesystem_paths_redacted"
   },
-  "recursive_improvement_next_step": "Freeze the dynamic layer-width repair, then run one bounded phone proof. Expected next field after successful custody/probe is c5_full_decoder_prediction_jsonl_writer_missing_after_lm_head_nll. If c5_full_decoder_final_hidden_opencl_prompt_weight_shape_unsupported:5 repeats after the frozen repair, trigger a bounded shape/manifest decomposition sprint.",
+  "recursive_improvement_next_step": "Run one falsifiable Phase3/4 implementation slice for prediction JSONL writing after LM-head/NLL. If custody-ready, freeze it and run one bounded phone proof; if blocked, route the exact source/runtime contract field without inventing predictions or metrics.",
   "required_lane_update_protocol": {
     "block_name": "CENTRAL_STATE_UPDATE",
     "meta_action": "on every heartbeat, read active threads, update this file, route the next concrete edge, and notify Execution only when both keys are green",
@@ -7856,19 +7931,20 @@
   "runner_size_bytes": 554312,
   "schema_version": "polymath_executive_delivery_state_v1",
   "secondary_missing_green_field": "c5_full_decoder_final_hidden_stream_missing_for_lm_head_nll_if_phase34_confirms_current_precondition",
-  "status": "PENDING_ACTION_REPO_CUSTODIAN_FINAL_HIDDEN_OPENCL_PROMPT_WEIGHT_SHAPE_REPAIR_FREEZE",
-  "status_classification": "PENDING_ACTION_REPO_CUSTODIAN_FINAL_HIDDEN_OPENCL_PROMPT_WEIGHT_SHAPE_REPAIR_FREEZE",
+  "status": "PENDING_ACTION_PHASE34_PREDICTION_JSONL_WRITER_AFTER_LM_HEAD_NLL",
+  "status_classification": "PENDING_ACTION_PHASE34_PREDICTION_JSONL_WRITER_AFTER_LM_HEAD_NLL",
   "threads_nudged_this_tick": [
-    "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: routed six-file final-hidden OpenCL prompt weight shape repair custody request",
-    "Phase3/4 019f13da-d897-7ba2-8ed1-b959892f5ed4: completed custody-ready pathset; no duplicate nudge",
-    "Execution 019f138c-fb51-7c53-a41a-ab8eac950d9c: parked until Custodian freeze and bounded probe command"
+    "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4: routed prediction JSONL writer after LM-head/NLL implementation handoff.",
+    "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: routed metadata-only prompt-shape probe evidence plus central mirror custody request.",
+    "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: completed bounded prompt-shape repair probe; now parked until next frozen implementation/probe command.",
+    "Training Material Steward, Pipeline Integrator, UI Engineer, Engineering Orchestrator: not current owner; no nudge."
   ],
-  "timestamp_utc": "2026-07-01T23:03:38Z",
-  "updated_at": "2026-07-01T23:03:38Z",
-  "updated_at_utc": "2026-07-01T23:03:38Z",
-  "updated_utc": "2026-07-01T23:03:38Z",
+  "timestamp_utc": "2026-07-01T23:22:56Z",
+  "updated_at": "2026-07-01T23:22:56Z",
+  "updated_at_utc": "2026-07-01T23:22:56Z",
+  "updated_utc": "2026-07-01T23:22:56Z",
   "user_action_required": false,
-  "current_owner": "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050 owns the six-file final-hidden OpenCL prompt weight shape repair freeze; Execution remains parked until custody freezes the repair and includes the bounded probe command.",
+  "current_owner": "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 owns the next bounded native C5 implementation slice: prediction JSONL writer after LM-head/NLL on the existing --run-c5-qa-predict path.",
   "c5_after_c1_final_hidden_opencl_prompt_weight_shape_repair_20260702T_phase34": {
     "status": "final_hidden_opencl_prompt_weight_shape_repair_pathset_ready_for_custodian",
     "current_gate": "WaveB_C5_after_C1_final_hidden_opencl_prompt_weight_shape_repair_custody_pending_after_phase34_pathset",
@@ -7963,5 +8039,153 @@
         "do not invent prediction JSONL/loss/confidence/candidate_train_loss"
       ]
     }
+  },
+  "c5_after_c1_prompt_shape_repair_custody_committed_20260701T231635Z": {
+    "status": "final_hidden_opencl_prompt_weight_shape_repair_committed_pushed",
+    "timestamp_utc": "2026-07-01T23:19:03Z",
+    "repo_custodian_thread": "019f1ac2-0f0f-7721-bf46-ad402dbd9050",
+    "commit": "499cd1739a3402fc498a70500e2efef081f97e46",
+    "branch": "origin/gemma4-megakernel-native-training",
+    "pathset_sha256": {
+      "runtime/reports/orchestration/c5_after_c1_final_hidden_opencl_prompt_weight_shape_repair_20260702T_phase34.json": "8c49a0a6af89489764b9082e2d5d4c0588cced83c499ab4dc7437e05cb2d324e",
+      "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/opencl_layer_runner.cpp": "e4bfb3fdbcb6fc6411209fdd80951f178b03f16739f0cf423654d225ca9352d7",
+      "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp": "1f8b3199f3bcc52bfc0d6ad5af209ab40f82098724292998c3f1bf6daa0211c3",
+      "tests/test_c5_native_runtime_contract.py": "306a635d5e05296fff64edcf6879f016f60d187b380b9c3ec34bf1723cfc5fbf",
+      "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json": "8e9e0b3c2485d3d715cf29c197a3821d236fee7929f15b8d395d4ce819854ec8",
+      "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md": "6e515e7bd86a0f5497afc3c5c29970670fa44ab0e67bfd3ddc59aee677d7da0d"
+    },
+    "verification": [
+      "branch/local/remote readback verified at 499cd1739a3402fc498a70500e2efef081f97e46",
+      "JSON validation passed for central state and repair report",
+      "ZPP linter exited 0 with only pre-existing active_watchdog_state.repo_custody_state_freeze warning",
+      "git diff --check passed over exact and staged six-file pathset",
+      "added-line raw payload path / value-shaped secret scan returned 0 hits",
+      "host build passed for gemma4_layer_runner",
+      "focused native contract 18 passed",
+      "broad C5 suite 53 passed",
+      "ctest 4/4 passed"
+    ],
+    "next_handoff_sent_to_execution": true
+  },
+  "c5_after_c1_prompt_shape_repair_phone_probe_execution_active_20260701T231635Z": {
+    "status": "prompt_shape_repair_phone_probe_active",
+    "timestamp_utc": "2026-07-01T23:19:03Z",
+    "execution_thread": "019f138c-fb51-7c53-a41a-ab8eac950d9c",
+    "consumed_commit": "499cd1739a3402fc498a70500e2efef081f97e46",
+    "runner_destination": "/data/data/com.termux/files/home/polymath_c5/C5_after_C1/bin/gemma4_layer_runner_c5_prompt_shape_repair",
+    "opencl_library": "/vendor/lib64/libOpenCL.so",
+    "first_missing_green_field": "c5_after_c1_prompt_shape_repair_bounded_phone_probe_pending",
+    "artifact_waiting_on": "Execution metadata-only probe result and NEXT_HANDOFF",
+    "expected_next_runtime_field": "c5_full_decoder_prediction_jsonl_writer_missing_after_lm_head_nll unless a more precise runtime field appears",
+    "same_field_repeat_escalation": "If c5_full_decoder_final_hidden_opencl_prompt_weight_shape_unsupported:5 repeats after this frozen repair/probe, trigger bounded shape/manifest decomposition and route to Phase3/4.",
+    "research_escalation": "none",
+    "nonclaims": [
+      "no C5 pass",
+      "no executed C5 metrics",
+      "no prediction JSONL/logits/loss/confidence/candidate_train_loss unless real runtime emits them",
+      "no bridge-MSE-as-C5-loss",
+      "no learning/model-quality claim",
+      "no Phase3/4 readiness",
+      "no 100k/1M authority",
+      "no raw payloads in git",
+      "no secrets printed",
+      "no Comet-backed accepted run"
+    ]
+  },
+  "next_handoff": {
+    "schema_version": "zpp_next_handoff_v1",
+    "run_id": "c5_after_c1_prompt_shape_repair_probe_result_20260701T231524Z",
+    "from_lane": "engineering_meta_watcher",
+    "to_lane": "phase34_engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4",
+    "sent": true,
+    "objective": "Implement the next native C5 boundary exposed by the bounded phone proof: prediction JSONL writer after LM-head/NLL.",
+    "authority_metric": "Existing --run-c5-qa-predict path must emit real runtime prediction JSONL only when real LM-head/NLL data exists; no fabricated predictions or metrics.",
+    "current_edge": "WaveB_C5_after_C1_prediction_jsonl_writer_pending_after_prompt_shape_repair_probe_green",
+    "current_verdict": "pending_action",
+    "completed_work": [
+      "Custodian froze prompt-shape repair at 499cd1739a3402fc498a70500e2efef081f97e46",
+      "Execution ran the bounded phone proof once and advanced past layer-5 shape rejection",
+      "Execution produced metadata-only proof with first_missing_green_field c5_full_decoder_prediction_jsonl_writer_missing_after_lm_head_nll",
+      "Engineering/Meta updated central state and routed Phase3/4 plus evidence custody"
+    ],
+    "evidence": [
+      {
+        "artifact": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_prompt_shape_repair_20260701T231524Z/candidate_probe_stdout.json",
+        "sha256": "6bc5a58af7b8ef7f304f7e37d39102bc05235269e0e2dc6fb92679a01bfa34c4",
+        "status": "runtime_result"
+      },
+      {
+        "artifact": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_prompt_shape_repair_20260701T231524Z/candidate_probe_stderr.log",
+        "sha256": "3b3698633c2ee470be9f3a0db40d8e0f35bef5720b37392ba0a94dfb5c260085",
+        "status": "runtime_result"
+      }
+    ],
+    "first_missing_green_field": "c5_full_decoder_prediction_jsonl_writer_missing_after_lm_head_nll",
+    "next_action": "Phase3/4 returns prediction JSONL writer pathset ready for Custodian, bounded probe command, or exact blocker.",
+    "owner_thread": "019f13da-d897-7ba2-8ed1-b959892f5ed4",
+    "research_escalation": {
+      "status": "none",
+      "reason": "first_missing_green_field advanced from layer-5 shape to prediction writer",
+      "packet_path": null
+    },
+    "nonclaims": [
+      "no C5 pass",
+      "no learning/model-quality claim",
+      "no Phase3/4 readiness claim",
+      "no 100k/1M authority",
+      "no Comet-backed accepted run unless actually executed"
+    ],
+    "do_not_do": [
+      "do not route Execution until a frozen implementation or bounded probe command exists",
+      "do not invent prediction JSONL/loss/confidence/candidate_train_loss",
+      "do not add raw payloads or secrets to git"
+    ]
+  },
+  "c5_after_c1_prompt_shape_repair_probe_result_20260701T231524Z": {
+    "status": "prompt_shape_repair_probe_green_next_prediction_jsonl_writer_missing",
+    "timestamp_utc": "2026-07-01T23:22:56Z",
+    "execution_thread": "019f138c-fb51-7c53-a41a-ab8eac950d9c",
+    "consumed_commit": "499cd1739a3402fc498a70500e2efef081f97e46",
+    "runner": "/data/data/com.termux/files/home/polymath_c5/C5_after_C1/bin/gemma4_layer_runner_c5_prompt_shape_repair",
+    "runner_sha256": "1ef49c246a08ab032862f717836f3e098d97640aca75fe9f3e29a63451aa10b1",
+    "runner_bytes": 573000,
+    "probe_exit_code": 13,
+    "elapsed_seconds": 251,
+    "native_status": "blocked",
+    "first_missing_green_field": "c5_full_decoder_prediction_jsonl_writer_missing_after_lm_head_nll",
+    "blockers": [
+      "c5_full_decoder_prediction_jsonl_writer_missing_after_lm_head_nll"
+    ],
+    "prediction_jsonl_written": false,
+    "raw_suffix_scan_count": 0,
+    "metadata_root": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_prompt_shape_repair_20260701T231524Z",
+    "artifacts_sha256": {
+      "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_prompt_shape_repair_20260701T231524Z/candidate_probe_stdout.json": "6bc5a58af7b8ef7f304f7e37d39102bc05235269e0e2dc6fb92679a01bfa34c4",
+      "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_prompt_shape_repair_20260701T231524Z/candidate_probe_stderr.log": "3b3698633c2ee470be9f3a0db40d8e0f35bef5720b37392ba0a94dfb5c260085",
+      "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_prompt_shape_repair_20260701T231524Z/meminfo_before.txt": "d624b705739005cf0b03a89ae93e03d8d9167305b8ce14f321836dc9fc05eb2a",
+      "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_prompt_shape_repair_20260701T231524Z/meminfo_after.txt": "35f9d7825819094f6fc11ad8b4fadbbd08f7afe8ca38ace055e06e90380f219a",
+      "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_prompt_shape_repair_20260701T231524Z/probe_metadata.txt": "c1a8f2fa8ef1b31795bc28c559304f9b2b20be3cce864d0327bec4c4713fdf7d",
+      "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_prompt_shape_repair_20260701T231524Z/build_logs/cmake_configure.log": "addb938817086ee8d97ed867583e81fa4432a060f635eb84804594858d5dcdfd",
+      "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_prompt_shape_repair_20260701T231524Z/build_logs/cmake_build.log": "269dd013bc4d70953458de7a247bfb36f51f9e591b1e006351826d976bd359fb"
+    },
+    "next_handoff": {
+      "to": "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4",
+      "status": "prompt_shape_repair_green_next_field_prediction_jsonl_writer_missing_after_lm_head_nll",
+      "first_missing_green_field": "c5_full_decoder_prediction_jsonl_writer_missing_after_lm_head_nll",
+      "next_action": "freeze/route prediction JSONL writer after LM-head NLL, or provide the next bounded probe",
+      "research_escalation": "none"
+    },
+    "nonclaims": [
+      "no C5 pass",
+      "no executed C5 metrics",
+      "no prediction JSONL/logits/loss/confidence/candidate_train_loss unless real runtime emits them",
+      "no bridge-MSE-as-C5-loss",
+      "no learning/model-quality claim",
+      "no Phase3/4 readiness",
+      "no 100k/1M authority",
+      "no raw payloads in git",
+      "no secrets printed",
+      "no Comet-backed accepted run"
+    ]
   }
 }
