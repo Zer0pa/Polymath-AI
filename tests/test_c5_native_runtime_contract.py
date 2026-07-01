@@ -58,8 +58,37 @@ def test_native_c5_runtime_validates_pack_then_stops_at_compute_kernel(tmp_path:
         "c5_full_decoder_multi_token_qa_prompt_sequence_orchestration_missing"
         not in payload["blockers"]
     )
+    assert (
+        "c5_full_decoder_rank16_adapter_stream_injection_missing"
+        not in payload["blockers"]
+    )
     assert payload["raw_boundary_proof"]["raw_payload_bytes_in_report"] is False
     assert payload["raw_boundary_proof"]["prediction_jsonl_written"] is False
+    assert not paths["output_jsonl"].exists()
+
+
+def test_native_c5_runtime_rejects_short_rank16_adapter_payload_before_opencl(
+    tmp_path: Path,
+) -> None:
+    paths = _write_component_pack(tmp_path, include_layer0_compute_tensors=True)
+    paths["checkpoint"].write_bytes(b"\x00" * 16)
+    paths["checkpoint_sha"] = _sha256_file(paths["checkpoint"])
+    policy_path = paths["pack"] / "adapter_site_policy.json"
+    policy = json.loads(policy_path.read_text(encoding="utf-8"))
+    policy["candidate_adapter_sha256"] = paths["checkpoint_sha"]
+    policy_path.write_text(json.dumps(policy, sort_keys=True), encoding="utf-8")
+
+    result = _run_native(paths)
+    payload = json.loads(result.stdout)
+
+    assert result.returncode == 13
+    assert payload["first_missing_green_field"] == (
+        "c5_full_decoder_rank16_adapter_payload_size_mismatch"
+    )
+    assert not any(
+        item.startswith("c5_full_decoder_opencl_parity_runtime_unavailable:")
+        for item in payload["blockers"]
+    )
     assert not paths["output_jsonl"].exists()
 
 

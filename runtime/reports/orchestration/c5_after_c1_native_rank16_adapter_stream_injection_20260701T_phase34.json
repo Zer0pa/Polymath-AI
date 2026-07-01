@@ -1,0 +1,102 @@
+{
+  "schema_version": "polymath_phase34_native_c5_runtime_pathset_report_v1",
+  "lane": "phase34_native_c5_runtime",
+  "status": "native_rank16_adapter_stream_injection_pathset_ready_for_custodian",
+  "base_commit": "104874594bc34595d6ae2de6b204e5f2352bc3de",
+  "branch": "gemma4-megakernel-native-training",
+  "governing_gate": "WaveB_C5_after_C1_rank16_adapter_stream_injection_pending_after_multi_token_orchestration_green",
+  "repaired_field": "c5_full_decoder_rank16_adapter_stream_injection_missing",
+  "first_missing_green_field_after_repair_expected": "c5_full_decoder_42_layer_orchestration_missing",
+  "pathset": [
+    {
+      "path": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp",
+      "sha256": "fe40f228ef6ac4348ef5038a81ec023389f1192d9df2e887a71a576b3c581778",
+      "role": "existing native --run-c5-qa-predict runtime body"
+    },
+    {
+      "path": "tests/test_c5_native_runtime_contract.py",
+      "sha256": "e083b61e5d2c809d0d7797476e640da756a80998bb2726e1ea78cdbf58883dd5",
+      "role": "focused fail-closed native runtime contract regression tests"
+    }
+  ],
+  "local_build_identity": {
+    "path": "build/gemma4_megakernel_host/gemma4_layer_runner",
+    "sha256": "9bf635bcb92eadd024fcfbdc7ed81b6dc3b4eba661dec23334fc35a6cfde7e67"
+  },
+  "implementation_summary": [
+    "Loads the accepted rank-16 adapter payload as two finite f32 matrices sized hidden_by_rank and rank_by_hidden.",
+    "Applies adapter_rank16_residual over the bounded multi-token QA prompt hidden rows already produced by the existing C5 runtime path.",
+    "Computes finite stream norms as a bounded local-plasticity proof while preserving no-prediction behavior until full logits/NLL exist.",
+    "Removes the terminal rank-16 missing-body blocker and leaves 42-layer orchestration plus chunked LM-head NLL writer as the next honest fields."
+  ],
+  "design_lens_applied": {
+    "adapter_semantics": "adapter is treated as a bounded local plasticity site on the prompt hidden stream, not as full-backbone retraining",
+    "qa_error_signal": "C5 loss remains reserved for teacher-forced answer token NLL from real full-decoder logits",
+    "forbidden_substitution": "Phase4 bridge MSE is not used as QA loss, prediction, or confidence"
+  },
+  "verification": [
+    {
+      "command": "cmake --build build/gemma4_megakernel_host --target gemma4_layer_runner -- -j2",
+      "result": "passed"
+    },
+    {
+      "command": "python3 -m pytest tests/test_c5_native_runtime_contract.py -q",
+      "result": "16 passed in 131.12s"
+    },
+    {
+      "command": "python3 -m pytest tests/test_c5_*.py -q",
+      "result": "51 passed in 140.88s"
+    },
+    {
+      "command": "ctest --test-dir build/gemma4_megakernel_host --output-on-failure",
+      "result": "4/4 passed"
+    },
+    {
+      "command": "git diff --check -- integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp tests/test_c5_native_runtime_contract.py",
+      "result": "passed"
+    },
+    {
+      "command": "metadata-only raw suffix and value-shaped secret diff scan over edited pathset",
+      "result": "no matches"
+    }
+  ],
+  "bounded_follow_up_phone_probe": {
+    "runner_destination": "/data/data/com.termux/files/home/polymath_c5/C5_after_C1/bin/gemma4_layer_runner_c5_rank16_adapter_stream",
+    "command_template": "cd \"$HOME/polymath_c5/C5_after_C1\" && ./bin/gemma4_layer_runner_c5_rank16_adapter_stream --run-c5-qa-predict --run-label c1_c4_waveB_rerun_20260630T230411Z --eval-point C5_after_C1 --checkpoint-role candidate --checkpoint-payload \"$CANDIDATE_ADAPTER_PAYLOAD\" --checkpoint-sha256 1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f --heldout-qa-jsonl \"$HELDOUT_QA_JSONL\" --output-jsonl \"$PREDICTION_JSONL_OUT\" --tokenizer-dir \"$TOKENIZER_DIR\" --decoder-component-pack \"$DECODER_COMPONENT_PACK\" --vocab-chunk-size 4096 --max-generation-tokens 1 --opencl-library /vendor/lib64/libOpenCL.so",
+    "raw_boundary": "Raw runtime paths are supplied by Execution-owned Termux environment variables and are not frozen into this git report.",
+    "expected_next_first_missing_green_field": "c5_full_decoder_42_layer_orchestration_missing",
+    "regression_fail_fields": [
+      "c5_full_decoder_rank16_adapter_payload_size_mismatch",
+      "c5_full_decoder_rank16_adapter_nonfinite",
+      "c5_full_decoder_rank16_adapter_stream_sequence_shape_mismatch",
+      "c5_full_decoder_rank16_adapter_stream_output_nonfinite",
+      "c5_full_decoder_opencl_parity_runtime_unavailable"
+    ]
+  },
+  "accepted_identity_fields": {
+    "heldout_qa_sha256": "da41c5362398f24e0e0dd9df9a5cf0594435a455871fa77ab74d9312e6c8e9b2",
+    "candidate_adapter_sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f",
+    "decoder_manifest_sha256_after_per_layer_runtime_repair": "52fcb53666bb4b06d0118cb825b983afc54624a630f667bbfa5af278640e28f8",
+    "adapter_site_policy_sha256": "f38bd8109bbb77e9e94a5b4b34a238bc0ec0a39e7736870c97defe5aecc93357",
+    "export_report_sha256_after_per_layer_runtime_repair": "4774d31953a58ad6ae1f64e4196405ba820e5be75d36880ac863cfb9dae00b6c"
+  },
+  "raw_boundary_proof": {
+    "raw_payload_bytes_in_report": false,
+    "raw_runtime_paths_frozen_in_report": false,
+    "prediction_jsonl_written": false,
+    "checkpoint_payload_copied_to_repo": false,
+    "diff_raw_suffix_or_secret_scan": "clean"
+  },
+  "research_escalation": "none",
+  "next_action": "Repo Custodian freezes this two-source-file plus report pathset, then Execution rebuilds/copies the runner and runs the bounded C5_after_C1 phone probe.",
+  "nonclaims": [
+    "no C5 pass",
+    "no executed C5 metrics",
+    "no prediction JSONL, logits, loss, confidence, or candidate_train_loss claim",
+    "no bridge-MSE-as-C5-loss substitution",
+    "no learning or model-quality claim",
+    "no Phase3/4 readiness claim",
+    "no 100k/1M Phase2 authority claim",
+    "no Comet-backed accepted run"
+  ]
+}
