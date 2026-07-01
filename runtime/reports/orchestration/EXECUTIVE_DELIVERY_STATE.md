@@ -1,14 +1,14 @@
 # Executive Delivery State
 
-Updated UTC: `2026-07-01T15:30:07Z`
+Updated UTC: `2026-07-01T15:52:52Z`
 
 ## Current Gate
 
-`WaveB_C5_after_C1_single_layer_attention_mlp_body_in_progress_after_ple_slice_custody`
+`WaveB_C5_after_C1_opencl_parity_dispatch_in_progress_after_cpu_single_layer_custody`
 
-Status classification: `PENDING_ACTION_PHASE34_SINGLE_LAYER_ATTENTION_MLP_BODY_AFTER_PLE_SLICE_CUSTODY`
+Status classification: `PENDING_ACTION_PHASE34_OPENCL_PARITY_DISPATCH_AFTER_CPU_SINGLE_LAYER_CUSTODY`
 
-Owner: Phase3/4 Engineer `019f13da-d897-7ba2-8ed1-b959892f5ed4` owns the streamed single-layer attention/MLP body behind `run_c5_full_decoder_runtime`. Repo Custodian froze the PLE single-layer slice at `955730e88c500fff9517d0a22d0f5bbd207ecaa9` and sent the handoff. Execution remains parked until a real runtime implementation is frozen.
+Owner: Phase3/4 Engineer `019f13da-d897-7ba2-8ed1-b959892f5ed4` owns OpenCL parity dispatch for the frozen CPU single-layer attention/MLP slice behind `run_c5_full_decoder_runtime`. Execution remains parked until a real runtime implementation is frozen.
 
 User action required: `false`
 
@@ -18,9 +18,10 @@ Research escalation: `none`
 
 ## Artifact Waiting On
 
-- Phase3/4 returns a custody-ready streamed single-layer attention/MLP body pathset or a precise implementation blocker from the active `run_c5_full_decoder_runtime` work.
-- The implementation must stay behind the existing `--run-c5-qa-predict` path and preserve fail-closed no-prediction behavior until real logits emit prediction JSONL.
-- After the single-layer body lands, remaining work is OpenCL parity dispatch, rank-16 adapter stream injection, 42-layer orchestration, chunked LM-head/NLL writer, outside-git prediction JSONL, and executed C5 metrics.
+- Phase3/4 implements OpenCL parity dispatch for the frozen CPU single-layer attention/MLP slice under the existing `--run-c5-qa-predict` / `run_c5_full_decoder_runtime` path.
+- Frozen CPU single-layer custody commit: `4f4c8d6b6423a6c9f36cbdb26b7e763953a16586` on `origin/gemma4-megakernel-native-training`.
+- The next implementation must preserve fail-closed no-prediction behavior; no prediction JSONL, logits, loss, confidence, `candidate_train_loss`, or C5 metrics may be claimed until real 42-layer logits and the writer exist.
+- After OpenCL parity, remaining work is bounded multi-token QA prompt orchestration, rank-16 adapter stream injection, 42-layer orchestration, chunked LM-head/NLL writer, outside-git prediction JSONL, and executed C5 metrics.
 - Execution remains parked until a real streamed runtime implementation is frozen; no C5 QA predict rerun is authorized for pass claims before then.
 
 ## Last Concrete Action
@@ -36,6 +37,10 @@ Repo Custodian froze and pushed the native C5 PLE contract + decoder math bounda
 Repo Custodian froze a superseded two-file central mirror at `495767ac5cc89a36fac47a05c12517b2d762bb56`, then froze and pushed the native C5 PLE single-layer slice at `955730e88c500fff9517d0a22d0f5bbd207ecaa9`.
 
 The PLE slice derives bounded PLE inputs and layer-0 input normalization without emitting predictions, loss, or metrics. Phase3/4 accepted the handoff and is actively implementing the streamed single-layer attention/MLP body.
+
+Phase3/4 returned `native_cpu_single_layer_attention_mlp_body_ready_for_custodian` in `runtime/reports/orchestration/c5_after_c1_native_cpu_single_layer_attention_mlp_slice_20260701T_phase34.json` SHA `305216b82f8c8c1880b2aa20fe8023bbb6738c0870d9d41e10b00f64f20d1a40`. The slice adds manifest-backed first-token layer-0 CPU attention/MLP/per-layer-input body under the existing `--run-c5-qa-predict` / `run_c5_full_decoder_runtime` path, keeps raw payload output and prediction JSONL disabled, and advances the next field to OpenCL parity/sequence orchestration after custody.
+
+Repo Custodian froze and pushed the native CPU single-layer attention/MLP runtime slice at `4f4c8d6b6423a6c9f36cbdb26b7e763953a16586`.
 
 PLE single-layer frozen hashes:
 - `runtime/reports/orchestration/c5_after_c1_native_ple_single_layer_slice_20260701T_phase34.json`: `f1ad7df8d951e1519dfbd64930d5f58f85862563fedc3740f755173dfefdf412`
@@ -54,22 +59,34 @@ Custodian verification:
 - Raw suffix/path and value-shaped secret scans clean.
 - Staged pathset was exactly the five requested files.
 
+CPU single-layer attention/MLP frozen pathset:
+- `runtime/reports/orchestration/c5_after_c1_native_cpu_single_layer_attention_mlp_slice_20260701T_phase34.json`: `305216b82f8c8c1880b2aa20fe8023bbb6738c0870d9d41e10b00f64f20d1a40`
+- `integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp`: `192d4e039a8d96f82df34345d6041dabaf8e6a910ebcdd29ffc0a4f093160fb3`
+- `tests/test_c5_native_runtime_contract.py`: `baa24e058ba60dc7bc0a3904e137864065309c8c69ad1e1bbd0e81e7a0c4e79e`
+
+Phase3/4 verification:
+- CMake configure/build with warnings-as-errors passed.
+- `tests/test_c5_native_runtime_contract.py` -> `10 passed`.
+- Broader C5 suite -> `36 passed`.
+- `ctest` -> `4/4 passed`.
+- `git diff --check` on source/test pathset passed.
+
 ## First Missing Green Field
 
-Current: `c5_full_decoder_single_layer_attention_mlp_kernel_missing_after_ple_derivation`
+Current: `c5_full_decoder_opencl_parity_dispatch_missing_after_cpu_single_layer_slice`
 
 ## Next Concrete Action
 
-Phase3/4 continues the active implementation and returns either a custody-ready streamed single-layer attention/MLP pathset or a precise blocker. If a pathset lands, Engineering updates central state metadata-only and routes it to Repo Custodian. Execution resumes only after real runtime implementation is frozen.
+Phase3/4 implements OpenCL parity dispatch for the CPU single-layer slice and returns either a custody-ready pathset or a precise implementation blocker. Engineering then updates central state metadata-only and routes the exact pathset to Repo Custodian. Execution resumes only after real runtime implementation is frozen.
 
 ## Drift Deletion / Hardening
 
-PLE contract/decoder math and PLE derivation/layer-0 input normalization are frozen. Remaining drift is streamed single-layer attention/MLP, OpenCL parity dispatch, rank-16 adapter stream injection, 42-layer orchestration, chunked LM-head/NLL, prediction JSONL, and executed C5 metrics.
+PLE contract/decoder math, PLE derivation/layer-0 input normalization, and CPU single-layer attention/MLP body are frozen. Remaining drift is OpenCL parity dispatch, bounded multi-token sequence orchestration, rank-16 adapter stream injection, 42-layer orchestration, chunked LM-head/NLL, prediction JSONL, and executed C5 metrics.
 
 ## Threads Nudged This Tick
 
-- Repo Custodian `019f1ac2-0f0f-7721-bf46-ad402dbd9050`: completed PLE slice custody at `955730e88c500fff9517d0a22d0f5bbd207ecaa9`; will be nudged for this post-custody two-file central mirror freeze.
-- Phase3/4 Engineer `019f13da-d897-7ba2-8ed1-b959892f5ed4`: active on streamed single-layer attention/MLP body; no duplicate nudge sent.
+- Repo Custodian `019f1ac2-0f0f-7721-bf46-ad402dbd9050`: will be nudged with this exact two-file post-CPU-slice central mirror pathset after completing CPU slice custody at `4f4c8d6b6423a6c9f36cbdb26b7e763953a16586`.
+- Phase3/4 Engineer `019f13da-d897-7ba2-8ed1-b959892f5ed4`: nudged to implement OpenCL parity dispatch for the frozen CPU single-layer slice and is active.
 - Execution Orchestrator `019f138c-fb51-7c53-a41a-ab8eac950d9c`: not nudged; parked until real runtime implementation is frozen.
 
 ## Nonclaims Preserved
