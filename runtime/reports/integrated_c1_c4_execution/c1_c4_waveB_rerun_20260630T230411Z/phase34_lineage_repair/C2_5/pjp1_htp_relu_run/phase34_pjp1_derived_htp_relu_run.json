@@ -1,0 +1,138 @@
+{
+  "authority_material": "integrated_metric_diagnostic_only",
+  "learning_claim": false,
+  "metric_availability": {
+    "device_compute_ms": "not_isolated_by_current_qnn_net_run_wrapper",
+    "device_to_host_ms": "not_isolated_by_current_qnn_net_run_wrapper",
+    "host_to_device_ms": "not_isolated_by_current_qnn_net_run_wrapper",
+    "qnn_latency_ms": "host_observed_adb_shell_wall_time_for_qnn_net_run"
+  },
+  "next_required_for_consumed_output": [
+    "Run Phase 4 bridge cell on actual_output_path and remote_phase4_target_path.",
+    "Verify adapter update telemetry and finite gradients.",
+    "Keep phase4_ready_claim=false until heldout/retention gates pass."
+  ],
+  "nonclaims": [
+    "This is PJP1-derived HTP smoke metadata only.",
+    "This is not Phase 3 readiness.",
+    "This does not prove Gemma forward correctness.",
+    "This does not prove learning or model-quality movement.",
+    "This does not authorize C1-C4 execution."
+  ],
+  "phase3_metrics": {
+    "blockers": [
+      "native_preflight_status_not_in_htp_runner_report",
+      "i8_oracle_mismatches_not_in_htp_runner_report",
+      "forward_cross_entropy_requires_language_model_target",
+      "perplexity_requires_language_model_likelihood",
+      "calibration_requires_probabilistic_outputs",
+      "device_compute_ms_requires_qnn_profile_parse"
+    ],
+    "comet_metric_prefix": "phase3/C2_5",
+    "comet_metrics": {
+      "phase3/C2_5/forward_mse": 0.0,
+      "phase3/C2_5/latency_ms": 471.701041002234,
+      "phase3/C2_5/output_bytes": 163840.0,
+      "phase3/C2_5/tokens_per_sec": 33.91978946241974
+    },
+    "corpus_phase": "C2_5",
+    "metrics": {
+      "actual_matches_expected_relu": true,
+      "answer_token_accuracy": null,
+      "brier_score": null,
+      "calibration_ece": null,
+      "device_compute_ms": null,
+      "device_to_host_ms": null,
+      "forward_cross_entropy": null,
+      "forward_loss": null,
+      "forward_mse": 0.0,
+      "host_to_device_ms": null,
+      "htp_backend": "/data/local/tmp/qairt-2.44/lib/aarch64-android/libQnnHtp.so",
+      "htp_output_sha256": "87454885f3d6cb8e27fd253359cc3bcba3ca3c0d0a1769cae68dead08e29d847",
+      "i8_oracle_mismatches": null,
+      "latency_ms": 471.701041002234,
+      "native_preflight_status": null,
+      "output_bytes": 163840,
+      "perplexity": null,
+      "pjp1_preflight_status": "pass",
+      "tokens_per_sec": 33.91978946241974
+    },
+    "nonclaims": [
+      "phase3_metrics_do_not_claim_phase3_readiness",
+      "phase3_metrics_do_not_claim_learning"
+    ],
+    "phase_family": "phase3",
+    "schema_version": "phase3_htp_metric_contract_v1",
+    "status": "partial"
+  },
+  "phase3_ready_claim": false,
+  "phase4_accepted_input_surface": {
+    "adapter_rank": 16,
+    "authority": "mechanical_consumed_output_and_gpu_update_surface_only",
+    "cell_id": "phase4_opencl_phase3_bridge_rank16_mse_sgd_cell_v0",
+    "objective": "bounded MSE between Phase 3 HTP output and PJP1 target-derived tensor",
+    "optimizer": "sgd",
+    "phase3_output_expected_dtype": "float32_le",
+    "phase3_output_expected_shape": [
+      1,
+      16,
+      2560
+    ],
+    "target_dtype": "float32_le",
+    "target_shape": [
+      1,
+      16,
+      2560
+    ]
+  },
+  "phase4_ready_claim": false,
+  "pjp1": {
+    "bytes": 185216,
+    "embedding_dim": 2560,
+    "jl_dim": 256,
+    "packet_count": 20,
+    "packet_len": 128,
+    "path": "/data/data/com.termux/files/home/polymath_phase2_outputs/c1_c4_waveB_rerun_20260630T230411Z/C2_5_phase2/raw_c1_c4_waveB_rerun_20260630T230411Z_C2_5_phase2.pjp1",
+    "projection_label": "dense_rademacher_k256_lsb_bitpack",
+    "sha256": "5c3278864d33d6e97ceb79b720d6c4f95ba456c8187c2d4b7c750a24171a85bb",
+    "source_real_token_count": 1326,
+    "source_record_count": 20
+  },
+  "qnn": {
+    "actual_matches_expected_relu": true,
+    "actual_output_bytes": 163840,
+    "actual_output_path": "/sdcard/Download/polymath_phase34_lineage_repair/c1_c4_waveB_rerun_20260630T230411Z_C2_5_lineage_repair/pjp1_htp_relu_input/htp_relu_run/run/Result_0/gemma_hidden_relu_out.raw",
+    "actual_output_sha256": "87454885f3d6cb8e27fd253359cc3bcba3ca3c0d0a1769cae68dead08e29d847",
+    "backend": "/data/local/tmp/qairt-2.44/lib/aarch64-android/libQnnHtp.so",
+    "context": "/data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13f/htp/relu/context/gemma_hidden2560_relu.qnn.bin",
+    "device_compute_ms": null,
+    "device_to_host_ms": null,
+    "expected_output_sha256": "87454885f3d6cb8e27fd253359cc3bcba3ca3c0d0a1769cae68dead08e29d847",
+    "graph": "gemma_hidden2560_relu",
+    "host_to_device_ms": null,
+    "input_path": "/sdcard/Download/polymath_phase34_lineage_repair/c1_c4_waveB_rerun_20260630T230411Z_C2_5_lineage_repair/pjp1_htp_relu_input/pjp1_packet0_tokens16_gemma_hidden.f32.bin",
+    "input_sha256": "db099ebea7627a9ff925b59e62a56b7804e2b7bff6bc9a9a9257966fc859799d",
+    "latency_ms": 471.701041002234,
+    "qairt_root": "/data/local/tmp/qairt-2.44",
+    "stderr_first_4096": "",
+    "stdout_first_4096": "qnn-net-run pid:21900\nqnn-net-run build version: v2.44.0.260225143659\nqnn-net-run log level is : QNN_LOG_LEVEL_INFO\nProcessing inference input(s):\n/sdcard/Download/polymath_phase34_lineage_repair/c1_c4_waveB_rerun_20260630T230411Z_C2_5_lineage_repair/pjp1_htp_relu_input/pjp1_packet0_tokens16_gemma_hidden.f32.bin\nCreating context from binary file: /data/local/tmp/polymath_gemma4_gate/phase13/20260524T210920Z_phase13_gemma4_only_heterogeneous/p13f/htp/relu/context/gemma_hidden2560_relu.qnn.bin\nExecuting Graphs\nFinished Executing Graphs\n",
+    "tokens_per_sec": 33.91978946241974
+  },
+  "raw_payload_rules": {
+    "compact_hash_report_only": true,
+    "raw_pjp1_pulled_to_host": false,
+    "raw_qnn_output_pulled_to_repo": false
+  },
+  "schema_version": "polar_phase34_pjp1_derived_htp_relu_run_v1",
+  "source_packet": {
+    "bit_order": "lsb_first",
+    "packet_index": 0,
+    "source_bytes_read": 512,
+    "source_section": "input_polar",
+    "target_bytes_read": 512,
+    "target_section": "target_polar",
+    "tokens_used": 16
+  },
+  "stage_report_remote": "/sdcard/Download/polymath_phase34_lineage_repair/c1_c4_waveB_rerun_20260630T230411Z_C2_5_lineage_repair/pjp1_htp_relu_input/phase34_pjp1_htp_relu_input_stage.json",
+  "status": "pass"
+}

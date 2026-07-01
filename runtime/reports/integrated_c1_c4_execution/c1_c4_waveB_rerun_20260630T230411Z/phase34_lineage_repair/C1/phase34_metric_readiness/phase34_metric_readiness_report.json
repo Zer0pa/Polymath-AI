@@ -1,0 +1,80 @@
+{
+  "bridge_validator_blockers": [],
+  "c5_compatibility": {
+    "nonclaim": "no C5 evaluation has been run by this Phase3/4 metric readiness proof",
+    "requires_c5_eval_points": [
+      "C5_after_C1",
+      "C5_after_C2",
+      "C5_after_C2_5",
+      "C5_after_C3",
+      "C5_after_C4",
+      "C5_full_curriculum_postrun"
+    ],
+    "status": "metric_names_aligned_no_c5_authority"
+  },
+  "corpus_phase": "C1",
+  "learning_claim": false,
+  "metric_availability": {
+    "answer_token_accuracy": "unavailable_without_supervised_answer_token_targets",
+    "brier_score": "unavailable_without_probability_distribution",
+    "calibration_ece": "unavailable_without_probability_distribution",
+    "cross_entropy": "unavailable_for_bounded_polar_mse_bridge",
+    "device_compute_ms": "not_isolated_by_current_qnn_net_run_wrapper",
+    "device_to_host_ms": "not_isolated_by_current_qnn_net_run_wrapper",
+    "host_to_device_ms": "not_isolated_by_current_qnn_net_run_wrapper",
+    "perplexity": "unavailable_without_language_model_likelihood"
+  },
+  "metric_readiness_blockers": [],
+  "metrics": {
+    "phase3/C1/answer_token_accuracy": null,
+    "phase3/C1/brier_score": null,
+    "phase3/C1/calibration_ece": null,
+    "phase3/C1/device_compute_ms": null,
+    "phase3/C1/device_to_host_ms": null,
+    "phase3/C1/forward_cross_entropy": null,
+    "phase3/C1/forward_loss": 1.00024414062,
+    "phase3/C1/forward_mse": 1.00024414062,
+    "phase3/C1/host_to_device_ms": null,
+    "phase3/C1/htp_backend": "/data/local/tmp/qairt-2.44/lib/aarch64-android/libQnnHtp.so",
+    "phase3/C1/htp_output_sha256": "eb596435b18457cc511cd7bd6a9530d76bc07379dbae2aa8b8285d4059b918ea",
+    "phase3/C1/i8_oracle_mismatches": 0,
+    "phase3/C1/latency_ms": 517.6524169983168,
+    "phase3/C1/native_preflight_status": "pass",
+    "phase3/C1/perplexity": null,
+    "phase3/C1/pjp1_preflight_status": "pass",
+    "phase3/C1/tokens_per_sec": 30.908770971800614,
+    "phase4/C1/adapter_changed": true,
+    "phase4/C1/adapter_delta_norm_l2": 2.18221383802e-07,
+    "phase4/C1/adapter_post_sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f",
+    "phase4/C1/adapter_pre_sha256": "e0d1c66ac876c2b6fbbe9e88f1b02dd37201d8ffba10afcd44f1c558fc32f7c9",
+    "phase4/C1/consumed_output_causes_update": true,
+    "phase4/C1/grad_norm_l2": 0.000727404578124,
+    "phase4/C1/grad_norm_linf": 1.23325654937e-05,
+    "phase4/C1/inf_gradient_count": 0,
+    "phase4/C1/latency_ms": 0.984832,
+    "phase4/C1/loss_delta": 0,
+    "phase4/C1/loss_post_update": 1.00024414062,
+    "phase4/C1/loss_pre_update": 1.00024414062,
+    "phase4/C1/nan_gradient_count": 0,
+    "phase4/C1/opencl_device": "QUALCOMM Adreno(TM) 830",
+    "phase4/C1/opencl_kernel_ms": 0.984832,
+    "phase4/C1/phase3_output_sha256": "eb596435b18457cc511cd7bd6a9530d76bc07379dbae2aa8b8285d4059b918ea",
+    "phase4/C1/target_sha256": "348cd7afa5636ee54c89a36d69073e42fdecf3efc0913f3063dfe68c8600eb7e",
+    "phase4/C1/tokens_per_sec": 16246.425786327009,
+    "phase4/C1/update_norm_l2": 2.18221383802e-07
+  },
+  "nonclaims": [
+    "No Phase3 readiness.",
+    "No Phase4 readiness.",
+    "No learning or model-quality claim.",
+    "No C5 authority."
+  ],
+  "phase3_ready_claim": false,
+  "phase4_ready_claim": false,
+  "schema_version": "polar_phase34_metric_readiness_report_v1",
+  "source_reports": {
+    "phase3_htp": "runtime/reports/polar_phase34_consumer_preflight/active_wave/pjp1_htp_relu_run/phase34_pjp1_derived_htp_relu_run.json",
+    "phase4_opencl": "runtime/reports/polar_phase34_consumer_preflight/active_wave/phase4_bridge_cell/phase4_bridge_cell_report.json"
+  },
+  "status": "pass"
+}
