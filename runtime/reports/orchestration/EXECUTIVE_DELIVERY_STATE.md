@@ -1,14 +1,14 @@
 # Executive Delivery State
 
-Updated UTC: `2026-07-01T15:52:52Z`
+Updated UTC: `2026-07-01T16:06:07Z`
 
 ## Current Gate
 
-`WaveB_C5_after_C1_opencl_parity_dispatch_in_progress_after_cpu_single_layer_custody`
+`WaveB_C5_after_C1_phone_opencl_parity_probe_result_pending_after_opencl_dispatch_custody`
 
-Status classification: `PENDING_ACTION_PHASE34_OPENCL_PARITY_DISPATCH_AFTER_CPU_SINGLE_LAYER_CUSTODY`
+Status classification: `PENDING_ACTION_EXECUTION_PHONE_OPENCL_PARITY_PROBE_RUNNING_AFTER_OPENCL_DISPATCH_CUSTODY`
 
-Owner: Phase3/4 Engineer `019f13da-d897-7ba2-8ed1-b959892f5ed4` owns OpenCL parity dispatch for the frozen CPU single-layer attention/MLP slice behind `run_c5_full_decoder_runtime`. Execution remains parked until a real runtime implementation is frozen.
+Owner: Execution Orchestrator `019f138c-fb51-7c53-a41a-ab8eac950d9c` owns the bounded phone `C5_after_C1` OpenCL parity probe after Repo Custodian froze the OpenCL parity dispatch pathset at `05bb56437b83138547301e69af14ab0fce7d4b1a`. Phase3/4 is parked until the phone probe returns the next runtime field or a precise execution blocker.
 
 User action required: `false`
 
@@ -18,11 +18,11 @@ Research escalation: `none`
 
 ## Artifact Waiting On
 
-- Phase3/4 implements OpenCL parity dispatch for the frozen CPU single-layer attention/MLP slice under the existing `--run-c5-qa-predict` / `run_c5_full_decoder_runtime` path.
-- Frozen CPU single-layer custody commit: `4f4c8d6b6423a6c9f36cbdb26b7e763953a16586` on `origin/gemma4-megakernel-native-training`.
-- The next implementation must preserve fail-closed no-prediction behavior; no prediction JSONL, logits, loss, confidence, `candidate_train_loss`, or C5 metrics may be claimed until real 42-layer logits and the writer exist.
-- After OpenCL parity, remaining work is bounded multi-token QA prompt orchestration, rank-16 adapter stream injection, 42-layer orchestration, chunked LM-head/NLL writer, outside-git prediction JSONL, and executed C5 metrics.
-- Execution remains parked until a real streamed runtime implementation is frozen; no C5 QA predict rerun is authorized for pass claims before then.
+- Execution rebuilds/copies the C5 runner from frozen commit `05bb56437b83138547301e69af14ab0fce7d4b1a` to the phone and reruns the existing `C5_after_C1` native probe against the schema-complete component pack and accepted heldout/checkpoint identities.
+- Execution thread `019f138c-fb51-7c53-a41a-ab8eac950d9c` is active: runner built from `05bb564`, C5 help/input hashes verified, and the bounded `--max-generation-tokens 1` phone probe is running under the 600-second timeout.
+- Local Mac first missing field from custody is `c5_full_decoder_opencl_parity_runtime_unavailable`; the phone probe determines whether RedMagic OpenCL parity succeeds or returns a precise runtime/execution blocker.
+- If phone OpenCL parity succeeds, expected next implementation field is `c5_full_decoder_multi_token_qa_prompt_sequence_orchestration_missing`; if it fails, route the exact first failing field/log SHA/runtime envelope to Phase3/4/Engineering.
+- No prediction JSONL, logits, loss, confidence, `candidate_train_loss`, or C5 metrics may be claimed until real runtime emits them.
 
 ## Last Concrete Action
 
@@ -41,6 +41,8 @@ The PLE slice derives bounded PLE inputs and layer-0 input normalization without
 Phase3/4 returned `native_cpu_single_layer_attention_mlp_body_ready_for_custodian` in `runtime/reports/orchestration/c5_after_c1_native_cpu_single_layer_attention_mlp_slice_20260701T_phase34.json` SHA `305216b82f8c8c1880b2aa20fe8023bbb6738c0870d9d41e10b00f64f20d1a40`. The slice adds manifest-backed first-token layer-0 CPU attention/MLP/per-layer-input body under the existing `--run-c5-qa-predict` / `run_c5_full_decoder_runtime` path, keeps raw payload output and prediction JSONL disabled, and advances the next field to OpenCL parity/sequence orchestration after custody.
 
 Repo Custodian froze and pushed the native CPU single-layer attention/MLP runtime slice at `4f4c8d6b6423a6c9f36cbdb26b7e763953a16586`.
+
+Repo Custodian froze and pushed the native C5 OpenCL parity dispatch pathset at `05bb56437b83138547301e69af14ab0fce7d4b1a`.
 
 PLE single-layer frozen hashes:
 - `runtime/reports/orchestration/c5_after_c1_native_ple_single_layer_slice_20260701T_phase34.json`: `f1ad7df8d951e1519dfbd64930d5f58f85862563fedc3740f755173dfefdf412`
@@ -64,30 +66,42 @@ CPU single-layer attention/MLP frozen pathset:
 - `integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp`: `192d4e039a8d96f82df34345d6041dabaf8e6a910ebcdd29ffc0a4f093160fb3`
 - `tests/test_c5_native_runtime_contract.py`: `baa24e058ba60dc7bc0a3904e137864065309c8c69ad1e1bbd0e81e7a0c4e79e`
 
-Phase3/4 verification:
+OpenCL parity dispatch frozen pathset:
+- `runtime/reports/orchestration/c5_after_c1_opencl_parity_dispatch_pathset_20260701T_phase34.json`: `d91a4e31e6e881f93223b7523c865a5c18998f8d5ce716cc70772968f2d449a7`
+- `integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/include/polymath/gemma4/opencl_layer_runner.h`: `e550a30c7aafd98dba7f52c6da8f093df01f6b6b921b763a49d6c087408aa2db`
+- `integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/opencl_layer_runner.cpp`: `f09c98d0a772892d494457e5d381c95f61273b6e59c760546b3c9ae0b6b33b78`
+- `integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp`: `2b3be6986b2dfb3cb1db350f22b9ce0bfa95170220fe909f0a93217428749174`
+- `tests/test_c5_native_runtime_contract.py`: `43216f9f9e222e991683a5877381edc8944773279aff5e1a1981219e9d07ce18`
+
+OpenCL parity custody verification:
+- Corrected JSON report validation passed.
+- Exact pathset `git diff --check` passed.
 - CMake configure/build with warnings-as-errors passed.
 - `tests/test_c5_native_runtime_contract.py` -> `10 passed`.
 - Broader C5 suite -> `36 passed`.
 - `ctest` -> `4/4 passed`.
-- `git diff --check` on source/test pathset passed.
+- Raw suffix/path and value-shaped secret scans clean.
+- Staged pathset was exactly the five requested files.
+
+Execution has accepted the custody handoff, built the phone runner from `05bb564`, verified the C5 surface and input hashes, and is running the bounded phone probe.
 
 ## First Missing Green Field
 
-Current: `c5_full_decoder_opencl_parity_dispatch_missing_after_cpu_single_layer_slice`
+Current: `phone_c5_after_c1_opencl_parity_probe_result_pending`
 
 ## Next Concrete Action
 
-Phase3/4 implements OpenCL parity dispatch for the CPU single-layer slice and returns either a custody-ready pathset or a precise implementation blocker. Engineering then updates central state metadata-only and routes the exact pathset to Repo Custodian. Execution resumes only after real runtime implementation is frozen.
+Execution completes the bounded phone `C5_after_C1` native probe from runner commit `05bb56437b83138547301e69af14ab0fce7d4b1a` and returns metadata-only evidence: exact command, runner SHA, input identity checks, stdout/stderr/report SHAs, first failing field or next missing green field, and runtime memory/latency/throughput if available. Engineering then updates central state and routes either Phase3/4 multi-token orchestration work or the smallest falsifiable runtime repair.
 
 ## Drift Deletion / Hardening
 
-PLE contract/decoder math, PLE derivation/layer-0 input normalization, and CPU single-layer attention/MLP body are frozen. Remaining drift is OpenCL parity dispatch, bounded multi-token sequence orchestration, rank-16 adapter stream injection, 42-layer orchestration, chunked LM-head/NLL, prediction JSONL, and executed C5 metrics.
+OpenCL parity dispatch is frozen; stale Phase3/4-opencl-pending wording has been superseded. Pending drift is phone GPU parity proof, bounded multi-token QA prompt orchestration, rank-16 adapter stream injection, 42-layer orchestration, chunked LM-head/NLL writer, outside-git prediction JSONL, and executed C5 metrics.
 
 ## Threads Nudged This Tick
 
-- Repo Custodian `019f1ac2-0f0f-7721-bf46-ad402dbd9050`: will be nudged with this exact two-file post-CPU-slice central mirror pathset after completing CPU slice custody at `4f4c8d6b6423a6c9f36cbdb26b7e763953a16586`.
-- Phase3/4 Engineer `019f13da-d897-7ba2-8ed1-b959892f5ed4`: nudged to implement OpenCL parity dispatch for the frozen CPU single-layer slice and is active.
-- Execution Orchestrator `019f138c-fb51-7c53-a41a-ab8eac950d9c`: not nudged; parked until real runtime implementation is frozen.
+- Repo Custodian `019f1ac2-0f0f-7721-bf46-ad402dbd9050`: will be nudged with the exact two-file central mirror pathset after this metadata-only update.
+- Execution Orchestrator `019f138c-fb51-7c53-a41a-ab8eac950d9c`: already active on the bounded phone OpenCL parity probe; no duplicate nudge sent.
+- Phase3/4 Engineer `019f13da-d897-7ba2-8ed1-b959892f5ed4`: not nudged; parked pending phone probe result.
 
 ## Nonclaims Preserved
 
