@@ -140,6 +140,36 @@ def test_native_c5_runtime_accepts_cli_opencl_library_config(tmp_path: Path) -> 
     assert not paths["output_jsonl"].exists()
 
 
+def test_native_c5_runtime_reports_configured_opencl_dlopen_detail_redacted(
+    tmp_path: Path,
+) -> None:
+    paths = _write_component_pack(tmp_path, include_layer0_compute_tensors=True)
+    configured_library = tmp_path / "invalid-vendor-libOpenCL.so"
+    configured_library.write_text("not a native shared library", encoding="utf-8")
+
+    result = _run_native(
+        paths,
+        extra_args=["--opencl-library", str(configured_library)],
+    )
+    payload = json.loads(result.stdout)
+
+    assert result.returncode == 13
+    first_missing = payload["first_missing_green_field"]
+    assert first_missing.startswith(
+        "c5_full_decoder_opencl_parity_runtime_unavailable:"
+        "opencl_single_token_layer_runtime_unavailable:"
+        "opencl_library_configured_load_failed:dlerror_category="
+    )
+    assert ":dlerror_redacted_sha256=" in first_missing
+    assert ":dlerror_detail=" in first_missing
+    assert str(configured_library) not in first_missing
+    assert str(configured_library) not in result.stdout
+    assert payload["opencl_runtime_discovery_contract"][
+        "opencl_library_cli_path_configured"
+    ] is True
+    assert not paths["output_jsonl"].exists()
+
+
 def test_native_c5_runtime_accepts_env_opencl_library_config(tmp_path: Path) -> None:
     paths = _write_component_pack(tmp_path, include_layer0_compute_tensors=True)
     env = os.environ.copy()

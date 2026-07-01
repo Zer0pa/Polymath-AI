@@ -1,0 +1,136 @@
+{
+  "schema_version": "polymath_phase34_opencl_configured_library_load_repair_v1",
+  "created_utc": "20260701T175401Z",
+  "lane": "phase34_c5_opencl_runtime",
+  "status": "opencl_configured_library_load_repair_pathset_ready_for_custodian",
+  "governing_gate": "WaveB_C5_after_C1_configured_vendor_opencl_library_load_repair_pending_after_forced_probe",
+  "first_missing_green_field_before_repair": "c5_full_decoder_opencl_parity_runtime_unavailable:opencl_single_token_layer_runtime_unavailable:opencl_library_configured_load_failed",
+  "first_missing_green_field_after_repair_pending_execution": "post_custody_phone_probe_needed_for_configured_opencl_dlopen_detail_or_runtime_advance",
+  "research_escalation": "bounded_sprint_required: configured vendor OpenCL library dlopen failed after forced path proof; boundary is existing OpenCL loader and c5_full_decoder_runtime path",
+  "evidence_consumed": {
+    "forced_vendor_opencl_probe_root": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_vendor_opencl_20260701T173345Z",
+    "candidate_probe_stdout_sha256": "2670839669b0b91ca4a042f6ba9921f75987ecf77c962866935c754445370de2",
+    "candidate_probe_stderr_sha256": "1f2e0b2bba5aeaa398c3f13fd8c6cbc1722c7dab98658f756adab82a64aef134",
+    "meminfo_before_sha256": "cf88d06ef54af0cf9d099a495171ee86c6bb24f7f98b02a1058c14a4ac4aed03",
+    "meminfo_after_sha256": "d2c7c84a8a5a88374be6cc0acab5b4c525cbc999e6eec614269c5cf0ba928e25",
+    "runner_sha256": "6bbad7d28dc3c4716444cd1c9e55448087755e2dcd1c03eb2a4bab4d051df363",
+    "runner_bytes": 522560,
+    "forced_opencl_cli_path_configured": true,
+    "forced_opencl_library_path_string_sha256": "59a8850fb37433061fd59e105ee6af8547f7149e8711d42d2cb37f70e27cf5c2"
+  },
+  "repair_summary": {
+    "existing_path_preserved": "--run-c5-qa-predict -> run_c5_full_decoder_runtime -> OpenCL parity dispatch -> DynamicLibrary",
+    "changed_behavior": [
+      "configured OpenCL library load failures retain bounded dlerror diagnostics instead of collapsing to a single opaque token",
+      "reported failure now includes dlerror_category, dlerror_redacted_sha256, and dlerror_detail with absolute paths redacted",
+      "missing configured paths still fail closed as opencl_library_configured_path_not_found"
+    ],
+    "fail_closed_guards": [
+      "no fallback to a parallel evaluator",
+      "no bypass of OpenCL parity dispatch",
+      "no prediction JSONL emitted on loader failure",
+      "no raw OpenCL, model, adapter, tensor, QA, or prediction payload bytes emitted in repo reports"
+    ]
+  },
+  "artifact_paths": [
+    {
+      "path": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/opencl_layer_runner.cpp",
+      "sha256": "67ef50fcf155cede9e7fa4c30a44022b52361073d4ff3c4e8032d5abfcf27b1b",
+      "role": "source_repair"
+    },
+    {
+      "path": "tests/test_c5_native_runtime_contract.py",
+      "sha256": "6a49ac7ad1a0af51203fc5e86eecb5ca4dc84209b5c0e5cf7d503cc01ce565ed",
+      "role": "focused_regression_tests"
+    },
+    {
+      "path": "runtime/reports/orchestration/c5_after_c1_opencl_configured_library_load_repair_20260701T_phase34.json",
+      "sha256_external": "compute after write",
+      "role": "metadata_only_repair_report"
+    }
+  ],
+  "local_build_identity": {
+    "path": "build/gemma4_megakernel_host/gemma4_layer_runner",
+    "sha256": "602d93f5d48eb707381e3eedcae09b91020ad07a254344e7cee4a048f41c3104",
+    "note": "host rebuild identity only; Execution must use a rebuilt phone runner from the custodied source patch"
+  },
+  "verification": [
+    {
+      "command": "cmake --build build/gemma4_megakernel_host --target gemma4_layer_runner -- -j2",
+      "result": "passed"
+    },
+    {
+      "command": "python3 -m pytest tests/test_c5_native_runtime_contract.py -q",
+      "result": "passed: 14 passed in 120.77s"
+    },
+    {
+      "command": "python3 -m pytest tests/test_c5_*.py -q",
+      "result": "passed: 49 passed in 129.09s"
+    },
+    {
+      "command": "ctest --test-dir build/gemma4_megakernel_host --output-on-failure",
+      "result": "passed: 4/4"
+    },
+    {
+      "command": "git diff --check -- integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/opencl_layer_runner.cpp tests/test_c5_native_runtime_contract.py",
+      "result": "passed"
+    }
+  ],
+  "next_execution_probe": {
+    "owner": "Execution after Repo Custodian freezes this pathset and phone runner is rebuilt/copied",
+    "probe_scope": "single bounded C5_after_C1 forced vendor OpenCL probe only",
+    "runner_requirement": "must be rebuilt from the custodied repair source; do not reuse runner sha6bbad7d28dc3c4716444cd1c9e55448087755e2dcd1c03eb2a4bab4d051df363 for the repaired proof",
+    "input_identities": {
+      "candidate_adapter_sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f",
+      "heldout_qa_sha256": "da41c5362398f24e0e0dd9df9a5cf0594435a455871fa77ab74d9312e6c8e9b2",
+      "decoder_manifest_sha256_after_per_layer_input_runtime_repair": "52fcb53666bb4b06d0118cb825b983afc54624a630f667bbfa5af278640e28f8",
+      "adapter_site_policy_sha256": "f38bd8109bbb77e9e94a5b4b34a238bc0ec0a39e7736870c97defe5aecc93357"
+    },
+    "command_template": [
+      "RUNNER=\"$HOME/polymath_c5/C5_after_C1/bin/gemma4_layer_runner_c5_opencl_dlopen_detail\"",
+      "CANDIDATE_ADAPTER_PAYLOAD=\"$POLYMATH_C5_CANDIDATE_ADAPTER_PAYLOAD_OUTSIDE_GIT\"",
+      "HELDOUT_QA_JSONL=\"$POLYMATH_C5_HELDOUT_QA_JSONL_OUTSIDE_GIT\"",
+      "PREDICTION_JSONL=\"$POLYMATH_C5_CANDIDATE_PREDICTION_JSONL_OUTSIDE_GIT\"",
+      "TOKENIZER_DIR=\"$POLYMATH_C5_TOKENIZER_DIR_OUTSIDE_GIT\"",
+      "DECODER_COMPONENT_PACK=\"$POLYMATH_C5_FULL_DECODER_COMPONENT_PACK_OUTSIDE_GIT\"",
+      "test -n \"$CANDIDATE_ADAPTER_PAYLOAD\" || { echo \"candidate_adapter_payload_path_missing\" >&2; exit 91; }",
+      "test -n \"$HELDOUT_QA_JSONL\" || { echo \"heldout_qa_jsonl_path_missing\" >&2; exit 92; }",
+      "test -n \"$PREDICTION_JSONL\" || { echo \"prediction_jsonl_output_path_missing\" >&2; exit 93; }",
+      "test -n \"$TOKENIZER_DIR\" || { echo \"tokenizer_dir_path_missing\" >&2; exit 94; }",
+      "test -n \"$DECODER_COMPONENT_PACK\" || { echo \"decoder_component_pack_path_missing\" >&2; exit 95; }",
+      "\"$RUNNER\" --help | grep -- '--opencl-library' >/dev/null || { echo \"bounded_opencl_probe_command_runner_missing_opencl_library_flag\" >&2; exit 98; }",
+      "OUT=\"$HOME/polymath_c5/C5_after_C1/native_probe_vendor_opencl_dlopen_detail_$(date -u +%Y%m%dT%H%M%SZ)\"",
+      "mkdir -p \"$OUT\"",
+      "cat /proc/meminfo > \"$OUT/meminfo_before.txt\"",
+      "\"$RUNNER\" --run-c5-qa-predict --run-label c5_after_c1_vendor_opencl_dlopen_detail_probe --eval-point C5_after_C1 --checkpoint-role candidate --checkpoint-payload \"$CANDIDATE_ADAPTER_PAYLOAD\" --checkpoint-sha256 1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f --heldout-qa-jsonl \"$HELDOUT_QA_JSONL\" --output-jsonl \"$PREDICTION_JSONL\" --tokenizer-dir \"$TOKENIZER_DIR\" --decoder-component-pack \"$DECODER_COMPONENT_PACK\" --vocab-chunk-size 4096 --max-generation-tokens 1 --opencl-library /vendor/lib64/libOpenCL.so > \"$OUT/candidate_probe_stdout.json\" 2> \"$OUT/candidate_probe_stderr.log\"",
+      "CODE=$?",
+      "cat /proc/meminfo > \"$OUT/meminfo_after.txt\"",
+      "sha256sum \"$OUT\"/*",
+      "exit \"$CODE\""
+    ],
+    "expected_green_field": "first_missing_green_field advances past c5_full_decoder_opencl_parity_runtime_unavailable",
+    "expected_repaired_fail_field": "c5_full_decoder_opencl_parity_runtime_unavailable:opencl_single_token_layer_runtime_unavailable:opencl_library_configured_load_failed:dlerror_category=<category>:dlerror_redacted_sha256=<sha256>:dlerror_detail=<redacted detail>",
+    "true_blocker_if_repeated_after_repair": "opencl_configured_library_load_blocker with the repaired dlerror category/detail"
+  },
+  "raw_boundary_proof": {
+    "raw_payload_bytes_in_report": false,
+    "prediction_jsonl_written": false,
+    "checkpoint_payload_copied_to_repo": false,
+    "model_payload_copied_to_repo": false,
+    "adapter_payload_copied_to_repo": false,
+    "tensor_payload_copied_to_repo": false,
+    "opencl_dlopen_paths_redacted_in_runtime_status": true
+  },
+  "authorization_needed": "Repo Custodian custody freeze, then Execution bounded phone runner rebuild/copy and one forced vendor OpenCL probe",
+  "user_action_required": false,
+  "nonclaims": [
+    "no C5 pass",
+    "no executed C5 metrics",
+    "no prediction JSONL/logits/loss/confidence/candidate_train_loss",
+    "no bridge-MSE-as-C5-loss",
+    "no learning/model-quality claim",
+    "no Phase3/4 readiness",
+    "no 100k/1M Phase2 authority",
+    "no Comet-backed accepted run"
+  ]
+}

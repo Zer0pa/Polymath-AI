@@ -152,6 +152,141 @@ bool absolute_path_exists(const std::string& path) {
   return static_cast<bool>(file);
 }
 
+std::string replace_all(std::string value, const std::string& needle,
+                        const std::string& replacement) {
+  if (needle.empty()) {
+    return value;
+  }
+  std::size_t position = 0U;
+  while ((position = value.find(needle, position)) != std::string::npos) {
+    value.replace(position, needle.size(), replacement);
+    position += replacement.size();
+  }
+  return value;
+}
+
+bool is_path_delimiter(char character) {
+  return std::isspace(static_cast<unsigned char>(character)) != 0 ||
+         character == '"' || character == '\'' || character == ')' ||
+         character == '(' || character == '[' || character == ']' ||
+         character == '{' || character == '}' || character == '<' ||
+         character == '>' || character == ',';
+}
+
+std::string redact_absolute_paths(const std::string& value) {
+  std::string redacted;
+  redacted.reserve(value.size());
+  for (std::size_t index = 0U; index < value.size();) {
+    if (value[index] != '/') {
+      redacted.push_back(value[index]);
+      ++index;
+      continue;
+    }
+    redacted += "<absolute_path>";
+    while (index < value.size() && !is_path_delimiter(value[index])) {
+      ++index;
+    }
+  }
+  return redacted;
+}
+
+std::string compact_diagnostic_detail(const std::string& value) {
+  constexpr std::size_t kMaxDiagnosticChars = 384U;
+  std::string compact;
+  compact.reserve(value.size());
+  bool previous_space = false;
+  for (const char character : value) {
+    const unsigned char byte = static_cast<unsigned char>(character);
+    if (std::isspace(byte) != 0 || std::iscntrl(byte) != 0) {
+      if (!compact.empty() && !previous_space) {
+        compact.push_back(' ');
+      }
+      previous_space = true;
+      continue;
+    }
+    compact.push_back(character);
+    previous_space = false;
+  }
+  while (!compact.empty() && compact.back() == ' ') {
+    compact.pop_back();
+  }
+  if (compact.size() <= kMaxDiagnosticChars) {
+    return compact;
+  }
+  return compact.substr(0U, kMaxDiagnosticChars) + "...";
+}
+
+std::string lower_ascii(std::string value) {
+  std::transform(value.begin(), value.end(), value.begin(), [](unsigned char c) {
+    return static_cast<char>(std::tolower(c));
+  });
+  return value;
+}
+
+std::string classify_dlopen_error(const std::string& detail) {
+  const std::string lower = lower_ascii(detail);
+  if (lower.find("wrong elf class") != std::string::npos) {
+    return "wrong_elf_class";
+  }
+  if (lower.find("namespace") != std::string::npos ||
+      lower.find("not accessible") != std::string::npos ||
+      lower.find("permission denied") != std::string::npos ||
+      lower.find("operation not permitted") != std::string::npos) {
+    return "linker_namespace_or_permission";
+  }
+  if (lower.find("cannot locate symbol") != std::string::npos ||
+      lower.find("undefined symbol") != std::string::npos ||
+      lower.find("symbol not found") != std::string::npos) {
+    return "missing_symbol";
+  }
+  const bool library_not_found =
+      lower.find("library") != std::string::npos &&
+      lower.find("not found") != std::string::npos;
+  if (lower.find("needed by") != std::string::npos ||
+      library_not_found ||
+      lower.find("no such file") != std::string::npos) {
+    return "dependency_or_path_not_found";
+  }
+  if (lower.find("file too short") != std::string::npos ||
+      lower.find("invalid elf") != std::string::npos ||
+      lower.find("not a mach-o") != std::string::npos ||
+      lower.find("bad mach-o") != std::string::npos ||
+      lower.find("invalid file") != std::string::npos) {
+    return "not_opencl_shared_object";
+  }
+  if (lower.find("dlopen failed") != std::string::npos) {
+    return "dlopen_failed";
+  }
+  return "dlopen_error_unclassified";
+}
+
+std::string redacted_dlopen_detail(const std::string& detail,
+                                   const std::string& attempted_path) {
+  std::string redacted =
+      replace_all(detail, attempted_path, "<configured_opencl_library>");
+  redacted = redact_absolute_paths(redacted);
+  return compact_diagnostic_detail(redacted);
+}
+
+std::string opencl_load_failure_message(bool caller_configured,
+                                        const std::string& dlopen_detail,
+                                        const std::string& attempted_path) {
+  const std::string base =
+      caller_configured ? "opencl_library_configured_load_failed"
+                        : "opencl_library_load_failed";
+  if (dlopen_detail.empty()) {
+    return base + ":dlerror_unavailable";
+  }
+  const std::string redacted_detail =
+      redacted_dlopen_detail(dlopen_detail, attempted_path);
+  if (redacted_detail.empty()) {
+    return base + ":dlerror_unavailable";
+  }
+  return base + ":dlerror_category=" + classify_dlopen_error(redacted_detail) +
+         ":dlerror_redacted_sha256=" + sha256_text_hex(redacted_detail) +
+         ":dlerror_detail=" + redacted_detail;
+}
+
 std::vector<std::string> default_opencl_library_candidates() {
   return {
       "/vendor/lib64/libOpenCL.so",
@@ -290,23 +425,30 @@ class DynamicLibrary {
     const std::vector<std::string> candidates =
         opencl_library_candidates(config, caller_configured);
     std::uint32_t attempted_load_count = 0U;
+    std::string last_dlopen_error;
+    std::string last_attempted_path;
     for (const std::string& candidate : candidates) {
       if (caller_configured && !absolute_path_exists(candidate)) {
         continue;
       }
       ++attempted_load_count;
+      dlerror();
       handle_ = dlopen(candidate.c_str(), RTLD_NOW | RTLD_LOCAL);
       if (handle_ != nullptr) {
         loaded_path_ = candidate;
         return;
       }
+      const char* error = dlerror();
+      if (error != nullptr && error[0] != '\0') {
+        last_dlopen_error = error;
+        last_attempted_path = candidate;
+      }
     }
     if (caller_configured && attempted_load_count == 0U) {
       throw std::runtime_error("opencl_library_configured_path_not_found");
     }
-    throw std::runtime_error(caller_configured
-                                 ? "opencl_library_configured_load_failed"
-                                 : "opencl_library_load_failed");
+    throw std::runtime_error(opencl_load_failure_message(
+        caller_configured, last_dlopen_error, last_attempted_path));
   }
 
   ~DynamicLibrary() {
