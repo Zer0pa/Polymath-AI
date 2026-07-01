@@ -1,10 +1,10 @@
 {
   "active_bottleneck": {
     "artifact_waiting_on": [
-      "Repo Custodian freeze of EXECUTIVE_DELIVERY_STATE.json, EXECUTIVE_DELIVERY_STATE.md, and the Phase3/4 native logits contract patch pathset.",
-      "Engineering exporter emits a schema-complete full decoder component pack with source_model_safetensors, architecture_config, and tensor_role_inventory.",
-      "Phase3/4 lands safetensors_reader plus streamed/chunked c5_full_decoder_runtime and replaces only the terminal full_decoder_logits_generation_not_implemented branch.",
-      "Execution rebuilds/copies the runner and reruns the same bounded C5_after_C1 native QA predict probe after custody and runtime patch."
+      "Repo Custodian freeze of EXECUTIVE_DELIVERY_STATE.json, EXECUTIVE_DELIVERY_STATE.md, the Engineering exporter runtime-fields report, exporter, and focused exporter test.",
+      "Execution rerun of the frozen phone exporter against the phone-held model.safetensors to regenerate schema-complete decoder_manifest.json, adapter_site_policy.json, and export_report.json identities.",
+      "Phase3/4 implementation of safetensors_reader plus streamed/chunked c5_full_decoder_runtime on the existing native C5 QA predict surface.",
+      "Execution rerun of the bounded C5_after_C1 native QA predict probe after the runtime body lands."
     ],
     "authorization_needed": "none; native implementation work is under current GO and must preserve raw/secrets boundary",
     "c5_after_c1_c5_qa_runtime_fail_closed_pathset": {
@@ -852,11 +852,11 @@
       "status": "c5_full_decoder_failure_artifacts_and_state_pending_custody",
       "user_action_required": false
     },
-    "current_gate": "WaveB_C5_after_C1_native_logits_contract_patch_custody_pending",
+    "current_gate": "WaveB_C5_after_C1_exporter_runtime_fields_patch_custody_pending",
     "custody_commit_latest": "bb8105a2bc91b6c9b0993603e14b49d0a5730f8d",
     "custody_status_latest": "c5_decoder_runtime_owner_state_committed_pushed",
     "dominant_failure_domain": "phase5_eval_failure",
-    "drift_deleted_or_pending": "The generic native full_decoder_logits_generation_not_implemented stop is now hardened into explicit manifest-contract fields: decoder_manifest_architecture_config_missing and decoder_manifest_tensor_role_inventory_missing. Remaining drift is pending exporter/runtime work for architecture/tensor-role inventory, safetensors range reading, and streamed decoder logits; bridge MSE remains forbidden as C5 loss.",
+    "drift_deleted_or_pending": "The decoder manifest no longer needs to stop at architecture_config/tensor_role_inventory absence once this exporter patch is frozen and rerun on the phone-held model. Pending drift remains the native safetensors reader and streamed full-decoder runtime body; bridge MSE remains forbidden as C5 loss.",
     "engineering_evaluator_implementation": {
       "artifact_paths_in_progress": [
         "polymath_ai/polar/c5_heldout_eval.py",
@@ -963,7 +963,7 @@
       "existing_surface_role": "run_c5_eval.py validates supplied metrics JSON; it does not compute metrics",
       "status": "c5_after_c1_real_evaluator_surface_missing"
     },
-    "first_missing_green_field": "repo_custody_freeze_native_full_decoder_logits_contract_patch",
+    "first_missing_green_field": "repo_custody_freeze_exporter_runtime_fields_patch",
     "first_missing_green_field_after_custody_until_model_source_available": "model_safetensors_missing",
     "first_unresolved_technical_failure_after_schema_paths": "full_decoder_logits_generation_not_implemented_after_valid_schema_paths",
     "first_unresolved_technical_failure_after_valid_schema_paths": "c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land",
@@ -994,7 +994,7 @@
       "training_material_steward": "complete for material identities",
       "ui_engineer": "not nudged until C5 evidence-backed status exists"
     },
-    "last_concrete_action": "Repo Custodian froze the native C5 probe failure central state at commit a6ddd7e98ad43fb1c7325590eeb725d0e30e4fbe. Phase3/4 then produced a native/host contract patch that hardens metadata-only decoder manifests before native invocation: report SHA 9128d334bac560f98d55a86d5be18f032e2d549121d3fce85e89accf452d1963; c5_qa_inference.cpp SHA 9edefbdfe569edd8add9d711e0ae5e1e4813b190e9d4e5f355e6ce7c35cbf7b0; run_c5_phase34_qa_inference_producer.py SHA 26d8b99f8d5a8b930b90296c89f0c98e51537dcbaf2d302f8923c6b1dce3cf2e; tests/test_c5_phase34_qa_inference_producer.py SHA eeea0c89882a087cf945058244ccc55aa8ea37901b1116baf15e0356aab97b3b. Verification reported by Phase3/4: git diff --check passed, py_compile passed, pytest tests/test_c5_phase34_qa_inference_producer.py tests/test_c5_prediction_payloads.py returned 12 passed, gemma4_layer_runner build completed, and ctest returned 4/4 passed.",
+    "last_concrete_action": "Repo Custodian committed and pushed the native C5 logits contract patch at 2151dbada9012a5f54806cf689e806001180521f. Engineering then patched the phone-compatible stdlib exporter to emit architecture_config and tensor_role_inventory metadata from the safetensors header: report SHA b135ba0c958c7cfea92cbd1c138f42df0cfb5b500485f0416b5167fce6a114f8; exporter SHA e3922085a08703d5ba4f17357f9b71218f8cca5aff1cbc4f395edfb7180599b4; test SHA d8eb5df2c73b470da58f7f37a24ff704bc005d0d58a9eb625cf15cb541a218cb. Focused verification passed: py_compile, exporter --print-schema JSON, pytest tests/test_c5_full_decoder_exporter.py tests/test_c5_phase34_qa_inference_producer.py tests/test_c5_prediction_payloads.py -> 19 passed, and git diff --check.",
     "lineage_drift_repair_status": {
       "commit": "ee74ae572322e05624deac6f6f8788c2c6e2f692",
       "proof_required": [
@@ -1010,7 +1010,7 @@
       ],
       "status": "source_repair_frozen_pending_execution_proof"
     },
-    "next_concrete_action": "Repo Custodian verifies and commits/pushes the exact central-state plus Phase3/4 contract pathset. After custody, the current metadata-only component pack must fail closed at decoder_manifest_architecture_config_missing and decoder_manifest_tensor_role_inventory_missing; with schema-complete paths but no runtime body, the fail-fast boundary remains c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land. Engineering/Phase3/4 then extend the exporter/runtime pathset rather than creating a new C5 pathway.",
+    "next_concrete_action": "Repo Custodian freezes the exact central-state plus exporter runtime-fields pathset. After custody, Execution reruns the phone exporter so the outside-git component pack advances from metadata-only manifest blockers to schema-complete decoder_manifest identities. Phase3/4 then lands safetensors_reader plus c5_full_decoder_runtime and replaces only the terminal full_decoder_logits_generation_not_implemented branch.",
     "nonclaims": [
       "development-cycle evidence only unless stronger gates pass",
       "no C5 pass",
@@ -1038,7 +1038,7 @@
       "no Comet/API call",
       "no secrets sourced"
     ],
-    "owner": "Repo Custodian owns the Phase3/4 native logits contract patch freeze; Engineering/Phase3/4 own exporter/runtime implementation after custody; Execution owns the bounded rerun after a runnable patch exists.",
+    "owner": "Repo Custodian owns the exporter runtime-fields patch freeze; Execution owns phone exporter rerun after custody; Phase3/4 owns safetensors_reader and c5_full_decoder_runtime implementation.",
     "phase2_status_by_phase": {
       "C1": {
         "packets": 5180,
@@ -1248,7 +1248,7 @@
       "phase34": "raw PJP1, HTP raw output, OpenCL tensors, and adapters remain on device/Termux; repair must keep compact JSON only",
       "report_root_scan": "metadata-freeze report root had 179 tracked files and clean forbidden suffix scans; raw payloads not committed"
     },
-    "recursive_improvement_next_step": "Freeze the Phase3/4 contract patch, then implement the smallest falsifiable exporter plus safetensors_reader plus c5_full_decoder_runtime path, rerun the bounded native QA predict probe, and only proceed to executed metrics after real prediction JSONL and finite runtime loss/confidence exist.",
+    "recursive_improvement_next_step": "Freeze the exporter runtime-fields patch, regenerate phone component-pack metadata, implement the native reader/runtime body, rerun the bounded QA predict probe, and proceed to executed metrics only after real prediction JSONL and finite runtime loss/confidence exist.",
     "repo_custody_state_freeze": {
       "branch": "origin/gemma4-megakernel-native-training",
       "commit": "7290fbec13c6a13e88710afddfe4af70637096f9",
@@ -1261,13 +1261,13 @@
     },
     "run_label": "c1_c4_waveB_rerun_20260630T230411Z",
     "run_root": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z",
-    "status_classification": "PENDING_ACTION_REPO_CUSTODY_NATIVE_LOGITS_CONTRACT_PATCH",
+    "status_classification": "PENDING_ACTION_REPO_CUSTODY_EXPORTER_RUNTIME_FIELDS_PATCH",
     "threads_nudged_this_tick": [
       "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 native logits implementation follow-up sent",
       "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050 central/probe report freeze requested"
     ],
-    "timestamp_utc": "2026-07-01T12:40:37Z",
-    "updated_utc": "2026-07-01T12:40:37Z",
+    "timestamp_utc": "2026-07-01T12:50:37Z",
+    "updated_utc": "2026-07-01T12:50:37Z",
     "user_action_required": false,
     "c5_full_decoder_exporter_custody": {
       "schema_version": "polymath_c5_full_decoder_exporter_post_custody_v1",
@@ -1550,7 +1550,7 @@
       "first_unresolved_technical_failure_after_valid_schema_paths": "full_decoder_logits_generation_not_implemented",
       "next_action": "Execution runs Termux command package to build/copy/verify C5-capable runner; Phase3/4 then patches c5_qa_inference.cpp::run_c5_qa_predict fail-closed branch after exported manifests exist."
     },
-    "status": "native_logits_contract_patch_custody_pending",
+    "status": "exporter_runtime_fields_pathset_ready_for_custody",
     "model_safetensors_sha256": "43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651",
     "model_safetensors_size_bytes": 15992595884,
     "first_missing_green_field_after_export": "phone_c5_runner_rebuild_or_copy_missing",
@@ -1724,15 +1724,132 @@
         "not 100k or 1M Phase2 authority",
         "no Comet-backed accepted run"
       ]
+    },
+    "first_missing_green_field_after_exporter_patch_custody": "phone_exporter_rerun_for_schema_complete_component_pack_pending",
+    "first_unresolved_technical_failure_after_schema_complete_export": "c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land",
+    "native_logits_contract_patch_custody_commit": "2151dbada9012a5f54806cf689e806001180521f",
+    "c5_after_c1_exporter_runtime_fields_patch_20260701T_engineering": {
+      "schema_version": "polymath_c5_after_c1_exporter_runtime_fields_patch_v1",
+      "lane": "engineering_orchestrator",
+      "status": "exporter_runtime_fields_pathset_ready_for_custody",
+      "artifact_paths": [
+        "runtime/reports/orchestration/c5_after_c1_exporter_runtime_fields_patch_20260701T_engineering.json",
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py",
+        "tests/test_c5_full_decoder_exporter.py"
+      ],
+      "pathset_sha256": {
+        "runtime/reports/orchestration/c5_after_c1_exporter_runtime_fields_patch_20260701T_engineering.json": "b135ba0c958c7cfea92cbd1c138f42df0cfb5b500485f0416b5167fce6a114f8",
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py": "e3922085a08703d5ba4f17357f9b71218f8cca5aff1cbc4f395edfb7180599b4",
+        "tests/test_c5_full_decoder_exporter.py": "d8eb5df2c73b470da58f7f37a24ff704bc005d0d58a9eb625cf15cb541a218cb"
+      },
+      "custody_prerequisite_commit": {
+        "status": "native_c5_logits_contract_patch_committed_pushed",
+        "commit_sha": "2151dbada9012a5f54806cf689e806001180521f",
+        "branch": "origin/gemma4-megakernel-native-training"
+      },
+      "first_missing_green_field_current": "repo_custody_freeze_exporter_runtime_fields_patch",
+      "first_missing_green_field_after_custody": "phone_exporter_rerun_for_schema_complete_component_pack_pending",
+      "first_unresolved_technical_failure_after_schema_complete_export": "c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land",
+      "implemented_this_step": {
+        "summary": "The phone-compatible stdlib exporter now emits runtime-driving decoder manifest fields required by the native and host guards: source_model_safetensors, architecture_config, and tensor_role_inventory.",
+        "architecture_config": {
+          "num_hidden_layers": 42,
+          "hidden_size": 2560,
+          "vocab_size": 262144,
+          "logits_vocabulary_size": 262144,
+          "intermediate_size": 10240,
+          "num_attention_heads": 8,
+          "num_key_value_heads": 2,
+          "head_dim": 256,
+          "small_input_size": 256,
+          "rms_norm_eps": 1e-06,
+          "rope_theta": 10000.0,
+          "activation": "gelu_pytorch_tanh",
+          "final_logit_softcap": 30.0,
+          "materializes_full_bsv_logits": false
+        },
+        "tensor_role_inventory": {
+          "format": "safetensors_header_metadata_only",
+          "per_layer_roles": [
+            "input_layernorm",
+            "layer_scalar",
+            "mlp_down_proj",
+            "mlp_gate_proj",
+            "mlp_up_proj",
+            "per_layer_input_gate",
+            "per_layer_projection",
+            "post_attention_layernorm",
+            "post_feedforward_layernorm",
+            "post_per_layer_input_norm",
+            "pre_feedforward_layernorm",
+            "self_attn_k_norm",
+            "self_attn_k_proj",
+            "self_attn_o_proj",
+            "self_attn_q_norm",
+            "self_attn_q_proj",
+            "self_attn_v_proj"
+          ],
+          "metadata_per_role": [
+            "key",
+            "dtype",
+            "shape",
+            "data_offsets",
+            "absolute_data_offsets",
+            "byte_length"
+          ],
+          "raw_tensor_bytes_copied_to_git": false
+        }
+      },
+      "verification_commands": [
+        {
+          "command": "python3.11 -m py_compile integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py tests/test_c5_full_decoder_exporter.py",
+          "result": "passed"
+        },
+        {
+          "command": "python3.11 integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py --print-schema | python3.11 -m json.tool",
+          "result": "passed"
+        },
+        {
+          "command": "python3.11 -m pytest -q tests/test_c5_full_decoder_exporter.py tests/test_c5_phase34_qa_inference_producer.py tests/test_c5_prediction_payloads.py",
+          "result": "19 passed in 5.16s"
+        },
+        {
+          "command": "git diff --check -- integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py tests/test_c5_full_decoder_exporter.py",
+          "result": "passed"
+        }
+      ],
+      "raw_boundary_proof": {
+        "raw_qa_jsonl_copied_to_git": false,
+        "raw_prediction_jsonl_copied_to_git": false,
+        "raw_checkpoint_or_adapter_payload_copied_to_git": false,
+        "raw_model_or_tensor_payload_copied_to_git": false,
+        "hf_or_comet_called": false,
+        "secrets_printed": false,
+        "phone_gate_run": false,
+        "staged_or_committed": false
+      },
+      "nonclaims": [
+        "no C5 pass",
+        "no executed C5 metrics",
+        "no real prediction JSONL emitted",
+        "no logits, prediction, loss, confidence, candidate_train_loss, or C5 metric fabricated",
+        "no bridge MSE relabeled as C5 loss",
+        "no old layer0/layer1 asset accepted as a full decoder",
+        "no learning or model-quality claim",
+        "no Phase3 readiness claim",
+        "no Phase4 readiness claim",
+        "not 100k or 1M Phase2 authority",
+        "no Comet-backed accepted run"
+      ]
     }
   },
-  "active_edge": "WaveB_C5_after_C1_native_logits_contract_patch_custody_pending",
+  "active_edge": "WaveB_C5_after_C1_exporter_runtime_fields_patch_custody_pending",
   "active_watchdog_state": {
     "artifact_waiting_on": [
-      "Repo Custodian freeze of EXECUTIVE_DELIVERY_STATE.json, EXECUTIVE_DELIVERY_STATE.md, and the Phase3/4 native logits contract patch pathset.",
-      "Engineering exporter emits a schema-complete full decoder component pack with source_model_safetensors, architecture_config, and tensor_role_inventory.",
-      "Phase3/4 lands safetensors_reader plus streamed/chunked c5_full_decoder_runtime and replaces only the terminal full_decoder_logits_generation_not_implemented branch.",
-      "Execution rebuilds/copies the runner and reruns the same bounded C5_after_C1 native QA predict probe after custody and runtime patch."
+      "Repo Custodian freeze of EXECUTIVE_DELIVERY_STATE.json, EXECUTIVE_DELIVERY_STATE.md, the Engineering exporter runtime-fields report, exporter, and focused exporter test.",
+      "Execution rerun of the frozen phone exporter against the phone-held model.safetensors to regenerate schema-complete decoder_manifest.json, adapter_site_policy.json, and export_report.json identities.",
+      "Phase3/4 implementation of safetensors_reader plus streamed/chunked c5_full_decoder_runtime on the existing native C5 QA predict surface.",
+      "Execution rerun of the bounded C5_after_C1 native QA predict probe after the runtime body lands."
     ],
     "authorization_needed": "none; native implementation work is under current GO and must preserve raw/secrets boundary",
     "c5_after_c1_c5_qa_runtime_fail_closed_pathset": {
@@ -2580,11 +2697,11 @@
       "status": "c5_full_decoder_failure_artifacts_and_state_pending_custody",
       "user_action_required": false
     },
-    "current_gate": "WaveB_C5_after_C1_native_logits_contract_patch_custody_pending",
+    "current_gate": "WaveB_C5_after_C1_exporter_runtime_fields_patch_custody_pending",
     "custody_commit_latest": "bb8105a2bc91b6c9b0993603e14b49d0a5730f8d",
     "custody_status_latest": "c5_decoder_runtime_owner_state_committed_pushed",
     "dominant_failure_domain": "phase5_eval_failure",
-    "drift_deleted_or_pending": "The generic native full_decoder_logits_generation_not_implemented stop is now hardened into explicit manifest-contract fields: decoder_manifest_architecture_config_missing and decoder_manifest_tensor_role_inventory_missing. Remaining drift is pending exporter/runtime work for architecture/tensor-role inventory, safetensors range reading, and streamed decoder logits; bridge MSE remains forbidden as C5 loss.",
+    "drift_deleted_or_pending": "The decoder manifest no longer needs to stop at architecture_config/tensor_role_inventory absence once this exporter patch is frozen and rerun on the phone-held model. Pending drift remains the native safetensors reader and streamed full-decoder runtime body; bridge MSE remains forbidden as C5 loss.",
     "engineering_evaluator_implementation": {
       "artifact_paths_in_progress": [
         "polymath_ai/polar/c5_heldout_eval.py",
@@ -2691,7 +2808,7 @@
       "existing_surface_role": "run_c5_eval.py validates supplied metrics JSON; it does not compute metrics",
       "status": "c5_after_c1_real_evaluator_surface_missing"
     },
-    "first_missing_green_field": "repo_custody_freeze_native_full_decoder_logits_contract_patch",
+    "first_missing_green_field": "repo_custody_freeze_exporter_runtime_fields_patch",
     "first_unresolved_technical_failure_after_schema_paths": "full_decoder_logits_generation_not_implemented_after_valid_schema_paths",
     "first_unresolved_technical_failure_after_valid_schema_paths": "c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land",
     "hardening_policy": {
@@ -2721,7 +2838,7 @@
       "training_material_steward": "complete for material identities",
       "ui_engineer": "not nudged until C5 evidence-backed status exists"
     },
-    "last_concrete_action": "Repo Custodian froze the native C5 probe failure central state at commit a6ddd7e98ad43fb1c7325590eeb725d0e30e4fbe. Phase3/4 then produced a native/host contract patch that hardens metadata-only decoder manifests before native invocation: report SHA 9128d334bac560f98d55a86d5be18f032e2d549121d3fce85e89accf452d1963; c5_qa_inference.cpp SHA 9edefbdfe569edd8add9d711e0ae5e1e4813b190e9d4e5f355e6ce7c35cbf7b0; run_c5_phase34_qa_inference_producer.py SHA 26d8b99f8d5a8b930b90296c89f0c98e51537dcbaf2d302f8923c6b1dce3cf2e; tests/test_c5_phase34_qa_inference_producer.py SHA eeea0c89882a087cf945058244ccc55aa8ea37901b1116baf15e0356aab97b3b. Verification reported by Phase3/4: git diff --check passed, py_compile passed, pytest tests/test_c5_phase34_qa_inference_producer.py tests/test_c5_prediction_payloads.py returned 12 passed, gemma4_layer_runner build completed, and ctest returned 4/4 passed.",
+    "last_concrete_action": "Repo Custodian committed and pushed the native C5 logits contract patch at 2151dbada9012a5f54806cf689e806001180521f. Engineering then patched the phone-compatible stdlib exporter to emit architecture_config and tensor_role_inventory metadata from the safetensors header: report SHA b135ba0c958c7cfea92cbd1c138f42df0cfb5b500485f0416b5167fce6a114f8; exporter SHA e3922085a08703d5ba4f17357f9b71218f8cca5aff1cbc4f395edfb7180599b4; test SHA d8eb5df2c73b470da58f7f37a24ff704bc005d0d58a9eb625cf15cb541a218cb. Focused verification passed: py_compile, exporter --print-schema JSON, pytest tests/test_c5_full_decoder_exporter.py tests/test_c5_phase34_qa_inference_producer.py tests/test_c5_prediction_payloads.py -> 19 passed, and git diff --check.",
     "lineage_drift_repair_status": {
       "commit": "ee74ae572322e05624deac6f6f8788c2c6e2f692",
       "proof_required": [
@@ -2737,7 +2854,7 @@
       ],
       "status": "source_repair_frozen_pending_execution_proof"
     },
-    "next_concrete_action": "Repo Custodian verifies and commits/pushes the exact central-state plus Phase3/4 contract pathset. After custody, the current metadata-only component pack must fail closed at decoder_manifest_architecture_config_missing and decoder_manifest_tensor_role_inventory_missing; with schema-complete paths but no runtime body, the fail-fast boundary remains c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land. Engineering/Phase3/4 then extend the exporter/runtime pathset rather than creating a new C5 pathway.",
+    "next_concrete_action": "Repo Custodian freezes the exact central-state plus exporter runtime-fields pathset. After custody, Execution reruns the phone exporter so the outside-git component pack advances from metadata-only manifest blockers to schema-complete decoder_manifest identities. Phase3/4 then lands safetensors_reader plus c5_full_decoder_runtime and replaces only the terminal full_decoder_logits_generation_not_implemented branch.",
     "nonclaims": [
       "development-cycle evidence only unless stronger gates pass",
       "no C5 pass",
@@ -2765,7 +2882,7 @@
       "no Comet/API call",
       "no secrets sourced"
     ],
-    "owner": "Repo Custodian owns the Phase3/4 native logits contract patch freeze; Engineering/Phase3/4 own exporter/runtime implementation after custody; Execution owns the bounded rerun after a runnable patch exists.",
+    "owner": "Repo Custodian owns the exporter runtime-fields patch freeze; Execution owns phone exporter rerun after custody; Phase3/4 owns safetensors_reader and c5_full_decoder_runtime implementation.",
     "phase2_status_by_phase": {
       "C1": {
         "packets": 5180,
@@ -2975,7 +3092,7 @@
       "phase34": "raw PJP1, HTP raw output, OpenCL tensors, and adapters remain on device/Termux; repair must keep compact JSON only",
       "report_root_scan": "metadata-freeze report root had 179 tracked files and clean forbidden suffix scans; raw payloads not committed"
     },
-    "recursive_improvement_next_step": "Freeze the Phase3/4 contract patch, then implement the smallest falsifiable exporter plus safetensors_reader plus c5_full_decoder_runtime path, rerun the bounded native QA predict probe, and only proceed to executed metrics after real prediction JSONL and finite runtime loss/confidence exist.",
+    "recursive_improvement_next_step": "Freeze the exporter runtime-fields patch, regenerate phone component-pack metadata, implement the native reader/runtime body, rerun the bounded QA predict probe, and proceed to executed metrics only after real prediction JSONL and finite runtime loss/confidence exist.",
     "repo_custody_state_freeze": {
       "branch": "origin/gemma4-megakernel-native-training",
       "commit": "7290fbec13c6a13e88710afddfe4af70637096f9",
@@ -2988,15 +3105,15 @@
     },
     "run_label": "c1_c4_waveB_rerun_20260630T230411Z",
     "run_root": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z",
-    "status_classification": "PENDING_ACTION_REPO_CUSTODY_NATIVE_LOGITS_CONTRACT_PATCH",
+    "status_classification": "PENDING_ACTION_REPO_CUSTODY_EXPORTER_RUNTIME_FIELDS_PATCH",
     "threads_nudged_this_tick": [
       "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 native logits implementation follow-up sent",
       "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050 central/probe report freeze requested"
     ],
-    "timestamp_utc": "2026-07-01T12:40:37Z",
-    "updated_utc": "2026-07-01T12:40:37Z",
+    "timestamp_utc": "2026-07-01T12:50:37Z",
+    "updated_utc": "2026-07-01T12:50:37Z",
     "user_action_required": false,
-    "status": "native_logits_contract_patch_custody_pending",
+    "status": "exporter_runtime_fields_pathset_ready_for_custody",
     "first_missing_green_field_after_custody": "phone_termux_model_safetensors_download_pending",
     "known_downstream_access_issue_after_custody": "termux_command_channel_missing",
     "model_safetensors_sha256": "43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651",
@@ -3172,11 +3289,163 @@
         "not 100k or 1M Phase2 authority",
         "no Comet-backed accepted run"
       ]
+    },
+    "first_missing_green_field_after_exporter_patch_custody": "phone_exporter_rerun_for_schema_complete_component_pack_pending",
+    "first_unresolved_technical_failure_after_schema_complete_export": "c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land",
+    "native_logits_contract_patch_custody_commit": "2151dbada9012a5f54806cf689e806001180521f",
+    "c5_after_c1_exporter_runtime_fields_patch_20260701T_engineering": {
+      "schema_version": "polymath_c5_after_c1_exporter_runtime_fields_patch_v1",
+      "lane": "engineering_orchestrator",
+      "status": "exporter_runtime_fields_pathset_ready_for_custody",
+      "artifact_paths": [
+        "runtime/reports/orchestration/c5_after_c1_exporter_runtime_fields_patch_20260701T_engineering.json",
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py",
+        "tests/test_c5_full_decoder_exporter.py"
+      ],
+      "pathset_sha256": {
+        "runtime/reports/orchestration/c5_after_c1_exporter_runtime_fields_patch_20260701T_engineering.json": "b135ba0c958c7cfea92cbd1c138f42df0cfb5b500485f0416b5167fce6a114f8",
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py": "e3922085a08703d5ba4f17357f9b71218f8cca5aff1cbc4f395edfb7180599b4",
+        "tests/test_c5_full_decoder_exporter.py": "d8eb5df2c73b470da58f7f37a24ff704bc005d0d58a9eb625cf15cb541a218cb"
+      },
+      "custody_prerequisite_commit": {
+        "status": "native_c5_logits_contract_patch_committed_pushed",
+        "commit_sha": "2151dbada9012a5f54806cf689e806001180521f",
+        "branch": "origin/gemma4-megakernel-native-training"
+      },
+      "first_missing_green_field_current": "repo_custody_freeze_exporter_runtime_fields_patch",
+      "first_missing_green_field_after_custody": "phone_exporter_rerun_for_schema_complete_component_pack_pending",
+      "first_unresolved_technical_failure_after_schema_complete_export": "c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land",
+      "implemented_this_step": {
+        "summary": "The phone-compatible stdlib exporter now emits runtime-driving decoder manifest fields required by the native and host guards: source_model_safetensors, architecture_config, and tensor_role_inventory.",
+        "architecture_config": {
+          "num_hidden_layers": 42,
+          "hidden_size": 2560,
+          "vocab_size": 262144,
+          "logits_vocabulary_size": 262144,
+          "intermediate_size": 10240,
+          "num_attention_heads": 8,
+          "num_key_value_heads": 2,
+          "head_dim": 256,
+          "small_input_size": 256,
+          "rms_norm_eps": 1e-06,
+          "rope_theta": 10000.0,
+          "activation": "gelu_pytorch_tanh",
+          "final_logit_softcap": 30.0,
+          "materializes_full_bsv_logits": false
+        },
+        "tensor_role_inventory": {
+          "format": "safetensors_header_metadata_only",
+          "per_layer_roles": [
+            "input_layernorm",
+            "layer_scalar",
+            "mlp_down_proj",
+            "mlp_gate_proj",
+            "mlp_up_proj",
+            "per_layer_input_gate",
+            "per_layer_projection",
+            "post_attention_layernorm",
+            "post_feedforward_layernorm",
+            "post_per_layer_input_norm",
+            "pre_feedforward_layernorm",
+            "self_attn_k_norm",
+            "self_attn_k_proj",
+            "self_attn_o_proj",
+            "self_attn_q_norm",
+            "self_attn_q_proj",
+            "self_attn_v_proj"
+          ],
+          "metadata_per_role": [
+            "key",
+            "dtype",
+            "shape",
+            "data_offsets",
+            "absolute_data_offsets",
+            "byte_length"
+          ],
+          "raw_tensor_bytes_copied_to_git": false
+        }
+      },
+      "verification_commands": [
+        {
+          "command": "python3.11 -m py_compile integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py tests/test_c5_full_decoder_exporter.py",
+          "result": "passed"
+        },
+        {
+          "command": "python3.11 integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py --print-schema | python3.11 -m json.tool",
+          "result": "passed"
+        },
+        {
+          "command": "python3.11 -m pytest -q tests/test_c5_full_decoder_exporter.py tests/test_c5_phase34_qa_inference_producer.py tests/test_c5_prediction_payloads.py",
+          "result": "19 passed in 5.16s"
+        },
+        {
+          "command": "git diff --check -- integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py tests/test_c5_full_decoder_exporter.py",
+          "result": "passed"
+        }
+      ],
+      "raw_boundary_proof": {
+        "raw_qa_jsonl_copied_to_git": false,
+        "raw_prediction_jsonl_copied_to_git": false,
+        "raw_checkpoint_or_adapter_payload_copied_to_git": false,
+        "raw_model_or_tensor_payload_copied_to_git": false,
+        "hf_or_comet_called": false,
+        "secrets_printed": false,
+        "phone_gate_run": false,
+        "staged_or_committed": false
+      },
+      "nonclaims": [
+        "no C5 pass",
+        "no executed C5 metrics",
+        "no real prediction JSONL emitted",
+        "no logits, prediction, loss, confidence, candidate_train_loss, or C5 metric fabricated",
+        "no bridge MSE relabeled as C5 loss",
+        "no old layer0/layer1 asset accepted as a full decoder",
+        "no learning or model-quality claim",
+        "no Phase3 readiness claim",
+        "no Phase4 readiness claim",
+        "not 100k or 1M Phase2 authority",
+        "no Comet-backed accepted run"
+      ]
     }
   },
-  "current_gate": "WaveB_C5_after_C1_native_logits_contract_patch_custody_pending",
-  "current_highest_valid_state": "C1-C4 Wave B Phase1->Phase2->Phase3->Phase4 development-cycle mechanics remain frozen as metadata evidence. Phone-local model download, component-pack export, C5-capable runner build, heldout QA staging, and the native C5 probe are metadata evidence only. No C5 pass or executed metrics exist; the active edge is custody of the Phase3/4 manifest-contract hardening before exporter/runtime implementation.",
+  "current_gate": "WaveB_C5_after_C1_exporter_runtime_fields_patch_custody_pending",
+  "current_highest_valid_state": "C1-C4 Wave B Phase1->Phase2->Phase3->Phase4 development-cycle mechanics remain frozen as metadata evidence. Phone-local model download, original component-pack export, C5-capable runner build, heldout QA staging, native C5 probe, and native manifest-contract guard are metadata evidence only. No C5 pass or executed metrics exist; the active edge is custody of Engineering exporter runtime-field emission before phone exporter rerun.",
   "driver_tick_history": [
+    {
+      "timestamp_utc": "2026-07-01T12:50:37Z",
+      "current_gate": "WaveB_C5_after_C1_exporter_runtime_fields_patch_custody_pending",
+      "status_classification": "PENDING_ACTION_REPO_CUSTODY_EXPORTER_RUNTIME_FIELDS_PATCH",
+      "owner": "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050",
+      "artifact_waiting_on": [
+        "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json",
+        "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md",
+        "runtime/reports/orchestration/c5_after_c1_exporter_runtime_fields_patch_20260701T_engineering.json",
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py",
+        "tests/test_c5_full_decoder_exporter.py"
+      ],
+      "first_missing_green_field": "repo_custody_freeze_exporter_runtime_fields_patch",
+      "last_concrete_action": "Repo Custodian committed and pushed the native C5 logits contract patch at 2151dbada9012a5f54806cf689e806001180521f. Engineering then patched the phone-compatible stdlib exporter to emit architecture_config and tensor_role_inventory metadata from the safetensors header: report SHA b135ba0c958c7cfea92cbd1c138f42df0cfb5b500485f0416b5167fce6a114f8; exporter SHA e3922085a08703d5ba4f17357f9b71218f8cca5aff1cbc4f395edfb7180599b4; test SHA d8eb5df2c73b470da58f7f37a24ff704bc005d0d58a9eb625cf15cb541a218cb. Focused verification passed: py_compile, exporter --print-schema JSON, pytest tests/test_c5_full_decoder_exporter.py tests/test_c5_phase34_qa_inference_producer.py tests/test_c5_prediction_payloads.py -> 19 passed, and git diff --check.",
+      "next_concrete_action": "Repo Custodian freezes the exact central-state plus exporter runtime-fields pathset. After custody, Execution reruns the phone exporter so the outside-git component pack advances from metadata-only manifest blockers to schema-complete decoder_manifest identities. Phase3/4 then lands safetensors_reader plus c5_full_decoder_runtime and replaces only the terminal full_decoder_logits_generation_not_implemented branch.",
+      "dominant_failure_domain": "phase5_eval_failure",
+      "threads_nudged_this_tick": [
+        "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: freeze exact central-state plus exporter runtime-fields pathset.",
+        "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4: prepare/implement safetensors_reader plus c5_full_decoder_runtime against the now-declared schema contract."
+      ],
+      "user_action_required": false,
+      "nonclaims": [
+        "no C5 pass",
+        "no executed C5 metrics",
+        "no real prediction JSONL emitted",
+        "no logits, prediction, loss, confidence, candidate_train_loss, or C5 metric fabricated",
+        "no bridge MSE relabeled as C5 loss",
+        "no old layer0/layer1 asset accepted as a full decoder",
+        "no learning or model-quality claim",
+        "no Phase3 readiness claim",
+        "no Phase4 readiness claim",
+        "not 100k or 1M Phase2 authority",
+        "no Comet-backed accepted run"
+      ]
+    },
     {
       "timestamp_utc": "2026-07-01T12:40:37Z",
       "current_gate": "WaveB_C5_after_C1_native_logits_contract_patch_custody_pending",
@@ -3868,7 +4137,7 @@
       "user_action_required": false
     }
   ],
-  "governing_edge": "WaveB_C5_after_C1_native_logits_contract_patch_custody_pending",
+  "governing_edge": "WaveB_C5_after_C1_exporter_runtime_fields_patch_custody_pending",
   "governing_objective": {
     "nonclaims": [
       "diagnostics_are_not_100k_or_1M_authority_unless_specific_authority_gate_passes",
@@ -4388,76 +4657,47 @@
   "lane_status": {
     "engineering_orchestrator": {
       "artifact_paths": [
-        "runtime/reports/orchestration/c5_after_c1_native_full_decoder_logits_contract_patch_20260701T_phase34.json",
-        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_qa_inference.cpp",
-        "scripts/host/run_c5_phase34_qa_inference_producer.py",
-        "tests/test_c5_phase34_qa_inference_producer.py"
+        "runtime/reports/orchestration/c5_after_c1_exporter_runtime_fields_patch_20260701T_engineering.json",
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py",
+        "tests/test_c5_full_decoder_exporter.py"
       ],
       "authorization_needed": false,
-      "first_missing_green_field": "repo_custody_freeze_native_full_decoder_logits_contract_patch",
+      "first_missing_green_field": "repo_custody_freeze_exporter_runtime_fields_patch",
       "first_missing_green_field_at_export_execution_until_model_source_is_available": "model_safetensors_missing",
       "first_unresolved_technical_failure_after_valid_schema_paths": "c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land",
-      "last_update_utc": "2026-07-01T12:40:37Z",
-      "next_action": "Repo Custodian verifies and commits/pushes the exact central-state plus Phase3/4 contract pathset. After custody, the current metadata-only component pack must fail closed at decoder_manifest_architecture_config_missing and decoder_manifest_tensor_role_inventory_missing; with schema-complete paths but no runtime body, the fail-fast boundary remains c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land. Engineering/Phase3/4 then extend the exporter/runtime pathset rather than creating a new C5 pathway.",
+      "last_update_utc": "2026-07-01T12:50:37Z",
+      "next_action": "Repo Custodian freezes the exact central-state plus exporter runtime-fields pathset. After custody, Execution reruns the phone exporter so the outside-git component pack advances from metadata-only manifest blockers to schema-complete decoder_manifest identities. Phase3/4 then lands safetensors_reader plus c5_full_decoder_runtime and replaces only the terminal full_decoder_logits_generation_not_implemented branch.",
       "nonclaims": [
         "no C5 pass",
         "no executed C5 metrics",
-        "no prediction JSONL emitted",
-        "no logits emitted",
-        "no loss, confidence, or candidate_train_loss emitted",
+        "no real prediction JSONL emitted",
+        "no logits, prediction, loss, confidence, candidate_train_loss, or C5 metric fabricated",
         "no bridge MSE relabeled as C5 loss",
-        "no learning/model-quality claim",
+        "no old layer0/layer1 asset accepted as a full decoder",
+        "no learning or model-quality claim",
         "no Phase3 readiness claim",
         "no Phase4 readiness claim",
-        "not 100k/1M Phase2 authority",
-        "no Comet/API call",
-        "no secrets sourced"
+        "not 100k or 1M Phase2 authority",
+        "no Comet-backed accepted run"
       ],
       "sha256_or_identity_fields": {
-        "route_report_sha256": "a5c93c1df54638c1b846602dde6e58143b4b33ae999d3a79b2223ed4c41d356c",
-        "exporter_sha256": "1f119fac8d654fdb3a8e8357c5de131190e8de04dc67f904c5e28143c6012143",
-        "test_sha256": "3386b13f52b2e6d7b357c50a8da3789fecffda94d5f096d1e214e59f0c0f7d42",
-        "phone_model_safetensors_sha256": "43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651",
-        "phone_model_safetensors_size_bytes": 15992595884,
-        "phone_exporter_exit_code": 0,
-        "export_metadata_hashes_status": "pending",
-        "decoder_manifest_sha256": "6700f3c2912bfdcb659b9e7de3cdb0831d58f3708a0f841c181ec446b3a83a5f",
-        "adapter_site_policy_sha256": "f38bd8109bbb77e9e94a5b4b34a238bc0ec0a39e7736870c97defe5aecc93357",
-        "export_report_sha256": "06fe8e91b5938ff3235cad5fa96e7b25d5b20fb3c4e456c249c84d53bf839d0f",
-        "runner_sha256": "a5a6f9a3b93d167d9cd69eddbe2f3404443ae1c2222e1c6a0782398c9ff09e84",
-        "heldout_qa_sha256": "da41c5362398f24e0e0dd9df9a5cf0594435a455871fa77ab74d9312e6c8e9b2",
-        "probe_stdout_metadata_sha256": "8be05287d47bb148054bd26425f41f7f0c2cded8b98110d956c0f3e778cb86e6",
-        "probe_stderr_sha256": "d2f647b4efae9fe021b2e0d5ce9f79f88d87853e4f40cf0d660cf6d5d5c2d819",
-        "native_probe_report_path": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe/candidate_probe_stdout.json",
-        "native_probe_exit_code": 13
+        "exporter_runtime_fields_report_sha256": "b135ba0c958c7cfea92cbd1c138f42df0cfb5b500485f0416b5167fce6a114f8",
+        "exporter_sha256": "e3922085a08703d5ba4f17357f9b71218f8cca5aff1cbc4f395edfb7180599b4",
+        "test_sha256": "d8eb5df2c73b470da58f7f37a24ff704bc005d0d58a9eb625cf15cb541a218cb"
       },
-      "status": "native_logits_contract_patch_custody_pending",
-      "status_classification": "PENDING_ACTION_REPO_CUSTODY_NATIVE_LOGITS_CONTRACT_PATCH",
+      "status": "exporter_runtime_fields_pathset_ready_for_custody",
+      "status_classification": "PENDING_ACTION_REPO_CUSTODY_EXPORTER_RUNTIME_FIELDS_PATCH",
       "thread_id": "019f138b-d229-7640-98b7-2f185d6beae0",
       "user_action_required": false,
       "verification_commands": [
-        "python3.11 -m py_compile integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py tests/test_c5_full_decoder_exporter.py -> pass",
-        "git diff --check -- integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py tests/test_c5_full_decoder_exporter.py -> pass",
-        "python3.11 integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py --print-schema -> pass",
-        "python3.11 -m pytest -q tests/test_c5_full_decoder_exporter.py -> 6 passed",
-        "python3.11 -m pytest -q tests/test_c5_full_decoder_exporter.py tests/test_c5_phase34_qa_inference_producer.py -> 11 passed",
-        "missing-model probe -> exit 2, first_missing_green_field model_safetensors_missing",
-        "python3.11 -m json.tool runtime/reports/orchestration/c5_after_c1_full_decoder_exporter_pathset_20260701T_engineering.json -> pass",
-        "raw suffix scan over new files -> clean",
-        "Execution: phone-local model download completed with size 15992595884 bytes and SHA-256 43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651",
-        "Execution: frozen stdlib exporter started on phone; exporter output hashes pending",
-        "Execution: frozen stdlib exporter completed on phone with exit 0; stderr empty; component pack created",
-        "Execution: export metadata hashes for decoder_manifest.json, adapter_site_policy.json, export_report.json still pending",
-        "Execution: decoder_manifest.json SHA-256 6700f3c2912bfdcb659b9e7de3cdb0831d58f3708a0f841c181ec446b3a83a5f",
-        "Execution: adapter_site_policy.json SHA-256 f38bd8109bbb77e9e94a5b4b34a238bc0ec0a39e7736870c97defe5aecc93357",
-        "Execution: export_report.json SHA-256 06fe8e91b5938ff3235cad5fa96e7b25d5b20fb3c4e456c249c84d53bf839d0f",
-        "Execution: next missing runner build/copy plus heldout QA staging; no C5 prediction JSONL emitted yet",
-        "Execution: C5 runner built from 090417c and help flags verified",
-        "Execution: heldout QA staged with accepted SHA da41c5362398f24e0e0dd9df9a5cf0594435a455871fa77ab74d9312e6c8e9b2, 53 rows",
-        "Execution: native C5 QA probe exited 13 at full_decoder_logits_generation_not_implemented"
+        "python3.11 -m py_compile integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py tests/test_c5_full_decoder_exporter.py -> passed",
+        "python3.11 integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py --print-schema | python3.11 -m json.tool -> passed",
+        "python3.11 -m pytest -q tests/test_c5_full_decoder_exporter.py tests/test_c5_phase34_qa_inference_producer.py tests/test_c5_prediction_payloads.py -> 19 passed in 5.16s",
+        "git diff --check -- integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py tests/test_c5_full_decoder_exporter.py -> passed"
       ],
-      "first_missing_green_field_after_custody": "decoder_manifest_architecture_config_missing",
-      "additional_missing_runtime_field": "decoder_manifest_tensor_role_inventory_missing"
+      "first_missing_green_field_after_custody": "phone_exporter_rerun_for_schema_complete_component_pack_pending",
+      "additional_missing_runtime_field": "decoder_manifest_tensor_role_inventory_missing",
+      "first_unresolved_technical_failure_after_schema_complete_export": "c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land"
     },
     "execution_orchestrator": {
       "artifact_paths": [
@@ -4467,9 +4707,9 @@
         "OUTSIDE_GIT_PHASE4_ADAPTER_PRE_PAYLOAD_PATH_REDACTED_SHA_ONLY"
       ],
       "authorization_needed": false,
-      "first_missing_green_field": "repo_custody_freeze_native_full_decoder_logits_contract_patch",
-      "last_update_utc": "2026-07-01T12:40:37Z",
-      "next_action": "After Custodian freezes the contract patch and Phase3/4 lands a runnable safetensors/full-decoder runtime, rebuild/copy runner and rerun the bounded C5_after_C1 native QA predict probe.",
+      "first_missing_green_field": "repo_custody_freeze_exporter_runtime_fields_patch",
+      "last_update_utc": "2026-07-01T12:50:37Z",
+      "next_action": "After Custodian freezes the exporter runtime-fields patch, rerun the phone exporter against the phone-held model.safetensors and return schema-complete decoder_manifest.json, adapter_site_policy.json, and export_report.json hashes.",
       "nonclaims": [
         "no C5 pass",
         "no executed C5 metrics",
@@ -4499,8 +4739,8 @@
         "adapter_site_policy_sha256": "f38bd8109bbb77e9e94a5b4b34a238bc0ec0a39e7736870c97defe5aecc93357",
         "export_report_sha256": "06fe8e91b5938ff3235cad5fa96e7b25d5b20fb3c4e456c249c84d53bf839d0f"
       },
-      "status": "waiting_on_native_logits_contract_patch_custody_and_runtime_body",
-      "status_classification": "WAITING_ON_REPO_CUSTODY_AND_PHASE34_RUNTIME_PATCH",
+      "status": "waiting_on_exporter_runtime_fields_custody_then_phone_exporter_rerun",
+      "status_classification": "WAITING_ON_REPO_CUSTODY_EXPORTER_RUNTIME_FIELDS_PATCH",
       "thread_id": "019f138c-fb51-7c53-a41a-ab8eac950d9c",
       "user_action_required": false,
       "verification_commands": [
@@ -4525,10 +4765,10 @@
         "tests/test_c5_phase34_qa_inference_producer.py"
       ],
       "custody_commit": "9f6a27f3640078d81a303445d7ab29c7ce3a2db8",
-      "first_missing_green_field": "repo_custody_freeze_native_full_decoder_logits_contract_patch",
+      "first_missing_green_field": "c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land",
       "first_unresolved_technical_failure_after_valid_schema_paths": "c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land",
-      "last_update_utc": "2026-07-01T12:40:37Z",
-      "next_action": "Hold for Custodian freeze, then implement exporter architecture_config and tensor_role_inventory plus safetensors_reader/c5_full_decoder_runtime pathset.",
+      "last_update_utc": "2026-07-01T12:50:37Z",
+      "next_action": "Implement safetensors_reader and streamed/chunked c5_full_decoder_runtime against the exporter-declared architecture_config and tensor_role_inventory contract; return exact pathset or source/build blocker.",
       "nonclaims": [
         "no C5 pass",
         "no real prediction JSONL emitted",
@@ -4552,8 +4792,8 @@
         "native_probe_stdout_metadata_sha256": "8be05287d47bb148054bd26425f41f7f0c2cded8b98110d956c0f3e778cb86e6",
         "native_probe_stderr_sha256": "d2f647b4efae9fe021b2e0d5ce9f79f88d87853e4f40cf0d660cf6d5d5c2d819"
       },
-      "status": "native_c5_logits_contract_patch_handoff_to_custodian",
-      "status_classification": "HANDOFF_TO_REPO_CUSTODY_NATIVE_LOGITS_CONTRACT_PATCH",
+      "status": "native_full_decoder_runtime_body_pending_after_schema_contract",
+      "status_classification": "PENDING_ACTION_PHASE34_NATIVE_SAFETENSORS_READER_AND_RUNTIME",
       "thread_id": "019f13da-d897-7ba2-8ed1-b959892f5ed4",
       "user_action_required": false,
       "verification_commands": [
@@ -4589,17 +4829,17 @@
       "artifact_paths": [
         "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json",
         "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md",
-        "runtime/reports/orchestration/c5_after_c1_native_full_decoder_logits_contract_patch_20260701T_phase34.json",
-        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_qa_inference.cpp",
-        "scripts/host/run_c5_phase34_qa_inference_producer.py",
-        "tests/test_c5_phase34_qa_inference_producer.py"
+        "runtime/reports/orchestration/c5_after_c1_exporter_runtime_fields_patch_20260701T_engineering.json",
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py",
+        "tests/test_c5_full_decoder_exporter.py"
       ],
       "authorization_needed": false,
-      "first_missing_green_field": "repo_custody_freeze_native_full_decoder_logits_contract_patch",
-      "last_update_utc": "2026-07-01T12:40:37Z",
-      "next_action": "Verify exact six-file pathset, commit/push only that pathset, and return commit SHA plus final SHA-256 identities.",
+      "first_missing_green_field": "repo_custody_freeze_exporter_runtime_fields_patch",
+      "last_update_utc": "2026-07-01T12:50:37Z",
+      "next_action": "Verify exact five-file pathset, commit/push only that pathset, and return final SHA-256 identities plus commit SHA.",
       "nonclaims": [
         "no C5 pass",
+        "no executed C5 metrics",
         "no real prediction JSONL emitted",
         "no logits, prediction, loss, confidence, candidate_train_loss, or C5 metric fabricated",
         "no bridge MSE relabeled as C5 loss",
@@ -4611,25 +4851,22 @@
         "no Comet-backed accepted run"
       ],
       "sha256_or_identity_fields": {
-        "previous_native_failure_state_commit": "a6ddd7e98ad43fb1c7325590eeb725d0e30e4fbe",
-        "contract_report_sha256": "9128d334bac560f98d55a86d5be18f032e2d549121d3fce85e89accf452d1963",
-        "native_guard_sha256": "9edefbdfe569edd8add9d711e0ae5e1e4813b190e9d4e5f355e6ce7c35cbf7b0",
-        "producer_sha256": "26d8b99f8d5a8b930b90296c89f0c98e51537dcbaf2d302f8923c6b1dce3cf2e",
-        "tests_sha256": "eeea0c89882a087cf945058244ccc55aa8ea37901b1116baf15e0356aab97b3b"
+        "native_logits_contract_patch_commit": "2151dbada9012a5f54806cf689e806001180521f",
+        "exporter_runtime_fields_report_sha256": "b135ba0c958c7cfea92cbd1c138f42df0cfb5b500485f0416b5167fce6a114f8",
+        "exporter_sha256": "e3922085a08703d5ba4f17357f9b71218f8cca5aff1cbc4f395edfb7180599b4",
+        "test_sha256": "d8eb5df2c73b470da58f7f37a24ff704bc005d0d58a9eb625cf15cb541a218cb"
       },
-      "status": "native_logits_contract_patch_freeze_requested",
-      "status_classification": "PENDING_ACTION_REPO_CUSTODY_NATIVE_LOGITS_CONTRACT_PATCH",
+      "status": "exporter_runtime_fields_patch_freeze_requested",
+      "status_classification": "PENDING_ACTION_REPO_CUSTODY_EXPORTER_RUNTIME_FIELDS_PATCH",
       "thread_id": "019f1ac2-0f0f-7721-bf46-ad402dbd9050",
       "user_action_required": false,
       "verification_commands": [
-        "python3.11 -m json.tool runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json runtime/reports/orchestration/c5_after_c1_native_full_decoder_logits_contract_patch_20260701T_phase34.json",
-        "git diff --check -- runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md runtime/reports/orchestration/c5_after_c1_native_full_decoder_logits_contract_patch_20260701T_phase34.json integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_qa_inference.cpp scripts/host/run_c5_phase34_qa_inference_producer.py tests/test_c5_phase34_qa_inference_producer.py",
-        "python3.11 -m py_compile scripts/host/run_c5_phase34_qa_inference_producer.py",
-        "python3.11 -m pytest -q tests/test_c5_phase34_qa_inference_producer.py tests/test_c5_prediction_payloads.py",
-        "raw-payload filename suffix scan over exact pathset and staged index",
-        "tight literal secret/token scan over exact pathset and staged index"
+        "python3.11 -m py_compile integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py tests/test_c5_full_decoder_exporter.py -> passed",
+        "python3.11 integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py --print-schema | python3.11 -m json.tool -> passed",
+        "python3.11 -m pytest -q tests/test_c5_full_decoder_exporter.py tests/test_c5_phase34_qa_inference_producer.py tests/test_c5_prediction_payloads.py -> 19 passed in 5.16s",
+        "git diff --check -- integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py tests/test_c5_full_decoder_exporter.py -> passed"
       ],
-      "current_gate": "WaveB_C5_after_C1_native_logits_contract_patch_custody_pending",
+      "current_gate": "WaveB_C5_after_C1_exporter_runtime_fields_patch_custody_pending",
       "commit_sha": "89aad4cdc3e7a5eac1f59c123c5be0479d96afe0",
       "branch": "origin/gemma4-megakernel-native-training",
       "prior_exporter_commit_sha": "090417c75b19573146e26c77e663ac605981fae3"
@@ -4697,6 +4934,19 @@
     }
   },
   "last_driver_actions": [
+    {
+      "timestamp_utc": "2026-07-01T12:50:37Z",
+      "owner": "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050; Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4",
+      "action": "recorded Custodian native contract patch freeze at 2151dba, implemented Engineering exporter runtime-field emission, verified focused tests, and prepared custody plus Phase3/4 runtime routing",
+      "artifacts": [
+        "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json",
+        "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md",
+        "runtime/reports/orchestration/c5_after_c1_exporter_runtime_fields_patch_20260701T_engineering.json",
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py",
+        "tests/test_c5_full_decoder_exporter.py"
+      ],
+      "user_action_required": false
+    },
     {
       "timestamp_utc": "2026-07-01T12:40:37Z",
       "owner": "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050",
@@ -5364,25 +5614,26 @@
     ]
   },
   "schema_version": "polymath_executive_delivery_state_v1",
-  "status": "native_logits_contract_patch_custody_pending",
-  "status_classification": "PENDING_ACTION_REPO_CUSTODY_NATIVE_LOGITS_CONTRACT_PATCH",
-  "updated_at": "2026-07-01T12:40:37Z",
-  "updated_at_utc": "2026-07-01T12:40:37Z",
+  "status": "exporter_runtime_fields_pathset_ready_for_custody",
+  "status_classification": "PENDING_ACTION_REPO_CUSTODY_EXPORTER_RUNTIME_FIELDS_PATCH",
+  "updated_at": "2026-07-01T12:50:37Z",
+  "updated_at_utc": "2026-07-01T12:50:37Z",
   "dominant_failure_domain": "phase5_eval_failure",
   "user_action_required": false,
-  "last_concrete_action": "Repo Custodian froze the native C5 probe failure central state at commit a6ddd7e98ad43fb1c7325590eeb725d0e30e4fbe. Phase3/4 then produced a native/host contract patch that hardens metadata-only decoder manifests before native invocation: report SHA 9128d334bac560f98d55a86d5be18f032e2d549121d3fce85e89accf452d1963; c5_qa_inference.cpp SHA 9edefbdfe569edd8add9d711e0ae5e1e4813b190e9d4e5f355e6ce7c35cbf7b0; run_c5_phase34_qa_inference_producer.py SHA 26d8b99f8d5a8b930b90296c89f0c98e51537dcbaf2d302f8923c6b1dce3cf2e; tests/test_c5_phase34_qa_inference_producer.py SHA eeea0c89882a087cf945058244ccc55aa8ea37901b1116baf15e0356aab97b3b. Verification reported by Phase3/4: git diff --check passed, py_compile passed, pytest tests/test_c5_phase34_qa_inference_producer.py tests/test_c5_prediction_payloads.py returned 12 passed, gemma4_layer_runner build completed, and ctest returned 4/4 passed.",
-  "next_concrete_action": "Repo Custodian verifies and commits/pushes the exact central-state plus Phase3/4 contract pathset. After custody, the current metadata-only component pack must fail closed at decoder_manifest_architecture_config_missing and decoder_manifest_tensor_role_inventory_missing; with schema-complete paths but no runtime body, the fail-fast boundary remains c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land. Engineering/Phase3/4 then extend the exporter/runtime pathset rather than creating a new C5 pathway.",
+  "last_concrete_action": "Repo Custodian committed and pushed the native C5 logits contract patch at 2151dbada9012a5f54806cf689e806001180521f. Engineering then patched the phone-compatible stdlib exporter to emit architecture_config and tensor_role_inventory metadata from the safetensors header: report SHA b135ba0c958c7cfea92cbd1c138f42df0cfb5b500485f0416b5167fce6a114f8; exporter SHA e3922085a08703d5ba4f17357f9b71218f8cca5aff1cbc4f395edfb7180599b4; test SHA d8eb5df2c73b470da58f7f37a24ff704bc005d0d58a9eb625cf15cb541a218cb. Focused verification passed: py_compile, exporter --print-schema JSON, pytest tests/test_c5_full_decoder_exporter.py tests/test_c5_phase34_qa_inference_producer.py tests/test_c5_prediction_payloads.py -> 19 passed, and git diff --check.",
+  "next_concrete_action": "Repo Custodian freezes the exact central-state plus exporter runtime-fields pathset. After custody, Execution reruns the phone exporter so the outside-git component pack advances from metadata-only manifest blockers to schema-complete decoder_manifest identities. Phase3/4 then lands safetensors_reader plus c5_full_decoder_runtime and replaces only the terminal full_decoder_logits_generation_not_implemented branch.",
   "artifact_waiting_on": [
-    "Repo Custodian freeze of EXECUTIVE_DELIVERY_STATE.json, EXECUTIVE_DELIVERY_STATE.md, and the Phase3/4 native logits contract patch pathset.",
-    "Engineering exporter emits a schema-complete full decoder component pack with source_model_safetensors, architecture_config, and tensor_role_inventory.",
-    "Phase3/4 lands safetensors_reader plus streamed/chunked c5_full_decoder_runtime and replaces only the terminal full_decoder_logits_generation_not_implemented branch.",
-    "Execution rebuilds/copies the runner and reruns the same bounded C5_after_C1 native QA predict probe after custody and runtime patch."
+    "Repo Custodian freeze of EXECUTIVE_DELIVERY_STATE.json, EXECUTIVE_DELIVERY_STATE.md, the Engineering exporter runtime-fields report, exporter, and focused exporter test.",
+    "Execution rerun of the frozen phone exporter against the phone-held model.safetensors to regenerate schema-complete decoder_manifest.json, adapter_site_policy.json, and export_report.json identities.",
+    "Phase3/4 implementation of safetensors_reader plus streamed/chunked c5_full_decoder_runtime on the existing native C5 QA predict surface.",
+    "Execution rerun of the bounded C5_after_C1 native QA predict probe after the runtime body lands."
   ],
-  "drift_deleted_or_pending": "The generic native full_decoder_logits_generation_not_implemented stop is now hardened into explicit manifest-contract fields: decoder_manifest_architecture_config_missing and decoder_manifest_tensor_role_inventory_missing. Remaining drift is pending exporter/runtime work for architecture/tensor-role inventory, safetensors range reading, and streamed decoder logits; bridge MSE remains forbidden as C5 loss.",
-  "recursive_improvement_next_step": "Freeze the Phase3/4 contract patch, then implement the smallest falsifiable exporter plus safetensors_reader plus c5_full_decoder_runtime path, rerun the bounded native QA predict probe, and only proceed to executed metrics after real prediction JSONL and finite runtime loss/confidence exist.",
-  "owner": "Repo Custodian owns the Phase3/4 native logits contract patch freeze; Engineering/Phase3/4 own exporter/runtime implementation after custody; Execution owns the bounded rerun after a runnable patch exists.",
+  "drift_deleted_or_pending": "The decoder manifest no longer needs to stop at architecture_config/tensor_role_inventory absence once this exporter patch is frozen and rerun on the phone-held model. Pending drift remains the native safetensors reader and streamed full-decoder runtime body; bridge MSE remains forbidden as C5 loss.",
+  "recursive_improvement_next_step": "Freeze the exporter runtime-fields patch, regenerate phone component-pack metadata, implement the native reader/runtime body, rerun the bounded QA predict probe, and proceed to executed metrics only after real prediction JSONL and finite runtime loss/confidence exist.",
+  "owner": "Repo Custodian owns the exporter runtime-fields patch freeze; Execution owns phone exporter rerun after custody; Phase3/4 owns safetensors_reader and c5_full_decoder_runtime implementation.",
   "threads_nudged_this_tick": [
-    "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: freeze exact central-state plus Phase3/4 native logits contract patch pathset."
+    "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: freeze exact central-state plus exporter runtime-fields pathset.",
+    "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4: prepare/implement safetensors_reader plus c5_full_decoder_runtime against the now-declared schema contract."
   ],
   "raw_phone_path_hardening_20260701T094236Z": {
     "status": "central_state_phone_filesystem_paths_redacted",
@@ -5390,7 +5641,7 @@
     "reason": "Prevent stale phone filesystem strings from being treated as C5 runtime evidence or raw payload routes.",
     "preserved": "artifact identities, hashes, lane status, nonclaims, and outside-git source requirements"
   },
-  "first_missing_green_field": "repo_custody_freeze_native_full_decoder_logits_contract_patch",
+  "first_missing_green_field": "repo_custody_freeze_exporter_runtime_fields_patch",
   "first_missing_green_field_after_download": "full_decoder_logits_generation_not_implemented",
   "known_downstream_access_issue_after_download": "native_full_decoder_logits_implementation_failure",
   "authorization_needed": "none; native implementation work is under current GO and must preserve raw/secrets boundary",
@@ -5558,6 +5809,122 @@
     },
     "nonclaims": [
       "no C5 pass",
+      "no real prediction JSONL emitted",
+      "no logits, prediction, loss, confidence, candidate_train_loss, or C5 metric fabricated",
+      "no bridge MSE relabeled as C5 loss",
+      "no old layer0/layer1 asset accepted as a full decoder",
+      "no learning or model-quality claim",
+      "no Phase3 readiness claim",
+      "no Phase4 readiness claim",
+      "not 100k or 1M Phase2 authority",
+      "no Comet-backed accepted run"
+    ]
+  },
+  "first_missing_green_field_after_exporter_patch_custody": "phone_exporter_rerun_for_schema_complete_component_pack_pending",
+  "first_unresolved_technical_failure_after_schema_complete_export": "c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land",
+  "c5_after_c1_exporter_runtime_fields_patch_20260701T_engineering": {
+    "schema_version": "polymath_c5_after_c1_exporter_runtime_fields_patch_v1",
+    "lane": "engineering_orchestrator",
+    "status": "exporter_runtime_fields_pathset_ready_for_custody",
+    "artifact_paths": [
+      "runtime/reports/orchestration/c5_after_c1_exporter_runtime_fields_patch_20260701T_engineering.json",
+      "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py",
+      "tests/test_c5_full_decoder_exporter.py"
+    ],
+    "pathset_sha256": {
+      "runtime/reports/orchestration/c5_after_c1_exporter_runtime_fields_patch_20260701T_engineering.json": "b135ba0c958c7cfea92cbd1c138f42df0cfb5b500485f0416b5167fce6a114f8",
+      "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py": "e3922085a08703d5ba4f17357f9b71218f8cca5aff1cbc4f395edfb7180599b4",
+      "tests/test_c5_full_decoder_exporter.py": "d8eb5df2c73b470da58f7f37a24ff704bc005d0d58a9eb625cf15cb541a218cb"
+    },
+    "custody_prerequisite_commit": {
+      "status": "native_c5_logits_contract_patch_committed_pushed",
+      "commit_sha": "2151dbada9012a5f54806cf689e806001180521f",
+      "branch": "origin/gemma4-megakernel-native-training"
+    },
+    "first_missing_green_field_current": "repo_custody_freeze_exporter_runtime_fields_patch",
+    "first_missing_green_field_after_custody": "phone_exporter_rerun_for_schema_complete_component_pack_pending",
+    "first_unresolved_technical_failure_after_schema_complete_export": "c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land",
+    "implemented_this_step": {
+      "summary": "The phone-compatible stdlib exporter now emits runtime-driving decoder manifest fields required by the native and host guards: source_model_safetensors, architecture_config, and tensor_role_inventory.",
+      "architecture_config": {
+        "num_hidden_layers": 42,
+        "hidden_size": 2560,
+        "vocab_size": 262144,
+        "logits_vocabulary_size": 262144,
+        "intermediate_size": 10240,
+        "num_attention_heads": 8,
+        "num_key_value_heads": 2,
+        "head_dim": 256,
+        "small_input_size": 256,
+        "rms_norm_eps": 1e-06,
+        "rope_theta": 10000.0,
+        "activation": "gelu_pytorch_tanh",
+        "final_logit_softcap": 30.0,
+        "materializes_full_bsv_logits": false
+      },
+      "tensor_role_inventory": {
+        "format": "safetensors_header_metadata_only",
+        "per_layer_roles": [
+          "input_layernorm",
+          "layer_scalar",
+          "mlp_down_proj",
+          "mlp_gate_proj",
+          "mlp_up_proj",
+          "per_layer_input_gate",
+          "per_layer_projection",
+          "post_attention_layernorm",
+          "post_feedforward_layernorm",
+          "post_per_layer_input_norm",
+          "pre_feedforward_layernorm",
+          "self_attn_k_norm",
+          "self_attn_k_proj",
+          "self_attn_o_proj",
+          "self_attn_q_norm",
+          "self_attn_q_proj",
+          "self_attn_v_proj"
+        ],
+        "metadata_per_role": [
+          "key",
+          "dtype",
+          "shape",
+          "data_offsets",
+          "absolute_data_offsets",
+          "byte_length"
+        ],
+        "raw_tensor_bytes_copied_to_git": false
+      }
+    },
+    "verification_commands": [
+      {
+        "command": "python3.11 -m py_compile integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py tests/test_c5_full_decoder_exporter.py",
+        "result": "passed"
+      },
+      {
+        "command": "python3.11 integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py --print-schema | python3.11 -m json.tool",
+        "result": "passed"
+      },
+      {
+        "command": "python3.11 -m pytest -q tests/test_c5_full_decoder_exporter.py tests/test_c5_phase34_qa_inference_producer.py tests/test_c5_prediction_payloads.py",
+        "result": "19 passed in 5.16s"
+      },
+      {
+        "command": "git diff --check -- integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py tests/test_c5_full_decoder_exporter.py",
+        "result": "passed"
+      }
+    ],
+    "raw_boundary_proof": {
+      "raw_qa_jsonl_copied_to_git": false,
+      "raw_prediction_jsonl_copied_to_git": false,
+      "raw_checkpoint_or_adapter_payload_copied_to_git": false,
+      "raw_model_or_tensor_payload_copied_to_git": false,
+      "hf_or_comet_called": false,
+      "secrets_printed": false,
+      "phone_gate_run": false,
+      "staged_or_committed": false
+    },
+    "nonclaims": [
+      "no C5 pass",
+      "no executed C5 metrics",
       "no real prediction JSONL emitted",
       "no logits, prediction, loss, confidence, candidate_train_loss, or C5 metric fabricated",
       "no bridge MSE relabeled as C5 loss",

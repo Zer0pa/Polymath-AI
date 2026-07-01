@@ -27,7 +27,16 @@ DECODER_KIND = "full_gemma4_text_decoder_logits"
 VOCAB_SIZE = 262_144
 HIDDEN_SIZE = 2_560
 NUM_LAYERS = 42
+INTERMEDIATE_SIZE = 10_240
+NUM_ATTENTION_HEADS = 8
+NUM_KEY_VALUE_HEADS = 2
+HEAD_DIM = 256
+SMALL_INPUT_SIZE = 256
 ADAPTER_RANK = 16
+RMS_NORM_EPS = 1.0e-6
+ROPE_THETA = 10_000.0
+FINAL_LOGIT_SOFTCAP = 30.0
+ACTIVATION = "gelu_pytorch_tanh"
 EMBED_TOKENS_KEY = "model.language_model.embed_tokens.weight"
 LAYER_PREFIX_TEMPLATE = "model.language_model.layers.{layer_index}."
 TOKENIZER_VOCAB_HEX_SHA256 = (
@@ -44,6 +53,76 @@ SUPPORTED_ADAPTER_SITES = {
     "post_layer0_residual": {
         "decoder_layer_index": 0,
         "description": "rank-16 adapter consumes and updates the layer-0 residual stream",
+    },
+}
+TENSOR_ROLE_SPECS = {
+    "input_layernorm": {
+        "suffix": "input_layernorm.weight",
+        "shape": [HIDDEN_SIZE],
+    },
+    "self_attn_q_proj": {
+        "suffix": "self_attn.q_proj.weight",
+        "shape": [NUM_ATTENTION_HEADS * HEAD_DIM, HIDDEN_SIZE],
+    },
+    "self_attn_k_proj": {
+        "suffix": "self_attn.k_proj.weight",
+        "shape": [NUM_KEY_VALUE_HEADS * HEAD_DIM, HIDDEN_SIZE],
+    },
+    "self_attn_v_proj": {
+        "suffix": "self_attn.v_proj.weight",
+        "shape": [NUM_KEY_VALUE_HEADS * HEAD_DIM, HIDDEN_SIZE],
+    },
+    "self_attn_o_proj": {
+        "suffix": "self_attn.o_proj.weight",
+        "shape": [HIDDEN_SIZE, NUM_ATTENTION_HEADS * HEAD_DIM],
+    },
+    "self_attn_q_norm": {
+        "suffix": "self_attn.q_norm.weight",
+        "shape": [HEAD_DIM],
+    },
+    "self_attn_k_norm": {
+        "suffix": "self_attn.k_norm.weight",
+        "shape": [HEAD_DIM],
+    },
+    "post_attention_layernorm": {
+        "suffix": "post_attention_layernorm.weight",
+        "shape": [HIDDEN_SIZE],
+    },
+    "pre_feedforward_layernorm": {
+        "suffix": "pre_feedforward_layernorm.weight",
+        "shape": [HIDDEN_SIZE],
+    },
+    "mlp_gate_proj": {
+        "suffix": "mlp.gate_proj.weight",
+        "shape": [INTERMEDIATE_SIZE, HIDDEN_SIZE],
+    },
+    "mlp_up_proj": {
+        "suffix": "mlp.up_proj.weight",
+        "shape": [INTERMEDIATE_SIZE, HIDDEN_SIZE],
+    },
+    "mlp_down_proj": {
+        "suffix": "mlp.down_proj.weight",
+        "shape": [HIDDEN_SIZE, INTERMEDIATE_SIZE],
+    },
+    "post_feedforward_layernorm": {
+        "suffix": "post_feedforward_layernorm.weight",
+        "shape": [HIDDEN_SIZE],
+    },
+    "per_layer_input_gate": {
+        "suffix": "per_layer_input_gate.weight",
+        "shape": [SMALL_INPUT_SIZE, HIDDEN_SIZE],
+    },
+    "per_layer_projection": {
+        "suffix": "per_layer_projection.weight",
+        "shape": [HIDDEN_SIZE, SMALL_INPUT_SIZE],
+    },
+    "post_per_layer_input_norm": {
+        "suffix": "post_per_layer_input_norm.weight",
+        "shape": [HIDDEN_SIZE],
+    },
+    "layer_scalar": {
+        "suffix": "layer_scalar",
+        "shape": [1],
     },
 }
 
@@ -169,6 +248,21 @@ def schema_contract() -> dict[str, Any]:
                 "vocab_size": VOCAB_SIZE,
                 "logits_vocabulary_size": VOCAB_SIZE,
             },
+            "source_model_safetensors": {
+                "required_fields": ["path", "sha256", "size_bytes"],
+            },
+            "architecture_config": build_architecture_config(),
+            "tensor_role_inventory": {
+                "layer_roles": sorted(TENSOR_ROLE_SPECS),
+                "per_role_required_fields": [
+                    "key",
+                    "dtype",
+                    "shape",
+                    "data_offsets",
+                    "absolute_data_offsets",
+                    "byte_length",
+                ],
+            },
             "lm_head": {
                 "embedded_in_decoder": True,
                 "source": "tied_word_embeddings",
@@ -246,7 +340,101 @@ def tensor_entry(header: dict[str, Any], key: str) -> dict[str, Any]:
     }
 
 
-def extract_model_metadata(path: Path) -> tuple[list[dict[str, Any]], str, str]:
+def tensor_role_entry(
+    header: dict[str, Any],
+    *,
+    key: str,
+    expected_shape: list[int],
+    tensor_data_start: int,
+    file_size: int,
+    role: str,
+) -> dict[str, Any]:
+    entry = tensor_entry(header, key)
+    shape = entry["shape"]
+    dtype = entry["dtype"]
+    if shape != expected_shape:
+        raise ValueError(f"{role}_shape_mismatch")
+    if dtype not in {"bf16", "f16", "f32"}:
+        raise ValueError(f"{role}_dtype_unsupported")
+    start, stop = entry["data_offsets"]
+    if file_size < tensor_data_start + stop:
+        raise ValueError(f"{role}_range_exceeds_file_size")
+    return {
+        "key": key,
+        "dtype": dtype,
+        "shape": shape,
+        "data_offsets": [start, stop],
+        "absolute_data_offsets": [tensor_data_start + start, tensor_data_start + stop],
+        "byte_length": stop - start,
+    }
+
+
+def build_architecture_config() -> dict[str, Any]:
+    return {
+        "num_hidden_layers": NUM_LAYERS,
+        "hidden_size": HIDDEN_SIZE,
+        "vocab_size": VOCAB_SIZE,
+        "logits_vocabulary_size": VOCAB_SIZE,
+        "intermediate_size": INTERMEDIATE_SIZE,
+        "num_attention_heads": NUM_ATTENTION_HEADS,
+        "num_key_value_heads": NUM_KEY_VALUE_HEADS,
+        "head_dim": HEAD_DIM,
+        "small_input_size": SMALL_INPUT_SIZE,
+        "rms_norm_eps": RMS_NORM_EPS,
+        "rope_theta": ROPE_THETA,
+        "activation": ACTIVATION,
+        "final_logit_softcap": FINAL_LOGIT_SOFTCAP,
+        "dtype_policy": "bf16_f16_f32_metadata_only; runtime converts explicitly",
+        "materializes_full_bsv_logits": False,
+    }
+
+
+def build_tensor_role_inventory(
+    header: dict[str, Any],
+    *,
+    tensor_data_start: int,
+    file_size: int,
+) -> dict[str, Any]:
+    layers: list[dict[str, Any]] = []
+    for layer_index in range(NUM_LAYERS):
+        prefix = LAYER_PREFIX_TEMPLATE.format(layer_index=layer_index)
+        roles: dict[str, Any] = {}
+        for role, spec in TENSOR_ROLE_SPECS.items():
+            key = prefix + str(spec["suffix"])
+            roles[role] = tensor_role_entry(
+                header,
+                key=key,
+                expected_shape=list(spec["shape"]),
+                tensor_data_start=tensor_data_start,
+                file_size=file_size,
+                role=f"decoder_layer_{layer_index}_{role}",
+            )
+        layers.append({"layer_index": layer_index, "roles": roles})
+
+    embed_entry = tensor_role_entry(
+        header,
+        key=EMBED_TOKENS_KEY,
+        expected_shape=[VOCAB_SIZE, HIDDEN_SIZE],
+        tensor_data_start=tensor_data_start,
+        file_size=file_size,
+        role="embed_tokens",
+    )
+    return {
+        "format": "safetensors_header_metadata_only",
+        "required_roles": sorted(TENSOR_ROLE_SPECS),
+        "layers": layers,
+        "token_embedding": embed_entry,
+        "lm_head": {
+            **embed_entry,
+            "source": "tied_word_embeddings",
+            "shares_storage_with": "token_embedding",
+        },
+    }
+
+
+def extract_model_metadata(
+    path: Path,
+) -> tuple[list[dict[str, Any]], str, str, dict[str, Any], dict[str, Any]]:
     header, tensor_data_start = read_safetensors_header(path)
     keys = [key for key in header if key != "__metadata__"]
     if EMBED_TOKENS_KEY not in keys:
@@ -265,7 +453,13 @@ def extract_model_metadata(path: Path) -> tuple[list[dict[str, Any]], str, str]:
     if path.stat().st_size < tensor_data_start + stop:
         raise ValueError("embed_tokens_range_exceeds_file_size")
     tensor_sha256 = sha256_file_range(path, absolute_start, length)
-    return layers, dtype, tensor_sha256
+    architecture_config = build_architecture_config()
+    tensor_role_inventory = build_tensor_role_inventory(
+        header,
+        tensor_data_start=tensor_data_start,
+        file_size=path.stat().st_size,
+    )
+    return layers, dtype, tensor_sha256, architecture_config, tensor_role_inventory
 
 
 def build_layer_inventory(keys: list[str]) -> list[dict[str, Any]]:
@@ -316,6 +510,8 @@ def build_decoder_manifest(
     source_model_size_bytes: int,
     layers: list[dict[str, Any]],
     lm_head_identity: dict[str, Any],
+    architecture_config: dict[str, Any],
+    tensor_role_inventory: dict[str, Any],
     tokenizer_vocab_sha256: str,
     tokenizer_merges_sha256: str,
 ) -> dict[str, Any]:
@@ -337,6 +533,8 @@ def build_decoder_manifest(
             "sha256": source_model_sha256,
             "size_bytes": source_model_size_bytes,
         },
+        "architecture_config": architecture_config,
+        "tensor_role_inventory": tensor_role_inventory,
         "tokenizer_identity": {
             "vocab_hex_tsv_sha256": tokenizer_vocab_sha256,
             "merges_hex_tsv_sha256": tokenizer_merges_sha256,
@@ -425,7 +623,13 @@ def export_component_pack(args: argparse.Namespace) -> int:
     assert args.model_safetensors is not None
     assert args.out is not None
     try:
-        layers, dtype, lm_head_sha256 = extract_model_metadata(args.model_safetensors)
+        (
+            layers,
+            dtype,
+            lm_head_sha256,
+            architecture_config,
+            tensor_role_inventory,
+        ) = extract_model_metadata(args.model_safetensors)
     except Exception as error:  # noqa: BLE001 - exporter must convert runtime failures into metadata.
         first_missing = str(error) if str(error) else "model_safetensors_read_failed"
         return fail_closed(
@@ -447,6 +651,8 @@ def export_component_pack(args: argparse.Namespace) -> int:
         source_model_size_bytes=args.model_safetensors.stat().st_size,
         layers=layers,
         lm_head_identity=lm_head_identity,
+        architecture_config=architecture_config,
+        tensor_role_inventory=tensor_role_inventory,
         tokenizer_vocab_sha256=args.tokenizer_vocab_sha,
         tokenizer_merges_sha256=args.tokenizer_merges_sha,
     )

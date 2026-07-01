@@ -1,0 +1,118 @@
+{
+  "schema_version": "polymath_c5_after_c1_exporter_runtime_fields_patch_v1",
+  "lane": "engineering_orchestrator",
+  "status": "exporter_runtime_fields_pathset_ready_for_custody",
+  "current_gate": "WaveB_C5_after_C1_exporter_runtime_fields_patch_custody_pending",
+  "status_classification": "PENDING_ACTION_REPO_CUSTODY_EXPORTER_RUNTIME_FIELDS_PATCH",
+  "custody_prerequisite_commit": {
+    "status": "native_c5_logits_contract_patch_committed_pushed",
+    "commit_sha": "2151dbada9012a5f54806cf689e806001180521f",
+    "branch": "origin/gemma4-megakernel-native-training"
+  },
+  "implemented_this_step": {
+    "summary": "The phone-compatible stdlib exporter now emits runtime-driving decoder manifest fields required by the native and host guards: source_model_safetensors, architecture_config, and tensor_role_inventory.",
+    "architecture_config": {
+      "num_hidden_layers": 42,
+      "hidden_size": 2560,
+      "vocab_size": 262144,
+      "logits_vocabulary_size": 262144,
+      "intermediate_size": 10240,
+      "num_attention_heads": 8,
+      "num_key_value_heads": 2,
+      "head_dim": 256,
+      "small_input_size": 256,
+      "rms_norm_eps": 1e-06,
+      "rope_theta": 10000.0,
+      "activation": "gelu_pytorch_tanh",
+      "final_logit_softcap": 30.0,
+      "materializes_full_bsv_logits": false
+    },
+    "tensor_role_inventory": {
+      "format": "safetensors_header_metadata_only",
+      "per_layer_roles": [
+        "input_layernorm",
+        "layer_scalar",
+        "mlp_down_proj",
+        "mlp_gate_proj",
+        "mlp_up_proj",
+        "per_layer_input_gate",
+        "per_layer_projection",
+        "post_attention_layernorm",
+        "post_feedforward_layernorm",
+        "post_per_layer_input_norm",
+        "pre_feedforward_layernorm",
+        "self_attn_k_norm",
+        "self_attn_k_proj",
+        "self_attn_o_proj",
+        "self_attn_q_norm",
+        "self_attn_q_proj",
+        "self_attn_v_proj"
+      ],
+      "metadata_per_role": [
+        "key",
+        "dtype",
+        "shape",
+        "data_offsets",
+        "absolute_data_offsets",
+        "byte_length"
+      ],
+      "raw_tensor_bytes_copied_to_git": false
+    }
+  },
+  "edited_pathset": {
+    "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py": {
+      "sha256": "e3922085a08703d5ba4f17357f9b71218f8cca5aff1cbc4f395edfb7180599b4",
+      "role": "Exporter now validates per-layer tensor role keys/shapes from the safetensors header and emits architecture_config plus tensor_role_inventory in decoder_manifest.json."
+    },
+    "tests/test_c5_full_decoder_exporter.py": {
+      "sha256": "d8eb5df2c73b470da58f7f37a24ff704bc005d0d58a9eb625cf15cb541a218cb",
+      "role": "Regression coverage proves schema contract and mock export include architecture_config, tensor_role_inventory, and role shapes."
+    }
+  },
+  "first_missing_green_field": "repo_custody_freeze_exporter_runtime_fields_patch",
+  "first_missing_green_field_after_custody": "phone_exporter_rerun_for_schema_complete_component_pack_pending",
+  "first_unresolved_technical_failure_after_schema_complete_export": "c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land",
+  "next_action": "Repo Custodian freezes the exporter/test/report plus central mirror pathset. Then Execution reruns the frozen exporter on the phone-held model.safetensors to emit schema-complete decoder_manifest.json, adapter_site_policy.json, and export_report.json identities. Phase3/4 implements safetensors_reader plus c5_full_decoder_runtime and replaces only the terminal full_decoder_logits_generation_not_implemented branch.",
+  "verification_commands": [
+    {
+      "command": "python3.11 -m py_compile integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py tests/test_c5_full_decoder_exporter.py",
+      "result": "passed"
+    },
+    {
+      "command": "python3.11 integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py --print-schema | python3.11 -m json.tool",
+      "result": "passed"
+    },
+    {
+      "command": "python3.11 -m pytest -q tests/test_c5_full_decoder_exporter.py tests/test_c5_phase34_qa_inference_producer.py tests/test_c5_prediction_payloads.py",
+      "result": "19 passed in 5.16s"
+    },
+    {
+      "command": "git diff --check -- integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py tests/test_c5_full_decoder_exporter.py",
+      "result": "passed"
+    }
+  ],
+  "raw_boundary_proof": {
+    "raw_qa_jsonl_copied_to_git": false,
+    "raw_prediction_jsonl_copied_to_git": false,
+    "raw_checkpoint_or_adapter_payload_copied_to_git": false,
+    "raw_model_or_tensor_payload_copied_to_git": false,
+    "hf_or_comet_called": false,
+    "secrets_printed": false,
+    "phone_gate_run": false,
+    "staged_or_committed": false
+  },
+  "user_action_required": false,
+  "nonclaims": [
+    "no C5 pass",
+    "no executed C5 metrics",
+    "no real prediction JSONL emitted",
+    "no logits, prediction, loss, confidence, candidate_train_loss, or C5 metric fabricated",
+    "no bridge MSE relabeled as C5 loss",
+    "no old layer0/layer1 asset accepted as a full decoder",
+    "no learning or model-quality claim",
+    "no Phase3 readiness claim",
+    "no Phase4 readiness claim",
+    "not 100k or 1M Phase2 authority",
+    "no Comet-backed accepted run"
+  ]
+}

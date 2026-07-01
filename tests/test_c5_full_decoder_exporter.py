@@ -42,6 +42,9 @@ def test_c5_full_decoder_exporter_prints_schema_contract() -> None:
     assert contract["decoder_manifest_schema"]["decoder"]["hidden_size"] == 2560
     assert contract["decoder_manifest_schema"]["decoder"]["logits_vocabulary_size"] == 262144
     assert contract["decoder_manifest_schema"]["lm_head"]["source"] == "tied_word_embeddings"
+    assert contract["decoder_manifest_schema"]["architecture_config"]["num_key_value_heads"] == 2
+    assert contract["decoder_manifest_schema"]["architecture_config"]["materializes_full_bsv_logits"] is False
+    assert "self_attn_q_proj" in contract["decoder_manifest_schema"]["tensor_role_inventory"]["layer_roles"]
     assert contract["adapter_site_policy_schema"]["bridge_mse_is_c5_loss"] is False
     assert contract["runtime_dependencies"]["torch_required"] is False
     assert contract["runtime_dependencies"]["safetensors_python_package_required"] is False
@@ -139,6 +142,14 @@ def test_c5_full_decoder_exporter_writes_metadata_from_mock_safetensors(tmp_path
     assert decoder_manifest["schema_version"] == "polymath_c5_full_decoder_manifest_v1"
     assert decoder_manifest["decoder"]["num_hidden_layers"] == 42
     assert len(decoder_manifest["decoder"]["layer_inventory"]) == 42
+    assert decoder_manifest["architecture_config"]["num_attention_heads"] == 8
+    assert decoder_manifest["architecture_config"]["num_key_value_heads"] == 2
+    assert decoder_manifest["architecture_config"]["materializes_full_bsv_logits"] is False
+    first_layer_roles = decoder_manifest["tensor_role_inventory"]["layers"][0]["roles"]
+    assert first_layer_roles["self_attn_q_proj"]["shape"] == [2048, 2560]
+    assert first_layer_roles["self_attn_k_proj"]["shape"] == [512, 2560]
+    assert first_layer_roles["mlp_down_proj"]["shape"] == [2560, 10240]
+    assert decoder_manifest["tensor_role_inventory"]["lm_head"]["shares_storage_with"] == "token_embedding"
     assert decoder_manifest["lm_head"]["sha256"] == hashlib.sha256(b"abcd").hexdigest()
     assert decoder_manifest["lm_head"]["sha256_kind"] == "safetensors_raw_tensor_bytes"
     assert adapter_policy["bridge_mse_is_c5_loss"] is False
@@ -168,6 +179,14 @@ def test_c5_full_decoder_manifest_builder_schema() -> None:
         source_model_size_bytes=123,
         layers=layers,
         lm_head_identity=lm_head,
+        architecture_config=exporter.build_architecture_config(),
+        tensor_role_inventory={
+            "format": "safetensors_header_metadata_only",
+            "required_roles": sorted(exporter.TENSOR_ROLE_SPECS),
+            "layers": [],
+            "token_embedding": {},
+            "lm_head": {},
+        },
         tokenizer_vocab_sha256=exporter.TOKENIZER_VOCAB_HEX_SHA256,
         tokenizer_merges_sha256=exporter.TOKENIZER_MERGES_HEX_SHA256,
     )
@@ -176,6 +195,8 @@ def test_c5_full_decoder_manifest_builder_schema() -> None:
     assert manifest["decoder"]["kind"] == "full_gemma4_text_decoder_logits"
     assert manifest["decoder"]["num_hidden_layers"] == 42
     assert manifest["decoder"]["hidden_size"] == 2560
+    assert manifest["architecture_config"]["num_key_value_heads"] == 2
+    assert "self_attn_q_proj" in manifest["tensor_role_inventory"]["required_roles"]
     assert manifest["lm_head"]["embedded_in_decoder"] is True
     assert manifest["lm_head"]["shape"] == [262144, 2560]
     assert manifest["runtime_contract"]["candidate_train_loss_source"].endswith(
@@ -216,6 +237,7 @@ def test_c5_full_decoder_adapter_policy_preserves_bridge_mse_nonclaim() -> None:
 
 
 def _write_mock_full_decoder_safetensors(path: Path, *, embed_bytes: bytes) -> None:
+    offset = len(embed_bytes)
     header = {
         "model.language_model.embed_tokens.weight": {
             "dtype": "BF16",
@@ -223,11 +245,31 @@ def _write_mock_full_decoder_safetensors(path: Path, *, embed_bytes: bytes) -> N
             "data_offsets": [0, len(embed_bytes)],
         }
     }
+    role_shapes = {
+        "input_layernorm.weight": [2560],
+        "self_attn.q_proj.weight": [2048, 2560],
+        "self_attn.k_proj.weight": [512, 2560],
+        "self_attn.v_proj.weight": [512, 2560],
+        "self_attn.o_proj.weight": [2560, 2048],
+        "self_attn.q_norm.weight": [256],
+        "self_attn.k_norm.weight": [256],
+        "post_attention_layernorm.weight": [2560],
+        "pre_feedforward_layernorm.weight": [2560],
+        "mlp.gate_proj.weight": [10240, 2560],
+        "mlp.up_proj.weight": [10240, 2560],
+        "mlp.down_proj.weight": [2560, 10240],
+        "post_feedforward_layernorm.weight": [2560],
+        "per_layer_input_gate.weight": [256, 2560],
+        "per_layer_projection.weight": [2560, 256],
+        "post_per_layer_input_norm.weight": [2560],
+        "layer_scalar": [1],
+    }
     for layer_index in range(42):
-        header[f"model.language_model.layers.{layer_index}.mock.weight"] = {
-            "dtype": "BF16",
-            "shape": [1],
-            "data_offsets": [len(embed_bytes), len(embed_bytes)],
-        }
+        for suffix, shape in role_shapes.items():
+            header[f"model.language_model.layers.{layer_index}.{suffix}"] = {
+                "dtype": "BF16",
+                "shape": shape,
+                "data_offsets": [offset, offset],
+            }
     header_bytes = json.dumps(header, separators=(",", ":")).encode("utf-8")
     path.write_bytes(len(header_bytes).to_bytes(8, "little") + header_bytes + embed_bytes)
