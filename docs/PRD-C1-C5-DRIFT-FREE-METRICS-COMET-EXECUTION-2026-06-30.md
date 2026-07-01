@@ -74,7 +74,7 @@ The output is not just another report. The output is:
 | Lane | Thread | Authority |
 |---|---|---|
 | Executive Orchestrator / Watcher-Driver | current orchestration thread | Owns objective, active cadence, lane routing, status board, blocker escalation, and anti-drift enforcement. |
-| Repo Custodian | `019f138b-288e-7d91-b426-7cdee9f62e28` | Owns clean commit, pathset discipline, raw-payload exclusion, canonical runner map, and drift cleanup. |
+| Repo Custodian | `019f1ac2-0f0f-7721-bf46-ad402dbd9050` | Owns clean commit, pathset discipline, raw-payload exclusion, canonical runner map, and drift cleanup. |
 | Training Material Steward | `019f138b-7bfc-7671-b9fc-22c14ab76342` | Owns HF material revision pin, C1-C4 source authority, C4 expansion, C5 eval material, and material nonclaims. |
 | Engineering Orchestrator | `019f138b-d229-7640-98b7-2f185d6beae0` | Owns repo-owned metric instrumentation and runner/helper changes. |
 | Pipeline Integrator | `019f138c-35b6-73e1-b26d-3db8c59cf850` | Owns metric schema integration, Phase1-4 continuity, Comet contract, and cross-phase artifact schema. |
@@ -256,9 +256,16 @@ Initial pass gate:
 - loss pre/post measured,
 - no learning claim unless C5 confirms improvement against stable checkpoint.
 
-### Stage 3: C5 Evaluation Contract
+### Stage 3: Phase5 / C5 Evaluation Contract
 
-C5 is always evaluation. It is not a new corpus phase required before C1-C4 execution. It is the evaluation boundary after each curriculum phase and after the whole sequence.
+Phase5 is the evaluation layer. `C5` is the corpus-specific evaluation instance for the C1-C4 curriculum, not a fifth source corpus. The naming rule is:
+
+- use `Phase5` for the pipeline stage that evaluates a trained or updated checkpoint,
+- use `C5_after_<C>` for the evaluation point tied to a specific curriculum phase,
+- use `C5_full_curriculum_postrun` for the full C1-C4 postrun evaluation,
+- never promote C5 into source material or confuse it with C4 expansion.
+
+C5 is always evaluation. It is the evaluation boundary after each curriculum phase and after the whole sequence.
 
 C5 eval points:
 
@@ -295,6 +302,45 @@ C5 pass gate:
 - throughput does not collapse without a routed performance blocker.
 
 If C5 fails after a phase, the next curriculum phase does not advance as a learning claim. The lane may still run diagnostics if explicitly labeled diagnostic.
+
+#### Phase5 Recursive Improvement Contract
+
+After the first metric-complete C5 run, the operating mode changes from one-off execution to recursive hardening. Every cycle must:
+
+1. Run the canonical Phase1 -> Phase2 -> Phase3 -> Phase4 -> Phase5 path for the authorized curriculum scope.
+2. Compare C5 metrics against the last stable checkpoint and the immediately previous run.
+3. Identify the dominant failure mode before proposing changes.
+4. Route exactly one primary repair hypothesis to the owning lane.
+5. Re-run the smallest falsifying path that can prove or reject that repair.
+6. Delete or quarantine drift paths that were bypassed, contradicted, or replaced by the repair.
+7. Preserve all nonclaims until C5 metrics show real improvement without regressions.
+
+Primary failure domains:
+
+- `material_failure`: eval split, source authority, answer leakage, unit/evidence/provenance, or C4 expansion problem.
+- `phase1_tokenization_failure`: bad token distribution, low vocabulary coverage, invalid spans/masks, or unstable tokenizer identity.
+- `phase2_geometry_failure`: collision rate, Hamming/JL distortion, projection norm, or PJP1 continuity failure.
+- `phase3_npu_handoff_failure`: PJP1-to-HTP shape mismatch, quantization mismatch, oracle mismatch, NPU throughput collapse, or forward-loss signal loss.
+- `phase4_gpu_update_failure`: OpenCL update instability, gradient blow-up/vanishing, adapter update not caused by Phase3 output, or loss not measured.
+- `phase5_eval_failure`: loss/perplexity/accuracy/calibration regression, overfit gap, missing metrics, or checkpoint/baseline identity mismatch.
+- `orchestration_failure`: idle lane, stale status, completed marker with owned next action, duplicate runner drift, or unowned artifact.
+
+Each recursive cycle must emit a compact improvement record with:
+
+- run label and immutable material/code identity,
+- last stable checkpoint identity,
+- candidate checkpoint identity,
+- Phase1-Phase5 metric summary,
+- slowest phase and data-move overhead,
+- dominant failure domain,
+- repair hypothesis,
+- owner lane,
+- next command or artifact,
+- falsifier for the repair,
+- drift paths deleted/quarantined,
+- whether C5 improved, regressed, or remained inconclusive.
+
+Research escalation is allowed when the metrics point to a real unknown, not as a substitute for execution. Research may draw from machine learning, information theory, computational physics, hardware architecture, biological computation, developmental systems, and natural memory/control ecologies. A research hypothesis enters the pipeline only when it produces a measurable intervention, a falsifier, and a bounded owner. Nature-inspired or cross-science ideas are welcome; they must still improve C5, throughput, geometry, stability, or handoff quality under measured gates.
 
 ## 7. Throughput Contract
 
@@ -445,6 +491,8 @@ Each heartbeat must:
 6. If the same blocker persists for 3 heartbeats, escalate in the current orchestration thread with exact owner and artifact missing.
 7. Update the central state with active bottleneck, owner, next command, and expected artifact.
 8. Refuse to treat status narration as progress.
+9. After C5 executed metrics exist, maintain the recursive improvement loop: identify the slowest or weakest measured point, route one falsifiable repair, ensure the repair is tested, and delete drift found during the cycle.
+10. If all lanes show completed markers but the sovereign gate has not advanced, treat that as an orchestration failure and nudge the lane that owns the next artifact.
 
 Heartbeat output must include:
 
@@ -455,6 +503,9 @@ Heartbeat output must include:
 - `last_concrete_action`
 - `next_concrete_action`
 - `blocked_or_moving`
+- `dominant_failure_domain`
+- `drift_deleted_or_pending`
+- `recursive_improvement_next_step`
 
 ## 12. Sequential And Parallel Plan
 
@@ -507,6 +558,34 @@ Run after first metric-complete integrated run:
 - Expand C4 only through Steward authority gates.
 
 Every optimization must compare against the last stable checkpoint in Comet and local JSON.
+
+### Sequential Wave E: Smooth Operation Hardening
+
+Run after the current C5 input chain is complete enough to execute a real C5 metrics run. This wave is not a documentation wave; it is the transition from debug-driven execution to repeatable operation.
+
+1. Freeze the current canonical source state and raw-payload boundary.
+2. Run Phase1 -> Phase2 -> Phase3 -> Phase4 -> Phase5 for C1.
+3. If C5_after_C1 passes or fails with real metrics, record the dominant failure domain.
+4. Apply one repair or optimization.
+5. Re-run the minimum path needed to falsify that repair.
+6. Continue C2, C2.5, C3, C4 only when prior C5 evidence does not regress the learning claim.
+7. Run `C5_full_curriculum_postrun`.
+8. Produce a smooth-operation hardening report.
+
+The hardening report must include:
+
+- command sequence actually used,
+- phone/Termux/host handoff timing,
+- end-to-end tokens/sec,
+- per-phase latency,
+- NPU handoff shape/hash/quantization summary,
+- GPU update stability summary,
+- C5 metric deltas against last stable checkpoint,
+- bottleneck ranking,
+- drift deleted during the cycle,
+- next optimization target.
+
+The target state is a pipeline that can be re-run without bespoke debugging and that automatically routes failures to the owning lane.
 
 ## 13. Acceptance Criteria
 

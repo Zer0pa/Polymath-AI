@@ -1,0 +1,2323 @@
+{
+  "active_bottleneck": {
+    "artifact_waiting_on": [
+      "Real executed local/device C5_after_C1 metrics JSON with schema polymath_c5_executed_metrics_v1",
+      "Exact evaluator command surface capable of consuming the heldout QA split plus candidate and stable checkpoint/adapter payloads, or Engineering pathset if that surface is absent",
+      "Outside-git heldout split payload and candidate/stable checkpoint or adapter payloads matching the accepted identity SHAs; no raw payloads in git"
+    ],
+    "c5_after_c1_eval_split_identity": {
+      "artifact_path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/c5_eval_split_identity_C5_after_C1.json",
+      "artifact_sha256": "ea8bf6e9876febad8b125e78deed2d8ef534daaa7dd1e38126a07027cc6c8ca9",
+      "eval_point": "C5_after_C1",
+      "eval_split_path": "packages/C1/qa_bridge/phase_C1_test.qa.jsonl",
+      "eval_split_sha256": "da41c5362398f24e0e0dd9df9a5cf0594435a455871fa77ab74d9312e6c8e9b2",
+      "hf_repo_id": "Zer0pa/polymat-gemmalit-c1-c4-commercial-corpus",
+      "hf_revision": "504dd91c5a7c8365882d690d52f3de20697c4f7b",
+      "hf_revision_is_immutable": true,
+      "pipeline_validation_status": "c5_after_c1_eval_split_identity_validated",
+      "raw_payload_boundary": "metadata-only identity; temporary HF payload removed by Steward after hash/count",
+      "record_count": 53,
+      "schema_version": "polymath_c5_eval_split_identity_v1",
+      "status": "pipeline_validated"
+    },
+    "c5_after_c1_executed_metrics_gap": {
+      "candidate_checkpoint_identity_path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/checkpoint_identities/candidate_checkpoint_identity_C5_after_C1.json",
+      "candidate_checkpoint_identity_sha256": "92dbfe9d6db7d905b069ca4af3d7dda0a01ce7a179e8fae640465397d0f4cfc1",
+      "checkpoint_sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f",
+      "identity_ready_preflight_path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/identity_ready_preflight_execution/c5_eval_C5_after_C1_c1_c4_waveB_rerun_20260630T230411Z.json",
+      "identity_ready_preflight_sha256": "4563da9632624c4b32c18dc0e3a75a88f4bf5dbf129555e8681cf794e806db0f",
+      "metadata_substitution_allowed": false,
+      "phase34_scan_result": "hit_count_0_no_executed_metrics_json_found_locally",
+      "required_metrics": [
+        "loss",
+        "loss_delta_vs_last_stable",
+        "accuracy",
+        "answer_exact_match",
+        "answer_token_f1",
+        "perplexity",
+        "calibration_ece",
+        "brier_score",
+        "overfit_gap_train_vs_val",
+        "grad_norm_max_observed_if_observable",
+        "checkpoint_sha256",
+        "stable_checkpoint_baseline_sha256",
+        "learning_score",
+        "command_provenance",
+        "split_identity",
+        "raw_boundary_proof"
+      ],
+      "schema_required": "polymath_c5_executed_metrics_v1",
+      "stable_baseline_identity_path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/checkpoint_identities/stable_baseline_checkpoint_identity_C5_after_C1.json",
+      "stable_baseline_identity_sha256": "7f65b37e8acc7659b6912fe7de3e46b3cffb9abca8a1c76331f1e48fd6c59fec",
+      "stable_checkpoint_baseline_sha256": "e0d1c66ac876c2b6fbbe9e88f1b02dd37201d8ffba10afcd44f1c558fc32f7c9",
+      "status": "pending_real_evaluator_run"
+    },
+    "c5_after_c1_fail_closed_preflight": {
+      "artifact_path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/c5_eval_C5_after_C1_c1_c4_waveB_rerun_20260630T230411Z.json",
+      "artifact_sha256": "bea483edd276ff788a4e4134a7bce4e3a346d7fc5f30e3fcc925075a807663f4",
+      "blockers": [
+        "eval_split_forbidden_raw_suffix",
+        "checkpoint_identity_path_missing",
+        "stable_baseline_identity_path_missing",
+        "executed_c5_metrics_json_missing"
+      ],
+      "first_missing_green_field": "eval_split_forbidden_raw_suffix",
+      "raw_suffix_scan": "C5 preflight directory forbidden_file_count 0; no raw payload file was copied into repo reports",
+      "status": "superseded_by_engineering_repair_pending_custody"
+    },
+    "c5_after_c1_input_artifact_requirements": {
+      "required_inputs": [
+        "C5_after_C1 eval split identity JSON",
+        "checkpoint_identity JSON with checkpoint_sha256",
+        "stable baseline identity JSON with stable_checkpoint_baseline_sha256",
+        "Phase1 report path input",
+        "Phase2 report path input",
+        "Phase3/4 report path input",
+        "executed local C5 metrics JSON or precise not-runnable report"
+      ],
+      "status": "pending_action_under_existing_authority",
+      "stop_condition": "do not run C5 if any required identity/report/metrics input is absent; return exact first missing artifact/path/schema"
+    },
+    "c5_after_c1_next_preflight": {
+      "eval_split_identity_path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/c5_eval_split_identity_C5_after_C1.json",
+      "eval_split_identity_sha256": "ea8bf6e9876febad8b125e78deed2d8ef534daaa7dd1e38126a07027cc6c8ca9",
+      "execution_constraints": "metadata-only preflight; no model evaluation, remote Comet, phone/ADB/Termux, HF call, secrets, raw payload movement, staging, commit, or push",
+      "expected_next_missing_fields_after_repair": [
+        "checkpoint_identity_path_missing",
+        "stable_baseline_identity_path_missing",
+        "executed_c5_metrics_json_missing"
+      ],
+      "must_not_recur": [
+        "eval_split_forbidden_raw_suffix"
+      ],
+      "status": "execution_holding_until_custody_freeze"
+    },
+    "c5_comet_readiness": {
+      "custody_commit": "80d92c3ed34475e9637868c20203efda14a6bf17",
+      "custody_status": "c5_readiness_status_ui_committed_pushed",
+      "first_missing_green_field": "C5_after_C1 lacks executable C5 evaluator command surface implementing c5_eval_contract.md plus checkpoint_identity.checkpoint_sha256 and stable_checkpoint_baseline_sha256",
+      "hf_revision": "504dd91c5a7c8365882d690d52f3de20697c4f7b",
+      "material_lock_sha256": "078a9a208fb6fae06db64b5306cd4069912af867062a6689ecc0340de2be2edc",
+      "raw_suffix_scan": "run root forbidden_file_count 0",
+      "remote_comet_called": false,
+      "repo_head": "c08a8f1474f8e3b0989051d29258dae3db4ebed3",
+      "report_path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_comet_next_action_readiness_20260701T000000Z.json",
+      "report_sha256": "756b6e988a8e976a9d039c3db12b35151541024a62af12789469da9a4257c6a0",
+      "status": "c5_eval_not_executable_first_missing_green_field_recorded",
+      "status_classification": "PENDING_ACTION_C5_EVAL_COMMAND_SURFACE_AND_CHECKPOINT_IDENTITY"
+    },
+    "c5_eval_split_validator_repair": {
+      "base_head_observed_by_engineering": "d9f9caaeb06cf98f8c5b7c3f5a6965269cd2a875",
+      "current_owner": "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050",
+      "engineering_owner": "Engineering Orchestrator 019f138b-d229-7640-98b7-2f185d6beae0",
+      "engineering_verification": [
+        "python3.11 -m py_compile polymath_ai/polar/c5_eval.py scripts/host/run_c5_eval.py tests/test_c5_eval_contract.py -> pass",
+        "python3.11 -m pytest -q tests/test_c5_eval_contract.py tests/test_metrics_contract.py -> 16 passed in 2.38s",
+        "git diff --check on three-file pathset -> clean",
+        "secret/token scan on edited files -> no hits",
+        "metadata-only local preflight under /tmp exited 2 fail-closed with first_missing checkpoint_identity_path_missing",
+        "raw suffix file scan of /tmp output found 0 files"
+      ],
+      "expected_absent_after_repair": "eval_split_forbidden_raw_suffix",
+      "expected_post_freeze_blockers": [
+        "checkpoint_identity_path_missing",
+        "stable_baseline_identity_path_missing",
+        "executed_c5_metrics_json_missing"
+      ],
+      "expected_post_freeze_first_missing": "checkpoint_identity_path_missing",
+      "pathset_sha256": {
+        "polymath_ai/polar/c5_eval.py": "be8f7befa1862956b0ffd1b924d2e4aace63a1e03036c88170f3c8c0fd8ed5bc",
+        "scripts/host/run_c5_eval.py": "be88f7635ae15358a502bfecc85022163107b59f868d19d76d2852851d993ed3",
+        "tests/test_c5_eval_contract.py": "7ab613707f3b907e78deaf698ede68a907ba547a9d7888783f05eda5bdde438e"
+      },
+      "proof_report_sha256": "507296a478436a22065f1e90c90d02866e684d7e2091ae9054b2f87111549a7e",
+      "status": "ready_for_custody_freeze_custodian_active",
+      "status_classification": "PENDING_ACTION_REPO_CUSTODIAN_FREEZE_C5_VALIDATOR_REPAIR"
+    },
+    "c5_evaluator_command_surface": {
+      "branch": "origin/gemma4-megakernel-native-training",
+      "commit": "d9f9caaeb06cf98f8c5b7c3f5a6965269cd2a875",
+      "pathset_sha256": {
+        "polymath_ai/polar/c5_eval.py": "726aa2f665ae62c13f097c35f098bccb5aa724c021343e59c4bb448584fca01d",
+        "scripts/host/run_c5_eval.py": "2024de04e54e05f6d6bc75604dcb8dcf926351444d58fc94b788f7cb4eb33117",
+        "tests/test_c5_eval_contract.py": "1654da5ac5da8a334f462e72c6c31eb25f056fd2142eae833403eb3ae2eed30e"
+      },
+      "status": "custody_committed_pushed",
+      "verification": [
+        "branch/base verified at 80d92c3ed34475e9637868c20203efda14a6bf17",
+        "python3.11 -m py_compile passed for three C5 files",
+        "python3.11 -m pytest -q tests/test_c5_eval_contract.py tests/test_metrics_contract.py -> 14 passed",
+        "run_c5_eval.py --print-identity-schema valid JSON; schema SHA 6769bd6776dd545fdb740333071e71a899c843103261fd68c35af22f281bc044",
+        "missing-identity fail-closed check exited 2 with pass_fail.status=blocked and first missing eval_split_path_missing",
+        "staged raw suffix scan and tight token/secret scan clean",
+        "no phone/ADB/Termux, no HF/Comet/API, no raw payloads"
+      ]
+    },
+    "c5_remaining_eval_split_identity_matrix": {
+      "artifact_path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/c5_eval_split_identity_matrix.json",
+      "artifact_sha256": "db026c4af238af375798a0f17452331f5458170f037593621b156a43a8a36bf6",
+      "component_splits": {
+        "C1_test": {
+          "path": "packages/C1/qa_bridge/phase_C1_test.qa.jsonl",
+          "rows": 53,
+          "sha256": "da41c5362398f24e0e0dd9df9a5cf0594435a455871fa77ab74d9312e6c8e9b2"
+        },
+        "C2_5_val": {
+          "path": "packages/C2_5/qa_bridge/phase_C2.5_val.qa.jsonl",
+          "role": "sentinel_no_c2_5_test_rows",
+          "rows": 1,
+          "sha256": "ff2ad496d3e93dd6d5e16f176fd19cdb5b96aeb21c52fe3b2632b93cdeda84c8"
+        },
+        "C2_test": {
+          "path": "packages/C2/qa_bridge/phase_C2_test.qa.jsonl",
+          "rows": 27,
+          "sha256": "26466b0b248be190f904cb29ba9cd9637f559bb553f360f67ce46f0986d6b24e"
+        },
+        "C3_test": {
+          "path": "packages/C3/qa_bridge/phase_C3_test.qa.jsonl",
+          "rows": 548,
+          "sha256": "2aeef053c9ab3903b70c95e419637d7e3a180beaf4c8b041fb5c32e56806b567"
+        },
+        "C4_test": {
+          "path": "packages/C4/qa_bridge/phase_C4_test.qa.jsonl",
+          "rows": 112,
+          "sha256": "5e34fd31ef9cf69f9e0b66553f806cc9483b88a9f39799cc8414343c9774197a"
+        }
+      },
+      "eval_point_count": 5,
+      "eval_point_matrix": {
+        "C5_after_C2": [
+          "C1_test",
+          "C2_test"
+        ],
+        "C5_after_C2_5": [
+          "C1_test",
+          "C2_test",
+          "C2_5_val"
+        ],
+        "C5_after_C3": [
+          "C1_test",
+          "C2_test",
+          "C2_5_val",
+          "C3_test"
+        ],
+        "C5_after_C4": [
+          "C1_test",
+          "C2_test",
+          "C2_5_val",
+          "C3_test",
+          "C4_test"
+        ],
+        "C5_full_curriculum_postrun": [
+          "C1_test",
+          "C2_test",
+          "C2_5_val",
+          "C3_test",
+          "C4_test"
+        ]
+      },
+      "hf_revision": "504dd91c5a7c8365882d690d52f3de20697c4f7b",
+      "raw_payload_boundary": "metadata-only unions; no raw union JSONL written; temporary payloads removed after hash/count",
+      "split_count": 5,
+      "status": "c5_remaining_eval_split_identity_matrix_ready"
+    },
+    "current_gate": "WaveB_C5_after_C1_executed_metrics_json_pending_evaluator_run",
+    "evidence_sha256": {
+      "c5_after_c1_eval_split_identity": "ea8bf6e9876febad8b125e78deed2d8ef534daaa7dd1e38126a07027cc6c8ca9",
+      "c5_after_c1_eval_split_payload": "da41c5362398f24e0e0dd9df9a5cf0594435a455871fa77ab74d9312e6c8e9b2",
+      "c5_after_c1_preflight_report": "bea483edd276ff788a4e4134a7bce4e3a346d7fc5f30e3fcc925075a807663f4",
+      "c5_after_c1_preflight_report_before_eval_split": "224d0b1deea15fe5c77a083439332337ad8753c42f5fd4390f27bcbe660626af",
+      "c5_after_c1_preflight_report_false_positive_before_repair": "bea483edd276ff788a4e4134a7bce4e3a346d7fc5f30e3fcc925075a807663f4",
+      "c5_comet_pending_execution_packet": "433dc0869714807d0f025f0ecd3540eb6dfa09dcdf52c9d4329c786154adc846",
+      "c5_eval_py": "726aa2f665ae62c13f097c35f098bccb5aa724c021343e59c4bb448584fca01d",
+      "c5_eval_split_identity_matrix": "db026c4af238af375798a0f17452331f5458170f037593621b156a43a8a36bf6",
+      "c5_eval_split_validator_repair_c5_eval_py": "be8f7befa1862956b0ffd1b924d2e4aace63a1e03036c88170f3c8c0fd8ed5bc",
+      "c5_eval_split_validator_repair_run_c5_eval_py": "be88f7635ae15358a502bfecc85022163107b59f868d19d76d2852851d993ed3",
+      "c5_eval_split_validator_repair_test_c5_eval_contract_py": "7ab613707f3b907e78deaf698ede68a907ba547a9d7888783f05eda5bdde438e",
+      "c5_eval_split_validator_repair_tmp_preflight_report": "507296a478436a22065f1e90c90d02866e684d7e2091ae9054b2f87111549a7e",
+      "c5_evaluator_command_surface_commit": "d9f9caaeb06cf98f8c5b7c3f5a6965269cd2a875",
+      "c5_identity_schema_sha256": "6769bd6776dd545fdb740333071e71a899c843103261fd68c35af22f281bc044",
+      "c5_readiness_status_ui_commit": "80d92c3ed34475e9637868c20203efda14a6bf17",
+      "central_state_json_previous": "242f9bd72637e42bc26948d5653db31d58b5c4b77c40addf1d3a56d254b85c01",
+      "central_state_json_previous_after_pipeline_update": "a50f0578786e743765953e1fabbb93dab5c8c6d16e293759429eca58aaa6a727",
+      "central_state_json_previous_before_c5_eval_split_validated_execution_route": "ebe9f93269ae4491244d3ffd95929cd03c05a0f26e58389e829d1bd7d4fca8a3",
+      "central_state_json_previous_before_c5_input_artifact_update": "1742ec5cbc85db0b22fbfb1d81a167535f7ecd5ce7e86cf7ae80a8b8f8b9f57b",
+      "central_state_json_previous_before_c5_matrix_update": "2dc500ae21835192f620924de8986af2f4636cb84862049b89ee48df106a66ad",
+      "central_state_json_previous_before_c5_metrics_mobilization": "183c53c2f48656404eff332e86f821f89c0c2d7430e46b233940f27fe5705254",
+      "central_state_json_previous_before_c5_validator_repair_update": "9e0ebd3769f4a431415cb38ab288052f9673b35ca0e7326bb510973f99ec22f5",
+      "central_state_json_previous_before_custodian_pathset_handoff": "7474fa8b6fda97da763de53147174a52cc01cc3c98d3660b3122cc47b505913b",
+      "central_state_json_previous_before_custody_pending_update": "f5efb41acadec26d3986d3afc567d4c88a06496f0327fd7367e4fcc45e2e7396",
+      "central_state_json_previous_before_eval_split_validation_route": "fa72d059d6e95c8c90d9542cc44439c8f01c14a4e1b22d5e8308d147b30c8530",
+      "central_state_md_previous": "2b2de78b3c6965e114a7a3712f9bc0e8d94afb4e279a3c4b349cb7563acf239a",
+      "central_state_md_previous_before_c5_validator_repair_update": "e1a6471175ee520bba57d2409528a40da6010c3630d46405ef2e0c7102f2cd9b",
+      "central_state_md_previous_before_custody_pending_update": "d2d8dc9ec68cc73cbc735d149843e81a558d9f9c7b7ba6151fcd0b74d391f184",
+      "final_integrated_metadata_report": "53c2b3a2d3a80c1418674633db89691cbe80766ca32535535a5845e49ca11b60",
+      "metadata_freeze_commit": "0d8b7307daa225c051a3d5de2d6644e612be6b4a",
+      "phase1_marker_wait_hardening_commit": "bb633600956d8e411245b01225a4d9bdf73e13da",
+      "phase1_to_phase2_bridge_summary_outside_termux_git": "faade0c4e42afeda11f1fc860faacc41fe8d5039d73fa3c082c35a7802fb8457",
+      "phase2_verified_summary": "cb403aa4b54826bc1071e46c6d54f0083bb979a2ba0f35962eb0946f9280574f",
+      "phase34_integrated_summary": "d719419d98b08696e564c685e96fd1872d2d11b1e247109b216396da1d921b9f",
+      "phase34_lineage_proof_metadata_commit": "c08a8f1474f8e3b0989051d29258dae3db4ebed3",
+      "phase34_lineage_repair_commit": "ee74ae572322e05624deac6f6f8788c2c6e2f692",
+      "phase34_lineage_repair_summary": "1348895a1d5ca8e7e5276de1ab2022d9f64a300b288aa7169550263b27a0e304",
+      "phase34_repair_metric_readiness_helper": "98b854f59856ea4871500e71bf528ce195df9a255fe406c09bf2b802265d424f",
+      "phase34_repair_phase4_bridge_cell_py": "c7da2ea73ceb21d21262561b3f179f3120d293b3d5611e4a14abdabb06abcd83",
+      "phase34_repair_runner_cpp": "7df10844eeea7cc10c0f66a24669fedc9656cad39068a60e90c7bf059cb2c0e6",
+      "phase34_repair_tests": "d06c1eff236a9d247eae5d6d69c3fd1cfb69540c75f28ef8af92c0cc4803ad3d",
+      "prd": "fd5e37ae09de9c0fbeb94282a58a8a06d4cdcfa75b1fb441725e49159b5bdc20",
+      "run_c5_eval_py": "2024de04e54e05f6d6bc75604dcb8dcf926351444d58fc94b788f7cb4eb33117",
+      "test_c5_eval_contract_py": "1654da5ac5da8a334f462e72c6c31eb25f056fd2142eae833403eb3ae2eed30e"
+    },
+    "first_missing_green_field": "executed_metrics_C5_after_C1.json from a real heldout evaluator run",
+    "hardening_policy": {
+      "deleted_or_repaired_drift": [
+        "forced_non_packaged_child_exec_default_for_phase1",
+        "device_sleep_keyguard_report_marker_starvation_during_long_phase1_waits",
+        "hard-coded_phase4_target_source_pjp1_sha256",
+        "diagnostic_phase4_metric_namespaces_for_non_c1_phases",
+        "placeholder_context_sha256_acceptance",
+        "stale_C5_checkpoint_identity_bottleneck_after_identities_accepted"
+      ],
+      "drift_handling": "delete or harden drift wherever found; do not preserve stale checkpoint-identity bottleneck now that identities are accepted; do not promote metadata-only preflight as C5 pass",
+      "next_hardening_surface": "Real C5 evaluator implementation and metrics schema: fail closed on absent command surface, identity mismatch, raw payload leakage, or metadata-derived metric substitution."
+    },
+    "lane_poll": {
+      "engineering_orchestrator": "mobilized: identify or implement real C5_after_C1 evaluator surface and return command/pathset",
+      "execution_orchestrator": "mobilized: verify outside-git split/checkpoint/baseline payload identities and run real evaluator if command surface exists",
+      "phase34_engineer": "complete for search edge: no executed metrics artifact exists; available for review if evaluator emits Phase3/4-dependent evidence",
+      "pipeline_integrator": "mobilized: enforce polymath_c5_executed_metrics_v1 receiving contract and reclassify stale checkpoint-identity wording",
+      "repo_custodian_replacement": "mobilized: verify/freeze PRD and central state exact pathset only; no broad add",
+      "training_material_steward": "complete: c5_remaining_eval_split_identity_matrix_ready at db026c4a; no remaining material identity action for planned eval points",
+      "ui_engineer": "not nudged until metrics-backed status surface exists"
+    },
+    "last_concrete_action": "Phase3/4 searched runtime artifacts and found zero executed local C5 metrics JSON files with schema polymath_c5_executed_metrics_v1. Execution and Pipeline already validated C5_after_C1 material split identity, candidate checkpoint identity, stable baseline identity, and the identity-ready preflight; the only remaining green field is a real evaluator run. Metrics such as loss, accuracy, F1, perplexity, calibration, Brier, overfit gap, and learning_score cannot be derived from metadata.",
+    "lineage_drift_repair_status": {
+      "commit": "ee74ae572322e05624deac6f6f8788c2c6e2f692",
+      "proof_required": [
+        "per-phase phase4_target.source_pjp1_sha256 equals consumed Phase2 PJP1 SHA",
+        "corpus_phase and metric namespaces match C1/C2/C2_5/C3/C4",
+        "context identity is real or handled exactly as repaired validator requires",
+        "patched validators pass on new evidence and fail closed on stale evidence"
+      ],
+      "repaired_drift": [
+        "hard-coded/stale phase4_target.source_pjp1_sha256 in direct Phase4 bridge reports",
+        "diagnostic metric namespace defaults such as C1_diagnostic for non-C1 phases",
+        "placeholder context_sha256 accepted as if it were real context identity"
+      ],
+      "status": "source_repair_frozen_pending_execution_proof"
+    },
+    "next_concrete_action": "Engineering identifies or implements the real heldout C5 evaluator surface; Execution verifies outside-git split/checkpoint/baseline payload identities and runs the evaluator when the command surface is present; Pipeline validates the emitted metrics JSON and C5 preflight. Material Steward prepares the remaining C5 split identity matrix in parallel.",
+    "nonclaims": [
+      "Development-cycle Wave B mechanics and Phase3/4 lineage-clean proof are preserved and frozen",
+      "Not 100k/1M Phase2 authority",
+      "No Phase3 readiness claim",
+      "No Phase4 readiness claim",
+      "No C5 eval pass",
+      "No Comet-backed accepted run claim yet",
+      "No learning claim",
+      "No model-quality claim"
+    ],
+    "owner": "Engineering Orchestrator 019f138b-d229-7640-98b7-2f185d6beae0 + Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c",
+    "phase2_status_by_phase": {
+      "C1": {
+        "packets": 5180,
+        "pjp1_bytes": 46914176,
+        "pjp1_sha256": "a9e191c1e9ec0f7110fabe5991033f3176cf60c152dcc78b54e2e786a66604bc",
+        "real_tokens": 216924,
+        "records": 5180,
+        "slots": 663040,
+        "status": "pass"
+      },
+      "C2": {
+        "packets": 3198,
+        "pjp1_bytes": 28965184,
+        "pjp1_sha256": "073c142e8109996eaef2f26044781ab68362a3594af7b34d859335c17d5f6408",
+        "real_tokens": 149896,
+        "records": 3198,
+        "slots": 409344,
+        "status": "pass"
+      },
+      "C2_5": {
+        "packets": 20,
+        "pjp1_bytes": 185216,
+        "pjp1_sha256": "5c3278864d33d6e97ceb79b720d6c4f95ba456c8187c2d4b7c750a24171a85bb",
+        "real_tokens": 1326,
+        "records": 20,
+        "slots": 2560,
+        "status": "pass"
+      },
+      "C3": {
+        "packets": 247500,
+        "pjp1_bytes": 2241364096,
+        "pjp1_sha256": "28bdbdcbef4d30240747b2cb1f1697859cc4f1e7c178b82ee201c7712a09f80b",
+        "real_tokens": 27792304,
+        "records": 56138,
+        "slots": 31680000,
+        "status": "pass"
+      },
+      "C4": {
+        "packets": 15341,
+        "pjp1_bytes": 138932192,
+        "pjp1_sha256": "3b0012b7d18ba5d5cbf8a3f744c4ff0d7e38f01cb569ae89ea69163f4d4c03c0",
+        "real_tokens": 1445274,
+        "records": 12487,
+        "slots": 1963648,
+        "status": "pass"
+      },
+      "totals": {
+        "packets": 271239,
+        "pjp1_bytes": 2456360864,
+        "real_tokens": 29605724,
+        "records": 77023,
+        "slots": 34718592
+      }
+    },
+    "phase34_lineage_clean_proof": {
+      "context_sha256": "81830ab0c0808843a7528d4c099c852957524c97a3c999c62eaa6e01f250673a",
+      "custody_status": "phase34_lineage_proof_metadata_committed_pushed",
+      "device_runner_sha256": "c63ff6ec719c0117973478557f519b331eb867be6ae2d92572612c997b7ec737",
+      "file_count": 16,
+      "freeze_commit": "ee74ae572322e05624deac6f6f8788c2c6e2f692",
+      "per_phase_status": {
+        "C1": {
+          "phase4_report_sha256": "c8eeee9a7ce54a9780b584dfb5d343c33db00c7aa3bebd803e95ab114a48e831",
+          "pjp1_sha256": "a9e191c1e9ec0f7110fabe5991033f3176cf60c152dcc78b54e2e786a66604bc",
+          "status": "pass"
+        },
+        "C2": {
+          "phase4_report_sha256": "df4d27fd37e2490d667a85712949f3d14f685e92e374e2eb9af0deb81c01d256",
+          "pjp1_sha256": "073c142e8109996eaef2f26044781ab68362a3594af7b34d859335c17d5f6408",
+          "status": "pass"
+        },
+        "C2_5": {
+          "phase4_report_sha256": "d504a5552f7d3ed1f52d96775f5bf68209d5b96a1d6dfaa8a3806f0df3097247",
+          "pjp1_sha256": "5c3278864d33d6e97ceb79b720d6c4f95ba456c8187c2d4b7c750a24171a85bb",
+          "status": "pass"
+        },
+        "C3": {
+          "phase4_report_sha256": "4d5e77fc8676b980856b3f3da01f0c296b0b8968e68e87d53683e6cff8339904",
+          "pjp1_sha256": "28bdbdcbef4d30240747b2cb1f1697859cc4f1e7c178b82ee201c7712a09f80b",
+          "status": "pass"
+        },
+        "C4": {
+          "phase4_report_sha256": "ad779c3c3daacf8fff88c0e245825cfbbeeb632e89fe04f796204c7e4126bf17",
+          "pjp1_sha256": "3b0012b7d18ba5d5cbf8a3f744c4ff0d7e38f01cb569ae89ea69163f4d4c03c0",
+          "status": "pass"
+        }
+      },
+      "pipeline_validation_classification": "PASS_FOR_DEVELOPMENT_CYCLE_PHASE34_LINEAGE_CLEAN_PROOF",
+      "pipeline_validation_status": "phase34_lineage_clean_proof_validated",
+      "proof_metadata_commit": "c08a8f1474f8e3b0989051d29258dae3db4ebed3",
+      "proof_pathset_sha256": {
+        "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/phase34_lineage_repair/C1/phase34_metric_readiness/phase34_metric_readiness_report.json": "ab8fb945b34645e72b1e607b4e3ce87d18dde082fa285e1d34ea8331363e0fc6",
+        "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/phase34_lineage_repair/C1/phase4_bridge_cell/phase4_bridge_cell_report.json": "c8eeee9a7ce54a9780b584dfb5d343c33db00c7aa3bebd803e95ab114a48e831",
+        "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/phase34_lineage_repair/C1/pjp1_htp_relu_run/phase34_pjp1_derived_htp_relu_run.json": "483b1531b649b71cbbce37ea8f1f716f8ba4b309e0d4a9cfca274da50c37babb",
+        "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/phase34_lineage_repair/C2/phase34_metric_readiness/phase34_metric_readiness_report.json": "40238b14f6d2b734e5b14686f829bfe10e9ffcdc5e87dfb2ded509f7fd7ed9b1",
+        "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/phase34_lineage_repair/C2/phase4_bridge_cell/phase4_bridge_cell_report.json": "df4d27fd37e2490d667a85712949f3d14f685e92e374e2eb9af0deb81c01d256",
+        "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/phase34_lineage_repair/C2/pjp1_htp_relu_run/phase34_pjp1_derived_htp_relu_run.json": "4827e6cc8fb2218e0c73be44fb886f416f72d07554f7966ea3bf8cd2822b13b4",
+        "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/phase34_lineage_repair/C2_5/phase34_metric_readiness/phase34_metric_readiness_report.json": "1e80f6a4fc24f4007ef9bd12b36cf8b7b08ff5b86e888193b1cb50786d1037ab",
+        "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/phase34_lineage_repair/C2_5/phase4_bridge_cell/phase4_bridge_cell_report.json": "d504a5552f7d3ed1f52d96775f5bf68209d5b96a1d6dfaa8a3806f0df3097247",
+        "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/phase34_lineage_repair/C2_5/pjp1_htp_relu_run/phase34_pjp1_derived_htp_relu_run.json": "80e01f3b45a4884e5772aa715041c6d016dd8236b90aab696629f1608319d8e6",
+        "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/phase34_lineage_repair/C3/phase34_metric_readiness/phase34_metric_readiness_report.json": "465f885a247073776e1142c218da0b57d13676a871392b930fd84c5b3e7cf96c",
+        "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/phase34_lineage_repair/C3/phase4_bridge_cell/phase4_bridge_cell_report.json": "4d5e77fc8676b980856b3f3da01f0c296b0b8968e68e87d53683e6cff8339904",
+        "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/phase34_lineage_repair/C3/pjp1_htp_relu_run/phase34_pjp1_derived_htp_relu_run.json": "ae3b6f64e44f7a89ab5642738732333547871ae00f7a80d6b4ba0f359bda5db1",
+        "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/phase34_lineage_repair/C4/phase34_metric_readiness/phase34_metric_readiness_report.json": "52215838921d68b531384bde4d30c522cc0e3e7e86027bd833d503cc226044de",
+        "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/phase34_lineage_repair/C4/phase4_bridge_cell/phase4_bridge_cell_report.json": "ad779c3c3daacf8fff88c0e245825cfbbeeb632e89fe04f796204c7e4126bf17",
+        "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/phase34_lineage_repair/C4/pjp1_htp_relu_run/phase34_pjp1_derived_htp_relu_run.json": "85038c535268d6bb5200ec23bbd774672b1593a04160938344e67eb432dc0c3f",
+        "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/phase34_lineage_repair/phase34_lineage_repair_summary.json": "1348895a1d5ca8e7e5276de1ab2022d9f64a300b288aa7169550263b27a0e304"
+      },
+      "proof_root": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/phase34_lineage_repair",
+      "raw_suffix_scan": "clean for .qai1/.pqa1/.pjp1/.bin/.raw/.f16/.apk/.aab/.jsonl",
+      "stale_pre_repair_evidence_policy": "superseded; must not be promoted",
+      "status": "custody_committed_pushed",
+      "summary_path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/phase34_lineage_repair/phase34_lineage_repair_summary.json",
+      "summary_sha256": "1348895a1d5ca8e7e5276de1ab2022d9f64a300b288aa7169550263b27a0e304"
+    },
+    "phase34_repair_pathset": {
+      "native/polar_phase34_consumer_preflight/phase4_bridge_cell_runner.cpp": "7df10844eeea7cc10c0f66a24669fedc9656cad39068a60e90c7bf059cb2c0e6",
+      "polymath_ai/polar/phase4_bridge_cell.py": "c7da2ea73ceb21d21262561b3f179f3120d293b3d5611e4a14abdabb06abcd83",
+      "scripts/host/run_phase34_metric_readiness_report.py": "98b854f59856ea4871500e71bf528ce195df9a255fe406c09bf2b802265d424f",
+      "tests/test_phase4_bridge_cell.py": "d06c1eff236a9d247eae5d6d69c3fd1cfb69540c75f28ef8af92c0cc4803ad3d"
+    },
+    "phase34_repair_verification_reported": [
+      "python3.11 -m py_compile polymath_ai/polar/phase4_bridge_cell.py scripts/host/run_phase34_metric_readiness_report.py",
+      "python3.11 -m pytest tests/test_phase4_bridge_cell.py tests/test_metrics_contract.py -q -> 27 passed",
+      "bash native/polar_phase34_consumer_preflight/build_phase4_bridge_cell_runner.sh -> rebuilt successfully",
+      "Patched validator rejects stale Wave B bridge reports with missing_corpus_phase,bad_phase3_context_sha256,target_pjp1_sha256_mismatch"
+    ],
+    "phase34_status_by_phase": {
+      "C1": {
+        "adapter_changed": true,
+        "bridge_validator_blockers": [],
+        "consumed_output_causes_update": true,
+        "htp_status": "pass",
+        "metric_readiness_status": "pass",
+        "phase4_status": "pass",
+        "status": "pass"
+      },
+      "C2": {
+        "adapter_changed": true,
+        "bridge_validator_blockers": [],
+        "consumed_output_causes_update": true,
+        "htp_status": "pass",
+        "metric_readiness_status": "pass",
+        "phase4_status": "pass",
+        "status": "pass"
+      },
+      "C2_5": {
+        "adapter_changed": true,
+        "bridge_validator_blockers": [],
+        "consumed_output_causes_update": true,
+        "htp_status": "pass",
+        "metric_readiness_status": "pass",
+        "phase4_status": "pass",
+        "status": "pass"
+      },
+      "C3": {
+        "adapter_changed": true,
+        "bridge_validator_blockers": [],
+        "consumed_output_causes_update": true,
+        "htp_status": "pass",
+        "metric_readiness_status": "pass",
+        "phase4_status": "pass",
+        "status": "pass"
+      },
+      "C4": {
+        "adapter_changed": true,
+        "bridge_validator_blockers": [],
+        "consumed_output_causes_update": true,
+        "htp_status": "pass",
+        "metric_readiness_status": "pass",
+        "phase4_status": "pass",
+        "status": "pass"
+      }
+    },
+    "raw_payload_boundary": {
+      "phase2": "raw PJP1 remains under Termux home outside repo; repo stores compact metadata only",
+      "phase34": "raw PJP1, HTP raw output, OpenCL tensors, and adapters remain on device/Termux; repair must keep compact JSON only",
+      "report_root_scan": "metadata-freeze report root had 179 tracked files and clean forbidden suffix scans; raw payloads not committed"
+    },
+    "run_label": "c1_c4_waveB_rerun_20260630T230411Z",
+    "run_root": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z",
+    "status_classification": "PENDING_ACTION_C5_EVALUATOR_EXECUTION_OR_IMPLEMENTATION",
+    "threads_nudged_this_tick": [
+      "Engineering Orchestrator 019f138b-d229-7640-98b7-2f185d6beae0: identify/implement real C5 evaluator surface",
+      "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: verify outside-git inputs and run real evaluator if surface exists",
+      "Pipeline Integrator 019f138c-35b6-73e1-b26d-3db8c59cf850: enforce polymath_c5_executed_metrics_v1 receiving contract",
+      "Training Material Steward 019f138b-7bfc-7671-b9fc-22c14ab76342: prepare remaining C5 split identity matrix",
+      "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: verify/freeze PRD and central state pathset only if clean"
+    ],
+    "timestamp_utc": "2026-07-01T01:50:34Z",
+    "user_action_required": false
+  },
+  "active_watchdog_state": {
+    "artifact_waiting_on": [
+      "Real executed local/device C5_after_C1 metrics JSON with schema polymath_c5_executed_metrics_v1",
+      "Exact evaluator command surface capable of consuming the heldout QA split plus candidate and stable checkpoint/adapter payloads, or Engineering pathset if that surface is absent",
+      "Outside-git heldout split payload and candidate/stable checkpoint or adapter payloads matching the accepted identity SHAs; no raw payloads in git"
+    ],
+    "c5_after_c1_eval_split_identity": {
+      "artifact_path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/c5_eval_split_identity_C5_after_C1.json",
+      "artifact_sha256": "ea8bf6e9876febad8b125e78deed2d8ef534daaa7dd1e38126a07027cc6c8ca9",
+      "eval_point": "C5_after_C1",
+      "eval_split_path": "packages/C1/qa_bridge/phase_C1_test.qa.jsonl",
+      "eval_split_sha256": "da41c5362398f24e0e0dd9df9a5cf0594435a455871fa77ab74d9312e6c8e9b2",
+      "hf_repo_id": "Zer0pa/polymat-gemmalit-c1-c4-commercial-corpus",
+      "hf_revision": "504dd91c5a7c8365882d690d52f3de20697c4f7b",
+      "hf_revision_is_immutable": true,
+      "pipeline_validation_status": "c5_after_c1_eval_split_identity_validated",
+      "raw_payload_boundary": "metadata-only identity; temporary HF payload removed by Steward after hash/count",
+      "record_count": 53,
+      "schema_version": "polymath_c5_eval_split_identity_v1",
+      "status": "pipeline_validated"
+    },
+    "c5_after_c1_executed_metrics_gap": {
+      "candidate_checkpoint_identity_path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/checkpoint_identities/candidate_checkpoint_identity_C5_after_C1.json",
+      "candidate_checkpoint_identity_sha256": "92dbfe9d6db7d905b069ca4af3d7dda0a01ce7a179e8fae640465397d0f4cfc1",
+      "checkpoint_sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f",
+      "identity_ready_preflight_path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/identity_ready_preflight_execution/c5_eval_C5_after_C1_c1_c4_waveB_rerun_20260630T230411Z.json",
+      "identity_ready_preflight_sha256": "4563da9632624c4b32c18dc0e3a75a88f4bf5dbf129555e8681cf794e806db0f",
+      "metadata_substitution_allowed": false,
+      "phase34_scan_result": "hit_count_0_no_executed_metrics_json_found_locally",
+      "required_metrics": [
+        "loss",
+        "loss_delta_vs_last_stable",
+        "accuracy",
+        "answer_exact_match",
+        "answer_token_f1",
+        "perplexity",
+        "calibration_ece",
+        "brier_score",
+        "overfit_gap_train_vs_val",
+        "grad_norm_max_observed_if_observable",
+        "checkpoint_sha256",
+        "stable_checkpoint_baseline_sha256",
+        "learning_score",
+        "command_provenance",
+        "split_identity",
+        "raw_boundary_proof"
+      ],
+      "schema_required": "polymath_c5_executed_metrics_v1",
+      "stable_baseline_identity_path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/checkpoint_identities/stable_baseline_checkpoint_identity_C5_after_C1.json",
+      "stable_baseline_identity_sha256": "7f65b37e8acc7659b6912fe7de3e46b3cffb9abca8a1c76331f1e48fd6c59fec",
+      "stable_checkpoint_baseline_sha256": "e0d1c66ac876c2b6fbbe9e88f1b02dd37201d8ffba10afcd44f1c558fc32f7c9",
+      "status": "pending_real_evaluator_run"
+    },
+    "c5_after_c1_fail_closed_preflight": {
+      "artifact_path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/c5_eval_C5_after_C1_c1_c4_waveB_rerun_20260630T230411Z.json",
+      "artifact_sha256": "aec39de048944decbf169691964f1d0814e4e2d84695e11801b8117177bfcff8",
+      "c5_material_identity": {
+        "eval_split_path": "packages/C1/qa_bridge/phase_C1_test.qa.jsonl",
+        "eval_split_sha256": "da41c5362398f24e0e0dd9df9a5cf0594435a455871fa77ab74d9312e6c8e9b2",
+        "hf_revision": "504dd91c5a7c8365882d690d52f3de20697c4f7b",
+        "record_count": 53
+      },
+      "commit_consumed": "ea2cf60ff4ceccf7e5d8b9ab67d26c13240b508d",
+      "first_missing_green_field": "checkpoint_identity_path_missing",
+      "pipeline_status_classification": "PENDING_ACTION_C5_CHECKPOINT_BASELINE_METRICS",
+      "pipeline_validation_status": "c5_after_c1_checkpoint_identity_missing",
+      "raw_suffix_scan": "forbidden_file_count 0",
+      "remaining_blockers": [
+        "checkpoint_identity_path_missing",
+        "stable_baseline_identity_path_missing",
+        "executed_c5_metrics_json_missing"
+      ],
+      "removed_blocker": "eval_split_forbidden_raw_suffix",
+      "status": "post_repair_preflight_received_checkpoint_identity_missing",
+      "status_classification": "PENDING_ACTION_C5_CHECKPOINT_BASELINE_METRICS"
+    },
+    "c5_after_c1_input_artifact_requirements": {
+      "required_inputs": [
+        "C5_after_C1 eval split identity JSON",
+        "checkpoint_identity JSON with checkpoint_sha256",
+        "stable baseline identity JSON with stable_checkpoint_baseline_sha256",
+        "Phase1 report path input",
+        "Phase2 report path input",
+        "Phase3/4 report path input",
+        "executed local C5 metrics JSON or precise not-runnable report"
+      ],
+      "status": "pending_action_under_existing_authority",
+      "stop_condition": "do not run C5 if any required identity/report/metrics input is absent; return exact first missing artifact/path/schema"
+    },
+    "c5_after_c1_next_identity_artifacts": {
+      "candidate_required_fields": [
+        "checkpoint_role=candidate",
+        "checkpoint_sha256",
+        "checkpoint_payload_location=outside_git",
+        "produced_by_phase=C1",
+        "source report paths/SHA fields tying identity to frozen Phase3/4 evidence"
+      ],
+      "candidate_schema": "polymath_checkpoint_identity_v1",
+      "owner": "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4",
+      "raw_payload_boundary": "metadata-only identity JSONs; no raw checkpoint/model/adapter/tensor payloads in git reports",
+      "stable_baseline_required_fields": [
+        "checkpoint_role=stable_baseline",
+        "stable_checkpoint_baseline_sha256",
+        "checkpoint_payload_location=outside_git",
+        "baseline role/source report identity"
+      ],
+      "status": "phase34_engineer_active"
+    },
+    "c5_after_c1_next_preflight": {
+      "commit_consumed": "ea2cf60ff4ceccf7e5d8b9ab67d26c13240b508d",
+      "eval_split_identity_path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/c5_eval_split_identity_C5_after_C1.json",
+      "eval_split_identity_sha256": "ea8bf6e9876febad8b125e78deed2d8ef534daaa7dd1e38126a07027cc6c8ca9",
+      "execution_constraints": "metadata-only preflight; no model evaluation, remote Comet, phone/ADB/Termux, HF call, secrets, raw payload movement, staging, commit, or push",
+      "expected_next_missing_fields_after_repair": [
+        "checkpoint_identity_path_missing",
+        "stable_baseline_identity_path_missing",
+        "executed_c5_metrics_json_missing"
+      ],
+      "must_not_recur": [
+        "eval_split_forbidden_raw_suffix"
+      ],
+      "report_path_expected": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/c5_eval_C5_after_C1_c1_c4_waveB_rerun_20260630T230411Z.json",
+      "status": "execution_running_post_repair_preflight"
+    },
+    "c5_comet_readiness": {
+      "custody_commit": "80d92c3ed34475e9637868c20203efda14a6bf17",
+      "custody_status": "c5_readiness_status_ui_committed_pushed",
+      "first_missing_green_field": "C5_after_C1 lacks executable C5 evaluator command surface implementing c5_eval_contract.md plus checkpoint_identity.checkpoint_sha256 and stable_checkpoint_baseline_sha256",
+      "hf_revision": "504dd91c5a7c8365882d690d52f3de20697c4f7b",
+      "material_lock_sha256": "078a9a208fb6fae06db64b5306cd4069912af867062a6689ecc0340de2be2edc",
+      "raw_suffix_scan": "run root forbidden_file_count 0",
+      "remote_comet_called": false,
+      "repo_head": "c08a8f1474f8e3b0989051d29258dae3db4ebed3",
+      "report_path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_comet_next_action_readiness_20260701T000000Z.json",
+      "report_sha256": "756b6e988a8e976a9d039c3db12b35151541024a62af12789469da9a4257c6a0",
+      "status": "c5_eval_not_executable_first_missing_green_field_recorded",
+      "status_classification": "PENDING_ACTION_C5_EVAL_COMMAND_SURFACE_AND_CHECKPOINT_IDENTITY"
+    },
+    "c5_eval_split_validator_repair": {
+      "base_head_observed_by_engineering": "d9f9caaeb06cf98f8c5b7c3f5a6965269cd2a875",
+      "branch": "origin/gemma4-megakernel-native-training",
+      "commit": "ea2cf60ff4ceccf7e5d8b9ab67d26c13240b508d",
+      "current_owner": "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c",
+      "custody_status": "c5_eval_split_metadata_path_repair_committed_pushed",
+      "engineering_owner": "Engineering Orchestrator 019f138b-d229-7640-98b7-2f185d6beae0",
+      "engineering_verification": [
+        "python3.11 -m py_compile polymath_ai/polar/c5_eval.py scripts/host/run_c5_eval.py tests/test_c5_eval_contract.py -> pass",
+        "python3.11 -m pytest -q tests/test_c5_eval_contract.py tests/test_metrics_contract.py -> 16 passed in 2.38s",
+        "git diff --check on three-file pathset -> clean",
+        "secret/token scan on edited files -> no hits",
+        "metadata-only local preflight under /tmp exited 2 fail-closed with first_missing checkpoint_identity_path_missing",
+        "raw suffix file scan of /tmp output found 0 files"
+      ],
+      "expected_absent_after_repair": "eval_split_forbidden_raw_suffix",
+      "expected_post_freeze_blockers": [
+        "checkpoint_identity_path_missing",
+        "stable_baseline_identity_path_missing",
+        "executed_c5_metrics_json_missing"
+      ],
+      "expected_post_freeze_first_missing": "checkpoint_identity_path_missing",
+      "pathset_sha256": {
+        "polymath_ai/polar/c5_eval.py": "be8f7befa1862956b0ffd1b924d2e4aace63a1e03036c88170f3c8c0fd8ed5bc",
+        "scripts/host/run_c5_eval.py": "be88f7635ae15358a502bfecc85022163107b59f868d19d76d2852851d993ed3",
+        "tests/test_c5_eval_contract.py": "7ab613707f3b907e78deaf698ede68a907ba547a9d7888783f05eda5bdde438e"
+      },
+      "proof_report_sha256": "507296a478436a22065f1e90c90d02866e684d7e2091ae9054b2f87111549a7e",
+      "status": "custody_committed_pushed_execution_preflight_running",
+      "status_classification": "PENDING_ACTION_EXECUTION_C5_AFTER_C1_PREFLIGHT_POST_REPAIR"
+    },
+    "c5_evaluator_command_surface": {
+      "branch": "origin/gemma4-megakernel-native-training",
+      "commit": "d9f9caaeb06cf98f8c5b7c3f5a6965269cd2a875",
+      "pathset_sha256": {
+        "polymath_ai/polar/c5_eval.py": "726aa2f665ae62c13f097c35f098bccb5aa724c021343e59c4bb448584fca01d",
+        "scripts/host/run_c5_eval.py": "2024de04e54e05f6d6bc75604dcb8dcf926351444d58fc94b788f7cb4eb33117",
+        "tests/test_c5_eval_contract.py": "1654da5ac5da8a334f462e72c6c31eb25f056fd2142eae833403eb3ae2eed30e"
+      },
+      "status": "custody_committed_pushed",
+      "verification": [
+        "branch/base verified at 80d92c3ed34475e9637868c20203efda14a6bf17",
+        "python3.11 -m py_compile passed for three C5 files",
+        "python3.11 -m pytest -q tests/test_c5_eval_contract.py tests/test_metrics_contract.py -> 14 passed",
+        "run_c5_eval.py --print-identity-schema valid JSON; schema SHA 6769bd6776dd545fdb740333071e71a899c843103261fd68c35af22f281bc044",
+        "missing-identity fail-closed check exited 2 with pass_fail.status=blocked and first missing eval_split_path_missing",
+        "staged raw suffix scan and tight token/secret scan clean",
+        "no phone/ADB/Termux, no HF/Comet/API, no raw payloads"
+      ]
+    },
+    "c5_remaining_eval_split_identity_matrix": {
+      "artifact_path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/c5_eval_split_identity_matrix.json",
+      "artifact_sha256": "db026c4af238af375798a0f17452331f5458170f037593621b156a43a8a36bf6",
+      "component_splits": {
+        "C1_test": {
+          "path": "packages/C1/qa_bridge/phase_C1_test.qa.jsonl",
+          "rows": 53,
+          "sha256": "da41c5362398f24e0e0dd9df9a5cf0594435a455871fa77ab74d9312e6c8e9b2"
+        },
+        "C2_5_val": {
+          "path": "packages/C2_5/qa_bridge/phase_C2.5_val.qa.jsonl",
+          "role": "sentinel_no_c2_5_test_rows",
+          "rows": 1,
+          "sha256": "ff2ad496d3e93dd6d5e16f176fd19cdb5b96aeb21c52fe3b2632b93cdeda84c8"
+        },
+        "C2_test": {
+          "path": "packages/C2/qa_bridge/phase_C2_test.qa.jsonl",
+          "rows": 27,
+          "sha256": "26466b0b248be190f904cb29ba9cd9637f559bb553f360f67ce46f0986d6b24e"
+        },
+        "C3_test": {
+          "path": "packages/C3/qa_bridge/phase_C3_test.qa.jsonl",
+          "rows": 548,
+          "sha256": "2aeef053c9ab3903b70c95e419637d7e3a180beaf4c8b041fb5c32e56806b567"
+        },
+        "C4_test": {
+          "path": "packages/C4/qa_bridge/phase_C4_test.qa.jsonl",
+          "rows": 112,
+          "sha256": "5e34fd31ef9cf69f9e0b66553f806cc9483b88a9f39799cc8414343c9774197a"
+        }
+      },
+      "eval_point_count": 5,
+      "eval_point_matrix": {
+        "C5_after_C2": [
+          "C1_test",
+          "C2_test"
+        ],
+        "C5_after_C2_5": [
+          "C1_test",
+          "C2_test",
+          "C2_5_val"
+        ],
+        "C5_after_C3": [
+          "C1_test",
+          "C2_test",
+          "C2_5_val",
+          "C3_test"
+        ],
+        "C5_after_C4": [
+          "C1_test",
+          "C2_test",
+          "C2_5_val",
+          "C3_test",
+          "C4_test"
+        ],
+        "C5_full_curriculum_postrun": [
+          "C1_test",
+          "C2_test",
+          "C2_5_val",
+          "C3_test",
+          "C4_test"
+        ]
+      },
+      "hf_revision": "504dd91c5a7c8365882d690d52f3de20697c4f7b",
+      "raw_payload_boundary": "metadata-only unions; no raw union JSONL written; temporary payloads removed after hash/count",
+      "split_count": 5,
+      "status": "c5_remaining_eval_split_identity_matrix_ready"
+    },
+    "current_gate": "WaveB_C5_after_C1_executed_metrics_json_pending_evaluator_run",
+    "evidence_sha256": {
+      "c5_after_c1_eval_split_identity": "ea8bf6e9876febad8b125e78deed2d8ef534daaa7dd1e38126a07027cc6c8ca9",
+      "c5_after_c1_eval_split_payload": "da41c5362398f24e0e0dd9df9a5cf0594435a455871fa77ab74d9312e6c8e9b2",
+      "c5_after_c1_post_repair_preflight_report": "aec39de048944decbf169691964f1d0814e4e2d84695e11801b8117177bfcff8",
+      "c5_after_c1_preflight_report": "bea483edd276ff788a4e4134a7bce4e3a346d7fc5f30e3fcc925075a807663f4",
+      "c5_after_c1_preflight_report_before_eval_split": "224d0b1deea15fe5c77a083439332337ad8753c42f5fd4390f27bcbe660626af",
+      "c5_after_c1_preflight_report_false_positive_before_repair": "bea483edd276ff788a4e4134a7bce4e3a346d7fc5f30e3fcc925075a807663f4",
+      "c5_comet_pending_execution_packet": "433dc0869714807d0f025f0ecd3540eb6dfa09dcdf52c9d4329c786154adc846",
+      "c5_eval_py": "726aa2f665ae62c13f097c35f098bccb5aa724c021343e59c4bb448584fca01d",
+      "c5_eval_split_identity_matrix": "db026c4af238af375798a0f17452331f5458170f037593621b156a43a8a36bf6",
+      "c5_eval_split_validator_repair_c5_eval_py": "be8f7befa1862956b0ffd1b924d2e4aace63a1e03036c88170f3c8c0fd8ed5bc",
+      "c5_eval_split_validator_repair_commit": "ea2cf60ff4ceccf7e5d8b9ab67d26c13240b508d",
+      "c5_eval_split_validator_repair_run_c5_eval_py": "be88f7635ae15358a502bfecc85022163107b59f868d19d76d2852851d993ed3",
+      "c5_eval_split_validator_repair_test_c5_eval_contract_py": "7ab613707f3b907e78deaf698ede68a907ba547a9d7888783f05eda5bdde438e",
+      "c5_eval_split_validator_repair_tmp_preflight_report": "507296a478436a22065f1e90c90d02866e684d7e2091ae9054b2f87111549a7e",
+      "c5_evaluator_command_surface_commit": "d9f9caaeb06cf98f8c5b7c3f5a6965269cd2a875",
+      "c5_identity_schema_sha256": "6769bd6776dd545fdb740333071e71a899c843103261fd68c35af22f281bc044",
+      "c5_readiness_status_ui_commit": "80d92c3ed34475e9637868c20203efda14a6bf17",
+      "central_state_json_previous": "242f9bd72637e42bc26948d5653db31d58b5c4b77c40addf1d3a56d254b85c01",
+      "central_state_json_previous_after_pipeline_update": "a50f0578786e743765953e1fabbb93dab5c8c6d16e293759429eca58aaa6a727",
+      "central_state_json_previous_before_c5_eval_split_validated_execution_route": "ebe9f93269ae4491244d3ffd95929cd03c05a0f26e58389e829d1bd7d4fca8a3",
+      "central_state_json_previous_before_c5_input_artifact_update": "1742ec5cbc85db0b22fbfb1d81a167535f7ecd5ce7e86cf7ae80a8b8f8b9f57b",
+      "central_state_json_previous_before_c5_matrix_update": "2dc500ae21835192f620924de8986af2f4636cb84862049b89ee48df106a66ad",
+      "central_state_json_previous_before_c5_metrics_mobilization": "183c53c2f48656404eff332e86f821f89c0c2d7430e46b233940f27fe5705254",
+      "central_state_json_previous_before_c5_validator_repair_update": "9e0ebd3769f4a431415cb38ab288052f9673b35ca0e7326bb510973f99ec22f5",
+      "central_state_json_previous_before_custodian_pathset_handoff": "7474fa8b6fda97da763de53147174a52cc01cc3c98d3660b3122cc47b505913b",
+      "central_state_json_previous_before_custody_pending_update": "f5efb41acadec26d3986d3afc567d4c88a06496f0327fd7367e4fcc45e2e7396",
+      "central_state_json_previous_before_eval_split_validation_route": "fa72d059d6e95c8c90d9542cc44439c8f01c14a4e1b22d5e8308d147b30c8530",
+      "central_state_md_previous": "2b2de78b3c6965e114a7a3712f9bc0e8d94afb4e279a3c4b349cb7563acf239a",
+      "central_state_md_previous_before_c5_validator_repair_update": "e1a6471175ee520bba57d2409528a40da6010c3630d46405ef2e0c7102f2cd9b",
+      "central_state_md_previous_before_custody_pending_update": "d2d8dc9ec68cc73cbc735d149843e81a558d9f9c7b7ba6151fcd0b74d391f184",
+      "final_integrated_metadata_report": "53c2b3a2d3a80c1418674633db89691cbe80766ca32535535a5845e49ca11b60",
+      "metadata_freeze_commit": "0d8b7307daa225c051a3d5de2d6644e612be6b4a",
+      "phase1_marker_wait_hardening_commit": "bb633600956d8e411245b01225a4d9bdf73e13da",
+      "phase1_to_phase2_bridge_summary_outside_termux_git": "faade0c4e42afeda11f1fc860faacc41fe8d5039d73fa3c082c35a7802fb8457",
+      "phase2_verified_summary": "cb403aa4b54826bc1071e46c6d54f0083bb979a2ba0f35962eb0946f9280574f",
+      "phase34_integrated_summary": "d719419d98b08696e564c685e96fd1872d2d11b1e247109b216396da1d921b9f",
+      "phase34_lineage_proof_metadata_commit": "c08a8f1474f8e3b0989051d29258dae3db4ebed3",
+      "phase34_lineage_repair_commit": "ee74ae572322e05624deac6f6f8788c2c6e2f692",
+      "phase34_lineage_repair_summary": "1348895a1d5ca8e7e5276de1ab2022d9f64a300b288aa7169550263b27a0e304",
+      "phase34_repair_metric_readiness_helper": "98b854f59856ea4871500e71bf528ce195df9a255fe406c09bf2b802265d424f",
+      "phase34_repair_phase4_bridge_cell_py": "c7da2ea73ceb21d21262561b3f179f3120d293b3d5611e4a14abdabb06abcd83",
+      "phase34_repair_runner_cpp": "7df10844eeea7cc10c0f66a24669fedc9656cad39068a60e90c7bf059cb2c0e6",
+      "phase34_repair_tests": "d06c1eff236a9d247eae5d6d69c3fd1cfb69540c75f28ef8af92c0cc4803ad3d",
+      "prd": "fd5e37ae09de9c0fbeb94282a58a8a06d4cdcfa75b1fb441725e49159b5bdc20",
+      "run_c5_eval_py": "2024de04e54e05f6d6bc75604dcb8dcf926351444d58fc94b788f7cb4eb33117",
+      "test_c5_eval_contract_py": "1654da5ac5da8a334f462e72c6c31eb25f056fd2142eae833403eb3ae2eed30e"
+    },
+    "first_missing_green_field": "executed_metrics_C5_after_C1.json from a real heldout evaluator run",
+    "hardening_policy": {
+      "deleted_or_repaired_drift": [
+        "forced_non_packaged_child_exec_default_for_phase1",
+        "device_sleep_keyguard_report_marker_starvation_during_long_phase1_waits",
+        "hard-coded_phase4_target_source_pjp1_sha256",
+        "diagnostic_phase4_metric_namespaces_for_non_c1_phases",
+        "placeholder_context_sha256_acceptance",
+        "stale_C5_checkpoint_identity_bottleneck_after_identities_accepted"
+      ],
+      "drift_handling": "delete or harden drift wherever found; do not preserve stale checkpoint-identity bottleneck now that identities are accepted; do not promote metadata-only preflight as C5 pass",
+      "next_hardening_surface": "Real C5 evaluator implementation and metrics schema: fail closed on absent command surface, identity mismatch, raw payload leakage, or metadata-derived metric substitution."
+    },
+    "lane_poll": {
+      "engineering_orchestrator": "mobilized: identify or implement real C5_after_C1 evaluator surface and return command/pathset",
+      "execution_orchestrator": "mobilized: verify outside-git split/checkpoint/baseline payload identities and run real evaluator if command surface exists",
+      "phase34_engineer": "complete for search edge: no executed metrics artifact exists; available for review if evaluator emits Phase3/4-dependent evidence",
+      "pipeline_integrator": "mobilized: enforce polymath_c5_executed_metrics_v1 receiving contract and reclassify stale checkpoint-identity wording",
+      "repo_custodian_replacement": "mobilized: verify/freeze PRD and central state exact pathset only; no broad add",
+      "training_material_steward": "complete: c5_remaining_eval_split_identity_matrix_ready at db026c4a; no remaining material identity action for planned eval points",
+      "ui_engineer": "not nudged until metrics-backed status surface exists"
+    },
+    "last_concrete_action": "Phase3/4 searched runtime artifacts and found zero executed local C5 metrics JSON files with schema polymath_c5_executed_metrics_v1. Execution and Pipeline already validated C5_after_C1 material split identity, candidate checkpoint identity, stable baseline identity, and the identity-ready preflight; the only remaining green field is a real evaluator run. Metrics such as loss, accuracy, F1, perplexity, calibration, Brier, overfit gap, and learning_score cannot be derived from metadata.",
+    "lineage_drift_repair_status": {
+      "commit": "ee74ae572322e05624deac6f6f8788c2c6e2f692",
+      "proof_required": [
+        "per-phase phase4_target.source_pjp1_sha256 equals consumed Phase2 PJP1 SHA",
+        "corpus_phase and metric namespaces match C1/C2/C2_5/C3/C4",
+        "context identity is real or handled exactly as repaired validator requires",
+        "patched validators pass on new evidence and fail closed on stale evidence"
+      ],
+      "repaired_drift": [
+        "hard-coded/stale phase4_target.source_pjp1_sha256 in direct Phase4 bridge reports",
+        "diagnostic metric namespace defaults such as C1_diagnostic for non-C1 phases",
+        "placeholder context_sha256 accepted as if it were real context identity"
+      ],
+      "status": "source_repair_frozen_pending_execution_proof"
+    },
+    "next_concrete_action": "Engineering identifies or implements the real heldout C5 evaluator surface; Execution verifies outside-git split/checkpoint/baseline payload identities and runs the evaluator when the command surface is present; Pipeline validates the emitted metrics JSON and C5 preflight. Material Steward prepares the remaining C5 split identity matrix in parallel.",
+    "nonclaims": [
+      "Development-cycle Wave B mechanics and Phase3/4 lineage-clean proof are preserved and frozen",
+      "Not 100k/1M Phase2 authority",
+      "No Phase3 readiness claim",
+      "No Phase4 readiness claim",
+      "No C5 eval pass",
+      "No Comet-backed accepted run claim yet",
+      "No learning claim",
+      "No model-quality claim"
+    ],
+    "owner": "Engineering Orchestrator 019f138b-d229-7640-98b7-2f185d6beae0 + Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c",
+    "phase2_status_by_phase": {
+      "C1": {
+        "packets": 5180,
+        "pjp1_bytes": 46914176,
+        "pjp1_sha256": "a9e191c1e9ec0f7110fabe5991033f3176cf60c152dcc78b54e2e786a66604bc",
+        "real_tokens": 216924,
+        "records": 5180,
+        "slots": 663040,
+        "status": "pass"
+      },
+      "C2": {
+        "packets": 3198,
+        "pjp1_bytes": 28965184,
+        "pjp1_sha256": "073c142e8109996eaef2f26044781ab68362a3594af7b34d859335c17d5f6408",
+        "real_tokens": 149896,
+        "records": 3198,
+        "slots": 409344,
+        "status": "pass"
+      },
+      "C2_5": {
+        "packets": 20,
+        "pjp1_bytes": 185216,
+        "pjp1_sha256": "5c3278864d33d6e97ceb79b720d6c4f95ba456c8187c2d4b7c750a24171a85bb",
+        "real_tokens": 1326,
+        "records": 20,
+        "slots": 2560,
+        "status": "pass"
+      },
+      "C3": {
+        "packets": 247500,
+        "pjp1_bytes": 2241364096,
+        "pjp1_sha256": "28bdbdcbef4d30240747b2cb1f1697859cc4f1e7c178b82ee201c7712a09f80b",
+        "real_tokens": 27792304,
+        "records": 56138,
+        "slots": 31680000,
+        "status": "pass"
+      },
+      "C4": {
+        "packets": 15341,
+        "pjp1_bytes": 138932192,
+        "pjp1_sha256": "3b0012b7d18ba5d5cbf8a3f744c4ff0d7e38f01cb569ae89ea69163f4d4c03c0",
+        "real_tokens": 1445274,
+        "records": 12487,
+        "slots": 1963648,
+        "status": "pass"
+      },
+      "totals": {
+        "packets": 271239,
+        "pjp1_bytes": 2456360864,
+        "real_tokens": 29605724,
+        "records": 77023,
+        "slots": 34718592
+      }
+    },
+    "phase34_lineage_clean_proof": {
+      "context_sha256": "81830ab0c0808843a7528d4c099c852957524c97a3c999c62eaa6e01f250673a",
+      "custody_status": "phase34_lineage_proof_metadata_committed_pushed",
+      "device_runner_sha256": "c63ff6ec719c0117973478557f519b331eb867be6ae2d92572612c997b7ec737",
+      "file_count": 16,
+      "freeze_commit": "ee74ae572322e05624deac6f6f8788c2c6e2f692",
+      "per_phase_status": {
+        "C1": {
+          "phase4_report_sha256": "c8eeee9a7ce54a9780b584dfb5d343c33db00c7aa3bebd803e95ab114a48e831",
+          "pjp1_sha256": "a9e191c1e9ec0f7110fabe5991033f3176cf60c152dcc78b54e2e786a66604bc",
+          "status": "pass"
+        },
+        "C2": {
+          "phase4_report_sha256": "df4d27fd37e2490d667a85712949f3d14f685e92e374e2eb9af0deb81c01d256",
+          "pjp1_sha256": "073c142e8109996eaef2f26044781ab68362a3594af7b34d859335c17d5f6408",
+          "status": "pass"
+        },
+        "C2_5": {
+          "phase4_report_sha256": "d504a5552f7d3ed1f52d96775f5bf68209d5b96a1d6dfaa8a3806f0df3097247",
+          "pjp1_sha256": "5c3278864d33d6e97ceb79b720d6c4f95ba456c8187c2d4b7c750a24171a85bb",
+          "status": "pass"
+        },
+        "C3": {
+          "phase4_report_sha256": "4d5e77fc8676b980856b3f3da01f0c296b0b8968e68e87d53683e6cff8339904",
+          "pjp1_sha256": "28bdbdcbef4d30240747b2cb1f1697859cc4f1e7c178b82ee201c7712a09f80b",
+          "status": "pass"
+        },
+        "C4": {
+          "phase4_report_sha256": "ad779c3c3daacf8fff88c0e245825cfbbeeb632e89fe04f796204c7e4126bf17",
+          "pjp1_sha256": "3b0012b7d18ba5d5cbf8a3f744c4ff0d7e38f01cb569ae89ea69163f4d4c03c0",
+          "status": "pass"
+        }
+      },
+      "pipeline_validation_classification": "PASS_FOR_DEVELOPMENT_CYCLE_PHASE34_LINEAGE_CLEAN_PROOF",
+      "pipeline_validation_status": "phase34_lineage_clean_proof_validated",
+      "proof_metadata_commit": "c08a8f1474f8e3b0989051d29258dae3db4ebed3",
+      "proof_pathset_sha256": {
+        "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/phase34_lineage_repair/C1/phase34_metric_readiness/phase34_metric_readiness_report.json": "ab8fb945b34645e72b1e607b4e3ce87d18dde082fa285e1d34ea8331363e0fc6",
+        "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/phase34_lineage_repair/C1/phase4_bridge_cell/phase4_bridge_cell_report.json": "c8eeee9a7ce54a9780b584dfb5d343c33db00c7aa3bebd803e95ab114a48e831",
+        "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/phase34_lineage_repair/C1/pjp1_htp_relu_run/phase34_pjp1_derived_htp_relu_run.json": "483b1531b649b71cbbce37ea8f1f716f8ba4b309e0d4a9cfca274da50c37babb",
+        "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/phase34_lineage_repair/C2/phase34_metric_readiness/phase34_metric_readiness_report.json": "40238b14f6d2b734e5b14686f829bfe10e9ffcdc5e87dfb2ded509f7fd7ed9b1",
+        "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/phase34_lineage_repair/C2/phase4_bridge_cell/phase4_bridge_cell_report.json": "df4d27fd37e2490d667a85712949f3d14f685e92e374e2eb9af0deb81c01d256",
+        "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/phase34_lineage_repair/C2/pjp1_htp_relu_run/phase34_pjp1_derived_htp_relu_run.json": "4827e6cc8fb2218e0c73be44fb886f416f72d07554f7966ea3bf8cd2822b13b4",
+        "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/phase34_lineage_repair/C2_5/phase34_metric_readiness/phase34_metric_readiness_report.json": "1e80f6a4fc24f4007ef9bd12b36cf8b7b08ff5b86e888193b1cb50786d1037ab",
+        "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/phase34_lineage_repair/C2_5/phase4_bridge_cell/phase4_bridge_cell_report.json": "d504a5552f7d3ed1f52d96775f5bf68209d5b96a1d6dfaa8a3806f0df3097247",
+        "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/phase34_lineage_repair/C2_5/pjp1_htp_relu_run/phase34_pjp1_derived_htp_relu_run.json": "80e01f3b45a4884e5772aa715041c6d016dd8236b90aab696629f1608319d8e6",
+        "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/phase34_lineage_repair/C3/phase34_metric_readiness/phase34_metric_readiness_report.json": "465f885a247073776e1142c218da0b57d13676a871392b930fd84c5b3e7cf96c",
+        "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/phase34_lineage_repair/C3/phase4_bridge_cell/phase4_bridge_cell_report.json": "4d5e77fc8676b980856b3f3da01f0c296b0b8968e68e87d53683e6cff8339904",
+        "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/phase34_lineage_repair/C3/pjp1_htp_relu_run/phase34_pjp1_derived_htp_relu_run.json": "ae3b6f64e44f7a89ab5642738732333547871ae00f7a80d6b4ba0f359bda5db1",
+        "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/phase34_lineage_repair/C4/phase34_metric_readiness/phase34_metric_readiness_report.json": "52215838921d68b531384bde4d30c522cc0e3e7e86027bd833d503cc226044de",
+        "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/phase34_lineage_repair/C4/phase4_bridge_cell/phase4_bridge_cell_report.json": "ad779c3c3daacf8fff88c0e245825cfbbeeb632e89fe04f796204c7e4126bf17",
+        "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/phase34_lineage_repair/C4/pjp1_htp_relu_run/phase34_pjp1_derived_htp_relu_run.json": "85038c535268d6bb5200ec23bbd774672b1593a04160938344e67eb432dc0c3f",
+        "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/phase34_lineage_repair/phase34_lineage_repair_summary.json": "1348895a1d5ca8e7e5276de1ab2022d9f64a300b288aa7169550263b27a0e304"
+      },
+      "proof_root": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/phase34_lineage_repair",
+      "raw_suffix_scan": "clean for .qai1/.pqa1/.pjp1/.bin/.raw/.f16/.apk/.aab/.jsonl",
+      "stale_pre_repair_evidence_policy": "superseded; must not be promoted",
+      "status": "custody_committed_pushed",
+      "summary_path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/phase34_lineage_repair/phase34_lineage_repair_summary.json",
+      "summary_sha256": "1348895a1d5ca8e7e5276de1ab2022d9f64a300b288aa7169550263b27a0e304"
+    },
+    "phase34_repair_pathset": {
+      "native/polar_phase34_consumer_preflight/phase4_bridge_cell_runner.cpp": "7df10844eeea7cc10c0f66a24669fedc9656cad39068a60e90c7bf059cb2c0e6",
+      "polymath_ai/polar/phase4_bridge_cell.py": "c7da2ea73ceb21d21262561b3f179f3120d293b3d5611e4a14abdabb06abcd83",
+      "scripts/host/run_phase34_metric_readiness_report.py": "98b854f59856ea4871500e71bf528ce195df9a255fe406c09bf2b802265d424f",
+      "tests/test_phase4_bridge_cell.py": "d06c1eff236a9d247eae5d6d69c3fd1cfb69540c75f28ef8af92c0cc4803ad3d"
+    },
+    "phase34_repair_verification_reported": [
+      "python3.11 -m py_compile polymath_ai/polar/phase4_bridge_cell.py scripts/host/run_phase34_metric_readiness_report.py",
+      "python3.11 -m pytest tests/test_phase4_bridge_cell.py tests/test_metrics_contract.py -q -> 27 passed",
+      "bash native/polar_phase34_consumer_preflight/build_phase4_bridge_cell_runner.sh -> rebuilt successfully",
+      "Patched validator rejects stale Wave B bridge reports with missing_corpus_phase,bad_phase3_context_sha256,target_pjp1_sha256_mismatch"
+    ],
+    "phase34_status_by_phase": {
+      "C1": {
+        "adapter_changed": true,
+        "bridge_validator_blockers": [],
+        "consumed_output_causes_update": true,
+        "htp_status": "pass",
+        "metric_readiness_status": "pass",
+        "phase4_status": "pass",
+        "status": "pass"
+      },
+      "C2": {
+        "adapter_changed": true,
+        "bridge_validator_blockers": [],
+        "consumed_output_causes_update": true,
+        "htp_status": "pass",
+        "metric_readiness_status": "pass",
+        "phase4_status": "pass",
+        "status": "pass"
+      },
+      "C2_5": {
+        "adapter_changed": true,
+        "bridge_validator_blockers": [],
+        "consumed_output_causes_update": true,
+        "htp_status": "pass",
+        "metric_readiness_status": "pass",
+        "phase4_status": "pass",
+        "status": "pass"
+      },
+      "C3": {
+        "adapter_changed": true,
+        "bridge_validator_blockers": [],
+        "consumed_output_causes_update": true,
+        "htp_status": "pass",
+        "metric_readiness_status": "pass",
+        "phase4_status": "pass",
+        "status": "pass"
+      },
+      "C4": {
+        "adapter_changed": true,
+        "bridge_validator_blockers": [],
+        "consumed_output_causes_update": true,
+        "htp_status": "pass",
+        "metric_readiness_status": "pass",
+        "phase4_status": "pass",
+        "status": "pass"
+      }
+    },
+    "raw_payload_boundary": {
+      "phase2": "raw PJP1 remains under Termux home outside repo; repo stores compact metadata only",
+      "phase34": "raw PJP1, HTP raw output, OpenCL tensors, and adapters remain on device/Termux; repair must keep compact JSON only",
+      "report_root_scan": "metadata-freeze report root had 179 tracked files and clean forbidden suffix scans; raw payloads not committed"
+    },
+    "run_label": "c1_c4_waveB_rerun_20260630T230411Z",
+    "run_root": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z",
+    "status_classification": "PENDING_ACTION_C5_EVALUATOR_EXECUTION_OR_IMPLEMENTATION",
+    "threads_nudged_this_tick": [
+      "Engineering Orchestrator 019f138b-d229-7640-98b7-2f185d6beae0: identify/implement real C5 evaluator surface",
+      "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: verify outside-git inputs and run real evaluator if surface exists",
+      "Pipeline Integrator 019f138c-35b6-73e1-b26d-3db8c59cf850: enforce polymath_c5_executed_metrics_v1 receiving contract",
+      "Training Material Steward 019f138b-7bfc-7671-b9fc-22c14ab76342: prepare remaining C5 split identity matrix",
+      "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: verify/freeze PRD and central state pathset only if clean"
+    ],
+    "timestamp_utc": "2026-07-01T01:50:34Z",
+    "user_action_required": false
+  },
+  "driver_tick_history": [
+    {
+      "artifact_waiting_on": [
+        "Repo Custodian commit/push of the three-file C5 eval split metadata path repair",
+        "Frozen pathset SHAs: polymath_ai/polar/c5_eval.py be8f7befa1862956b0ffd1b924d2e4aace63a1e03036c88170f3c8c0fd8ed5bc; scripts/host/run_c5_eval.py be88f7635ae15358a502bfecc85022163107b59f868d19d76d2852851d993ed3; tests/test_c5_eval_contract.py 7ab613707f3b907e78deaf698ede68a907ba547a9d7888783f05eda5bdde438e",
+        "Execution rerun of metadata-only C5_after_C1 preflight after custody freeze",
+        "Pipeline validation of the post-freeze receiving state: no eval_split_forbidden_raw_suffix; first missing checkpoint_identity_path_missing"
+      ],
+      "current_gate": "WaveB_C5_eval_split_validator_repair_custody_pending",
+      "last_concrete_action": "Engineering completed the narrow C5 eval split metadata repair, verified 16 focused tests, and proved a metadata-only local preflight now advances from eval_split_forbidden_raw_suffix to checkpoint_identity_path_missing. Engineering routed exact three-file SHAs to Repo Custodian; Execution is holding for the freeze commit; Pipeline is monitoring the post-freeze receiving condition. No new thread, secrets, Comet, phone gate, or raw payload movement.",
+      "next_concrete_action": "Repo Custodian completes checks, commits/pushes the three-file repair, and returns CENTRAL_STATE_UPDATE. Then Execution consumes the commit and reruns the prepared metadata-only C5_after_C1 preflight; Pipeline validates the resulting checkpoint/baseline/metrics pending state.",
+      "owner": "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050",
+      "status_classification": "PENDING_ACTION_REPO_CUSTODIAN_FREEZE_C5_VALIDATOR_REPAIR",
+      "threads_nudged_this_tick": [
+        "Engineering Orchestrator routed Custodian, Execution, and Pipeline in existing threads; meta sent no additional duplicate prompt this tick"
+      ],
+      "timestamp_utc": "2026-07-01T01:30:25Z",
+      "user_action_required": false
+    },
+    {
+      "artifact_waiting_on": [
+        "Engineering C5 validator/runner/test pathset that allows immutable HF eval_split metadata references ending .jsonl only in approved identity fields",
+        "Regression tests proving local raw .jsonl payload/file references still fail closed and checkpoint/raw paths remain banned",
+        "Repo Custodian freeze of the narrow C5 validator repair pathset after Engineering returns exact SHAs",
+        "Execution metadata-only C5_after_C1 preflight rerun after custody freeze; expected next field checkpoint_identity_path_missing or stable_baseline_identity_path_missing"
+      ],
+      "current_gate": "WaveB_C5_eval_split_validator_reconciliation_pending",
+      "last_concrete_action": "Execution reran C5_after_C1 metadata-only preflight with the Pipeline-validated eval split identity. The report SHA bea483edd276ff788a4e4134a7bce4e3a346d7fc5f30e3fcc925075a807663f4 failed closed on eval_split_forbidden_raw_suffix even though the C5 preflight raw-file scan was clean. Engineering is actively patching the C5 validator/runner/tests so immutable HF split-path metadata is not misclassified as a copied raw payload.",
+      "next_concrete_action": "Engineering returns the narrow repair pathset, SHAs, and tests or a precise technical blocker. Then route that exact pathset to Repo Custodian for freeze; after custody green, Execution reruns the same metadata-only C5_after_C1 preflight and should advance to checkpoint/baseline identity if those remain absent.",
+      "owner": "Engineering Orchestrator 019f138b-d229-7640-98b7-2f185d6beae0",
+      "status_classification": "PENDING_ACTION_ENGINEERING_C5_EVAL_SPLIT_VALIDATOR_REPAIR",
+      "threads_nudged_this_tick": [
+        "none: Engineering Orchestrator is already active on the validator repair in the existing thread"
+      ],
+      "timestamp_utc": "2026-07-01T01:28:28Z",
+      "user_action_required": false
+    },
+    {
+      "artifact_waiting_on": [
+        "Execution metadata-only C5_after_C1 preflight rerun using validated eval split identity",
+        "Next fail-closed first missing field: checkpoint_identity JSON with checkpoint_sha256 or stable baseline identity",
+        "Candidate checkpoint and stable baseline identity route after preflight confirms exact missing fields"
+      ],
+      "current_gate": "WaveB_C5_after_C1_checkpoint_identity_preflight_active",
+      "last_concrete_action": "Pipeline validated the C5_after_C1 eval split identity artifact SHA ea8bf6e9876febad8b125e78deed2d8ef534daaa7dd1e38126a07027cc6c8ca9 and confirmed it clears eval_split_path_missing. Meta routed Execution to rerun the frozen metadata-only C5_after_C1 preflight with --eval-split pointing to that artifact. No meta staging/commit/push, phone gate, Comet, HF call, or secrets.",
+      "next_concrete_action": "Execution runs the same fail-closed C5_after_C1 preflight with the validated eval split identity and returns a new compact JSON report. Expected next missing fields are checkpoint_identity_path_missing and/or stable_baseline_identity_path_missing if those identities remain absent.",
+      "owner": "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c",
+      "status_classification": "PENDING_ACTION_EXECUTION_C5_AFTER_C1_PREFLIGHT_WITH_EVAL_SPLIT",
+      "threads_nudged_this_tick": [
+        "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: sent validated eval split identity and requested metadata-only fail-closed C5_after_C1 preflight rerun."
+      ],
+      "timestamp_utc": "2026-07-01T01:18:46Z",
+      "user_action_required": false
+    },
+    {
+      "artifact_waiting_on": [
+        "Pipeline validation of C5_after_C1 polymath_c5_eval_split_identity_v1 artifact",
+        "If validation passes: Execution rerun of metadata-only C5_after_C1 preflight with eval split identity",
+        "Then next C5 missing field: checkpoint_identity JSON with checkpoint_sha256 or stable baseline identity"
+      ],
+      "current_gate": "WaveB_C5_after_C1_eval_split_identity_validation_pending",
+      "last_concrete_action": "Execution ran the frozen C5 evaluator preflight metadata-only and failed closed with report SHA 224d0b1deea15fe5c77a083439332337ad8753c42f5fd4390f27bcbe660626af, first missing eval_split_path_missing. Training Material Steward produced the C5_after_C1 eval split identity JSON with artifact SHA ea8bf6e9876febad8b125e78deed2d8ef534daaa7dd1e38126a07027cc6c8ca9, eval split SHA da41c5362398f24e0e0dd9df9a5cf0594435a455871fa77ab74d9312e6c8e9b2, record_count 53. Meta routed that artifact to Pipeline for validation. No meta staging/commit/push, phone gate, Comet, or secrets.",
+      "next_concrete_action": "Pipeline validates the metadata-only eval split identity against the C5 contract. If green, Execution runs the same fail-closed C5_after_C1 preflight with --eval-split pointing to the validated identity and reports the next missing field. If invalid, Pipeline returns the exact schema/path/hash defect.",
+      "owner": "Pipeline Integrator 019f138c-35b6-73e1-b26d-3db8c59cf850",
+      "status_classification": "PENDING_ACTION_PIPELINE_EVAL_SPLIT_IDENTITY_VALIDATION",
+      "threads_nudged_this_tick": [
+        "Pipeline Integrator 019f138c-35b6-73e1-b26d-3db8c59cf850: sent C5_after_C1 eval split identity validation request with artifact path/SHA and required checks."
+      ],
+      "timestamp_utc": "2026-07-01T01:18:46Z",
+      "user_action_required": false
+    },
+    {
+      "artifact_waiting_on": [
+        "C5_after_C1 eval split identity JSON",
+        "checkpoint_identity JSON with checkpoint_sha256",
+        "stable baseline identity JSON with stable_checkpoint_baseline_sha256",
+        "Phase1 report path input",
+        "Phase2 report path input",
+        "Phase3/4 report path input",
+        "executed local C5 metrics JSON or precise not-runnable report"
+      ],
+      "current_gate": "WaveB_C5_after_C1_input_artifacts_pending",
+      "last_concrete_action": "Polled lanes; Engineering implemented the C5 evaluator surface and Repo Custodian verified, committed, and pushed the exact three-file C5 evaluator command surface at d9f9caaeb06cf98f8c5b7c3f5a6965269cd2a875. Meta routed Execution to prepare or falsify C5_after_C1 input artifacts using the frozen runner. No meta staging/commit/push, phone gate, HF, Comet, or secrets.",
+      "next_concrete_action": "Execution checks the frozen C5 runner and current Wave B run root for C5_after_C1 input identities. It returns either an exact C5_after_C1 GO package or the first missing artifact/path/schema without running C5 if inputs are absent.",
+      "owner": "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c",
+      "status_classification": "PENDING_ACTION_C5_INPUT_IDENTITY_ARTIFACTS",
+      "threads_nudged_this_tick": [
+        "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: sent post-custody C5_after_C1 input-artifact readiness/preflight request."
+      ],
+      "timestamp_utc": "2026-07-01T01:08:46Z",
+      "user_action_required": false
+    },
+    {
+      "artifact_waiting_on": [
+        "Engineering C5 evaluator runner/checkpoint identity implementation pathset or exact missing artifact schema",
+        "Repo Custodian freeze of C5 readiness report plus UI status pathset",
+        "Execution C5_after_C1 GO only after runner and checkpoint/baseline identity are frozen"
+      ],
+      "current_gate": "WaveB_C5_evaluator_engineering_implementation_pending",
+      "last_concrete_action": "Pipeline validated the C5 readiness report against the PRD/contracts and confirmed this is an Engineering implementation gap: contracts are sufficient, but the repo lacks a canonical C5 evaluator runner and checkpoint/baseline identity production. Meta routed a concrete implementation request to Engineering.",
+      "next_concrete_action": "Engineering implements or precisely falsifies the canonical C5 evaluator runner and checkpoint/baseline identity surface. Repo Custodian completes the C5 readiness/UI freeze. Pipeline/Execution consume the Engineering pathset only after Custodian freeze.",
+      "owner": "Engineering Orchestrator 019f138b-d229-7640-98b7-2f185d6beae0 for C5 runner/identity implementation; Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050 for scoped freeze",
+      "status_classification": "PENDING_ACTION_ENGINEERING_C5_EVALUATOR_IMPLEMENTATION",
+      "threads_nudged_this_tick": [
+        "Pipeline Integrator 019f138c-35b6-73e1-b26d-3db8c59cf850: returned c5_eval_not_executable_contract_validated",
+        "Engineering Orchestrator 019f138b-d229-7640-98b7-2f185d6beae0: sent concrete C5 evaluator/checkpoint identity implementation request",
+        "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: active on C5 readiness/UI freeze request"
+      ],
+      "timestamp_utc": "2026-07-01T00:48:16Z",
+      "user_action_required": false
+    },
+    {
+      "artifact_waiting_on": [
+        "Pipeline C5 executable receiving/repair contract from readiness report",
+        "Repo Custodian freeze of C5 readiness report plus UI status pathset",
+        "Engineering implementation pathset if Pipeline determines a C5 runner/checkpoint identity surface must be added"
+      ],
+      "current_gate": "WaveB_C5_eval_command_surface_and_checkpoint_identity_pending",
+      "last_concrete_action": "Execution completed C5/Comet readiness analysis and wrote a metadata-only report showing C5 is not executable yet: no usable C5 runner was found and checkpoint/baseline identity reports are absent. Meta routed the report to Pipeline for a concrete repair contract and to Repo Custodian for scoped metadata/UI freeze.",
+      "next_concrete_action": "Pipeline validates the C5 readiness report and returns the exact C5 runner/checkpoint identity repair contract, including whether Engineering must implement a runner. Repo Custodian freezes the C5 readiness JSON and UI status pathset if checks pass.",
+      "owner": "Pipeline Integrator 019f138c-35b6-73e1-b26d-3db8c59cf850 for C5 repair contract; Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050 for scoped freeze",
+      "status_classification": "PENDING_ACTION_C5_EVAL_COMMAND_SURFACE_AND_CHECKPOINT_IDENTITY",
+      "threads_nudged_this_tick": [
+        "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: completed c5_eval_not_executable_first_missing_green_field_recorded",
+        "Pipeline Integrator 019f138c-35b6-73e1-b26d-3db8c59cf850: sent C5 repair/receiving contract request",
+        "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: sent exact four-file C5 readiness/UI freeze request",
+        "UI Engineer 019f138c-8d85-7141-a813-66db51c62b3d: completed frozen-proof status surface update and Kotlin compile verification"
+      ],
+      "timestamp_utc": "2026-07-01T00:48:16Z",
+      "user_action_required": false
+    },
+    {
+      "artifact_waiting_on": [
+        "Execution metadata-only C5/Comet readiness report with exact first missing artifact/path/identity",
+        "C5 eval/checkpoint execution surface if Execution finds it runnable",
+        "Comet remote or sanitized offline logging packet tied to frozen run identity"
+      ],
+      "current_gate": "WaveB_C5_Comet_execution_surface_readiness_active",
+      "last_concrete_action": "UI updated the Android status surface to show development-cycle Phase1-4 mechanics green, Phase3/4 lineage-clean proof frozen, C5/Comet pending, and nonclaim badges; :app:compileDebugKotlin passed. Execution is actively verifying C5/Comet surfaces and writing a metadata-only readiness report instead of inventing a C5 pass.",
+      "next_concrete_action": "Execution completes the metadata-only C5/Comet readiness report. If C5 is runnable, it emits the minimum C5/Comet packet; if not, it returns the first precise missing artifact/path/identity for Engineering/Pipeline routing.",
+      "owner": "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c",
+      "status_classification": "PENDING_ACTION_EXECUTION_C5_COMET_READINESS_REPORT",
+      "threads_nudged_this_tick": [
+        "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: active on C5/Comet readiness report; no duplicate nudge sent",
+        "UI Engineer 019f138c-8d85-7141-a813-66db51c62b3d: completed frozen-proof status surface update and Kotlin compile verification"
+      ],
+      "timestamp_utc": "2026-07-01T00:48:16Z",
+      "user_action_required": false
+    },
+    {
+      "artifact_waiting_on": [
+        "C5 eval/checkpoint execution packet or the first precise missing artifact",
+        "Comet remote or sanitized offline logging packet tied to the frozen run identity",
+        "UI evidence surface update showing frozen proof plus nonclaims"
+      ],
+      "current_gate": "WaveB_Phase34_lineage_proof_frozen_c5_comet_pending",
+      "last_concrete_action": "Repo Custodian committed and pushed the exact 16-file Phase3/4 lineage-clean proof metadata at c08a8f1474f8e3b0989051d29258dae3db4ebed3. Meta routed C5/Comet next-action work to Execution and evidence-backed status surface work to UI.",
+      "next_concrete_action": "Execution determines whether C5 eval and Comet/offline logging can run from current frozen artifacts. If runnable, produce the minimum metadata-only C5/Comet packet; if not, return the exact first missing artifact/path/identity. UI surfaces the frozen Phase1-4 development-cycle state with nonclaim badges.",
+      "owner": "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c for C5/Comet; UI Engineer 019f138c-8d85-7141-a813-66db51c62b3d for status surface",
+      "status_classification": "PENDING_ACTION_C5_COMET_EXECUTION_CONTRACT",
+      "threads_nudged_this_tick": [
+        "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: completed phase34_lineage_proof_metadata_committed_pushed",
+        "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: sent C5/Comet next-action packet request",
+        "UI Engineer 019f138c-8d85-7141-a813-66db51c62b3d: sent evidence-backed status surface request"
+      ],
+      "timestamp_utc": "2026-07-01T00:26:16Z",
+      "user_action_required": false
+    },
+    {
+      "artifact_waiting_on": [
+        "Repo Custodian metadata-only freeze of exact 16-file Phase3/4 lineage-clean proof subroot",
+        "C5 eval and Comet/offline logging remain pending after proof custody"
+      ],
+      "current_gate": "WaveB_Phase34_lineage_clean_proof_validated_pending_custody",
+      "last_concrete_action": "Pipeline Integrator validated the bounded Phase3/4 lineage-clean proof as PASS_FOR_DEVELOPMENT_CYCLE_PHASE34_LINEAGE_CLEAN_PROOF. Meta routed the exact 16-file metadata-only proof root to Repo Custodian; Custodian is active on hash, raw-suffix, secret-scan, staged-scope, commit, and push verification.",
+      "next_concrete_action": "Repo Custodian verifies summary SHA/file count, scans the exact proof root, stages only the 16 metadata JSON files under phase34_lineage_repair, commits Freeze Phase3/4 lineage proof metadata, pushes origin/gemma4-megakernel-native-training, and returns CENTRAL_STATE_UPDATE. Then C5/Comet become the next pending execution-contract gaps.",
+      "owner": "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050",
+      "status_classification": "PENDING_ACTION_CUSTODY_FREEZE",
+      "threads_nudged_this_tick": [
+        "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: completed phase34_lineage_clean_proof_passed",
+        "Pipeline Integrator 019f138c-35b6-73e1-b26d-3db8c59cf850: returned phase34_lineage_clean_proof_validated",
+        "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: sent exact 16-file metadata-only custody request and thread is active",
+        "C5/Comet remains held until proof custody is green"
+      ],
+      "timestamp_utc": "2026-07-01T00:26:16Z",
+      "user_action_required": false
+    },
+    {
+      "artifact_waiting_on": [
+        "Pipeline validation of metadata-only Phase3/4 lineage-clean proof summary",
+        "Repo Custodian freeze of proof subroot if Pipeline validates it",
+        "C5 eval and Comet/offline logging remain pending after proof custody"
+      ],
+      "central_state_json_previous_sha256": "2ee382842b4cb4cc65a6936786e8c00e15d7b0ca8de170821a925dfd77747586",
+      "current_gate": "WaveB_Phase34_lineage_clean_proof_pending_pipeline_validation",
+      "last_concrete_action": "Execution completed bounded Phase3/4 lineage-clean proof under repair commit ee74ae572322e05624deac6f6f8788c2c6e2f692. Summary SHA 1348895a1d5ca8e7e5276de1ab2022d9f64a300b288aa7169550263b27a0e304. Meta independently checked per-phase PJP1 equality, real context SHA 81830ab0c0808843a7528d4c099c852957524c97a3c999c62eaa6e01f250673a, phase-specific namespaces, empty strict blockers, and clean raw-suffix scan, then routed Pipeline validation.",
+      "next_concrete_action": "Pipeline Integrator validates the proof packet and returns phase34_lineage_clean_proof_validated or a precise first missing field. If green, route Repo Custodian to freeze the metadata-only proof subroot.",
+      "owner": "Pipeline Integrator 019f138c-35b6-73e1-b26d-3db8c59cf850",
+      "status_classification": "GATE_PENDING_PIPELINE_VALIDATION",
+      "threads_nudged_this_tick": [
+        "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: completed phase34_lineage_clean_proof_passed",
+        "Pipeline Integrator 019f138c-35b6-73e1-b26d-3db8c59cf850: sent proof validation handoff and lane is active",
+        "C5/Comet remains held as planning-only until Pipeline validation and proof custody are green"
+      ],
+      "timestamp_utc": "2026-07-01T00:26:16Z",
+      "user_action_required": false
+    },
+    {
+      "artifact_waiting_on": [
+        "Bounded Phase3/4 lineage-clean proof packet over C1/C2/C2_5/C3/C4 from frozen repair commit ee74ae572322e05624deac6f6f8788c2c6e2f692",
+        "Direct Phase4 bridge reports with per-phase corpus_phase, matching phase4_target.source_pjp1_sha256, repaired metric namespaces, and real or validator-accepted context identity",
+        "Pipeline revalidation of lineage-clean Phase3/4 metadata after Execution proof returns"
+      ],
+      "central_state_json_previous_sha256": "a13b37f98bd94bf2daf6c5fdbf1b8296e192644dfd889534b0803e6a15758ef2",
+      "current_gate": "WaveB_Phase34_lineage_repair_frozen_pending_execution_proof",
+      "last_concrete_action": "Repo Custodian verified, staged, committed, and pushed the four-file Phase3/4 lineage repair at ee74ae572322e05624deac6f6f8788c2c6e2f692. Meta routed Execution GO for a bounded Phase3/4 proof rerun using existing Wave B raw lineage, per-phase PJP1 SHA equality, repaired namespace/context checks, and metadata-only output boundaries.",
+      "next_concrete_action": "Execution updates or verifies source at ee74ae572322e05624deac6f6f8788c2c6e2f692, runs the minimum Phase3/4 proof over C1/C2/C2_5/C3/C4 without rerunning Phase1/Phase2 unless technically required, and returns a metadata-only CENTRAL_STATE_UPDATE for Pipeline revalidation.",
+      "owner": "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c",
+      "status_classification": "PENDING_ACTION_EXECUTION_RERUN",
+      "threads_nudged_this_tick": [
+        "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: sent post-custody bounded Phase3/4 lineage-clean proof GO",
+        "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: completed freeze at ee74ae572322e05624deac6f6f8788c2c6e2f692",
+        "Pipeline Integrator 019f138c-35b6-73e1-b26d-3db8c59cf850: next owner after Execution proof returns; not nudged this tick",
+        "C5/Comet remains held as planning-only until lineage-clean proof and Pipeline revalidation are green"
+      ],
+      "timestamp_utc": "2026-07-01T00:26:16Z",
+      "user_action_required": false
+    },
+    {
+      "artifact_waiting_on": [
+        "Repo Custodian verification/stage/commit/push of the four-file Phase3/4 lineage repair pathset",
+        "Post-custody Execution rerun/proof packet over C1/C2/C2_5/C3/C4 using patched runner and real per-phase PJP1/QNN context identity",
+        "Pipeline revalidation of lineage-clean Phase3/4 metadata after repair freeze and proof rerun"
+      ],
+      "current_gate": "WaveB_Phase34_lineage_repair_pathset_pending_custody",
+      "last_concrete_action": "Phase3/4 Engineer completed narrow lineage repair and returned final pathset. Meta verified the four source/test/helper SHA-256 values locally and routed exact custody request to Repo Custodian. Repair covers source PJP1 SHA as explicit runner input, real/lowercase context SHA handling, corpus-phase/metric namespace enforcement, and validator fail-closed checks. No raw payloads, phone gates, or commits were performed by meta.",
+      "next_concrete_action": "Repo Custodian verifies hashes/tests/scans, stages only the four repair files, commits `Freeze Phase3/4 lineage repair`, and pushes. After custody green, route Execution for bounded Phase3/4 rerun/proof using patched runner command with actual per-phase PJP1 SHA and real QNN context identity.",
+      "owner": "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050",
+      "status_classification": "PENDING_ACTION_CUSTODY_FREEZE",
+      "timestamp_utc": "2026-07-01T00:26:16Z",
+      "user_action_required": false
+    },
+    {
+      "artifact_waiting_on": [
+        "Phase3/4 CENTRAL_STATE_UPDATE with final edited pathset, SHA-256 values, and verification results",
+        "Repo Custodian freeze of the Phase3/4 repair pathset after raw-payload/secret scans and focused tests pass",
+        "Execution proof rerun only if Phase3/4 repair declares emitted-value proof is required",
+        "Pipeline revalidation of lineage-clean Phase3/4 metadata after repair/freeze/proof as applicable"
+      ],
+      "current_gate": "WaveB_Phase34_lineage_drift_repair_in_progress_after_metadata_freeze",
+      "last_concrete_action": "Polled all active lanes. Pipeline reclassified the prior pass to PENDING_ACTION_PHASE34_LINEAGE_REPAIR. Phase3/4 Engineer is actively repairing the canonical runner/validator surfaces: native bridge runner, Python bridge validator, metric-readiness helper default, and focused Phase4 bridge tests. Reported interim checks: Python regression suite passed, native runner compiled via bash, patched validator now fails stale Wave B reports for the expected lineage drift. Repo Custodian already froze the prior metadata packet at 0d8b7307daa225c051a3d5de2d6644e612be6b4a; next custody waits for final repair pathset. UI and Execution are active/corrected to treat current evidence as mechanics-only with lineage repair pending.",
+      "next_concrete_action": "Wait for Phase3/4 Engineer final CENTRAL_STATE_UPDATE. If it reports phase34_lineage_drift_repaired_pending_custody, route its exact pathset to Repo Custodian for narrow freeze. If it reports proof rerun required, route Execution after custody with concrete command contract. Do not execute C5/eval or present lineage-clean Phase4 status until repair is frozen and revalidated.",
+      "owner": "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4; Repo Custodian after final repair pathset",
+      "status_classification": "PENDING_ACTION_PHASE34_REPAIR_PATHSET",
+      "timestamp_utc": "2026-07-01T00:26:16Z",
+      "user_action_required": false
+    },
+    {
+      "artifact_waiting_on": [
+        "Phase3/4 narrow repair for actual per-phase PJP1 SHA emission and validator equality enforcement",
+        "Phase3/4 namespace repair so C2/C2_5/C3/C4 do not emit C1_diagnostic metric namespaces",
+        "Phase3/4 context_sha256 placeholder rejection or exact execution requirement for real compact context identity",
+        "Repo Custodian freeze of Phase3/4 repair pathset after hashes/tests pass",
+        "Post-repair execution rerun only if needed to prove corrected emitted values"
+      ],
+      "current_gate": "WaveB_Phase34_lineage_drift_repair_pending_after_metadata_freeze",
+      "last_concrete_action": "Pipeline validated the final Wave B development-cycle metadata packet and Repo Custodian committed/pushed the metadata-only report root as 0d8b7307daa225c051a3d5de2d6644e612be6b4a. Phase3/4 review then found concrete lineage drift: stale/hard-coded phase4_target.source_pjp1_sha256, C1_diagnostic metric namespaces for non-C1 phases, and placeholder context_sha256 handling. Engineering routed a repair GO to the existing Phase3/4 Engineer thread, which is actively patching canonical runner/validator surfaces.",
+      "next_concrete_action": "Phase3/4 Engineer returns edited pathset/hashes/tests for lineage drift repair. If green, route exact pathset to Repo Custodian. If repair needs a phone rerun to prove emitted values, classify as PENDING_ACTION_EXECUTION_RERUN and route Execution with a concrete command contract. UI must surface current run as development-cycle mechanics evidence with known Phase3/4 lineage-drift repair pending.",
+      "owner": "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4; Repo Custodian after repair pathset",
+      "status_classification": "PENDING_ACTION_PHASE34_REPAIR_AND_CUSTODY",
+      "timestamp_utc": "2026-07-01T00:13:46Z",
+      "user_action_required": false
+    },
+    {
+      "artifact_waiting_on": [
+        "phase1_exec_permission_repair_frozen_pushed",
+        "repair_freeze_commit_sha",
+        "pushed gemma4-megakernel-native-training branch containing only the bounded repair pathset"
+      ],
+      "current_gate": "WaveB_Phase1_C1_repair_custody_freeze",
+      "last_concrete_action": "Meta tick loaded central state and PRD, polled active lane threads, checked git branch/head/status/log, and verified no visible Custodian repair-freeze commit after repeated prior prompts. Repair pathset remains dirty while Execution and Pipeline correctly hold.",
+      "next_concrete_action": "Repo Custodian must commit and push the exact bounded repair pathset, or user/meta must explicitly re-authorize this same meta thread to perform the bounded custody action because the Custodian lane appears stalled.",
+      "owner": "Repo Custodian 019f138b-288e-7d91-b426-7cdee9f62e28",
+      "status_classification": "BLOCKER_REPO_CUSTODIAN_STALLED",
+      "timestamp_utc": "2026-06-30T22:50:46Z",
+      "user_action_required": true
+    },
+    {
+      "artifact_waiting_on": [
+        "phase1_exec_permission_repair_committed_pushed",
+        "repair_freeze_commit_sha",
+        "pushed gemma4-megakernel-native-training branch containing exactly the four-file repair pathset"
+      ],
+      "current_gate": "WaveB_Phase1_C1_repair_custody_freeze",
+      "last_concrete_action": "Loaded central state and PRD, polled old and replacement Custodian plus Pipeline/Execution/Material/UI/Phase3-4 lanes, verified old Custodian was killed as frozen, verified replacement Custodian is active and has staged exactly the four authorized repair files while leaving unrelated dirty files unstaged.",
+      "next_concrete_action": "Replacement Repo Custodian completes commit and push, returns phase1_exec_permission_repair_committed_pushed with commit SHA and pushed branch; Execution then reruns full C1-C4 Wave B from the new frozen identity starting at Phase1 C1.",
+      "owner": "Replacement Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050",
+      "status_classification": "PENDING_ACTION_REPLACEMENT_CUSTODIAN_STAGING",
+      "timestamp_utc": "2026-06-30T23:00:46Z",
+      "user_action_required": false
+    },
+    {
+      "artifact_waiting_on": [
+        "fresh integrated C1-C4 run label/report root from commit 392a990b1001c7d6b013555bdcf52f971bea48dc",
+        "Phase1 C1 metrics proving linked-native default route with real PQA1 outputs and nonzero token/distinct/latency fields",
+        "then Phase2/Phase3/Phase4 metadata-only metric reports or first precise blocker"
+      ],
+      "current_gate": "WaveB_C1_C4_integrated_rerun_after_phase1_repair_freeze",
+      "last_concrete_action": "Observed replacement Custodian commit/push of the exact four-file Phase1 linked-native repair freeze at 392a990b1001c7d6b013555bdcf52f971bea48dc, verified HEAD/origin moved, sent Execution a direct rerun command, and sent Pipeline a validation-watch update.",
+      "next_concrete_action": "Execution reruns integrated C1-C4 Phase1->Phase2->Phase3->Phase4 from commit 392a990b1001c7d6b013555bdcf52f971bea48dc using a fresh run label/report root, starting at Phase1 C1 and stopping on first precise technical failure.",
+      "owner": "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c",
+      "status_classification": "PENDING_ACTION_EXECUTION_RERUN_FROM_REPAIR_FREEZE",
+      "timestamp_utc": "2026-06-30T23:00:46Z",
+      "user_action_required": false
+    },
+    {
+      "artifact_waiting_on": [
+        "C3 Phase1 metrics contract or precise runtime blocker for fresh rerun",
+        "C4 Phase1 completion after C3",
+        "then Phase2/Phase3/Phase4 metadata-only metric reports or first precise blocker"
+      ],
+      "current_gate": "WaveB_Phase1_C3_active_after_C1_C2_C2_5_green",
+      "last_concrete_action": "Loaded EXECUTIVE_DELIVERY_STATE.json, PRD, HF token status, latest report roots, and active lane threads; verified fresh run root c1_c4_waveB_rerun_20260630T230411Z at commit 392a990b1001c7d6b013555bdcf52f971bea48dc; confirmed C1/C2/C2_5 Phase1 are green with real PQA1 outputs and nonzero metrics while C3 Phase1 is still active with no blocker artifact.",
+      "next_concrete_action": "Execution continues the live C3 Phase1 leg without interruption; Pipeline validates C3/C4 when metrics land, then Execution proceeds to Phase2/Phase3/Phase4 or stops on first precise failure.",
+      "owner": "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c",
+      "status_classification": "PENDING_ACTION_EXECUTION_RUNNING",
+      "timestamp_utc": "2026-06-30T23:10:46Z",
+      "user_action_required": false
+    },
+    {
+      "artifact_waiting_on": [
+        "C3 Phase1 metrics contract or precise runtime blocker for fresh rerun",
+        "C4 Phase1 completion after C3",
+        "then Phase2/Phase3/Phase4 metadata-only metric reports or first precise blocker"
+      ],
+      "current_gate": "WaveB_Phase1_C3_active_after_C1_C2_C2_5_green",
+      "last_concrete_action": "Loaded EXECUTIVE_DELIVERY_STATE.json, PRD, HF token status, latest report artifacts, and active lane threads; confirmed Execution thread remains in progress and C3 Phase1 host wrapper/app wait is live for fresh run c1_c4_waveB_rerun_20260630T230411Z. C1/C2/C2_5 Phase1 remain green; C3 has source/QAI/staging manifests but no metrics contract, no C4 log, and no blocker artifact.",
+      "next_concrete_action": "Execution continues the live C3 Phase1 leg and captures device/logcat observability without interrupting; Pipeline validates C3/C4 when metrics land, then Execution proceeds to Phase2/Phase3/Phase4 or stops on first precise failure.",
+      "owner": "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c",
+      "status_classification": "PENDING_ACTION_EXECUTION_RUNNING",
+      "timestamp_utc": "2026-06-30T23:20:46Z",
+      "user_action_required": false
+    },
+    {
+      "artifact_waiting_on": [
+        "Execution post-repair metadata-only C5_after_C1 preflight report from commit ea2cf60ff4ceccf7e5d8b9ab67d26c13240b508d",
+        "Expected receiving state: no eval_split_forbidden_raw_suffix; c5_material_identity present; first missing checkpoint_identity_path_missing",
+        "Pipeline validation of the post-freeze receiving state and classification as PENDING_ACTION_C5_CHECKPOINT_BASELINE_METRICS if expected"
+      ],
+      "current_gate": "WaveB_C5_after_C1_post_repair_preflight_running",
+      "last_concrete_action": "Repo Custodian froze and pushed the three-file C5 eval split metadata path repair at ea2cf60ff4ceccf7e5d8b9ab67d26c13240b508d. Meta verified local HEAD and origin both resolve to that commit, sent no duplicate prompt because Execution and Pipeline are already active, and moved central ownership from Custodian to Execution.",
+      "next_concrete_action": "Execution completes the already-running metadata-only C5_after_C1 preflight from ea2cf60ff4ceccf7e5d8b9ab67d26c13240b508d; Pipeline validates the report. If expected, route checkpoint identity JSON, stable baseline identity JSON, and executed local C5 metrics JSON as the next concrete inputs.",
+      "owner": "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c",
+      "status_classification": "PENDING_ACTION_EXECUTION_C5_AFTER_C1_PREFLIGHT_POST_REPAIR",
+      "timestamp_utc": "2026-07-01T01:31:16Z",
+      "user_action_required": false
+    },
+    {
+      "artifact_waiting_on": [
+        "Metadata-only polymath_checkpoint_identity_v1 JSON for C5_after_C1 candidate checkpoint/adapter identity if derivable from existing Wave B Phase3/4 artifacts",
+        "Metadata-only polymath_checkpoint_identity_v1 JSON for stable baseline identity if derivable from existing artifacts",
+        "If either identity cannot be produced from existing reports, Phase3/4 must return the exact missing artifact/action; no raw checkpoint/model/adapter/tensor payloads in git"
+      ],
+      "current_gate": "WaveB_C5_after_C1_checkpoint_baseline_identity_pending",
+      "last_concrete_action": "Execution consumed ea2cf60ff4ceccf7e5d8b9ab67d26c13240b508d and reran the metadata-only C5_after_C1 preflight. Pipeline validated the expected post-freeze state: eval_split_forbidden_raw_suffix is gone, c5_material_identity is present, raw suffix scan is clean, and first missing advanced to checkpoint_identity_path_missing with stable_baseline_identity_path_missing and executed_c5_metrics_json_missing downstream.",
+      "next_concrete_action": "Phase3/4 Engineer inspects existing Wave B C1 Phase3/4 artifacts and emits metadata-only candidate checkpoint and stable baseline identity JSONs if valid, or reports the first exact missing artifact/action. Execution reruns C5_after_C1 preflight after Pipeline validates those identities.",
+      "owner": "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4",
+      "status_classification": "PENDING_ACTION_PHASE34_CHECKPOINT_BASELINE_IDENTITY",
+      "timestamp_utc": "2026-07-01T01:31:16Z",
+      "user_action_required": false
+    },
+    {
+      "artifact_waiting_on": [
+        "Real executed local/device C5_after_C1 metrics JSON with schema polymath_c5_executed_metrics_v1",
+        "Exact evaluator command surface capable of consuming the heldout QA split plus candidate and stable checkpoint/adapter payloads, or Engineering pathset if that surface is absent",
+        "Outside-git heldout split payload and candidate/stable checkpoint or adapter payloads matching the accepted identity SHAs; no raw payloads in git"
+      ],
+      "current_gate": "WaveB_C5_after_C1_executed_metrics_json_pending_evaluator_run",
+      "first_missing_green_field": "executed_metrics_C5_after_C1.json from a real heldout evaluator run",
+      "last_concrete_action": "Phase3/4 searched runtime artifacts and found zero executed local C5 metrics JSON files with schema polymath_c5_executed_metrics_v1. Execution and Pipeline already validated C5_after_C1 material split identity, candidate checkpoint identity, stable baseline identity, and the identity-ready preflight; the only remaining green field is a real evaluator run. Metrics such as loss, accuracy, F1, perplexity, calibration, Brier, overfit gap, and learning_score cannot be derived from metadata.",
+      "next_concrete_action": "Engineering identifies or implements the real heldout C5 evaluator surface; Execution verifies outside-git split/checkpoint/baseline payload identities and runs the evaluator when the command surface is present; Pipeline validates the emitted metrics JSON and C5 preflight. Material Steward prepares the remaining C5 split identity matrix in parallel.",
+      "nonclaims": [
+        "Development-cycle Wave B mechanics only unless stronger gates pass",
+        "Not 100k/1M Phase2 authority",
+        "No Phase3 readiness claim",
+        "No Phase4 readiness claim",
+        "No C5 eval pass",
+        "No learning claim",
+        "No model-quality claim"
+      ],
+      "owner": "Engineering Orchestrator 019f138b-d229-7640-98b7-2f185d6beae0 + Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c",
+      "status_classification": "PENDING_ACTION_C5_EVALUATOR_EXECUTION_OR_IMPLEMENTATION",
+      "threads_nudged_this_tick": [
+        "Engineering Orchestrator 019f138b-d229-7640-98b7-2f185d6beae0: identify/implement real C5 evaluator surface",
+        "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: verify outside-git inputs and run real evaluator if surface exists",
+        "Pipeline Integrator 019f138c-35b6-73e1-b26d-3db8c59cf850: enforce polymath_c5_executed_metrics_v1 receiving contract",
+        "Training Material Steward 019f138b-7bfc-7671-b9fc-22c14ab76342: prepare remaining C5 split identity matrix",
+        "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: verify/freeze PRD and central state pathset only if clean"
+      ],
+      "timestamp_utc": "2026-07-01T01:48:19Z",
+      "user_action_required": false
+    }
+  ],
+  "governing_objective": {
+    "nonclaims": [
+      "diagnostics_are_not_100k_or_1M_authority_unless_specific_authority_gate_passes",
+      "synthetic_or_PJP1_derived_HTP_smoke_is_not_Phase3_readiness",
+      "Phase4_consumed_output_proof_is_mechanical_bridge_evidence_not_learning_or_model_quality",
+      "C5_is_post_C4_execution_evaluation_acceptance_not_pre_execution_material_blocker",
+      "integrated_Phase1_4_consumed_output_diagnostic_passed_but_no_100k_1M_authority_or_learning_claim"
+    ],
+    "objective": "deliver accepted C1-C4 curriculum material through Phase 1 -> Phase 2 -> Phase 3 -> Phase 4 on the mobile SoC",
+    "phase3_role": "NPU_HTP_forward_consumer",
+    "phase4_role": "GPU_backward_update_surface",
+    "top_gate": "integrated_execution_requires_material_key_green_and_phase34_key_green_plus_explicit_meta_user_GO"
+  },
+  "keys": {
+    "engineering_key": {
+      "artifact_paths": [
+        "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_20260630T221810Z/phase1_exec_permission_repair_engineering_report.json"
+      ],
+      "authority_lane": "engineering_orchestrator",
+      "authorization_needed": "none_from_user; custody_freeze_commit_push is authorized for Repo Custodian under current integrated cycle",
+      "first_missing_green_field": "Repo Custodian freeze/commit/push of the three-file Phase1 repair pathset before full C1-C4 rerun.",
+      "latest_artifact_sha256": {
+        "phase1_exec_permission_repair_engineering_report": "95d6aa8e8c3b6ca27f3044a1e4c7e273c4c5fa97769ed424484ae78218c16623"
+      },
+      "latest_observed_state": "Engineering deleted the immediate Phase1 C1 execution-path drift: linked APK-native engine is the default path, child exec is explicit-only, and metrics fail closed on native/app blocked, nonzero return, zero token/distinct/latency, or missing PQA1. Bounded C1 phone repair run passed, but full execution must wait for Repo Custodian freeze.",
+      "next_action": "Repo Custodian freezes repair pathset; Execution reruns Phase1 C1-C4 from repaired frozen identity, then Phase2/3/4.",
+      "nonclaims": [
+        "repair evidence is not full C1-C4 pass",
+        "no Phase2/3/4 run from repair evidence",
+        "no C5 pass",
+        "no learning/model-quality claim"
+      ],
+      "status": "phase1_exec_permission_partially_repaired_requires_custody_freeze",
+      "thread_id": "019f138b-d229-7640-98b7-2f185d6beae0"
+    },
+    "execution_key": {
+      "authority_lane": "execution_orchestrator",
+      "current_checkpoint": {
+        "exec_label": "c1_c4_integrated_20260630T164809Z",
+        "material_verification": "pass",
+        "phase1": {
+          "device": "FY25013101C8",
+          "forbidden_payload_scan": "pass_all",
+          "packages": {
+            "C1": {
+              "records": 5180,
+              "token_ids": 216924
+            },
+            "C2": {
+              "records": 3198,
+              "token_ids": 149896
+            },
+            "C2_5": {
+              "records": 20,
+              "token_ids": 1326
+            },
+            "C3": {
+              "records": 56138,
+              "token_ids": 27792304
+            },
+            "C4": {
+              "records": 12487,
+              "token_ids": 1445274
+            }
+          },
+          "status": "pass_all_c1_c4"
+        },
+        "phase2": {
+          "packages": {
+            "C1": {
+              "bytes": 46914176,
+              "sha256": "48a860c400166b667999690f41e3196224044f61b907444d0e9868f2974d5c12"
+            },
+            "C2": {
+              "bytes": 28965184,
+              "sha256": "8faba670c559474c4fd20840f614d6212a047cfd4b8f894da6b74b831df3ea42"
+            },
+            "C2_5": {
+              "bytes": 185216,
+              "sha256": "baae8027b92257ccc53db5fb29ebfe8a576b7dff5ee394728b3ffddda0060673"
+            },
+            "C3": {
+              "bytes": 2241364096,
+              "sha256": "c22fd5978829b85e93b419726dfb7c9228a89003c5faa1777b785e66d2997416"
+            },
+            "C4": {
+              "bytes": 138932192,
+              "sha256": "f80abf3b0090cb05efa66429a363aee29b7b259ab2fb5a475649305181d383b7"
+            }
+          },
+          "raw_pjp1_storage": "Termux home outside git",
+          "status": "pass_all_c1_c4"
+        },
+        "phase34": {
+          "adapter_hash_changed": "true_all",
+          "bounded_int8_oracle_mismatches": 0,
+          "consumed_output_causes_update": "true_all",
+          "htp_actual_matches_expected_relu": "true_all",
+          "native_pjp1_contract_preflight": "pass_all",
+          "opencl_device": "QUALCOMM Adreno(TM) 830",
+          "packages": {
+            "C1": {
+              "adapter_post_sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f",
+              "htp_output_sha256": "eb596435b18457cc511cd7bd6a9530d76bc07379dbae2aa8b8285d4059b918ea",
+              "phase4_report_sha256": "fe096d710437be39b4167a569eee75b4d296cad41aacc1000b7f451283639489",
+              "records": 5180,
+              "tokens": 216924
+            },
+            "C2": {
+              "adapter_post_sha256": "c5575f24b612c4ac386f7587f8d4854f87bf35043f77f5c5f8bf77d8ac1ee491",
+              "htp_output_sha256": "a35ffe6ef79db795343cf1d4a49b24e0b719562ab679c7b7a51b13f35ba3320f",
+              "phase4_report_sha256": "869d66f41a378129d39eb44a2b6f376ea777f19f499e64c0eaa0335e3edf156c",
+              "records": 3198,
+              "tokens": 149896
+            },
+            "C2_5": {
+              "adapter_post_sha256": "980f035674f07cc32c524eec10169dc51c67128912331a2db8cfa257dd89a9f3",
+              "htp_output_sha256": "87454885f3d6cb8e27fd253359cc3bcba3ca3c0d0a1769cae68dead08e29d847",
+              "phase4_report_sha256": "70f0b125cb55dbf052873ce6b12fd76b66bbb1fbc679aa07f1bb3263d3954d62",
+              "records": 20,
+              "tokens": 1326
+            },
+            "C3": {
+              "adapter_post_sha256": "2f9af5478eeef4371303184d382607034053643f062e357df33e73f85803bb5f",
+              "htp_output_sha256": "521c1997cbb790e278c0f33b49cabfb74c35ed89f8beca17fd757732489077ce",
+              "phase4_report_sha256": "b8fe9b7a2e9fd5abce70e887541965aae03fd957573e6823f257cacaedb4740f",
+              "records": 56138,
+              "tokens": 27792304
+            },
+            "C4": {
+              "adapter_post_sha256": "b7b2e4728bc3425c45e0117bcbcdca98ee9c92ace24ca6ba74c1fb70bd06b392",
+              "htp_output_sha256": "7d66d5ed882dbccc42a33199de313eabc140b12d887c30344c993b9e1a6e003e",
+              "phase4_report_sha256": "271fd4de1770020fdd95444ef1455750b659b013d2866c216f946936628997aa",
+              "records": 12487,
+              "tokens": 1445274
+            }
+          },
+          "phase4_blockers": "empty_all",
+          "pjp1_python_consumer_preflight": "pass_all",
+          "qnn_htp_backend": "/data/local/tmp/qairt-2.44/lib/aarch64-android/libQnnHtp.so",
+          "raw_payload_rules": {
+            "raw_model_or_checkpoint_pulled_to_repo": false,
+            "raw_pjp1_pulled_to_host": false,
+            "raw_qnn_output_pulled_to_repo": false,
+            "repo_report_tree_raw_scan": "pass_clean"
+          },
+          "scope": "bounded_packet0_tokens16_per_phase_actual_integrated_pjp1_lineage",
+          "status": "pass_all_c1_c4_integrated_consumed_output"
+        },
+        "pqa1_bridge": {
+          "repo_raw_payload_scan": "pass_clean",
+          "shard_count": 40,
+          "staging": "run-as cat to /tmp host staging, SHA verify, push to /sdcard/Download/polymath/integrated_c1_c4, SHA verify, delete host temp per shard",
+          "status": "pass"
+        },
+        "total_verified_rows": 77023
+      },
+      "first_missing_green_field": "Custodian repair freeze commit/push identity.",
+      "latest_artifact_sha256": {
+        "repair_report": "95d6aa8e8c3b6ca27f3044a1e4c7e273c4c5fa97769ed424484ae78218c16623"
+      },
+      "latest_artifacts": {
+        "repair_report": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_20260630T221810Z/phase1_exec_permission_repair_engineering_report.json"
+      },
+      "latest_observed_state": "Execution verified repair evidence and is holding correctly; no device rerun occurred from the uncommitted patch.",
+      "live_unstructured_progress": {
+        "accepted_manifest_sha256": "d2d76eb16913779131b3af2db893c7723f26a3f4a44272432233df9484534946",
+        "android_build_status": "build_successful_after_ANDROID_HOME_rerun",
+        "android_install_status": "adb_install_success_direct_fallback_after_host_bash_mapfile_bug",
+        "apk_sha256": "137c52a812ac2eb24cdcb23655e692349359f5cd0d4a1282a2dc7138bacd913a",
+        "app_report_root": "/sdcard/Android/data/ai.zer0pa.polymath.lab/files/reports/phase1/2026-06-30T222251Z",
+        "app_report_run_id": "2026-06-30T222251Z",
+        "app_run_result_status": "blocked",
+        "authority_blocker": "Final APK promotion remains blocked until host authority evidence includes matched exact material, enforced high-performance profile state, frequency/profile evidence, and no forbidden payloads.",
+        "corpus_phase": "C1",
+        "distinct_token_ids": 0,
+        "evidence_sha256": {
+          "android_adb_install_log": "429f9955a8e97084c594601cb492d914aff823ddc7165b0b563f5bb837dc06ba",
+          "android_apk_sha256_txt": "0c39260ddf39187b762fa087151286b13914ba46ec849cb5c43d487fd22d0247",
+          "android_build_install_log": "2279b64d7a90db8c8703e6f5abd9580d1bf254234dbc7c9a35a19740b5086bd2",
+          "command_log": "92d50bf402b6c52db075179af4a958325a69c080f529c9db56ff63fb9d52791d",
+          "gate_result": "905c5beeda9e3a350741d58db8794ae6fb9eb433d4b3f050572de8e549c25ad0",
+          "native_phase1_metrics": "7fbec6f88d1960e732feb5d920c2f0ef753211b856f258402c8d6daff329d8aa",
+          "phase1_app_run_result": "0fc4e35eab308e37118c4d4af856fb674fee5665b3a8114a49d7cc67050e85bc",
+          "phase1_metrics_contract": "ec7b73d56c57cae7546e9c5c3d4200233cfa4f6f581d14bcf54d2ef4d6049ff2",
+          "phase1_summary": "53e3a2694e944519dc73bb1c2189199643d31e0278b706346e83452bba3db936",
+          "prepared_command_package": "12c17e36f77a1642a5b39cda8d0c96c92c300164f4fb1e42553c9540f23af471"
+        },
+        "forbidden_payload_scan": "pass",
+        "frozen_git_head": "bbcc229e07a8bca0c55318a0b6ffb51fe0bc6a3d",
+        "gate_result_status": "probe",
+        "metrics_contract_status": "pass",
+        "native_phase1_metrics_status": "fail",
+        "phase1_report_root": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_20260630T221810Z/phase1/c1_c4_waveB_20260630T221810Z_C1_phase1_phase1_c1_pipeline_smoke",
+        "records_per_sec": 0,
+        "records_selected": 5180,
+        "remote_pqa1_all_outputs_present": false,
+        "report_root": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_20260630T221810Z",
+        "run_label": "c1_c4_waveB_20260630T221810Z",
+        "token_ids_per_sec": 0,
+        "token_ids_total": 0,
+        "tokens_per_record_mean": 0,
+        "tokens_per_record_p50": 0,
+        "tokens_per_record_p95": 0,
+        "tokens_per_record_p99": 0,
+        "vocab_coverage_ratio": 0,
+        "wrapper_metrics_status": "pass",
+        "wrapper_summary_status": "phase1_c1_smoke_complete"
+      },
+      "next_expected_action": "Consume Custodian repair freeze commit, then rerun integrated C1-C4 from C1.",
+      "stage0_phase2_identity_repair": {
+        "boundary": [
+          "identity_repair_only",
+          "no_Phase1_Phase2_corpus_gate_rerun",
+          "no_integrated_pipeline_rerun",
+          "no_secrets_sourced",
+          "no_stage_commit_push",
+          "compact_JSON_text_evidence_only_in_repo"
+        ],
+        "comparison_result": {
+          "binary_sha_recorded": true,
+          "build_script_sha_match": true,
+          "source_sha_match": true,
+          "stage0_phase2_identity_green": true
+        },
+        "evidence_dir": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/orchestration/phase2_identity_repair_stage0_rebuild_20260630T212205Z",
+        "exec_label": "stage0_rebuild_20260630T212205Z",
+        "metadata_path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/orchestration/phase2_identity_repair_stage0_rebuild_20260630T212205Z/stage0_phase2_identity_repair_metadata.json",
+        "metadata_sha256": "f6978b8e2ec8cbf558de275217a962e1db461c0999fb30f7f476775c6512bb07",
+        "phone_shared_evidence_root": "/sdcard/Download/polymath_stage0_phase2_identity/stage0_rebuild_20260630T212205Z",
+        "post_rebuild": {
+          "binary_bytes": 111736,
+          "binary_sha256": "045f9318aecb08c4f7f2c4737354ff4766b11cd2edc1b69ba5e745e6458ce8f0",
+          "build_exit_code": 0,
+          "build_script_sha256": "3c284c858aaa0d1e7697c4b63a12330d2e24d62a2391f109f34133463a631716",
+          "source_sha256": "deb7a8439d9a8233e8d700a746bd3d9dfa6cef108a7802386ebef9b22c3d17d9"
+        },
+        "pre_rebuild": {
+          "binary_sha256": "11c81138d181f09dd1a9a4715952c8a5357a91e3f1c1562f2fb9761d4d4c336a",
+          "build_script_sha256": "3c284c858aaa0d1e7697c4b63a12330d2e24d62a2391f109f34133463a631716",
+          "source_sha256": "ba2d4dd48e2d9afeabf69b84019af0375aa739b26e982d69e8084a94a264c61f"
+        },
+        "report_path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/orchestration/phase2_binary_identity_reconciliation.stage0_rebuild_20260630T212205Z.json",
+        "report_sha256": "41d2cde3b72b1b050527558fccba14c0837f55c264528d17dadeef930bbc0bb6",
+        "status": "stage0_phase2_identity_green",
+        "status_classification": "GATE_PASSED_FOR_STAGE0_IDENTITY_REPAIR__NO_AUTHORITY_CLAIM"
+      },
+      "status": "holding_for_custody_freeze_after_phase1_repair",
+      "thread_id": "019f138c-fb51-7c53-a41a-ab8eac950d9c"
+    },
+    "material_key": {
+      "authority_lane": "training_material_steward",
+      "c25_authority": {
+        "hf_head_checked": "504dd91c5a7c8365882d690d52f3de20697c4f7b",
+        "hf_root": "packages/C2_5",
+        "input_records": 20,
+        "missing_files": 0,
+        "package_status": "pass",
+        "promoted_records": 20,
+        "qa_bridge": "20/20 pass",
+        "rejected_records": 0,
+        "remaining_failed_terms": [],
+        "remote_exact_match": "pass",
+        "repo_id": "Zer0pa/polymat-gemmalit-c1-c4-commercial-corpus",
+        "sha_checked": 123,
+        "sha_failures": 0,
+        "splits": {
+          "test": 0,
+          "train": 19,
+          "val": 1
+        }
+      },
+      "c4_candidate_sources_observed": [
+        "common-pile/peS2o_filtered",
+        "common-pile/arxiv_papers_filtered",
+        "common-pile/libretexts_filtered",
+        "common-pile/usgpo_filtered",
+        "pranav-gupta/openstax-qa",
+        "allenai/qasc",
+        "zd21/SciInstruct"
+      ],
+      "c4_route_authorization_options": [
+        "authorize HF source acquisition/download plus narrow C4 source-authority builder/verifier implementation",
+        "optionally authorize API-backed or manual source-grounded generation",
+        "keep MegaScience blocked unless commercial license provenance changes",
+        "keep OpenMathInstruct-2 quarantined as math substitute only"
+      ],
+      "completed_green_fields_observed": [
+        "C1->C2 transition pass",
+        "C2->C2.5 transition pass",
+        "C2.5->C3 transition pass",
+        "C3->C4 transition pass",
+        "C2.5 authoritative HF root packages/C2_5 has 20 input, 20 promoted, 0 rejected",
+        "C2.5 repaired terms accepted: crystal, field strength, radiation, reaction, vapor pressure",
+        "C2.5 remote exact-match pass; stale remote COMET file removed",
+        "C4 v2 authority evidence pass per HF storage handover",
+        "HF dataset repo verified by SHA: Zer0pa/polymat-gemmalit-c1-c4-commercial-corpus",
+        "HF is source of truth; local package roots are transient/deleted after verification"
+      ],
+      "hf_source_of_truth": {
+        "immutable_revision": "504dd91c5a7c8365882d690d52f3de20697c4f7b",
+        "remote_layout": [
+          "packages/C1",
+          "packages/C2",
+          "packages/C2_5",
+          "packages/C3",
+          "packages/C4"
+        ],
+        "repo_id": "Zer0pa/polymat-gemmalit-c1-c4-commercial-corpus",
+        "repo_url": "https://huggingface.co/datasets/Zer0pa/polymat-gemmalit-c1-c4-commercial-corpus",
+        "revision_lock_status": "locked_verified",
+        "revision_verification_report_sha256": "0cb70fc473b3abab52f82a2a6a9c505d73e1c8877ac0ed0a2623b715ad6fc4ac",
+        "sha_checked_count": 124,
+        "sha_failures": 0,
+        "stage0_dataset_freeze_status": "green",
+        "storage_rule": "HF is source of truth; local package roots are transient build/cache artifacts after verification",
+        "upload_verification_status": "pass",
+        "verified_sha_streams": 10,
+        "visibility": "private"
+      },
+      "latest_artifact_sha256": {
+        "c25_authority_resolution_md": "d55c546d26d8f62f76bdad6f6e4b5207aa99af74eda45aa3b41dd8ba271378ff",
+        "c25_full": "323f3e256bb8a72d4e1c597b184f402447af112a62f90adc871a7a306c5bf4eb",
+        "c25_hf_upload_verification_report": "0c1fd25b9b219bc1d0146b6760db4e94d1d8a855e6f1e1be13b089e92500bf0b",
+        "c25_manifest": "b1b7ed6f03cc2da281959c87dfa6ffb84cddfb23805e76c3682fc916a6284316",
+        "c25_manifest_file": "b1b7ed6f03cc2da281959c87dfa6ffb84cddfb23805e76c3682fc916a6284316",
+        "c25_qa_full": "ec5a85f111ba42bf778fffd98212f3f92ec871e9eb0a757196393cef99d2ba83",
+        "c25_repair_rejudge_report": "e9bf1baaffa63d7580f7eaf77e3274b096c0cd698298d643eda5da970b57f026",
+        "c3_manifest": "75635467d25f02e09590ce86583ccc0693169970c8ef678d4ee9ea07e6c13edf",
+        "c4_replacement_authorization_json": "86775ed5d31629f26bdfcf5dce5abfea81c66f5b3970a4d004e492c4be7a6865",
+        "c4_replacement_authorization_md": "f066770b4915022bc7d7a1196e3b1588cef7d5b8389fd5af9635fdfdfa597068",
+        "c4_v2_handover": "10a5f95e4cc6b7b8f71b1f3aae6614551d8fea5c83466a08577e4a0cd20a26cd",
+        "current_hf_c25_full": "60b257e8294c0282f84a01a860ca4e565feba3c052e2480285936eb1f02dfe03",
+        "current_hf_c25_qa_full": "2a3700e9779a57c51ecd991b6c6a3faf9338c0dff19aec9a9273d740369b3e8b",
+        "hf_token_access_status": "4a7080a85ddd48ad2d4c87692fb443477cf1518e9ae031a54a3ebe4d344ca7d7",
+        "repaired_c25_full": "323f3e256bb8a72d4e1c597b184f402447af112a62f90adc871a7a306c5bf4eb",
+        "repaired_c25_manifest_identity": "sha256:7b79a99e5ef41ee4aac38a250eadd70fb443a6b1239ecf3fd9b578861ca2481a",
+        "repaired_c25_qa_full": "ec5a85f111ba42bf778fffd98212f3f92ec871e9eb0a757196393cef99d2ba83",
+        "stage0_hf_revision_verification_report": "0cb70fc473b3abab52f82a2a6a9c505d73e1c8877ac0ed0a2623b715ad6fc4ac",
+        "stage0_integrated_material_verification": "871a9c4b2b7d05148ef12be55172a70e1bc1185bb114db07ce64013dad1396bb",
+        "stage0_material_revision_lock": "078a9a208fb6fae06db64b5306cd4069912af867062a6689ecc0340de2be2edc",
+        "structured_c3_full": "f2dc2f0999df4cb5d5c19c58a1a46a78c73177abfc66edc73ce3895b5cd45e11",
+        "structured_c3_manifest_identity": "sha256:6f9748ded392047b95bd863088fbefb10b14c679569f03cda9842ab902b71e1e",
+        "structured_c3_qa_full": "c3f72ae59663165396074ef070860c394d779d1406efe78adfe13ee31b0490c9",
+        "transition_gate_plan": "9f0e814f4387b46fe6133159acf0b7dda821cc856459cb9f1075e7b38456ed95"
+      },
+      "latest_artifacts": {
+        "c1_c4_authority_manifest": "/Users/Zer0pa/Polymat AI/runtime/reports/corpus_pipeline/c1_c4_curriculum_pack_20260630T_c25_repair5_authority/c1_c4_curriculum_pack_manifest.json",
+        "c1_c4_replay_schedule": "/Users/Zer0pa/Polymat AI/runtime/reports/corpus_pipeline/c1_c4_curriculum_pack_20260630T_c25_repair5_authority/replay_schedule.json",
+        "c1_c4_transition_gate_plan": "/Users/Zer0pa/Polymat AI/runtime/reports/corpus_pipeline/c1_c4_curriculum_pack_20260630T_c25_repair5_authority/transition_gate_plan.json",
+        "c25_authority_curriculum_manifest": "/Users/Zer0pa/Polymat AI/runtime/reports/corpus_pipeline/c1_c4_curriculum_pack_20260630T_c25_repair5_authority/c1_c4_curriculum_pack_manifest.json",
+        "c25_authority_resolution": "/Users/Zer0pa/Polymat AI/runtime/reports/corpus_pipeline/c25_authority_resolution_20260630T_repair5_hf/C2_5_AUTHORITY_RESOLUTION_2026-06-30.md",
+        "c25_authority_transition_gate_plan": "/Users/Zer0pa/Polymat AI/runtime/reports/corpus_pipeline/c1_c4_curriculum_pack_20260630T_c25_repair5_authority/transition_gate_plan.json",
+        "c25_hf_authority_verification": "/Users/Zer0pa/Polymat AI/runtime/reports/corpus_pipeline/hf_publish_c25_repair5_20260630T_resolve_authority/hf_upload_verification_report.json",
+        "c25_hf_upload_verification": "/Users/Zer0pa/Polymat AI/runtime/reports/corpus_pipeline/hf_publish_c25_repair5_20260630T_resolve_authority/hf_upload_verification_report.json",
+        "c25_manifest": "/Users/Zer0pa/Polymat AI/corpus_packages/commercial/20260630T_c25_repair5_v1/20260630T_repair5_v1/phase_C2.5_scivocab_bridge_frontier_v1/phase_C2.5_build_manifest.json",
+        "c25_repair_rejudge_report": "/Users/Zer0pa/Polymat AI/runtime/reports/corpus_pipeline/c25_scivocab_bridge_20260630T_repair5_v1/c25_repair_rejudge_report.json",
+        "c3_manifest": "/Users/Zer0pa/Polymat AI/corpus_packages/commercial/20260630T_c3_structured_v1/phase_C3_sciinstruct_qasc_openstax_en_strict_v2_structured/phase_C3_build_manifest.json",
+        "c4_replacement_authorization_json": "/Users/Zer0pa/Polymat AI/runtime/reports/corpus_pipeline/c1_c4_curriculum_pack_20260630T_exec/steward_c4_replacement_authorization/C4_REPLACEMENT_AUTHORIZATION_PACKAGE_20260630.json",
+        "c4_replacement_authorization_md": "/Users/Zer0pa/Polymat AI/runtime/reports/corpus_pipeline/c1_c4_curriculum_pack_20260630T_exec/steward_c4_replacement_authorization/C4_REPLACEMENT_AUTHORIZATION_PACKAGE_20260630.md",
+        "c4_replacement_requirements": "/Users/Zer0pa/Polymat AI/runtime/reports/corpus_pipeline/c1_c4_curriculum_pack_20260630T_exec/steward_repair_audit/c4_science_authority_replacement_requirements.json",
+        "hf_c1_c4_curriculum_manifest": "/Users/Zer0pa/Polymat AI/runtime/reports/corpus_pipeline/c1_c4_curriculum_pack_20260630T_hf_c4_v2/c1_c4_curriculum_pack_manifest.json",
+        "hf_c4_v2_orchestrator_handover": "/Users/Zer0pa/Polymat AI/runtime/reports/corpus_pipeline/orchestrator_handover_20260630T_hf_storage_c4_v2/ORCHESTRATOR_HANDOVER_HF_STORAGE_C4_V2_2026-06-30.md",
+        "hf_local_deletion_report": "/Users/Zer0pa/Polymat AI/runtime/reports/corpus_pipeline/hf_publish_c1_c4_20260630T_hf_c4_v2/local_deletion_report_20260630T_hf_c4_v2.json",
+        "hf_token_access_status": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/orchestration/hf_token_access_status_20260630.json",
+        "hf_upload_manifest": "/Users/Zer0pa/Polymat AI/runtime/reports/corpus_pipeline/hf_publish_c1_c4_20260630T_hf_c4_v2/hf_upload_manifest.json",
+        "hf_upload_verification_report": "/Users/Zer0pa/Polymat AI/runtime/reports/corpus_pipeline/hf_publish_c1_c4_20260630T_hf_c4_v2/hf_upload_verification_report.json",
+        "stage0_hf_revision_verification_report": "/Users/Zer0pa/Polymat AI/runtime/reports/corpus_pipeline/stage0_material_freeze_20260630T_steward/hf_revision_504dd91_c1_c4_sha_verification.json",
+        "stage0_integrated_material_verification": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_integrated_20260630T164809Z/material_verification.json",
+        "stage0_material_revision_lock": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/orchestration/material_revision_lock.json"
+      },
+      "latest_observed_state": "Training Material Steward confirms Stage0 dataset freeze green for the accepted C1-C4 HF source-of-truth at immutable revision 504dd91c5a7c8365882d690d52f3de20697c4f7b. Read-only revision-pinned verification checked 10/10 manifest and QA bridge SHA streams with all pass; repo-local material_revision_lock.json and patched integrated material_verification.json now bind the execution material to the immutable HF commit. C2.5 remains authoritative at packages/C2_5 with 20/20 pass and C4 v2 remains authoritative; C4->C5 stays post-C4 evaluation, not a pre-execution material blocker.",
+      "next_expected_artifact": "Repo Custodian custody acceptance for material-freeze metadata pathset; Stage0 then remains blocked on code/Phase2 identity, not material.",
+      "previous_audit_status": "blocked_c4_v2_passed_hf_source_of_truth_c25_c5_transition_unresolved",
+      "required_green_fields": [
+        "material_key_status=green_for_C1_C4_Phase1_4_pre_C5_scope",
+        "Pipeline confirms HF C1-C4 package identities and transition gates C1->C4 pass",
+        "Execution GO package reads HF source-of-truth, not deleted local package roots",
+        "Replay schedule bound to HF package hashes",
+        "Quarantine list and nonclaims preserved",
+        "C5 treated as post-C4 execution/evaluation acceptance gate after training, not pre-execution material blocker"
+      ],
+      "status": "material_ready_for_c1_c4_phase1_4_pre_c5_eval",
+      "thread_id": "019f138b-7bfc-7671-b9fc-22c14ab76342"
+    },
+    "phase34_key": {
+      "authority_lane": "phase_three_four_engineer",
+      "first_missing_green_field": "Authorized integrated C1/C2/C2_5/C3/C4 Phase3/4 metric reports and C5 evaluation authority; Wave B overall also waits on Phase1/2 remaining metrics.",
+      "latest_artifact_sha256": {
+        "active_summary": "65039e0bb24049416cbcfc04c6914b625ef0c752e025668bfc45dc2a0a1afcce",
+        "adapter_post_sha256": "9e53eea0b8936ede2e164a4988f5a6441ab923e494f85af2a816b512f89bcb30",
+        "adapter_pre_sha256": "e0d1c66ac876c2b6fbbe9e88f1b02dd37201d8ffba10afcd44f1c558fc32f7c9",
+        "android_binary": "ff4a7dc77b5319a6baff56cfb9d850ad8281385b1032c31f0d54f47157a4e756",
+        "ingestion_contract": "598582e8d505a22182f76eb4cffa638c5733f1cf740417eb9844d175815b6a5d",
+        "opencl_device": "QUALCOMM Adreno(TM) 830",
+        "phase4_bridge_cell_tests": "4fa96cdd5dcf69b8019b78e2741ec1d2d9f4056299e7ab8ab408d49003c2907b",
+        "phase4_bridge_cell_validator": "98c197b3dfc0f4f21121fdf2e610ba9bb7dee125e310989386ebe54624f940c3",
+        "phase4_report": "a19146b442645e4ec42209f8ad3c7369325b4d7bb65b7a4b0f9d70538d2553df",
+        "runner_source": "57ed840461313cefd4daf1e51d056f9d4a56b818e0461485ffa4aac1b7f3dd5f",
+        "waveB_phase34_surface_map": "6ac39c68f5ade6206863969444f03aefb3894c6b01513a31ecdc481babd3c67e",
+        "waveB_phase34_tests": "8f4148d8997b67b65ed8ad151fd2e167074ac9aba5a5358149e45b5824418841",
+        "waveB_phase34_validator": "66a8fe2f0b0869fd64b94e04b845ea43c947fd5c3cbbf886b919bfb1ec270b79"
+      },
+      "latest_artifacts": {
+        "active_summary": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/polar_phase34_consumer_preflight/active_wave/active_wave_summary.json",
+        "ingestion_contract": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/polar_phase34_consumer_preflight/active_wave/PHASE34_INGESTION_CONTRACT_FOR_EXECUTION.md",
+        "phase4_bridge_cell_tests": "/Users/Zer0pa/Polymat AI/Polymath-AI/tests/test_phase4_bridge_cell.py",
+        "phase4_bridge_cell_validator": "/Users/Zer0pa/Polymat AI/Polymath-AI/polymath_ai/polar/phase4_bridge_cell.py",
+        "phase4_bridge_report": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/polar_phase34_consumer_preflight/active_wave/phase4_bridge_cell/phase4_bridge_cell_report.json",
+        "phase4_bridge_runner_source": "/Users/Zer0pa/Polymat AI/Polymath-AI/native/polar_phase34_consumer_preflight/phase4_bridge_cell_runner.cpp",
+        "waveB_phase34_surface_map": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/polar_phase34_consumer_preflight/active_wave/PHASE34_WAVEB_METRIC_SURFACES.md",
+        "waveB_phase34_tests": "/Users/Zer0pa/Polymat AI/Polymath-AI/tests/test_phase4_bridge_cell.py",
+        "waveB_phase34_validator": "/Users/Zer0pa/Polymat AI/Polymath-AI/polymath_ai/polar/phase4_bridge_cell.py"
+      },
+      "latest_observed_state": "Pipeline validated the Phase3/4 Wave B source-validator pathset against PRD expectations: C1/C2/C2_5/C3/C4 supported, diagnostic C1_diagnostic supported, required Phase3 and Phase4 metric names present, null metric explanations required, readiness/learning claims fail closed. This is source-validator readiness only, not execution or readiness authority.",
+      "next_expected_artifact": "Execution final GO package consuming material pass plus Phase3/4 consumed-output proof; no readiness or learning claim.",
+      "required_green_fields": [
+        "consumed_output_proof_passed",
+        "Phase4 GPU/OpenCL rank16 MSE/SGD cell consumes Phase3 HTP output plus PJP1-derived target",
+        "compact hashes and telemetry emitted",
+        "raw payload boundaries preserved",
+        "validator blockers empty",
+        "phase3_ready_claim and phase4_ready_claim remain false unless separate authority gates pass"
+      ],
+      "status": "phase34_waveB_metric_surfaces_pipeline_validated_partial_green",
+      "thread_id": "019f13da-d897-7ba2-8ed1-b959892f5ed4"
+    },
+    "pipeline_key": {
+      "authority_lane": "pipeline_integrator",
+      "first_missing_green_field": "Full rerun reports after custody freeze; repair evidence alone is not full C1-C4 validation.",
+      "latest_artifact_sha256": {
+        "accepted_full_code_hash_manifest": "6d556b700d78002b0e6f6a531d8a9dbd2a2aad3425d9ca4245fdd125760321e5",
+        "material_revision_lock": "078a9a208fb6fae06db64b5306cd4069912af867062a6689ecc0340de2be2edc",
+        "phase2_identity_report": "41d2cde3b72b1b050527558fccba14c0837f55c264528d17dadeef930bbc0bb6"
+      },
+      "latest_artifacts": {
+        "accepted_full_code_hash_manifest": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/orchestration/accepted_full_code_hash_manifest_20260630T2118Z.json",
+        "material_revision_lock": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/orchestration/material_revision_lock.json",
+        "phase2_identity_evidence_dir": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/orchestration/phase2_identity_repair_stage0_rebuild_20260630T212205Z",
+        "phase2_identity_report": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/orchestration/phase2_binary_identity_reconciliation.stage0_rebuild_20260630T212205Z.json"
+      },
+      "latest_observed_state": "Pipeline has received the Phase1 C1 repair evidence and is validating that positive tokenizer metrics and PQA1 hashes replace the prior zero-metric false positive. Full pipeline validation remains pending on Custodian freeze and Execution rerun.",
+      "next_expected_action": "Pipeline validates post-freeze Execution reports against PRD metric gates.",
+      "route": {
+        "execution_read_model": {
+          "local_package_roots": "do_not_use_deleted_after_HF_verification",
+          "paths": {
+            "C1": "hf://datasets/Zer0pa/polymat-gemmalit-c1-c4-commercial-corpus/packages/C1/",
+            "C2": "hf://datasets/Zer0pa/polymat-gemmalit-c1-c4-commercial-corpus/packages/C2/",
+            "C2_5": "hf://datasets/Zer0pa/polymat-gemmalit-c1-c4-commercial-corpus/packages/C2_5/",
+            "C3": "hf://datasets/Zer0pa/polymat-gemmalit-c1-c4-commercial-corpus/packages/C3/",
+            "C4": "hf://datasets/Zer0pa/polymat-gemmalit-c1-c4-commercial-corpus/packages/C4/"
+          },
+          "repo_id": "Zer0pa/polymat-gemmalit-c1-c4-commercial-corpus"
+        },
+        "to_execution_preparation": true,
+        "to_execution_run": false
+      },
+      "status": "phase1_c1_repair_evidence_received_validation_in_progress",
+      "thread_id": "019f138c-35b6-73e1-b26d-3db8c59cf850",
+      "wave_b_receiving_checklist_ready": true
+    },
+    "repo_custody_key": {
+      "artifact_paths": {
+        "freeze_pathset": [
+          "scripts/android_lab/run_phase1_c1_pipeline_smoke.py",
+          "scripts/android_lab/build_install_phase1_app.sh",
+          "tests/test_metrics_contract.py"
+        ],
+        "repair_report": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_20260630T221810Z/phase1_exec_permission_repair_engineering_report.json"
+      },
+      "authority_lane": "repo_custodian",
+      "authorization_needed": "none_from_user_for_current_cycle; Custodian is authorized to freeze this repair pathset but must avoid unrelated dirty files/raw payloads/secrets",
+      "first_missing_green_field": "phase1_exec_permission_repair_frozen_pushed commit SHA and pushed branch from Repo Custodian.",
+      "latest_artifact_sha256": {
+        "repair_report": "95d6aa8e8c3b6ca27f3044a1e4c7e273c4c5fa97769ed424484ae78218c16623",
+        "scripts/android_lab/build_install_phase1_app.sh": "4f784f7f2309a47699feb8e2970d91191de73626beb707acb8b3e202331c5071",
+        "scripts/android_lab/run_phase1_c1_pipeline_smoke.py": "954763c2dfe72f6760d3b6ad732cba1d73060c42a9e6d23a333b3c11e5a34042",
+        "tests/test_metrics_contract.py": "fccafd4b58582ee65a393c2203cd39ac52884a383e8e98ec278aa8851e597ad5"
+      },
+      "latest_observed_state": "Repo Custodian thread remains active/in-progress but no repair freeze commit or CENTRAL_STATE_UPDATE is visible. Meta sent a pressure follow-up with exact pathset/hashes and requested either phase1_exec_permission_repair_frozen_pushed or repo_freeze_failed.",
+      "next_expected_action": "Custodian returns CENTRAL_STATE_UPDATE status phase1_exec_permission_repair_frozen_pushed or precise repo_freeze_failed.",
+      "nonclaims": [
+        "custody pending is not execution pass",
+        "not 100k/1M authority",
+        "not Phase3/4 readiness",
+        "not learning/model-quality evidence"
+      ],
+      "status": "phase1_repair_freeze_prompt_resent_no_visible_progress",
+      "status_classification": "PENDING_ACTION_NO_VISIBLE_CUSTODIAN_PROGRESS_ONE_TICK",
+      "thread_id": "019f138b-288e-7d91-b426-7cdee9f62e28",
+      "verification_commands": [
+        "shasum -a 256 on exact three-file pathset and optional metadata report",
+        "python3.11 -m py_compile scripts/android_lab/run_phase1_c1_pipeline_smoke.py",
+        "python3.11 -m pytest -q tests/test_metrics_contract.py",
+        "bash -n scripts/android_lab/build_install_phase1_app.sh",
+        "git diff --check -- exact pathset",
+        "bounded raw suffix and secret scan over staged pathset"
+      ]
+    },
+    "stage0_code_commit_or_manifest": "ea2cf60ff4ceccf7e5d8b9ab67d26c13240b508d"
+  },
+  "lane_status": {
+    "engineering_orchestrator": {
+      "artifact_paths": [
+        "polymath_ai/polar/c5_eval.py",
+        "scripts/host/run_c5_eval.py",
+        "tests/test_c5_eval_contract.py"
+      ],
+      "first_missing_green_field": "Repo Custodian freeze of three-file C5 validator repair pathset.",
+      "latest_observed_state": "Engineering patched the bounded eval split metadata exception, proved 16 tests pass, and proved local metadata preflight now reaches checkpoint_identity_path_missing instead of eval_split_forbidden_raw_suffix.",
+      "next_action": "Stand by for Execution/Pipeline findings from C5_after_C1 input preflight.",
+      "next_expected_action": "Stand by unless Custodian finds a precise verification failure.",
+      "nonclaims": [
+        "Development-cycle Wave B mechanics and Phase3/4 lineage-clean proof are preserved and frozen",
+        "Not 100k/1M Phase2 authority",
+        "No Phase3 readiness claim",
+        "No Phase4 readiness claim",
+        "No C5 eval pass",
+        "No Comet-backed accepted run claim yet",
+        "No learning claim",
+        "No model-quality claim"
+      ],
+      "sha256_or_identity_fields": {
+        "custody_commit": "d9f9caaeb06cf98f8c5b7c3f5a6965269cd2a875",
+        "identity_schema_sha256": "6769bd6776dd545fdb740333071e71a899c843103261fd68c35af22f281bc044"
+      },
+      "status": "c5_eval_split_validator_repair_ready_for_custody",
+      "status_classification": "COMPLETE_FOR_ENGINEERING_REPAIR_PENDING_CUSTODY_FREEZE",
+      "thread_id": "019f138b-d229-7640-98b7-2f185d6beae0",
+      "user_action_required": false
+    },
+    "execution_orchestrator": {
+      "artifact_paths": [
+        "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/c5_eval_C5_after_C1_c1_c4_waveB_rerun_20260630T230411Z.json",
+        "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/c5_eval_split_identity_C5_after_C1.json"
+      ],
+      "first_missing_green_field": "checkpoint_identity_path_missing",
+      "next_action": "Rerun metadata-only C5_after_C1 preflight after checkpoint and stable baseline identities are validated.",
+      "sha256_or_identity_fields": {
+        "commit_consumed": "ea2cf60ff4ceccf7e5d8b9ab67d26c13240b508d",
+        "eval_split_identity_sha256": "ea8bf6e9876febad8b125e78deed2d8ef534daaa7dd1e38126a07027cc6c8ca9",
+        "report_sha256": "aec39de048944decbf169691964f1d0814e4e2d84695e11801b8117177bfcff8"
+      },
+      "status": "c5_after_c1_checkpoint_identity_missing",
+      "status_classification": "COMPLETE_FOR_POST_REPAIR_PREFLIGHT_PENDING_NEXT_INPUTS",
+      "thread_id": "019f138c-fb51-7c53-a41a-ab8eac950d9c",
+      "user_action_required": false
+    },
+    "phase34_engineer": {
+      "artifact_paths": [
+        "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/c5_eval_C5_after_C1_c1_c4_waveB_rerun_20260630T230411Z.json"
+      ],
+      "first_missing_green_field": "C5_after_C1 candidate checkpoint identity JSON, then stable baseline identity JSON, then executed local C5 metrics JSON.",
+      "next_action": "Emit metadata-only polymath_checkpoint_identity_v1 JSONs for candidate and stable baseline if derivable, or return exact missing artifact/action.",
+      "status": "c5_after_c1_checkpoint_baseline_identity_inspection_active",
+      "status_classification": "PENDING_ACTION_PHASE34_CHECKPOINT_BASELINE_IDENTITY",
+      "thread_id": "019f13da-d897-7ba2-8ed1-b959892f5ed4",
+      "user_action_required": false
+    },
+    "pipeline_integrator": {
+      "artifact_paths": [
+        "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/c5_eval_C5_after_C1_c1_c4_waveB_rerun_20260630T230411Z.json",
+        "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/c5_eval_split_identity_C5_after_C1.json"
+      ],
+      "first_missing_green_field": "checkpoint_identity_path_missing",
+      "next_action": "Validate Phase3/4-produced checkpoint/baseline identities when emitted.",
+      "sha256_or_identity_fields": {
+        "code_head": "ea2cf60ff4ceccf7e5d8b9ab67d26c13240b508d",
+        "eval_split_sha256": "da41c5362398f24e0e0dd9df9a5cf0594435a455871fa77ab74d9312e6c8e9b2",
+        "report_sha256": "aec39de048944decbf169691964f1d0814e4e2d84695e11801b8117177bfcff8"
+      },
+      "status": "c5_after_c1_checkpoint_identity_missing",
+      "status_classification": "PENDING_ACTION_C5_CHECKPOINT_BASELINE_METRICS",
+      "thread_id": "019f138c-35b6-73e1-b26d-3db8c59cf850",
+      "user_action_required": false
+    },
+    "repo_custodian": {
+      "next_action": "No action unless Pipeline or Execution exposes a new scoped pathset requiring custody.",
+      "sha256_or_identity_fields": {
+        "commit": "ea2cf60ff4ceccf7e5d8b9ab67d26c13240b508d",
+        "pathset_sha256": {
+          "polymath_ai/polar/c5_eval.py": "be8f7befa1862956b0ffd1b924d2e4aace63a1e03036c88170f3c8c0fd8ed5bc",
+          "scripts/host/run_c5_eval.py": "be88f7635ae15358a502bfecc85022163107b59f868d19d76d2852851d993ed3",
+          "tests/test_c5_eval_contract.py": "7ab613707f3b907e78deaf698ede68a907ba547a9d7888783f05eda5bdde438e"
+        }
+      },
+      "status": "c5_eval_split_metadata_path_repair_committed_pushed",
+      "status_classification": "COMPLETE_FOR_THIS_GATE",
+      "thread_id": "019f1ac2-0f0f-7721-bf46-ad402dbd9050",
+      "user_action_required": false
+    },
+    "training_material_steward": {
+      "artifact_paths": [
+        "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/c5_eval_split_identity_C5_after_C1.json"
+      ],
+      "first_missing_green_field": "none for C5_after_C1 eval split identity",
+      "latest_observed_state": "C5_after_C1 eval split identity is validated by Pipeline at immutable HF revision 504dd91c5a7c8365882d690d52f3de20697c4f7b; current issue is Engineering validator handling of metadata suffixes.",
+      "next_action": "Pipeline validates artifact; Steward stands by for later C5 material identities.",
+      "nonclaims": [
+        "Development-cycle Wave B mechanics and Phase3/4 lineage-clean proof are preserved and frozen",
+        "Not 100k/1M Phase2 authority",
+        "No Phase3 readiness claim",
+        "No Phase4 readiness claim",
+        "No C5 eval pass",
+        "No Comet-backed accepted run claim yet",
+        "No learning claim",
+        "No model-quality claim"
+      ],
+      "sha256_or_identity_fields": {
+        "artifact_sha256": "ea8bf6e9876febad8b125e78deed2d8ef534daaa7dd1e38126a07027cc6c8ca9",
+        "eval_point": "C5_after_C1",
+        "eval_split_path": "packages/C1/qa_bridge/phase_C1_test.qa.jsonl",
+        "eval_split_sha256": "da41c5362398f24e0e0dd9df9a5cf0594435a455871fa77ab74d9312e6c8e9b2",
+        "hf_repo_id": "Zer0pa/polymat-gemmalit-c1-c4-commercial-corpus",
+        "hf_revision": "504dd91c5a7c8365882d690d52f3de20697c4f7b",
+        "hf_revision_is_immutable": true,
+        "record_count": 53,
+        "schema_version": "polymath_c5_eval_split_identity_v1"
+      },
+      "status": "c5_after_c1_eval_split_identity_validated_no_material_regression",
+      "status_classification": "COMPLETE_FOR_C5_AFTER_C1_EVAL_SPLIT_IDENTITY",
+      "thread_id": "019f138b-7bfc-7671-b9fc-22c14ab76342",
+      "user_action_required": false
+    },
+    "ui_engineer": {
+      "artifact_paths": [
+        "apps/android-redmagic-lab/app/src/main/java/ai/zer0pa/polymath/lab/ui/LabState.kt",
+        "apps/android-redmagic-lab/app/src/main/java/ai/zer0pa/polymath/lab/ui/screens/LabConsoleScreen.kt"
+      ],
+      "first_missing_green_field": "C5 eval pass packet and Comet/offline logging packet",
+      "next_action": "Wait for C5/Comet execution-contract evidence before adding any C5/Comet pass surfaces; route exact UI pathset to Repo Custodian only when meta authorizes a UI freeze pathset.",
+      "nonclaims": [
+        "Development-cycle Wave B mechanics and Phase3/4 lineage-clean proof are preserved and frozen",
+        "Not 100k/1M Phase2 authority",
+        "No Phase3 readiness claim",
+        "No Phase4 readiness claim",
+        "No C5 eval pass",
+        "No Comet-backed accepted run claim yet",
+        "No learning claim",
+        "No model-quality claim"
+      ],
+      "sha256_or_identity_fields": {
+        "apps/android-redmagic-lab/app/src/main/java/ai/zer0pa/polymath/lab/ui/LabController.kt": "7a961c00bf8f87ba91fa4025c8b8c8da74f60600624133cfd268a5455b3b5ff6",
+        "apps/android-redmagic-lab/app/src/main/java/ai/zer0pa/polymath/lab/ui/LabState.kt": "9433318aab5fbfd6c2cdc6068c4ed32ca2f2f42e80334569c7f593a45935df57",
+        "apps/android-redmagic-lab/app/src/main/java/ai/zer0pa/polymath/lab/ui/screens/LabConsoleScreen.kt": "fd50d6f42f31caf73b32f6a70329c2451d9b26cc441df8544be98c331bad821e",
+        "verification_command": "ANDROID_HOME=/usr/local/share/android-commandlinetools ANDROID_SDK_ROOT=/usr/local/share/android-commandlinetools gradle --no-daemon :app:compileDebugKotlin",
+        "verification_result": "BUILD SUCCESSFUL in 51s"
+      },
+      "status": "ui_status_surface_updated_for_phase34_lineage_clean_proof_frozen",
+      "status_classification": "GREEN_FOR_UI_STATUS_SURFACE_PENDING_CUSTODY_PATHSET",
+      "user_action_required": false
+    }
+  },
+  "last_driver_actions": [
+    {
+      "action": "recorded Execution and Pipeline validation of post-repair C5_after_C1 preflight; routed active edge to Phase3/4 checkpoint/baseline identity inspection",
+      "owner": "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4",
+      "timestamp_utc": "2026-07-01T01:31:16Z",
+      "user_action_required": false
+    },
+    {
+      "action": "recorded Custodian freeze at ea2cf60 and shifted active ownership to Execution post-repair C5_after_C1 metadata preflight; Pipeline is active on receiving validation",
+      "owner": "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c",
+      "timestamp_utc": "2026-07-01T01:31:16Z",
+      "user_action_required": false
+    },
+    {
+      "action": "recorded Engineering C5 validator repair as ready for Custodian freeze and confirmed Execution/Pipeline are holding for post-freeze rerun/validation",
+      "owner": "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050",
+      "timestamp_utc": "2026-07-01T01:30:25Z",
+      "user_action_required": false
+    },
+    {
+      "action": "recorded C5 eval split validator false-positive and moved active ownership to Engineering repair; no new thread or user action required",
+      "owner": "Engineering Orchestrator 019f138b-d229-7640-98b7-2f185d6beae0",
+      "timestamp_utc": "2026-07-01T01:28:28Z",
+      "user_action_required": false
+    },
+    {
+      "action": "recorded Pipeline validation of C5_after_C1 eval split identity and routed next metadata-only preflight to Execution",
+      "owner": "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c",
+      "timestamp_utc": "2026-07-01T01:18:46Z",
+      "user_action_required": false
+    },
+    {
+      "action": "recorded Execution C5_after_C1 fail-closed preflight and Steward eval split identity; routed identity to Pipeline for validation",
+      "owner": "Pipeline Integrator 019f138c-35b6-73e1-b26d-3db8c59cf850",
+      "timestamp_utc": "2026-07-01T01:18:46Z",
+      "user_action_required": false
+    },
+    {
+      "action": "recorded Repo Custodian C5 evaluator command-surface custody at d9f9caa and routed post-custody C5_after_C1 input-artifact preflight to Execution",
+      "owner": "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c",
+      "timestamp_utc": "2026-07-01T01:08:46Z",
+      "user_action_required": false
+    },
+    {
+      "action": "confirmed Engineering thread is active after C5 evaluator implementation follow-up and is preparing ready-for-custody result",
+      "owner": "Engineering Orchestrator 019f138b-d229-7640-98b7-2f185d6beae0",
+      "timestamp_utc": "2026-07-01T01:03:31Z",
+      "user_action_required": false
+    },
+    {
+      "action": "sent C5 evaluator/checkpoint identity implementation follow-up to Engineering Orchestrator after lane poll showed the next edge was idle/unresolved",
+      "owner": "Engineering Orchestrator 019f138b-d229-7640-98b7-2f185d6beae0",
+      "timestamp_utc": "2026-07-01T00:58:46Z",
+      "user_action_required": false
+    },
+    {
+      "action": "recorded Repo Custodian completion of C5 readiness/UI custody freeze; narrowed active gate to Engineering C5 evaluator/checkpoint identity implementation",
+      "owner": "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050; Engineering Orchestrator 019f138b-d229-7640-98b7-2f185d6beae0",
+      "timestamp_utc": "2026-07-01T00:56:55Z",
+      "user_action_required": false
+    },
+    {
+      "action": "routed Pipeline-validated C5 evaluator implementation gap to Engineering Orchestrator",
+      "owner": "Engineering Orchestrator 019f138b-d229-7640-98b7-2f185d6beae0",
+      "timestamp_utc": "2026-07-01T00:48:16Z",
+      "user_action_required": false
+    },
+    {
+      "action": "routed C5 readiness report to Pipeline for repair contract and to Repo Custodian for scoped freeze",
+      "owner": "Pipeline Integrator 019f138c-35b6-73e1-b26d-3db8c59cf850; Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050",
+      "timestamp_utc": "2026-07-01T00:48:16Z",
+      "user_action_required": false
+    },
+    {
+      "action": "recorded UI frozen-proof status surface compile pass and kept C5/Comet readiness with Execution",
+      "owner": "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c; UI Engineer 019f138c-8d85-7141-a813-66db51c62b3d",
+      "timestamp_utc": "2026-07-01T00:48:16Z",
+      "user_action_required": false
+    },
+    {
+      "action": "advanced from Phase3/4 proof custody to C5/Comet next-action and UI status-surface routing",
+      "owner": "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c; UI Engineer 019f138c-8d85-7141-a813-66db51c62b3d",
+      "timestamp_utc": "2026-07-01T00:26:16Z",
+      "user_action_required": false
+    },
+    {
+      "action": "Pipeline validated Phase3/4 lineage-clean proof; routed exact 16-file metadata-only proof pathset to Repo Custodian for freeze",
+      "owner": "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050",
+      "timestamp_utc": "2026-07-01T00:26:16Z",
+      "user_action_required": false
+    },
+    {
+      "action": "routed Phase3/4 lineage-clean proof packet to Pipeline validation and recorded proof identity",
+      "owner": "Pipeline Integrator 019f138c-35b6-73e1-b26d-3db8c59cf850",
+      "timestamp_utc": "2026-07-01T00:26:16Z",
+      "user_action_required": false
+    },
+    {
+      "action": "routed post-custody Phase3/4 lineage-clean proof GO to Execution and updated central state",
+      "owner": "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c",
+      "timestamp_utc": "2026-07-01T00:26:16Z",
+      "user_action_required": false
+    },
+    {
+      "action": "routed Phase3/4 lineage repair pathset to Repo Custodian for narrow freeze",
+      "owner": "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050",
+      "timestamp_utc": "2026-07-01T00:26:16Z",
+      "user_action_required": false
+    },
+    {
+      "action": "polled lanes; confirmed Phase3/4 repair is active and kept next gate on final repair pathset rather than blocker escalation",
+      "owner": "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4; Repo Custodian after final repair pathset",
+      "timestamp_utc": "2026-07-01T00:26:16Z",
+      "user_action_required": false
+    },
+    {
+      "action": "detected Phase3/4 lineage drift from lane review and reclassified active bottleneck to repair/hardening rather than promotion",
+      "owner": "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4; Repo Custodian after repair pathset",
+      "timestamp_utc": "2026-07-01T00:13:46Z",
+      "user_action_required": false
+    },
+    {
+      "action": "classified Pipeline final validation pass; shifted bottleneck to metadata custody plus C5/Comet/UI hardening route",
+      "owner": "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050 for metadata freeze; UI/C5/Comet lanes for next surfaces",
+      "timestamp_utc": "2026-07-01T00:13:46Z",
+      "user_action_required": false
+    },
+    {
+      "action": "confirmed Engineering active on Phase1 C1 drift repair",
+      "at_utc": "2026-06-30T22:28:13Z",
+      "result": "engineering route identified: delete forced child-exec drift and fail closed on blocked/zero-token evidence; waiting for patch artifact",
+      "user_action_required": false
+    },
+    {
+      "action": "mobilized Engineering, Execution, Pipeline, and Material lanes for real C5_after_C1 evaluator path; corrected central bottleneck from checkpoint identity to executed metrics JSON",
+      "owner": "Engineering Orchestrator 019f138b-d229-7640-98b7-2f185d6beae0 + Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c",
+      "timestamp_utc": "2026-07-01T01:48:19Z",
+      "user_action_required": false
+    },
+    {
+      "action": "sent Repo Custodian exact PRD and central-state pathset for review/freeze; no broad add authorized",
+      "owner": "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050",
+      "timestamp_utc": "2026-07-01T01:49:41Z",
+      "user_action_required": false
+    },
+    {
+      "action": "normalized Training Material Steward completion: remaining C5 eval split identity matrix is ready and metadata-only",
+      "owner": "Training Material Steward 019f138b-7bfc-7671-b9fc-22c14ab76342",
+      "timestamp_utc": "2026-07-01T01:50:34Z",
+      "user_action_required": false
+    }
+  ],
+  "owner_thread": {
+    "central_state_policy": "this_thread_normalizes_lane_outputs_into_this_file; lanes must return CENTRAL_STATE_UPDATE blocks instead of relying on user-forwarded handoffs",
+    "heartbeat_automation_id": "polymath-orchestration-monitor",
+    "heartbeat_cadence": "10_minutes",
+    "role": "meta_orchestrator_executive_watchdog",
+    "thread_id": "019f1423-816d-7251-b7d9-945a11441c3f"
+  },
+  "prd_watchdog": {
+    "artifact_waiting_on": [
+      "Real executed local/device C5_after_C1 metrics JSON with schema polymath_c5_executed_metrics_v1",
+      "Exact evaluator command surface capable of consuming the heldout QA split plus candidate and stable checkpoint/adapter payloads, or Engineering pathset if that surface is absent",
+      "Outside-git heldout split payload and candidate/stable checkpoint or adapter payloads matching the accepted identity SHAs; no raw payloads in git"
+    ],
+    "current_gate": "WaveB_C5_after_C1_executed_metrics_json_pending_evaluator_run",
+    "first_missing_green_field": "executed_metrics_C5_after_C1.json from a real heldout evaluator run",
+    "last_concrete_action": "Phase3/4 searched runtime artifacts and found zero executed local C5 metrics JSON files with schema polymath_c5_executed_metrics_v1. Execution and Pipeline already validated C5_after_C1 material split identity, candidate checkpoint identity, stable baseline identity, and the identity-ready preflight; the only remaining green field is a real evaluator run. Metrics such as loss, accuracy, F1, perplexity, calibration, Brier, overfit gap, and learning_score cannot be derived from metadata.",
+    "next_concrete_action": "Engineering identifies or implements the real heldout C5 evaluator surface; Execution verifies outside-git split/checkpoint/baseline payload identities and runs the evaluator when the command surface is present; Pipeline validates the emitted metrics JSON and C5 preflight. Material Steward prepares the remaining C5 split identity matrix in parallel.",
+    "nonclaims_preserved": [
+      "development-cycle evidence only unless stronger gates pass",
+      "no C5 pass",
+      "no Comet-backed accepted run claim",
+      "no learning/model-quality claim",
+      "no Phase3 readiness claim",
+      "no Phase4 readiness claim",
+      "not 100k/1M Phase2 authority"
+    ],
+    "owner": "Engineering Orchestrator 019f138b-d229-7640-98b7-2f185d6beae0 + Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c",
+    "status_classification": "PENDING_ACTION_C5_EVALUATOR_EXECUTION_OR_IMPLEMENTATION",
+    "threads_nudged_this_tick": [
+      "Engineering Orchestrator 019f138b-d229-7640-98b7-2f185d6beae0: identify/implement real C5 evaluator surface",
+      "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: verify outside-git inputs and run real evaluator if surface exists",
+      "Pipeline Integrator 019f138c-35b6-73e1-b26d-3db8c59cf850: enforce polymath_c5_executed_metrics_v1 receiving contract",
+      "Training Material Steward 019f138b-7bfc-7671-b9fc-22c14ab76342: prepare remaining C5 split identity matrix",
+      "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: verify/freeze PRD and central state pathset only if clean"
+    ],
+    "user_action_required": false
+  },
+  "required_lane_update_protocol": {
+    "block_name": "CENTRAL_STATE_UPDATE",
+    "meta_action": "on every heartbeat, read active threads, update this file, route the next concrete edge, and notify Execution only when both keys are green",
+    "required_fields": [
+      "lane",
+      "status",
+      "artifact_paths",
+      "sha256_or_identity_fields",
+      "verification_commands",
+      "first_missing_green_field",
+      "next_action",
+      "authorization_needed",
+      "nonclaims"
+    ]
+  },
+  "schema_version": "polymath_executive_delivery_state_v1",
+  "updated_at_utc": "2026-07-01T01:50:34Z"
+}
