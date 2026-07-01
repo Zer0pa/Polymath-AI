@@ -1,12 +1,13 @@
 {
   "active_bottleneck": {
     "artifact_waiting_on": [
-      "Exact model source route: restore or mount /workspace/models/gemma4_e4b/snapshot/model.safetensors outside git, or explicitly authorize bounded HF read/download of google/gemma-4-E4B revision 7aa32e6889efd6300124851b164f8b364314c3d8 into outside-git storage.",
+      "Exact model source route after bounded Mac, phone public-root, and Termux-private probes found no full Gemma 4 E4B model source or full decoder component pack.",
+      "Restore or mount the historical outside-git Gemma 4 E4B model snapshot, or explicitly authorize bounded HF read/download/export for google/gemma-4-E4B revision 7aa32e6889efd6300124851b164f8b364314c3d8 into outside-git storage.",
       "After source is available, Engineering runs the frozen exporter outside git to produce decoder_manifest.json and adapter_site_policy.json.",
       "After exporter output exists, Phase3/4 replaces full_decoder_logits_generation_not_implemented with streamed/chunked logits generation plus teacher-forced answer loss.",
       "Execution resumes only after outside-git prediction JSONL, finite candidate_train_loss, and polymath_c5_executed_metrics_v1 can be emitted by real runtime execution."
     ],
-    "authorization_needed": "exact model source route required: mount/restore /workspace/models/gemma4_e4b/snapshot/model.safetensors outside git, or authorize bounded HF read/download/export for google/gemma-4-E4B revision 7aa32e6889efd6300124851b164f8b364314c3d8 without printing secrets",
+    "authorization_needed": "exact model source route required after bounded phone and Mac probes: restore/mount the historical outside-git Gemma 4 E4B model snapshot or authorize bounded HF read/download/export for google/gemma-4-E4B revision 7aa32e6889efd6300124851b164f8b364314c3d8 without printing secrets",
     "c5_after_c1_c5_qa_runtime_fail_closed_pathset": {
       "artifact_paths": [
         "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/include/polymath/gemma4/c5_qa_inference.h",
@@ -122,7 +123,7 @@
     "c5_after_c1_decoder_runtime_schema_hardening_pathset": {
       "accepted_tokenizer_identity_from_phase34": {
         "merges_hex_tsv_sha256": "6c99efe1bfe6b70092d531cad0a57278182652a2380aa5fb33e99d4e4eeb905f",
-        "path": "/data/local/tmp/polymath_gemma4_gate/tokenizer/gemma4_e4b_bpe_v1",
+        "path": "<phone_public_tokenizer_dir_redacted>",
         "vocab_hex_tsv_sha256": "0e43bafc96037bed92fabea31282eb10ad094ec921748a58f6be10dbf9796f74"
       },
       "artifact_paths": [
@@ -516,7 +517,7 @@
         "expected_path_or_format": "outside-git JSON manifest passed as --decoder-manifest, identifying the real full Gemma4 decoder/logits path, not checkpoint-only metadata and not a two-layer diagnostic pack",
         "first_missing_green_field": "decoder_manifest_missing",
         "owner": "Engineering",
-        "search_summary": "No accepted full decoder/logits manifest found under Mac outside-git roots (/Users/Zer0pa/Polymat AI/runtime, /tmp) or phone public roots (/data/local/tmp, /sdcard/Download). Repo contains historical checkpoint manifests and 2-layer/layer-pack metadata only; these are not accepted full-decoder logits manifests.",
+        "search_summary": "No accepted full decoder/logits manifest found under Mac outside-git roots (/Users/Zer0pa/Polymat AI/runtime, /tmp) or phone public roots (<phone_public_tmp_redacted>, <phone_download_redacted>). Repo contains historical checkpoint manifests and 2-layer/layer-pack metadata only; these are not accepted full-decoder logits manifests.",
         "status": "missing"
       },
       "first_missing_green_field": "decoder_manifest_missing",
@@ -552,7 +553,7 @@
         "not 100k or 1M Phase2 authority",
         "no Comet-backed accepted run"
       ],
-      "producer_prefix_when_components_exist": "python3.11 scripts/host/run_c5_phase34_qa_inference_producer.py --gemma4-runner <phone_or_host_gemma4_layer_runner> --tokenizer-dir /data/local/tmp/polymath_gemma4_gate/tokenizer/gemma4_e4b_bpe_v1 --decoder-manifest <outside_git_decoder_manifest> --lm-head <outside_git_lm_head_or_unembedding> --adapter-site-policy <outside_git_adapter_site_policy>",
+      "producer_prefix_when_components_exist": "python3.11 scripts/host/run_c5_phase34_qa_inference_producer.py --gemma4-runner <phone_or_host_gemma4_layer_runner> --tokenizer-dir <phone_public_tokenizer_dir_redacted> --decoder-manifest <outside_git_decoder_manifest> --lm-head <outside_git_lm_head_or_unembedding> --adapter-site-policy <outside_git_adapter_site_policy>",
       "raw_boundary_proof": {
         "adb_pull_used": false,
         "hf_or_comet_called": false,
@@ -565,15 +566,15 @@
       "supersedes_stale_assumption": {
         "old_first_missing_green_field": "outside_git_tokenizer_dir_with_vocab_hex_tsv_and_merges_hex_tsv",
         "path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/orchestration/c5_after_c1_runtime_component_inventory_20260701T_engineering.json",
-        "reason": "Fresh phone public-root probe found accepted tokenizer tables under /data/local/tmp; tokenizer is no longer the first missing field for phone-side execution."
+        "reason": "Fresh phone public-root probe found accepted tokenizer tables under <phone_public_tmp_redacted>; tokenizer is no longer the first missing field for phone-side execution."
       },
       "tokenizer_dir": {
-        "compatibility_note": "Matches native loader requirement for vocab.hex.tsv and merges.hex.tsv. Plain ADB cannot inspect the older Termux-private tokenizer root; public /data/local/tmp copy is enough for phone-side native runner access if used there.",
+        "compatibility_note": "Matches native loader requirement for vocab.hex.tsv and merges.hex.tsv. Plain ADB cannot inspect the older Termux-private tokenizer root; public <phone_public_tmp_redacted> copy is enough for phone-side native runner access if used there.",
         "merges_hex_tsv": {
           "sha256": "6c99efe1bfe6b70092d531cad0a57278182652a2380aa5fb33e99d4e4eeb905f",
           "size_bytes": 13758174
         },
-        "path": "/data/local/tmp/polymath_gemma4_gate/tokenizer/gemma4_e4b_bpe_v1",
+        "path": "<phone_public_tokenizer_dir_redacted>",
         "status": "present_phone_public_outside_git_hash_verified",
         "vocab_hex_tsv": {
           "sha256": "0e43bafc96037bed92fabea31282eb10ad094ec921748a58f6be10dbf9796f74",
@@ -1448,12 +1449,25 @@
         "no HF/Comet/API call",
         "no secrets sourced or printed"
       ]
+    },
+    "phone_model_source_probe_20260701T094236Z": {
+      "status": "c5_after_c1_phone_model_source_probe_no_full_model_found",
+      "status_classification": "PENDING_ACTION_MODEL_SOURCE_ACQUISITION_OR_REMOTE_MOUNT",
+      "artifact_path": "runtime/reports/orchestration/c5_after_c1_phone_model_source_probe_no_full_model_20260701T_engineering.json",
+      "artifact_sha256": "132e707f140221d11486efaa9d00acfe402743882c0291066172f5f41b63edfd",
+      "device_serial": "FY25013101C8",
+      "adb_state": "device",
+      "search_summary": "ADB recovered. Bounded public-root plus Termux-private metadata-only phone inventory found known two-layer/runtime assets and tokenizer support, but no full model source, no full-model safetensors shards, no decoder_manifest.json, no adapter_site_policy.json, and no full decoder component pack.",
+      "raw_boundary": "No raw model/tensor payload pulled or copied into git; central state stores report identity only and does not copy phone raw payload paths.",
+      "first_missing_green_field": "model_safetensors_missing",
+      "user_action_required": true
     }
   },
-  "active_edge": "WaveB_C5_after_C1_model_source_authorization_pending",
+  "active_edge": "WaveB_C5_after_C1_model_source_acquisition_pending_after_phone_probe",
   "active_watchdog_state": {
     "artifact_waiting_on": [
-      "Exact model source route: restore or mount /workspace/models/gemma4_e4b/snapshot/model.safetensors outside git, or explicitly authorize bounded HF read/download of google/gemma-4-E4B revision 7aa32e6889efd6300124851b164f8b364314c3d8 into outside-git storage.",
+      "Exact model source route after bounded Mac, phone public-root, and Termux-private probes found no full Gemma 4 E4B model source or full decoder component pack.",
+      "Restore or mount the historical outside-git Gemma 4 E4B model snapshot, or explicitly authorize bounded HF read/download/export for google/gemma-4-E4B revision 7aa32e6889efd6300124851b164f8b364314c3d8 into outside-git storage.",
       "After source is available, Engineering runs the frozen exporter outside git to produce decoder_manifest.json and adapter_site_policy.json.",
       "After exporter output exists, Phase3/4 replaces full_decoder_logits_generation_not_implemented with streamed/chunked logits generation plus teacher-forced answer loss.",
       "Execution resumes only after outside-git prediction JSONL, finite candidate_train_loss, and polymath_c5_executed_metrics_v1 can be emitted by real runtime execution."
@@ -1574,7 +1588,7 @@
     "c5_after_c1_decoder_runtime_schema_hardening_pathset": {
       "accepted_tokenizer_identity_from_phase34": {
         "merges_hex_tsv_sha256": "6c99efe1bfe6b70092d531cad0a57278182652a2380aa5fb33e99d4e4eeb905f",
-        "path": "/data/local/tmp/polymath_gemma4_gate/tokenizer/gemma4_e4b_bpe_v1",
+        "path": "<phone_public_tokenizer_dir_redacted>",
         "vocab_hex_tsv_sha256": "0e43bafc96037bed92fabea31282eb10ad094ec921748a58f6be10dbf9796f74"
       },
       "artifact_paths": [
@@ -1968,7 +1982,7 @@
         "expected_path_or_format": "outside-git JSON manifest passed as --decoder-manifest, identifying the real full Gemma4 decoder/logits path, not checkpoint-only metadata and not a two-layer diagnostic pack",
         "first_missing_green_field": "decoder_manifest_missing",
         "owner": "Engineering",
-        "search_summary": "No accepted full decoder/logits manifest found under Mac outside-git roots (/Users/Zer0pa/Polymat AI/runtime, /tmp) or phone public roots (/data/local/tmp, /sdcard/Download). Repo contains historical checkpoint manifests and 2-layer/layer-pack metadata only; these are not accepted full-decoder logits manifests.",
+        "search_summary": "No accepted full decoder/logits manifest found under Mac outside-git roots (/Users/Zer0pa/Polymat AI/runtime, /tmp) or phone public roots (<phone_public_tmp_redacted>, <phone_download_redacted>). Repo contains historical checkpoint manifests and 2-layer/layer-pack metadata only; these are not accepted full-decoder logits manifests.",
         "status": "missing"
       },
       "first_missing_green_field": "decoder_manifest_missing",
@@ -2004,7 +2018,7 @@
         "not 100k or 1M Phase2 authority",
         "no Comet-backed accepted run"
       ],
-      "producer_prefix_when_components_exist": "python3.11 scripts/host/run_c5_phase34_qa_inference_producer.py --gemma4-runner <phone_or_host_gemma4_layer_runner> --tokenizer-dir /data/local/tmp/polymath_gemma4_gate/tokenizer/gemma4_e4b_bpe_v1 --decoder-manifest <outside_git_decoder_manifest> --lm-head <outside_git_lm_head_or_unembedding> --adapter-site-policy <outside_git_adapter_site_policy>",
+      "producer_prefix_when_components_exist": "python3.11 scripts/host/run_c5_phase34_qa_inference_producer.py --gemma4-runner <phone_or_host_gemma4_layer_runner> --tokenizer-dir <phone_public_tokenizer_dir_redacted> --decoder-manifest <outside_git_decoder_manifest> --lm-head <outside_git_lm_head_or_unembedding> --adapter-site-policy <outside_git_adapter_site_policy>",
       "raw_boundary_proof": {
         "adb_pull_used": false,
         "hf_or_comet_called": false,
@@ -2017,15 +2031,15 @@
       "supersedes_stale_assumption": {
         "old_first_missing_green_field": "outside_git_tokenizer_dir_with_vocab_hex_tsv_and_merges_hex_tsv",
         "path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/orchestration/c5_after_c1_runtime_component_inventory_20260701T_engineering.json",
-        "reason": "Fresh phone public-root probe found accepted tokenizer tables under /data/local/tmp; tokenizer is no longer the first missing field for phone-side execution."
+        "reason": "Fresh phone public-root probe found accepted tokenizer tables under <phone_public_tmp_redacted>; tokenizer is no longer the first missing field for phone-side execution."
       },
       "tokenizer_dir": {
-        "compatibility_note": "Matches native loader requirement for vocab.hex.tsv and merges.hex.tsv. Plain ADB cannot inspect the older Termux-private tokenizer root; public /data/local/tmp copy is enough for phone-side native runner access if used there.",
+        "compatibility_note": "Matches native loader requirement for vocab.hex.tsv and merges.hex.tsv. Plain ADB cannot inspect the older Termux-private tokenizer root; public <phone_public_tmp_redacted> copy is enough for phone-side native runner access if used there.",
         "merges_hex_tsv": {
           "sha256": "6c99efe1bfe6b70092d531cad0a57278182652a2380aa5fb33e99d4e4eeb905f",
           "size_bytes": 13758174
         },
-        "path": "/data/local/tmp/polymath_gemma4_gate/tokenizer/gemma4_e4b_bpe_v1",
+        "path": "<phone_public_tokenizer_dir_redacted>",
         "status": "present_phone_public_outside_git_hash_verified",
         "vocab_hex_tsv": {
           "sha256": "0e43bafc96037bed92fabea31282eb10ad094ec921748a58f6be10dbf9796f74",
@@ -2304,11 +2318,11 @@
       "status": "c5_full_decoder_failure_artifacts_and_state_pending_custody",
       "user_action_required": false
     },
-    "current_gate": "WaveB_C5_after_C1_model_source_authorization_pending",
+    "current_gate": "WaveB_C5_after_C1_model_source_acquisition_pending_after_phone_probe",
     "custody_commit_latest": "bb8105a2bc91b6c9b0993603e14b49d0a5730f8d",
     "custody_status_latest": "c5_decoder_runtime_owner_state_committed_pushed",
     "dominant_failure_domain": "phase5_eval_failure",
-    "drift_deleted_or_pending": "Deleted stale nested exporter-custody routing after Custodian completed commit 9d1c171ea72cef391e2bbcf550ea3e0f84632f27. Remaining drift hardening is source-bound: do not allow historical path strings, metadata-only manifests, bridge MSE, placeholder schemas, or stale custody fields to substitute for a real outside-git model export and C5 runtime metrics. Historical phone raw-payload path strings and local/absolute .jsonl payload paths remain redacted to metadata-only labels while preserving hashes.",
+    "drift_deleted_or_pending": "Deleted the unverified phone-source assumption: phone public and Termux-private searches are now complete. ADB exposure blocker is superseded by no-full-model evidence. Pending drift hardening: freeze updated central mirror and do not surface raw phone payload paths.",
     "engineering_evaluator_implementation": {
       "artifact_paths_in_progress": [
         "polymath_ai/polar/c5_heldout_eval.py",
@@ -2445,7 +2459,7 @@
       "training_material_steward": "complete for material identities",
       "ui_engineer": "not nudged until C5 evidence-backed status exists"
     },
-    "last_concrete_action": "Repo Custodian froze and pushed the latest metadata-only model-source state routing hardening at 9d1c171ea72cef391e2bbcf550ea3e0f84632f27. This supersedes stale nested routing that still pointed at exporter/pathset custody after custody had completed.",
+    "last_concrete_action": "Engineering and Execution recovered ADB and completed bounded phone-side public-root plus Termux-private metadata-only inventory; no full model source, decoder manifest, adapter-site policy, or full decoder component pack was found. Evidence report SHA 132e707f140221d11486efaa9d00acfe402743882c0291066172f5f41b63edfd.",
     "lineage_drift_repair_status": {
       "commit": "ee74ae572322e05624deac6f6f8788c2c6e2f692",
       "proof_required": [
@@ -2461,7 +2475,7 @@
       ],
       "status": "source_repair_frozen_pending_execution_proof"
     },
-    "next_concrete_action": "User/meta supplies one exact model source route: restore or mount the historical outside-git /workspace/models/gemma4_e4b/snapshot/model.safetensors, or explicitly authorize bounded HF read/download/export for google/gemma-4-E4B revision 7aa32e6889efd6300124851b164f8b364314c3d8 without printing secrets. Once available, Engineering runs the frozen exporter outside git and returns decoder_manifest/adapter_site_policy identities.",
+    "next_concrete_action": "Restore or mount the historical outside-git Gemma 4 E4B model snapshot, or authorize bounded HF read/download/export for google/gemma-4-E4B revision 7aa32e6889efd6300124851b164f8b364314c3d8 into outside-git storage; then run the frozen exporter.",
     "nonclaims": [
       "development-cycle evidence only unless stronger gates pass",
       "no C5 pass",
@@ -2487,7 +2501,7 @@
       "not 100k/1M Phase2 authority",
       "no Comet-backed accepted run claim"
     ],
-    "owner": "User/meta owns the exact model-source route; Engineering Orchestrator 019f138b-d229-7640-98b7-2f185d6beae0 resumes the frozen exporter after source is mounted or HF read/download is explicitly authorized. Repo Custodian completed the latest metadata custody routing hardening at 9d1c171ea72cef391e2bbcf550ea3e0f84632f27.",
+    "owner": "User/meta owns the exact model-source acquisition route after Engineering/Execution completed bounded phone public-root and Termux-private probes. Engineering Orchestrator resumes the frozen exporter after source is mounted/restored or bounded HF read/download/export is authorized.",
     "phase2_status_by_phase": {
       "C1": {
         "packets": 5180,
@@ -2697,7 +2711,7 @@
       "phase34": "raw PJP1, HTP raw output, OpenCL tensors, and adapters remain on device/Termux; repair must keep compact JSON only",
       "report_root_scan": "metadata-freeze report root had 179 tracked files and clean forbidden suffix scans; raw payloads not committed"
     },
-    "recursive_improvement_next_step": "authorize or mount model source -> Engineering runs frozen exporter outside git -> Custodian freezes metadata identities -> Phase3/4 implements real logits/loss -> Execution emits prediction JSONL and heldout metrics -> Pipeline validates -> Custodian freezes metadata/code only.",
+    "recursive_improvement_next_step": "After the model source route is supplied and exporter output exists, resume the smallest real C5 proof path through streamed/chunked logits generation, teacher-forced answer loss, and executed metrics emission; compare against stable baseline only after real metrics exist.",
     "repo_custody_state_freeze": {
       "branch": "origin/gemma4-megakernel-native-training",
       "commit": "7290fbec13c6a13e88710afddfe4af70637096f9",
@@ -2716,9 +2730,10 @@
     ],
     "timestamp_utc": "2026-07-01T03:45:47Z",
     "updated_utc": "2026-07-01T04:05:47Z",
-    "user_action_required": true
+    "user_action_required": true,
+    "status": "phone_and_mac_full_model_source_absent_exact_source_route_required"
   },
-  "current_gate": "WaveB_C5_after_C1_model_source_authorization_pending",
+  "current_gate": "WaveB_C5_after_C1_model_source_acquisition_pending_after_phone_probe",
   "current_highest_valid_state": "C1-C4 Wave B Phase1->Phase2->Phase3->Phase4 development-cycle mechanics remain frozen as metadata evidence; C5_after_C1 is now waiting on exact outside-git model-source authorization or mount after Repo Custodian completed the metadata custody mirror at 9d1c171ea72cef391e2bbcf550ea3e0f84632f27.",
   "driver_tick_history": [
     {
@@ -3338,9 +3353,22 @@
       "first_unresolved_technical_failure_after_valid_schema_paths": "full_decoder_logits_generation_not_implemented_after_valid_schema_paths",
       "custody_commit": "9d1c171ea72cef391e2bbcf550ea3e0f84632f27",
       "drift_hardening_action": "normalized stale nested prd_watchdog/active_watchdog_state/lane_status.repo_custodian fields away from exporter-custody-pending to model-source-authorization-pending after Custodian commit 9d1c171."
+    },
+    {
+      "utc": "2026-07-01T09:42:36Z",
+      "action": "recorded bounded phone public-root and Termux-private model-source probe; no full model/decoder/policy found; shifted central mirror from unverified phone-source assumption to model-source acquisition pending after phone probe",
+      "current_gate": "WaveB_C5_after_C1_model_source_acquisition_pending_after_phone_probe",
+      "status_classification": "AUTHORIZATION_PENDING_MODEL_SOURCE_OR_REMOTE_MOUNT",
+      "owner": "user/meta for source acquisition; Engineering resumes exporter after source exists",
+      "artifact": "runtime/reports/orchestration/c5_after_c1_phone_model_source_probe_no_full_model_20260701T_engineering.json",
+      "artifact_sha256": "132e707f140221d11486efaa9d00acfe402743882c0291066172f5f41b63edfd",
+      "threads_nudged_this_tick": [
+        "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050"
+      ],
+      "user_action_required": true
     }
   ],
-  "governing_edge": "WaveB_C5_after_C1_model_source_authorization_pending",
+  "governing_edge": "WaveB_C5_after_C1_model_source_acquisition_pending_after_phone_probe",
   "governing_objective": {
     "nonclaims": [
       "diagnostics_are_not_100k_or_1M_authority_unless_specific_authority_gate_passes",
@@ -3486,7 +3514,7 @@
           },
           "phase4_blockers": "empty_all",
           "pjp1_python_consumer_preflight": "pass_all",
-          "qnn_htp_backend": "/data/local/tmp/qairt-2.44/lib/aarch64-android/libQnnHtp.so",
+          "qnn_htp_backend": "<phone_qnn_htp_backend_redacted>",
           "raw_payload_rules": {
             "raw_model_or_checkpoint_pulled_to_repo": false,
             "raw_pjp1_pulled_to_host": false,
@@ -3499,7 +3527,7 @@
         "pqa1_bridge": {
           "repo_raw_payload_scan": "pass_clean",
           "shard_count": 40,
-          "staging": "run-as cat to /tmp host staging, SHA verify, push to /sdcard/Download/polymath/integrated_c1_c4, SHA verify, delete host temp per shard",
+          "staging": "run-as cat to /tmp host staging, SHA verify, push to <phone_download_redacted>/polymath/integrated_c1_c4, SHA verify, delete host temp per shard",
           "status": "pass"
         },
         "total_verified_rows": 77023
@@ -3517,7 +3545,7 @@
         "android_build_status": "build_successful_after_ANDROID_HOME_rerun",
         "android_install_status": "adb_install_success_direct_fallback_after_host_bash_mapfile_bug",
         "apk_sha256": "137c52a812ac2eb24cdcb23655e692349359f5cd0d4a1282a2dc7138bacd913a",
-        "app_report_root": "/sdcard/Android/data/ai.zer0pa.polymath.lab/files/reports/phase1/2026-06-30T222251Z",
+        "app_report_root": "<phone_app_external_files_redacted>/reports/phase1/2026-06-30T222251Z",
         "app_report_run_id": "2026-06-30T222251Z",
         "app_run_result_status": "blocked",
         "authority_blocker": "Final APK promotion remains blocked until host authority evidence includes matched exact material, enforced high-performance profile state, frequency/profile evidence, and no forbidden payloads.",
@@ -3576,7 +3604,7 @@
         "exec_label": "stage0_rebuild_20260630T212205Z",
         "metadata_path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/orchestration/phase2_identity_repair_stage0_rebuild_20260630T212205Z/stage0_phase2_identity_repair_metadata.json",
         "metadata_sha256": "f6978b8e2ec8cbf558de275217a962e1db461c0999fb30f7f476775c6512bb07",
-        "phone_shared_evidence_root": "/sdcard/Download/polymath_stage0_phase2_identity/stage0_rebuild_20260630T212205Z",
+        "phone_shared_evidence_root": "<phone_download_redacted>/polymath_stage0_phase2_identity/stage0_rebuild_20260630T212205Z",
         "post_rebuild": {
           "binary_bytes": 111736,
           "binary_sha256": "045f9318aecb08c4f7f2c4737354ff4766b11cd2edc1b69ba5e745e6458ce8f0",
@@ -3830,38 +3858,40 @@
         "no learning/model-quality evidence"
       ]
     },
-    "stage0_code_commit_or_manifest": "ea2cf60ff4ceccf7e5d8b9ab67d26c13240b508d"
+    "stage0_code_commit_or_manifest": "ea2cf60ff4ceccf7e5d8b9ab67d26c13240b508d",
+    "current_gate": "WaveB_C5_after_C1_model_source_acquisition_pending_after_phone_probe",
+    "status_classification": "AUTHORIZATION_PENDING_MODEL_SOURCE_OR_REMOTE_MOUNT",
+    "first_missing_green_field": "model_safetensors_missing",
+    "phone_model_source_probe_report_sha256": "132e707f140221d11486efaa9d00acfe402743882c0291066172f5f41b63edfd"
   },
   "lane_status": {
     "engineering_orchestrator": {
       "artifact_paths": [
-        "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/orchestration/c5_after_c1_model_safetensors_missing_exact_source_authorization_20260701T_engineering.json"
+        "runtime/reports/orchestration/c5_after_c1_phone_model_source_probe_no_full_model_20260701T_engineering.json"
       ],
       "authorization_needed": "exact model source route required: mount/restore /workspace/models/gemma4_e4b/snapshot/model.safetensors outside git, or authorize bounded HF read/download/export for google/gemma-4-E4B revision 7aa32e6889efd6300124851b164f8b364314c3d8 without printing secrets",
       "first_missing_green_field": "model_safetensors_missing",
       "first_missing_green_field_at_export_execution_until_model_source_is_available": "model_safetensors_missing",
       "first_unresolved_technical_failure_after_valid_schema_paths": "full_decoder_logits_generation_not_implemented_after_valid_schema_paths",
-      "last_update_utc": "2026-07-01T04:16:17Z",
-      "next_action": "Wait for exact model source route; once available run frozen exporter outside git and return decoder_manifest.json and adapter_site_policy.json identities.",
+      "last_update_utc": "2026-07-01T09:42:36Z",
+      "next_action": "Acquire or mount the pinned Gemma 4 E4B full model source outside git, then run the frozen full-decoder exporter and return decoder_manifest.json plus adapter_site_policy.json identities.",
       "nonclaims": [
-        "no C5 pass",
-        "no decoder_manifest emitted from a real model yet",
+        "no full model source found on phone",
+        "no decoder component pack exported",
+        "no decoder_manifest emitted",
+        "no adapter_site_policy emitted",
         "no logits emitted",
         "no prediction JSONL emitted",
-        "no loss, confidence, candidate_train_loss, or C5 metrics fabricated",
-        "no bridge MSE relabeled as C5 loss",
-        "no learning/model-quality claim",
-        "no Phase3 readiness claim",
-        "no Phase4 readiness claim",
-        "not 100k/1M Phase2 authority",
-        "no HF/Comet call",
-        "no secrets sourced"
+        "no C5 pass",
+        "no HF/Comet/API call",
+        "no secrets sourced or printed",
+        "no raw payload copied into git"
       ],
       "sha256_or_identity_fields": {
-        "report_sha256": "9d92cbdd9994b66808a6bd5541ea139ddb3f18f78f5f4f05a082088ba37b3f16"
+        "phone_model_source_probe_report_sha256": "132e707f140221d11486efaa9d00acfe402743882c0291066172f5f41b63edfd"
       },
-      "status": "model_safetensors_missing_exact_source_authorization_required",
-      "status_classification": "AUTHORIZATION_PENDING_MODEL_SOURCE_OR_REMOTE_MOUNT",
+      "status": "c5_after_c1_phone_model_source_probe_no_full_model_found",
+      "status_classification": "PENDING_ACTION_MODEL_SOURCE_ACQUISITION_OR_REMOTE_MOUNT",
       "thread_id": "019f138b-d229-7640-98b7-2f185d6beae0",
       "user_action_required": true,
       "verification_commands": [
@@ -3883,21 +3913,16 @@
         "OUTSIDE_GIT_PHASE4_ADAPTER_PRE_PAYLOAD_PATH_REDACTED_SHA_ONLY"
       ],
       "authorization_needed": false,
-      "first_missing_green_field": "decoder_manifest_missing",
-      "last_update_utc": "2026-07-01T04:05:47Z",
-      "next_action": "Hold C5 scoring until exporter/model-source path produces outside-git decoder pack, prediction JSONL, and finite candidate_train_loss.",
+      "first_missing_green_field": "model_safetensors_missing",
+      "last_update_utc": "2026-07-01T09:42:36Z",
+      "next_action": "Hold execution until Engineering/user supplies a full model source route and the frozen exporter emits decoder_manifest.json and adapter_site_policy.json outside git.",
       "nonclaims": [
-        "development-cycle evidence only unless stronger gates pass",
         "no C5 pass",
-        "no prediction JSONL emitted from real runtime yet",
-        "no candidate_train_loss emitted or invented",
-        "no bridge MSE relabeled as C5 loss",
-        "no logits, loss, confidence, or learning metrics fabricated",
+        "no executed metrics",
         "no learning/model-quality claim",
-        "no Phase3 readiness claim",
-        "no Phase4 readiness claim",
-        "not 100k/1M Phase2 authority",
-        "no HF/Comet call"
+        "no Phase3 readiness",
+        "no Phase4 readiness",
+        "not 100k/1M authority"
       ],
       "sha256_or_identity_fields": {
         "candidate_checkpoint_sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f",
@@ -3907,8 +3932,8 @@
         "stable_baseline_payload_path": "OUTSIDE_GIT_PHASE4_ADAPTER_PRE_PAYLOAD_PATH_REDACTED_SHA_ONLY",
         "stable_checkpoint_baseline_sha256": "e0d1c66ac876c2b6fbbe9e88f1b02dd37201d8ffba10afcd44f1c558fc32f7c9"
       },
-      "status": "waiting_for_exporter_pathset_and_outside_git_decoder_component_pack",
-      "status_classification": "GATE_PENDING_FULL_DECODER_COMPONENT_PACK",
+      "status": "phone_model_source_inventory_ready_public_roots_only_no_full_pack",
+      "status_classification": "COMPLETE_FOR_ADB_RECOVERY_AND_PUBLIC_PHONE_INVENTORY",
       "thread_id": "019f138c-fb51-7c53-a41a-ab8eac950d9c",
       "user_action_required": false,
       "verification_commands": [
@@ -4435,7 +4460,8 @@
   },
   "prd_watchdog": {
     "artifact_waiting_on": [
-      "Exact model source route: restore or mount /workspace/models/gemma4_e4b/snapshot/model.safetensors outside git, or explicitly authorize bounded HF read/download of google/gemma-4-E4B revision 7aa32e6889efd6300124851b164f8b364314c3d8 into outside-git storage.",
+      "Exact model source route after bounded Mac, phone public-root, and Termux-private probes found no full Gemma 4 E4B model source or full decoder component pack.",
+      "Restore or mount the historical outside-git Gemma 4 E4B model snapshot, or explicitly authorize bounded HF read/download/export for google/gemma-4-E4B revision 7aa32e6889efd6300124851b164f8b364314c3d8 into outside-git storage.",
       "After source is available, Engineering runs the frozen exporter outside git to produce decoder_manifest.json and adapter_site_policy.json.",
       "After exporter output exists, Phase3/4 replaces full_decoder_logits_generation_not_implemented with streamed/chunked logits generation plus teacher-forced answer loss.",
       "Execution resumes only after outside-git prediction JSONL, finite candidate_train_loss, and polymath_c5_executed_metrics_v1 can be emitted by real runtime execution."
@@ -4523,7 +4549,7 @@
         "expected_path_or_format": "outside-git JSON manifest passed as --decoder-manifest, identifying the real full Gemma4 decoder/logits path, not checkpoint-only metadata and not a two-layer diagnostic pack",
         "first_missing_green_field": "decoder_manifest_missing",
         "owner": "Engineering",
-        "search_summary": "No accepted full decoder/logits manifest found under Mac outside-git roots (/Users/Zer0pa/Polymat AI/runtime, /tmp) or phone public roots (/data/local/tmp, /sdcard/Download). Repo contains historical checkpoint manifests and 2-layer/layer-pack metadata only; these are not accepted full-decoder logits manifests.",
+        "search_summary": "No accepted full decoder/logits manifest found under Mac outside-git roots (/Users/Zer0pa/Polymat AI/runtime, /tmp) or phone public roots (<phone_public_tmp_redacted>, <phone_download_redacted>). Repo contains historical checkpoint manifests and 2-layer/layer-pack metadata only; these are not accepted full-decoder logits manifests.",
         "status": "missing"
       },
       "first_missing_green_field": "decoder_manifest_missing",
@@ -4559,7 +4585,7 @@
         "not 100k or 1M Phase2 authority",
         "no Comet-backed accepted run"
       ],
-      "producer_prefix_when_components_exist": "python3.11 scripts/host/run_c5_phase34_qa_inference_producer.py --gemma4-runner <phone_or_host_gemma4_layer_runner> --tokenizer-dir /data/local/tmp/polymath_gemma4_gate/tokenizer/gemma4_e4b_bpe_v1 --decoder-manifest <outside_git_decoder_manifest> --lm-head <outside_git_lm_head_or_unembedding> --adapter-site-policy <outside_git_adapter_site_policy>",
+      "producer_prefix_when_components_exist": "python3.11 scripts/host/run_c5_phase34_qa_inference_producer.py --gemma4-runner <phone_or_host_gemma4_layer_runner> --tokenizer-dir <phone_public_tokenizer_dir_redacted> --decoder-manifest <outside_git_decoder_manifest> --lm-head <outside_git_lm_head_or_unembedding> --adapter-site-policy <outside_git_adapter_site_policy>",
       "raw_boundary_proof": {
         "adb_pull_used": false,
         "hf_or_comet_called": false,
@@ -4572,15 +4598,15 @@
       "supersedes_stale_assumption": {
         "old_first_missing_green_field": "outside_git_tokenizer_dir_with_vocab_hex_tsv_and_merges_hex_tsv",
         "path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/orchestration/c5_after_c1_runtime_component_inventory_20260701T_engineering.json",
-        "reason": "Fresh phone public-root probe found accepted tokenizer tables under /data/local/tmp; tokenizer is no longer the first missing field for phone-side execution."
+        "reason": "Fresh phone public-root probe found accepted tokenizer tables under <phone_public_tmp_redacted>; tokenizer is no longer the first missing field for phone-side execution."
       },
       "tokenizer_dir": {
-        "compatibility_note": "Matches native loader requirement for vocab.hex.tsv and merges.hex.tsv. Plain ADB cannot inspect the older Termux-private tokenizer root; public /data/local/tmp copy is enough for phone-side native runner access if used there.",
+        "compatibility_note": "Matches native loader requirement for vocab.hex.tsv and merges.hex.tsv. Plain ADB cannot inspect the older Termux-private tokenizer root; public <phone_public_tmp_redacted> copy is enough for phone-side native runner access if used there.",
         "merges_hex_tsv": {
           "sha256": "6c99efe1bfe6b70092d531cad0a57278182652a2380aa5fb33e99d4e4eeb905f",
           "size_bytes": 13758174
         },
-        "path": "/data/local/tmp/polymath_gemma4_gate/tokenizer/gemma4_e4b_bpe_v1",
+        "path": "<phone_public_tokenizer_dir_redacted>",
         "status": "present_phone_public_outside_git_hash_verified",
         "vocab_hex_tsv": {
           "sha256": "0e43bafc96037bed92fabea31282eb10ad094ec921748a58f6be10dbf9796f74",
@@ -4640,14 +4666,14 @@
       },
       "schema_version": "polymath_c5_qa_runtime_post_custody_v1"
     },
-    "current_gate": "WaveB_C5_after_C1_model_source_authorization_pending",
+    "current_gate": "WaveB_C5_after_C1_model_source_acquisition_pending_after_phone_probe",
     "dominant_failure_domain": "phase5_eval_failure",
-    "drift_deleted_or_pending": "Deleted stale nested exporter-custody routing after Custodian completed commit 9d1c171ea72cef391e2bbcf550ea3e0f84632f27. Remaining drift hardening is source-bound: do not allow historical path strings, metadata-only manifests, bridge MSE, placeholder schemas, or stale custody fields to substitute for a real outside-git model export and C5 runtime metrics. Historical phone raw-payload path strings and local/absolute .jsonl payload paths remain redacted to metadata-only labels while preserving hashes.",
+    "drift_deleted_or_pending": "Deleted the unverified phone-source assumption: phone public and Termux-private searches are now complete. ADB exposure blocker is superseded by no-full-model evidence. Pending drift hardening: freeze updated central mirror and do not surface raw phone payload paths.",
     "first_missing_green_field": "model_safetensors_missing",
     "first_missing_green_field_after_custody_until_model_source_available": "model_safetensors_missing",
     "first_unresolved_technical_failure_after_valid_schema_paths": "full_decoder_logits_generation_not_implemented_after_valid_schema_paths",
-    "last_concrete_action": "Repo Custodian froze and pushed the latest metadata-only model-source state routing hardening at 9d1c171ea72cef391e2bbcf550ea3e0f84632f27. This supersedes stale nested routing that still pointed at exporter/pathset custody after custody had completed.",
-    "next_concrete_action": "User/meta supplies one exact model source route: restore or mount the historical outside-git /workspace/models/gemma4_e4b/snapshot/model.safetensors, or explicitly authorize bounded HF read/download/export for google/gemma-4-E4B revision 7aa32e6889efd6300124851b164f8b364314c3d8 without printing secrets. Once available, Engineering runs the frozen exporter outside git and returns decoder_manifest/adapter_site_policy identities.",
+    "last_concrete_action": "Engineering and Execution recovered ADB and completed bounded phone-side public-root plus Termux-private metadata-only inventory; no full model source, decoder manifest, adapter-site policy, or full decoder component pack was found. Evidence report SHA 132e707f140221d11486efaa9d00acfe402743882c0291066172f5f41b63edfd.",
+    "next_concrete_action": "Restore or mount the historical outside-git Gemma 4 E4B model snapshot, or authorize bounded HF read/download/export for google/gemma-4-E4B revision 7aa32e6889efd6300124851b164f8b364314c3d8 into outside-git storage; then run the frozen exporter.",
     "nonclaims_preserved": [
       "no C5 pass",
       "no decoder_manifest emitted from a real model yet",
@@ -4662,7 +4688,7 @@
       "no HF/Comet call",
       "no secrets sourced"
     ],
-    "owner": "User/meta owns the exact model-source route; Engineering Orchestrator 019f138b-d229-7640-98b7-2f185d6beae0 resumes the frozen exporter after source is mounted or HF read/download is explicitly authorized. Repo Custodian completed the latest metadata custody routing hardening at 9d1c171ea72cef391e2bbcf550ea3e0f84632f27.",
+    "owner": "User/meta owns the exact model-source acquisition route after Engineering/Execution completed bounded phone public-root and Termux-private probes. Engineering Orchestrator resumes the frozen exporter after source is mounted/restored or bounded HF read/download/export is authorized.",
     "post_custody_c5_qa_runtime_status": {
       "branch": "origin/gemma4-megakernel-native-training",
       "custody_commit": "9f6a27f3640078d81a303445d7ab29c7ce3a2db8",
@@ -4686,13 +4712,14 @@
       },
       "schema_version": "polymath_c5_qa_runtime_post_custody_v1"
     },
-    "recursive_improvement_next_step": "authorize or mount model source -> Engineering runs frozen exporter outside git -> Custodian freezes metadata identities -> Phase3/4 implements real logits/loss -> Execution emits prediction JSONL and heldout metrics -> Pipeline validates -> Custodian freezes metadata/code only.",
+    "recursive_improvement_next_step": "After the model source route is supplied and exporter output exists, resume the smallest real C5 proof path through streamed/chunked logits generation, teacher-forced answer loss, and executed metrics emission; compare against stable baseline only after real metrics exist.",
     "status_classification": "AUTHORIZATION_PENDING_MODEL_SOURCE_OR_REMOTE_MOUNT",
     "threads_nudged_this_tick": [
       "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050"
     ],
     "user_action_required": true,
-    "authorization_needed": "exact model source route required: mount/restore /workspace/models/gemma4_e4b/snapshot/model.safetensors outside git, or authorize bounded HF read/download/export for google/gemma-4-E4B revision 7aa32e6889efd6300124851b164f8b364314c3d8 without printing secrets"
+    "authorization_needed": "exact model source route required: mount/restore /workspace/models/gemma4_e4b/snapshot/model.safetensors outside git, or authorize bounded HF read/download/export for google/gemma-4-E4B revision 7aa32e6889efd6300124851b164f8b364314c3d8 without printing secrets",
+    "status": "phone_and_mac_full_model_source_absent_exact_source_route_required"
   },
   "required_lane_update_protocol": {
     "block_name": "CENTRAL_STATE_UPDATE",
@@ -4710,8 +4737,31 @@
     ]
   },
   "schema_version": "polymath_executive_delivery_state_v1",
-  "status": "model_safetensors_missing_exact_source_authorization_required",
+  "status": "phone_and_mac_full_model_source_absent_exact_source_route_required",
   "status_classification": "AUTHORIZATION_PENDING_MODEL_SOURCE_OR_REMOTE_MOUNT",
-  "updated_at": "2026-07-01T05:37:47Z",
-  "updated_at_utc": "2026-07-01T05:37:47Z"
+  "updated_at": "2026-07-01T09:42:36Z",
+  "updated_at_utc": "2026-07-01T09:42:36Z",
+  "dominant_failure_domain": "phase5_eval_failure",
+  "user_action_required": true,
+  "last_concrete_action": "Engineering and Execution recovered ADB and completed bounded phone public-root plus Termux-private metadata-only model-source inventory; no full model source, decoder manifest, adapter-site policy, or full decoder component pack was found. Evidence report SHA 132e707f140221d11486efaa9d00acfe402743882c0291066172f5f41b63edfd.",
+  "next_concrete_action": "User/meta supplies the exact full-model source route: restore or mount the historical outside-git Gemma 4 E4B model snapshot, or authorize bounded HF read/download/export for google/gemma-4-E4B revision 7aa32e6889efd6300124851b164f8b364314c3d8 into outside-git storage. Engineering resumes the frozen exporter after source exists.",
+  "artifact_waiting_on": [
+    "Exact model source route after bounded Mac, phone public-root, and Termux-private probes found no full Gemma 4 E4B model source or full decoder component pack.",
+    "Restore or mount the historical outside-git Gemma 4 E4B model snapshot, or explicitly authorize bounded HF read/download/export for google/gemma-4-E4B revision 7aa32e6889efd6300124851b164f8b364314c3d8 into outside-git storage.",
+    "After source is available, Engineering runs the frozen exporter outside git to produce decoder_manifest.json and adapter_site_policy.json.",
+    "After exporter output exists, Phase3/4 replaces full_decoder_logits_generation_not_implemented with streamed/chunked logits generation plus teacher-forced answer loss.",
+    "Execution resumes only after outside-git prediction JSONL, finite candidate_train_loss, and polymath_c5_executed_metrics_v1 can be emitted by real runtime execution."
+  ],
+  "drift_deleted_or_pending": "Deleted the stale unverified-phone-source assumption and superseded the ADB exposure blocker with bounded phone no-full-model evidence. Pending: Repo Custodian freeze of this metadata-only central-state mirror.",
+  "recursive_improvement_next_step": "Once source exists, produce decoder_manifest.json and adapter_site_policy.json, implement real streamed/chunked logits generation plus teacher-forced answer loss, then run the smallest real C5 executed-metrics proof path.",
+  "owner": "user/meta for exact model-source route; Engineering resumes exporter after source exists; Repo Custodian freezes metadata-only central mirror",
+  "threads_nudged_this_tick": [
+    "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050"
+  ],
+  "raw_phone_path_hardening_20260701T094236Z": {
+    "status": "central_state_phone_filesystem_paths_redacted",
+    "scope": "metadata mirror only",
+    "reason": "Prevent stale phone filesystem strings from being treated as C5 runtime evidence or raw payload routes.",
+    "preserved": "artifact identities, hashes, lane status, nonclaims, and outside-git source requirements"
+  }
 }
