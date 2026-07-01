@@ -11,6 +11,7 @@ from polymath_ai.polar.c5_eval import (
     load_json,
     required_metric_names,
     validate_checkpoint_identity,
+    validate_eval_split_identity,
 )
 
 
@@ -54,6 +55,60 @@ def test_checkpoint_identity_rejects_raw_payload_suffix() -> None:
 
     assert identity is None
     assert "candidate_identity_forbidden_raw_suffix" in blockers
+
+
+def test_eval_split_identity_allows_hashed_immutable_hf_jsonl_metadata_path() -> None:
+    identity, blockers = validate_eval_split_identity(
+        {
+            "schema_version": "polymath_c5_eval_split_identity_v1",
+            "hf_repo_id": "Zer0pa/polymat-gemmalit-c1-c4-commercial-corpus",
+            "hf_revision": "1" * 40,
+            "hf_revision_is_immutable": True,
+            "eval_split_hf_uri": (
+                "hf://datasets/Zer0pa/polymat-gemmalit-c1-c4-commercial-corpus/"
+                "packages/C1/qa_bridge/phase_C1_test.qa.jsonl"
+            ),
+            "eval_split_path": "packages/C1/qa_bridge/phase_C1_test.qa.jsonl",
+            "eval_split_sha256": EVAL_SPLIT_SHA,
+            "material_id": (
+                "Zer0pa/polymat-gemmalit-c1-c4-commercial-corpus@"
+                "1111111111111111111111111111111111111111:"
+                "packages/C1/qa_bridge/phase_C1_test.qa.jsonl"
+            ),
+            "record_count": 53,
+            "sha_stream": [
+                {
+                    "remote_path": "packages/C1/qa_bridge/phase_C1_test.qa.jsonl",
+                    "sha256": EVAL_SPLIT_SHA,
+                    "record_count": 53,
+                    "status": "pass",
+                },
+            ],
+        },
+    )
+
+    assert blockers == []
+    assert identity is not None
+    assert identity["eval_split_path"].endswith(".jsonl")
+    assert identity["hf_revision_is_immutable"] is True
+
+
+def test_eval_split_identity_rejects_unscoped_raw_jsonl_path() -> None:
+    identity, blockers = validate_eval_split_identity(
+        {
+            "schema_version": "polymath_c5_eval_split_identity_v1",
+            "hf_repo_id": "Zer0pa/polymat-gemmalit-c1-c4-commercial-corpus",
+            "hf_revision": "1" * 40,
+            "hf_revision_is_immutable": True,
+            "eval_split_path": "packages/C1/qa_bridge/phase_C1_test.qa.jsonl",
+            "eval_split_sha256": EVAL_SPLIT_SHA,
+            "record_count": 53,
+            "debug_payload_copy": "/tmp/phase_C1_test.qa.jsonl",
+        },
+    )
+
+    assert identity is None
+    assert "c5_material_identity_forbidden_raw_suffix" in blockers
 
 
 def test_c5_runner_fails_closed_without_executed_metrics_json(tmp_path: Path) -> None:
@@ -232,9 +287,26 @@ def _write_required_inputs(tmp_path: Path) -> dict[str, Path]:
         "hf_repo_id": "Zer0pa/polymat-gemmalit-c1-c4-commercial-corpus",
         "hf_revision": "1" * 40,
         "hf_revision_is_immutable": True,
-        "eval_split_path": "hf://datasets/Zer0pa/polymat-gemmalit-c1-c4-commercial-corpus/packages/C5/eval.json",
+        "eval_split_hf_uri": (
+            "hf://datasets/Zer0pa/polymat-gemmalit-c1-c4-commercial-corpus/"
+            "packages/C1/qa_bridge/phase_C1_test.qa.jsonl"
+        ),
+        "eval_split_path": "packages/C1/qa_bridge/phase_C1_test.qa.jsonl",
         "eval_split_sha256": EVAL_SPLIT_SHA,
+        "material_id": (
+            "Zer0pa/polymat-gemmalit-c1-c4-commercial-corpus@"
+            "1111111111111111111111111111111111111111:"
+            "packages/C1/qa_bridge/phase_C1_test.qa.jsonl"
+        ),
         "record_count": 3,
+        "sha_stream": [
+            {
+                "remote_path": "packages/C1/qa_bridge/phase_C1_test.qa.jsonl",
+                "sha256": EVAL_SPLIT_SHA,
+                "record_count": 3,
+                "status": "pass",
+            },
+        ],
     })
     _write_json(checkpoint, {
         "schema_version": "polymath_checkpoint_identity_v1",

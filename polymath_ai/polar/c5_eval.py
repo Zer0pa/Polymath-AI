@@ -14,7 +14,7 @@ import math
 import re
 import subprocess
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable
 
 
 C5_SCHEMA_VERSION = "polymath_c5_eval_report_v1"
@@ -165,23 +165,52 @@ def is_finite_number(value: Any) -> bool:
     return isinstance(value, (int, float)) and not isinstance(value, bool) and math.isfinite(float(value))
 
 
-def scan_forbidden_raw_suffixes(payload: Any, *, path: str = "$") -> list[dict[str, str]]:
+def scan_forbidden_raw_suffixes(
+    payload: Any,
+    *,
+    path: str = "$",
+    allowed_paths: set[str] | frozenset[str] | None = None,
+    allowed_path_predicate: Callable[[str], bool] | None = None,
+) -> list[dict[str, str]]:
+    allowed_paths = allowed_paths or frozenset()
     hits: list[dict[str, str]] = []
     if isinstance(payload, dict):
         for key, value in payload.items():
-            hits.extend(scan_forbidden_raw_suffixes(value, path=f"{path}.{key}"))
+            hits.extend(
+                scan_forbidden_raw_suffixes(
+                    value,
+                    path=f"{path}.{key}",
+                    allowed_paths=allowed_paths,
+                    allowed_path_predicate=allowed_path_predicate,
+                ),
+            )
         return hits
     if isinstance(payload, list):
         for index, value in enumerate(payload):
-            hits.extend(scan_forbidden_raw_suffixes(value, path=f"{path}[{index}]"))
+            hits.extend(
+                scan_forbidden_raw_suffixes(
+                    value,
+                    path=f"{path}[{index}]",
+                    allowed_paths=allowed_paths,
+                    allowed_path_predicate=allowed_path_predicate,
+                ),
+            )
         return hits
     if isinstance(payload, str):
+        if path in allowed_paths or (allowed_path_predicate is not None and allowed_path_predicate(path)):
+            return hits
         lowered = payload.lower()
         for suffix in FORBIDDEN_RAW_SUFFIXES:
             if lowered.endswith(suffix) or f"{suffix}?" in lowered or f"{suffix}#" in lowered:
                 hits.append({"path": path, "value": payload, "suffix": suffix})
         return hits
     return hits
+
+
+def is_eval_split_metadata_path(path: str) -> bool:
+    if path in {"$.eval_split_path", "$.eval_split_hf_uri", "$.material_id"}:
+        return True
+    return path.startswith("$.sha_stream[") and path.endswith("].remote_path")
 
 
 def validate_eval_split_identity(payload: dict[str, Any]) -> tuple[dict[str, Any] | None, list[str]]:
@@ -204,7 +233,7 @@ def validate_eval_split_identity(payload: dict[str, Any]) -> tuple[dict[str, Any
     if not isinstance(payload.get("record_count"), int) or payload.get("record_count", 0) <= 0:
         blockers.append("c5_material_identity_record_count_nonpositive")
 
-    raw_hits = scan_forbidden_raw_suffixes(payload)
+    raw_hits = scan_forbidden_raw_suffixes(payload, allowed_path_predicate=is_eval_split_metadata_path)
     if raw_hits:
         blockers.append("c5_material_identity_forbidden_raw_suffix")
 
@@ -464,7 +493,13 @@ def build_c5_eval_report(
     }
 
 
-def load_optional_json_identity(path: Path | None, label: str) -> tuple[dict[str, Any] | None, list[str]]:
+def load_optional_json_identity(
+    path: Path | None,
+    label: str,
+    *,
+    allowed_raw_suffix_paths: set[str] | frozenset[str] | None = None,
+    allowed_raw_suffix_path_predicate: Callable[[str], bool] | None = None,
+) -> tuple[dict[str, Any] | None, list[str]]:
     if path is None:
         return None, [f"{label}_path_missing"]
     identity, blockers = report_file_identity(path, label)
@@ -474,7 +509,11 @@ def load_optional_json_identity(path: Path | None, label: str) -> tuple[dict[str
         payload = load_json(path)
     except (OSError, json.JSONDecodeError, ValueError) as exc:
         return None, [f"{label}_json_invalid_{type(exc).__name__}"]
-    raw_hits = scan_forbidden_raw_suffixes(payload)
+    raw_hits = scan_forbidden_raw_suffixes(
+        payload,
+        allowed_paths=allowed_raw_suffix_paths,
+        allowed_path_predicate=allowed_raw_suffix_path_predicate,
+    )
     if raw_hits:
         return None, [f"{label}_forbidden_raw_suffix"]
     if identity is not None:

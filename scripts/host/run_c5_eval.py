@@ -26,6 +26,7 @@ from polymath_ai.polar.c5_eval import (  # noqa: E402
     build_c5_eval_report,
     capture_git_identity,
     expected_identity_schemas,
+    is_eval_split_metadata_path,
     load_optional_json_identity,
     load_json,
     report_file_identity,
@@ -63,7 +64,11 @@ def safe_label(value: str) -> str:
 def load_and_validate_inputs(args: argparse.Namespace) -> tuple[dict[str, Any], list[str]]:
     blockers: list[str] = []
 
-    eval_split_payload, eval_split_blockers = load_optional_json_identity(args.eval_split, "eval_split")
+    eval_split_payload, eval_split_blockers = load_optional_json_identity(
+        args.eval_split,
+        "eval_split",
+        allowed_raw_suffix_path_predicate=is_eval_split_metadata_path,
+    )
     blockers.extend(eval_split_blockers)
     eval_split_identity = None
     if eval_split_payload is not None:
