@@ -1,14 +1,14 @@
 # Executive Delivery State
 
-Updated UTC: `2026-07-01T13:23:09Z`
+Updated UTC: `2026-07-01T13:54:07Z`
 
 ## Current Gate
 
-`WaveB_C5_after_C1_exporter_attention_layout_repair_custody_pending`
+`WaveB_C5_after_C1_phone_exporter_rerun_after_attention_layout_repair_pending`
 
-Status classification: `PENDING_ACTION_REPO_CUSTODY_EXPORTER_ATTENTION_LAYOUT_REPAIR`
+Status classification: `PENDING_ACTION_EXECUTION_PHONE_EXPORTER_RERUN_SCHEMA_COMPLETE_COMPONENT_PACK`
 
-Owner: Repo Custodian owns custody freeze for the exporter attention-layout repair plus native validator pathset. After custody, Execution reruns the phone exporter. Phase3/4 continues the full decoder compute kernel after schema-complete export.
+Owner: Execution Orchestrator owns the post-custody phone exporter rerun. Repo Custodian owns freezing this metadata-only central mirror. Phase3/4 resumes native logits work only after schema-complete exporter evidence exists.
 
 User action required: `false`
 
@@ -16,28 +16,27 @@ Dominant failure domain: `phase5_eval_failure`
 
 ## Artifact Waiting On
 
-- Repo Custodian freeze of the exporter attention-layout repair, native `safetensors_reader` / runtime validator pathset, focused tests, Engineering report, and this central mirror.
-- Execution rerun of the phone-local exporter from the newly frozen repair against the already phone-held `model.safetensors` SHA `43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651`.
+- Execution consumes Repo Custodian commit `9e6d5086aaabf24e0e08e69656ba39c074c4dfbc` in a clean Termux exporter worktree and verifies exporter SHA `21f62fb37b247375492791833d2a273276f0a2a33e4785d6dd3dea0aaf665f5f`.
+- Execution reruns the phone-local exporter from the newly frozen repair against the already phone-held `model.safetensors` SHA `43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651`.
 - Schema-complete `decoder_manifest.json`, `adapter_site_policy.json`, and `export_report.json` identities generated after the repair, not old pre-runtime-fields component-pack hashes.
+- Repo Custodian freeze of this metadata-only central mirror after the runnable owner was advanced.
 - Phase3/4 replacement of `full_decoder_logits_generation_kernel_not_implemented` only after schema/header validation is green.
 
 ## Last Concrete Action
 
-Engineering repaired the live phone exporter rejection from `export_stdout_43cf3c4.log`: `decoder_layer_5_self_attn_q_proj_shape_mismatch`. The stdlib exporter now validates attention projection compatibility from safetensors header metadata, emits per-layer `attention_layout`, and includes expected/actual shape data on future shape failures. The native C5 runtime validator uses the same attention-layout compatibility rules so schema/header validation reaches the real compute-kernel stop.
+Repo Custodian verified, committed, and pushed the exact 14-file exporter attention-layout repair pathset at `9e6d5086aaabf24e0e08e69656ba39c074c4dfbc` on `origin/gemma4-megakernel-native-training`. The frozen exporter SHA is `21f62fb37b247375492791833d2a273276f0a2a33e4785d6dd3dea0aaf665f5f`; Engineering report SHA is `84f65397246edb58ce5f0d21861ec3cb4b604868fb0fccf05e0a5dc00acbaf6a`. Execution had already restored the Termux SSH command channel and is ready for the post-custody rerun.
 
 Verification:
-- `python3.11 -m py_compile ...` passed.
-- `python3.11 -m pytest -q tests/test_c5_full_decoder_exporter.py` -> `8 passed`.
+- Custodian `python3.11 -m json.tool` checks passed.
+- Custodian `python3.11 -m py_compile` checks passed.
+- Custodian combined C5-focused pytest suite -> `25 passed`.
 - `cmake --build build/gemma4_megakernel_host --target gemma4_layer_runner -j 8` -> built.
-- `python3.11 -m pytest -q tests/test_c5_native_runtime_contract.py` -> `5 passed`.
-- Combined C5-focused suite -> `25 passed`.
-- `git diff --check` on exact repair pathset passed.
+- Custodian `ctest --test-dir build/gemma4_megakernel_host --output-on-failure` -> `4/4 passed`.
+- Custodian staged scope, diff hygiene, raw-suffix scan, and secret scan passed.
 
 ## First Missing Green Field
 
-Current: `repo_custody_freeze_exporter_attention_layout_repair`
-
-After custody: `phone_exporter_rerun_for_schema_complete_component_pack_pending`
+Current: `phone_exporter_rerun_for_schema_complete_component_pack_pending`
 
 After schema-complete export: `full_decoder_logits_generation_kernel_not_implemented_until_native_compute_body_lands`
 
@@ -60,16 +59,16 @@ After schema-complete export: `full_decoder_logits_generation_kernel_not_impleme
 
 ## Next Concrete Action
 
-Repo Custodian verifies and freezes exactly the attention-layout repair custody pathset plus central state. After custody, Execution reruns the same phone exporter command against the existing phone-held model. If the exporter still fails, it must return the new expected/actual shape-bearing blocker JSON. If it passes, Execution returns metadata-only hashes, bytes, and schema proof for `decoder_manifest.json`, `adapter_site_policy.json`, and `export_report.json`.
+Execution consumes commit `9e6d5086aaabf24e0e08e69656ba39c074c4dfbc` on the phone, verifies exporter SHA `21f62fb37b247375492791833d2a273276f0a2a33e4785d6dd3dea0aaf665f5f` and existing model SHA `43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651`, then reruns the same phone exporter command. If the exporter still fails, Execution must return the new expected/actual shape-bearing blocker JSON. If it passes, Execution returns metadata-only hashes, bytes, and schema proof for `decoder_manifest.json`, `adapter_site_policy.json`, and `export_report.json`.
 
 ## Drift Deletion / Hardening
 
-Pending drift before custody: commit `43cf3c4` exporter hard-coded a single q/k/v/o projection row count and rejected the real phone-held model at layer 5. The repair is ready for custody and keeps old pre-runtime-fields component-pack hashes superseded. Remaining drift after export passes: native full decoder compute kernel still intentionally fails closed; bridge MSE remains forbidden as C5 loss.
+Hard-coded attention projection row-count drift is frozen at `9e6d5086aaabf24e0e08e69656ba39c074c4dfbc`, and old pre-runtime-fields component-pack hashes remain superseded. Pending drift: prove the repair on the real phone-held model via exporter rerun. After export passes, native full decoder compute still intentionally fails closed; bridge MSE remains forbidden as C5 loss.
 
 ## Threads Nudged This Tick
 
-- Repo Custodian `019f1ac2-0f0f-7721-bf46-ad402dbd9050` for exact repair pathset freeze.
-- Execution Orchestrator `019f138c-fb51-7c53-a41a-ab8eac950d9c` to prepare phone exporter rerun immediately after custody.
+- Execution Orchestrator `019f138c-fb51-7c53-a41a-ab8eac950d9c` for post-custody phone exporter rerun with commit `9e6d5086aaabf24e0e08e69656ba39c074c4dfbc`.
+- Repo Custodian `019f1ac2-0f0f-7721-bf46-ad402dbd9050` for metadata-only central mirror freeze.
 
 ## Nonclaims Preserved
 
