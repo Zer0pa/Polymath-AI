@@ -5,6 +5,7 @@
 #include <string>
 
 #include "polymath/gemma4/adapter_training.h"
+#include "polymath/gemma4/c5_qa_inference.h"
 #include "polymath/gemma4/data_pipeline.h"
 #include "polymath/gemma4/device_backend.h"
 #include "polymath/gemma4/json_writer.h"
@@ -25,6 +26,7 @@ void print_help() {
       << "                           [--run-g8-distill-compact-rank TOKEN_CACHE ASSETS PACK0 PACK1 CHECKPOINT OUT_DIR LR RANK]\n"
       << "                           [--run-h11f-topk-kl-compact TOKEN_CACHE ASSETS PACK0 PACK1 CHECKPOINT TEACHER_SHARD OUT_DIR LR RANK APPLY_UPDATE]\n"
       << "                           [--run-h11f-topk-kl-layer1-compact TOKEN_CACHE ASSETS PACK0 PACK1 CHECKPOINT TEACHER_SHARD OUT_DIR LR RANK APPLY_UPDATE]\n"
+      << "                           [--run-c5-qa-predict --run-label LABEL --eval-point POINT --checkpoint-role ROLE --checkpoint-payload PATH --checkpoint-sha256 SHA --heldout-qa-jsonl PATH --output-jsonl PATH]\n"
       << "                           [--tokenize-pack TOKENIZER_DIR RAW_TEXT OUT_DIR SEQ N URL]\n"
       << "\n"
       << "Current authority gates: Gemma 4 E4B layer forward-only and stack\n"
@@ -33,6 +35,15 @@ void print_help() {
       << "\n"
       << "This runner does not claim gate success unless a full real-weight layer\n"
       << "output is produced on a GPU backend and audited externally.\n";
+}
+
+std::string require_named_value(int argc, char** argv, int& index,
+                                const std::string& flag) {
+  if ((index + 1) >= argc) {
+    throw std::invalid_argument(flag + " requires a value");
+  }
+  ++index;
+  return argv[index];
 }
 
 void write_pack_validation_json(const std::string& pack_dir,
@@ -253,6 +264,46 @@ int run_h11f_topk_kl_layer1(int argc, char** argv, int index,
   return 0;
 }
 
+int run_c5_qa_predict(int argc, char** argv, int index) {
+  polymath::gemma4::C5QaInferenceRequest request;
+  for (int arg_index = index + 1; arg_index < argc; ++arg_index) {
+    const std::string flag = argv[arg_index];
+    if (flag == "--run-label") {
+      request.run_label = require_named_value(argc, argv, arg_index, flag);
+    } else if (flag == "--eval-point") {
+      request.eval_point = require_named_value(argc, argv, arg_index, flag);
+    } else if (flag == "--checkpoint-role") {
+      request.checkpoint_role = require_named_value(argc, argv, arg_index, flag);
+    } else if (flag == "--checkpoint-payload") {
+      request.checkpoint_payload_path = require_named_value(argc, argv, arg_index, flag);
+    } else if (flag == "--checkpoint-sha256") {
+      request.checkpoint_sha256 = require_named_value(argc, argv, arg_index, flag);
+    } else if (flag == "--heldout-qa-jsonl") {
+      request.heldout_qa_jsonl_path = require_named_value(argc, argv, arg_index, flag);
+    } else if (flag == "--output-jsonl") {
+      request.output_jsonl_path = require_named_value(argc, argv, arg_index, flag);
+    } else if (flag == "--tokenizer-dir") {
+      request.tokenizer_dir = require_named_value(argc, argv, arg_index, flag);
+    } else if (flag == "--decoder-manifest") {
+      request.decoder_manifest_path = require_named_value(argc, argv, arg_index, flag);
+    } else if (flag == "--lm-head") {
+      request.lm_head_path = require_named_value(argc, argv, arg_index, flag);
+    } else if (flag == "--adapter-site-policy") {
+      request.adapter_site_policy_path = require_named_value(argc, argv, arg_index, flag);
+    } else {
+      throw std::invalid_argument("unknown --run-c5-qa-predict argument: " + flag);
+    }
+  }
+
+  const polymath::gemma4::Status status =
+      polymath::gemma4::run_c5_qa_predict(request);
+  if (!status.is_ok()) {
+    std::cerr << status.message() << '\n';
+    return 13;
+  }
+  return 0;
+}
+
 }  // namespace
 
 int main(int argc, char** argv) {
@@ -303,6 +354,9 @@ int main(int argc, char** argv) {
       }
       if (argument == "--run-h11f-topk-kl-layer1-compact") {
         return run_h11f_topk_kl_layer1(argc, argv, index, false);
+      }
+      if (argument == "--run-c5-qa-predict") {
+        return run_c5_qa_predict(argc, argv, index);
       }
       if (argument == "--tokenize-pack") {
         return run_tokenize_pack(argc, argv, index);

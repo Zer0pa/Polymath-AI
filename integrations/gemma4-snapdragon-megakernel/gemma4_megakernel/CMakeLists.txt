@@ -11,6 +11,7 @@ add_library(gemma4_megakernel_core STATIC
   src/model/layer_pack_reader.cpp
   src/backends/device_probe.cpp
   src/backends/cpu_debug_backend.cpp
+  src/backends/c5_qa_inference.cpp
   src/backends/opencl_layer_runner.cpp
 )
 
