@@ -1,6 +1,6 @@
 # Executive Delivery State
 
-Updated UTC: `2026-07-01T16:13:35Z`
+Updated UTC: `2026-07-01T16:18:07Z`
 
 ## Current Gate
 
@@ -96,6 +96,16 @@ Phone probe result:
 - Meminfo after SHA: `9d1f0d6d5ca276e5190596f1e81f78162a31d41a5a779db7c6f939ee4741f28f`
 - Prediction JSONL: not written.
 
+Repo Custodian froze and pushed the six-file phone OpenCL probe failure evidence plus corrected central mirror at `eb7ce060d1295e8396f2f7d5701df32dc1234cad`.
+
+Frozen phone probe evidence pathset:
+- `runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json`: `0a092fbd99b72107206fdd9e0d0d702c3a053c4634325387810480907fa688d6`
+- `runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md`: `ce8608b8f5d8db1bfd2c3e0e61cfc97664773b49d8cd2a1c0d81ea7efec9d679`
+- `runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_opencl_05bb564/candidate_probe_stdout.json`: `fdddc66acb25942701567344c0a9414afb7851bf9f6b39a8f6dfd893c4f47bce`
+- `runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_opencl_05bb564/candidate_probe_stderr.log`: `7588fb8cffee4da0ed9cb23db07b0586de362b52934fbcdc448cb20a64176470`
+- `runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_opencl_05bb564/meminfo_before.txt`: `c2ca8410159a436563d1f2e4e5e5b24dffc8c162534f63a5cd2ae97c887aae27`
+- `runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_opencl_05bb564/meminfo_after.txt`: `9d1f0d6d5ca276e5190596f1e81f78162a31d41a5a779db7c6f939ee4741f28f`
+
 ## First Missing Green Field
 
 Current: `decoder_manifest_per_layer_input_runtime_missing`
@@ -106,12 +116,12 @@ Phase3/4 inspects the exporter manifest schema and native `run_c5_full_decoder_r
 
 ## Drift Deletion / Hardening
 
-OpenCL parity dispatch is frozen and the phone proof reached a new semantic manifest/runtime contract field. Stale OpenCL-pending and Execution-running mirrors are superseded. Pending drift is `per_layer_input_runtime` manifest/runtime repair, bounded multi-token QA prompt orchestration, rank-16 adapter stream injection, 42-layer orchestration, chunked LM-head/NLL writer, outside-git prediction JSONL, and executed C5 metrics.
+OpenCL parity dispatch and the phone proof failure evidence are frozen. Stale OpenCL-pending and Execution-running mirrors are superseded. Pending drift is `per_layer_input_runtime` manifest/runtime repair, bounded multi-token QA prompt orchestration, rank-16 adapter stream injection, 42-layer orchestration, chunked LM-head/NLL writer, outside-git prediction JSONL, and executed C5 metrics.
 
 ## Threads Nudged This Tick
 
-- Repo Custodian `019f1ac2-0f0f-7721-bf46-ad402dbd9050`: will receive a superseding custody note; prior two-file phone-probe-running central mirror is stale unless already committed.
-- Phase3/4 Engineer `019f13da-d897-7ba2-8ed1-b959892f5ed4`: nudged with exact phone probe artifact, first missing field, and repair boundary.
+- Repo Custodian `019f1ac2-0f0f-7721-bf46-ad402dbd9050`: polled complete at `eb7ce060d1295e8396f2f7d5701df32dc1234cad`; no duplicate nudge sent; will receive only this two-file post-freeze central mirror correction.
+- Phase3/4 Engineer `019f13da-d897-7ba2-8ed1-b959892f5ed4`: active on `decoder_manifest_per_layer_input_runtime` repair; no duplicate nudge sent.
 - Execution Orchestrator `019f138c-fb51-7c53-a41a-ab8eac950d9c`: completed bounded phone probe; not re-nudged until repair is frozen.
 
 ## Nonclaims Preserved

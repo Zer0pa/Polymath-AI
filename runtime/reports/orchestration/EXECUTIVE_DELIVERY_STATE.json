@@ -11,7 +11,9 @@
       "Probe report: runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_opencl_05bb564/candidate_probe_stdout.json SHA fdddc66acb25942701567344c0a9414afb7851bf9f6b39a8f6dfd893c4f47bce.",
       "Stderr log SHA 7588fb8cffee4da0ed9cb23db07b0586de362b52934fbcdc448cb20a64176470; meminfo before SHA c2ca8410159a436563d1f2e4e5e5b24dffc8c162534f63a5cd2ae97c887aae27; meminfo after SHA 9d1f0d6d5ca276e5190596f1e81f78162a31d41a5a779db7c6f939ee4741f28f.",
       "Prediction JSONL was not written; no logits/loss/confidence/candidate_train_loss or C5 metrics are claimable."
-    ]
+    ],
+    "evidence_freeze_commit": "eb7ce060d1295e8396f2f7d5701df32dc1234cad",
+    "evidence_freeze_status": "phone_opencl_probe_failure_evidence_and_central_mirror_committed_pushed"
   },
   "active_edge": "WaveB_C5_after_C1_decoder_manifest_per_layer_input_runtime_repair_pending_after_phone_opencl_probe",
   "active_watchdog_state": {
@@ -988,7 +990,7 @@
     "current_gate": "WaveB_C5_after_C1_decoder_manifest_per_layer_input_runtime_repair_pending_after_phone_opencl_probe",
     "custody_commit_latest": "05bb56437b83138547301e69af14ab0fce7d4b1a",
     "custody_status_latest": "c5_opencl_parity_dispatch_committed_pushed",
-    "decoder_manifest_sha256": "6700f3c2912bfdcb659b9e7de3cdb0831d58f3708a0f841c181ec446b3a83a5f",
+    "decoder_manifest_sha256": "2384cd0331423c46a8e0f4a510add39990c16275e5adcd72a00ef56be820bea5",
     "dominant_failure_domain": "phase5_eval_failure",
     "drift_deleted_or_pending": "OpenCL parity dispatch is frozen and the phone proof reached a new semantic manifest/runtime contract field. Stale OpenCL-pending and Execution-running mirrors are superseded. Pending drift is per_layer_input_runtime manifest/runtime repair, bounded multi-token QA prompt orchestration, rank-16 adapter stream injection, 42-layer orchestration, chunked LM-head/NLL writer, outside-git prediction JSONL, and executed C5 metrics.",
     "engineering_evaluator_implementation": {
@@ -1097,7 +1099,7 @@
       "existing_surface_role": "run_c5_eval.py validates supplied metrics JSON; it does not compute metrics",
       "status": "c5_after_c1_real_evaluator_surface_missing"
     },
-    "export_report_sha256": "06fe8e91b5938ff3235cad5fa96e7b25d5b20fb3c4e456c249c84d53bf839d0f",
+    "export_report_sha256": "3313602e8ac2ebf259c36c7aa7a9107e1536e79fea9bf7d0b275434bcda17358",
     "first_missing_green_field": "decoder_manifest_per_layer_input_runtime_missing",
     "first_missing_green_field_after_contract_patch": "decoder_manifest_architecture_config_missing",
     "first_missing_green_field_after_custody": "c5_full_decoder_opencl_parity_dispatch_missing_after_cpu_single_layer_slice",
@@ -1572,12 +1574,12 @@
     "status": "bounded_phone_probe_semantic_failure_decoder_manifest_per_layer_input_runtime_missing",
     "status_classification": "PENDING_ACTION_PHASE34_DECODER_MANIFEST_PER_LAYER_INPUT_RUNTIME_REPAIR_AFTER_PHONE_OPENCL_PROBE",
     "threads_nudged_this_tick": [
-      "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: will receive a superseding custody note; prior two-file phone-probe-running central mirror is stale unless already committed.",
-      "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4: nudged with exact phone probe artifact, first missing field, and repair boundary.",
-      "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: completed bounded phone probe; not re-nudged until repair is frozen."
+      "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: polled complete at eb7ce060d1295e8396f2f7d5701df32dc1234cad; no nudge sent; will receive only this two-file post-freeze central mirror correction.",
+      "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4: active on decoder_manifest_per_layer_input_runtime repair; no duplicate nudge sent.",
+      "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: parked after bounded phone semantic failure; not re-nudged until repair is frozen."
     ],
     "timestamp_utc": "2026-07-01T15:19:37Z",
-    "updated_utc": "2026-07-01T16:13:35Z",
+    "updated_utc": "2026-07-01T16:18:07Z",
     "user_action_required": false,
     "exporter_attention_layout_repair_custody": {
       "status": "committed_pushed",
@@ -1889,7 +1891,8 @@
         "no raw payload copied to repo",
         "no secrets printed"
       ]
-    }
+    },
+    "current_highest_valid_state": "C1-C4 Wave B mechanics, phone-local model/exporter evidence, C5-capable runner build, heldout QA staging, native C5 probe, tokenizer/tensor-loader custody, PLE contract/decoder math custody, PLE derivation/layer-0 normalization custody, CPU single-layer attention/MLP custody, OpenCL parity dispatch custody, and phone OpenCL probe failure evidence custody are development-cycle metadata/code evidence only. No C5 pass, prediction JSONL, or executed metrics exist. The active edge is Phase3/4 repairing the decoder manifest/runtime per_layer_input_runtime contract after the bounded phone probe failed semantically."
   },
   "adapter_site_policy_sha256": "f38bd8109bbb77e9e94a5b4b34a238bc0ec0a39e7736870c97defe5aecc93357",
   "additional_missing_runtime_field_after_contract_patch": "decoder_manifest_tensor_role_inventory_missing",
@@ -2235,8 +2238,8 @@
   },
   "candidate_adapter_sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f",
   "current_gate": "WaveB_C5_after_C1_decoder_manifest_per_layer_input_runtime_repair_pending_after_phone_opencl_probe",
-  "current_highest_valid_state": "C1-C4 Wave B mechanics, phone-local model/exporter evidence, C5-capable runner build, heldout QA staging, native C5 probe, tokenizer/tensor-loader custody, PLE contract/decoder math custody, and PLE derivation/layer-0 normalization custody are development-cycle metadata/code evidence only. No C5 pass, prediction JSONL, or executed metrics exist. The active edge is Phase3/4 implementing the streamed single-layer attention/MLP body.",
-  "decoder_manifest_sha256": "6700f3c2912bfdcb659b9e7de3cdb0831d58f3708a0f841c181ec446b3a83a5f",
+  "current_highest_valid_state": "C1-C4 Wave B mechanics, phone-local model/exporter evidence, C5-capable runner build, heldout QA staging, native C5 probe, tokenizer/tensor-loader custody, PLE contract/decoder math custody, PLE derivation/layer-0 normalization custody, CPU single-layer attention/MLP custody, OpenCL parity dispatch custody, and phone OpenCL probe failure evidence custody are development-cycle metadata/code evidence only. No C5 pass, prediction JSONL, or executed metrics exist. The active edge is Phase3/4 repairing the decoder manifest/runtime per_layer_input_runtime contract after the bounded phone probe failed semantically.",
+  "decoder_manifest_sha256": "2384cd0331423c46a8e0f4a510add39990c16275e5adcd72a00ef56be820bea5",
   "dominant_failure_domain": "phase5_eval_failure",
   "drift_deleted_or_pending": "OpenCL parity dispatch is frozen and the phone proof reached a new semantic manifest/runtime contract field. Stale OpenCL-pending and Execution-running mirrors are superseded. Pending drift is per_layer_input_runtime manifest/runtime repair, bounded multi-token QA prompt orchestration, rank-16 adapter stream injection, 42-layer orchestration, chunked LM-head/NLL writer, outside-git prediction JSONL, and executed C5 metrics.",
   "driver_tick_history": [
@@ -3101,9 +3104,30 @@
         "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: completed bounded phone probe; not re-nudged until repair is frozen."
       ],
       "user_action_required": false
+    },
+    {
+      "timestamp_utc": "2026-07-01T16:18:07Z",
+      "current_gate": "WaveB_C5_after_C1_decoder_manifest_per_layer_input_runtime_repair_pending_after_phone_opencl_probe",
+      "status_classification": "PENDING_ACTION_PHASE34_DECODER_MANIFEST_PER_LAYER_INPUT_RUNTIME_REPAIR_AFTER_PHONE_OPENCL_PROBE",
+      "owner": "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 owns the manifest/runtime contract repair after Execution ran the bounded phone OpenCL parity probe and failed semantically at decoder_manifest_per_layer_input_runtime_missing. Engineering Orchestrator validates/reroutes; Execution is parked until a repaired/frozen runtime or bounded probe command exists.",
+      "action": "recorded Repo Custodian phone OpenCL probe failure evidence custody at eb7ce060 and kept Phase3/4 active on decoder_manifest_per_layer_input_runtime repair; Execution remains parked",
+      "artifact_waiting_on": [
+        "Phase3/4/Engineering repairs the manifest/runtime contract for per_layer_input_runtime behind the existing exporter/native C5 path; do not create a parallel C5 pathway.",
+        "Execution probe evidence: runner built from 05bb56437b83138547301e69af14ab0fce7d4b1a, runner SHA 9c830f8337f61df9d63d2d86255a039c8f705258484df73aa5fad30473bde0e5, exit code 13, elapsed 97s, semantic classification.",
+        "Probe report: runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_opencl_05bb564/candidate_probe_stdout.json SHA fdddc66acb25942701567344c0a9414afb7851bf9f6b39a8f6dfd893c4f47bce.",
+        "Stderr log SHA 7588fb8cffee4da0ed9cb23db07b0586de362b52934fbcdc448cb20a64176470; meminfo before SHA c2ca8410159a436563d1f2e4e5e5b24dffc8c162534f63a5cd2ae97c887aae27; meminfo after SHA 9d1f0d6d5ca276e5190596f1e81f78162a31d41a5a779db7c6f939ee4741f28f.",
+        "Prediction JSONL was not written; no logits/loss/confidence/candidate_train_loss or C5 metrics are claimable."
+      ],
+      "first_missing_green_field": "decoder_manifest_per_layer_input_runtime_missing",
+      "threads_nudged_this_tick": [
+        "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: polled complete at eb7ce060d1295e8396f2f7d5701df32dc1234cad; no nudge sent; will receive only this two-file post-freeze central mirror correction.",
+        "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4: active on decoder_manifest_per_layer_input_runtime repair; no duplicate nudge sent.",
+        "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: parked after bounded phone semantic failure; not re-nudged until repair is frozen."
+      ],
+      "user_action_required": false
     }
   ],
-  "export_report_sha256": "06fe8e91b5938ff3235cad5fa96e7b25d5b20fb3c4e456c249c84d53bf839d0f",
+  "export_report_sha256": "3313602e8ac2ebf259c36c7aa7a9107e1536e79fea9bf7d0b275434bcda17358",
   "exporter_runtime_fields_freeze_commit": "43cf3c4130dc902fc8fd69183bac1056f0596626",
   "exporter_runtime_fields_freeze_status": "committed_pushed",
   "first_missing_green_field": "decoder_manifest_per_layer_input_runtime_missing",
@@ -3767,11 +3791,21 @@
     },
     "repo_custodian": {
       "thread_id": "019f1ac2-0f0f-7721-bf46-ad402dbd9050",
-      "status": "superseding_central_mirror_and_phone_probe_evidence_freeze_pending",
-      "status_classification": "PENDING_ACTION_REPO_CUSTODY_PHONE_PROBE_FAILURE_EVIDENCE_AND_CENTRAL_MIRROR_FREEZE",
-      "last_update_utc": "2026-07-01T16:13:35Z",
-      "first_missing_green_field": "phone_probe_failure_evidence_and_central_mirror_freeze_pending",
-      "next_action": "Freeze current central mirror plus metadata-only phone probe evidence; supersede prior phone-probe-running mirror if not committed, or commit this as the next central-state correction if it was already committed.",
+      "status": "phone_opencl_probe_failure_evidence_and_central_mirror_committed_pushed",
+      "status_classification": "COMPLETE_PHONE_PROBE_FAILURE_EVIDENCE_AND_CENTRAL_MIRROR_FREEZE",
+      "last_update_utc": "2026-07-01T16:18:07Z",
+      "first_missing_green_field": "none_for_repo_custody_current_owner_phase34",
+      "commit_sha": "eb7ce060d1295e8396f2f7d5701df32dc1234cad",
+      "branch": "origin/gemma4-megakernel-native-training",
+      "pathset_sha256": {
+        "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json": "0a092fbd99b72107206fdd9e0d0d702c3a053c4634325387810480907fa688d6",
+        "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md": "ce8608b8f5d8db1bfd2c3e0e61cfc97664773b49d8cd2a1c0d81ea7efec9d679",
+        "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_opencl_05bb564/candidate_probe_stdout.json": "fdddc66acb25942701567344c0a9414afb7851bf9f6b39a8f6dfd893c4f47bce",
+        "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_opencl_05bb564/candidate_probe_stderr.log": "7588fb8cffee4da0ed9cb23db07b0586de362b52934fbcdc448cb20a64176470",
+        "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_opencl_05bb564/meminfo_before.txt": "c2ca8410159a436563d1f2e4e5e5b24dffc8c162534f63a5cd2ae97c887aae27",
+        "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_opencl_05bb564/meminfo_after.txt": "9d1f0d6d5ca276e5190596f1e81f78162a31d41a5a779db7c6f939ee4741f28f"
+      },
+      "next_action": "Stand by for Phase3/4 decoder_manifest_per_layer_input_runtime repair pathset or central mirror custody after that repair result; do not reroute Execution before repair custody.",
       "user_action_required": false
     },
     "training_material_steward": {
@@ -3981,6 +4015,27 @@
         "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_opencl_05bb564/meminfo_after.txt",
         "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json",
         "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md"
+      ],
+      "user_action_required": false
+    },
+    {
+      "timestamp_utc": "2026-07-01T16:18:07Z",
+      "current_gate": "WaveB_C5_after_C1_decoder_manifest_per_layer_input_runtime_repair_pending_after_phone_opencl_probe",
+      "status_classification": "PENDING_ACTION_PHASE34_DECODER_MANIFEST_PER_LAYER_INPUT_RUNTIME_REPAIR_AFTER_PHONE_OPENCL_PROBE",
+      "owner": "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 owns the manifest/runtime contract repair after Execution ran the bounded phone OpenCL parity probe and failed semantically at decoder_manifest_per_layer_input_runtime_missing. Engineering Orchestrator validates/reroutes; Execution is parked until a repaired/frozen runtime or bounded probe command exists.",
+      "action": "recorded Repo Custodian phone OpenCL probe failure evidence custody at eb7ce060 and kept Phase3/4 active on decoder_manifest_per_layer_input_runtime repair; Execution remains parked",
+      "artifact_waiting_on": [
+        "Phase3/4/Engineering repairs the manifest/runtime contract for per_layer_input_runtime behind the existing exporter/native C5 path; do not create a parallel C5 pathway.",
+        "Execution probe evidence: runner built from 05bb56437b83138547301e69af14ab0fce7d4b1a, runner SHA 9c830f8337f61df9d63d2d86255a039c8f705258484df73aa5fad30473bde0e5, exit code 13, elapsed 97s, semantic classification.",
+        "Probe report: runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_opencl_05bb564/candidate_probe_stdout.json SHA fdddc66acb25942701567344c0a9414afb7851bf9f6b39a8f6dfd893c4f47bce.",
+        "Stderr log SHA 7588fb8cffee4da0ed9cb23db07b0586de362b52934fbcdc448cb20a64176470; meminfo before SHA c2ca8410159a436563d1f2e4e5e5b24dffc8c162534f63a5cd2ae97c887aae27; meminfo after SHA 9d1f0d6d5ca276e5190596f1e81f78162a31d41a5a779db7c6f939ee4741f28f.",
+        "Prediction JSONL was not written; no logits/loss/confidence/candidate_train_loss or C5 metrics are claimable."
+      ],
+      "first_missing_green_field": "decoder_manifest_per_layer_input_runtime_missing",
+      "threads_nudged_this_tick": [
+        "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: polled complete at eb7ce060d1295e8396f2f7d5701df32dc1234cad; no nudge sent; will receive only this two-file post-freeze central mirror correction.",
+        "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4: active on decoder_manifest_per_layer_input_runtime repair; no duplicate nudge sent.",
+        "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: parked after bounded phone semantic failure; not re-nudged until repair is frozen."
       ],
       "user_action_required": false
     }
@@ -4450,9 +4505,9 @@
   "status": "bounded_phone_probe_semantic_failure_decoder_manifest_per_layer_input_runtime_missing",
   "status_classification": "PENDING_ACTION_PHASE34_DECODER_MANIFEST_PER_LAYER_INPUT_RUNTIME_REPAIR_AFTER_PHONE_OPENCL_PROBE",
   "threads_nudged_this_tick": [
-    "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: will receive a superseding custody note; prior two-file phone-probe-running central mirror is stale unless already committed.",
-    "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4: nudged with exact phone probe artifact, first missing field, and repair boundary.",
-    "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: completed bounded phone probe; not re-nudged until repair is frozen."
+    "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: polled complete at eb7ce060d1295e8396f2f7d5701df32dc1234cad; no nudge sent; will receive only this two-file post-freeze central mirror correction.",
+    "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4: active on decoder_manifest_per_layer_input_runtime repair; no duplicate nudge sent.",
+    "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: parked after bounded phone semantic failure; not re-nudged until repair is frozen."
   ],
   "updated_at": "2026-07-01T16:13:35Z",
   "updated_at_utc": "2026-07-01T16:13:35Z",
@@ -5185,6 +5240,44 @@
     "raw_boundary": "metadata/log evidence only; no raw model/checkpoint/adapter/tensor/prediction payload was copied into git; raw-suffix scan clean",
     "research_escalation": "none",
     "next_action": "Phase3/4 inspects the exporter manifest schema and native run_c5_full_decoder_runtime validation path, then returns a custody-ready repair pathset for decoder_manifest_per_layer_input_runtime_missing or a precise source/schema blocker. After custody, Execution reruns only the bounded phone C5_after_C1 probe against the repaired manifest/runtime contract.",
+    "nonclaims": [
+      "no C5 pass",
+      "no executed C5 metrics",
+      "no prediction JSONL",
+      "no logits, loss, confidence, or candidate_train_loss",
+      "no bridge MSE relabeled as C5 loss",
+      "no learning/model-quality claim",
+      "no Phase3 readiness claim",
+      "no Phase4 readiness claim",
+      "no raw payload copied to repo",
+      "no secrets printed"
+    ]
+  },
+  "c5_after_c1_phone_opencl_probe_failure_evidence_custody_20260701T161807Z": {
+    "schema_version": "polymath_phase34_phone_probe_failure_evidence_custody_result_v1",
+    "status": "phone_opencl_probe_failure_evidence_and_central_mirror_committed_pushed",
+    "owner": "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050",
+    "commit_sha": "eb7ce060d1295e8396f2f7d5701df32dc1234cad",
+    "branch": "origin/gemma4-megakernel-native-training",
+    "first_missing_green_field_preserved": "decoder_manifest_per_layer_input_runtime_missing",
+    "pathset_sha256": {
+      "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json": "0a092fbd99b72107206fdd9e0d0d702c3a053c4634325387810480907fa688d6",
+      "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md": "ce8608b8f5d8db1bfd2c3e0e61cfc97664773b49d8cd2a1c0d81ea7efec9d679",
+      "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_opencl_05bb564/candidate_probe_stdout.json": "fdddc66acb25942701567344c0a9414afb7851bf9f6b39a8f6dfd893c4f47bce",
+      "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_opencl_05bb564/candidate_probe_stderr.log": "7588fb8cffee4da0ed9cb23db07b0586de362b52934fbcdc448cb20a64176470",
+      "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_opencl_05bb564/meminfo_before.txt": "c2ca8410159a436563d1f2e4e5e5b24dffc8c162534f63a5cd2ae97c887aae27",
+      "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_opencl_05bb564/meminfo_after.txt": "9d1f0d6d5ca276e5190596f1e81f78162a31d41a5a779db7c6f939ee4741f28f"
+    },
+    "verification_commands": [
+      "Repo Custodian: exact six-file hashes matched the request",
+      "Repo Custodian: JSON validation passed for central state and candidate_probe_stdout.json",
+      "Repo Custodian: git diff --check and git diff --cached --check passed",
+      "Repo Custodian: forbidden raw payload filename suffix scan -> 0 hits",
+      "Repo Custodian: raw path and value-shaped secret scans -> no hits",
+      "Repo Custodian: branch/local/remote verified at eb7ce060d1295e8396f2f7d5701df32dc1234cad"
+    ],
+    "next_action": "Phase3/4 repairs decoder_manifest_per_layer_input_runtime behind the existing exporter/native C5 path. Execution reruns only the bounded phone C5_after_C1 probe after repair custody or an explicit bounded follow-up command.",
+    "raw_boundary": "metadata-only phone probe evidence and central mirror; no raw model/checkpoint/adapter/tensor/prediction payload copied into git",
     "nonclaims": [
       "no C5 pass",
       "no executed C5 metrics",
