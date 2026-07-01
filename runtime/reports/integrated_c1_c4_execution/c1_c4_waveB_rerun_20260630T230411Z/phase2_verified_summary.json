@@ -1,0 +1,1089 @@
+{
+  "created_utc": "2026-07-01T00:12:11Z",
+  "phases": {
+    "C1": {
+      "local_metadata_dir": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/phase2/C1",
+      "native_result_path": {
+        "path": "/data/data/com.termux/files/home/polymath_phase2_outputs/c1_c4_waveB_rerun_20260630T230411Z/C1_phase2/c1_c4_waveB_rerun_20260630T230411Z_C1_phase2_native_packetizer_report.json",
+        "sha256": "6ffe23f634677ea5138abf542b81aefbfb076ac71fe14a5a457d898427403f23",
+        "summary": {
+          "geometry_quality": {
+            "jl_distance_distortion_mean": 0.022643,
+            "jl_distance_distortion_p95": 0.061859,
+            "measurement_status": "measured_from_original_embedding_rows_and_projected_polar_vectors",
+            "original_angular_distance_mean": 0.404335,
+            "original_distance_kind": "embedding_cosine_angular_distance_div_pi",
+            "projected_distance_kind": "input_polar_hamming_fraction",
+            "projected_hamming_distance_mean": 0.410521,
+            "sample_pair_count": 4096,
+            "sample_pair_policy": "first_adjacent_real_token_pairs_in_source_order",
+            "schema_version": "phase2_geometry_quality_v1",
+            "status": "pass"
+          },
+          "job_count": 5180,
+          "label": "c1_c4_waveB_rerun_20260630T230411Z_C1_phase2",
+          "packet_count": 5180,
+          "pjp1_bytes": 46914176,
+          "pjp1_path": "/data/data/com.termux/files/home/polymath_phase2_outputs/c1_c4_waveB_rerun_20260630T230411Z/C1_phase2/raw_c1_c4_waveB_rerun_20260630T230411Z_C1_phase2.pjp1",
+          "pqa1_files_consumed": 8,
+          "pqa1_source_sha256_stream": "2eb940a659c4426570ce2b6721f3bf2c7e43aa64bc10db05a4dd488e345a595d",
+          "schema_version": "polar_phase2b_native_packetizer_run_v1",
+          "slot_count": 663040,
+          "source_real_token_count": 216924,
+          "source_record_count": 5180,
+          "status": "pass",
+          "thread_count": 8,
+          "throughput": {
+            "output_MB_per_sec": 9.7409,
+            "packet_slots_per_sec": 137669,
+            "packets_per_sec": 1075.54,
+            "real_tokens_per_sec": 45040.4,
+            "records_per_sec": 1075.54
+          },
+          "timing_sec": {
+            "native_process": 4.60478,
+            "output_prepare": 0.00032849,
+            "scan_validate": 0.00176651,
+            "total": 4.8162
+          },
+          "worker_rollup": {
+            "packets": 5180,
+            "real_tokens": 216924,
+            "records": 5180
+          },
+          "writer": "phase2b_native_cpp_neon_writer_v1"
+        }
+      },
+      "phase2_metrics": {
+        "blockers": [],
+        "comet_metric_prefix": "phase2/C1",
+        "comet_metrics": {
+          "phase2/C1/collision_count": 0.0,
+          "phase2/C1/collision_rate": 0.0,
+          "phase2/C1/hamming_distance_mean": 106.12655034685726,
+          "phase2/C1/hamming_distance_p05": 83.0,
+          "phase2/C1/hamming_distance_p50": 107.0,
+          "phase2/C1/hamming_distance_p95": 133.0,
+          "phase2/C1/jl_distance_distortion_mean": 0.022643,
+          "phase2/C1/jl_distance_distortion_p95": 0.061859,
+          "phase2/C1/jl_distance_distortion_sample_pairs": 4096.0,
+          "phase2/C1/latency_ms": 4816.2,
+          "phase2/C1/output_MB_per_sec": 9.7409,
+          "phase2/C1/packet_count": 5180.0,
+          "phase2/C1/pjp1_bytes": 46914176.0,
+          "phase2/C1/pqa1_files_consumed": 8.0,
+          "phase2/C1/projected_vector_norm_mean": 16.0,
+          "phase2/C1/projected_vector_norm_p95": 16.0,
+          "phase2/C1/real_tokens_per_sec": 45040.4,
+          "phase2/C1/records_per_sec": 1075.54,
+          "phase2/C1/slot_count": 663040.0,
+          "phase2/C1/source_real_token_count": 216924.0,
+          "phase2/C1/source_record_count": 5180.0
+        },
+        "corpus_phase": "C1",
+        "geometry_sample": {
+          "blockers": [],
+          "collision_count": 0,
+          "collision_rate": 0.0,
+          "hamming_distance_mean": 106.12655034685726,
+          "hamming_distance_p05": 83.0,
+          "hamming_distance_p50": 107.0,
+          "hamming_distance_p95": 133.0,
+          "jl_distance_distortion_mean": null,
+          "jl_distance_distortion_p95": null,
+          "jl_distance_distortion_status": "unmeasured_requires_original_embedding_space_pair_distances_or_native_packetizer_support",
+          "metric_measurement_status": {
+            "collision_rate": "measured_from_pjp1_projected_vector_sample",
+            "hamming_distance": "measured_between_adjacent_sampled_projected_vectors",
+            "jl_distance_distortion": "requires_original_embedding_space_pair_distances_or_native_packetizer_support",
+            "projected_vector_norm": "measured_from_bitpacked_polar_dimension"
+          },
+          "pjp1_bytes": 46914176,
+          "pjp1_sha256": "a9e191c1e9ec0f7110fabe5991033f3176cf60c152dcc78b54e2e786a66604bc",
+          "positive_bit_count_mean": 130.53262951371048,
+          "positive_bit_count_p05": 121.0,
+          "positive_bit_count_p50": 131.0,
+          "positive_bit_count_p95": 141.0,
+          "projected_vector_norm_mean": 16.0,
+          "projected_vector_norm_p95": 16.0,
+          "same_token_duplicate_projection_count": 36476,
+          "sample_packets": 1024,
+          "sampled_real_tokens": 42814,
+          "status": "pass",
+          "unique_projection_count": 6338,
+          "unmeasured_metrics": {
+            "jl_distance_distortion": "requires original embedding-space pair distances or native packetizer support; PJP1 contains only projected bitpacked polar vectors"
+          }
+        },
+        "identity_reconciliation": {
+          "binary": {
+            "bytes": 115752,
+            "exists": true,
+            "inside_git_worktree": true,
+            "is_executable": true,
+            "is_file": true,
+            "path": "/data/data/com.termux/files/home/Polymath-AI/native/polar_phase2_packetizer/bin/phase2b_native_packetizer",
+            "sha256": "3dde45a7b6efd9eaa056b113a39335df8b1e876e65c91559b3fd444aa05d9aae"
+          },
+          "build_script": {
+            "bytes": 705,
+            "exists": true,
+            "inside_git_worktree": true,
+            "is_executable": true,
+            "is_file": true,
+            "path": "/data/data/com.termux/files/home/Polymath-AI/native/polar_phase2_packetizer/build_phase2b_native_packetizer.sh",
+            "sha256": "3c284c858aaa0d1e7697c4b63a12330d2e24d62a2391f109f34133463a631716"
+          },
+          "source": {
+            "bytes": 45896,
+            "exists": true,
+            "inside_git_worktree": true,
+            "is_executable": false,
+            "is_file": true,
+            "path": "/data/data/com.termux/files/home/Polymath-AI/native/polar_phase2_packetizer/phase2b_native_packetizer.cpp",
+            "sha256": "1c668e0392f76a1c5eef2677172419bdc0d265f7861fb3a651c3eb7a0fc291e6"
+          },
+          "termux_source_build_identity_captured": true
+        },
+        "metrics": {
+          "collision_count": 0,
+          "collision_rate": 0.0,
+          "hamming_distance_mean": 106.12655034685726,
+          "hamming_distance_p05": 83.0,
+          "hamming_distance_p50": 107.0,
+          "hamming_distance_p95": 133.0,
+          "jl_distance_distortion_mean": 0.022643,
+          "jl_distance_distortion_metric": "abs(input_polar_hamming_fraction - embedding_cosine_angular_distance_div_pi)",
+          "jl_distance_distortion_p95": 0.061859,
+          "jl_distance_distortion_sample_pairs": 4096,
+          "jl_distance_distortion_status": "unmeasured_requires_original_embedding_space_pair_distances_or_native_packetizer_support",
+          "latency_ms": 4816.2,
+          "metric_measurement_status": {
+            "collision_rate": "measured_from_pjp1_projected_vector_sample",
+            "hamming_distance": "measured_between_adjacent_sampled_projected_vectors",
+            "jl_distance_distortion": "measured_from_native_packetizer_original_embedding_and_projected_distances",
+            "packetizer_identity": "measured_from_repo_paths",
+            "pjp1_sha256": "measured_from_output_payload_metadata",
+            "projected_vector_norm": "measured_from_bitpacked_polar_dimension",
+            "structural_counts": "measured_from_native_packetizer_report"
+          },
+          "output_MB_per_sec": 9.7409,
+          "packet_count": 5180,
+          "packetizer_binary_sha256": "3dde45a7b6efd9eaa056b113a39335df8b1e876e65c91559b3fd444aa05d9aae",
+          "packetizer_build_script_sha256": "3c284c858aaa0d1e7697c4b63a12330d2e24d62a2391f109f34133463a631716",
+          "packetizer_source_sha256": "1c668e0392f76a1c5eef2677172419bdc0d265f7861fb3a651c3eb7a0fc291e6",
+          "pjp1_bytes": 46914176,
+          "pjp1_sha256": "a9e191c1e9ec0f7110fabe5991033f3176cf60c152dcc78b54e2e786a66604bc",
+          "pqa1_files_consumed": 8,
+          "projected_vector_norm_mean": 16.0,
+          "projected_vector_norm_p95": 16.0,
+          "real_tokens_per_sec": 45040.4,
+          "records_per_sec": 1075.54,
+          "slot_count": 663040,
+          "source_real_token_count": 216924,
+          "source_record_count": 5180
+        },
+        "nonclaims": [
+          "c1_smoke_only",
+          "no_100k_or_1m_phase2_authority_claim",
+          "no_phase3_ready_claim",
+          "no_npu_htp_claim",
+          "no_learning_claim",
+          "no_model_quality_claim"
+        ],
+        "phase_family": "phase2",
+        "schema_version": "phase2_c1_metric_contract_v1",
+        "status": "pass"
+      },
+      "pulled_metadata": [
+        {
+          "bytes": 3879,
+          "local_path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/phase2/C1/c1_c4_waveB_rerun_20260630T230411Z_C1_phase2_native_packetizer_report.json",
+          "remote_path": "/data/data/com.termux/files/home/polymath_phase2_outputs/c1_c4_waveB_rerun_20260630T230411Z/C1_phase2/c1_c4_waveB_rerun_20260630T230411Z_C1_phase2_native_packetizer_report.json",
+          "sha256": "6ffe23f634677ea5138abf542b81aefbfb076ac71fe14a5a457d898427403f23"
+        },
+        {
+          "bytes": 17574,
+          "local_path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/phase2/C1/phase2_wrapper_report.json",
+          "remote_path": "/data/data/com.termux/files/home/polymath_phase2_outputs/c1_c4_waveB_rerun_20260630T230411Z/C1_phase2/phase2_wrapper_report.json",
+          "sha256": "edcec22e5ffbafd0fd545d91fe84dea6ae8448cfb7ad816e7cb579758775a84c"
+        }
+      ],
+      "raw_pjp1": {
+        "bytes": 46914176,
+        "path": "/data/data/com.termux/files/home/polymath_phase2_outputs/c1_c4_waveB_rerun_20260630T230411Z/C1_phase2/raw_c1_c4_waveB_rerun_20260630T230411Z_C1_phase2.pjp1",
+        "sha256": "a9e191c1e9ec0f7110fabe5991033f3176cf60c152dcc78b54e2e786a66604bc"
+      },
+      "remote_dir": "/data/data/com.termux/files/home/polymath_phase2_outputs/c1_c4_waveB_rerun_20260630T230411Z/C1_phase2",
+      "wrapper_status": "pass"
+    },
+    "C2": {
+      "local_metadata_dir": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/phase2/C2",
+      "native_result_path": {
+        "path": "/data/data/com.termux/files/home/polymath_phase2_outputs/c1_c4_waveB_rerun_20260630T230411Z/C2_phase2/c1_c4_waveB_rerun_20260630T230411Z_C2_phase2_native_packetizer_report.json",
+        "sha256": "0392a4aeb8b13b2292fa0145b9c617dc5198d9d07b28a82f7784c4aa99fbafa5",
+        "summary": {
+          "geometry_quality": {
+            "jl_distance_distortion_mean": 0.0222531,
+            "jl_distance_distortion_p95": 0.0577133,
+            "measurement_status": "measured_from_original_embedding_rows_and_projected_polar_vectors",
+            "original_angular_distance_mean": 0.406459,
+            "original_distance_kind": "embedding_cosine_angular_distance_div_pi",
+            "projected_distance_kind": "input_polar_hamming_fraction",
+            "projected_hamming_distance_mean": 0.410036,
+            "sample_pair_count": 4096,
+            "sample_pair_policy": "first_adjacent_real_token_pairs_in_source_order",
+            "schema_version": "phase2_geometry_quality_v1",
+            "status": "pass"
+          },
+          "job_count": 3198,
+          "label": "c1_c4_waveB_rerun_20260630T230411Z_C2_phase2",
+          "packet_count": 3198,
+          "pjp1_bytes": 28965184,
+          "pjp1_path": "/data/data/com.termux/files/home/polymath_phase2_outputs/c1_c4_waveB_rerun_20260630T230411Z/C2_phase2/raw_c1_c4_waveB_rerun_20260630T230411Z_C2_phase2.pjp1",
+          "pqa1_files_consumed": 8,
+          "pqa1_source_sha256_stream": "67b2522803ccf9599e2b10771448796b9f394eb4149d774eb6e379d7ff89aa90",
+          "schema_version": "polar_phase2b_native_packetizer_run_v1",
+          "slot_count": 409344,
+          "source_real_token_count": 149896,
+          "source_record_count": 3198,
+          "status": "pass",
+          "thread_count": 8,
+          "throughput": {
+            "output_MB_per_sec": 8.49273,
+            "packet_slots_per_sec": 120022,
+            "packets_per_sec": 937.669,
+            "real_tokens_per_sec": 43950.2,
+            "records_per_sec": 937.669
+          },
+          "timing_sec": {
+            "native_process": 3.26217,
+            "output_prepare": 0.00031375,
+            "scan_validate": 0.0013626,
+            "total": 3.41059
+          },
+          "worker_rollup": {
+            "packets": 3198,
+            "real_tokens": 149896,
+            "records": 3198
+          },
+          "writer": "phase2b_native_cpp_neon_writer_v1"
+        }
+      },
+      "phase2_metrics": {
+        "blockers": [],
+        "comet_metric_prefix": "phase2/C2",
+        "comet_metrics": {
+          "phase2/C2/collision_count": 0.0,
+          "phase2/C2/collision_rate": 0.0,
+          "phase2/C2/hamming_distance_mean": 105.68438593567738,
+          "phase2/C2/hamming_distance_p05": 84.0,
+          "phase2/C2/hamming_distance_p50": 107.0,
+          "phase2/C2/hamming_distance_p95": 127.0,
+          "phase2/C2/jl_distance_distortion_mean": 0.0222531,
+          "phase2/C2/jl_distance_distortion_p95": 0.0577133,
+          "phase2/C2/jl_distance_distortion_sample_pairs": 4096.0,
+          "phase2/C2/latency_ms": 3410.59,
+          "phase2/C2/output_MB_per_sec": 8.49273,
+          "phase2/C2/packet_count": 3198.0,
+          "phase2/C2/pjp1_bytes": 28965184.0,
+          "phase2/C2/pqa1_files_consumed": 8.0,
+          "phase2/C2/projected_vector_norm_mean": 16.0,
+          "phase2/C2/projected_vector_norm_p95": 16.0,
+          "phase2/C2/real_tokens_per_sec": 43950.2,
+          "phase2/C2/records_per_sec": 937.669,
+          "phase2/C2/slot_count": 409344.0,
+          "phase2/C2/source_real_token_count": 149896.0,
+          "phase2/C2/source_record_count": 3198.0
+        },
+        "corpus_phase": "C2",
+        "geometry_sample": {
+          "blockers": [],
+          "collision_count": 0,
+          "collision_rate": 0.0,
+          "hamming_distance_mean": 105.68438593567738,
+          "hamming_distance_p05": 84.0,
+          "hamming_distance_p50": 107.0,
+          "hamming_distance_p95": 127.0,
+          "jl_distance_distortion_mean": null,
+          "jl_distance_distortion_p95": null,
+          "jl_distance_distortion_status": "unmeasured_requires_original_embedding_space_pair_distances_or_native_packetizer_support",
+          "metric_measurement_status": {
+            "collision_rate": "measured_from_pjp1_projected_vector_sample",
+            "hamming_distance": "measured_between_adjacent_sampled_projected_vectors",
+            "jl_distance_distortion": "requires_original_embedding_space_pair_distances_or_native_packetizer_support",
+            "projected_vector_norm": "measured_from_bitpacked_polar_dimension"
+          },
+          "pjp1_bytes": 28965184,
+          "pjp1_sha256": "073c142e8109996eaef2f26044781ab68362a3594af7b34d859335c17d5f6408",
+          "positive_bit_count_mean": 130.57922472869672,
+          "positive_bit_count_p05": 121.0,
+          "positive_bit_count_p50": 131.0,
+          "positive_bit_count_p95": 140.0,
+          "projected_vector_norm_mean": 16.0,
+          "projected_vector_norm_p95": 16.0,
+          "same_token_duplicate_projection_count": 42482,
+          "sample_packets": 1024,
+          "sampled_real_tokens": 48009,
+          "status": "pass",
+          "unique_projection_count": 5527,
+          "unmeasured_metrics": {
+            "jl_distance_distortion": "requires original embedding-space pair distances or native packetizer support; PJP1 contains only projected bitpacked polar vectors"
+          }
+        },
+        "identity_reconciliation": {
+          "binary": {
+            "bytes": 115752,
+            "exists": true,
+            "inside_git_worktree": true,
+            "is_executable": true,
+            "is_file": true,
+            "path": "/data/data/com.termux/files/home/Polymath-AI/native/polar_phase2_packetizer/bin/phase2b_native_packetizer",
+            "sha256": "3dde45a7b6efd9eaa056b113a39335df8b1e876e65c91559b3fd444aa05d9aae"
+          },
+          "build_script": {
+            "bytes": 705,
+            "exists": true,
+            "inside_git_worktree": true,
+            "is_executable": true,
+            "is_file": true,
+            "path": "/data/data/com.termux/files/home/Polymath-AI/native/polar_phase2_packetizer/build_phase2b_native_packetizer.sh",
+            "sha256": "3c284c858aaa0d1e7697c4b63a12330d2e24d62a2391f109f34133463a631716"
+          },
+          "source": {
+            "bytes": 45896,
+            "exists": true,
+            "inside_git_worktree": true,
+            "is_executable": false,
+            "is_file": true,
+            "path": "/data/data/com.termux/files/home/Polymath-AI/native/polar_phase2_packetizer/phase2b_native_packetizer.cpp",
+            "sha256": "1c668e0392f76a1c5eef2677172419bdc0d265f7861fb3a651c3eb7a0fc291e6"
+          },
+          "termux_source_build_identity_captured": true
+        },
+        "metrics": {
+          "collision_count": 0,
+          "collision_rate": 0.0,
+          "hamming_distance_mean": 105.68438593567738,
+          "hamming_distance_p05": 84.0,
+          "hamming_distance_p50": 107.0,
+          "hamming_distance_p95": 127.0,
+          "jl_distance_distortion_mean": 0.0222531,
+          "jl_distance_distortion_metric": "abs(input_polar_hamming_fraction - embedding_cosine_angular_distance_div_pi)",
+          "jl_distance_distortion_p95": 0.0577133,
+          "jl_distance_distortion_sample_pairs": 4096,
+          "jl_distance_distortion_status": "unmeasured_requires_original_embedding_space_pair_distances_or_native_packetizer_support",
+          "latency_ms": 3410.59,
+          "metric_measurement_status": {
+            "collision_rate": "measured_from_pjp1_projected_vector_sample",
+            "hamming_distance": "measured_between_adjacent_sampled_projected_vectors",
+            "jl_distance_distortion": "measured_from_native_packetizer_original_embedding_and_projected_distances",
+            "packetizer_identity": "measured_from_repo_paths",
+            "pjp1_sha256": "measured_from_output_payload_metadata",
+            "projected_vector_norm": "measured_from_bitpacked_polar_dimension",
+            "structural_counts": "measured_from_native_packetizer_report"
+          },
+          "output_MB_per_sec": 8.49273,
+          "packet_count": 3198,
+          "packetizer_binary_sha256": "3dde45a7b6efd9eaa056b113a39335df8b1e876e65c91559b3fd444aa05d9aae",
+          "packetizer_build_script_sha256": "3c284c858aaa0d1e7697c4b63a12330d2e24d62a2391f109f34133463a631716",
+          "packetizer_source_sha256": "1c668e0392f76a1c5eef2677172419bdc0d265f7861fb3a651c3eb7a0fc291e6",
+          "pjp1_bytes": 28965184,
+          "pjp1_sha256": "073c142e8109996eaef2f26044781ab68362a3594af7b34d859335c17d5f6408",
+          "pqa1_files_consumed": 8,
+          "projected_vector_norm_mean": 16.0,
+          "projected_vector_norm_p95": 16.0,
+          "real_tokens_per_sec": 43950.2,
+          "records_per_sec": 937.669,
+          "slot_count": 409344,
+          "source_real_token_count": 149896,
+          "source_record_count": 3198
+        },
+        "nonclaims": [
+          "c1_smoke_only",
+          "no_100k_or_1m_phase2_authority_claim",
+          "no_phase3_ready_claim",
+          "no_npu_htp_claim",
+          "no_learning_claim",
+          "no_model_quality_claim"
+        ],
+        "phase_family": "phase2",
+        "schema_version": "phase2_c1_metric_contract_v1",
+        "status": "pass"
+      },
+      "pulled_metadata": [
+        {
+          "bytes": 3882,
+          "local_path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/phase2/C2/c1_c4_waveB_rerun_20260630T230411Z_C2_phase2_native_packetizer_report.json",
+          "remote_path": "/data/data/com.termux/files/home/polymath_phase2_outputs/c1_c4_waveB_rerun_20260630T230411Z/C2_phase2/c1_c4_waveB_rerun_20260630T230411Z_C2_phase2_native_packetizer_report.json",
+          "sha256": "0392a4aeb8b13b2292fa0145b9c617dc5198d9d07b28a82f7784c4aa99fbafa5"
+        },
+        {
+          "bytes": 17586,
+          "local_path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/phase2/C2/phase2_wrapper_report.json",
+          "remote_path": "/data/data/com.termux/files/home/polymath_phase2_outputs/c1_c4_waveB_rerun_20260630T230411Z/C2_phase2/phase2_wrapper_report.json",
+          "sha256": "10cbc04a85118cdc09e3684acf7f5c3a03e9b7fdf17271a0ad09270e21b1de66"
+        }
+      ],
+      "raw_pjp1": {
+        "bytes": 28965184,
+        "path": "/data/data/com.termux/files/home/polymath_phase2_outputs/c1_c4_waveB_rerun_20260630T230411Z/C2_phase2/raw_c1_c4_waveB_rerun_20260630T230411Z_C2_phase2.pjp1",
+        "sha256": "073c142e8109996eaef2f26044781ab68362a3594af7b34d859335c17d5f6408"
+      },
+      "remote_dir": "/data/data/com.termux/files/home/polymath_phase2_outputs/c1_c4_waveB_rerun_20260630T230411Z/C2_phase2",
+      "wrapper_status": "pass"
+    },
+    "C2_5": {
+      "local_metadata_dir": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/phase2/C2_5",
+      "native_result_path": {
+        "path": "/data/data/com.termux/files/home/polymath_phase2_outputs/c1_c4_waveB_rerun_20260630T230411Z/C2_5_phase2/c1_c4_waveB_rerun_20260630T230411Z_C2_5_phase2_native_packetizer_report.json",
+        "sha256": "eaba87115cfa2f251f37c591297f790006f1e4c43c7d4c1a300c2017f17a9ab0",
+        "summary": {
+          "geometry_quality": {
+            "jl_distance_distortion_mean": 0.0223863,
+            "jl_distance_distortion_p95": 0.0578337,
+            "measurement_status": "measured_from_original_embedding_rows_and_projected_polar_vectors",
+            "original_angular_distance_mean": 0.394618,
+            "original_distance_kind": "embedding_cosine_angular_distance_div_pi",
+            "projected_distance_kind": "input_polar_hamming_fraction",
+            "projected_hamming_distance_mean": 0.396655,
+            "sample_pair_count": 1306,
+            "sample_pair_policy": "first_adjacent_real_token_pairs_in_source_order",
+            "schema_version": "phase2_geometry_quality_v1",
+            "status": "pass"
+          },
+          "job_count": 20,
+          "label": "c1_c4_waveB_rerun_20260630T230411Z_C2_5_phase2",
+          "packet_count": 20,
+          "pjp1_bytes": 185216,
+          "pjp1_path": "/data/data/com.termux/files/home/polymath_phase2_outputs/c1_c4_waveB_rerun_20260630T230411Z/C2_5_phase2/raw_c1_c4_waveB_rerun_20260630T230411Z_C2_5_phase2.pjp1",
+          "pqa1_files_consumed": 8,
+          "pqa1_source_sha256_stream": "5e4d060c7c91840ffff2a30f994e8ccf0c1b2f877b1c502f69cbd2d28e5628bd",
+          "schema_version": "polar_phase2b_native_packetizer_run_v1",
+          "slot_count": 2560,
+          "source_real_token_count": 1326,
+          "source_record_count": 20,
+          "status": "pass",
+          "thread_count": 8,
+          "throughput": {
+            "output_MB_per_sec": 3.72592,
+            "packet_slots_per_sec": 51498.6,
+            "packets_per_sec": 402.333,
+            "real_tokens_per_sec": 26674.7,
+            "records_per_sec": 402.333
+          },
+          "timing_sec": {
+            "native_process": 0.0392709,
+            "output_prepare": 0.000259531,
+            "scan_validate": 0.000467135,
+            "total": 0.0497101
+          },
+          "worker_rollup": {
+            "packets": 20,
+            "real_tokens": 1326,
+            "records": 20
+          },
+          "writer": "phase2b_native_cpp_neon_writer_v1"
+        }
+      },
+      "phase2_metrics": {
+        "blockers": [],
+        "comet_metric_prefix": "phase2/C2_5",
+        "comet_metrics": {
+          "phase2/C2_5/collision_count": 0.0,
+          "phase2/C2_5/collision_rate": 0.0,
+          "phase2/C2_5/hamming_distance_mean": 102.0377358490566,
+          "phase2/C2_5/hamming_distance_p05": 73.0,
+          "phase2/C2_5/hamming_distance_p50": 104.0,
+          "phase2/C2_5/hamming_distance_p95": 124.0,
+          "phase2/C2_5/jl_distance_distortion_mean": 0.0223863,
+          "phase2/C2_5/jl_distance_distortion_p95": 0.0578337,
+          "phase2/C2_5/jl_distance_distortion_sample_pairs": 1306.0,
+          "phase2/C2_5/latency_ms": 49.7101,
+          "phase2/C2_5/output_MB_per_sec": 3.72592,
+          "phase2/C2_5/packet_count": 20.0,
+          "phase2/C2_5/pjp1_bytes": 185216.0,
+          "phase2/C2_5/pqa1_files_consumed": 8.0,
+          "phase2/C2_5/projected_vector_norm_mean": 16.0,
+          "phase2/C2_5/projected_vector_norm_p95": 16.0,
+          "phase2/C2_5/real_tokens_per_sec": 26674.7,
+          "phase2/C2_5/records_per_sec": 402.333,
+          "phase2/C2_5/slot_count": 2560.0,
+          "phase2/C2_5/source_real_token_count": 1326.0,
+          "phase2/C2_5/source_record_count": 20.0
+        },
+        "corpus_phase": "C2_5",
+        "geometry_sample": {
+          "blockers": [],
+          "collision_count": 0,
+          "collision_rate": 0.0,
+          "hamming_distance_mean": 102.0377358490566,
+          "hamming_distance_p05": 73.0,
+          "hamming_distance_p50": 104.0,
+          "hamming_distance_p95": 124.0,
+          "jl_distance_distortion_mean": null,
+          "jl_distance_distortion_p95": null,
+          "jl_distance_distortion_status": "unmeasured_requires_original_embedding_space_pair_distances_or_native_packetizer_support",
+          "metric_measurement_status": {
+            "collision_rate": "measured_from_pjp1_projected_vector_sample",
+            "hamming_distance": "measured_between_adjacent_sampled_projected_vectors",
+            "jl_distance_distortion": "requires_original_embedding_space_pair_distances_or_native_packetizer_support",
+            "projected_vector_norm": "measured_from_bitpacked_polar_dimension"
+          },
+          "pjp1_bytes": 185216,
+          "pjp1_sha256": "5c3278864d33d6e97ceb79b720d6c4f95ba456c8187c2d4b7c750a24171a85bb",
+          "positive_bit_count_mean": 130.25641025641025,
+          "positive_bit_count_p05": 121.0,
+          "positive_bit_count_p50": 130.0,
+          "positive_bit_count_p95": 140.0,
+          "projected_vector_norm_mean": 16.0,
+          "projected_vector_norm_p95": 16.0,
+          "same_token_duplicate_projection_count": 974,
+          "sample_packets": 20,
+          "sampled_real_tokens": 1326,
+          "status": "pass",
+          "unique_projection_count": 352,
+          "unmeasured_metrics": {
+            "jl_distance_distortion": "requires original embedding-space pair distances or native packetizer support; PJP1 contains only projected bitpacked polar vectors"
+          }
+        },
+        "identity_reconciliation": {
+          "binary": {
+            "bytes": 115752,
+            "exists": true,
+            "inside_git_worktree": true,
+            "is_executable": true,
+            "is_file": true,
+            "path": "/data/data/com.termux/files/home/Polymath-AI/native/polar_phase2_packetizer/bin/phase2b_native_packetizer",
+            "sha256": "3dde45a7b6efd9eaa056b113a39335df8b1e876e65c91559b3fd444aa05d9aae"
+          },
+          "build_script": {
+            "bytes": 705,
+            "exists": true,
+            "inside_git_worktree": true,
+            "is_executable": true,
+            "is_file": true,
+            "path": "/data/data/com.termux/files/home/Polymath-AI/native/polar_phase2_packetizer/build_phase2b_native_packetizer.sh",
+            "sha256": "3c284c858aaa0d1e7697c4b63a12330d2e24d62a2391f109f34133463a631716"
+          },
+          "source": {
+            "bytes": 45896,
+            "exists": true,
+            "inside_git_worktree": true,
+            "is_executable": false,
+            "is_file": true,
+            "path": "/data/data/com.termux/files/home/Polymath-AI/native/polar_phase2_packetizer/phase2b_native_packetizer.cpp",
+            "sha256": "1c668e0392f76a1c5eef2677172419bdc0d265f7861fb3a651c3eb7a0fc291e6"
+          },
+          "termux_source_build_identity_captured": true
+        },
+        "metrics": {
+          "collision_count": 0,
+          "collision_rate": 0.0,
+          "hamming_distance_mean": 102.0377358490566,
+          "hamming_distance_p05": 73.0,
+          "hamming_distance_p50": 104.0,
+          "hamming_distance_p95": 124.0,
+          "jl_distance_distortion_mean": 0.0223863,
+          "jl_distance_distortion_metric": "abs(input_polar_hamming_fraction - embedding_cosine_angular_distance_div_pi)",
+          "jl_distance_distortion_p95": 0.0578337,
+          "jl_distance_distortion_sample_pairs": 1306,
+          "jl_distance_distortion_status": "unmeasured_requires_original_embedding_space_pair_distances_or_native_packetizer_support",
+          "latency_ms": 49.7101,
+          "metric_measurement_status": {
+            "collision_rate": "measured_from_pjp1_projected_vector_sample",
+            "hamming_distance": "measured_between_adjacent_sampled_projected_vectors",
+            "jl_distance_distortion": "measured_from_native_packetizer_original_embedding_and_projected_distances",
+            "packetizer_identity": "measured_from_repo_paths",
+            "pjp1_sha256": "measured_from_output_payload_metadata",
+            "projected_vector_norm": "measured_from_bitpacked_polar_dimension",
+            "structural_counts": "measured_from_native_packetizer_report"
+          },
+          "output_MB_per_sec": 3.72592,
+          "packet_count": 20,
+          "packetizer_binary_sha256": "3dde45a7b6efd9eaa056b113a39335df8b1e876e65c91559b3fd444aa05d9aae",
+          "packetizer_build_script_sha256": "3c284c858aaa0d1e7697c4b63a12330d2e24d62a2391f109f34133463a631716",
+          "packetizer_source_sha256": "1c668e0392f76a1c5eef2677172419bdc0d265f7861fb3a651c3eb7a0fc291e6",
+          "pjp1_bytes": 185216,
+          "pjp1_sha256": "5c3278864d33d6e97ceb79b720d6c4f95ba456c8187c2d4b7c750a24171a85bb",
+          "pqa1_files_consumed": 8,
+          "projected_vector_norm_mean": 16.0,
+          "projected_vector_norm_p95": 16.0,
+          "real_tokens_per_sec": 26674.7,
+          "records_per_sec": 402.333,
+          "slot_count": 2560,
+          "source_real_token_count": 1326,
+          "source_record_count": 20
+        },
+        "nonclaims": [
+          "c1_smoke_only",
+          "no_100k_or_1m_phase2_authority_claim",
+          "no_phase3_ready_claim",
+          "no_npu_htp_claim",
+          "no_learning_claim",
+          "no_model_quality_claim"
+        ],
+        "phase_family": "phase2",
+        "schema_version": "phase2_c1_metric_contract_v1",
+        "status": "pass"
+      },
+      "pulled_metadata": [
+        {
+          "bytes": 3878,
+          "local_path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/phase2/C2_5/c1_c4_waveB_rerun_20260630T230411Z_C2_5_phase2_native_packetizer_report.json",
+          "remote_path": "/data/data/com.termux/files/home/polymath_phase2_outputs/c1_c4_waveB_rerun_20260630T230411Z/C2_5_phase2/c1_c4_waveB_rerun_20260630T230411Z_C2_5_phase2_native_packetizer_report.json",
+          "sha256": "eaba87115cfa2f251f37c591297f790006f1e4c43c7d4c1a300c2017f17a9ab0"
+        },
+        {
+          "bytes": 17689,
+          "local_path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/phase2/C2_5/phase2_wrapper_report.json",
+          "remote_path": "/data/data/com.termux/files/home/polymath_phase2_outputs/c1_c4_waveB_rerun_20260630T230411Z/C2_5_phase2/phase2_wrapper_report.json",
+          "sha256": "9d49d551f578d6076410323f5cc5deb53ac0b254919afc37dbb1b0b1b2674aba"
+        }
+      ],
+      "raw_pjp1": {
+        "bytes": 185216,
+        "path": "/data/data/com.termux/files/home/polymath_phase2_outputs/c1_c4_waveB_rerun_20260630T230411Z/C2_5_phase2/raw_c1_c4_waveB_rerun_20260630T230411Z_C2_5_phase2.pjp1",
+        "sha256": "5c3278864d33d6e97ceb79b720d6c4f95ba456c8187c2d4b7c750a24171a85bb"
+      },
+      "remote_dir": "/data/data/com.termux/files/home/polymath_phase2_outputs/c1_c4_waveB_rerun_20260630T230411Z/C2_5_phase2",
+      "wrapper_status": "pass"
+    },
+    "C3": {
+      "local_metadata_dir": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/phase2/C3",
+      "native_result_path": {
+        "path": "/data/data/com.termux/files/home/polymath_phase2_outputs/c1_c4_waveB_rerun_20260630T230411Z/C3_phase2/c1_c4_waveB_rerun_20260630T230411Z_C3_phase2_native_packetizer_report.json",
+        "sha256": "c016c1314099eac8c72b16f51ae2dfd4a608f4375758bddf743ae14aa20ec344",
+        "summary": {
+          "geometry_quality": {
+            "jl_distance_distortion_mean": 0.0254038,
+            "jl_distance_distortion_p95": 0.0654859,
+            "measurement_status": "measured_from_original_embedding_rows_and_projected_polar_vectors",
+            "original_angular_distance_mean": 0.391771,
+            "original_distance_kind": "embedding_cosine_angular_distance_div_pi",
+            "projected_distance_kind": "input_polar_hamming_fraction",
+            "projected_hamming_distance_mean": 0.398964,
+            "sample_pair_count": 4096,
+            "sample_pair_policy": "first_adjacent_real_token_pairs_in_source_order",
+            "schema_version": "phase2_geometry_quality_v1",
+            "status": "pass"
+          },
+          "job_count": 56138,
+          "label": "c1_c4_waveB_rerun_20260630T230411Z_C3_phase2",
+          "packet_count": 247500,
+          "pjp1_bytes": 2241364096,
+          "pjp1_path": "/data/data/com.termux/files/home/polymath_phase2_outputs/c1_c4_waveB_rerun_20260630T230411Z/C3_phase2/raw_c1_c4_waveB_rerun_20260630T230411Z_C3_phase2.pjp1",
+          "pqa1_files_consumed": 8,
+          "pqa1_source_sha256_stream": "05daebeddb168b236437546ed81c48c7c1ba9e8f4f13578bf550c0768c0f65f9",
+          "schema_version": "polar_phase2b_native_packetizer_run_v1",
+          "slot_count": 31680000,
+          "source_real_token_count": 27792304,
+          "source_record_count": 56138,
+          "status": "pass",
+          "thread_count": 8,
+          "throughput": {
+            "output_MB_per_sec": 4.4284,
+            "packet_slots_per_sec": 62592.1,
+            "packets_per_sec": 489,
+            "real_tokens_per_sec": 54910.9,
+            "records_per_sec": 110.915
+          },
+          "timing_sec": {
+            "native_process": 505.675,
+            "output_prepare": 0.000390625,
+            "scan_validate": 0.111638,
+            "total": 506.134
+          },
+          "worker_rollup": {
+            "packets": 247500,
+            "real_tokens": 27792304,
+            "records": 56138
+          },
+          "writer": "phase2b_native_cpp_neon_writer_v1"
+        }
+      },
+      "phase2_metrics": {
+        "blockers": [],
+        "comet_metric_prefix": "phase2/C3",
+        "comet_metrics": {
+          "phase2/C3/collision_count": 0.0,
+          "phase2/C3/collision_rate": 0.0,
+          "phase2/C3/hamming_distance_mean": 102.16945931793997,
+          "phase2/C3/hamming_distance_p05": 71.0,
+          "phase2/C3/hamming_distance_p50": 104.0,
+          "phase2/C3/hamming_distance_p95": 125.0,
+          "phase2/C3/jl_distance_distortion_mean": 0.0254038,
+          "phase2/C3/jl_distance_distortion_p95": 0.0654859,
+          "phase2/C3/jl_distance_distortion_sample_pairs": 4096.0,
+          "phase2/C3/latency_ms": 506134.0,
+          "phase2/C3/output_MB_per_sec": 4.4284,
+          "phase2/C3/packet_count": 247500.0,
+          "phase2/C3/pjp1_bytes": 2241364096.0,
+          "phase2/C3/pqa1_files_consumed": 8.0,
+          "phase2/C3/projected_vector_norm_mean": 16.0,
+          "phase2/C3/projected_vector_norm_p95": 16.0,
+          "phase2/C3/real_tokens_per_sec": 54910.9,
+          "phase2/C3/records_per_sec": 110.915,
+          "phase2/C3/slot_count": 31680000.0,
+          "phase2/C3/source_real_token_count": 27792304.0,
+          "phase2/C3/source_record_count": 56138.0
+        },
+        "corpus_phase": "C3",
+        "geometry_sample": {
+          "blockers": [],
+          "collision_count": 0,
+          "collision_rate": 0.0,
+          "hamming_distance_mean": 102.16945931793997,
+          "hamming_distance_p05": 71.0,
+          "hamming_distance_p50": 104.0,
+          "hamming_distance_p95": 125.0,
+          "jl_distance_distortion_mean": null,
+          "jl_distance_distortion_p95": null,
+          "jl_distance_distortion_status": "unmeasured_requires_original_embedding_space_pair_distances_or_native_packetizer_support",
+          "metric_measurement_status": {
+            "collision_rate": "measured_from_pjp1_projected_vector_sample",
+            "hamming_distance": "measured_between_adjacent_sampled_projected_vectors",
+            "jl_distance_distortion": "requires_original_embedding_space_pair_distances_or_native_packetizer_support",
+            "projected_vector_norm": "measured_from_bitpacked_polar_dimension"
+          },
+          "pjp1_bytes": 2241364096,
+          "pjp1_sha256": "28bdbdcbef4d30240747b2cb1f1697859cc4f1e7c178b82ee201c7712a09f80b",
+          "positive_bit_count_mean": 130.29873233845973,
+          "positive_bit_count_p05": 117.0,
+          "positive_bit_count_p50": 130.0,
+          "positive_bit_count_p95": 143.0,
+          "projected_vector_norm_mean": 16.0,
+          "projected_vector_norm_p95": 16.0,
+          "same_token_duplicate_projection_count": 113611,
+          "sample_packets": 1024,
+          "sampled_real_tokens": 118407,
+          "status": "pass",
+          "unique_projection_count": 4796,
+          "unmeasured_metrics": {
+            "jl_distance_distortion": "requires original embedding-space pair distances or native packetizer support; PJP1 contains only projected bitpacked polar vectors"
+          }
+        },
+        "identity_reconciliation": {
+          "binary": {
+            "bytes": 115752,
+            "exists": true,
+            "inside_git_worktree": true,
+            "is_executable": true,
+            "is_file": true,
+            "path": "/data/data/com.termux/files/home/Polymath-AI/native/polar_phase2_packetizer/bin/phase2b_native_packetizer",
+            "sha256": "3dde45a7b6efd9eaa056b113a39335df8b1e876e65c91559b3fd444aa05d9aae"
+          },
+          "build_script": {
+            "bytes": 705,
+            "exists": true,
+            "inside_git_worktree": true,
+            "is_executable": true,
+            "is_file": true,
+            "path": "/data/data/com.termux/files/home/Polymath-AI/native/polar_phase2_packetizer/build_phase2b_native_packetizer.sh",
+            "sha256": "3c284c858aaa0d1e7697c4b63a12330d2e24d62a2391f109f34133463a631716"
+          },
+          "source": {
+            "bytes": 45896,
+            "exists": true,
+            "inside_git_worktree": true,
+            "is_executable": false,
+            "is_file": true,
+            "path": "/data/data/com.termux/files/home/Polymath-AI/native/polar_phase2_packetizer/phase2b_native_packetizer.cpp",
+            "sha256": "1c668e0392f76a1c5eef2677172419bdc0d265f7861fb3a651c3eb7a0fc291e6"
+          },
+          "termux_source_build_identity_captured": true
+        },
+        "metrics": {
+          "collision_count": 0,
+          "collision_rate": 0.0,
+          "hamming_distance_mean": 102.16945931793997,
+          "hamming_distance_p05": 71.0,
+          "hamming_distance_p50": 104.0,
+          "hamming_distance_p95": 125.0,
+          "jl_distance_distortion_mean": 0.0254038,
+          "jl_distance_distortion_metric": "abs(input_polar_hamming_fraction - embedding_cosine_angular_distance_div_pi)",
+          "jl_distance_distortion_p95": 0.0654859,
+          "jl_distance_distortion_sample_pairs": 4096,
+          "jl_distance_distortion_status": "unmeasured_requires_original_embedding_space_pair_distances_or_native_packetizer_support",
+          "latency_ms": 506134.0,
+          "metric_measurement_status": {
+            "collision_rate": "measured_from_pjp1_projected_vector_sample",
+            "hamming_distance": "measured_between_adjacent_sampled_projected_vectors",
+            "jl_distance_distortion": "measured_from_native_packetizer_original_embedding_and_projected_distances",
+            "packetizer_identity": "measured_from_repo_paths",
+            "pjp1_sha256": "measured_from_output_payload_metadata",
+            "projected_vector_norm": "measured_from_bitpacked_polar_dimension",
+            "structural_counts": "measured_from_native_packetizer_report"
+          },
+          "output_MB_per_sec": 4.4284,
+          "packet_count": 247500,
+          "packetizer_binary_sha256": "3dde45a7b6efd9eaa056b113a39335df8b1e876e65c91559b3fd444aa05d9aae",
+          "packetizer_build_script_sha256": "3c284c858aaa0d1e7697c4b63a12330d2e24d62a2391f109f34133463a631716",
+          "packetizer_source_sha256": "1c668e0392f76a1c5eef2677172419bdc0d265f7861fb3a651c3eb7a0fc291e6",
+          "pjp1_bytes": 2241364096,
+          "pjp1_sha256": "28bdbdcbef4d30240747b2cb1f1697859cc4f1e7c178b82ee201c7712a09f80b",
+          "pqa1_files_consumed": 8,
+          "projected_vector_norm_mean": 16.0,
+          "projected_vector_norm_p95": 16.0,
+          "real_tokens_per_sec": 54910.9,
+          "records_per_sec": 110.915,
+          "slot_count": 31680000,
+          "source_real_token_count": 27792304,
+          "source_record_count": 56138
+        },
+        "nonclaims": [
+          "c1_smoke_only",
+          "no_100k_or_1m_phase2_authority_claim",
+          "no_phase3_ready_claim",
+          "no_npu_htp_claim",
+          "no_learning_claim",
+          "no_model_quality_claim"
+        ],
+        "phase_family": "phase2",
+        "schema_version": "phase2_c1_metric_contract_v1",
+        "status": "pass"
+      },
+      "pulled_metadata": [
+        {
+          "bytes": 3892,
+          "local_path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/phase2/C3/c1_c4_waveB_rerun_20260630T230411Z_C3_phase2_native_packetizer_report.json",
+          "remote_path": "/data/data/com.termux/files/home/polymath_phase2_outputs/c1_c4_waveB_rerun_20260630T230411Z/C3_phase2/c1_c4_waveB_rerun_20260630T230411Z_C3_phase2_native_packetizer_report.json",
+          "sha256": "c016c1314099eac8c72b16f51ae2dfd4a608f4375758bddf743ae14aa20ec344"
+        },
+        {
+          "bytes": 17619,
+          "local_path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/phase2/C3/phase2_wrapper_report.json",
+          "remote_path": "/data/data/com.termux/files/home/polymath_phase2_outputs/c1_c4_waveB_rerun_20260630T230411Z/C3_phase2/phase2_wrapper_report.json",
+          "sha256": "875cb058f2cbf0ed83cbf4ff140574602d3a5daef681ee0caa10136fa3f4b54a"
+        }
+      ],
+      "raw_pjp1": {
+        "bytes": 2241364096,
+        "path": "/data/data/com.termux/files/home/polymath_phase2_outputs/c1_c4_waveB_rerun_20260630T230411Z/C3_phase2/raw_c1_c4_waveB_rerun_20260630T230411Z_C3_phase2.pjp1",
+        "sha256": "28bdbdcbef4d30240747b2cb1f1697859cc4f1e7c178b82ee201c7712a09f80b"
+      },
+      "remote_dir": "/data/data/com.termux/files/home/polymath_phase2_outputs/c1_c4_waveB_rerun_20260630T230411Z/C3_phase2",
+      "wrapper_status": "pass"
+    },
+    "C4": {
+      "local_metadata_dir": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/phase2/C4",
+      "native_result_path": {
+        "path": "/data/data/com.termux/files/home/polymath_phase2_outputs/c1_c4_waveB_rerun_20260630T230411Z/C4_phase2/c1_c4_waveB_rerun_20260630T230411Z_C4_phase2_native_packetizer_report.json",
+        "sha256": "b0101d5d16e5930d67a616e754a82df68df87df4f31ab9c5364cd3c5896d8c31",
+        "summary": {
+          "geometry_quality": {
+            "jl_distance_distortion_mean": 0.0230077,
+            "jl_distance_distortion_p95": 0.0576834,
+            "measurement_status": "measured_from_original_embedding_rows_and_projected_polar_vectors",
+            "original_angular_distance_mean": 0.386571,
+            "original_distance_kind": "embedding_cosine_angular_distance_div_pi",
+            "projected_distance_kind": "input_polar_hamming_fraction",
+            "projected_hamming_distance_mean": 0.389743,
+            "sample_pair_count": 4096,
+            "sample_pair_policy": "first_adjacent_real_token_pairs_in_source_order",
+            "schema_version": "phase2_geometry_quality_v1",
+            "status": "pass"
+          },
+          "job_count": 12487,
+          "label": "c1_c4_waveB_rerun_20260630T230411Z_C4_phase2",
+          "packet_count": 15341,
+          "pjp1_bytes": 138932192,
+          "pjp1_path": "/data/data/com.termux/files/home/polymath_phase2_outputs/c1_c4_waveB_rerun_20260630T230411Z/C4_phase2/raw_c1_c4_waveB_rerun_20260630T230411Z_C4_phase2.pjp1",
+          "pqa1_files_consumed": 8,
+          "pqa1_source_sha256_stream": "be406d765ecae387264c476cb78d46da670f8612f91406c88f9876fa7e2f8827",
+          "schema_version": "polar_phase2b_native_packetizer_run_v1",
+          "slot_count": 1963648,
+          "source_real_token_count": 1445274,
+          "source_record_count": 12487,
+          "status": "pass",
+          "thread_count": 8,
+          "throughput": {
+            "output_MB_per_sec": 5.12699,
+            "packet_slots_per_sec": 72464.2,
+            "packets_per_sec": 566.126,
+            "real_tokens_per_sec": 53334.7,
+            "records_per_sec": 460.806
+          },
+          "timing_sec": {
+            "native_process": 26.8681,
+            "output_prepare": 0.0003825,
+            "scan_validate": 0.00818453,
+            "total": 27.0982
+          },
+          "worker_rollup": {
+            "packets": 15341,
+            "real_tokens": 1445274,
+            "records": 12487
+          },
+          "writer": "phase2b_native_cpp_neon_writer_v1"
+        }
+      },
+      "phase2_metrics": {
+        "blockers": [],
+        "comet_metric_prefix": "phase2/C4",
+        "comet_metrics": {
+          "phase2/C4/collision_count": 0.0,
+          "phase2/C4/collision_rate": 0.0,
+          "phase2/C4/hamming_distance_mean": 100.46029708034531,
+          "phase2/C4/hamming_distance_p05": 67.0,
+          "phase2/C4/hamming_distance_p50": 103.0,
+          "phase2/C4/hamming_distance_p95": 125.0,
+          "phase2/C4/jl_distance_distortion_mean": 0.0230077,
+          "phase2/C4/jl_distance_distortion_p95": 0.0576834,
+          "phase2/C4/jl_distance_distortion_sample_pairs": 4096.0,
+          "phase2/C4/latency_ms": 27098.199999999997,
+          "phase2/C4/output_MB_per_sec": 5.12699,
+          "phase2/C4/packet_count": 15341.0,
+          "phase2/C4/pjp1_bytes": 138932192.0,
+          "phase2/C4/pqa1_files_consumed": 8.0,
+          "phase2/C4/projected_vector_norm_mean": 16.0,
+          "phase2/C4/projected_vector_norm_p95": 16.0,
+          "phase2/C4/real_tokens_per_sec": 53334.7,
+          "phase2/C4/records_per_sec": 460.806,
+          "phase2/C4/slot_count": 1963648.0,
+          "phase2/C4/source_real_token_count": 1445274.0,
+          "phase2/C4/source_record_count": 12487.0
+        },
+        "corpus_phase": "C4",
+        "geometry_sample": {
+          "blockers": [],
+          "collision_count": 0,
+          "collision_rate": 0.0,
+          "hamming_distance_mean": 100.46029708034531,
+          "hamming_distance_p05": 67.0,
+          "hamming_distance_p50": 103.0,
+          "hamming_distance_p95": 125.0,
+          "jl_distance_distortion_mean": null,
+          "jl_distance_distortion_p95": null,
+          "jl_distance_distortion_status": "unmeasured_requires_original_embedding_space_pair_distances_or_native_packetizer_support",
+          "metric_measurement_status": {
+            "collision_rate": "measured_from_pjp1_projected_vector_sample",
+            "hamming_distance": "measured_between_adjacent_sampled_projected_vectors",
+            "jl_distance_distortion": "requires_original_embedding_space_pair_distances_or_native_packetizer_support",
+            "projected_vector_norm": "measured_from_bitpacked_polar_dimension"
+          },
+          "pjp1_bytes": 138932192,
+          "pjp1_sha256": "3b0012b7d18ba5d5cbf8a3f744c4ff0d7e38f01cb569ae89ea69163f4d4c03c0",
+          "positive_bit_count_mean": 130.69555323590814,
+          "positive_bit_count_p05": 120.0,
+          "positive_bit_count_p50": 130.0,
+          "positive_bit_count_p95": 142.0,
+          "projected_vector_norm_mean": 16.0,
+          "projected_vector_norm_p95": 16.0,
+          "same_token_duplicate_projection_count": 89705,
+          "sample_packets": 1024,
+          "sampled_real_tokens": 95800,
+          "status": "pass",
+          "unique_projection_count": 6095,
+          "unmeasured_metrics": {
+            "jl_distance_distortion": "requires original embedding-space pair distances or native packetizer support; PJP1 contains only projected bitpacked polar vectors"
+          }
+        },
+        "identity_reconciliation": {
+          "binary": {
+            "bytes": 115752,
+            "exists": true,
+            "inside_git_worktree": true,
+            "is_executable": true,
+            "is_file": true,
+            "path": "/data/data/com.termux/files/home/Polymath-AI/native/polar_phase2_packetizer/bin/phase2b_native_packetizer",
+            "sha256": "3dde45a7b6efd9eaa056b113a39335df8b1e876e65c91559b3fd444aa05d9aae"
+          },
+          "build_script": {
+            "bytes": 705,
+            "exists": true,
+            "inside_git_worktree": true,
+            "is_executable": true,
+            "is_file": true,
+            "path": "/data/data/com.termux/files/home/Polymath-AI/native/polar_phase2_packetizer/build_phase2b_native_packetizer.sh",
+            "sha256": "3c284c858aaa0d1e7697c4b63a12330d2e24d62a2391f109f34133463a631716"
+          },
+          "source": {
+            "bytes": 45896,
+            "exists": true,
+            "inside_git_worktree": true,
+            "is_executable": false,
+            "is_file": true,
+            "path": "/data/data/com.termux/files/home/Polymath-AI/native/polar_phase2_packetizer/phase2b_native_packetizer.cpp",
+            "sha256": "1c668e0392f76a1c5eef2677172419bdc0d265f7861fb3a651c3eb7a0fc291e6"
+          },
+          "termux_source_build_identity_captured": true
+        },
+        "metrics": {
+          "collision_count": 0,
+          "collision_rate": 0.0,
+          "hamming_distance_mean": 100.46029708034531,
+          "hamming_distance_p05": 67.0,
+          "hamming_distance_p50": 103.0,
+          "hamming_distance_p95": 125.0,
+          "jl_distance_distortion_mean": 0.0230077,
+          "jl_distance_distortion_metric": "abs(input_polar_hamming_fraction - embedding_cosine_angular_distance_div_pi)",
+          "jl_distance_distortion_p95": 0.0576834,
+          "jl_distance_distortion_sample_pairs": 4096,
+          "jl_distance_distortion_status": "unmeasured_requires_original_embedding_space_pair_distances_or_native_packetizer_support",
+          "latency_ms": 27098.199999999997,
+          "metric_measurement_status": {
+            "collision_rate": "measured_from_pjp1_projected_vector_sample",
+            "hamming_distance": "measured_between_adjacent_sampled_projected_vectors",
+            "jl_distance_distortion": "measured_from_native_packetizer_original_embedding_and_projected_distances",
+            "packetizer_identity": "measured_from_repo_paths",
+            "pjp1_sha256": "measured_from_output_payload_metadata",
+            "projected_vector_norm": "measured_from_bitpacked_polar_dimension",
+            "structural_counts": "measured_from_native_packetizer_report"
+          },
+          "output_MB_per_sec": 5.12699,
+          "packet_count": 15341,
+          "packetizer_binary_sha256": "3dde45a7b6efd9eaa056b113a39335df8b1e876e65c91559b3fd444aa05d9aae",
+          "packetizer_build_script_sha256": "3c284c858aaa0d1e7697c4b63a12330d2e24d62a2391f109f34133463a631716",
+          "packetizer_source_sha256": "1c668e0392f76a1c5eef2677172419bdc0d265f7861fb3a651c3eb7a0fc291e6",
+          "pjp1_bytes": 138932192,
+          "pjp1_sha256": "3b0012b7d18ba5d5cbf8a3f744c4ff0d7e38f01cb569ae89ea69163f4d4c03c0",
+          "pqa1_files_consumed": 8,
+          "projected_vector_norm_mean": 16.0,
+          "projected_vector_norm_p95": 16.0,
+          "real_tokens_per_sec": 53334.7,
+          "records_per_sec": 460.806,
+          "slot_count": 1963648,
+          "source_real_token_count": 1445274,
+          "source_record_count": 12487
+        },
+        "nonclaims": [
+          "c1_smoke_only",
+          "no_100k_or_1m_phase2_authority_claim",
+          "no_phase3_ready_claim",
+          "no_npu_htp_claim",
+          "no_learning_claim",
+          "no_model_quality_claim"
+        ],
+        "phase_family": "phase2",
+        "schema_version": "phase2_c1_metric_contract_v1",
+        "status": "pass"
+      },
+      "pulled_metadata": [
+        {
+          "bytes": 3893,
+          "local_path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/phase2/C4/c1_c4_waveB_rerun_20260630T230411Z_C4_phase2_native_packetizer_report.json",
+          "remote_path": "/data/data/com.termux/files/home/polymath_phase2_outputs/c1_c4_waveB_rerun_20260630T230411Z/C4_phase2/c1_c4_waveB_rerun_20260630T230411Z_C4_phase2_native_packetizer_report.json",
+          "sha256": "b0101d5d16e5930d67a616e754a82df68df87df4f31ab9c5364cd3c5896d8c31"
+        },
+        {
+          "bytes": 17630,
+          "local_path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/phase2/C4/phase2_wrapper_report.json",
+          "remote_path": "/data/data/com.termux/files/home/polymath_phase2_outputs/c1_c4_waveB_rerun_20260630T230411Z/C4_phase2/phase2_wrapper_report.json",
+          "sha256": "0aea17c5fe537aab6be9171cfb06678884011c855b76656add9259da0fd190f1"
+        }
+      ],
+      "raw_pjp1": {
+        "bytes": 138932192,
+        "path": "/data/data/com.termux/files/home/polymath_phase2_outputs/c1_c4_waveB_rerun_20260630T230411Z/C4_phase2/raw_c1_c4_waveB_rerun_20260630T230411Z_C4_phase2.pjp1",
+        "sha256": "3b0012b7d18ba5d5cbf8a3f744c4ff0d7e38f01cb569ae89ea69163f4d4c03c0"
+      },
+      "remote_dir": "/data/data/com.termux/files/home/polymath_phase2_outputs/c1_c4_waveB_rerun_20260630T230411Z/C4_phase2",
+      "wrapper_status": "pass"
+    }
+  },
+  "raw_output_base": "/data/data/com.termux/files/home/polymath_phase2_outputs/c1_c4_waveB_rerun_20260630T230411Z",
+  "raw_payload_policy": "raw PJP1 remains in Termux home outside git; only JSON metadata is copied into repo",
+  "run_label": "c1_c4_waveB_rerun_20260630T230411Z",
+  "schema_version": "integrated_c1_c4_phase2_summary_v1"
+}

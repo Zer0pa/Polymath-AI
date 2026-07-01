@@ -1,0 +1,59 @@
+{
+  "schema_version": "polar_phase2b_native_packetizer_run_v1",
+  "status": "pass",
+  "writer": "phase2b_native_cpp_neon_writer_v1",
+  "label": "c1_c4_waveB_rerun_20260630T230411Z_C3_phase2",
+  "thread_count": 8,
+  "job_count": 56138,
+  "pqa1_files_consumed": 8,
+  "source_record_count": 56138,
+  "source_real_token_count": 27792304,
+  "packet_count": 247500,
+  "slot_count": 31680000,
+  "pqa1_source_sha256_stream": "05daebeddb168b236437546ed81c48c7c1ba9e8f4f13578bf550c0768c0f65f9",
+  "pjp1_path": "/data/data/com.termux/files/home/polymath_phase2_outputs/c1_c4_waveB_rerun_20260630T230411Z/C3_phase2/raw_c1_c4_waveB_rerun_20260630T230411Z_C3_phase2.pjp1",
+  "pjp1_bytes": 2241364096,
+  "timing_sec": {
+    "scan_validate": 0.111638,
+    "output_prepare": 0.000390625,
+    "native_process": 505.675,
+    "total": 506.134
+  },
+  "throughput": {
+    "records_per_sec": 110.915,
+    "real_tokens_per_sec": 54910.9,
+    "packets_per_sec": 489,
+    "packet_slots_per_sec": 62592.1,
+    "output_MB_per_sec": 4.4284
+  },
+  "worker_rollup": {
+    "records": 56138,
+    "packets": 247500,
+    "real_tokens": 27792304
+  },
+  "geometry_quality": {
+    "schema_version": "phase2_geometry_quality_v1",
+    "status": "pass",
+    "sample_pair_count": 4096,
+    "sample_pair_policy": "first_adjacent_real_token_pairs_in_source_order",
+    "original_distance_kind": "embedding_cosine_angular_distance_div_pi",
+    "projected_distance_kind": "input_polar_hamming_fraction",
+    "original_angular_distance_mean": 0.391771,
+    "projected_hamming_distance_mean": 0.398964,
+    "jl_distance_distortion_mean": 0.0254038,
+    "jl_distance_distortion_p95": 0.0654859,
+    "measurement_status": "measured_from_original_embedding_rows_and_projected_polar_vectors"
+  },
+  "memory_after": {
+    "VmRSS": "\t 3279180 kB",
+    "VmHWM": "\t 3279228 kB",
+    "VmSize": "\t14515140 kB"
+  },
+  "sampled_packets": [
+    {"packet_id": 0, "record_hash": 5085692477693980683, "real_token_count": 128, "pad_count": 0, "answer_active_count": 0, "input_sha256": "b7fc91fad183ae6170b16d87d62072430d0ad5b9ca5414c3ad9540825a875722", "target_sha256": "ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7", "pooled_sha256": "66687aadf862bd776c8fc18b8e9f8e20089714856ee233b3902a591d0d5f2925", "crc32": 1056437851},
+    {"packet_id": 1, "record_hash": 5085692477693980683, "real_token_count": 128, "pad_count": 0, "answer_active_count": 120, "input_sha256": "eb7388c59fcd5e8ec7dc050f90f552b108ef4679be8a1e87193966148194963a", "target_sha256": "0357ea19e92774af0d96e311e4d5a8fdb7d2b940b29f2a319e016f00d547dcb9", "pooled_sha256": "034fdd922983b6cb6364f5f582582df22604c57447212eb31dc7c6717ca81327", "crc32": 2260841396},
+    {"packet_id": 2, "record_hash": 5085692477693980683, "real_token_count": 128, "pad_count": 0, "answer_active_count": 128, "input_sha256": "a7ada12e7de3906611d3d073432ad789c688351c2a88e1ce83296792ccf999e2", "target_sha256": "a7ada12e7de3906611d3d073432ad789c688351c2a88e1ce83296792ccf999e2", "pooled_sha256": "344707d5bebe8c494c8ba81baa5465069d6cfaaa0dad4698148fdb1fd292319a", "crc32": 138084638},
+    {"packet_id": 3, "record_hash": 5085692477693980683, "real_token_count": 128, "pad_count": 0, "answer_active_count": 128, "input_sha256": "218d07dd91503c795bdf63abb7eaa50081003e8f3d816af93167feb264d1c9bd", "target_sha256": "218d07dd91503c795bdf63abb7eaa50081003e8f3d816af93167feb264d1c9bd", "pooled_sha256": "1f7bba306f220c4c939da1193ddd9d718a37c7e9974e1d335d392d93d7da3c19", "crc32": 492911219},
+    {"packet_id": 4, "record_hash": 5085692477693980683, "real_token_count": 5, "pad_count": 123, "answer_active_count": 5, "input_sha256": "7d049c277c8ef5b45b6235fdb3b890736a580efc680c835ebf64e182d0443c09", "target_sha256": "7d049c277c8ef5b45b6235fdb3b890736a580efc680c835ebf64e182d0443c09", "pooled_sha256": "93305b7a4cd0b0121c725ee908168df461798efa41ea1becfb89a4295705140e", "crc32": 2851159845}
+  ]
+}

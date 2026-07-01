@@ -1,0 +1,140 @@
+{
+  "after_run_before_reapply": {
+    "NubiaperformanceMode": "ai.zer0pa.polymath.lab+300,com.primatelabs.geekbench6+300,",
+    "db_game_strengthen_mode_list": "null,ai.zer0pa.polymath.lab+6,com.primatelabs.geekbench6+6",
+    "db_game_strengthen_packagename": "ai.zer0pa.polymath.lab",
+    "game_strengthen_mode_value": "6",
+    "performance_mode_package": "ai.zer0pa.polymath.lab",
+    "performance_mode_value": "2"
+  },
+  "applied": {
+    "NubiaperformanceMode": "ai.zer0pa.polymath.lab+300,com.primatelabs.geekbench6+300,",
+    "db_game_strengthen_mode_list": "null,ai.zer0pa.polymath.lab+6,com.primatelabs.geekbench6+6",
+    "db_game_strengthen_packagename": "ai.zer0pa.polymath.lab",
+    "game_strengthen_mode_value": "6",
+    "performance_mode_package": "ai.zer0pa.polymath.lab",
+    "performance_mode_value": "2"
+  },
+  "final": {
+    "NubiaperformanceMode": "ai.zer0pa.polymath.lab+300,com.primatelabs.geekbench6+300,",
+    "db_game_strengthen_mode_list": "null,ai.zer0pa.polymath.lab+6,com.primatelabs.geekbench6+6",
+    "db_game_strengthen_packagename": "ai.zer0pa.polymath.lab",
+    "game_strengthen_mode_value": "6",
+    "performance_mode_package": "ai.zer0pa.polymath.lab",
+    "performance_mode_value": "2"
+  },
+  "final_match_target": true,
+  "frequency_after_apply": {
+    "cmd": [
+      "adb",
+      "-s",
+      "FY25013101C8",
+      "shell",
+      "for c in 0 1 2 3 4 5 6 7; do b=/sys/devices/system/cpu/cpu${c}/cpufreq; printf 'cpu%s cur=' \"$c\"; cat $b/scaling_cur_freq; printf 'cpu%s min=' \"$c\"; cat $b/scaling_min_freq; printf 'cpu%s max=' \"$c\"; cat $b/scaling_max_freq; printf 'cpu%s hwmax=' \"$c\"; cat $b/cpuinfo_max_freq; done"
+    ],
+    "elapsed_sec": 0.5768860829994082,
+    "returncode": 0,
+    "stderr_tail": "",
+    "stdout_tail": "cpu0 cur=748800\ncpu0 min=384000\ncpu0 max=3532800\ncpu0 hwmax=3532800\ncpu1 cur=1152000\ncpu1 min=384000\ncpu1 max=3532800\ncpu1 hwmax=3532800\ncpu2 cur=2745600\ncpu2 min=384000\ncpu2 max=3532800\ncpu2 hwmax=3532800\ncpu3 cur=2745600\ncpu3 min=384000\ncpu3 max=3532800\ncpu3 hwmax=3532800\ncpu4 cur=1152000\ncpu4 min=384000\ncpu4 max=3532800\ncpu4 hwmax=3532800\ncpu5 cur=1996800\ncpu5 min=384000\ncpu5 max=3532800\ncpu5 hwmax=3532800\ncpu6 cur=1017600\ncpu6 min=1017600\ncpu6 max=3072000\ncpu6 hwmax=4320000\ncpu7 cur=1017600\ncpu7 min=1017600\ncpu7 max=3072000\ncpu7 hwmax=4320000\n"
+  },
+  "frequency_after_final_apply": {
+    "cmd": [
+      "adb",
+      "-s",
+      "FY25013101C8",
+      "shell",
+      "for c in 0 1 2 3 4 5 6 7; do b=/sys/devices/system/cpu/cpu${c}/cpufreq; printf 'cpu%s cur=' \"$c\"; cat $b/scaling_cur_freq; printf 'cpu%s min=' \"$c\"; cat $b/scaling_min_freq; printf 'cpu%s max=' \"$c\"; cat $b/scaling_max_freq; printf 'cpu%s hwmax=' \"$c\"; cat $b/cpuinfo_max_freq; done"
+    ],
+    "elapsed_sec": 0.22587633300281595,
+    "returncode": 0,
+    "stderr_tail": "",
+    "stdout_tail": "cpu0 cur=3532800\ncpu0 min=3532800\ncpu0 max=3532800\ncpu0 hwmax=3532800\ncpu1 cur=3532800\ncpu1 min=3532800\ncpu1 max=3532800\ncpu1 hwmax=3532800\ncpu2 cur=3532800\ncpu2 min=3532800\ncpu2 max=3532800\ncpu2 hwmax=3532800\ncpu3 cur=3532800\ncpu3 min=3532800\ncpu3 max=3532800\ncpu3 hwmax=3532800\ncpu4 cur=3532800\ncpu4 min=3532800\ncpu4 max=3532800\ncpu4 hwmax=3532800\ncpu5 cur=3532800\ncpu5 min=3532800\ncpu5 max=3532800\ncpu5 hwmax=3532800\ncpu6 cur=4320000\ncpu6 min=4320000\ncpu6 max=4320000\ncpu6 hwmax=4320000\ncpu7 cur=4320000\ncpu7 min=4320000\ncpu7 max=4320000\ncpu7 hwmax=4320000\n"
+  },
+  "frequency_before": {
+    "cmd": [
+      "adb",
+      "-s",
+      "FY25013101C8",
+      "shell",
+      "for c in 0 1 2 3 4 5 6 7; do b=/sys/devices/system/cpu/cpu${c}/cpufreq; printf 'cpu%s cur=' \"$c\"; cat $b/scaling_cur_freq; printf 'cpu%s min=' \"$c\"; cat $b/scaling_min_freq; printf 'cpu%s max=' \"$c\"; cat $b/scaling_max_freq; printf 'cpu%s hwmax=' \"$c\"; cat $b/cpuinfo_max_freq; done"
+    ],
+    "elapsed_sec": 0.7031795419970877,
+    "returncode": 0,
+    "stderr_tail": "",
+    "stdout_tail": "cpu0 cur=748800\ncpu0 min=384000\ncpu0 max=3532800\ncpu0 hwmax=3532800\ncpu1 cur=1363200\ncpu1 min=384000\ncpu1 max=3532800\ncpu1 hwmax=3532800\ncpu2 cur=1555200\ncpu2 min=384000\ncpu2 max=3532800\ncpu2 hwmax=3532800\ncpu3 cur=1363200\ncpu3 min=384000\ncpu3 max=3532800\ncpu3 hwmax=3532800\ncpu4 cur=1996800\ncpu4 min=384000\ncpu4 max=3532800\ncpu4 hwmax=3532800\ncpu5 cur=1152000\ncpu5 min=384000\ncpu5 max=3532800\ncpu5 hwmax=3532800\ncpu6 cur=1017600\ncpu6 min=1017600\ncpu6 max=3072000\ncpu6 hwmax=4320000\ncpu7 cur=1017600\ncpu7 min=1017600\ncpu7 max=3072000\ncpu7 hwmax=4320000\n"
+  },
+  "game_mode_before": "standard",
+  "game_mode_target": {
+    "after": {
+      "cmd": [
+        "adb",
+        "-s",
+        "FY25013101C8",
+        "shell",
+        "cmd",
+        "game",
+        "list-modes",
+        "ai.zer0pa.polymath.lab"
+      ],
+      "elapsed_sec": 0.10074291699856985,
+      "returncode": 0,
+      "stderr_tail": "",
+      "stdout_tail": "ai.zer0pa.polymath.lab current mode: standard, available game modes: [standard,custom]\n"
+    },
+    "before": {
+      "cmd": [
+        "adb",
+        "-s",
+        "FY25013101C8",
+        "shell",
+        "cmd",
+        "game",
+        "list-modes",
+        "ai.zer0pa.polymath.lab"
+      ],
+      "elapsed_sec": 0.09114216599846259,
+      "returncode": 0,
+      "stderr_tail": "",
+      "stdout_tail": "ai.zer0pa.polymath.lab current mode: standard, available game modes: [standard,custom]\n"
+    },
+    "requested_mode": "standard",
+    "set_result": {
+      "cmd": [
+        "adb",
+        "-s",
+        "FY25013101C8",
+        "shell",
+        "cmd",
+        "game",
+        "mode",
+        "standard",
+        "ai.zer0pa.polymath.lab"
+      ],
+      "elapsed_sec": 0.09677579200069886,
+      "returncode": 0,
+      "stderr_tail": "",
+      "stdout_tail": "Set game mode to `STANDARD` for user `0` in game `ai.zer0pa.polymath.lab`\n"
+    }
+  },
+  "native_extended_warm_sequence_enabled": false,
+  "native_warm_sequence_enabled": false,
+  "policy": "high_performance_profile_is_authority_default_no_restore",
+  "previous": {
+    "NubiaperformanceMode": "ai.zer0pa.polymath.lab+300,com.primatelabs.geekbench6+300,",
+    "db_game_strengthen_mode_list": "null,ai.zer0pa.polymath.lab+6,com.primatelabs.geekbench6+6",
+    "db_game_strengthen_packagename": "ai.zer0pa.polymath.lab",
+    "game_strengthen_mode_value": "6",
+    "performance_mode_package": "ai.zer0pa.polymath.lab",
+    "performance_mode_value": "2"
+  },
+  "run_flags": 0,
+  "schema_version": "phase1_c1_settings_profile_evidence_v1",
+  "target": {
+    "NubiaperformanceMode": "ai.zer0pa.polymath.lab+300,com.primatelabs.geekbench6+300,",
+    "db_game_strengthen_mode_list": "null,ai.zer0pa.polymath.lab+6,com.primatelabs.geekbench6+6",
+    "db_game_strengthen_packagename": "ai.zer0pa.polymath.lab",
+    "game_strengthen_mode_value": "6",
+    "performance_mode_package": "ai.zer0pa.polymath.lab",
+    "performance_mode_value": "2"
+  }
+}

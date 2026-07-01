@@ -1,0 +1,13 @@
+Traceback (most recent call last):
+  File "/Users/Zer0pa/Polymat AI/Polymath-AI/scripts/android_lab/run_phase1_c1_pipeline_smoke.py", line 931, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/Users/Zer0pa/Polymat AI/Polymath-AI/scripts/android_lab/run_phase1_c1_pipeline_smoke.py", line 924, in main
+    summary = run_phase1(args, records, source_manifest, outputs, report_root, run_label)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/Zer0pa/Polymat AI/Polymath-AI/scripts/android_lab/run_phase1_c1_pipeline_smoke.py", line 745, in run_phase1
+    run_id = launch_and_wait(
+             ^^^^^^^^^^^^^^^^
+  File "/Users/Zer0pa/Polymat AI/Polymath-AI/scripts/android_lab/run_phase1_apk_benchmark.py", line 351, in launch_and_wait
+    raise TimeoutError("Timed out waiting for app benchmark report marker.")
+TimeoutError: Timed out waiting for app benchmark report marker.
