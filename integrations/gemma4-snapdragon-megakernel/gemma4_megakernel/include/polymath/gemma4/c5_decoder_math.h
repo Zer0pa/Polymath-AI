@@ -20,6 +20,8 @@ struct ChunkedNllResult {
 };
 
 float bf16_to_float(std::uint16_t value);
+std::uint16_t float_to_bf16_bits(float value);
+float bf16_round(float value);
 float f16_to_float(std::uint16_t value);
 
 Status decode_tensor_f32(const SafetensorsTensorInfo& tensor,

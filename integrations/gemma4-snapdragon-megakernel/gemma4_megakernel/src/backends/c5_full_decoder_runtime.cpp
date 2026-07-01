@@ -49,6 +49,11 @@ struct SourceModelIdentity {
   std::uint64_t size_bytes = 0;
 };
 
+struct QaTokenization {
+  std::vector<std::uint32_t> question_tokens;
+  std::vector<std::uint32_t> answer_tokens;
+};
+
 std::vector<RoleSpec> role_specs() {
   return {
       {"input_layernorm", "input_layernorm.weight", {kHiddenSize}},
@@ -162,6 +167,73 @@ bool contains_string(const std::vector<std::string>& values,
     }
   }
   return false;
+}
+
+std::uint64_t tensor_element_bytes(const SafetensorsTensorInfo& tensor) {
+  if (tensor.dtype == "bf16" || tensor.dtype == "f16") {
+    return 2U;
+  }
+  if (tensor.dtype == "f32") {
+    return 4U;
+  }
+  return 0U;
+}
+
+Status decode_tensor_slice_f32(const SafetensorsReader& reader,
+                               const std::string& key,
+                               std::uint64_t element_offset,
+                               std::uint64_t element_count,
+                               std::uint64_t max_bytes,
+                               std::vector<float>& output) {
+  output.clear();
+  const SafetensorsTensorInfo* tensor = reader.find_tensor(key);
+  if (tensor == nullptr) {
+    return Status::invalid("safetensors_tensor_missing:" + key);
+  }
+  const std::uint64_t element_bytes = tensor_element_bytes(*tensor);
+  if (element_bytes == 0U) {
+    return Status::invalid("safetensors_tensor_dtype_unsupported:" + key);
+  }
+  if (element_count == 0U ||
+      element_count > (std::numeric_limits<std::uint64_t>::max() / element_bytes) ||
+      element_offset > (std::numeric_limits<std::uint64_t>::max() / element_bytes)) {
+    return Status::invalid("safetensors_tensor_slice_element_range_invalid:" + key);
+  }
+  std::vector<std::uint8_t> bytes;
+  const Status read_status = reader.read_tensor_slice_bytes(
+      key, element_offset * element_bytes, element_count * element_bytes,
+      max_bytes, bytes);
+  if (!read_status.is_ok()) {
+    return read_status;
+  }
+  SafetensorsTensorInfo slice = *tensor;
+  slice.shape = {element_count};
+  return decode_tensor_f32(slice, bytes, output);
+}
+
+Status decode_full_tensor_f32_limited(const SafetensorsReader& reader,
+                                      const std::string& key,
+                                      std::uint64_t expected_elements,
+                                      std::uint64_t max_bytes,
+                                      std::vector<float>& output) {
+  output.clear();
+  const SafetensorsTensorInfo* tensor = reader.find_tensor(key);
+  if (tensor == nullptr) {
+    return Status::invalid("safetensors_tensor_missing:" + key);
+  }
+  std::vector<std::uint8_t> bytes;
+  const Status read_status = reader.read_tensor_bytes(key, max_bytes, bytes);
+  if (!read_status.is_ok()) {
+    return read_status;
+  }
+  const Status decode_status = decode_tensor_f32(*tensor, bytes, output);
+  if (!decode_status.is_ok()) {
+    return decode_status;
+  }
+  if (output.size() != expected_elements) {
+    return Status::invalid("c5_full_decoder_tensor_element_count_mismatch:" + key);
+  }
+  return Status::ok();
 }
 
 bool contains_json_unsigned_pair(const std::string& text,
@@ -743,6 +815,193 @@ void append_adapter_payload_blockers(const C5QaInferenceRequest& request,
   }
 }
 
+Status derive_layer_input_row(const SafetensorsReader& reader,
+                              std::uint32_t token_id,
+                              std::vector<float>& layer_input_row) {
+  if (token_id >= kVocabSize) {
+    return Status::invalid("c5_full_decoder_token_id_out_of_vocab");
+  }
+  const std::uint64_t row_offset =
+      static_cast<std::uint64_t>(token_id) * kHiddenSize;
+  const Status read_status = decode_tensor_slice_f32(
+      reader, kEmbedTokensKey, row_offset, kHiddenSize,
+      static_cast<std::uint64_t>(kHiddenSize) * sizeof(float),
+      layer_input_row);
+  if (!read_status.is_ok()) {
+    return read_status;
+  }
+  const float embedding_scale =
+      bf16_round(std::sqrt(static_cast<float>(kHiddenSize)));
+  for (float& value : layer_input_row) {
+    value *= embedding_scale;
+    if (!std::isfinite(value)) {
+      return Status::invalid("c5_full_decoder_layer_input_nonfinite");
+    }
+  }
+  return Status::ok();
+}
+
+Status derive_ple_input_row(const SafetensorsReader& reader,
+                            const std::vector<float>& layer_input_row,
+                            std::uint32_t token_id,
+                            std::uint32_t layer_index,
+                            std::vector<float>& ple_input_row) {
+  ple_input_row.clear();
+  if (layer_input_row.size() != kHiddenSize) {
+    return Status::invalid("c5_full_decoder_ple_layer_input_shape_mismatch");
+  }
+  if (token_id >= kVocabSize || layer_index >= kLayerCount) {
+    return Status::invalid("c5_full_decoder_ple_index_out_of_range");
+  }
+
+  const std::uint64_t ple_row_width =
+      static_cast<std::uint64_t>(kLayerCount) * kSmallInputSize;
+  const std::uint64_t layer_offset =
+      static_cast<std::uint64_t>(layer_index) * kSmallInputSize;
+  const std::uint64_t identity_offset =
+      (static_cast<std::uint64_t>(token_id) * ple_row_width) + layer_offset;
+  std::vector<float> identity;
+  Status status = decode_tensor_slice_f32(
+      reader, kPleTokenKey, identity_offset, kSmallInputSize,
+      static_cast<std::uint64_t>(kSmallInputSize) * sizeof(float),
+      identity);
+  if (!status.is_ok()) {
+    return status;
+  }
+  for (float& value : identity) {
+    value *= 16.0F;
+  }
+
+  const std::uint64_t projection_offset =
+      layer_offset * static_cast<std::uint64_t>(kHiddenSize);
+  std::vector<float> projection;
+  status = decode_tensor_slice_f32(
+      reader, kPleProjectionKey, projection_offset,
+      static_cast<std::uint64_t>(kSmallInputSize) * kHiddenSize,
+      static_cast<std::uint64_t>(kSmallInputSize) * kHiddenSize * sizeof(float),
+      projection);
+  if (!status.is_ok()) {
+    return status;
+  }
+
+  std::vector<float> norm_weight;
+  status = decode_full_tensor_f32_limited(
+      reader, kPleProjectionNormKey, kSmallInputSize,
+      static_cast<std::uint64_t>(kSmallInputSize) * sizeof(float),
+      norm_weight);
+  if (!status.is_ok()) {
+    return status;
+  }
+
+  std::vector<float> projected;
+  status = linear_row_major(layer_input_row, projection, 1U, kHiddenSize,
+                            kSmallInputSize, projected);
+  if (!status.is_ok()) {
+    return status;
+  }
+  const float projection_scale =
+      1.0F / std::sqrt(static_cast<float>(kHiddenSize));
+  for (float& value : projected) {
+    value *= projection_scale;
+  }
+
+  std::vector<float> normalized_projection;
+  status = rms_norm_weighted(projected, norm_weight, 1U, kSmallInputSize,
+                             1.0e-6F, normalized_projection);
+  if (!status.is_ok()) {
+    return status;
+  }
+
+  const float combine_scale = 1.0F / std::sqrt(2.0F);
+  ple_input_row.resize(kSmallInputSize);
+  for (std::uint32_t index = 0U; index < kSmallInputSize; ++index) {
+    const float value =
+        (normalized_projection[index] + identity[index]) * combine_scale;
+    if (!std::isfinite(value)) {
+      return Status::invalid("c5_full_decoder_ple_row_nonfinite");
+    }
+    ple_input_row[index] = value;
+  }
+  return Status::ok();
+}
+
+Status prepare_single_layer_input_norm_slice(const SafetensorsReader& reader,
+                                             const std::vector<float>& layer_input_row,
+                                             std::uint32_t layer_index,
+                                             std::vector<float>& normalized_row) {
+  normalized_row.clear();
+  if (layer_input_row.size() != kHiddenSize || layer_index >= kLayerCount) {
+    return Status::invalid("c5_full_decoder_single_layer_input_shape_mismatch");
+  }
+  const std::string key = "model.language_model.layers." +
+                          std::to_string(layer_index) +
+                          ".input_layernorm.weight";
+  std::vector<float> norm_weight;
+  Status status = decode_full_tensor_f32_limited(
+      reader, key, kHiddenSize,
+      static_cast<std::uint64_t>(kHiddenSize) * sizeof(float),
+      norm_weight);
+  if (!status.is_ok()) {
+    return status;
+  }
+  status = rms_norm_weighted(layer_input_row, norm_weight, 1U, kHiddenSize,
+                             1.0e-6F, normalized_row);
+  if (!status.is_ok()) {
+    return status;
+  }
+  for (const float value : normalized_row) {
+    if (!std::isfinite(value)) {
+      return Status::invalid("c5_full_decoder_single_layer_norm_nonfinite");
+    }
+  }
+  return Status::ok();
+}
+
+void append_ple_single_layer_slice_blockers(
+    const SourceModelIdentity& identity,
+    const QaTokenization& tokenization,
+    std::vector<std::string>& blockers) {
+  if (identity.path.empty() || !file_exists(identity.path)) {
+    return;
+  }
+  if (tokenization.question_tokens.empty()) {
+    blockers.push_back("c5_full_decoder_ple_prompt_tokens_missing");
+    return;
+  }
+  SafetensorsReader reader;
+  const Status open_status = reader.open(identity.path);
+  if (!open_status.is_ok()) {
+    blockers.push_back(open_status.message());
+    return;
+  }
+
+  const std::uint32_t token_id = tokenization.question_tokens.front();
+  std::vector<float> layer_input_row;
+  Status status = derive_layer_input_row(reader, token_id, layer_input_row);
+  if (!status.is_ok()) {
+    blockers.push_back(status.message());
+    return;
+  }
+  std::vector<float> ple_input_row;
+  status = derive_ple_input_row(reader, layer_input_row, token_id, 0U,
+                                ple_input_row);
+  if (!status.is_ok()) {
+    blockers.push_back(status.message());
+    return;
+  }
+  if (ple_input_row.size() != kSmallInputSize) {
+    blockers.push_back("c5_full_decoder_ple_row_shape_mismatch");
+    return;
+  }
+
+  std::vector<float> normalized_row;
+  status = prepare_single_layer_input_norm_slice(reader, layer_input_row, 0U,
+                                                 normalized_row);
+  if (!status.is_ok()) {
+    blockers.push_back(status.message());
+  }
+}
+
 std::string first_nonempty_jsonl_line(const std::string& path) {
   std::ifstream file(path);
   if (!file) {
@@ -766,6 +1025,7 @@ std::string first_nonempty_jsonl_line(const std::string& path) {
 
 void append_qa_prompt_token_runtime_blockers(
     const C5QaInferenceRequest& request,
+    QaTokenization& tokenization,
     std::vector<std::string>& blockers) {
   try {
     GemmaBpeTokenizer tokenizer;
@@ -786,7 +1046,13 @@ void append_qa_prompt_token_runtime_blockers(
     if (!question.empty() && tokenizer.encode(question).empty()) {
       blockers.push_back("c5_qa_prompt_token_runtime_question_tokens_empty");
     }
-    if (!answer.empty() && tokenizer.encode(answer).size() <= 1U) {
+    if (!question.empty()) {
+      tokenization.question_tokens = tokenizer.encode(question);
+    }
+    if (!answer.empty()) {
+      tokenization.answer_tokens = tokenizer.encode(answer);
+    }
+    if (!answer.empty() && tokenization.answer_tokens.size() <= 1U) {
       blockers.push_back("c5_qa_prompt_token_runtime_answer_tokens_empty");
     }
   } catch (const std::exception& error) {
@@ -847,9 +1113,12 @@ void append_numeric_decoder_primitive_blockers(
 
 void append_full_decoder_compute_kernel_blockers(
     C5FullDecoderRuntimeResult& result) {
-  result.blockers.push_back("c5_full_decoder_streamed_compute_kernel_missing");
-  result.blockers.push_back("c5_full_decoder_attention_mlp_kernel_missing");
-  result.blockers.push_back("c5_full_decoder_rank16_adapter_injection_missing");
+  result.blockers.push_back(
+      "c5_full_decoder_single_layer_attention_mlp_kernel_missing_after_ple_derivation");
+  result.blockers.push_back(
+      "c5_full_decoder_opencl_parity_dispatch_missing_after_cpu_ple_slice");
+  result.blockers.push_back("c5_full_decoder_rank16_adapter_stream_injection_missing");
+  result.blockers.push_back("c5_full_decoder_42_layer_orchestration_missing");
   result.blockers.push_back("c5_full_decoder_chunked_lm_head_nll_writer_missing");
 }
 
@@ -859,6 +1128,7 @@ C5FullDecoderRuntimeResult run_c5_full_decoder_runtime(
     const C5QaInferenceRequest& request) {
   C5FullDecoderRuntimeResult result;
   try {
+    QaTokenization tokenization;
     const std::string manifest = read_text_file(request.decoder_manifest_path);
     append_architecture_blockers(manifest, result.blockers);
     append_tokenizer_identity_blockers(manifest, request, result.blockers);
@@ -872,13 +1142,18 @@ C5FullDecoderRuntimeResult run_c5_full_decoder_runtime(
       append_tensor_value_loader_blockers(identity, result.blockers);
     }
     if (result.blockers.empty()) {
-      append_qa_prompt_token_runtime_blockers(request, result.blockers);
+      append_qa_prompt_token_runtime_blockers(request, tokenization,
+                                             result.blockers);
     }
     if (result.blockers.empty()) {
       append_adapter_payload_blockers(request, result.blockers);
     }
     if (result.blockers.empty()) {
       append_numeric_decoder_primitive_blockers(result.blockers);
+    }
+    if (result.blockers.empty()) {
+      append_ple_single_layer_slice_blockers(identity, tokenization,
+                                             result.blockers);
     }
   } catch (const std::exception& error) {
     result.blockers.push_back(std::string("c5_full_decoder_runtime_error:") +

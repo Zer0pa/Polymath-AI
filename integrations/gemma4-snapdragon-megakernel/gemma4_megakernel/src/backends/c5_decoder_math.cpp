@@ -56,6 +56,17 @@ float bf16_to_float(std::uint16_t value) {
   return result;
 }
 
+std::uint16_t float_to_bf16_bits(float value) {
+  std::uint32_t bits = 0U;
+  std::memcpy(&bits, &value, sizeof(float));
+  const std::uint32_t round_bias = 0x7FFFU + ((bits >> 16U) & 1U);
+  return static_cast<std::uint16_t>((bits + round_bias) >> 16U);
+}
+
+float bf16_round(float value) {
+  return bf16_to_float(float_to_bf16_bits(value));
+}
+
 float f16_to_float(std::uint16_t value) {
   const std::uint32_t sign = static_cast<std::uint32_t>(value & 0x8000U) << 16U;
   const std::uint32_t exponent = static_cast<std::uint32_t>((value >> 10U) & 0x1FU);

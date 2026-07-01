@@ -50,7 +50,10 @@ def test_native_c5_runtime_validates_pack_then_stops_at_compute_kernel(tmp_path:
 
     assert result.returncode == 13
     payload = json.loads(result.stdout)
-    assert payload["first_missing_green_field"] == "c5_full_decoder_streamed_compute_kernel_missing"
+    assert (
+        payload["first_missing_green_field"]
+        == "c5_full_decoder_single_layer_attention_mlp_kernel_missing_after_ple_derivation"
+    )
     assert payload["raw_boundary_proof"]["raw_payload_bytes_in_report"] is False
     assert payload["raw_boundary_proof"]["prediction_jsonl_written"] is False
     assert not paths["output_jsonl"].exists()
@@ -73,10 +76,13 @@ def test_native_c5_runtime_accepts_layer_variant_attention_layout(tmp_path: Path
     payload = json.loads(result.stdout)
 
     assert result.returncode == 13
-    assert payload["first_missing_green_field"] == "c5_full_decoder_streamed_compute_kernel_missing"
+    assert (
+        payload["first_missing_green_field"]
+        == "c5_full_decoder_single_layer_attention_mlp_kernel_missing_after_ple_derivation"
+    )
     assert payload["blockers"][:2] == [
-        "c5_full_decoder_streamed_compute_kernel_missing",
-        "c5_full_decoder_attention_mlp_kernel_missing",
+        "c5_full_decoder_single_layer_attention_mlp_kernel_missing_after_ple_derivation",
+        "c5_full_decoder_opencl_parity_dispatch_missing_after_cpu_ple_slice",
     ]
     assert not paths["output_jsonl"].exists()
 
@@ -93,10 +99,13 @@ def test_native_c5_runtime_accepts_independent_k_norm_width(tmp_path: Path) -> N
     payload = json.loads(result.stdout)
 
     assert result.returncode == 13
-    assert payload["first_missing_green_field"] == "c5_full_decoder_streamed_compute_kernel_missing"
+    assert (
+        payload["first_missing_green_field"]
+        == "c5_full_decoder_single_layer_attention_mlp_kernel_missing_after_ple_derivation"
+    )
     assert payload["blockers"][:2] == [
-        "c5_full_decoder_streamed_compute_kernel_missing",
-        "c5_full_decoder_attention_mlp_kernel_missing",
+        "c5_full_decoder_single_layer_attention_mlp_kernel_missing_after_ple_derivation",
+        "c5_full_decoder_opencl_parity_dispatch_missing_after_cpu_ple_slice",
     ]
     assert not paths["output_jsonl"].exists()
 
@@ -129,7 +138,10 @@ def test_native_c5_runtime_rejects_missing_per_layer_input_runtime(tmp_path: Pat
 
     assert result.returncode == 13
     assert payload["first_missing_green_field"] == "decoder_manifest_per_layer_input_runtime_missing"
-    assert "c5_full_decoder_streamed_compute_kernel_missing" not in payload["blockers"]
+    assert (
+        "c5_full_decoder_single_layer_attention_mlp_kernel_missing_after_ple_derivation"
+        not in payload["blockers"]
+    )
     assert not paths["output_jsonl"].exists()
 
 
@@ -149,7 +161,10 @@ def test_native_c5_runtime_rejects_empty_tensor_value_before_compute(tmp_path: P
         "safetensors_tensor_empty:model.language_model.layers.0.layer_scalar"
         in payload["blockers"]
     )
-    assert "c5_full_decoder_streamed_compute_kernel_missing" not in payload["blockers"]
+    assert (
+        "c5_full_decoder_single_layer_attention_mlp_kernel_missing_after_ple_derivation"
+        not in payload["blockers"]
+    )
     assert not paths["output_jsonl"].exists()
 
 
@@ -167,7 +182,10 @@ def test_native_c5_runtime_rejects_malformed_tokenizer_before_compute(tmp_path: 
         item.startswith("c5_qa_prompt_token_runtime_error:malformed merge line")
         for item in payload["blockers"]
     )
-    assert "c5_full_decoder_streamed_compute_kernel_missing" not in payload["blockers"]
+    assert (
+        "c5_full_decoder_single_layer_attention_mlp_kernel_missing_after_ple_derivation"
+        not in payload["blockers"]
+    )
     assert not paths["output_jsonl"].exists()
 
 
@@ -206,7 +224,7 @@ def test_native_c5_runtime_rejects_safetensors_shape_mismatch(tmp_path: Path) ->
 def test_native_c5_runtime_rejects_safetensors_offset_bounds(tmp_path: Path) -> None:
     paths = _write_component_pack(
         tmp_path,
-        tensor_mutation=lambda key, entry: entry.update({"data_offsets": [0, 999_999]})
+        tensor_mutation=lambda key, entry: entry.update({"data_offsets": [0, 999_999_999]})
         if key.endswith("layers.0.self_attn.q_proj.weight")
         else None,
     )
@@ -451,34 +469,38 @@ def _per_layer_input_runtime(entries: dict[str, dict]) -> dict:
 
 
 def _write_mock_safetensors(path: Path, *, tensor_mutation=None) -> dict[str, dict]:
-    data = bytearray(b"abcd")
+    data = bytearray()
+
+    def add_tensor(key: str, dtype: str, shape: list[int], byte_count: int) -> None:
+        start = len(data)
+        data.extend(b"\x00" * byte_count)
+        header[key] = {"dtype": dtype, "shape": shape, "data_offsets": [start, len(data)]}
+
     header: dict[str, dict] = {
-        "model.language_model.embed_tokens.weight": {
-            "dtype": "BF16",
-            "shape": [262144, 2560],
-            "data_offsets": [0, 4],
-        },
-        "model.language_model.embed_tokens_per_layer.weight": {
-            "dtype": "BF16",
-            "shape": [262144, 42 * 256],
-            "data_offsets": [4, 4],
-        },
-        "model.language_model.per_layer_projection_norm.weight": {
-            "dtype": "BF16",
-            "shape": [256],
-            "data_offsets": [4, 4],
-        },
-        "model.language_model.per_layer_model_projection.weight": {
-            "dtype": "BF16",
-            "shape": [42 * 256, 2560],
-            "data_offsets": [4, 4],
-        },
     }
+    add_tensor("model.language_model.embed_tokens.weight", "BF16", [262144, 2560], 4 * 2560 * 2)
+    add_tensor(
+        "model.language_model.embed_tokens_per_layer.weight",
+        "BF16",
+        [262144, 42 * 256],
+        4 * 42 * 256 * 2,
+    )
+    add_tensor("model.language_model.per_layer_projection_norm.weight", "BF16", [256], 256 * 2)
+    add_tensor(
+        "model.language_model.per_layer_model_projection.weight",
+        "BF16",
+        [42 * 256, 2560],
+        256 * 2560 * 2,
+    )
     for layer_index in range(42):
         prefix = f"model.language_model.layers.{layer_index}."
         for _role, (suffix, shape) in ROLE_SHAPES.items():
             key = prefix + suffix
-            if layer_index == 0 and suffix == "layer_scalar":
+            if layer_index == 0 and suffix == "input_layernorm.weight":
+                start = len(data)
+                data.extend(b"\x00" * (2560 * 2))
+                offsets = [start, len(data)]
+            elif layer_index == 0 and suffix == "layer_scalar":
                 start = len(data)
                 data.extend(b"\x00\x3f")
                 offsets = [start, len(data)]
