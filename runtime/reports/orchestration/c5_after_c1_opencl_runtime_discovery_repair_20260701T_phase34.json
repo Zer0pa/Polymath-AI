@@ -1,0 +1,120 @@
+{
+  "schema_version": "polymath_phase34_native_runtime_pathset_report_v1",
+  "lane": "phase34_native_full_decoder_consumer",
+  "status": "opencl_runtime_discovery_repair_pathset_ready_for_custodian",
+  "base_lineage": {
+    "current_head_observed_before_pathset": "e1b7aa4976a5b45222b3c490a89b874a3191a9fd",
+    "custodian_repair_commit_consumed_by_execution": "58872fdc3dd7ff6efb73321252d58f3447eb0e2b",
+    "phone_probe_status_routed_to_phase34": "bounded_phone_probe_resource_runtime_availability_failure",
+    "phone_probe_first_missing_green_field": "c5_full_decoder_opencl_parity_runtime_unavailable:opencl_single_token_layer_runtime_unavailable:clGetPlatformIDs count failed with OpenCL error -1001",
+    "phone_probe_exit_code": 13,
+    "decoder_manifest_sha256_from_probe": "52fcb53666bb4b06d0118cb825b983afc54624a630f667bbfa5af278640e28f8",
+    "adapter_site_policy_sha256_from_probe": "f38bd8109bbb77e9e94a5b4b34a238bc0ec0a39e7736870c97defe5aecc93357",
+    "export_report_sha256_from_probe": "4774d31953a58ad6ae1f64e4196405ba820e5be75d36880ac863cfb9dae00b6c",
+    "runner_sha256_from_probe": "efc18e811b4edff6ca4af5baad5fc9bab3db0f707a36ad3aba114d3994303a01"
+  },
+  "diagnosis": {
+    "manifest_contract_blocker_cleared": true,
+    "failure_class": "OpenCL runtime discovery/loading",
+    "old_behavior": "shared OpenCL layer runner used two hard-coded library candidates and selected generic soname before Android vendor paths, with no C5 command-line override or env-reflected report contract",
+    "repair_strategy": "reuse the existing C5 and OpenCL parity surface, prefer Android vendor libraries before generic soname, add explicit library discovery config, pass it through probe and dispatch, and report CLI/env discovery state with redacted path hash only"
+  },
+  "implemented_boundary": {
+    "existing_runner_surface": "gemma4_layer_runner --run-c5-qa-predict",
+    "existing_runtime_function": "run_c5_full_decoder_runtime(...)",
+    "existing_opencl_path": "probe_opencl_layer_runtime_available(...) and run_opencl_single_token_layer_forward(...)",
+    "new_cli_flag": "--opencl-library PATH",
+    "new_env_single_library": "POLYMATH_GEMMA4_OPENCL_LIBRARY",
+    "new_env_library_list": "POLYMATH_GEMMA4_OPENCL_LIBRARY_PATHS",
+    "default_discovery_order": "Android vendor library paths before generic libOpenCL soname",
+    "parallel_evaluator_created": false,
+    "opencl_parity_bypassed": false,
+    "prediction_jsonl_written": false,
+    "bridge_mse_as_c5_loss": false
+  },
+  "source_changes": [
+    {
+      "path": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/include/polymath/gemma4/opencl_layer_runner.h",
+      "sha256": "9261cf4b42f5bbf4519793e4d4a50624cb5c683b4b81c91452c5a8f44b5b46e7",
+      "summary": "Adds OpenClRuntimeDiscoveryConfig and passes it through OpenCL runtime probe and single-token forward APIs."
+    },
+    {
+      "path": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/include/polymath/gemma4/c5_qa_inference.h",
+      "sha256": "ca4bc6ed226c5f59c1df7fdf24e8e233d6606969f367ec808353dcff6e529e06",
+      "summary": "Adds C5 request field for an explicit OpenCL library path."
+    },
+    {
+      "path": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/runner/main.cpp",
+      "sha256": "c3b906553ce7d00e65a06d7425ba55ed8a8ade7d18550394952103c427fe73ca",
+      "summary": "Exposes --opencl-library on the existing --run-c5-qa-predict command surface and documents it in help."
+    },
+    {
+      "path": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/opencl_layer_runner.cpp",
+      "sha256": "ba6779769201949b9e611eed3e7f52cca205b6aee7f41b81a9e96df42d06c760",
+      "summary": "Adds deterministic OpenCL library discovery from CLI config, env config, env candidate list, and Android-vendor-first defaults while preserving fail-closed runtime errors."
+    },
+    {
+      "path": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp",
+      "sha256": "2776090c77f66c5e9fdaf9601d46dc648398d245be69131efcfb507cea31804d",
+      "summary": "Passes the C5 OpenCL discovery config through the parity probe and single-token dispatch."
+    },
+    {
+      "path": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_qa_inference.cpp",
+      "sha256": "92440c1d9c9cd66ff15195d28f77bb42738488face7be749fa7cdb07463f9fb8",
+      "summary": "Reports OpenCL discovery configuration as hash-only/redacted metadata, including CLI/env source booleans."
+    },
+    {
+      "path": "tests/test_c5_native_runtime_contract.py",
+      "sha256": "3cfa4de756effb92acc65c6c22cb6d8b7b57e727fb0caff91076dd328cbef8a0",
+      "summary": "Adds fail-closed regression tests for CLI-supplied and env-supplied OpenCL runtime discovery configuration."
+    }
+  ],
+  "first_missing_green_field": "PENDING_ACTION_EXECUTION_REBUILD_COPY_RUNNER_AND_BOUNDED_PHONE_PROBE",
+  "expected_next_execution": [
+    "Custodian freezes this pathset",
+    "Execution rebuilds and copies the repaired C5-capable runner",
+    "Execution reruns only the bounded C5_after_C1 phone probe against the existing regenerated component pack",
+    "If the same clGetPlatformIDs -1001 discovery field repeats after this repair, trigger bounded_sprint_required focused on Android Termux OpenCL ICD/vendor loader behavior"
+  ],
+  "verification": [
+    {
+      "command": "cmake -S integrations/gemma4-snapdragon-megakernel/gemma4_megakernel -B build/gemma4_megakernel_host -DGEMMA4_MEGAKERNEL_WARNINGS_AS_ERRORS=ON && cmake --build build/gemma4_megakernel_host --target gemma4_layer_runner -j 8",
+      "result": "pass"
+    },
+    {
+      "command": "python3.11 -m pytest -q tests/test_c5_native_runtime_contract.py",
+      "result": "pass: 13 passed in 101.71s"
+    },
+    {
+      "command": "python3.11 -m pytest -q tests/test_c5_full_decoder_exporter.py tests/test_c5_native_runtime_contract.py tests/test_c5_phase34_qa_inference_producer.py tests/test_c5_prediction_payloads.py tests/test_c5_heldout_eval.py",
+      "result": "pass: 40 passed in 108.17s"
+    },
+    {
+      "command": "ctest --test-dir build/gemma4_megakernel_host --output-on-failure",
+      "result": "pass: 4/4 tests passed"
+    },
+    {
+      "command": "git diff --check -- exact pathset",
+      "result": "pass"
+    }
+  ],
+  "research_escalation": "none",
+  "raw_boundary_proof": {
+    "raw_model_checkpoint_adapter_tensor_or_prediction_payloads_added_to_git": false,
+    "prediction_jsonl_added_to_git": false,
+    "metadata_only_report": true,
+    "opencl_library_paths_redacted_to_sha256_in_runtime_reports": true
+  },
+  "next_action": "Repo Custodian freeze this pathset, then Execution rebuild/copy the repaired runner and rerun only the bounded C5_after_C1 phone probe.",
+  "nonclaims": [
+    "no C5 pass",
+    "no executed C5 metrics",
+    "no prediction JSONL",
+    "no logits/loss/confidence/candidate_train_loss claim",
+    "no bridge-MSE-as-C5-loss substitution",
+    "no learning or model-quality claim",
+    "no Phase3/4 readiness claim",
+    "no 100k/1M Phase2 authority",
+    "no Comet-backed accepted run"
+  ]
+}

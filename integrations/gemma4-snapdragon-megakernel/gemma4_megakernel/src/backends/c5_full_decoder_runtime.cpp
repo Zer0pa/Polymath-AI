@@ -1637,6 +1637,7 @@ void append_cpu_single_layer_body_blockers(
 }
 
 void append_opencl_single_layer_parity_blockers(
+    const C5QaInferenceRequest& request,
     const SourceModelIdentity& identity,
     const SingleLayerBody& cpu_body,
     std::vector<std::string>& blockers) {
@@ -1650,7 +1651,9 @@ void append_opencl_single_layer_parity_blockers(
     return;
   }
 
-  const Status runtime_status = probe_opencl_layer_runtime_available();
+  OpenClRuntimeDiscoveryConfig opencl_config;
+  opencl_config.opencl_library = request.opencl_library;
+  const Status runtime_status = probe_opencl_layer_runtime_available(opencl_config);
   if (!runtime_status.is_ok()) {
     blockers.push_back("c5_full_decoder_opencl_parity_runtime_unavailable:" +
                        runtime_status.message());
@@ -1676,7 +1679,8 @@ void append_opencl_single_layer_parity_blockers(
   input.per_layer_input_row = cpu_body.ple_input_row;
   input.position_id = 0U;
   OpenClSingleTokenLayerResult result;
-  status = run_opencl_single_token_layer_forward(weights, input, result);
+  status = run_opencl_single_token_layer_forward(weights, input, result,
+                                                 opencl_config);
   if (!status.is_ok()) {
     blockers.push_back("c5_full_decoder_opencl_parity_dispatch_failed:" +
                        status.message());
@@ -1864,7 +1868,7 @@ C5FullDecoderRuntimeResult run_c5_full_decoder_runtime(
                                             result.blockers);
     }
     if (result.blockers.empty()) {
-      append_opencl_single_layer_parity_blockers(identity, layer0_body,
+      append_opencl_single_layer_parity_blockers(request, identity, layer0_body,
                                                  result.blockers);
     }
   } catch (const std::exception& error) {

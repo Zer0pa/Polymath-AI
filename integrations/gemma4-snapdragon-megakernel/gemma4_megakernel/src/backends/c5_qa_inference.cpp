@@ -1,6 +1,7 @@
 #include "polymath/gemma4/c5_qa_inference.h"
 
 #include <cctype>
+#include <cstdlib>
 #include <cstdint>
 #include <fstream>
 #include <iostream>
@@ -28,6 +29,9 @@ constexpr std::uint32_t kGemma4E4bHiddenSize = 2560;
 constexpr std::uint32_t kGemma4E4bVocabSize = 262144;
 constexpr std::uint32_t kMaxAcceptedVocabChunkSize = 16384;
 constexpr std::uint32_t kMaxAcceptedGenerationTokens = 512;
+constexpr const char* kOpenClLibraryEnv = "POLYMATH_GEMMA4_OPENCL_LIBRARY";
+constexpr const char* kOpenClLibraryPathsEnv =
+    "POLYMATH_GEMMA4_OPENCL_LIBRARY_PATHS";
 
 bool is_sha256(const std::string& value) {
   if (value.size() != 64U) {
@@ -44,6 +48,11 @@ bool is_sha256(const std::string& value) {
 bool file_exists(const std::string& path) {
   std::ifstream file(path, std::ios::binary);
   return static_cast<bool>(file);
+}
+
+std::string getenv_string(const char* name) {
+  const char* value = std::getenv(name);
+  return value == nullptr ? std::string() : std::string(value);
 }
 
 std::string join_path(const std::string& base, const std::string& leaf) {
@@ -453,6 +462,30 @@ void write_report(const C5QaInferenceRequest& request,
             << kMaxAcceptedVocabChunkSize;
   std::cout << ",\"full_bsv_logits_materialization_allowed\":false";
   std::cout << ",\"streamed_or_chunked_logits_required\":true}";
+  std::cout << ",\"opencl_runtime_discovery_contract\":{";
+  const std::string env_opencl_library = getenv_string(kOpenClLibraryEnv);
+  const bool cli_opencl_library_configured = !request.opencl_library.empty();
+  const bool env_opencl_library_configured = !env_opencl_library.empty();
+  const std::string reported_opencl_library =
+      cli_opencl_library_configured ? request.opencl_library : env_opencl_library;
+  std::cout << "\"opencl_library_path_configured\":"
+            << ((cli_opencl_library_configured || env_opencl_library_configured)
+                    ? "true"
+                    : "false");
+  std::cout << ",\"opencl_library_cli_path_configured\":"
+            << (cli_opencl_library_configured ? "true" : "false");
+  std::cout << ",\"opencl_library_env_path_configured\":"
+            << (env_opencl_library_configured ? "true" : "false");
+  std::cout << ",\"opencl_library_path_string_sha256\":";
+  write_json_string(std::cout, reported_opencl_library.empty()
+                                   ? std::string()
+                                   : sha256_text_hex(reported_opencl_library));
+  std::cout << ",\"path_redacted\":true";
+  std::cout << ",\"env_library_variable\":";
+  write_json_string(std::cout, kOpenClLibraryEnv);
+  std::cout << ",\"env_library_paths_variable\":";
+  write_json_string(std::cout, kOpenClLibraryPathsEnv);
+  std::cout << ",\"android_vendor_paths_preferred_before_generic_soname\":true}";
   std::cout << ",\"required_runtime_components\":{";
   std::cout << "\"tokenizer_dir_present\":" << (request.tokenizer_dir.empty() ? "false" : "true");
   std::cout << ",\"decoder_manifest_present\":"

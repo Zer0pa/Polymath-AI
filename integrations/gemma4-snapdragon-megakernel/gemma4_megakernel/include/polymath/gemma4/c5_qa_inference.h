@@ -21,6 +21,7 @@ struct C5QaInferenceRequest {
   std::string decoder_manifest_path;
   std::string lm_head_path;
   std::string adapter_site_policy_path;
+  std::string opencl_library;
   std::uint32_t vocab_chunk_size = 4096;
   std::uint32_t max_generation_tokens = 128;
 };

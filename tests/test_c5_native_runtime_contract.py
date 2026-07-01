@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 import subprocess
 from pathlib import Path
 
@@ -104,6 +105,66 @@ def test_native_c5_runtime_accepts_independent_k_norm_width(tmp_path: Path) -> N
     assert result.returncode == 13
     assert payload["first_missing_green_field"].startswith(
         "c5_full_decoder_opencl_parity_runtime_unavailable:"
+    )
+    assert not paths["output_jsonl"].exists()
+
+
+def test_native_c5_runtime_accepts_cli_opencl_library_config(tmp_path: Path) -> None:
+    paths = _write_component_pack(tmp_path, include_layer0_compute_tensors=True)
+    configured_library = tmp_path / "missing-vendor-libOpenCL.so"
+
+    result = _run_native(
+        paths,
+        extra_args=["--opencl-library", str(configured_library)],
+    )
+    payload = json.loads(result.stdout)
+
+    assert result.returncode == 13
+    assert payload["first_missing_green_field"] == (
+        "c5_full_decoder_opencl_parity_runtime_unavailable:"
+        "opencl_single_token_layer_runtime_unavailable:"
+        "opencl_library_configured_path_not_found"
+    )
+    assert payload["opencl_runtime_discovery_contract"] == {
+        "opencl_library_path_configured": True,
+        "opencl_library_cli_path_configured": True,
+        "opencl_library_env_path_configured": False,
+        "opencl_library_path_string_sha256": hashlib.sha256(
+            str(configured_library).encode("utf-8")
+        ).hexdigest(),
+        "path_redacted": True,
+        "env_library_variable": "POLYMATH_GEMMA4_OPENCL_LIBRARY",
+        "env_library_paths_variable": "POLYMATH_GEMMA4_OPENCL_LIBRARY_PATHS",
+        "android_vendor_paths_preferred_before_generic_soname": True,
+    }
+    assert not paths["output_jsonl"].exists()
+
+
+def test_native_c5_runtime_accepts_env_opencl_library_config(tmp_path: Path) -> None:
+    paths = _write_component_pack(tmp_path, include_layer0_compute_tensors=True)
+    env = os.environ.copy()
+    env["POLYMATH_GEMMA4_OPENCL_LIBRARY"] = str(
+        tmp_path / "missing-env-libOpenCL.so"
+    )
+
+    result = _run_native(paths, env=env)
+    payload = json.loads(result.stdout)
+
+    assert result.returncode == 13
+    assert payload["first_missing_green_field"] == (
+        "c5_full_decoder_opencl_parity_runtime_unavailable:"
+        "opencl_single_token_layer_runtime_unavailable:"
+        "opencl_library_configured_path_not_found"
+    )
+    discovery_contract = payload["opencl_runtime_discovery_contract"]
+    assert discovery_contract["opencl_library_path_configured"] is True
+    assert discovery_contract["opencl_library_cli_path_configured"] is False
+    assert discovery_contract["opencl_library_env_path_configured"] is True
+    assert discovery_contract["opencl_library_path_string_sha256"] == hashlib.sha256(
+        env["POLYMATH_GEMMA4_OPENCL_LIBRARY"].encode("utf-8")
+    ).hexdigest()
+    assert discovery_contract["env_library_variable"] == (
+        "POLYMATH_GEMMA4_OPENCL_LIBRARY"
     )
     assert not paths["output_jsonl"].exists()
 
@@ -252,35 +313,44 @@ def test_native_c5_runtime_rejects_safetensors_offset_bounds(tmp_path: Path) -> 
     assert not paths["output_jsonl"].exists()
 
 
-def _run_native(paths: dict[str, Path]) -> subprocess.CompletedProcess[str]:
+def _run_native(
+    paths: dict[str, Path],
+    *,
+    extra_args: list[str] | None = None,
+    env: dict[str, str] | None = None,
+) -> subprocess.CompletedProcess[str]:
+    command = [
+        str(RUNNER),
+        "--run-c5-qa-predict",
+        "--run-label",
+        "unit",
+        "--eval-point",
+        "C5_after_C1",
+        "--checkpoint-role",
+        "candidate",
+        "--checkpoint-payload",
+        str(paths["checkpoint"]),
+        "--checkpoint-sha256",
+        str(paths["checkpoint_sha"]),
+        "--heldout-qa-jsonl",
+        str(paths["heldout"]),
+        "--output-jsonl",
+        str(paths["output_jsonl"]),
+        "--tokenizer-dir",
+        str(paths["tokenizer"]),
+        "--decoder-component-pack",
+        str(paths["pack"]),
+        "--vocab-chunk-size",
+        "4096",
+        "--max-generation-tokens",
+        "1",
+    ]
+    if extra_args:
+        command.extend(extra_args)
     return subprocess.run(
-        [
-            str(RUNNER),
-            "--run-c5-qa-predict",
-            "--run-label",
-            "unit",
-            "--eval-point",
-            "C5_after_C1",
-            "--checkpoint-role",
-            "candidate",
-            "--checkpoint-payload",
-            str(paths["checkpoint"]),
-            "--checkpoint-sha256",
-            str(paths["checkpoint_sha"]),
-            "--heldout-qa-jsonl",
-            str(paths["heldout"]),
-            "--output-jsonl",
-            str(paths["output_jsonl"]),
-            "--tokenizer-dir",
-            str(paths["tokenizer"]),
-            "--decoder-component-pack",
-            str(paths["pack"]),
-            "--vocab-chunk-size",
-            "4096",
-            "--max-generation-tokens",
-            "1",
-        ],
+        command,
         cwd=ROOT,
+        env=env,
         text=True,
         capture_output=True,
         check=False,

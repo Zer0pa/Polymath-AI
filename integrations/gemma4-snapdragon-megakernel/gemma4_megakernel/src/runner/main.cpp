@@ -28,7 +28,7 @@ void print_help() {
       << "                           [--run-h11f-topk-kl-compact TOKEN_CACHE ASSETS PACK0 PACK1 CHECKPOINT TEACHER_SHARD OUT_DIR LR RANK APPLY_UPDATE]\n"
       << "                           [--run-h11f-topk-kl-layer1-compact TOKEN_CACHE ASSETS PACK0 PACK1 CHECKPOINT TEACHER_SHARD OUT_DIR LR RANK APPLY_UPDATE]\n"
       << "                           [--run-c5-qa-predict --run-label LABEL --eval-point POINT --checkpoint-role ROLE --checkpoint-payload PATH --checkpoint-sha256 SHA --heldout-qa-jsonl PATH --output-jsonl PATH]\n"
-      << "                           [--decoder-component-pack DIR | --decoder-manifest PATH --lm-head PATH --adapter-site-policy PATH] [--vocab-chunk-size N] [--max-generation-tokens N]\n"
+      << "                           [--decoder-component-pack DIR | --decoder-manifest PATH --lm-head PATH --adapter-site-policy PATH] [--opencl-library PATH] [--vocab-chunk-size N] [--max-generation-tokens N]\n"
       << "                           [--tokenize-pack TOKENIZER_DIR RAW_TEXT OUT_DIR SEQ N URL]\n"
       << "\n"
       << "Current authority gates: Gemma 4 E4B layer forward-only and stack\n"
@@ -307,6 +307,8 @@ int run_c5_qa_predict(int argc, char** argv, int index) {
       request.lm_head_path = require_named_value(argc, argv, arg_index, flag);
     } else if (flag == "--adapter-site-policy") {
       request.adapter_site_policy_path = require_named_value(argc, argv, arg_index, flag);
+    } else if (flag == "--opencl-library") {
+      request.opencl_library = require_named_value(argc, argv, arg_index, flag);
     } else if (flag == "--vocab-chunk-size") {
       request.vocab_chunk_size = require_named_u32(argc, argv, arg_index, flag);
     } else if (flag == "--max-generation-tokens") {

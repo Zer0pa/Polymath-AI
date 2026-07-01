@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <chrono>
 #include <cctype>
+#include <cstdlib>
 #include <cstdint>
 #include <cstring>
 #include <cmath>
@@ -68,6 +69,9 @@ constexpr std::uint32_t kTeacherTopK = 8U;
 constexpr std::uint32_t kVocabSize = 262144U;
 constexpr float kRmsEpsilon = 1.0e-6F;
 constexpr float kFinalLogitSoftcap = 30.0F;
+constexpr const char* kOpenClLibraryEnv = "POLYMATH_GEMMA4_OPENCL_LIBRARY";
+constexpr const char* kOpenClLibraryPathsEnv =
+    "POLYMATH_GEMMA4_OPENCL_LIBRARY_PATHS";
 
 float adapter_scale(std::uint32_t adapter_rank) {
   if (adapter_rank == 0U) {
@@ -101,6 +105,94 @@ Function resolve_symbol(void* library, const char* name) {
     throw std::runtime_error(std::string("OpenCL missing symbol: ") + name);
   }
   return reinterpret_cast<Function>(symbol);
+}
+
+bool string_has_value(const std::vector<std::string>& values,
+                      const std::string& value) {
+  for (const std::string& existing : values) {
+    if (existing == value) {
+      return true;
+    }
+  }
+  return false;
+}
+
+void append_unique_string(std::vector<std::string>& values,
+                          const std::string& value) {
+  if (!value.empty() && !string_has_value(values, value)) {
+    values.push_back(value);
+  }
+}
+
+std::vector<std::string> split_opencl_library_paths(const std::string& value) {
+  std::vector<std::string> paths;
+  std::string current;
+  for (const char character : value) {
+    if (character == ':' || character == ';' || character == ',') {
+      append_unique_string(paths, current);
+      current.clear();
+      continue;
+    }
+    current.push_back(character);
+  }
+  append_unique_string(paths, current);
+  return paths;
+}
+
+std::string getenv_string(const char* name) {
+  const char* value = std::getenv(name);
+  return value == nullptr ? std::string() : std::string(value);
+}
+
+bool absolute_path_exists(const std::string& path) {
+  if (path.empty() || path.front() != '/') {
+    return true;
+  }
+  std::ifstream file(path, std::ios::binary);
+  return static_cast<bool>(file);
+}
+
+std::vector<std::string> default_opencl_library_candidates() {
+  return {
+      "/vendor/lib64/libOpenCL.so",
+      "/system/vendor/lib64/libOpenCL.so",
+      "/system/lib64/libOpenCL.so",
+      "/odm/lib64/libOpenCL.so",
+      "libOpenCL.so",
+      "libOpenCL.so.1",
+      "/vendor/lib/libOpenCL.so",
+      "/system/vendor/lib/libOpenCL.so",
+      "/system/lib/libOpenCL.so",
+      "/odm/lib/libOpenCL.so",
+  };
+}
+
+std::vector<std::string> opencl_library_candidates(
+    const OpenClRuntimeDiscoveryConfig& config,
+    bool& caller_configured) {
+  caller_configured = true;
+  if (!config.opencl_library.empty()) {
+    return {config.opencl_library};
+  }
+  const std::string env_library = getenv_string(kOpenClLibraryEnv);
+  if (!env_library.empty()) {
+    return {env_library};
+  }
+
+  std::vector<std::string> candidates;
+  for (const std::string& candidate : config.opencl_library_candidates) {
+    append_unique_string(candidates, candidate);
+  }
+  for (const std::string& candidate :
+       split_opencl_library_paths(getenv_string(kOpenClLibraryPathsEnv))) {
+    append_unique_string(candidates, candidate);
+  }
+  if (!candidates.empty()) {
+    return candidates;
+  }
+
+  caller_configured = false;
+  return default_opencl_library_candidates();
 }
 
 struct OpenClApi {
@@ -192,16 +284,29 @@ struct OpenClApi {
 
 class DynamicLibrary {
  public:
-  DynamicLibrary() {
-    const char* candidates[] = {"libOpenCL.so", "/vendor/lib64/libOpenCL.so"};
-    for (const char* candidate : candidates) {
-      handle_ = dlopen(candidate, RTLD_NOW | RTLD_LOCAL);
+  explicit DynamicLibrary(
+      const OpenClRuntimeDiscoveryConfig& config = OpenClRuntimeDiscoveryConfig{}) {
+    bool caller_configured = false;
+    const std::vector<std::string> candidates =
+        opencl_library_candidates(config, caller_configured);
+    std::uint32_t attempted_load_count = 0U;
+    for (const std::string& candidate : candidates) {
+      if (caller_configured && !absolute_path_exists(candidate)) {
+        continue;
+      }
+      ++attempted_load_count;
+      handle_ = dlopen(candidate.c_str(), RTLD_NOW | RTLD_LOCAL);
       if (handle_ != nullptr) {
         loaded_path_ = candidate;
         return;
       }
     }
-    throw std::runtime_error("unable to load libOpenCL.so");
+    if (caller_configured && attempted_load_count == 0U) {
+      throw std::runtime_error("opencl_library_configured_path_not_found");
+    }
+    throw std::runtime_error(caller_configured
+                                 ? "opencl_library_configured_load_failed"
+                                 : "opencl_library_load_failed");
   }
 
   ~DynamicLibrary() {
@@ -3355,7 +3460,8 @@ LayerForwardResult run_opencl_layer_values_loaded(
     std::vector<float> layer_input,
     std::vector<float> per_layer_input,
     std::vector<std::uint8_t> attention_mask,
-    std::vector<std::uint32_t> position_ids) {
+    std::vector<std::uint32_t> position_ids,
+    const OpenClRuntimeDiscoveryConfig& config = OpenClRuntimeDiscoveryConfig{}) {
   const auto start_time = std::chrono::steady_clock::now();
   if (layer_input.size() != (kTokens * kHidden)) {
     throw std::runtime_error("layer input has invalid element count");
@@ -3376,7 +3482,7 @@ LayerForwardResult run_opencl_layer_values_loaded(
     throw std::runtime_error("q/k norm width is incompatible with projection width");
   }
 
-  DynamicLibrary library;
+  DynamicLibrary library(config);
   OpenClApi api(library.handle());
   ClRuntime runtime(api);
   runtime.build_program(opencl_source());
@@ -3556,9 +3662,10 @@ LayerForwardResult run_opencl_layer_values(const std::string& pack_dir,
 
 }  // namespace
 
-Status probe_opencl_layer_runtime_available() {
+Status probe_opencl_layer_runtime_available(
+    const OpenClRuntimeDiscoveryConfig& config) {
   try {
-    DynamicLibrary library;
+    DynamicLibrary library(config);
     OpenClApi api(library.handle());
     ClRuntime runtime(api);
     return Status::ok();
@@ -3571,7 +3678,8 @@ Status probe_opencl_layer_runtime_available() {
 Status run_opencl_single_token_layer_forward(
     const OpenClSingleTokenLayerWeights& weights,
     const OpenClSingleTokenLayerInput& input,
-    OpenClSingleTokenLayerResult& result) {
+    OpenClSingleTokenLayerResult& result,
+    const OpenClRuntimeDiscoveryConfig& config) {
   result = OpenClSingleTokenLayerResult{};
   try {
     if (input.layer_input_row.size() != kHidden ||
@@ -3612,7 +3720,7 @@ Status run_opencl_single_token_layer_forward(
     const LayerForwardResult forward = run_opencl_layer_values_loaded(
         input.layer_index, std::move(loaded), std::move(layer_input),
         std::move(per_layer_input), std::move(attention_mask),
-        std::move(position_ids));
+        std::move(position_ids), config);
     result.output_row.assign(forward.output_values.begin(),
                              forward.output_values.begin() + kHidden);
     result.opencl_library = forward.opencl_library;
