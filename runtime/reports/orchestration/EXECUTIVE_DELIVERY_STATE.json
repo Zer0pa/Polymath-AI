@@ -13,13 +13,13 @@
       "schema-complete component-pack identities or the next expected/actual shape-bearing blocker"
     ]
   },
-  "active_edge": "WaveB_C5_after_C1_native_tokenizer_tensor_loader_prereq_custody_pending",
+  "active_edge": "WaveB_C5_after_C1_streamed_decoder_compute_runtime_in_progress_after_tokenizer_tensor_loader_custody",
   "active_watchdog_state": {
     "adapter_site_policy_sha256": "f38bd8109bbb77e9e94a5b4b34a238bc0ec0a39e7736870c97defe5aecc93357",
     "additional_missing_runtime_field_after_contract_patch": "decoder_manifest_tensor_role_inventory_missing",
     "artifact_waiting_on": [
-      "Repo Custodian freezes the native C5 tokenizer + bounded safetensors tensor-value-loader prerequisite pathset from Phase3/4: CMakeLists.txt, gemma_bpe_tokenizer.h/.cpp, safetensors_reader.h/.cpp, c5_full_decoder_runtime.cpp, tests/test_c5_native_runtime_contract.py, and c5_after_c1_native_tokenizer_tensor_loader_pathset_20260701T_phase34.json.",
-      "After custody, Phase3/4 implements the remaining streamed full-decoder compute bodies: streamed attention/MLP kernel, rank-16 adapter injection, and chunked LM-head/NLL writer behind the existing --run-c5-qa-predict surface.",
+      "Phase3/4 returns a custody-ready streamed decoder compute/runtime pathset or precise implementation blocker from the active native C5 runtime work.",
+      "Current active implementation area: c5_decoder_math helpers, bounded safetensors slicing, native validation for PLE/per-layer input runtime contract, adapter payload validation, and remaining streamed attention/MLP plus chunked LM-head/NLL wiring.",
       "Execution remains parked until a real streamed compute implementation is frozen; no C5 QA predict rerun is authorized for pass claims before then."
     ],
     "authorization_needed": "none; native implementation work is under current GO and must preserve raw/secrets boundary",
@@ -983,12 +983,12 @@
       "status": "c5_full_decoder_failure_artifacts_and_state_pending_custody",
       "user_action_required": false
     },
-    "current_gate": "WaveB_C5_after_C1_native_tokenizer_tensor_loader_prereq_custody_pending",
+    "current_gate": "WaveB_C5_after_C1_streamed_decoder_compute_runtime_in_progress_after_tokenizer_tensor_loader_custody",
     "custody_commit_latest": "bb8105a2bc91b6c9b0993603e14b49d0a5730f8d",
     "custody_status_latest": "c5_decoder_runtime_owner_state_committed_pushed",
     "decoder_manifest_sha256": "6700f3c2912bfdcb659b9e7de3cdb0831d58f3708a0f841c181ec446b3a83a5f",
     "dominant_failure_domain": "phase5_eval_failure",
-    "drift_deleted_or_pending": "Compute-kernel failure-surface custody is complete at a5b66d0b6eb69a18f67e98afc00aeab6eef3faa8. Tokenizer runtime and bounded tensor-value loading are implemented by Phase3/4 and pending custody. Remaining drift is native streamed full-decoder compute: attention/MLP, rank-16 adapter injection, and chunked LM-head/NLL emission are still absent behind --run-c5-qa-predict.",
+    "drift_deleted_or_pending": "Tokenizer runtime and bounded tensor-value loading are frozen. Remaining drift is native streamed full-decoder compute: PLE/per-layer-input runtime source contract, streamed attention/MLP execution, rank-16 adapter injection, and chunked LM-head/NLL emission must be real before any C5 prediction/loss claim.",
     "engineering_evaluator_implementation": {
       "artifact_paths_in_progress": [
         "polymath_ai/polar/c5_heldout_eval.py",
@@ -1137,7 +1137,7 @@
       "training_material_steward": "complete for material identities",
       "ui_engineer": "not nudged until C5 evidence-backed status exists"
     },
-    "last_concrete_action": "Repo Custodian froze and pushed the native full-decoder compute-kernel failure surface at a5b66d0b6eb69a18f67e98afc00aeab6eef3faa8. Phase3/4 then implemented the next prerequisite slice: reusable native Gemma BPE tokenization, bounded SafetensorsReader tensor-byte reads, and C5 runtime validation that exercises tokenization plus bounded tensor reads before the remaining streamed compute blocker. Phase3/4 routed this pathset to Repo Custodian; Custodian is actively verifying it.",
+    "last_concrete_action": "Repo Custodian froze the native tokenizer + bounded safetensors tensor-loader prerequisite pathset at 4472e3dee86d88d83031eecfc94b91008e5215e0 and then froze the central mirror at 59567735db38a4680c60a7f9c0182d90d7ffb38e. Phase3/4 accepted the handoff and is actively implementing the next runtime slice, adding native math helpers and tightening the runtime contract around the PLE/per-layer-input source needed to drive full decoder math.",
     "lineage_drift_repair_status": {
       "commit": "ee74ae572322e05624deac6f6f8788c2c6e2f692",
       "proof_required": [
@@ -1312,7 +1312,7 @@
     "native_logits_contract_patch_custody_commit": "2151dbada9012a5f54806cf689e806001180521f",
     "native_probe_exit_code": 13,
     "native_probe_report_path": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe/candidate_probe_stdout.json",
-    "next_concrete_action": "Repo Custodian verifies, commits, and pushes the eight-file native tokenizer/tensor-loader prerequisite pathset. After custody, Phase3/4 continues with the remaining streamed decoder compute bodies; Execution resumes only after a real runtime implementation is frozen.",
+    "next_concrete_action": "Phase3/4 continues the active implementation and returns either a custody-ready pathset for streamed decoder compute/runtime hardening or a precise blocker. If a pathset lands, Engineering updates central state metadata-only and routes it to Repo Custodian. Execution resumes only after the real runtime implementation is frozen.",
     "nonclaims": [
       "development-cycle evidence only unless stronger gates pass",
       "no C5 pass",
@@ -1340,7 +1340,7 @@
       "no Comet/API call",
       "no secrets sourced"
     ],
-    "owner": "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050 owns freezing the native C5 tokenizer + bounded safetensors tensor-value-loader prerequisite pathset. Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 owns the remaining streamed decoder compute implementation after custody.",
+    "owner": "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 owns the streamed decoder compute runtime implementation behind --run-c5-qa-predict. Repo Custodian completed prerequisite custody at 4472e3dee86d88d83031eecfc94b91008e5215e0 and central mirror custody at 59567735db38a4680c60a7f9c0182d90d7ffb38e. Execution remains parked until a real runtime implementation is frozen.",
     "phase2_status_by_phase": {
       "C1": {
         "packets": 5180,
@@ -1552,7 +1552,7 @@
       "phase34": "raw PJP1, HTP raw output, OpenCL tensors, and adapters remain on device/Termux; repair must keep compact JSON only",
       "report_root_scan": "metadata-freeze report root had 179 tracked files and clean forbidden suffix scans; raw payloads not committed"
     },
-    "recursive_improvement_next_step": "Custodian freezes tokenizer/tensor-loader prerequisite pathset -> Phase3/4 implements streamed decoder compute kernel -> Custodian freezes implementation -> Execution runs bounded C5_after_C1 --run-c5-qa-predict proof -> Pipeline validates executed evidence -> Custodian freezes metadata/code only.",
+    "recursive_improvement_next_step": "Phase3/4 implementation pathset or precise blocker -> Custodian freezes implementation evidence -> Execution runs bounded C5_after_C1 --run-c5-qa-predict proof -> Pipeline validates executed evidence -> Custodian freezes metadata/code only.",
     "repo_custody_state_freeze": {
       "branch": "origin/gemma4-megakernel-native-training",
       "commit": "7290fbec13c6a13e88710afddfe4af70637096f9",
@@ -1567,14 +1567,14 @@
     "run_root": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z",
     "runner_sha256": "a5a6f9a3b93d167d9cd69eddbe2f3404443ae1c2222e1c6a0782398c9ff09e84",
     "runner_size_bytes": 369536,
-    "status": "native_full_decoder_prereq_pathset_ready_for_custodian",
-    "status_classification": "PENDING_ACTION_REPO_CUSTODY_NATIVE_TOKENIZER_TENSOR_LOADER_PREREQ_PATHSET",
+    "status": "phase34_streamed_decoder_compute_runtime_implementation_in_progress",
+    "status_classification": "PENDING_ACTION_PHASE34_STREAMED_DECODER_COMPUTE_RUNTIME_IMPLEMENTATION",
     "threads_nudged_this_tick": [
-      "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: active verifying native tokenizer + bounded tensor-loader prerequisite custody pathset; no duplicate nudge sent.",
-      "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4: completed prerequisite implementation slice and routed custody request; currently idle pending custody."
+      "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: completed prerequisite custody at 4472e3dee86d88d83031eecfc94b91008e5215e0 and central mirror custody at 59567735db38a4680c60a7f9c0182d90d7ffb38e.",
+      "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4: active on streamed decoder compute runtime implementation; no duplicate nudge sent."
     ],
-    "timestamp_utc": "2026-07-01T15:09:37Z",
-    "updated_utc": "2026-07-01T15:09:37Z",
+    "timestamp_utc": "2026-07-01T15:19:37Z",
+    "updated_utc": "2026-07-01T15:19:37Z",
     "user_action_required": false,
     "exporter_attention_layout_repair_custody": {
       "status": "committed_pushed",
@@ -1660,13 +1660,16 @@
     },
     "native_compute_kernel_failure_surface_custody_commit": "a5b66d0b6eb69a18f67e98afc00aeab6eef3faa8",
     "native_tokenizer_tensor_loader_prereq_status": "native_full_decoder_prereq_pathset_ready_for_custodian",
-    "native_tokenizer_tensor_loader_prereq_report_sha256": "1e4a087354d8a917ec9fba7747a5e2410d9fb01f36e991c902e00adf8764e422"
+    "native_tokenizer_tensor_loader_prereq_report_sha256": "1e4a087354d8a917ec9fba7747a5e2410d9fb01f36e991c902e00adf8764e422",
+    "native_tokenizer_tensor_loader_prereq_custody_commit": "4472e3dee86d88d83031eecfc94b91008e5215e0",
+    "native_tokenizer_tensor_loader_prereq_central_mirror_commit": "59567735db38a4680c60a7f9c0182d90d7ffb38e",
+    "phase34_streamed_decoder_compute_runtime_status": "implementation_in_progress"
   },
   "adapter_site_policy_sha256": "f38bd8109bbb77e9e94a5b4b34a238bc0ec0a39e7736870c97defe5aecc93357",
   "additional_missing_runtime_field_after_contract_patch": "decoder_manifest_tensor_role_inventory_missing",
   "artifact_waiting_on": [
-    "Repo Custodian freezes the native C5 tokenizer + bounded safetensors tensor-value-loader prerequisite pathset from Phase3/4: CMakeLists.txt, gemma_bpe_tokenizer.h/.cpp, safetensors_reader.h/.cpp, c5_full_decoder_runtime.cpp, tests/test_c5_native_runtime_contract.py, and c5_after_c1_native_tokenizer_tensor_loader_pathset_20260701T_phase34.json.",
-    "After custody, Phase3/4 implements the remaining streamed full-decoder compute bodies: streamed attention/MLP kernel, rank-16 adapter injection, and chunked LM-head/NLL writer behind the existing --run-c5-qa-predict surface.",
+    "Phase3/4 returns a custody-ready streamed decoder compute/runtime pathset or precise implementation blocker from the active native C5 runtime work.",
+    "Current active implementation area: c5_decoder_math helpers, bounded safetensors slicing, native validation for PLE/per-layer input runtime contract, adapter payload validation, and remaining streamed attention/MLP plus chunked LM-head/NLL wiring.",
     "Execution remains parked until a real streamed compute implementation is frozen; no C5 QA predict rerun is authorized for pass claims before then."
   ],
   "authorization_needed": "none; native implementation work is under current GO and must preserve raw/secrets boundary",
@@ -2003,11 +2006,11 @@
     ]
   },
   "candidate_adapter_sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f",
-  "current_gate": "WaveB_C5_after_C1_native_tokenizer_tensor_loader_prereq_custody_pending",
+  "current_gate": "WaveB_C5_after_C1_streamed_decoder_compute_runtime_in_progress_after_tokenizer_tensor_loader_custody",
   "current_highest_valid_state": "C1-C4 Wave B Phase1->Phase2->Phase3->Phase4 development-cycle mechanics remain frozen as metadata evidence. Phone-local model download, original component-pack export, C5-capable runner build, heldout QA staging, native C5 probe, and native manifest-contract guard are metadata evidence only. No C5 pass or executed metrics exist; the active edge is Execution consuming k_norm repair commit a27900b18aa7f26c2ecfffa87df746a7dec4a3db and rerunning the phone exporter.",
   "decoder_manifest_sha256": "6700f3c2912bfdcb659b9e7de3cdb0831d58f3708a0f841c181ec446b3a83a5f",
   "dominant_failure_domain": "phase5_eval_failure",
-  "drift_deleted_or_pending": "Compute-kernel failure-surface custody is complete at a5b66d0b6eb69a18f67e98afc00aeab6eef3faa8. Tokenizer runtime and bounded tensor-value loading are implemented by Phase3/4 and pending custody. Remaining drift is native streamed full-decoder compute: attention/MLP, rank-16 adapter injection, and chunked LM-head/NLL emission are still absent behind --run-c5-qa-predict.",
+  "drift_deleted_or_pending": "Tokenizer runtime and bounded tensor-value loading are frozen. Remaining drift is native streamed full-decoder compute: PLE/per-layer-input runtime source contract, streamed attention/MLP execution, rank-16 adapter injection, and chunked LM-head/NLL emission must be real before any C5 prediction/loss claim.",
   "driver_tick_history": [
     {
       "artifact_waiting_on": [
@@ -2751,6 +2754,24 @@
         "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4: completed prerequisite implementation slice and routed custody request; currently idle pending custody."
       ],
       "user_action_required": false
+    },
+    {
+      "utc": "2026-07-01T15:19:37Z",
+      "current_gate": "WaveB_C5_after_C1_streamed_decoder_compute_runtime_in_progress_after_tokenizer_tensor_loader_custody",
+      "status_classification": "PENDING_ACTION_PHASE34_STREAMED_DECODER_COMPUTE_RUNTIME_IMPLEMENTATION",
+      "owner": "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 owns the streamed decoder compute runtime implementation behind --run-c5-qa-predict. Repo Custodian completed prerequisite custody at 4472e3dee86d88d83031eecfc94b91008e5215e0 and central mirror custody at 59567735db38a4680c60a7f9c0182d90d7ffb38e. Execution remains parked until a real runtime implementation is frozen.",
+      "action": "recorded prerequisite custody at 4472e3d and central mirror custody at 5956773; shifted active edge to Phase3/4 streamed decoder compute runtime implementation in progress",
+      "artifact_waiting_on": [
+        "Phase3/4 returns a custody-ready streamed decoder compute/runtime pathset or precise implementation blocker from the active native C5 runtime work.",
+        "Current active implementation area: c5_decoder_math helpers, bounded safetensors slicing, native validation for PLE/per-layer input runtime contract, adapter payload validation, and remaining streamed attention/MLP plus chunked LM-head/NLL wiring.",
+        "Execution remains parked until a real streamed compute implementation is frozen; no C5 QA predict rerun is authorized for pass claims before then."
+      ],
+      "first_missing_green_field": "c5_full_decoder_streamed_compute_kernel_missing",
+      "threads_nudged_this_tick": [
+        "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: completed prerequisite custody at 4472e3dee86d88d83031eecfc94b91008e5215e0 and central mirror custody at 59567735db38a4680c60a7f9c0182d90d7ffb38e.",
+        "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4: active on streamed decoder compute runtime implementation; no duplicate nudge sent."
+      ],
+      "user_action_required": false
     }
   ],
   "export_report_sha256": "06fe8e91b5938ff3235cad5fa96e7b25d5b20fb3c4e456c249c84d53bf839d0f",
@@ -2765,7 +2786,7 @@
   "first_missing_green_field_after_runner": "heldout_qa_jsonl_staging_or_c5_predict_probe_pending",
   "first_unresolved_technical_failure_after_schema_complete_export": "c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land",
   "first_unresolved_technical_failure_after_valid_schema_paths": "c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land",
-  "governing_edge": "WaveB_C5_after_C1_native_tokenizer_tensor_loader_prereq_custody_pending",
+  "governing_edge": "WaveB_C5_after_C1_streamed_decoder_compute_runtime_in_progress_after_tokenizer_tensor_loader_custody",
   "governing_objective": {
     "nonclaims": [
       "diagnostics_are_not_100k_or_1M_authority_unless_specific_authority_gate_passes",
@@ -3399,7 +3420,7 @@
       ],
       "authorization_needed": false,
       "custody_commit": "9f6a27f3640078d81a303445d7ab29c7ce3a2db8",
-      "first_missing_green_field": "c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land",
+      "first_missing_green_field": "c5_full_decoder_streamed_compute_kernel_missing",
       "first_missing_green_field_after_custody": "decoder_manifest_architecture_config_missing",
       "first_unresolved_technical_failure_after_valid_schema_paths": "c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land",
       "last_update_utc": "2026-07-01T12:50:37Z",
@@ -3427,7 +3448,7 @@
         "runner_sha256": "a5a6f9a3b93d167d9cd69eddbe2f3404443ae1c2222e1c6a0782398c9ff09e84",
         "tests_sha256": "eeea0c89882a087cf945058244ccc55aa8ea37901b1116baf15e0356aab97b3b"
       },
-      "status": "native_full_decoder_prereq_pathset_ready_for_custodian",
+      "status": "active_streamed_decoder_compute_runtime_implementation",
       "status_classification": "PENDING_ACTION_PHASE34_NATIVE_SAFETENSORS_READER_AND_RUNTIME",
       "thread_id": "019f13da-d897-7ba2-8ed1-b959892f5ed4",
       "user_action_required": false,
@@ -3440,7 +3461,8 @@
       ],
       "artifact": "runtime/reports/orchestration/c5_after_c1_native_tokenizer_tensor_loader_pathset_20260701T_phase34.json",
       "artifact_sha256": "1e4a087354d8a917ec9fba7747a5e2410d9fb01f36e991c902e00adf8764e422",
-      "next_action_after_custody": "implement streamed attention/MLP, rank-16 adapter injection, and chunked LM-head/NLL writer"
+      "next_action_after_custody": "implement streamed attention/MLP, rank-16 adapter injection, and chunked LM-head/NLL writer",
+      "current_observed_subproblem": "PLE/per-layer-input runtime source contract under active implementation; no final blocker returned yet"
     },
     "pipeline_integrator": {
       "artifact_paths": [
@@ -3495,7 +3517,7 @@
         "native_logits_contract_patch_commit": "2151dbada9012a5f54806cf689e806001180521f",
         "test_sha256": "d8eb5df2c73b470da58f7f37a24ff704bc005d0d58a9eb625cf15cb541a218cb"
       },
-      "status": "active_verifying_native_tokenizer_tensor_loader_prereq_pathset",
+      "status": "idle_after_native_tokenizer_tensor_loader_prereq_and_central_mirror_custody",
       "status_classification": "PENDING_ACTION_REPO_CUSTODY_EXPORTER_RUNTIME_FIELDS_PATCH",
       "thread_id": "019f1ac2-0f0f-7721-bf46-ad402dbd9050",
       "user_action_required": false,
@@ -3505,7 +3527,11 @@
         "python3.11 -m pytest -q tests/test_c5_full_decoder_exporter.py tests/test_c5_phase34_qa_inference_producer.py tests/test_c5_prediction_payloads.py -> 19 passed in 5.16s",
         "git diff --check -- integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py tests/test_c5_full_decoder_exporter.py -> passed"
       ],
-      "artifact_waiting_on": "eight-file native tokenizer + bounded safetensors tensor-loader prerequisite custody pathset"
+      "artifact_waiting_on": "eight-file native tokenizer + bounded safetensors tensor-loader prerequisite custody pathset",
+      "latest_commits": [
+        "4472e3dee86d88d83031eecfc94b91008e5215e0",
+        "59567735db38a4680c60a7f9c0182d90d7ffb38e"
+      ]
     },
     "training_material_steward": {
       "artifact_paths": [
@@ -3569,7 +3595,7 @@
       "user_action_required": false
     }
   },
-  "last_concrete_action": "Repo Custodian froze and pushed the native full-decoder compute-kernel failure surface at a5b66d0b6eb69a18f67e98afc00aeab6eef3faa8. Phase3/4 then implemented the next prerequisite slice: reusable native Gemma BPE tokenization, bounded SafetensorsReader tensor-byte reads, and C5 runtime validation that exercises tokenization plus bounded tensor reads before the remaining streamed compute blocker. Phase3/4 routed this pathset to Repo Custodian; Custodian is actively verifying it.",
+  "last_concrete_action": "Repo Custodian froze the native tokenizer + bounded safetensors tensor-loader prerequisite pathset at 4472e3dee86d88d83031eecfc94b91008e5215e0 and then froze the central mirror at 59567735db38a4680c60a7f9c0182d90d7ffb38e. Phase3/4 accepted the handoff and is actively implementing the next runtime slice, adding native math helpers and tightening the runtime contract around the PLE/per-layer-input source needed to drive full decoder math.",
   "last_driver_actions": [
     {
       "action": "recorded Custodian native contract patch freeze at 2151dba, implemented Engineering exporter runtime-field emission, verified focused tests, and prepared custody plus Phase3/4 runtime routing",
@@ -3950,15 +3976,15 @@
   "model_safetensors_size_bytes": 15992595884,
   "native_probe_exit_code": 13,
   "native_probe_report_path": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe/candidate_probe_stdout.json",
-  "next_concrete_action": "Repo Custodian verifies, commits, and pushes the eight-file native tokenizer/tensor-loader prerequisite pathset. After custody, Phase3/4 continues with the remaining streamed decoder compute bodies; Execution resumes only after a real runtime implementation is frozen.",
-  "owner": "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050 owns freezing the native C5 tokenizer + bounded safetensors tensor-value-loader prerequisite pathset. Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 owns the remaining streamed decoder compute implementation after custody.",
-  "owner_thread": "019f1ac2-0f0f-7721-bf46-ad402dbd9050",
+  "next_concrete_action": "Phase3/4 continues the active implementation and returns either a custody-ready pathset for streamed decoder compute/runtime hardening or a precise blocker. If a pathset lands, Engineering updates central state metadata-only and routes it to Repo Custodian. Execution resumes only after the real runtime implementation is frozen.",
+  "owner": "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 owns the streamed decoder compute runtime implementation behind --run-c5-qa-predict. Repo Custodian completed prerequisite custody at 4472e3dee86d88d83031eecfc94b91008e5215e0 and central mirror custody at 59567735db38a4680c60a7f9c0182d90d7ffb38e. Execution remains parked until a real runtime implementation is frozen.",
+  "owner_thread": "019f13da-d897-7ba2-8ed1-b959892f5ed4",
   "phone_exporter_rerun_required_after_commit": "43cf3c4130dc902fc8fd69183bac1056f0596626",
   "prd_watchdog": {
     "adapter_site_policy_sha256": "f38bd8109bbb77e9e94a5b4b34a238bc0ec0a39e7736870c97defe5aecc93357",
     "artifact_waiting_on": [
-      "Repo Custodian freezes the native C5 tokenizer + bounded safetensors tensor-value-loader prerequisite pathset from Phase3/4: CMakeLists.txt, gemma_bpe_tokenizer.h/.cpp, safetensors_reader.h/.cpp, c5_full_decoder_runtime.cpp, tests/test_c5_native_runtime_contract.py, and c5_after_c1_native_tokenizer_tensor_loader_pathset_20260701T_phase34.json.",
-      "After custody, Phase3/4 implements the remaining streamed full-decoder compute bodies: streamed attention/MLP kernel, rank-16 adapter injection, and chunked LM-head/NLL writer behind the existing --run-c5-qa-predict surface.",
+      "Phase3/4 returns a custody-ready streamed decoder compute/runtime pathset or precise implementation blocker from the active native C5 runtime work.",
+      "Current active implementation area: c5_decoder_math helpers, bounded safetensors slicing, native validation for PLE/per-layer input runtime contract, adapter payload validation, and remaining streamed attention/MLP plus chunked LM-head/NLL wiring.",
       "Execution remains parked until a real streamed compute implementation is frozen; no C5 QA predict rerun is authorized for pass claims before then."
     ],
     "authorization_needed": "none; native implementation work is under current GO and must preserve raw/secrets boundary",
@@ -4163,10 +4189,10 @@
       "schema_version": "polymath_c5_qa_runtime_post_custody_v1"
     },
     "candidate_adapter_sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f",
-    "current_gate": "WaveB_C5_after_C1_native_tokenizer_tensor_loader_prereq_custody_pending",
+    "current_gate": "WaveB_C5_after_C1_streamed_decoder_compute_runtime_in_progress_after_tokenizer_tensor_loader_custody",
     "decoder_manifest_sha256": "6700f3c2912bfdcb659b9e7de3cdb0831d58f3708a0f841c181ec446b3a83a5f",
     "dominant_failure_domain": "phase5_eval_failure",
-    "drift_deleted_or_pending": "Compute-kernel failure-surface custody is complete at a5b66d0b6eb69a18f67e98afc00aeab6eef3faa8. Tokenizer runtime and bounded tensor-value loading are implemented by Phase3/4 and pending custody. Remaining drift is native streamed full-decoder compute: attention/MLP, rank-16 adapter injection, and chunked LM-head/NLL emission are still absent behind --run-c5-qa-predict.",
+    "drift_deleted_or_pending": "Tokenizer runtime and bounded tensor-value loading are frozen. Remaining drift is native streamed full-decoder compute: PLE/per-layer-input runtime source contract, streamed attention/MLP execution, rank-16 adapter injection, and chunked LM-head/NLL emission must be real before any C5 prediction/loss claim.",
     "export_report_sha256": "06fe8e91b5938ff3235cad5fa96e7b25d5b20fb3c4e456c249c84d53bf839d0f",
     "first_missing_green_field": "c5_full_decoder_streamed_compute_kernel_missing",
     "first_missing_green_field_after_custody": "phone_termux_model_safetensors_download_pending",
@@ -4179,12 +4205,12 @@
     "heldout_qa_sha256": "da41c5362398f24e0e0dd9df9a5cf0594435a455871fa77ab74d9312e6c8e9b2",
     "heldout_qa_size_bytes": 153158,
     "known_downstream_access_issue_after_custody": "termux_command_channel_missing",
-    "last_concrete_action": "Repo Custodian froze and pushed the native full-decoder compute-kernel failure surface at a5b66d0b6eb69a18f67e98afc00aeab6eef3faa8. Phase3/4 then implemented the next prerequisite slice: reusable native Gemma BPE tokenization, bounded SafetensorsReader tensor-byte reads, and C5 runtime validation that exercises tokenization plus bounded tensor reads before the remaining streamed compute blocker. Phase3/4 routed this pathset to Repo Custodian; Custodian is actively verifying it.",
+    "last_concrete_action": "Repo Custodian froze the native tokenizer + bounded safetensors tensor-loader prerequisite pathset at 4472e3dee86d88d83031eecfc94b91008e5215e0 and then froze the central mirror at 59567735db38a4680c60a7f9c0182d90d7ffb38e. Phase3/4 accepted the handoff and is actively implementing the next runtime slice, adding native math helpers and tightening the runtime contract around the PLE/per-layer-input source needed to drive full decoder math.",
     "model_safetensors_sha256": "43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651",
     "model_safetensors_size_bytes": 15992595884,
     "native_probe_exit_code": 13,
     "native_probe_report_path": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe/candidate_probe_stdout.json",
-    "next_concrete_action": "Repo Custodian verifies, commits, and pushes the eight-file native tokenizer/tensor-loader prerequisite pathset. After custody, Phase3/4 continues with the remaining streamed decoder compute bodies; Execution resumes only after a real runtime implementation is frozen.",
+    "next_concrete_action": "Phase3/4 continues the active implementation and returns either a custody-ready pathset for streamed decoder compute/runtime hardening or a precise blocker. If a pathset lands, Engineering updates central state metadata-only and routes it to Repo Custodian. Execution resumes only after the real runtime implementation is frozen.",
     "nonclaims_preserved": [
       "no C5 pass",
       "no executed C5 metrics",
@@ -4199,7 +4225,7 @@
       "no Comet/API call",
       "no secrets sourced"
     ],
-    "owner": "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050 owns freezing the native C5 tokenizer + bounded safetensors tensor-value-loader prerequisite pathset. Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 owns the remaining streamed decoder compute implementation after custody.",
+    "owner": "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 owns the streamed decoder compute runtime implementation behind --run-c5-qa-predict. Repo Custodian completed prerequisite custody at 4472e3dee86d88d83031eecfc94b91008e5215e0 and central mirror custody at 59567735db38a4680c60a7f9c0182d90d7ffb38e. Execution remains parked until a real runtime implementation is frozen.",
     "post_custody_c5_qa_runtime_status": {
       "branch": "origin/gemma4-megakernel-native-training",
       "custody_commit": "9f6a27f3640078d81a303445d7ab29c7ce3a2db8",
@@ -4225,21 +4251,24 @@
     },
     "probe_stderr_sha256": "d2f647b4efae9fe021b2e0d5ce9f79f88d87853e4f40cf0d660cf6d5d5c2d819",
     "probe_stdout_metadata_sha256": "8be05287d47bb148054bd26425f41f7f0c2cded8b98110d956c0f3e778cb86e6",
-    "recursive_improvement_next_step": "Custodian freezes tokenizer/tensor-loader prerequisite pathset -> Phase3/4 implements streamed decoder compute kernel -> Custodian freezes implementation -> Execution runs bounded C5_after_C1 --run-c5-qa-predict proof -> Pipeline validates executed evidence -> Custodian freezes metadata/code only.",
+    "recursive_improvement_next_step": "Phase3/4 implementation pathset or precise blocker -> Custodian freezes implementation evidence -> Execution runs bounded C5_after_C1 --run-c5-qa-predict proof -> Pipeline validates executed evidence -> Custodian freezes metadata/code only.",
     "runner_sha256": "a5a6f9a3b93d167d9cd69eddbe2f3404443ae1c2222e1c6a0782398c9ff09e84",
     "runner_size_bytes": 369536,
-    "status": "native_full_decoder_prereq_pathset_ready_for_custodian",
-    "status_classification": "PENDING_ACTION_REPO_CUSTODY_NATIVE_TOKENIZER_TENSOR_LOADER_PREREQ_PATHSET",
+    "status": "phase34_streamed_decoder_compute_runtime_implementation_in_progress",
+    "status_classification": "PENDING_ACTION_PHASE34_STREAMED_DECODER_COMPUTE_RUNTIME_IMPLEMENTATION",
     "threads_nudged_this_tick": [
-      "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: active verifying native tokenizer + bounded tensor-loader prerequisite custody pathset; no duplicate nudge sent.",
-      "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4: completed prerequisite implementation slice and routed custody request; currently idle pending custody."
+      "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: completed prerequisite custody at 4472e3dee86d88d83031eecfc94b91008e5215e0 and central mirror custody at 59567735db38a4680c60a7f9c0182d90d7ffb38e.",
+      "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4: active on streamed decoder compute runtime implementation; no duplicate nudge sent."
     ],
     "user_action_required": false,
-    "updated_utc": "2026-07-01T15:09:37Z",
-    "timestamp_utc": "2026-07-01T15:09:37Z",
+    "updated_utc": "2026-07-01T15:19:37Z",
+    "timestamp_utc": "2026-07-01T15:19:37Z",
     "native_compute_kernel_failure_surface_custody_commit": "a5b66d0b6eb69a18f67e98afc00aeab6eef3faa8",
     "native_tokenizer_tensor_loader_prereq_status": "native_full_decoder_prereq_pathset_ready_for_custodian",
-    "native_tokenizer_tensor_loader_prereq_report_sha256": "1e4a087354d8a917ec9fba7747a5e2410d9fb01f36e991c902e00adf8764e422"
+    "native_tokenizer_tensor_loader_prereq_report_sha256": "1e4a087354d8a917ec9fba7747a5e2410d9fb01f36e991c902e00adf8764e422",
+    "native_tokenizer_tensor_loader_prereq_custody_commit": "4472e3dee86d88d83031eecfc94b91008e5215e0",
+    "native_tokenizer_tensor_loader_prereq_central_mirror_commit": "59567735db38a4680c60a7f9c0182d90d7ffb38e",
+    "phase34_streamed_decoder_compute_runtime_status": "implementation_in_progress"
   },
   "probe_stderr_sha256": "d2f647b4efae9fe021b2e0d5ce9f79f88d87853e4f40cf0d660cf6d5d5c2d819",
   "probe_stdout_metadata_sha256": "8be05287d47bb148054bd26425f41f7f0c2cded8b98110d956c0f3e778cb86e6",
@@ -4249,7 +4278,7 @@
     "scope": "metadata mirror only",
     "status": "central_state_phone_filesystem_paths_redacted"
   },
-  "recursive_improvement_next_step": "Custodian freezes tokenizer/tensor-loader prerequisite pathset -> Phase3/4 implements streamed decoder compute kernel -> Custodian freezes implementation -> Execution runs bounded C5_after_C1 --run-c5-qa-predict proof -> Pipeline validates executed evidence -> Custodian freezes metadata/code only.",
+  "recursive_improvement_next_step": "Phase3/4 implementation pathset or precise blocker -> Custodian freezes implementation evidence -> Execution runs bounded C5_after_C1 --run-c5-qa-predict proof -> Pipeline validates executed evidence -> Custodian freezes metadata/code only.",
   "required_lane_update_protocol": {
     "block_name": "CENTRAL_STATE_UPDATE",
     "meta_action": "on every heartbeat, read active threads, update this file, route the next concrete edge, and notify Execution only when both keys are green",
@@ -4268,14 +4297,14 @@
   "runner_sha256": "a5a6f9a3b93d167d9cd69eddbe2f3404443ae1c2222e1c6a0782398c9ff09e84",
   "runner_size_bytes": 369536,
   "schema_version": "polymath_executive_delivery_state_v1",
-  "status": "native_full_decoder_prereq_pathset_ready_for_custodian",
-  "status_classification": "PENDING_ACTION_REPO_CUSTODY_NATIVE_TOKENIZER_TENSOR_LOADER_PREREQ_PATHSET",
+  "status": "phase34_streamed_decoder_compute_runtime_implementation_in_progress",
+  "status_classification": "PENDING_ACTION_PHASE34_STREAMED_DECODER_COMPUTE_RUNTIME_IMPLEMENTATION",
   "threads_nudged_this_tick": [
-    "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: active verifying native tokenizer + bounded tensor-loader prerequisite custody pathset; no duplicate nudge sent.",
-    "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4: completed prerequisite implementation slice and routed custody request; currently idle pending custody."
+    "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: completed prerequisite custody at 4472e3dee86d88d83031eecfc94b91008e5215e0 and central mirror custody at 59567735db38a4680c60a7f9c0182d90d7ffb38e.",
+    "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4: active on streamed decoder compute runtime implementation; no duplicate nudge sent."
   ],
-  "updated_at": "2026-07-01T15:09:37Z",
-  "updated_at_utc": "2026-07-01T15:09:37Z",
+  "updated_at": "2026-07-01T15:19:37Z",
+  "updated_at_utc": "2026-07-01T15:19:37Z",
   "user_action_required": false,
   "c5_after_c1_exporter_attention_layout_repair_post_custody_20260701T135407Z": {
     "schema_version": "polymath_c5_after_c1_exporter_attention_layout_repair_post_custody_v1",
@@ -4668,6 +4697,55 @@
       "no prediction JSONL/loss/confidence/candidate_train_loss",
       "no learning/model-quality claim",
       "no Phase3/4 readiness claim"
+    ]
+  },
+  "c5_after_c1_native_tokenizer_tensor_loader_prereq_custody_20260701T151937Z": {
+    "lane": "repo_custodian",
+    "status": "native_tokenizer_tensor_loader_prereq_committed_pushed",
+    "commit_sha": "4472e3dee86d88d83031eecfc94b91008e5215e0",
+    "pushed_branch": "origin/gemma4-megakernel-native-training",
+    "pathset_sha256": {
+      "runtime/reports/orchestration/c5_after_c1_native_tokenizer_tensor_loader_pathset_20260701T_phase34.json": "1e4a087354d8a917ec9fba7747a5e2410d9fb01f36e991c902e00adf8764e422",
+      "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/CMakeLists.txt": "fecc8f4050f1f63774ac0ea2bae329b3a4e4e3b437a9a5592fb6afc38c2fb2cc",
+      "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/include/polymath/gemma4/gemma_bpe_tokenizer.h": "7a8d9ab385c5fbf655aa46a32ab5cfb642caa95ac5a8cffe5e5fdcefc15535a8",
+      "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/data/gemma_bpe_tokenizer.cpp": "2409e81db049c9c66a84a4bc8f4f8e55844a5e3816f427c1ef279ecf6b8cd48d",
+      "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/include/polymath/gemma4/safetensors_reader.h": "f9a1833e661ba2555084eb93d4fe30095ace4b27165e4cb6daf53a35985f6db7",
+      "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/model/safetensors_reader.cpp": "b69a121c7e3e96d60e6fe6e3823e93981ed9c42d7baa6c9687d425129f99eb32",
+      "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp": "0881fcd798ac9310f2db0fc775b8b132c754b74a0beaf1d8b515e53c790df926",
+      "tests/test_c5_native_runtime_contract.py": "eb71d5526521e0f76799ba9b52246f439387892ba5ba7afaac546e29f834a917"
+    },
+    "verification": [
+      "python3.11 -m pytest -q tests/test_c5_native_runtime_contract.py -> 9 passed",
+      "focused C5 suite -> 32 passed",
+      "ctest --test-dir build/gemma4_megakernel_host --output-on-failure -> 4/4 passed",
+      "staged pathset exactly 8 requested files",
+      "staged raw suffix path scan -> 0",
+      "staged secret value scan -> 0"
+    ],
+    "first_missing_green_field": "c5_full_decoder_streamed_compute_kernel_missing",
+    "nonclaims": [
+      "no C5 pass",
+      "no executed C5 metrics",
+      "no prediction JSONL/loss/confidence/candidate_train_loss",
+      "no learning/model-quality claim",
+      "no Phase3/4 readiness claim"
+    ]
+  },
+  "c5_after_c1_native_tokenizer_tensor_loader_prereq_central_mirror_custody_20260701T151937Z": {
+    "lane": "repo_custodian",
+    "status": "native_tokenizer_tensor_loader_prereq_central_mirror_committed_pushed",
+    "commit_sha": "59567735db38a4680c60a7f9c0182d90d7ffb38e",
+    "pushed_branch": "origin/gemma4-megakernel-native-training",
+    "pathset_sha256": {
+      "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json": "861e42b63f726cf739acd6ddd39ca124030c935c03fbb1c16287b8093e0265d0",
+      "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md": "c0719854bc944ca2a383b6b7c19ff28cd433df3a488b13ee07669dc22166496c"
+    },
+    "verification": [
+      "python3.11 -m json.tool runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json -> passed",
+      "active-edge readback matched requested gate/status/first missing field",
+      "staged pathset exactly 2 requested files",
+      "staged raw suffix path scan -> 0",
+      "staged secret value scan -> 0"
     ]
   }
 }

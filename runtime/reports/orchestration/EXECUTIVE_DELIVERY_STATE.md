@@ -1,14 +1,14 @@
 # Executive Delivery State
 
-Updated UTC: `2026-07-01T15:09:37Z`
+Updated UTC: `2026-07-01T15:19:37Z`
 
 ## Current Gate
 
-`WaveB_C5_after_C1_native_tokenizer_tensor_loader_prereq_custody_pending`
+`WaveB_C5_after_C1_streamed_decoder_compute_runtime_in_progress_after_tokenizer_tensor_loader_custody`
 
-Status classification: `PENDING_ACTION_REPO_CUSTODY_NATIVE_TOKENIZER_TENSOR_LOADER_PREREQ_PATHSET`
+Status classification: `PENDING_ACTION_PHASE34_STREAMED_DECODER_COMPUTE_RUNTIME_IMPLEMENTATION`
 
-Owner: Repo Custodian `019f1ac2-0f0f-7721-bf46-ad402dbd9050` owns freezing the native C5 tokenizer + bounded safetensors tensor-value-loader prerequisite pathset. Phase3/4 Engineer `019f13da-d897-7ba2-8ed1-b959892f5ed4` owns the remaining streamed decoder compute implementation after custody.
+Owner: Phase3/4 Engineer `019f13da-d897-7ba2-8ed1-b959892f5ed4` owns the streamed decoder compute runtime implementation behind `--run-c5-qa-predict`. Repo Custodian completed prerequisite custody at `4472e3dee86d88d83031eecfc94b91008e5215e0` and central mirror custody at `59567735db38a4680c60a7f9c0182d90d7ffb38e`. Execution remains parked until a real runtime implementation is frozen.
 
 User action required: `false`
 
@@ -16,8 +16,8 @@ Dominant failure domain: `phase5_eval_failure`
 
 ## Artifact Waiting On
 
-- Repo Custodian freezes the native C5 tokenizer + bounded safetensors tensor-value-loader prerequisite pathset from Phase3/4: `CMakeLists.txt`, `gemma_bpe_tokenizer.h/.cpp`, `safetensors_reader.h/.cpp`, `c5_full_decoder_runtime.cpp`, `tests/test_c5_native_runtime_contract.py`, and `c5_after_c1_native_tokenizer_tensor_loader_pathset_20260701T_phase34.json`.
-- After custody, Phase3/4 implements the remaining streamed full-decoder compute bodies: streamed attention/MLP kernel, rank-16 adapter injection, and chunked LM-head/NLL writer behind the existing `--run-c5-qa-predict` surface.
+- Phase3/4 returns a custody-ready streamed decoder compute/runtime pathset or precise implementation blocker from the active native C5 runtime work.
+- Current active implementation area: `c5_decoder_math` helpers, bounded safetensors slicing, native validation for PLE/per-layer input runtime contract, adapter payload validation, and remaining streamed attention/MLP plus chunked LM-head/NLL wiring.
 - Execution remains parked until the real streamed compute implementation is frozen.
 
 ## Last Concrete Action
@@ -27,6 +27,10 @@ Repo Custodian froze schema-complete exporter evidence at `0d401a8b7a461b3e10e7a
 Repo Custodian then froze and pushed the native full-decoder compute-kernel failure surface at `a5b66d0b6eb69a18f67e98afc00aeab6eef3faa8`.
 
 Phase3/4 implemented the next prerequisite slice and routed it to Custodian: reusable native Gemma BPE tokenization, bounded `SafetensorsReader` tensor-byte reads, and C5 runtime validation that exercises QA prompt/answer tokenization plus bounded tensor reads before the remaining streamed compute blocker.
+
+Repo Custodian froze that prerequisite pathset at `4472e3dee86d88d83031eecfc94b91008e5215e0`, then froze this central mirror at `59567735db38a4680c60a7f9c0182d90d7ffb38e`.
+
+Phase3/4 accepted the handoff and is actively implementing the next runtime slice, adding native math helpers and tightening the runtime contract around the PLE/per-layer-input source needed to drive full decoder math.
 
 Prerequisite pathset hashes:
 - `runtime/reports/orchestration/c5_after_c1_native_tokenizer_tensor_loader_pathset_20260701T_phase34.json`: `1e4a087354d8a917ec9fba7747a5e2410d9fb01f36e991c902e00adf8764e422`
@@ -56,16 +60,16 @@ Current: `c5_full_decoder_streamed_compute_kernel_missing`
 
 ## Next Concrete Action
 
-Repo Custodian verifies, commits, and pushes the eight-file native tokenizer/tensor-loader prerequisite pathset. After custody, Phase3/4 continues with the remaining streamed decoder compute bodies; Execution resumes only after a real runtime implementation is frozen.
+Phase3/4 continues the active implementation and returns either a custody-ready pathset for streamed decoder compute/runtime hardening or a precise blocker. If a pathset lands, Engineering updates central state metadata-only and routes it to Repo Custodian. Execution resumes only after the real runtime implementation is frozen.
 
 ## Drift Deletion / Hardening
 
-Compute-kernel failure-surface custody is complete at `a5b66d0b6eb69a18f67e98afc00aeab6eef3faa8`. Tokenizer runtime and bounded tensor-value loading are implemented by Phase3/4 and pending custody. Remaining drift is native streamed full-decoder compute: attention/MLP, rank-16 adapter injection, and chunked LM-head/NLL emission are still absent behind `--run-c5-qa-predict`.
+Tokenizer runtime and bounded tensor-value loading are frozen. Remaining drift is native streamed full-decoder compute: PLE/per-layer-input runtime source contract, streamed attention/MLP execution, rank-16 adapter injection, and chunked LM-head/NLL emission must be real before any C5 prediction/loss claim.
 
 ## Threads Nudged This Tick
 
-- Repo Custodian `019f1ac2-0f0f-7721-bf46-ad402dbd9050`: active verifying native tokenizer + bounded tensor-loader prerequisite custody pathset; no duplicate nudge sent.
-- Phase3/4 Engineer `019f13da-d897-7ba2-8ed1-b959892f5ed4`: completed prerequisite implementation slice and routed custody request; currently idle pending custody.
+- Repo Custodian `019f1ac2-0f0f-7721-bf46-ad402dbd9050`: completed prerequisite custody at `4472e3dee86d88d83031eecfc94b91008e5215e0` and central mirror custody at `59567735db38a4680c60a7f9c0182d90d7ffb38e`.
+- Phase3/4 Engineer `019f13da-d897-7ba2-8ed1-b959892f5ed4`: active on streamed decoder compute runtime implementation; no duplicate nudge sent.
 
 ## Nonclaims Preserved
 
