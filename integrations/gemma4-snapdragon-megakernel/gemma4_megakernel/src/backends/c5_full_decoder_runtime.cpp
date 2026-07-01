@@ -2138,9 +2138,7 @@ Status validate_opencl_prompt_layer_weights(
   const std::size_t hidden = kHiddenSize;
   const std::size_t small = kSmallInputSize;
   const std::size_t intermediate = kIntermediateSize;
-  const std::size_t query_width = kAttentionHeads * kHeadDim;
-  const std::size_t kv_width = kKeyValueHeads * kHeadDim;
-  const bool fixed_shape_supported =
+  const bool fixed_mlp_shape_supported =
       weights.input_layernorm_weight.size() == hidden &&
       weights.layer_scalar.size() == 1U &&
       weights.mlp_down_proj_weight.size() == hidden * intermediate &&
@@ -2151,12 +2149,31 @@ Status validate_opencl_prompt_layer_weights(
       weights.post_attention_layernorm_weight.size() == hidden &&
       weights.post_feedforward_layernorm_weight.size() == hidden &&
       weights.post_per_layer_input_norm_weight.size() == hidden &&
-      weights.pre_feedforward_layernorm_weight.size() == hidden &&
-      weights.self_attn_k_proj_weight.size() == kv_width * hidden &&
-      weights.self_attn_o_proj_weight.size() == hidden * query_width &&
-      weights.self_attn_q_proj_weight.size() == query_width * hidden &&
-      weights.self_attn_v_proj_weight.size() == kv_width * hidden;
-  if (!fixed_shape_supported) {
+      weights.pre_feedforward_layernorm_weight.size() == hidden;
+  if (!fixed_mlp_shape_supported ||
+      weights.self_attn_q_proj_weight.size() % hidden != 0U ||
+      weights.self_attn_k_proj_weight.size() % hidden != 0U ||
+      weights.self_attn_v_proj_weight.size() % hidden != 0U) {
+    return Status::invalid(
+        "c5_full_decoder_final_hidden_opencl_prompt_weight_shape_unsupported:" +
+        std::to_string(layer_index));
+  }
+  const std::size_t query_width =
+      weights.self_attn_q_proj_weight.size() / hidden;
+  const std::size_t kv_width = weights.self_attn_k_proj_weight.size() / hidden;
+  const std::size_t value_width =
+      weights.self_attn_v_proj_weight.size() / hidden;
+  if (query_width == 0U || kv_width == 0U || value_width != kv_width ||
+      (query_width % kHeadDim) != 0U || (kv_width % kHeadDim) != 0U ||
+      weights.self_attn_o_proj_weight.size() != hidden * query_width) {
+    return Status::invalid(
+        "c5_full_decoder_final_hidden_opencl_prompt_weight_shape_unsupported:" +
+        std::to_string(layer_index));
+  }
+  const std::size_t query_heads = query_width / kHeadDim;
+  const std::size_t key_value_heads = kv_width / kHeadDim;
+  if (query_heads == 0U || key_value_heads == 0U ||
+      (query_heads % key_value_heads) != 0U) {
     return Status::invalid(
         "c5_full_decoder_final_hidden_opencl_prompt_weight_shape_unsupported:" +
         std::to_string(layer_index));

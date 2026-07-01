@@ -1802,11 +1802,11 @@ void dispatch_rope(ClRuntime& runtime, cl_kernel kernel, cl_mem input, cl_mem ou
 }
 
 void dispatch_attention_scores(ClRuntime& runtime, cl_kernel kernel, cl_mem query,
-                               cl_mem key, cl_mem attention_mask, cl_mem scores) {
+                               cl_mem key, cl_mem attention_mask, cl_mem scores,
+                               std::int32_t query_heads,
+                               std::int32_t key_value_heads) {
   const std::int32_t cases = static_cast<std::int32_t>(kCases);
   const std::int32_t sequence = static_cast<std::int32_t>(kSequence);
-  const std::int32_t query_heads = static_cast<std::int32_t>(kQueryHeads);
-  const std::int32_t key_value_heads = static_cast<std::int32_t>(kKeyValueHeads);
   const std::int32_t head_dim = static_cast<std::int32_t>(kHeadDim);
   runtime.set_arg(kernel, 0U, query);
   runtime.set_arg(kernel, 1U, key);
@@ -1817,15 +1817,16 @@ void dispatch_attention_scores(ClRuntime& runtime, cl_kernel kernel, cl_mem quer
   runtime.set_arg(kernel, 6U, query_heads);
   runtime.set_arg(kernel, 7U, key_value_heads);
   runtime.set_arg(kernel, 8U, head_dim);
-  runtime.run_1d(kernel, kCases * kQueryHeads * kSequence * kSequence);
+  runtime.run_1d(kernel, static_cast<std::size_t>(cases * query_heads * sequence *
+                                                  sequence));
 }
 
 void dispatch_attention_values(ClRuntime& runtime, cl_kernel kernel, cl_mem scores,
-                               cl_mem value, cl_mem output) {
+                               cl_mem value, cl_mem output,
+                               std::int32_t query_heads,
+                               std::int32_t key_value_heads) {
   const std::int32_t cases = static_cast<std::int32_t>(kCases);
   const std::int32_t sequence = static_cast<std::int32_t>(kSequence);
-  const std::int32_t query_heads = static_cast<std::int32_t>(kQueryHeads);
-  const std::int32_t key_value_heads = static_cast<std::int32_t>(kKeyValueHeads);
   const std::int32_t head_dim = static_cast<std::int32_t>(kHeadDim);
   runtime.set_arg(kernel, 0U, scores);
   runtime.set_arg(kernel, 1U, value);
@@ -1835,7 +1836,8 @@ void dispatch_attention_values(ClRuntime& runtime, cl_kernel kernel, cl_mem scor
   runtime.set_arg(kernel, 5U, query_heads);
   runtime.set_arg(kernel, 6U, key_value_heads);
   runtime.set_arg(kernel, 7U, head_dim);
-  runtime.run_1d(kernel, kCases * kQueryHeads * kSequence * kHeadDim);
+  runtime.run_1d(kernel, static_cast<std::size_t>(cases * query_heads * sequence *
+                                                  head_dim));
 }
 
 void dispatch_scale(ClRuntime& runtime, cl_kernel kernel, cl_mem values, float scale,
@@ -3780,9 +3782,32 @@ LayerForwardResult run_opencl_layer_values_loaded(
       static_cast<std::int32_t>(weights.self_attn_q_norm_weight.size());
   const std::int32_t k_norm_width =
       static_cast<std::int32_t>(weights.self_attn_k_norm_weight.size());
+  if (weights.self_attn_q_proj_weight.size() % kHidden != 0U ||
+      weights.self_attn_k_proj_weight.size() % kHidden != 0U ||
+      weights.self_attn_v_proj_weight.size() % kHidden != 0U) {
+    throw std::runtime_error("attention projection weight shape is not hidden-aligned");
+  }
+  const std::uint32_t q_width =
+      static_cast<std::uint32_t>(weights.self_attn_q_proj_weight.size() / kHidden);
+  const std::uint32_t kv_width =
+      static_cast<std::uint32_t>(weights.self_attn_k_proj_weight.size() / kHidden);
+  const std::uint32_t v_width =
+      static_cast<std::uint32_t>(weights.self_attn_v_proj_weight.size() / kHidden);
+  if (q_width == 0U || kv_width == 0U || v_width != kv_width ||
+      (q_width % kHeadDim) != 0U || (kv_width % kHeadDim) != 0U ||
+      weights.self_attn_o_proj_weight.size() !=
+          static_cast<std::size_t>(kHidden * q_width)) {
+    throw std::runtime_error("attention projection width is incompatible with head layout");
+  }
+  const std::uint32_t query_heads = q_width / kHeadDim;
+  const std::uint32_t key_value_heads = kv_width / kHeadDim;
+  if (query_heads == 0U || key_value_heads == 0U ||
+      (query_heads % key_value_heads) != 0U) {
+    throw std::runtime_error("attention head grouping is incompatible with prompt layer");
+  }
   if (q_norm_width <= 0 || k_norm_width <= 0 ||
-      ((kQueryHeads * kHeadDim) % q_norm_width) != 0U ||
-      ((kKeyValueHeads * kHeadDim) % k_norm_width) != 0U) {
+      (q_width % static_cast<std::uint32_t>(q_norm_width)) != 0U ||
+      (kv_width % static_cast<std::uint32_t>(k_norm_width)) != 0U) {
     throw std::runtime_error("q/k norm width is incompatible with projection width");
   }
 
@@ -3814,11 +3839,15 @@ LayerForwardResult run_opencl_layer_values_loaded(
   cl_mem v_proj_w = runtime.buffer_from_vector(weights.self_attn_v_proj_weight);
 
   const std::size_t hidden_bytes = kTokens * kHidden * sizeof(float);
-  const std::size_t query_bytes = kTokens * kQueryHeads * kHeadDim * sizeof(float);
-  const std::size_t key_value_bytes = kTokens * kKeyValueHeads * kHeadDim * sizeof(float);
+  const std::size_t query_bytes =
+      static_cast<std::size_t>(kTokens * q_width) * sizeof(float);
+  const std::size_t key_value_bytes =
+      static_cast<std::size_t>(kTokens * kv_width) * sizeof(float);
   const std::size_t intermediate_bytes = kTokens * kIntermediate * sizeof(float);
   const std::size_t small_bytes = kTokens * kSmallInput * sizeof(float);
-  const std::size_t scores_bytes = kCases * kQueryHeads * kSequence * kSequence * sizeof(float);
+  const std::size_t scores_bytes =
+      static_cast<std::size_t>(kCases * query_heads * kSequence * kSequence) *
+      sizeof(float);
 
   cl_mem attn_in = runtime.buffer(hidden_bytes);
   cl_mem q = runtime.buffer(query_bytes);
@@ -3849,8 +3878,11 @@ LayerForwardResult run_opencl_layer_values_loaded(
 
   const std::int32_t tokens = static_cast<std::int32_t>(kTokens);
   const std::int32_t hidden_size = static_cast<std::int32_t>(kHidden);
-  const std::int32_t q_width = static_cast<std::int32_t>(kQueryHeads * kHeadDim);
-  const std::int32_t kv_width = static_cast<std::int32_t>(kKeyValueHeads * kHeadDim);
+  const std::int32_t q_width_i = static_cast<std::int32_t>(q_width);
+  const std::int32_t kv_width_i = static_cast<std::int32_t>(kv_width);
+  const std::int32_t query_heads_i = static_cast<std::int32_t>(query_heads);
+  const std::int32_t key_value_heads_i =
+      static_cast<std::int32_t>(key_value_heads);
   const std::int32_t head_dim = static_cast<std::int32_t>(kHeadDim);
   const std::int32_t intermediate = static_cast<std::int32_t>(kIntermediate);
   const std::int32_t small_input = static_cast<std::int32_t>(kSmallInput);
@@ -3858,26 +3890,27 @@ LayerForwardResult run_opencl_layer_values_loaded(
   dispatch_rms_weighted(runtime, kernels.rms_weighted, input, input_ln_w, attn_in, tokens,
                         hidden_size);
   dispatch_linear(runtime, kernels.linear_tiled, attn_in, q_proj_w, q, tokens, hidden_size,
-                  q_width);
+                  q_width_i);
   dispatch_linear(runtime, kernels.linear_tiled, attn_in, k_proj_w, k, tokens, hidden_size,
-                  kv_width);
+                  kv_width_i);
   dispatch_linear(runtime, kernels.linear_tiled, attn_in, v_proj_w, v, tokens, hidden_size,
-                  kv_width);
+                  kv_width_i);
   dispatch_rms_weighted(runtime, kernels.rms_weighted, q, q_norm_w, qn,
-                        tokens * (q_width / q_norm_width), q_norm_width);
+                        tokens * (q_width_i / q_norm_width), q_norm_width);
   dispatch_rms_weighted(runtime, kernels.rms_weighted, k, k_norm_w, kn,
-                        tokens * (kv_width / k_norm_width), k_norm_width);
+                        tokens * (kv_width_i / k_norm_width), k_norm_width);
   dispatch_rms_unweighted(runtime, kernels.rms_unweighted, v, vn,
-                          tokens * static_cast<std::int32_t>(kKeyValueHeads), head_dim);
+                          tokens * key_value_heads_i, head_dim);
   dispatch_rope(runtime, kernels.rope, qn, q_rope, positions, tokens,
-                static_cast<std::int32_t>(kQueryHeads), head_dim);
+                query_heads_i, head_dim);
   dispatch_rope(runtime, kernels.rope, kn, k_rope, positions, tokens,
-                static_cast<std::int32_t>(kKeyValueHeads), head_dim);
+                key_value_heads_i, head_dim);
   dispatch_attention_scores(runtime, kernels.attention_scores, q_rope, k_rope, mask,
-                            scores);
-  dispatch_attention_values(runtime, kernels.attention_values, scores, vn, context);
+                            scores, query_heads_i, key_value_heads_i);
+  dispatch_attention_values(runtime, kernels.attention_values, scores, vn, context,
+                            query_heads_i, key_value_heads_i);
   dispatch_linear(runtime, kernels.linear_tiled, context, o_proj_w, attn_proj, tokens,
-                  q_width, hidden_size);
+                  q_width_i, hidden_size);
   dispatch_rms_weighted(runtime, kernels.rms_weighted, attn_proj, post_attn_ln_w,
                         attn_norm, tokens, hidden_size);
   dispatch_add(runtime, kernels.add_vectors, input, attn_norm, hidden_state,

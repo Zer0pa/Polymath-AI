@@ -1,61 +1,57 @@
 # Executive Delivery State
 
-Updated UTC: `2026-07-01T22:43:08Z`
+Updated UTC: `2026-07-01T23:03:38Z`
 
 ## Current Gate
 
-`WaveB_C5_after_C1_final_hidden_opencl_prompt_weight_shape_repair_pending_after_layer5_probe_blocker`
+`WaveB_C5_after_C1_final_hidden_opencl_prompt_weight_shape_repair_custody_pending_after_phase34_pathset`
 
-Status classification: `PENDING_ACTION_PHASE34_FINAL_HIDDEN_OPENCL_PROMPT_WEIGHT_SHAPE_REPAIR`
+Status classification: `PENDING_ACTION_REPO_CUSTODIAN_FINAL_HIDDEN_OPENCL_PROMPT_WEIGHT_SHAPE_REPAIR_FREEZE`
 
-Owner: Phase3/4 Engineer `019f13da-d897-7ba2-8ed1-b959892f5ed4` owns the layer-5 final-hidden OpenCL prompt weight shape repair behind the existing native `--run-c5-qa-predict` path.
+Owner: Repo Custodian `019f1ac2-0f0f-7721-bf46-ad402dbd9050` owns the six-file final-hidden OpenCL prompt weight shape repair freeze. Execution remains parked until custody freezes the repair and includes the bounded probe command.
 
 User action required: `false`
 
 Dominant failure domain: `phase5_eval_failure`
 
-Research escalation: `none` - the first missing field narrowed to a concrete layer-5 shape contract, so this is still normal implementation refinement.
+Research escalation: `none` - Phase3/4 narrowed and repaired the layer-5 shape contract locally; the active gate is custody, not research.
 
 ## Artifact Waiting On
 
-- Execution completed the bounded final-hidden-stream phone probe from custody commit `b96077acad00bd5ced2a88627753f54578a67e88`.
-- Runner: `/data/data/com.termux/files/home/polymath_c5/C5_after_C1/bin/gemma4_layer_runner_c5_final_hidden_stream`
-- Runner SHA/bytes: `07dfa82bec4f7796805f3929b261ca6768896eb78efb696bce5aa52e40caf248`, `572024`
-- Probe result: exit `13`, elapsed `121s`, native status `blocked`, prediction JSONL written `false`.
-- First missing green field: `c5_full_decoder_final_hidden_opencl_prompt_weight_shape_unsupported:5`
-- Metadata-only artifact root: `runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_final_hidden_stream_20260701T224102Z`
-- Metadata SHAs:
-  - `candidate_probe_stdout.json` SHA `141fce097811edb07931770fc56db2bd1faee9a400f478b1fcc294147a4e1081`
-  - `candidate_probe_stderr.log` SHA `2a5f89b540bba92c3f3cf987a873587dde252d8206455ef4479c9c288ccacf55`
-  - `meminfo_before.txt` SHA `19dcbd00f95029e038e898bb640955fb73cb09edc74f2f4207827f407706afcd`
-  - `meminfo_after.txt` SHA `817f9c1859eeb5793ed3591263c429ef9de5d1ebf7bd7f9612c102b2740238e6`
-  - `probe_metadata.txt` SHA `85252f50d3b57bf67990561d6f28ec7fadf44a792e7f7031dd712e04012a20a6`
+- Phase3/4 completed `final_hidden_opencl_prompt_weight_shape_repair_pathset_ready_for_custodian`.
+- Repair report: `runtime/reports/orchestration/c5_after_c1_final_hidden_opencl_prompt_weight_shape_repair_20260702T_phase34.json` SHA `8c49a0a6af89489764b9082e2d5d4c0588cced83c499ab4dc7437e05cb2d324e`
+- Source/test SHAs:
+  - `opencl_layer_runner.cpp` SHA `e4bfb3fdbcb6fc6411209fdd80951f178b03f16739f0cf423654d225ca9352d7`
+  - `c5_full_decoder_runtime.cpp` SHA `1f8b3199f3bcc52bfc0d6ad5af209ab40f82098724292998c3f1bf6daa0211c3`
+  - `tests/test_c5_native_runtime_contract.py` SHA `306a635d5e05296fff64edcf6879f016f60d187b380b9c3ec34bf1723cfc5fbf`
+- Phase3/4 verification passed: native runner build, focused native runtime contract `18 passed`, broad C5 suite `53 passed`, `ctest` `4/4`, `git diff --check`, and raw/secret diff scan.
+- Awaiting Custodian verification/freeze of the four repair files plus this central JSON/MD update.
 
 ## Last Concrete Action
 
-Execution consumed final-hidden custody commit `b96077acad00bd5ced2a88627753f54578a67e88`, built/copied the phone runner, ran exactly one bounded forced-vendor OpenCL probe, and returned the concrete layer-5 shape blocker. Raw suffix scan over local metadata report returned `0`; no prediction JSONL was written.
+Phase3/4 repaired the layer-5 final-hidden OpenCL prompt weight shape blocker by deriving layer Q/KV widths from actual projection sizes and dynamic head counts, then aligned the C5 prompt weight validator and regression guard. It produced report SHA `8c49a0a6af89489764b9082e2d5d4c0588cced83c499ab4dc7437e05cb2d324e` after build/tests/diff/raw-boundary checks passed.
 
 ## First Missing Green Field
 
-`c5_full_decoder_final_hidden_opencl_prompt_weight_shape_unsupported:5`
+`final_hidden_opencl_prompt_weight_shape_repair_custody_commit_missing`
 
 ## Next Concrete Action
 
-Phase3/4 must inspect and patch the existing final-hidden OpenCL prompt-layer weight shape handling for layer 5, then return a custody-ready source/test/report pathset or a precise source/runtime blocker. Execution must not run another probe until the repair is frozen and includes a bounded command.
+Repo Custodian must verify and freeze exactly the four Phase3/4 repair files plus `EXECUTIVE_DELIVERY_STATE.json` and `.md`. After custody, Custodian should route Execution to rebuild/copy `gemma4_layer_runner_c5_prompt_shape_repair` and run one bounded `C5_after_C1` phone probe from the report command template. If custody verification fails, return the exact failing command/file to Phase3/4/Engineering.
 
 ## Drift Deletion / Hardening
 
-Superseded stale custody-pending and probe-parse-active drift. The final-hidden-stream implementation reached the phone runtime and now fails at the narrower layer-5 OpenCL prompt weight shape contract. Older rank16, 42-layer, LM-head, and prediction-writer expectations are not the active edge.
+Deleted stale Phase3/4-active drift: the layer-5 prompt weight shape repair pathset is now custody-ready. Do not regress to phone model source, exporter schema, tokenizer/tensor loader, PLE, SP-HAL/OpenCL loader, multi-token, rank16, 42-layer, generic LM-head, or final-hidden-stream blockers without new evidence.
 
 ## Recursive Improvement Next Step
 
-Repair the layer-5 prompt weight shape support, freeze it through Custodian, then run exactly one bounded phone proof. If the same field repeats after repair, escalate to a bounded shape/manifest decomposition sprint; otherwise keep normal implementation refinement.
+Freeze the dynamic layer-width repair, then run one bounded phone proof. Expected next field after successful custody/probe is `c5_full_decoder_prediction_jsonl_writer_missing_after_lm_head_nll`. If `c5_full_decoder_final_hidden_opencl_prompt_weight_shape_unsupported:5` repeats after the frozen repair, trigger a bounded shape/manifest decomposition sprint.
 
 ## Threads Nudged This Tick
 
-- Phase3/4 Engineer `019f13da-d897-7ba2-8ed1-b959892f5ed4`: nudged with exact layer-5 shape blocker, evidence root, stdout SHA, and repair expectation.
-- Repo Custodian `019f1ac2-0f0f-7721-bf46-ad402dbd9050`: routed this two-file central mirror correction for custody.
-- Execution Orchestrator `019f138c-fb51-7c53-a41a-ab8eac950d9c`: completed bounded probe; no rerun requested.
+- Repo Custodian `019f1ac2-0f0f-7721-bf46-ad402dbd9050`: routed six-file final-hidden OpenCL prompt weight shape repair custody request.
+- Phase3/4 Engineer `019f13da-d897-7ba2-8ed1-b959892f5ed4`: completed custody-ready pathset; no duplicate nudge.
+- Execution Orchestrator `019f138c-fb51-7c53-a41a-ab8eac950d9c`: parked until Custodian freeze and bounded probe command.
 - Training Material Steward, Pipeline Integrator, UI Engineer, Engineering Orchestrator: not current owner; no nudge.
 
 ## Nonclaims Preserved

@@ -1,12 +1,12 @@
 {
-  "active_bottleneck": "c5_full_decoder_final_hidden_opencl_prompt_weight_shape_unsupported:5",
-  "active_edge": "WaveB_C5_after_C1_final_hidden_opencl_prompt_weight_shape_repair_pending_after_layer5_probe_blocker",
+  "active_bottleneck": "final_hidden_opencl_prompt_weight_shape_repair_custody_commit_missing",
+  "active_edge": "WaveB_C5_after_C1_final_hidden_opencl_prompt_weight_shape_repair_custody_pending_after_phase34_pathset",
   "active_watchdog_state": {
-    "active_bottleneck": "c5_full_decoder_final_hidden_opencl_prompt_weight_shape_unsupported:5",
-    "active_edge": "WaveB_C5_after_C1_final_hidden_opencl_prompt_weight_shape_repair_pending_after_layer5_probe_blocker",
+    "active_bottleneck": "final_hidden_opencl_prompt_weight_shape_repair_custody_commit_missing",
+    "active_edge": "WaveB_C5_after_C1_final_hidden_opencl_prompt_weight_shape_repair_custody_pending_after_phase34_pathset",
     "adapter_site_policy_sha256": "f38bd8109bbb77e9e94a5b4b34a238bc0ec0a39e7736870c97defe5aecc93357",
     "additional_missing_runtime_field_after_contract_patch": "decoder_manifest_tensor_role_inventory_missing",
-    "artifact_waiting_on": "Execution completed the bounded final-hidden-stream phone probe from commit b96077acad00bd5ced2a88627753f54578a67e88. Metadata-only artifact root: runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_final_hidden_stream_20260701T224102Z. candidate_probe_stdout.json SHA 141fce097811edb07931770fc56db2bd1faee9a400f478b1fcc294147a4e1081; candidate_probe_stderr.log SHA 2a5f89b540bba92c3f3cf987a873587dde252d8206455ef4479c9c288ccacf55; meminfo_before.txt SHA 19dcbd00f95029e038e898bb640955fb73cb09edc74f2f4207827f407706afcd; meminfo_after.txt SHA 817f9c1859eeb5793ed3591263c429ef9de5d1ebf7bd7f9612c102b2740238e6; probe_metadata.txt SHA 85252f50d3b57bf67990561d6f28ec7fadf44a792e7f7031dd712e04012a20a6. Awaiting Phase3/4 repair/freeze for layer-5 prompt weight shape handling or a precise source/runtime blocker.",
+    "artifact_waiting_on": "Phase3/4 completed final_hidden_opencl_prompt_weight_shape_repair_pathset_ready_for_custodian. Repair pathset: runtime/reports/orchestration/c5_after_c1_final_hidden_opencl_prompt_weight_shape_repair_20260702T_phase34.json SHA 8c49a0a6af89489764b9082e2d5d4c0588cced83c499ab4dc7437e05cb2d324e; integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/opencl_layer_runner.cpp SHA e4bfb3fdbcb6fc6411209fdd80951f178b03f16739f0cf423654d225ca9352d7; integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp SHA 1f8b3199f3bcc52bfc0d6ad5af209ab40f82098724292998c3f1bf6daa0211c3; tests/test_c5_native_runtime_contract.py SHA 306a635d5e05296fff64edcf6879f016f60d187b380b9c3ec34bf1723cfc5fbf. Phase3/4 verification passed: native runner build, focused native runtime contract 18 passed, broad C5 suite 53 passed, ctest 4/4, git diff --check, and raw/secret diff scan. Awaiting Custodian verification/freeze plus this central mirror update.",
     "authorization_needed": "none",
     "c5_after_c1_bounded_opencl_probe_command_identity_repair_20260701T171907Z": {
       "execution_routed": false,
@@ -1871,14 +1871,14 @@
       "user_action_required": false
     },
     "central_state_update_pending_custody": true,
-    "current_gate": "WaveB_C5_after_C1_final_hidden_opencl_prompt_weight_shape_repair_pending_after_layer5_probe_blocker",
+    "current_gate": "WaveB_C5_after_C1_final_hidden_opencl_prompt_weight_shape_repair_custody_pending_after_phase34_pathset",
     "current_highest_valid_state": "C1-C4 Wave B mechanics, phone-local model/exporter evidence, C5-capable runner build, heldout QA staging, native C5 probes through SP-HAL OpenCL route, multi-token QA prompt orchestration, rank-16 adapter stream injection, native 42-layer orchestration, and frozen 42-layer proof evidence are development-cycle metadata/code evidence only. Phase3/4 is actively working the chunked LM-head/NLL writer boundary; no C5 pass, prediction JSONL, loss, confidence, candidate_train_loss, or executed metrics exist.",
-    "current_owner": "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 owns the layer-5 final-hidden OpenCL prompt weight shape repair behind the existing native --run-c5-qa-predict path.",
+    "current_owner": "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050 owns the six-file final-hidden OpenCL prompt weight shape repair freeze; Execution remains parked until custody freezes the repair and includes the bounded probe command.",
     "custody_commit_latest": "05bb56437b83138547301e69af14ab0fce7d4b1a",
     "custody_status_latest": "c5_opencl_parity_dispatch_committed_pushed",
     "decoder_manifest_sha256": "52fcb53666bb4b06d0118cb825b983afc54624a630f667bbfa5af278640e28f8",
     "dominant_failure_domain": "phase5_eval_failure",
-    "drift_deleted_or_pending": "Superseded stale custody-pending and probe-parse-active drift. The final-hidden-stream implementation reached the phone runtime and now fails at the narrower layer-5 OpenCL prompt weight shape contract. Older rank16, 42-layer, LM-head, and prediction-writer expectations are not the active edge.",
+    "drift_deleted_or_pending": "Deleted stale Phase3/4-active drift: the layer-5 prompt weight shape repair pathset is now custody-ready. Do not regress to phone model source, exporter schema, tokenizer/tensor loader, PLE, SP-HAL/OpenCL loader, multi-token, rank16, 42-layer, generic LM-head, or final-hidden-stream blockers without new evidence.",
     "driver_tick_history": [
       {
         "artifact_waiting_on": [
@@ -2119,7 +2119,7 @@
       "next_owner": "execution_orchestrator",
       "status": "committed_pushed"
     },
-    "first_missing_green_field": "c5_full_decoder_final_hidden_opencl_prompt_weight_shape_unsupported:5",
+    "first_missing_green_field": "final_hidden_opencl_prompt_weight_shape_repair_custody_commit_missing",
     "first_missing_green_field_after_contract_patch": "decoder_manifest_architecture_config_missing",
     "first_missing_green_field_after_custody": "c5_full_decoder_chunked_lm_head_nll_writer_missing",
     "first_missing_green_field_after_export": "phone_c5_runner_rebuild_or_copy_missing",
@@ -2401,12 +2401,12 @@
         "user_action_required": false
       }
     },
-    "last_concrete_action": "Execution consumed final-hidden custody commit b96077acad00bd5ced2a88627753f54578a67e88, built/copied runner /data/data/com.termux/files/home/polymath_c5/C5_after_C1/bin/gemma4_layer_runner_c5_final_hidden_stream SHA 07dfa82bec4f7796805f3929b261ca6768896eb78efb696bce5aa52e40caf248 bytes 572024, ran exactly one bounded forced-vendor OpenCL probe, and failed closed after 121s with exit 13. Native first missing green field is c5_full_decoder_final_hidden_opencl_prompt_weight_shape_unsupported:5; prediction JSONL written false; raw suffix scan 0.",
+    "last_concrete_action": "Phase3/4 repaired the layer-5 final-hidden OpenCL prompt weight shape blocker by making OpenCL prompt-layer validation and dispatch derive layer Q/KV widths from actual projection sizes and dynamic head counts, then aligned the C5 prompt weight validator and regression guard. It produced report SHA 8c49a0a6af89489764b9082e2d5d4c0588cced83c499ab4dc7437e05cb2d324e after build/tests/diff/raw-boundary checks passed.",
     "last_driver_actions": [
-      "Loaded central state and polled current owner lanes.",
-      "Detected Repo Custodian completed prior rank16 probe/42-layer central evidence freeze at d9fb2584946e2a1acfffd8588c35c615f9e9b130.",
-      "Detected Phase3/4 completed native_42_layer_orchestration_pathset_ready_for_custodian.",
-      "Updated central mirror metadata-only, hardened stale current_gate/governing_edge drift, and routed Repo Custodian custody packet."
+      "Loaded central state and polled existing Phase3/4 and Custodian threads only.",
+      "Detected Phase3/4 completed final_hidden_opencl_prompt_weight_shape_repair_pathset_ready_for_custodian.",
+      "Updated central state metadata-only to Repo Custodian custody pending for the six-file repair pathset.",
+      "Prepared exact Custodian handoff; Execution remains parked."
     ],
     "last_update_utc": "2026-07-01T22:43:08Z",
     "lineage_drift_repair_status": {
@@ -2589,7 +2589,7 @@
     "native_tokenizer_tensor_loader_prereq_custody_commit": "4472e3dee86d88d83031eecfc94b91008e5215e0",
     "native_tokenizer_tensor_loader_prereq_report_sha256": "1e4a087354d8a917ec9fba7747a5e2410d9fb01f36e991c902e00adf8764e422",
     "native_tokenizer_tensor_loader_prereq_status": "native_full_decoder_prereq_pathset_ready_for_custodian",
-    "next_concrete_action": "Phase3/4 must inspect and patch the existing final-hidden OpenCL prompt-layer weight shape handling for layer 5, then return a custody-ready source/test/report pathset or a precise source/runtime blocker. Execution must not run another probe until the repair is frozen and includes a bounded command.",
+    "next_concrete_action": "Repo Custodian must verify and freeze exactly the four Phase3/4 repair files plus EXECUTIVE_DELIVERY_STATE.json and .md. After custody, Custodian should route Execution to rebuild/copy gemma4_layer_runner_c5_prompt_shape_repair and run one bounded C5_after_C1 phone probe from the report command template. If custody verification fails, return the exact failing command/file to Phase3/4/Engineering.",
     "nonclaims": [
       "no C5 pass",
       "no executed C5 metrics",
@@ -2612,8 +2612,8 @@
       "no 100k/1M authority",
       "no Comet-backed accepted run"
     ],
-    "owner": "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 owns the layer-5 final-hidden OpenCL prompt weight shape repair behind the existing native --run-c5-qa-predict path.",
-    "owner_thread": "019f13da-d897-7ba2-8ed1-b959892f5ed4",
+    "owner": "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050 owns the six-file final-hidden OpenCL prompt weight shape repair freeze; Execution remains parked until custody freezes the repair and includes the bounded probe command.",
+    "owner_thread": "019f1ac2-0f0f-7721-bf46-ad402dbd9050",
     "phase2_status_by_phase": {
       "C1": {
         "packets": 5180,
@@ -2835,7 +2835,7 @@
       "phase34": "raw PJP1, HTP raw output, OpenCL tensors, and adapters remain on device/Termux; repair must keep compact JSON only",
       "report_root_scan": "metadata-freeze report root had 179 tracked files and clean forbidden suffix scans; raw payloads not committed"
     },
-    "recursive_improvement_next_step": "Repair the layer-5 prompt weight shape support, freeze it through Custodian, then run exactly one bounded phone proof. If the same field repeats after repair, escalate to a bounded shape/manifest decomposition sprint; otherwise keep normal implementation refinement.",
+    "recursive_improvement_next_step": "Freeze the dynamic layer-width repair, then run one bounded phone proof. Expected next field after successful custody/probe is c5_full_decoder_prediction_jsonl_writer_missing_after_lm_head_nll. If c5_full_decoder_final_hidden_opencl_prompt_weight_shape_unsupported:5 repeats after the frozen repair, trigger a bounded shape/manifest decomposition sprint.",
     "repo_custodian_per_layer_input_runtime_repair_commit": "58872fdc3dd7ff6efb73321252d58f3447eb0e2b",
     "repo_custodian_post_phone_probe_central_mirror_commit": "5802ea1e25222c068dd3fcb5050c91f20f72357b",
     "repo_custody_state_freeze": {
@@ -2854,22 +2854,117 @@
     "runner_sha256": "31015b6844e20d74cd67f69cbb152fa4ccba4200992d3d60cc458d145afda23c",
     "runner_size_bytes": 554312,
     "secondary_missing_green_field": "c5_full_decoder_final_hidden_stream_missing_for_lm_head_nll_if_phase34_confirms_current_precondition",
-    "status": "PENDING_ACTION_PHASE34_FINAL_HIDDEN_OPENCL_PROMPT_WEIGHT_SHAPE_REPAIR",
-    "status_classification": "PENDING_ACTION_PHASE34_FINAL_HIDDEN_OPENCL_PROMPT_WEIGHT_SHAPE_REPAIR",
+    "status": "PENDING_ACTION_REPO_CUSTODIAN_FINAL_HIDDEN_OPENCL_PROMPT_WEIGHT_SHAPE_REPAIR_FREEZE",
+    "status_classification": "PENDING_ACTION_REPO_CUSTODIAN_FINAL_HIDDEN_OPENCL_PROMPT_WEIGHT_SHAPE_REPAIR_FREEZE",
     "threads_nudged_this_tick": [
-      "Phase3/4 019f13da-d897-7ba2-8ed1-b959892f5ed4: nudged with exact layer-5 shape blocker, evidence root, stdout SHA, and repair expectation",
-      "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: routed two-file central mirror correction for custody",
-      "Execution 019f138c-fb51-7c53-a41a-ab8eac950d9c: completed bounded probe; no rerun requested"
+      "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: routed six-file final-hidden OpenCL prompt weight shape repair custody request",
+      "Phase3/4 019f13da-d897-7ba2-8ed1-b959892f5ed4: completed custody-ready pathset; no duplicate nudge",
+      "Execution 019f138c-fb51-7c53-a41a-ab8eac950d9c: parked until Custodian freeze and bounded probe command"
     ],
     "timestamp_utc": "2026-07-01T22:06:08Z",
     "updated_at": "2026-07-01T22:06:08Z",
     "updated_at_utc": "2026-07-01T22:43:08Z",
     "updated_utc": "2026-07-01T22:06:08Z",
-    "user_action_required": false
+    "user_action_required": false,
+    "c5_after_c1_final_hidden_opencl_prompt_weight_shape_repair_20260702T_phase34": {
+      "status": "final_hidden_opencl_prompt_weight_shape_repair_pathset_ready_for_custodian",
+      "current_gate": "WaveB_C5_after_C1_final_hidden_opencl_prompt_weight_shape_repair_custody_pending_after_phase34_pathset",
+      "status_classification": "PENDING_ACTION_REPO_CUSTODIAN_FINAL_HIDDEN_OPENCL_PROMPT_WEIGHT_SHAPE_REPAIR_FREEZE",
+      "owner": "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050 owns the six-file final-hidden OpenCL prompt weight shape repair freeze; Execution remains parked until custody freezes the repair and includes the bounded probe command.",
+      "first_missing_green_field": "final_hidden_opencl_prompt_weight_shape_repair_custody_commit_missing",
+      "artifact_paths": {
+        "runtime/reports/orchestration/c5_after_c1_final_hidden_opencl_prompt_weight_shape_repair_20260702T_phase34.json": "8c49a0a6af89489764b9082e2d5d4c0588cced83c499ab4dc7437e05cb2d324e",
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/opencl_layer_runner.cpp": "e4bfb3fdbcb6fc6411209fdd80951f178b03f16739f0cf423654d225ca9352d7",
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp": "1f8b3199f3bcc52bfc0d6ad5af209ab40f82098724292998c3f1bf6daa0211c3",
+        "tests/test_c5_native_runtime_contract.py": "306a635d5e05296fff64edcf6879f016f60d187b380b9c3ec34bf1723cfc5fbf",
+        "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json": "compute after meta update",
+        "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md": "compute after meta update"
+      },
+      "verification_commands": [
+        "Phase3/4: cmake --build build/gemma4_megakernel_host --target gemma4_layer_runner -- -j2 passed",
+        "Phase3/4: python3 -m pytest tests/test_c5_native_runtime_contract.py -q -> 18 passed",
+        "Phase3/4: python3 -m pytest tests/test_c5_*.py -q -> 53 passed",
+        "Phase3/4: ctest --test-dir build/gemma4_megakernel_host --output-on-failure -> 4/4 passed",
+        "Phase3/4: git diff --check passed",
+        "Phase3/4: raw/secret diff scan clean"
+      ],
+      "expected_first_missing_green_field_after_probe": "c5_full_decoder_prediction_jsonl_writer_missing_after_lm_head_nll",
+      "research_escalation": "none",
+      "user_action_required": false,
+      "nonclaims": [
+        "no C5 pass",
+        "no executed C5 metrics",
+        "no prediction JSONL/logits/loss/confidence/candidate_train_loss",
+        "no bridge-MSE-as-C5-loss",
+        "no learning/model-quality claim",
+        "no Phase3/4 readiness",
+        "no 100k/1M authority",
+        "no Comet-backed accepted run"
+      ],
+      "next_handoff": {
+        "schema_version": "zpp_next_handoff_v1",
+        "run_id": "c5_after_c1_final_hidden_opencl_prompt_weight_shape_repair_20260702T_phase34",
+        "from_lane": "phase34_native_c5_runtime",
+        "to_lane": "repo_custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050",
+        "sent": true,
+        "objective": "Freeze the final-hidden OpenCL prompt weight shape repair so Execution can run exactly one bounded C5_after_C1 phone proof on the existing native --run-c5-qa-predict path.",
+        "authority_metric": "C5_after_C1 bounded phone runtime advances past c5_full_decoder_final_hidden_opencl_prompt_weight_shape_unsupported:5 without fabricating predictions, loss, confidence, or candidate_train_loss.",
+        "current_edge": "WaveB_C5_after_C1_final_hidden_opencl_prompt_weight_shape_repair_custody_pending_after_phase34_pathset",
+        "current_verdict": "pending_action",
+        "completed_work": [
+          "Phase3/4 produced dynamic layer-width OpenCL prompt shape repair pathset",
+          "Local build/test/diff/raw-boundary verification passed",
+          "Engineering/Meta updated central state metadata-only for custody pending"
+        ],
+        "evidence": [
+          {
+            "artifact": "runtime/reports/orchestration/c5_after_c1_final_hidden_opencl_prompt_weight_shape_repair_20260702T_phase34.json",
+            "sha256": "8c49a0a6af89489764b9082e2d5d4c0588cced83c499ab4dc7437e05cb2d324e",
+            "status": "custody_input"
+          },
+          {
+            "artifact": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/opencl_layer_runner.cpp",
+            "sha256": "e4bfb3fdbcb6fc6411209fdd80951f178b03f16739f0cf423654d225ca9352d7",
+            "status": "custody_input"
+          },
+          {
+            "artifact": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp",
+            "sha256": "1f8b3199f3bcc52bfc0d6ad5af209ab40f82098724292998c3f1bf6daa0211c3",
+            "status": "custody_input"
+          },
+          {
+            "artifact": "tests/test_c5_native_runtime_contract.py",
+            "sha256": "306a635d5e05296fff64edcf6879f016f60d187b380b9c3ec34bf1723cfc5fbf",
+            "status": "custody_input"
+          }
+        ],
+        "first_missing_green_field": "final_hidden_opencl_prompt_weight_shape_repair_custody_commit_missing",
+        "next_action": "Repo Custodian verifies, stages, commits, and pushes the exact six-file pathset, then routes Execution with the bounded phone probe command from the repair report.",
+        "owner_thread": "019f1ac2-0f0f-7721-bf46-ad402dbd9050",
+        "research_escalation": {
+          "status": "none",
+          "reason": "first_missing_green_field narrowed and a source repair exists; no repeated same-field post-repair phone failure yet",
+          "packet_path": null
+        },
+        "nonclaims": [
+          "no C5 pass",
+          "no learning/model-quality claim",
+          "no Phase3/4 readiness claim",
+          "no 100k/1M authority",
+          "no Comet-backed accepted run unless actually executed"
+        ],
+        "do_not_do": [
+          "do not route Execution before custody",
+          "do not stage unrelated files",
+          "do not add raw payloads or secrets to git",
+          "do not invent prediction JSONL/loss/confidence/candidate_train_loss"
+        ]
+      }
+    }
   },
   "adapter_site_policy_sha256": "f38bd8109bbb77e9e94a5b4b34a238bc0ec0a39e7736870c97defe5aecc93357",
   "additional_missing_runtime_field_after_contract_patch": "decoder_manifest_tensor_role_inventory_missing",
-  "artifact_waiting_on": "Execution completed the bounded final-hidden-stream phone probe from commit b96077acad00bd5ced2a88627753f54578a67e88. Metadata-only artifact root: runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_final_hidden_stream_20260701T224102Z. candidate_probe_stdout.json SHA 141fce097811edb07931770fc56db2bd1faee9a400f478b1fcc294147a4e1081; candidate_probe_stderr.log SHA 2a5f89b540bba92c3f3cf987a873587dde252d8206455ef4479c9c288ccacf55; meminfo_before.txt SHA 19dcbd00f95029e038e898bb640955fb73cb09edc74f2f4207827f407706afcd; meminfo_after.txt SHA 817f9c1859eeb5793ed3591263c429ef9de5d1ebf7bd7f9612c102b2740238e6; probe_metadata.txt SHA 85252f50d3b57bf67990561d6f28ec7fadf44a792e7f7031dd712e04012a20a6. Awaiting Phase3/4 repair/freeze for layer-5 prompt weight shape handling or a precise source/runtime blocker.",
+  "artifact_waiting_on": "Phase3/4 completed final_hidden_opencl_prompt_weight_shape_repair_pathset_ready_for_custodian. Repair pathset: runtime/reports/orchestration/c5_after_c1_final_hidden_opencl_prompt_weight_shape_repair_20260702T_phase34.json SHA 8c49a0a6af89489764b9082e2d5d4c0588cced83c499ab4dc7437e05cb2d324e; integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/opencl_layer_runner.cpp SHA e4bfb3fdbcb6fc6411209fdd80951f178b03f16739f0cf423654d225ca9352d7; integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp SHA 1f8b3199f3bcc52bfc0d6ad5af209ab40f82098724292998c3f1bf6daa0211c3; tests/test_c5_native_runtime_contract.py SHA 306a635d5e05296fff64edcf6879f016f60d187b380b9c3ec34bf1723cfc5fbf. Phase3/4 verification passed: native runner build, focused native runtime contract 18 passed, broad C5 suite 53 passed, ctest 4/4, git diff --check, and raw/secret diff scan. Awaiting Custodian verification/freeze plus this central mirror update.",
   "authorization_needed": "none",
   "c5_after_c1_42_layer_orchestration_probe_20260701T213036Z": {
     "blockers": [
@@ -5185,11 +5280,11 @@
   "candidate_adapter_sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f",
   "central_mirror_local_update_status": "updated_after_final_hidden_stream_phone_probe_layer5_shape_blocker",
   "central_state_update_pending_custody": true,
-  "current_gate": "WaveB_C5_after_C1_final_hidden_opencl_prompt_weight_shape_repair_pending_after_layer5_probe_blocker",
+  "current_gate": "WaveB_C5_after_C1_final_hidden_opencl_prompt_weight_shape_repair_custody_pending_after_phase34_pathset",
   "current_highest_valid_state": "C1-C4 Wave B mechanics, phone-local model/exporter evidence, C5-capable runner build, heldout QA staging, native C5 probes through SP-HAL OpenCL route, multi-token QA prompt orchestration, rank-16 adapter stream injection, native 42-layer orchestration, and frozen 42-layer proof evidence are development-cycle metadata/code evidence only. Phase3/4 is actively working the chunked LM-head/NLL writer boundary; no C5 pass, prediction JSONL, loss, confidence, candidate_train_loss, or executed metrics exist.",
   "decoder_manifest_sha256": "52fcb53666bb4b06d0118cb825b983afc54624a630f667bbfa5af278640e28f8",
   "dominant_failure_domain": "phase5_eval_failure",
-  "drift_deleted_or_pending": "Superseded stale custody-pending and probe-parse-active drift. The final-hidden-stream implementation reached the phone runtime and now fails at the narrower layer-5 OpenCL prompt weight shape contract. Older rank16, 42-layer, LM-head, and prediction-writer expectations are not the active edge.",
+  "drift_deleted_or_pending": "Deleted stale Phase3/4-active drift: the layer-5 prompt weight shape repair pathset is now custody-ready. Do not regress to phone model source, exporter schema, tokenizer/tensor loader, PLE, SP-HAL/OpenCL loader, multi-token, rank16, 42-layer, generic LM-head, or final-hidden-stream blockers without new evidence.",
   "driver_tick_history": [
     {
       "artifact_waiting_on": [
@@ -6444,7 +6539,7 @@
   "export_report_sha256": "4774d31953a58ad6ae1f64e4196405ba820e5be75d36880ac863cfb9dae00b6c",
   "exporter_runtime_fields_freeze_commit": "43cf3c4130dc902fc8fd69183bac1056f0596626",
   "exporter_runtime_fields_freeze_status": "committed_pushed",
-  "first_missing_green_field": "c5_full_decoder_final_hidden_opencl_prompt_weight_shape_unsupported:5",
+  "first_missing_green_field": "final_hidden_opencl_prompt_weight_shape_repair_custody_commit_missing",
   "first_missing_green_field_after_contract_patch": "decoder_manifest_architecture_config_missing",
   "first_missing_green_field_after_custody": "c5_full_decoder_chunked_lm_head_nll_writer_missing",
   "first_missing_green_field_after_download": "full_decoder_logits_generation_not_implemented",
@@ -7112,20 +7207,20 @@
       "user_action_required": false
     }
   },
-  "last_concrete_action": "Execution consumed final-hidden custody commit b96077acad00bd5ced2a88627753f54578a67e88, built/copied runner /data/data/com.termux/files/home/polymath_c5/C5_after_C1/bin/gemma4_layer_runner_c5_final_hidden_stream SHA 07dfa82bec4f7796805f3929b261ca6768896eb78efb696bce5aa52e40caf248 bytes 572024, ran exactly one bounded forced-vendor OpenCL probe, and failed closed after 121s with exit 13. Native first missing green field is c5_full_decoder_final_hidden_opencl_prompt_weight_shape_unsupported:5; prediction JSONL written false; raw suffix scan 0.",
+  "last_concrete_action": "Phase3/4 repaired the layer-5 final-hidden OpenCL prompt weight shape blocker by making OpenCL prompt-layer validation and dispatch derive layer Q/KV widths from actual projection sizes and dynamic head counts, then aligned the C5 prompt weight validator and regression guard. It produced report SHA 8c49a0a6af89489764b9082e2d5d4c0588cced83c499ab4dc7437e05cb2d324e after build/tests/diff/raw-boundary checks passed.",
   "last_driver_actions": [
-    "Loaded central state and polled existing lane threads only.",
-    "Accepted Execution CENTRAL_STATE_UPDATE final_hidden_stream_probe_blocked_shape_unsupported_layer5.",
-    "Updated central state metadata-only to Phase3/4 layer-5 shape repair pending.",
-    "Routed exact repair handoff to Phase3/4 and prepared two-file central mirror custody route."
+    "Loaded central state and polled existing Phase3/4 and Custodian threads only.",
+    "Detected Phase3/4 completed final_hidden_opencl_prompt_weight_shape_repair_pathset_ready_for_custodian.",
+    "Updated central state metadata-only to Repo Custodian custody pending for the six-file repair pathset.",
+    "Prepared exact Custodian handoff; Execution remains parked."
   ],
-  "last_update_utc": "2026-07-01T22:43:08Z",
+  "last_update_utc": "2026-07-01T23:03:38Z",
   "model_safetensors_sha256": "43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651",
   "model_safetensors_size_bytes": 15992595884,
   "native_probe_elapsed_seconds": 104,
   "native_probe_exit_code": 13,
   "native_probe_report_path": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_42_layer_orchestration_20260701T213036Z",
-  "next_concrete_action": "Phase3/4 must inspect and patch the existing final-hidden OpenCL prompt-layer weight shape handling for layer 5, then return a custody-ready source/test/report pathset or a precise source/runtime blocker. Execution must not run another probe until the repair is frozen and includes a bounded command.",
+  "next_concrete_action": "Repo Custodian must verify and freeze exactly the four Phase3/4 repair files plus EXECUTIVE_DELIVERY_STATE.json and .md. After custody, Custodian should route Execution to rebuild/copy gemma4_layer_runner_c5_prompt_shape_repair and run one bounded C5_after_C1 phone probe from the report command template. If custody verification fails, return the exact failing command/file to Phase3/4/Engineering.",
   "nonclaims": [
     "no C5 pass",
     "no executed C5 metrics",
@@ -7148,8 +7243,8 @@
     "no 100k/1M authority",
     "no Comet-backed accepted run"
   ],
-  "owner": "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 owns the layer-5 final-hidden OpenCL prompt weight shape repair behind the existing native --run-c5-qa-predict path.",
-  "owner_thread": "019f13da-d897-7ba2-8ed1-b959892f5ed4",
+  "owner": "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050 owns the six-file final-hidden OpenCL prompt weight shape repair freeze; Execution remains parked until custody freezes the repair and includes the bounded probe command.",
+  "owner_thread": "019f1ac2-0f0f-7721-bf46-ad402dbd9050",
   "phone_exporter_rerun_required_after_commit": "43cf3c4130dc902fc8fd69183bac1056f0596626",
   "prd_watchdog": {
     "active_bottleneck": "forced_vendor_opencl_probe_result_missing",
@@ -7740,7 +7835,7 @@
     "scope": "metadata mirror only",
     "status": "central_state_phone_filesystem_paths_redacted"
   },
-  "recursive_improvement_next_step": "Repair the layer-5 prompt weight shape support, freeze it through Custodian, then run exactly one bounded phone proof. If the same field repeats after repair, escalate to a bounded shape/manifest decomposition sprint; otherwise keep normal implementation refinement.",
+  "recursive_improvement_next_step": "Freeze the dynamic layer-width repair, then run one bounded phone proof. Expected next field after successful custody/probe is c5_full_decoder_prediction_jsonl_writer_missing_after_lm_head_nll. If c5_full_decoder_final_hidden_opencl_prompt_weight_shape_unsupported:5 repeats after the frozen repair, trigger a bounded shape/manifest decomposition sprint.",
   "required_lane_update_protocol": {
     "block_name": "CENTRAL_STATE_UPDATE",
     "meta_action": "on every heartbeat, read active threads, update this file, route the next concrete edge, and notify Execution only when both keys are green",
@@ -7761,16 +7856,112 @@
   "runner_size_bytes": 554312,
   "schema_version": "polymath_executive_delivery_state_v1",
   "secondary_missing_green_field": "c5_full_decoder_final_hidden_stream_missing_for_lm_head_nll_if_phase34_confirms_current_precondition",
-  "status": "PENDING_ACTION_PHASE34_FINAL_HIDDEN_STREAM_IMPLEMENTATION_ACTIVE_AFTER_LM_HEAD_CUSTODY",
-  "status_classification": "PENDING_ACTION_PHASE34_FINAL_HIDDEN_OPENCL_PROMPT_WEIGHT_SHAPE_REPAIR",
+  "status": "PENDING_ACTION_REPO_CUSTODIAN_FINAL_HIDDEN_OPENCL_PROMPT_WEIGHT_SHAPE_REPAIR_FREEZE",
+  "status_classification": "PENDING_ACTION_REPO_CUSTODIAN_FINAL_HIDDEN_OPENCL_PROMPT_WEIGHT_SHAPE_REPAIR_FREEZE",
   "threads_nudged_this_tick": [
-    "Phase3/4 019f13da-d897-7ba2-8ed1-b959892f5ed4: nudged with exact layer-5 shape blocker, evidence root, stdout SHA, and repair expectation",
-    "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: routed two-file central mirror correction for custody",
-    "Execution 019f138c-fb51-7c53-a41a-ab8eac950d9c: completed bounded probe; no rerun requested"
+    "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: routed six-file final-hidden OpenCL prompt weight shape repair custody request",
+    "Phase3/4 019f13da-d897-7ba2-8ed1-b959892f5ed4: completed custody-ready pathset; no duplicate nudge",
+    "Execution 019f138c-fb51-7c53-a41a-ab8eac950d9c: parked until Custodian freeze and bounded probe command"
   ],
-  "timestamp_utc": "2026-07-01T22:06:08Z",
-  "updated_at": "2026-07-01T22:06:08Z",
-  "updated_at_utc": "2026-07-01T22:43:08Z",
-  "updated_utc": "2026-07-01T22:06:08Z",
-  "user_action_required": false
+  "timestamp_utc": "2026-07-01T23:03:38Z",
+  "updated_at": "2026-07-01T23:03:38Z",
+  "updated_at_utc": "2026-07-01T23:03:38Z",
+  "updated_utc": "2026-07-01T23:03:38Z",
+  "user_action_required": false,
+  "current_owner": "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050 owns the six-file final-hidden OpenCL prompt weight shape repair freeze; Execution remains parked until custody freezes the repair and includes the bounded probe command.",
+  "c5_after_c1_final_hidden_opencl_prompt_weight_shape_repair_20260702T_phase34": {
+    "status": "final_hidden_opencl_prompt_weight_shape_repair_pathset_ready_for_custodian",
+    "current_gate": "WaveB_C5_after_C1_final_hidden_opencl_prompt_weight_shape_repair_custody_pending_after_phase34_pathset",
+    "status_classification": "PENDING_ACTION_REPO_CUSTODIAN_FINAL_HIDDEN_OPENCL_PROMPT_WEIGHT_SHAPE_REPAIR_FREEZE",
+    "owner": "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050 owns the six-file final-hidden OpenCL prompt weight shape repair freeze; Execution remains parked until custody freezes the repair and includes the bounded probe command.",
+    "first_missing_green_field": "final_hidden_opencl_prompt_weight_shape_repair_custody_commit_missing",
+    "artifact_paths": {
+      "runtime/reports/orchestration/c5_after_c1_final_hidden_opencl_prompt_weight_shape_repair_20260702T_phase34.json": "8c49a0a6af89489764b9082e2d5d4c0588cced83c499ab4dc7437e05cb2d324e",
+      "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/opencl_layer_runner.cpp": "e4bfb3fdbcb6fc6411209fdd80951f178b03f16739f0cf423654d225ca9352d7",
+      "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp": "1f8b3199f3bcc52bfc0d6ad5af209ab40f82098724292998c3f1bf6daa0211c3",
+      "tests/test_c5_native_runtime_contract.py": "306a635d5e05296fff64edcf6879f016f60d187b380b9c3ec34bf1723cfc5fbf",
+      "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json": "compute after meta update",
+      "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md": "compute after meta update"
+    },
+    "verification_commands": [
+      "Phase3/4: cmake --build build/gemma4_megakernel_host --target gemma4_layer_runner -- -j2 passed",
+      "Phase3/4: python3 -m pytest tests/test_c5_native_runtime_contract.py -q -> 18 passed",
+      "Phase3/4: python3 -m pytest tests/test_c5_*.py -q -> 53 passed",
+      "Phase3/4: ctest --test-dir build/gemma4_megakernel_host --output-on-failure -> 4/4 passed",
+      "Phase3/4: git diff --check passed",
+      "Phase3/4: raw/secret diff scan clean"
+    ],
+    "expected_first_missing_green_field_after_probe": "c5_full_decoder_prediction_jsonl_writer_missing_after_lm_head_nll",
+    "research_escalation": "none",
+    "user_action_required": false,
+    "nonclaims": [
+      "no C5 pass",
+      "no executed C5 metrics",
+      "no prediction JSONL/logits/loss/confidence/candidate_train_loss",
+      "no bridge-MSE-as-C5-loss",
+      "no learning/model-quality claim",
+      "no Phase3/4 readiness",
+      "no 100k/1M authority",
+      "no Comet-backed accepted run"
+    ],
+    "next_handoff": {
+      "schema_version": "zpp_next_handoff_v1",
+      "run_id": "c5_after_c1_final_hidden_opencl_prompt_weight_shape_repair_20260702T_phase34",
+      "from_lane": "phase34_native_c5_runtime",
+      "to_lane": "repo_custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050",
+      "sent": true,
+      "objective": "Freeze the final-hidden OpenCL prompt weight shape repair so Execution can run exactly one bounded C5_after_C1 phone proof on the existing native --run-c5-qa-predict path.",
+      "authority_metric": "C5_after_C1 bounded phone runtime advances past c5_full_decoder_final_hidden_opencl_prompt_weight_shape_unsupported:5 without fabricating predictions, loss, confidence, or candidate_train_loss.",
+      "current_edge": "WaveB_C5_after_C1_final_hidden_opencl_prompt_weight_shape_repair_custody_pending_after_phase34_pathset",
+      "current_verdict": "pending_action",
+      "completed_work": [
+        "Phase3/4 produced dynamic layer-width OpenCL prompt shape repair pathset",
+        "Local build/test/diff/raw-boundary verification passed",
+        "Engineering/Meta updated central state metadata-only for custody pending"
+      ],
+      "evidence": [
+        {
+          "artifact": "runtime/reports/orchestration/c5_after_c1_final_hidden_opencl_prompt_weight_shape_repair_20260702T_phase34.json",
+          "sha256": "8c49a0a6af89489764b9082e2d5d4c0588cced83c499ab4dc7437e05cb2d324e",
+          "status": "custody_input"
+        },
+        {
+          "artifact": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/opencl_layer_runner.cpp",
+          "sha256": "e4bfb3fdbcb6fc6411209fdd80951f178b03f16739f0cf423654d225ca9352d7",
+          "status": "custody_input"
+        },
+        {
+          "artifact": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp",
+          "sha256": "1f8b3199f3bcc52bfc0d6ad5af209ab40f82098724292998c3f1bf6daa0211c3",
+          "status": "custody_input"
+        },
+        {
+          "artifact": "tests/test_c5_native_runtime_contract.py",
+          "sha256": "306a635d5e05296fff64edcf6879f016f60d187b380b9c3ec34bf1723cfc5fbf",
+          "status": "custody_input"
+        }
+      ],
+      "first_missing_green_field": "final_hidden_opencl_prompt_weight_shape_repair_custody_commit_missing",
+      "next_action": "Repo Custodian verifies, stages, commits, and pushes the exact six-file pathset, then routes Execution with the bounded phone probe command from the repair report.",
+      "owner_thread": "019f1ac2-0f0f-7721-bf46-ad402dbd9050",
+      "research_escalation": {
+        "status": "none",
+        "reason": "first_missing_green_field narrowed and a source repair exists; no repeated same-field post-repair phone failure yet",
+        "packet_path": null
+      },
+      "nonclaims": [
+        "no C5 pass",
+        "no learning/model-quality claim",
+        "no Phase3/4 readiness claim",
+        "no 100k/1M authority",
+        "no Comet-backed accepted run unless actually executed"
+      ],
+      "do_not_do": [
+        "do not route Execution before custody",
+        "do not stage unrelated files",
+        "do not add raw payloads or secrets to git",
+        "do not invent prediction JSONL/loss/confidence/candidate_train_loss"
+      ]
+    }
+  }
 }

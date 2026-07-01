@@ -88,6 +88,24 @@ def test_native_c5_runtime_terminal_blocker_advances_to_lm_head_nll_writer() -> 
     )
 
 
+def test_native_c5_opencl_prompt_layer_uses_dynamic_attention_widths() -> None:
+    runtime_source = (
+        ROOT
+        / "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp"
+    ).read_text(encoding="utf-8")
+    opencl_source = (
+        ROOT
+        / "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/opencl_layer_runner.cpp"
+    ).read_text(encoding="utf-8")
+
+    assert "weights.self_attn_q_proj_weight.size() / hidden" in runtime_source
+    assert "weights.self_attn_k_proj_weight.size() / hidden" in runtime_source
+    assert "const std::uint32_t q_width =" in opencl_source
+    assert "dispatch_attention_scores(runtime, kernels.attention_scores" in opencl_source
+    assert "query_heads_i, key_value_heads_i" in opencl_source
+    assert "const std::size_t query_width = kAttentionHeads * kHeadDim" not in runtime_source
+
+
 def test_native_c5_runtime_rejects_short_rank16_adapter_payload_before_opencl(
     tmp_path: Path,
 ) -> None:
