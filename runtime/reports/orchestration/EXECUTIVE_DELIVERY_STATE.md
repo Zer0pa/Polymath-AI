@@ -4,54 +4,53 @@ Updated UTC: `2026-07-01T21:32:38Z`
 
 ## Current Gate
 
-`WaveB_C5_after_C1_bounded_42_layer_phone_probe_metadata_pending_after_native_42_layer_custody`
+`WaveB_C5_after_C1_chunked_lm_head_nll_writer_pending_after_42_layer_orchestration_green`
 
-Status classification: `PENDING_ACTION_EXECUTION_RETURN_BOUNDED_42_LAYER_PHONE_PROBE_METADATA`
+Status classification: `PENDING_ACTION_PHASE34_CHUNKED_LM_HEAD_NLL_WRITER_AFTER_42_LAYER_GREEN`
 
-Owner: Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c is active parsing the bounded 42-layer phone probe result after Repo Custodian froze the native 42-layer orchestration pathset.
+Owner: Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 owns the next bounded native C5 runtime implementation slice: chunked LM-head/NLL writer. Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050 owns the metadata-only probe evidence and central mirror freeze in parallel.
 
 User action required: `false`
 
 Dominant failure domain: `phase5_eval_failure`
 
-Research escalation: `none` - first missing field has continued narrowing; the expected next runtime field after this bounded probe is chunked LM-head/NLL writer unless Execution reports a more precise 42-layer runtime field.
+Research escalation: `none` - the first missing field advanced from 42-layer orchestration to chunked LM-head/NLL writer.
 
 ## Artifact Waiting On
 
-- Repo Custodian froze the native 42-layer orchestration pathset and central mirror at commit 412f705acb0add7ee33d80947568722054932896 on origin/gemma4-megakernel-native-training.
-- Frozen source/test/report identities remain: c5_full_decoder_runtime.cpp SHA ea8a833fa10e623a3c864b5c9d89c54f756c0b7fdb0763a3b7863e3ad76ac8c2; test_c5_native_runtime_contract.py SHA f99e4c7d811abcc60dc1c58aa9ef2394db8aea035a397c661af82f029ba20ed7; 42-layer report SHA 7bff0d8eaa3afd911c04602a0ef730c69c3f3f468fd3d5d26db1808aabc098b0.
-- Execution consumed commit 412f705acb0add7ee33d80947568722054932896, verified the frozen host pathset, restored the Termux SSH route, built/copied gemma4_layer_runner_c5_42_layer_orchestration, and verified C5/OpenCL help flags.
-- Execution ran exactly one bounded C5_after_C1 forced vendor OpenCL probe from the frozen report command; it reported exit code 13 after 104 seconds, prediction JSONL not written, metadata copied, and final parsing in progress.
-- Current artifact waiting on is Execution CENTRAL_STATE_UPDATE with metadata-only stdout/stderr/meminfo SHAs, first_missing_green_field, raw-boundary proof, and NEXT_HANDOFF.
-- Expected downstream runtime field if the 42-layer orchestration proof advanced as designed: c5_full_decoder_chunked_lm_head_nll_writer_missing; do not claim C5 pass or metrics.
+- Execution completed the bounded 42-layer phone probe after consuming custody commit 412f705acb0add7ee33d80947568722054932896.
+- Phone runner: /data/data/com.termux/files/home/polymath_c5/C5_after_C1/bin/gemma4_layer_runner_c5_42_layer_orchestration; SHA 31015b6844e20d74cd67f69cbb152fa4ccba4200992d3d60cc458d145afda23c; bytes 554312.
+- Probe ran exactly once with --opencl-library /vendor/lib64/libOpenCL.so; exit code 13; elapsed 104 seconds; native status blocked; prediction JSONL written false.
+- First missing green field advanced to c5_full_decoder_chunked_lm_head_nll_writer_missing; 42-layer orchestration is green for this bounded proof.
+- Metadata-only evidence root: runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_42_layer_orchestration_20260701T213036Z.
+- Repo Custodian must freeze the seven metadata evidence files plus central JSON/MD; this supersedes the earlier two-file probe-active mirror request unless it has already committed.
+- Phase3/4 must implement or return a precise blocker for the chunked LM-head/NLL writer behind the existing --run-c5-qa-predict path; no new evaluator or metrics shortcut.
 
 ## Last Concrete Action
 
-Repo Custodian completed the five-file native 42-layer orchestration custody freeze at 412f705acb0add7ee33d80947568722054932896 and directly handed the bounded phone probe to Execution. Execution verified the frozen pathset, rebuilt/copied the phone runner, restored Termux SSH, ran the single bounded forced-vendor OpenCL C5_after_C1 probe, observed fail-closed exit 13 after 104 seconds with no prediction JSONL, and is parsing compact metadata evidence.
+Execution consumed native 42-layer custody commit 412f705acb0add7ee33d80947568722054932896, rebuilt/copied runner gemma4_layer_runner_c5_42_layer_orchestration on Termux, ran exactly one bounded C5_after_C1 forced-vendor OpenCL probe, and returned metadata-only evidence. The probe failed closed with exit 13 after 104 seconds, did not write prediction JSONL, and advanced the first missing green field to c5_full_decoder_chunked_lm_head_nll_writer_missing.
 
 ## First Missing Green Field
 
-Current execution field: `bounded_42_layer_phone_probe_metadata_return_pending`
-
-Expected runtime field after probe metadata returns: `c5_full_decoder_chunked_lm_head_nll_writer_missing`
+Current implementation field: `c5_full_decoder_chunked_lm_head_nll_writer_missing`
 
 ## Next Concrete Action
 
-Execution must return the bounded 42-layer phone probe CENTRAL_STATE_UPDATE with stdout/stderr/meminfo SHA-256s, exact first_missing_green_field, raw-boundary proof, and NEXT_HANDOFF. If the field advances to chunked LM-head/NLL writer, Meta updates central state and routes Phase3/4 for that implementation slice; if 42-layer repeats, route exact failing runtime evidence back to Phase3/4.
+Phase3/4 must implement the bounded chunked LM-head/NLL writer slice or return the exact source/runtime blocker. In parallel, Repo Custodian freezes the central mirror and seven metadata-only probe evidence files; Execution remains parked until a frozen Phase3/4 pathset or bounded probe command exists.
 
 ## Drift Deletion / Hardening
 
-Hardened stale custody-pending state after Repo Custodian completed commit 412f705acb0add7ee33d80947568722054932896. Do not regress to rank16, multi-token, SP-HAL, exporter, tokenizer, PLE, or model-source blockers unless new lane evidence reopens them.
+Hardened stale probe-active mirror drift: Execution completed the bounded 42-layer probe, so the active edge is now chunked LM-head/NLL writer implementation. The prior two-file central mirror custody request is superseded by the metadata evidence plus central mirror freeze unless already committed. Do not regress to model source, exporter schema, tokenizer/tensor loader, PLE, SP-HAL/OpenCL, multi-token orchestration, rank16 injection, or 42-layer orchestration blockers without new evidence.
 
 ## Recursive Improvement Next Step
 
-Wait for Execution metadata return from the one bounded probe, then route exactly one falsifiable next repair: chunked LM-head/NLL writer if exposed, or the exact repeated 42-layer runtime field if not. No broader research escalation while the first missing field is still narrowing.
+Route exactly one falsifiable implementation slice for chunked LM-head/NLL writer. If it returns a custody-ready pathset, freeze it and run one bounded phone proof; if it returns a blocker, route that smallest source/runtime contract repair. Research escalation remains none while the first missing field is advancing.
 
 ## Threads Nudged This Tick
 
-- Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: routed two-file central mirror correction after native 42-layer custody completed and Execution probe began.
-- Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: active parsing bounded phone probe metadata; no nudge.
-- Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4: prior pathset frozen; parked until Execution returns next runtime field.
+- Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: routed superseding nine-file metadata evidence plus central mirror freeze; previous two-file probe-active mirror request is stale unless already committed.
+- Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4: nudged to implement/return precise blocker for c5_full_decoder_chunked_lm_head_nll_writer_missing.
+- Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: completed bounded 42-layer proof; parked until next frozen implementation/probe command.
 - Training Material Steward, Pipeline Integrator, UI Engineer, Engineering Orchestrator: not current owner; no nudge.
 
 ## Nonclaims Preserved
