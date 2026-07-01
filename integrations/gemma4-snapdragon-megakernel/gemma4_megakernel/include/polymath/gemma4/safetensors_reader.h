@@ -37,6 +37,9 @@ class SafetensorsReader {
   Status validate_tensor(const std::string& key,
                          const std::vector<std::uint64_t>& expected_shape,
                          const std::vector<std::string>& allowed_dtypes) const;
+  Status read_tensor_bytes(const std::string& key,
+                           std::uint64_t max_bytes,
+                           std::vector<std::uint8_t>& output) const;
 
  private:
   SafetensorsMetadata metadata_;

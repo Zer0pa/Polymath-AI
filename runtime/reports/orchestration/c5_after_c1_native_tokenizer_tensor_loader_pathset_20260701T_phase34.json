@@ -1,0 +1,97 @@
+{
+  "schema_version": "polymath_c5_after_c1_native_tokenizer_tensor_loader_pathset_v1",
+  "lane": "phase34_native_full_decoder_logits_runtime",
+  "status": "native_full_decoder_prereq_pathset_ready_for_custodian",
+  "base_frozen_compute_failure_commit": "a5b66d0b6eb69a18f67e98afc00aeab6eef3faa8",
+  "governing_gate": "WaveB_C5_after_C1_native_full_decoder_streamed_compute_kernel_missing_after_schema_complete_component_pack",
+  "implemented_this_step": [
+    "exposed reusable native Gemma BPE tokenizer behind include/polymath/gemma4/gemma_bpe_tokenizer.h",
+    "linked reusable tokenizer into gemma4_megakernel_core",
+    "added bounded SafetensorsReader::read_tensor_bytes with max-byte, range, empty, and truncation checks",
+    "wired C5 runtime to load/encode heldout QA question and answer through the native tokenizer before compute",
+    "wired C5 runtime to read a bounded tensor value from source model safetensors before compute",
+    "removed tensor-value-loader and QA-prompt-token-runtime from the generic missing-body list once their fail-closed prerequisites pass"
+  ],
+  "remaining_first_missing_green_field": "c5_full_decoder_streamed_compute_kernel_missing",
+  "remaining_compute_bodies": [
+    "c5_full_decoder_attention_mlp_kernel_missing",
+    "c5_full_decoder_rank16_adapter_injection_missing",
+    "c5_full_decoder_chunked_lm_head_nll_writer_missing"
+  ],
+  "source_pathset": {
+    "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/CMakeLists.txt": {
+      "sha256": "fecc8f4050f1f63774ac0ea2bae329b3a4e4e3b437a9a5592fb6afc38c2fb2cc",
+      "role": "links gemma_bpe_tokenizer.cpp into gemma4_megakernel_core"
+    },
+    "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/include/polymath/gemma4/gemma_bpe_tokenizer.h": {
+      "sha256": "7a8d9ab385c5fbf655aa46a32ab5cfb642caa95ac5a8cffe5e5fdcefc15535a8",
+      "role": "declares reusable native Gemma BPE tokenizer interface for C5 runtime"
+    },
+    "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/data/gemma_bpe_tokenizer.cpp": {
+      "sha256": "2409e81db049c9c66a84a4bc8f4f8e55844a5e3816f427c1ef279ecf6b8cd48d",
+      "role": "implements native vocab.hex.tsv/merges.hex.tsv BPE loading and encoding"
+    },
+    "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/include/polymath/gemma4/safetensors_reader.h": {
+      "sha256": "f9a1833e661ba2555084eb93d4fe30095ace4b27165e4cb6daf53a35985f6db7",
+      "role": "adds bounded tensor byte read API"
+    },
+    "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/model/safetensors_reader.cpp": {
+      "sha256": "b69a121c7e3e96d60e6fe6e3823e93981ed9c42d7baa6c9687d425129f99eb32",
+      "role": "implements bounded tensor byte reads without report emission"
+    },
+    "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp": {
+      "sha256": "0881fcd798ac9310f2db0fc775b8b132c754b74a0beaf1d8b515e53c790df926",
+      "role": "uses tokenizer runtime and bounded tensor value loader before remaining streamed compute blockers"
+    },
+    "tests/test_c5_native_runtime_contract.py": {
+      "sha256": "eb71d5526521e0f76799ba9b52246f439387892ba5ba7afaac546e29f834a917",
+      "role": "proves valid runtime reaches compute blocker while empty tensor and malformed tokenizer fail before compute"
+    }
+  },
+  "verification_commands": [
+    {
+      "command": "cmake -S integrations/gemma4-snapdragon-megakernel/gemma4_megakernel -B build/gemma4_megakernel_host -DGEMMA4_MEGAKERNEL_WARNINGS_AS_ERRORS=ON && cmake --build build/gemma4_megakernel_host --target gemma4_layer_runner -j 8",
+      "result": "built"
+    },
+    {
+      "command": "python3.11 -m pytest -q tests/test_c5_native_runtime_contract.py",
+      "result": "9 passed in 3.64s"
+    },
+    {
+      "command": "python3.11 -m pytest -q tests/test_c5_full_decoder_exporter.py tests/test_c5_native_runtime_contract.py tests/test_c5_phase34_qa_inference_producer.py tests/test_c5_prediction_payloads.py",
+      "result": "32 passed in 10.74s"
+    },
+    {
+      "command": "cmake --build build/gemma4_megakernel_host --target gemma4_layer_runner -j 8 && ctest --test-dir build/gemma4_megakernel_host --output-on-failure",
+      "result": "4/4 CTest passed"
+    },
+    {
+      "command": "git diff --check -- <native tokenizer/tensor loader pathset>",
+      "result": "passed"
+    }
+  ],
+  "next_action": "Custodian freezes this seven-file prerequisite pathset. Phase3/4 then implements streamed attention/MLP, rank-16 adapter injection, and chunked LM-head/NLL writer behind existing --run-c5-qa-predict.",
+  "raw_boundary_proof": {
+    "raw_model_payload_copied_to_git": false,
+    "raw_tensor_payload_copied_to_git": false,
+    "raw_checkpoint_or_adapter_payload_copied_to_git": false,
+    "raw_qa_payload_copied_to_git": false,
+    "prediction_jsonl_emitted_by_this_step": false,
+    "phone_gate_run": false,
+    "hf_or_comet_called": false,
+    "secrets_printed": false,
+    "staged_or_committed": false
+  },
+  "user_action_required": false,
+  "nonclaims": [
+    "no C5 pass",
+    "no executed C5 metrics",
+    "no prediction JSONL emitted",
+    "no logits, loss, confidence, or candidate_train_loss claim",
+    "no learning or model-quality claim",
+    "no Phase3 readiness claim",
+    "no Phase4 readiness claim",
+    "no 100k or 1M authority",
+    "no Comet-backed accepted run"
+  ]
+}

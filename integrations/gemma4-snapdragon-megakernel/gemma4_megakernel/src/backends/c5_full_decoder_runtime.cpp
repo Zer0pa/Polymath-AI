@@ -7,6 +7,7 @@
 #include <string>
 #include <vector>
 
+#include "polymath/gemma4/gemma_bpe_tokenizer.h"
 #include "polymath/gemma4/safetensors_reader.h"
 #include "polymath/gemma4/sha256.h"
 
@@ -593,11 +594,85 @@ void append_tensor_role_blockers(const std::string& manifest,
   }
 }
 
+void append_tensor_value_loader_blockers(
+    const SourceModelIdentity& identity,
+    std::vector<std::string>& blockers) {
+  if (identity.path.empty() || !file_exists(identity.path)) {
+    return;
+  }
+  SafetensorsReader reader;
+  const Status open_status = reader.open(identity.path);
+  if (!open_status.is_ok()) {
+    blockers.push_back(open_status.message());
+    return;
+  }
+  std::vector<std::uint8_t> layer_scalar;
+  const Status read_status = reader.read_tensor_bytes(
+      "model.language_model.layers.0.layer_scalar", 4096U, layer_scalar);
+  if (!read_status.is_ok()) {
+    blockers.push_back(read_status.message());
+    return;
+  }
+  if (layer_scalar.empty()) {
+    blockers.push_back("c5_full_decoder_tensor_value_loader_empty");
+  }
+}
+
+std::string first_nonempty_jsonl_line(const std::string& path) {
+  std::ifstream file(path);
+  if (!file) {
+    throw std::runtime_error("heldout_qa_jsonl_read_failed");
+  }
+  std::string line;
+  while (std::getline(file, line)) {
+    bool has_content = false;
+    for (const char character : line) {
+      if (std::isspace(static_cast<unsigned char>(character)) == 0) {
+        has_content = true;
+        break;
+      }
+    }
+    if (has_content) {
+      return line;
+    }
+  }
+  return {};
+}
+
+void append_qa_prompt_token_runtime_blockers(
+    const C5QaInferenceRequest& request,
+    std::vector<std::string>& blockers) {
+  try {
+    GemmaBpeTokenizer tokenizer;
+    tokenizer.load(request.tokenizer_dir);
+    const std::string record = first_nonempty_jsonl_line(request.heldout_qa_jsonl_path);
+    if (record.empty()) {
+      blockers.push_back("c5_qa_prompt_token_runtime_heldout_empty");
+      return;
+    }
+    const std::string question = string_field(record, "question");
+    const std::string answer = string_field(record, "answer");
+    if (question.empty()) {
+      blockers.push_back("c5_qa_prompt_token_runtime_question_missing");
+    }
+    if (answer.empty()) {
+      blockers.push_back("c5_qa_prompt_token_runtime_answer_missing");
+    }
+    if (!question.empty() && tokenizer.encode(question).empty()) {
+      blockers.push_back("c5_qa_prompt_token_runtime_question_tokens_empty");
+    }
+    if (!answer.empty() && tokenizer.encode(answer).size() <= 1U) {
+      blockers.push_back("c5_qa_prompt_token_runtime_answer_tokens_empty");
+    }
+  } catch (const std::exception& error) {
+    blockers.push_back(std::string("c5_qa_prompt_token_runtime_error:") +
+                       error.what());
+  }
+}
+
 void append_full_decoder_compute_kernel_blockers(
     C5FullDecoderRuntimeResult& result) {
   result.blockers.push_back("c5_full_decoder_streamed_compute_kernel_missing");
-  result.blockers.push_back("c5_full_decoder_tensor_value_loader_missing");
-  result.blockers.push_back("c5_full_decoder_qa_prompt_token_runtime_missing");
   result.blockers.push_back("c5_full_decoder_attention_mlp_kernel_missing");
   result.blockers.push_back("c5_full_decoder_rank16_adapter_injection_missing");
   result.blockers.push_back("c5_full_decoder_chunked_lm_head_nll_writer_missing");
@@ -617,6 +692,12 @@ C5FullDecoderRuntimeResult run_c5_full_decoder_runtime(
         parse_source_model_identity(manifest, result.blockers);
     append_source_model_blockers(identity, result, result.blockers);
     append_tensor_role_blockers(manifest, identity, result, result.blockers);
+    if (result.blockers.empty()) {
+      append_tensor_value_loader_blockers(identity, result.blockers);
+    }
+    if (result.blockers.empty()) {
+      append_qa_prompt_token_runtime_blockers(request, result.blockers);
+    }
   } catch (const std::exception& error) {
     result.blockers.push_back(std::string("c5_full_decoder_runtime_error:") +
                               error.what());

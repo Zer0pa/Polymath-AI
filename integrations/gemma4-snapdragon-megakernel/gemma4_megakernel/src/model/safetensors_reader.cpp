@@ -361,4 +361,39 @@ Status SafetensorsReader::validate_tensor(
   return Status::ok();
 }
 
+Status SafetensorsReader::read_tensor_bytes(
+    const std::string& key,
+    std::uint64_t max_bytes,
+    std::vector<std::uint8_t>& output) const {
+  output.clear();
+  const SafetensorsTensorInfo* tensor = find_tensor(key);
+  if (tensor == nullptr) {
+    return Status::invalid("safetensors_tensor_missing:" + key);
+  }
+  if (tensor->byte_length == 0U) {
+    return Status::invalid("safetensors_tensor_empty:" + key);
+  }
+  if (max_bytes == 0U || tensor->byte_length > max_bytes) {
+    return Status::invalid("safetensors_tensor_read_exceeds_limit:" + key);
+  }
+  if (tensor->absolute_data_offset_end > metadata_.file_size_bytes ||
+      tensor->absolute_data_offset_end < tensor->absolute_data_offset_begin) {
+    return Status::invalid("safetensors_tensor_range_invalid:" + key);
+  }
+  std::ifstream file(metadata_.path, std::ios::binary);
+  if (!file) {
+    return Status::invalid("safetensors_file_open_failed");
+  }
+  file.seekg(static_cast<std::streamoff>(tensor->absolute_data_offset_begin),
+             std::ios::beg);
+  output.resize(static_cast<std::size_t>(tensor->byte_length));
+  file.read(reinterpret_cast<char*>(output.data()),
+            static_cast<std::streamsize>(output.size()));
+  if (file.gcount() != static_cast<std::streamsize>(output.size())) {
+    output.clear();
+    return Status::invalid("safetensors_tensor_read_truncated:" + key);
+  }
+  return Status::ok();
+}
+
 }  // namespace polymath::gemma4

@@ -75,7 +75,7 @@ def test_native_c5_runtime_accepts_layer_variant_attention_layout(tmp_path: Path
     assert payload["first_missing_green_field"] == "c5_full_decoder_streamed_compute_kernel_missing"
     assert payload["blockers"][:2] == [
         "c5_full_decoder_streamed_compute_kernel_missing",
-        "c5_full_decoder_tensor_value_loader_missing",
+        "c5_full_decoder_attention_mlp_kernel_missing",
     ]
     assert not paths["output_jsonl"].exists()
 
@@ -95,7 +95,7 @@ def test_native_c5_runtime_accepts_independent_k_norm_width(tmp_path: Path) -> N
     assert payload["first_missing_green_field"] == "c5_full_decoder_streamed_compute_kernel_missing"
     assert payload["blockers"][:2] == [
         "c5_full_decoder_streamed_compute_kernel_missing",
-        "c5_full_decoder_tensor_value_loader_missing",
+        "c5_full_decoder_attention_mlp_kernel_missing",
     ]
     assert not paths["output_jsonl"].exists()
 
@@ -113,6 +113,44 @@ def test_native_c5_runtime_rejects_incompatible_norm_width(tmp_path: Path) -> No
 
     assert result.returncode == 13
     assert "safetensors_attention_q_norm_shape_mismatch:5" in payload["blockers"]
+    assert not paths["output_jsonl"].exists()
+
+
+def test_native_c5_runtime_rejects_empty_tensor_value_before_compute(tmp_path: Path) -> None:
+    paths = _write_component_pack(
+        tmp_path,
+        tensor_mutation=lambda key, entry: entry.update({"data_offsets": [4, 4]})
+        if key.endswith("layers.0.layer_scalar")
+        else None,
+    )
+
+    result = _run_native(paths)
+    payload = json.loads(result.stdout)
+
+    assert result.returncode == 13
+    assert (
+        "safetensors_tensor_empty:model.language_model.layers.0.layer_scalar"
+        in payload["blockers"]
+    )
+    assert "c5_full_decoder_streamed_compute_kernel_missing" not in payload["blockers"]
+    assert not paths["output_jsonl"].exists()
+
+
+def test_native_c5_runtime_rejects_malformed_tokenizer_before_compute(tmp_path: Path) -> None:
+    paths = _write_component_pack(tmp_path)
+    merges = paths["tokenizer"] / "merges.hex.tsv"
+    merges.write_text("61 62\t63\n", encoding="utf-8")
+    _rewrite_manifest_tokenizer_merges_sha(paths["pack"] / "decoder_manifest.json", _sha256_file(merges))
+
+    result = _run_native(paths)
+    payload = json.loads(result.stdout)
+
+    assert result.returncode == 13
+    assert any(
+        item.startswith("c5_qa_prompt_token_runtime_error:malformed merge line")
+        for item in payload["blockers"]
+    )
+    assert "c5_full_decoder_streamed_compute_kernel_missing" not in payload["blockers"]
     assert not paths["output_jsonl"].exists()
 
 
@@ -211,7 +249,7 @@ def _write_component_pack(
     vocab = tokenizer / "vocab.hex.tsv"
     merges = tokenizer / "merges.hex.tsv"
     vocab.write_text("61\t0\n", encoding="utf-8")
-    merges.write_text("61 62\t63\n", encoding="utf-8")
+    merges.write_text("61\t62\t63\n", encoding="utf-8")
     checkpoint = tmp_path / "adapter_post_rank16.f32.bin"
     checkpoint.write_bytes(b"candidate")
     checkpoint_sha = _sha256_file(checkpoint)
@@ -370,6 +408,7 @@ def _tensor_role_inventory(entries: dict[str, dict]) -> dict:
 
 
 def _write_mock_safetensors(path: Path, *, tensor_mutation=None) -> dict[str, dict]:
+    data = bytearray(b"abcd")
     header: dict[str, dict] = {
         "model.language_model.embed_tokens.weight": {
             "dtype": "BF16",
@@ -381,12 +420,18 @@ def _write_mock_safetensors(path: Path, *, tensor_mutation=None) -> dict[str, di
         prefix = f"model.language_model.layers.{layer_index}."
         for _role, (suffix, shape) in ROLE_SHAPES.items():
             key = prefix + suffix
-            header[key] = {"dtype": "BF16", "shape": shape, "data_offsets": [4, 4]}
+            if layer_index == 0 and suffix == "layer_scalar":
+                start = len(data)
+                data.extend(b"\x00\x3f")
+                offsets = [start, len(data)]
+            else:
+                offsets = [len(data), len(data)]
+            header[key] = {"dtype": "BF16", "shape": shape, "data_offsets": offsets}
             if tensor_mutation:
                 tensor_mutation(key, header[key])
     header_bytes = json.dumps(header, separators=(",", ":")).encode("utf-8")
     tensor_data_start = 8 + len(header_bytes)
-    path.write_bytes(len(header_bytes).to_bytes(8, "little") + header_bytes + b"abcd")
+    path.write_bytes(len(header_bytes).to_bytes(8, "little") + header_bytes + data)
     entries = {}
     for key, entry in header.items():
         start, end = entry["data_offsets"]
@@ -396,6 +441,12 @@ def _write_mock_safetensors(path: Path, *, tensor_mutation=None) -> dict[str, di
             "byte_length": end - start,
         }
     return entries
+
+
+def _rewrite_manifest_tokenizer_merges_sha(path: Path, merges_sha: str) -> None:
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    payload["tokenizer_identity"]["merges_hex_tsv_sha256"] = merges_sha
+    path.write_text(json.dumps(payload, sort_keys=True), encoding="utf-8")
 
 
 def _sha256_file(path: Path) -> str:
