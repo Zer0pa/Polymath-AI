@@ -1,14 +1,14 @@
 # Executive Delivery State
 
-Updated UTC: `2026-07-01T03:25:17Z`
+Updated UTC: `2026-07-01T03:35:17Z`
 
 ## Current Gate
 
-`WaveB_C5_after_C1_c5_qa_component_validation_hardening_pending_custody`
+`WaveB_C5_after_C1_decoder_manifest_lmhead_adapter_policy_logits_missing`
 
-Status classification: `PENDING_ACTION_REPO_CUSTODY_C5_QA_COMPONENT_VALIDATION_HARDENING`
+Status classification: `PENDING_ACTION_ENGINEERING_C5_QA_DECODER_MANIFEST_RUNTIME_COMPONENTS`
 
-Owner: `Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050 owns freeze of the Engineering C5 QA runtime component-validation hardening pathset; Phase3/4 resumes tokenizer/decoder/LM-head/adapter-policy plus real logits generation after custody.`
+Owner: `Engineering Orchestrator 019f138b-d229-7640-98b7-2f185d6beae0 owns decoder_manifest, LM head/unembedding, adapter-site policy, and full decoder/logits implementation. Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 supports the native runner boundary. Execution Orchestrator resumes only after real prediction JSONL and finite candidate_train_loss exist. Repo Custodian freezes the metadata-only inventory/state pathset.`
 
 User action required: `false`
 
@@ -16,69 +16,69 @@ Dominant failure domain: `phase5_eval_failure`
 
 ## Artifact Waiting On
 
-- Repo Custodian freeze of the Engineering C5 QA runtime component-validation hardening pathset with exact SHA-256 checks.
-- After custody: outside-git Gemma `tokenizer_dir` compatible with the runtime loader, including `vocab.hex.tsv` and `merges.hex.tsv` or a parity manifest proving the equivalent tokenizer surface.
-- After custody: outside-git `decoder_manifest` or layer-pack manifest for the real full-decoder logits path.
-- After custody: outside-git LM head/unembedding identity and path, or a manifest proving it is already embedded in the decoder path.
-- After custody: adapter-site policy mapping the Phase4 rank-16 adapter payload into the decoder path without relabeling bridge MSE as QA loss.
-- After custody: native full-decoder logits/generation body behind `gemma4_layer_runner --run-c5-qa-predict` that emits per-record prediction/loss/confidence JSONL through the frozen producer contract.
-- After custody: finite `candidate_train_loss` from the same real logits/training objective, then outside-git candidate/stable prediction JSONL and `polymath_c5_executed_metrics_v1`.
+- Repo Custodian freeze of the metadata-only Phase3/4 runtime component inventory plus refreshed executive state mirror.
+- Outside-git decoder_manifest JSON identifying the real full Gemma4 decoder/logits path; not checkpoint-only metadata and not a two-layer diagnostic pack.
+- Outside-git LM head/unembedding tensor identity/path, or decoder manifest proof it is embedded, including dtype, shape, sha256, and logits vocabulary alignment.
+- Outside-git adapter-site policy mapping the Phase4 rank-16 adapter payload into an explicit decoder layer/site/tensor shape without relabeling bridge MSE as C5 loss.
+- Native full-decoder logits/generation body behind gemma4_layer_runner --run-c5-qa-predict that emits per-record prediction/loss/confidence JSONL through the frozen producer contract.
+- Finite candidate_train_loss from the same real logits/training objective, then outside-git candidate/stable prediction JSONL and polymath_c5_executed_metrics_v1.
 
 ## Last Concrete Action
 
-Engineering completed and verified a four-file C5 QA runtime component-validation hardening pathset. Meta verified the handoff SHA-256 values and inventory JSON validity, then nudged Repo Custodian with the exact freeze contract and fail-fast boundary.
+Repo Custodian previously froze C5 QA component hardening at 16c99dd7d7501f84b887fe121c6ecc367e22a8bc and central mirror at 7785224275b4e77c309013c8764c9b99c144abf5. Phase3/4 then produced metadata-only inventory /Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/orchestration/c5_after_c1_runtime_component_inventory_after_16c99_20260701T_phase34.json SHA 7b09bce3faa891544c46c5b6ed924a4359ebb3ffeb61ba331049f29580d0f07d, proving phone tokenizer tables are present and changing the first missing field from tokenizer_dir_missing to decoder_manifest_missing.
 
-Engineering verification reported:
+## Phase3/4 Inventory
 
-- `python3.11 -m pytest -q tests/test_c5_phase34_qa_inference_producer.py tests/test_c5_prediction_payloads.py` -> `8 passed`.
-- `python3.11 -m py_compile scripts/host/run_c5_phase34_qa_inference_producer.py polymath_ai/polar/c5_prediction_payloads.py` -> passed.
-- `git diff --check` on the hardening pathset -> clean.
-- `cmake --build build/gemma4_megakernel_host --target gemma4_layer_runner -j 8` -> built.
-- Native probe without components -> `tokenizer_dir_missing`.
-- Native probe with fake component paths -> `tokenizer_vocab_hex_missing` plus decoder/LM-head/policy path failures.
-
-## Pending Custody Pathset
-
-- `scripts/host/run_c5_phase34_qa_inference_producer.py` `93a2137ccc8c8e37e1541ebe61f34f5cfe35b63de2289f759c6cdcfca02290dd`
-- `integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_qa_inference.cpp` `09cba8af0efb0fec1a8b84f55515c8bd145bb381f436bbe9b52581cc98793e0d`
-- `tests/test_c5_phase34_qa_inference_producer.py` `c2bb18f1560ab1b760d09a4f53bf18065e36feed0706aff28a1e69599d8e8a7e`
-- `runtime/reports/orchestration/c5_after_c1_runtime_component_inventory_20260701T_engineering.json` `1a06cb7b28589877e7b1e3d7e3b1c47cb375a92dacd8b1632326bba11bc467c6`
-
-## Drift Deletion / Hardening
-
-Deleted/hardened the drift where bogus non-empty tokenizer/decoder/LM-head/adapter-policy paths could pass the C5 QA runtime boundary. The host wrapper now rejects bad component paths before native invocation, and native `--run-c5-qa-predict` verifies tokenizer `vocab.hex.tsv`/`merges.hex.tsv`, decoder manifest file, LM-head/unembedding file, and adapter policy file.
-
-Remaining runtime drift is the missing real decoder/logits path. Bridge MSE, fail-closed producer reports, and metadata-only identity reports remain forbidden as substitutes for C5 loss, prediction JSONL, `candidate_train_loss`, or learning metrics.
-
-## Next Concrete Action
-
-Repo Custodian freezes exactly the four-file hardening pathset plus this central state mirror if clean. After custody, Phase3/4 wires outside-git `tokenizer_dir`, `decoder_manifest`, LM head/unembedding, adapter-site policy, and real full-decoder logits/generation. Execution resumes only after finite `candidate_train_loss` and outside-git prediction JSONL exist.
-
-Recursive improvement next step: Custodian freeze -> Phase3/4 real runtime components/logits -> Execution outside-git prediction JSONL and C5 metrics -> Pipeline validation -> smallest measured repair loop.
-
-## Threads Nudged This Tick
-
-- Repo Custodian `019f1ac2-0f0f-7721-bf46-ad402dbd9050`: exact hardening pathset freeze request with verification and fail-fast boundary.
+- Inventory report: `/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/orchestration/c5_after_c1_runtime_component_inventory_after_16c99_20260701T_phase34.json`
+- Inventory SHA-256: `7b09bce3faa891544c46c5b6ed924a4359ebb3ffeb61ba331049f29580d0f07d`
+- Consumed source commit: `16c99dd7d7501f84b887fe121c6ecc367e22a8bc`
+- Head commit seen by inventory: `7785224275b4e77c309013c8764c9b99c144abf5`
+- Tokenizer dir: `/data/local/tmp/polymath_gemma4_gate/tokenizer/gemma4_e4b_bpe_v1`
+- Tokenizer vocab SHA: `0e43bafc96037bed92fabea31282eb10ad094ec921748a58f6be10dbf9796f74`
+- Tokenizer merges SHA: `6c99efe1bfe6b70092d531cad0a57278182652a2380aa5fb33e99d4e4eeb905f`
 
 ## First Missing Green Field
 
-`repo_custody_freeze_of_c5_component_validation_hardening_pathset`
+`decoder_manifest_missing`
 
-After custody: `tokenizer_dir_missing`, then `decoder_manifest_missing`, `lm_head_or_unembedding_missing`, `adapter_site_policy_missing`, native full-decoder logits generation, finite `candidate_train_loss`, outside-git prediction JSONL, and `polymath_c5_executed_metrics_v1`.
+Expected: outside-git full decoder/logits manifest passed as `--decoder-manifest`, not checkpoint-only metadata and not a two-layer diagnostic pack.
+
+Then: `lm_head_or_unembedding_missing`, `adapter_site_policy_missing`, native full-decoder logits/generation body, finite `candidate_train_loss`, outside-git prediction JSONL, and `polymath_c5_executed_metrics_v1`.
+
+## Drift Deletion / Hardening
+
+Deleted stale routing assumption that tokenizer_dir is still first missing. Fresh Phase3/4 phone-public-root proof shows tokenizer tables are present under /data/local/tmp/polymath_gemma4_gate/tokenizer/gemma4_e4b_bpe_v1. Remaining drift/pending hardening is absence of a real full decoder/logits manifest/runtime; bridge MSE, fail-closed reports, and metadata-only identities remain forbidden as substitutes for C5 loss, prediction JSONL, candidate_train_loss, or learning metrics.
+
+## Next Concrete Action
+
+Engineering must supply/build the outside-git full decoder/logits manifest, LM head/unembedding identity, and adapter-site policy, then implement the real native decode/loss body behind gemma4_layer_runner --run-c5-qa-predict. If that cannot proceed in one pathset, return the exact missing field/schema/path and smallest next implementation action. Custodian should freeze the metadata-only inventory and refreshed central state pathset.
+
+Recursive improvement next step: decoder_manifest + LM head/unembedding + adapter-site policy -> native full decoder logits/generation -> Execution outside-git prediction JSONL and candidate_train_loss -> heldout C5 metrics JSON -> Pipeline validation -> Custodian freeze -> smallest measured repair loop.
+
+## Custody Pathset Requested
+
+- `runtime/reports/orchestration/c5_after_c1_runtime_component_inventory_after_16c99_20260701T_phase34.json` `7b09bce3faa891544c46c5b6ed924a4359ebb3ffeb61ba331049f29580d0f07d`
+- `runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json` `150e246ced93be1aa70b760181136f7fcc22ec480891e97be535be93ae7aa8d4`
+- `runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md` current on-disk SHA should be verified by Custodian; this file does not self-embed its own final hash.
+
+## Threads Nudged This Tick
+
+- Engineering Orchestrator `019f138b-d229-7640-98b7-2f185d6beae0`: decoder manifest, LM-head/unembedding, adapter-site policy, and logits implementation request.
+- Repo Custodian `019f1ac2-0f0f-7721-bf46-ad402dbd9050`: metadata-only inventory and central state freeze request.
 
 ## Nonclaims Preserved
 
-- Development-cycle evidence only unless stronger gates pass.
-- No C5 pass.
-- No prediction JSONL emitted from a real runtime yet.
-- No `candidate_train_loss` invented.
-- No bridge MSE relabeled as C5 loss.
-- No learning/model-quality claim.
-- No Phase3 readiness claim.
-- No Phase4 readiness claim.
-- Not 100k/1M Phase2 authority.
-- No Comet-backed accepted run claim yet.
+- development-cycle evidence only unless stronger gates pass.
+- no C5 pass.
+- no prediction JSONL emitted from real runtime yet.
+- no candidate_train_loss invented.
+- no bridge MSE relabeled as C5 loss.
+- no learning/model-quality claim.
+- no Phase3 readiness claim.
+- no Phase4 readiness claim.
+- not 100k/1M Phase2 authority.
+- no Comet-backed accepted run claim.
 
 ## State Hash
 
-`EXECUTIVE_DELIVERY_STATE.json` SHA after this update: `a8ffb25c274ad62a2fa3294a96502fd6d3e7a6347c762e9e60e75e1098c9ae3c`
+`EXECUTIVE_DELIVERY_STATE.json` SHA after this update: `150e246ced93be1aa70b760181136f7fcc22ec480891e97be535be93ae7aa8d4`
