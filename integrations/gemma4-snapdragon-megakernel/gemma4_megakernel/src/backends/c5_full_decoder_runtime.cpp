@@ -37,6 +37,7 @@ constexpr std::uint32_t kKeyValueHeads = 2;
 constexpr std::uint32_t kHeadDim = 256;
 constexpr std::uint32_t kSmallInputSize = 256;
 constexpr std::uint32_t kAdapterRank = 16;
+constexpr std::uint32_t kQaPromptWindowTokens = 16;
 constexpr std::uint64_t kAdapterPayloadBytes =
     static_cast<std::uint64_t>(kHiddenSize) * kAdapterRank * 2U * sizeof(float);
 
@@ -55,6 +56,15 @@ struct SourceModelIdentity {
 struct QaTokenization {
   std::vector<std::uint32_t> question_tokens;
   std::vector<std::uint32_t> answer_tokens;
+};
+
+struct QaRuntimeSequence {
+  std::vector<std::uint32_t> prompt_tokens;
+  std::vector<std::uint32_t> answer_target_tokens;
+  std::vector<std::uint32_t> position_ids;
+  std::vector<std::uint8_t> attention_mask;
+  std::vector<float> layer_input_rows;
+  std::vector<float> ple_input_rows;
 };
 
 struct SingleLayerBody {
@@ -1769,6 +1779,151 @@ void append_qa_prompt_token_runtime_blockers(
   }
 }
 
+std::uint32_t prompt_window_offset(const QaTokenization& tokenization) {
+  if (tokenization.question_tokens.size() <= kQaPromptWindowTokens) {
+    return 0U;
+  }
+  return static_cast<std::uint32_t>(tokenization.question_tokens.size() -
+                                    kQaPromptWindowTokens);
+}
+
+std::vector<std::uint32_t> prompt_window_tokens(
+    const QaTokenization& tokenization) {
+  std::vector<std::uint32_t> tokens;
+  if (tokenization.question_tokens.empty()) {
+    return tokens;
+  }
+  const std::uint32_t offset = prompt_window_offset(tokenization);
+  tokens.insert(tokens.end(), tokenization.question_tokens.begin() + offset,
+                tokenization.question_tokens.end());
+  return tokens;
+}
+
+std::vector<std::uint32_t> answer_target_tokens(
+    const QaTokenization& tokenization) {
+  std::vector<std::uint32_t> tokens;
+  if (tokenization.answer_tokens.size() <= 1U) {
+    return tokens;
+  }
+  tokens.insert(tokens.end(), tokenization.answer_tokens.begin() + 1,
+                tokenization.answer_tokens.end());
+  return tokens;
+}
+
+Status append_row(std::vector<float>& rows,
+                  const std::vector<float>& row,
+                  std::uint32_t width,
+                  const std::string& label) {
+  if (row.size() != width) {
+    return Status::invalid(label + "_shape_mismatch");
+  }
+  const Status finite_status = ensure_finite_row(row, label);
+  if (!finite_status.is_ok()) {
+    return finite_status;
+  }
+  rows.insert(rows.end(), row.begin(), row.end());
+  return Status::ok();
+}
+
+Status build_multi_token_qa_prompt_sequence(
+    const SafetensorsReader& reader,
+    const QaTokenization& tokenization,
+    QaRuntimeSequence& sequence) {
+  sequence = QaRuntimeSequence{};
+  sequence.prompt_tokens = prompt_window_tokens(tokenization);
+  sequence.answer_target_tokens = answer_target_tokens(tokenization);
+  if (sequence.prompt_tokens.empty()) {
+    return Status::invalid("c5_full_decoder_multi_token_prompt_tokens_missing");
+  }
+  if (sequence.answer_target_tokens.empty()) {
+    return Status::invalid("c5_full_decoder_multi_token_answer_target_missing");
+  }
+  if (sequence.prompt_tokens.size() > kQaPromptWindowTokens) {
+    return Status::invalid("c5_full_decoder_multi_token_prompt_window_overflow");
+  }
+  sequence.attention_mask.assign(sequence.prompt_tokens.size(), 1U);
+  const std::uint32_t position_offset = prompt_window_offset(tokenization);
+  sequence.position_ids.reserve(sequence.prompt_tokens.size());
+  sequence.layer_input_rows.reserve(sequence.prompt_tokens.size() * kHiddenSize);
+  sequence.ple_input_rows.reserve(sequence.prompt_tokens.size() * kSmallInputSize);
+
+  for (std::size_t index = 0U; index < sequence.prompt_tokens.size(); ++index) {
+    const std::uint32_t token_id = sequence.prompt_tokens[index];
+    if (token_id >= kVocabSize) {
+      return Status::invalid("c5_full_decoder_token_id_out_of_vocab");
+    }
+    const std::uint32_t position =
+        position_offset + static_cast<std::uint32_t>(index);
+    sequence.position_ids.push_back(position);
+
+    std::vector<float> layer_input_row;
+    Status status = derive_layer_input_row(reader, token_id, layer_input_row);
+    if (!status.is_ok()) {
+      return status;
+    }
+    std::vector<float> ple_input_row;
+    status = derive_ple_input_row(reader, layer_input_row, token_id, 0U,
+                                  ple_input_row);
+    if (!status.is_ok()) {
+      return status;
+    }
+    status = append_row(sequence.layer_input_rows, layer_input_row, kHiddenSize,
+                        "c5_full_decoder_multi_token_layer_input_row");
+    if (!status.is_ok()) {
+      return status;
+    }
+    status = append_row(sequence.ple_input_rows, ple_input_row, kSmallInputSize,
+                        "c5_full_decoder_multi_token_ple_input_row");
+    if (!status.is_ok()) {
+      return status;
+    }
+
+    std::vector<float> normalized_row;
+    status = prepare_single_layer_input_norm_slice(reader, layer_input_row, 0U,
+                                                   normalized_row);
+    if (!status.is_ok()) {
+      return status;
+    }
+  }
+
+  for (const std::uint32_t token_id : sequence.answer_target_tokens) {
+    if (token_id >= kVocabSize) {
+      return Status::invalid("c5_full_decoder_answer_token_id_out_of_vocab");
+    }
+  }
+  if (sequence.position_ids.size() != sequence.prompt_tokens.size() ||
+      sequence.attention_mask.size() != sequence.prompt_tokens.size() ||
+      sequence.layer_input_rows.size() !=
+          sequence.prompt_tokens.size() * kHiddenSize ||
+      sequence.ple_input_rows.size() !=
+          sequence.prompt_tokens.size() * kSmallInputSize) {
+    return Status::invalid("c5_full_decoder_multi_token_sequence_shape_mismatch");
+  }
+  return Status::ok();
+}
+
+void append_multi_token_qa_prompt_sequence_blockers(
+    const SourceModelIdentity& identity,
+    const QaTokenization& tokenization,
+    QaRuntimeSequence& sequence,
+    std::vector<std::string>& blockers) {
+  sequence = QaRuntimeSequence{};
+  if (identity.path.empty() || !file_exists(identity.path)) {
+    return;
+  }
+  SafetensorsReader reader;
+  const Status open_status = reader.open(identity.path);
+  if (!open_status.is_ok()) {
+    blockers.push_back(open_status.message());
+    return;
+  }
+  const Status sequence_status =
+      build_multi_token_qa_prompt_sequence(reader, tokenization, sequence);
+  if (!sequence_status.is_ok()) {
+    blockers.push_back(sequence_status.message());
+  }
+}
+
 void append_numeric_decoder_primitive_blockers(
     std::vector<std::string>& blockers) {
   std::vector<float> output;
@@ -1821,8 +1976,6 @@ void append_numeric_decoder_primitive_blockers(
 
 void append_full_decoder_compute_kernel_blockers(
     C5FullDecoderRuntimeResult& result) {
-  result.blockers.push_back(
-      "c5_full_decoder_multi_token_qa_prompt_sequence_orchestration_missing");
   result.blockers.push_back("c5_full_decoder_rank16_adapter_stream_injection_missing");
   result.blockers.push_back("c5_full_decoder_42_layer_orchestration_missing");
   result.blockers.push_back("c5_full_decoder_chunked_lm_head_nll_writer_missing");
@@ -1835,6 +1988,7 @@ C5FullDecoderRuntimeResult run_c5_full_decoder_runtime(
   C5FullDecoderRuntimeResult result;
   try {
     QaTokenization tokenization;
+    QaRuntimeSequence runtime_sequence;
     SingleLayerBody layer0_body;
     const std::string manifest = read_text_file(request.decoder_manifest_path);
     append_architecture_blockers(manifest, result.blockers);
@@ -1851,6 +2005,11 @@ C5FullDecoderRuntimeResult run_c5_full_decoder_runtime(
     if (result.blockers.empty()) {
       append_qa_prompt_token_runtime_blockers(request, tokenization,
                                              result.blockers);
+    }
+    if (result.blockers.empty()) {
+      append_multi_token_qa_prompt_sequence_blockers(identity, tokenization,
+                                                     runtime_sequence,
+                                                     result.blockers);
     }
     if (result.blockers.empty()) {
       append_adapter_payload_blockers(request, result.blockers);

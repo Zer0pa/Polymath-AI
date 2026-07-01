@@ -54,6 +54,10 @@ def test_native_c5_runtime_validates_pack_then_stops_at_compute_kernel(tmp_path:
     assert payload["first_missing_green_field"].startswith(
         "c5_full_decoder_opencl_parity_runtime_unavailable:"
     )
+    assert (
+        "c5_full_decoder_multi_token_qa_prompt_sequence_orchestration_missing"
+        not in payload["blockers"]
+    )
     assert payload["raw_boundary_proof"]["raw_payload_bytes_in_report"] is False
     assert payload["raw_boundary_proof"]["prediction_jsonl_written"] is False
     assert not paths["output_jsonl"].exists()
@@ -300,6 +304,34 @@ def test_native_c5_runtime_rejects_malformed_tokenizer_before_compute(tmp_path: 
     assert (
         "c5_full_decoder_single_layer_attention_mlp_kernel_missing_after_ple_derivation"
         not in payload["blockers"]
+    )
+    assert not paths["output_jsonl"].exists()
+
+
+def test_native_c5_runtime_rejects_out_of_vocab_prompt_before_opencl(
+    tmp_path: Path,
+) -> None:
+    paths = _write_component_pack(tmp_path)
+    vocab = paths["tokenizer"] / "vocab.hex.tsv"
+    vocab.write_text("61\t262144\n", encoding="utf-8")
+    _rewrite_manifest_tokenizer_vocab_sha(
+        paths["pack"] / "decoder_manifest.json", _sha256_file(vocab)
+    )
+    paths["heldout"].write_text(
+        json.dumps({"record_id": "r1", "question": "a", "answer": "a"}) + "\n",
+        encoding="utf-8",
+    )
+
+    result = _run_native(paths)
+    payload = json.loads(result.stdout)
+
+    assert result.returncode == 13
+    assert payload["first_missing_green_field"] == (
+        "c5_full_decoder_token_id_out_of_vocab"
+    )
+    assert not any(
+        item.startswith("c5_full_decoder_opencl_parity_runtime_unavailable:")
+        for item in payload["blockers"]
     )
     assert not paths["output_jsonl"].exists()
 
@@ -672,6 +704,12 @@ def _write_mock_safetensors(
 def _rewrite_manifest_tokenizer_merges_sha(path: Path, merges_sha: str) -> None:
     payload = json.loads(path.read_text(encoding="utf-8"))
     payload["tokenizer_identity"]["merges_hex_tsv_sha256"] = merges_sha
+    path.write_text(json.dumps(payload, sort_keys=True), encoding="utf-8")
+
+
+def _rewrite_manifest_tokenizer_vocab_sha(path: Path, vocab_sha: str) -> None:
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    payload["tokenizer_identity"]["vocab_hex_tsv_sha256"] = vocab_sha
     path.write_text(json.dumps(payload, sort_keys=True), encoding="utf-8")
 
 

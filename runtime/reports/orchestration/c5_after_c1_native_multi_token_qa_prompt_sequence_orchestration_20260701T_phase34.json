@@ -1,0 +1,147 @@
+{
+  "schema_version": "polymath_phase34_native_multi_token_qa_prompt_sequence_orchestration_v1",
+  "created_utc": "20260701T195413Z",
+  "lane": "phase34_c5_native_runtime",
+  "status": "native_multi_token_qa_prompt_sequence_orchestration_pathset_ready_for_custodian",
+  "governing_gate": "WaveB_C5_after_C1_multi_token_qa_prompt_sequence_orchestration_pending_after_sphal_opencl_route_green",
+  "first_missing_green_field_before_repair": "c5_full_decoder_multi_token_qa_prompt_sequence_orchestration_missing",
+  "first_missing_green_field_after_repair_pending_execution": "c5_full_decoder_rank16_adapter_stream_injection_missing",
+  "research_escalation": "none; first_missing_green_field advanced after SP-HAL OpenCL route green and the source boundary was direct",
+  "evidence_consumed": {
+    "custodian_freeze_commit": "d45b9c01412cdf565fb4fbf73f3577278b971dc4",
+    "execution_runner_sha256": "0f5d9ce2c123b7d279b4b78d27caa30a4841ae6e9988ba55e651f21cc95205c5",
+    "execution_runner_bytes": 537776,
+    "probe_root": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_vendor_opencl_sphal_20260701T193641Z",
+    "candidate_probe_stdout_sha256": "b424127fcb06f139019487b0a2f5d162b1b3ba4b2b9e10060acbe0044fe329fc",
+    "candidate_probe_stderr_sha256": "f047bcf42a3aa51800cc2e170bf4c7f4c79315ec63d0a30d4d6332850c4c5efb",
+    "meminfo_before_sha256": "8bb905dc8da1eee56eeca9a6b42042986a79265c725f05673a91c69e15755735",
+    "meminfo_after_sha256": "700b67b9f8dadc48e6f8625847766a77eb7805bee41df40210719198921cf9e6",
+    "opencl_cli_path_configured": true,
+    "android_sphal_loader_fallback_enabled": true,
+    "prediction_jsonl_written": false
+  },
+  "implementation_summary": {
+    "existing_surface_preserved": "--run-c5-qa-predict -> run_c5_full_decoder_runtime",
+    "new_runtime_contract": "builds a bounded 16-token QA prompt window from the tokenizer output, preserves monotonic position ids, builds an attention mask, derives flattened layer-input rows from token embeddings, derives flattened PLE rows from per_layer_input_runtime assets, validates answer target token ids, and runs layer-0 input normalization for every prompt token",
+    "window_policy": "uses the final 16 question tokens when the encoded prompt is longer than the rank-16 adapter input window; shorter prompts keep all tokens including BOS",
+    "fail_closed_fields": [
+      "c5_full_decoder_multi_token_prompt_tokens_missing",
+      "c5_full_decoder_multi_token_answer_target_missing",
+      "c5_full_decoder_token_id_out_of_vocab",
+      "c5_full_decoder_answer_token_id_out_of_vocab",
+      "c5_full_decoder_multi_token_sequence_shape_mismatch",
+      "c5_full_decoder_multi_token_layer_input_row_*",
+      "c5_full_decoder_multi_token_ple_input_row_*"
+    ],
+    "terminal_field_after_valid_orchestration": "c5_full_decoder_rank16_adapter_stream_injection_missing"
+  },
+  "artifact_paths": [
+    {
+      "path": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp",
+      "sha256": "d8d05d4b3434e074ef88e5150813a1225a2e5a153780ae31298ca389ded2d0a8",
+      "role": "source_repair"
+    },
+    {
+      "path": "tests/test_c5_native_runtime_contract.py",
+      "sha256": "ad5713bfa36e918aecf9eba03922d79bf640744076c698a6bd3d9e01312f0fc2",
+      "role": "focused_regression_tests"
+    },
+    {
+      "path": "runtime/reports/orchestration/c5_after_c1_native_multi_token_qa_prompt_sequence_orchestration_20260701T_phase34.json",
+      "sha256_external": "compute after write",
+      "role": "metadata_only_repair_report"
+    }
+  ],
+  "local_build_identity": {
+    "path": "build/gemma4_megakernel_host/gemma4_layer_runner",
+    "sha256": "7734c956bbff5a3de1471a08226737afac52fb7ab255f14b3863257a47ef0dc5",
+    "note": "host rebuild identity only; Execution must use a rebuilt phone runner from the custodied source patch"
+  },
+  "verification": [
+    {
+      "command": "cmake --build build/gemma4_megakernel_host --target gemma4_layer_runner -- -j2",
+      "result": "passed"
+    },
+    {
+      "command": "python3 -m pytest tests/test_c5_native_runtime_contract.py -q",
+      "result": "passed: 15 passed in 121.63s"
+    },
+    {
+      "command": "python3 -m pytest tests/test_c5_*.py -q",
+      "result": "passed: 50 passed in 130.47s"
+    },
+    {
+      "command": "ctest --test-dir build/gemma4_megakernel_host --output-on-failure",
+      "result": "passed: 4/4"
+    },
+    {
+      "command": "git diff --check -- integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp tests/test_c5_native_runtime_contract.py",
+      "result": "passed"
+    }
+  ],
+  "next_execution_probe": {
+    "owner": "Execution after Repo Custodian freezes this pathset and rebuilds/copies a repaired phone runner",
+    "probe_scope": "single bounded C5_after_C1 forced vendor OpenCL probe only",
+    "runner_requirement": "must be rebuilt from this custodied repair source; do not reuse runner sha 0f5d9ce2c123b7d279b4b78d27caa30a4841ae6e9988ba55e651f21cc95205c5 for the repaired proof",
+    "outside_git_input_environment": {
+      "POLYMATH_C5_CANDIDATE_ADAPTER_PAYLOAD_OUTSIDE_GIT": "candidate adapter payload path; SHA must equal 1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f",
+      "POLYMATH_C5_HELDOUT_QA_JSONL_OUTSIDE_GIT": "heldout QA JSONL path; SHA must equal da41c5362398f24e0e0dd9df9a5cf0594435a455871fa77ab74d9312e6c8e9b2",
+      "POLYMATH_C5_CANDIDATE_PREDICTION_JSONL_OUTSIDE_GIT": "outside-git prediction JSONL output path",
+      "POLYMATH_C5_TOKENIZER_DIR_OUTSIDE_GIT": "tokenizer directory path",
+      "POLYMATH_C5_FULL_DECODER_COMPONENT_PACK_OUTSIDE_GIT": "full decoder component pack directory path"
+    },
+    "command_template": [
+      "RUNNER=\"$HOME/polymath_c5/C5_after_C1/bin/gemma4_layer_runner_c5_multi_token_orchestration\"",
+      "CANDIDATE_ADAPTER_PAYLOAD=\"$POLYMATH_C5_CANDIDATE_ADAPTER_PAYLOAD_OUTSIDE_GIT\"",
+      "HELDOUT_QA_JSONL=\"$POLYMATH_C5_HELDOUT_QA_JSONL_OUTSIDE_GIT\"",
+      "PREDICTION_JSONL=\"$POLYMATH_C5_CANDIDATE_PREDICTION_JSONL_OUTSIDE_GIT\"",
+      "TOKENIZER_DIR=\"$POLYMATH_C5_TOKENIZER_DIR_OUTSIDE_GIT\"",
+      "DECODER_COMPONENT_PACK=\"$POLYMATH_C5_FULL_DECODER_COMPONENT_PACK_OUTSIDE_GIT\"",
+      "test -x \"$RUNNER\" || { echo \"repaired_runner_missing_or_not_executable\" >&2; exit 90; }",
+      "test -n \"$CANDIDATE_ADAPTER_PAYLOAD\" || { echo \"candidate_adapter_payload_path_missing\" >&2; exit 91; }",
+      "test -n \"$HELDOUT_QA_JSONL\" || { echo \"heldout_qa_jsonl_path_missing\" >&2; exit 92; }",
+      "test -n \"$PREDICTION_JSONL\" || { echo \"prediction_jsonl_output_path_missing\" >&2; exit 93; }",
+      "test -n \"$TOKENIZER_DIR\" || { echo \"tokenizer_dir_path_missing\" >&2; exit 94; }",
+      "test -n \"$DECODER_COMPONENT_PACK\" || { echo \"decoder_component_pack_path_missing\" >&2; exit 95; }",
+      "\"$RUNNER\" --help | grep -- '--run-c5-qa-predict' >/dev/null || { echo \"c5_runner_missing_qa_predict_flag\" >&2; exit 97; }",
+      "\"$RUNNER\" --help | grep -- '--opencl-library' >/dev/null || { echo \"c5_runner_missing_opencl_library_flag\" >&2; exit 98; }",
+      "OUT=\"$HOME/polymath_c5/C5_after_C1/native_probe_multi_token_orchestration_$(date -u +%Y%m%dT%H%M%SZ)\"",
+      "mkdir -p \"$OUT\"",
+      "cat /proc/meminfo > \"$OUT/meminfo_before.txt\"",
+      "\"$RUNNER\" --run-c5-qa-predict --run-label c5_after_c1_multi_token_orchestration_probe --eval-point C5_after_C1 --checkpoint-role candidate --checkpoint-payload \"$CANDIDATE_ADAPTER_PAYLOAD\" --checkpoint-sha256 1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f --heldout-qa-jsonl \"$HELDOUT_QA_JSONL\" --output-jsonl \"$PREDICTION_JSONL\" --tokenizer-dir \"$TOKENIZER_DIR\" --decoder-component-pack \"$DECODER_COMPONENT_PACK\" --vocab-chunk-size 4096 --max-generation-tokens 1 --opencl-library /vendor/lib64/libOpenCL.so > \"$OUT/candidate_probe_stdout.json\" 2> \"$OUT/candidate_probe_stderr.log\"",
+      "CODE=$?",
+      "cat /proc/meminfo > \"$OUT/meminfo_after.txt\"",
+      "sha256sum \"$OUT\"/*",
+      "exit \"$CODE\""
+    ],
+    "expected_green_field": "first_missing_green_field advances from c5_full_decoder_multi_token_qa_prompt_sequence_orchestration_missing to c5_full_decoder_rank16_adapter_stream_injection_missing",
+    "expected_fail_fields_if_not_green": [
+      "c5_full_decoder_multi_token_prompt_tokens_missing",
+      "c5_full_decoder_multi_token_answer_target_missing",
+      "c5_full_decoder_token_id_out_of_vocab",
+      "c5_full_decoder_answer_token_id_out_of_vocab",
+      "c5_full_decoder_multi_token_sequence_shape_mismatch"
+    ]
+  },
+  "raw_boundary_proof": {
+    "raw_payload_bytes_in_report": false,
+    "prediction_jsonl_written": false,
+    "checkpoint_payload_copied_to_repo": false,
+    "model_payload_copied_to_repo": false,
+    "adapter_payload_copied_to_repo": false,
+    "tensor_payload_copied_to_repo": false,
+    "raw_input_paths_in_report": false
+  },
+  "authorization_needed": "Repo Custodian custody freeze, then Execution bounded phone runner rebuild/copy and one forced vendor OpenCL C5_after_C1 probe",
+  "user_action_required": false,
+  "nonclaims": [
+    "no C5 pass",
+    "no executed C5 metrics",
+    "no prediction JSONL/logits/loss/confidence/candidate_train_loss",
+    "no bridge-MSE-as-C5-loss",
+    "no learning/model-quality claim",
+    "no Phase3/4 readiness",
+    "no 100k/1M Phase2 authority",
+    "no Comet-backed accepted run"
+  ]
+}
