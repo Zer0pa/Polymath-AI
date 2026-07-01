@@ -1,58 +1,58 @@
 # Executive Delivery State
 
-Updated UTC: `2026-07-01T18:27:37Z`
+Updated UTC: `2026-07-01T19:40:38Z`
 
 ## Current Gate
 
-`WaveB_C5_after_C1_android_sphal_opencl_loader_route_repair_custody_pending_after_phase34_pathset`
+`WaveB_C5_after_C1_multi_token_qa_prompt_sequence_orchestration_pending_after_sphal_opencl_route_green`
 
-Status classification: `PENDING_ACTION_REPO_CUSTODIAN_ANDROID_SPHAL_OPENCL_LOADER_ROUTE_REPAIR_FREEZE`
+Status classification: `PENDING_ACTION_PHASE34_RUNTIME_ORCHESTRATION_AFTER_SPHAL_OPENCL_ROUTE_GREEN`
 
-Owner: Repo Custodian `019f1ac2-0f0f-7721-bf46-ad402dbd9050` owns freeze of the Phase3/4 Android SP-HAL OpenCL loader route repair pathset plus this central mirror. Execution is parked until custody is green.
+Owner: Phase3/4 Engineer `019f13da-d897-7ba2-8ed1-b959892f5ed4` owns the bounded native C5 runtime orchestration implementation pathset. Repo Custodian `019f1ac2-0f0f-7721-bf46-ad402dbd9050` owns the two-file central mirror freeze in parallel. Execution is parked until a frozen implementation/probe command exists.
 
 User action required: `false`
 
 Dominant failure domain: `phase5_eval_failure`
 
-Research escalation: `bounded_sprint_completed: Phase3/4 produced Android SP-HAL OpenCL loader-route repair pathset; no broad research detour authorized while first_missing_green_field is advancing.`
+Research escalation: `none` - SP-HAL/OpenCL loader route is green for the bounded sprint and the first missing field advanced into native C5 runtime orchestration.
 
 ## Artifact Waiting On
 
-- Repo Custodian must verify/freeze the Phase3/4 Android SP-HAL OpenCL loader route repair pathset and the two-file central mirror; do not run phone gates in custody.
-- Repair report: `runtime/reports/orchestration/c5_after_c1_opencl_linker_namespace_loader_route_repair_20260701T_phase34.json` SHA `f15965c2b2d10a00f3d56c16e13d9c6c7c463dc3d4b74689af474e2442249785`.
-- Source pathset:
-  - `integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/opencl_layer_runner.cpp` SHA `b8d5c7fde2e43e78f0a333c5b7d339f2b85f1353d959654b027a30f1023f1560`
-  - `integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_qa_inference.cpp` SHA `190611d2ad9939d263cb16a4e30627caa61285ab4477e55aaecf20e15c07cedd`
-  - `tests/test_c5_native_runtime_contract.py` SHA `0df6a128b2b7cdf87d07a9cf9212768a385c7dc95119f3fc462080b8b1f6a8be`
-- Central mirror pathset: `runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json` and `runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md`.
-- Phase3/4 verification reported: CMake host runner build passed, focused native contract `14 passed`, broad C5 suite `49 passed`, `ctest` `4/4` passed, JSON/diff/raw-boundary/credential-pattern scans passed.
-- After custody, Execution rebuilds/copies the repaired phone runner and runs exactly one bounded forced vendor C5_after_C1 probe using `--opencl-library /vendor/lib64/libOpenCL.so`. Do not route Execution before custody.
+- Repo Custodian must freeze only the two-file central mirror correction: `runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json` and `runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md`.
+- Repo Custodian already froze the Android SP-HAL OpenCL loader-route repair at `d45b9c01412cdf565fb4fbf73f3577278b971dc4`.
+- Execution consumed `d45b9c01412cdf565fb4fbf73f3577278b971dc4`, rebuilt runner `/data/data/com.termux/files/home/polymath_c5/C5_after_C1/bin/gemma4_layer_runner_c5_opencl_sphal` SHA `0f5d9ce2c123b7d279b4b78d27caa30a4841ae6e9988ba55e651f21cc95205c5` bytes `537776`, and ran one bounded forced-vendor C5_after_C1 probe with `--opencl-library /vendor/lib64/libOpenCL.so`.
+- SP-HAL/OpenCL loader route is green for the bounded sprint: OpenCL CLI path configured `true`, SP-HAL fallback enabled `true`, support library `libvndksupport.so`; prediction JSONL was not written and the probe exited `13` at the next native C5 runtime boundary.
+- Probe evidence root: `runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_vendor_opencl_sphal_20260701T193641Z`.
+- Probe artifact hashes: stdout `b424127fcb06f139019487b0a2f5d162b1b3ba4b2b9e10060acbe0044fe329fc`; stderr `f047bcf42a3aa51800cc2e170bf4c7f4c79315ec63d0a30d4d6332850c4c5efb`; meminfo before `8bb905dc8da1eee56eeca9a6b42042986a79265c725f05673a91c69e15755735`; meminfo after `700b67b9f8dadc48e6f8625847766a77eb7805bee41df40210719198921cf9e6`.
+- Phase3/4 must return a custody-ready bounded implementation/probe pathset for multi-token QA prompt sequence orchestration behind the existing `--run-c5-qa-predict` path, or return the exact first source/runtime blocker.
+- Additional exposed runtime fields: `c5_full_decoder_rank16_adapter_stream_injection_missing`, `c5_full_decoder_42_layer_orchestration_missing`, and `c5_full_decoder_chunked_lm_head_nll_writer_missing`.
+- Do not route Execution again until a real runtime implementation or bounded proof command is frozen.
 
 ## Last Concrete Action
 
-Repo Custodian froze the post-custody linker namespace central mirror at `89862113544aed7aaae41abe9f422e947a5a2575`. Phase3/4 then completed the bounded Android/Termux OpenCL loader route repair pathset: direct `dlopen` remains first; on Android namespace/permission failure the existing OpenCL loader tries `libvndksupport.so` / `android_load_sphal_library`, including basename fallback, and emits `opencl_library_load_route=android_sphal` if SP-HAL loads but later OpenCL runtime creation fails. Local verification passed.
+Repo Custodian froze the Android SP-HAL OpenCL loader-route repair at d45b9c01412cdf565fb4fbf73f3577278b971dc4. Execution consumed that commit, rebuilt the phone runner, ran exactly one bounded forced vendor OpenCL C5_after_C1 probe with --opencl-library /vendor/lib64/libOpenCL.so, and cleared the OpenCL loader/runtime availability blocker for this bounded sprint. The probe failed closed at the next expected native C5 runtime boundary: c5_full_decoder_multi_token_qa_prompt_sequence_orchestration_missing; no prediction JSONL or metrics were emitted.
 
 ## First Missing Green Field
 
-Current: `android_sphal_opencl_loader_route_repair_custody_commit_missing`
+Current: `c5_full_decoder_multi_token_qa_prompt_sequence_orchestration_missing`
 
 ## Next Concrete Action
 
-Repo Custodian must freeze/push the exact six-file custody packet: the four Phase3/4 repair artifacts plus the two central mirror files. On green custody, Execution reruns exactly one bounded C5_after_C1 forced vendor OpenCL probe with the repaired runner; if the same namespace field repeats after this repair, classify it as true source/runtime blocker or route the smallest next loader probe.
+Phase3/4 must patch or supply a bounded proof pathset for multi-token QA prompt sequence orchestration behind the existing native --run-c5-qa-predict surface, then route source/test/report artifacts to Repo Custodian. The fail-fast boundary is: if multi-token sequence orchestration cannot be implemented, return the exact source/runtime contract field; otherwise continue to rank-16 adapter stream injection, 42-layer orchestration, and chunked LM-head/NLL writer without inventing prediction JSONL or C5 metrics.
 
 ## Drift Deletion / Hardening
 
-The older Phase3/4 repair-pending edge is superseded by a custody-ready Android SP-HAL loader route pathset. No alternate evaluator or OpenCL parity bypass is introduced; the repair stays behind the existing `--run-c5-qa-predict` / OpenCL path. Raw payloads remain outside git.
+Hardened: the stale SP-HAL custody edge is superseded by committed repair custody and a phone probe showing the SP-HAL route is available. Pending drift: do not keep nudging Execution for OpenCL loader work; the active field is native C5 runtime orchestration, not linker namespace discovery.
 
 ## Recursive Improvement Next Step
 
-Freeze the Android SP-HAL loader route, then rerun one bounded forced vendor probe. If SP-HAL route is reported and the first missing field advances, continue runtime narrowing; if `linker_namespace_or_permission` repeats, treat it as a repeated same-field runtime blocker and route only a falsifiable loader repair/probe.
+Freeze this central mirror, then drive one bounded Phase3/4 implementation/probe slice for multi-token QA prompt sequence orchestration. If the same field repeats after a repair, classify it as a repeated runtime orchestration failure and route the smallest falsifiable source fix; otherwise advance to adapter injection, 42-layer orchestration, and chunked LM-head/NLL writer.
 
 ## Threads Nudged This Tick
 
-- Repo Custodian `019f1ac2-0f0f-7721-bf46-ad402dbd9050`: routed six-file Android SP-HAL OpenCL loader route repair custody packet plus central mirror.
-- Phase3/4 Engineer `019f13da-d897-7ba2-8ed1-b959892f5ed4`: polled complete pathset; no additional nudge.
-- Execution Orchestrator `019f138c-fb51-7c53-a41a-ab8eac950d9c`: polled parked after proof; no reroute until custody green.
+- Repo Custodian `019f1ac2-0f0f-7721-bf46-ad402dbd9050`: routed two-file central mirror correction after SP-HAL probe edge advance.
+- Phase3/4 Engineer `019f13da-d897-7ba2-8ed1-b959892f5ed4`: nudged to produce a custody-ready multi-token QA prompt sequence orchestration implementation/probe pathset or precise source/runtime blocker.
+- Execution Orchestrator `019f138c-fb51-7c53-a41a-ab8eac950d9c`: polled completed SP-HAL forced-vendor probe; parked until runtime implementation/probe custody.
 - Training Material Steward, Pipeline Integrator, UI Engineer, Engineering Orchestrator: polled/not current owner; no nudge.
 
 ## Nonclaims Preserved
