@@ -8,6 +8,7 @@
 #include <string>
 #include <vector>
 
+#include "polymath/gemma4/c5_full_decoder_runtime.h"
 #include "polymath/gemma4/json_writer.h"
 #include "polymath/gemma4/sha256.h"
 
@@ -387,7 +388,8 @@ void write_report(const C5QaInferenceRequest& request,
                   const std::string& checkpoint_actual_sha256,
                   std::uint64_t checkpoint_size_bytes,
                   const std::string& heldout_qa_sha256,
-                  std::uint64_t heldout_record_count) {
+                  std::uint64_t heldout_record_count,
+                  bool prediction_jsonl_written) {
   const std::string first_missing =
       blockers.empty() ? std::string() : blockers.front();
   std::cout << "{\"schema_version\":";
@@ -461,7 +463,8 @@ void write_report(const C5QaInferenceRequest& request,
             << (request.adapter_site_policy_path.empty() ? "false" : "true");
   std::cout << "},\"raw_boundary_proof\":{";
   std::cout << "\"raw_payload_bytes_in_report\":false,";
-  std::cout << "\"prediction_jsonl_written\":false,";
+  std::cout << "\"prediction_jsonl_written\":"
+            << (prediction_jsonl_written ? "true" : "false") << ',';
   std::cout << "\"checkpoint_payload_copied_to_repo\":false}";
   std::cout << ",\"nonclaims\":[";
   write_json_string(std::cout, "no C5 pass");
@@ -555,12 +558,21 @@ Status run_c5_qa_predict(const C5QaInferenceRequest& request) {
                                       resolved_request.checkpoint_role,
                                       resolved_request.checkpoint_sha256);
 
+  bool prediction_jsonl_written = false;
   if (blockers.empty()) {
-    blockers.push_back("full_decoder_logits_generation_not_implemented");
+    const C5FullDecoderRuntimeResult runtime_result =
+        run_c5_full_decoder_runtime(resolved_request);
+    blockers.insert(blockers.end(), runtime_result.blockers.begin(),
+                    runtime_result.blockers.end());
+    prediction_jsonl_written = runtime_result.prediction_jsonl_written;
   }
 
   write_report(resolved_request, blockers, checkpoint_actual_sha256, checkpoint_size,
-               heldout_qa_sha256, heldout_record_count);
+               heldout_qa_sha256, heldout_record_count,
+               prediction_jsonl_written);
+  if (blockers.empty()) {
+    return Status::ok();
+  }
   return Status::invalid(blockers.front());
 }
 

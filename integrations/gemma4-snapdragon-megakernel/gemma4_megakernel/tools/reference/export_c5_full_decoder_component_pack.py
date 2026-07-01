@@ -254,6 +254,12 @@ def schema_contract() -> dict[str, Any]:
             "architecture_config": build_architecture_config(),
             "tensor_role_inventory": {
                 "layer_roles": sorted(TENSOR_ROLE_SPECS),
+                "per_layer_attention_layout": [
+                    "query_heads",
+                    "key_value_heads",
+                    "head_dim",
+                    "query_to_key_value_group_size",
+                ],
                 "per_role_required_fields": [
                     "key",
                     "dtype",
@@ -340,10 +346,50 @@ def tensor_entry(header: dict[str, Any], key: str) -> dict[str, Any]:
     }
 
 
+def shape_mismatch_message(role: str, expected: Any, actual: Any) -> str:
+    return (
+        f"{role}_shape_mismatch"
+        f"_expected_{json.dumps(expected, separators=(',', ':'))}"
+        f"_actual_{json.dumps(actual, separators=(',', ':'))}"
+    )
+
+
+def validate_tensor_role_shape(
+    *,
+    role: str,
+    base_role: str,
+    shape: list[int],
+    expected_shape: list[int],
+) -> None:
+    if base_role in {"self_attn_q_proj", "self_attn_k_proj", "self_attn_v_proj"}:
+        if len(shape) != 2 or shape[1] != HIDDEN_SIZE or shape[0] <= 0 or shape[0] % HEAD_DIM:
+            raise ValueError(
+                shape_mismatch_message(
+                    role,
+                    {"rank": 2, "dim1": HIDDEN_SIZE, "dim0_multiple_of": HEAD_DIM},
+                    shape,
+                )
+            )
+        return
+    if base_role == "self_attn_o_proj":
+        if len(shape) != 2 or shape[0] != HIDDEN_SIZE or shape[1] <= 0 or shape[1] % HEAD_DIM:
+            raise ValueError(
+                shape_mismatch_message(
+                    role,
+                    {"rank": 2, "dim0": HIDDEN_SIZE, "dim1_multiple_of": HEAD_DIM},
+                    shape,
+                )
+            )
+        return
+    if shape != expected_shape:
+        raise ValueError(shape_mismatch_message(role, expected_shape, shape))
+
+
 def tensor_role_entry(
     header: dict[str, Any],
     *,
     key: str,
+    base_role: str,
     expected_shape: list[int],
     tensor_data_start: int,
     file_size: int,
@@ -352,8 +398,12 @@ def tensor_role_entry(
     entry = tensor_entry(header, key)
     shape = entry["shape"]
     dtype = entry["dtype"]
-    if shape != expected_shape:
-        raise ValueError(f"{role}_shape_mismatch")
+    validate_tensor_role_shape(
+        role=role,
+        base_role=base_role,
+        shape=shape,
+        expected_shape=expected_shape,
+    )
     if dtype not in {"bf16", "f16", "f32"}:
         raise ValueError(f"{role}_dtype_unsupported")
     start, stop = entry["data_offsets"]
@@ -366,6 +416,33 @@ def tensor_role_entry(
         "data_offsets": [start, stop],
         "absolute_data_offsets": [tensor_data_start + start, tensor_data_start + stop],
         "byte_length": stop - start,
+    }
+
+
+def attention_layout_for_layer(layer_index: int, roles: dict[str, Any]) -> dict[str, Any]:
+    q_shape = roles["self_attn_q_proj"]["shape"]
+    k_shape = roles["self_attn_k_proj"]["shape"]
+    v_shape = roles["self_attn_v_proj"]["shape"]
+    o_shape = roles["self_attn_o_proj"]["shape"]
+    query_heads = q_shape[0] // HEAD_DIM
+    key_heads = k_shape[0] // HEAD_DIM
+    value_heads = v_shape[0] // HEAD_DIM
+    output_heads = o_shape[1] // HEAD_DIM
+    if key_heads != value_heads:
+        raise ValueError(f"decoder_layer_{layer_index}_kv_head_shape_mismatch")
+    if query_heads != output_heads:
+        raise ValueError(f"decoder_layer_{layer_index}_q_o_head_shape_mismatch")
+    if key_heads == 0 or query_heads == 0 or query_heads % key_heads:
+        raise ValueError(f"decoder_layer_{layer_index}_attention_head_grouping_invalid")
+    return {
+        "query_heads": query_heads,
+        "key_value_heads": key_heads,
+        "head_dim": HEAD_DIM,
+        "query_to_key_value_group_size": query_heads // key_heads,
+        "q_proj_shape": q_shape,
+        "k_proj_shape": k_shape,
+        "v_proj_shape": v_shape,
+        "o_proj_shape": o_shape,
     }
 
 
@@ -385,6 +462,7 @@ def build_architecture_config() -> dict[str, Any]:
         "activation": ACTIVATION,
         "final_logit_softcap": FINAL_LOGIT_SOFTCAP,
         "dtype_policy": "bf16_f16_f32_metadata_only; runtime converts explicitly",
+        "attention_layout_source": "tensor_role_inventory.per_layer_attention_layout",
         "materializes_full_bsv_logits": False,
     }
 
@@ -404,16 +482,24 @@ def build_tensor_role_inventory(
             roles[role] = tensor_role_entry(
                 header,
                 key=key,
+                base_role=role,
                 expected_shape=list(spec["shape"]),
                 tensor_data_start=tensor_data_start,
                 file_size=file_size,
                 role=f"decoder_layer_{layer_index}_{role}",
             )
-        layers.append({"layer_index": layer_index, "roles": roles})
+        layers.append(
+            {
+                "layer_index": layer_index,
+                "roles": roles,
+                "attention_layout": attention_layout_for_layer(layer_index, roles),
+            }
+        )
 
     embed_entry = tensor_role_entry(
         header,
         key=EMBED_TOKENS_KEY,
+        base_role="embed_tokens",
         expected_shape=[VOCAB_SIZE, HIDDEN_SIZE],
         tensor_data_start=tensor_data_start,
         file_size=file_size,

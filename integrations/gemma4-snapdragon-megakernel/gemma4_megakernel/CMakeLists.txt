@@ -9,8 +9,10 @@ add_library(gemma4_megakernel_core STATIC
   src/core/sha256.cpp
   src/data/tokenizer_packer.cpp
   src/model/layer_pack_reader.cpp
+  src/model/safetensors_reader.cpp
   src/backends/device_probe.cpp
   src/backends/cpu_debug_backend.cpp
+  src/backends/c5_full_decoder_runtime.cpp
   src/backends/c5_qa_inference.cpp
   src/backends/opencl_layer_runner.cpp
 )

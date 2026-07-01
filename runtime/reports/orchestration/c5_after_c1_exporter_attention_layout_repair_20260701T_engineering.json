@@ -1,0 +1,125 @@
+{
+  "schema_version": "polymath_orchestration_engineering_pathset_v1",
+  "created_utc": "2026-07-01T13:23:09Z",
+  "lane": "engineering_orchestrator",
+  "status": "c5_after_c1_exporter_attention_layout_repair_ready_for_custody",
+  "current_gate": "WaveB_C5_after_C1_exporter_attention_layout_repair_custody_pending",
+  "status_classification": "PENDING_ACTION_REPO_CUSTODY_EXPORTER_ATTENTION_LAYOUT_REPAIR",
+  "first_missing_green_field": "repo_custody_freeze_exporter_attention_layout_repair",
+  "source_blocker_repaired": {
+    "execution_status": "exporter_schema_rejection_precise_blocker",
+    "first_missing_green_field": "decoder_layer_5_self_attn_q_proj_shape_mismatch",
+    "blocked_export_log": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/exporter_43cf3c4_schema_complete_rerun/export_stdout_43cf3c4.log",
+    "blocked_export_log_sha256": "4bfe5546ca3b52ea1506005d28723ba7709a314c1eb5e40c4a1c6a61504a7082"
+  },
+  "patch_meaning": [
+    "The exporter no longer hard-codes a single q/k/v/o projection row count for every decoder layer.",
+    "Attention projection tensors still fail closed unless they are rank-2, hidden-size aligned, head-dim divisible, and internally consistent across q/o plus k/v.",
+    "The exporter records per-layer attention_layout metadata derived from the safetensors header.",
+    "Shape mismatch errors now include expected and actual shape metadata so future phone failures are actionable without raw tensor movement.",
+    "The native C5 runtime validator uses the same attention-layout compatibility rules, so schema-complete manifests are not rejected before the real compute-kernel boundary."
+  ],
+  "custody_pathset": [
+    {
+      "path": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py",
+      "sha256": "21f62fb37b247375492791833d2a273276f0a2a33e4785d6dd3dea0aaf665f5f"
+    },
+    {
+      "path": "tests/test_c5_full_decoder_exporter.py",
+      "sha256": "588c6712427f717c887017df05a6fc55796b7dc4354a5a829addf2c1a25a16ba"
+    },
+    {
+      "path": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/CMakeLists.txt",
+      "sha256": "3b187d4fcd494cf5ca3c433eee2385bbd7afcde35225541521beef90b898035d"
+    },
+    {
+      "path": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_qa_inference.cpp",
+      "sha256": "b37a55d6c0cb7159a549497a5d212e0459807e36081d0d9e4f588d61fbc2a9bf"
+    },
+    {
+      "path": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/core/sha256.cpp",
+      "sha256": "15d8dd7a00bfa4eaced22a6528d1856cae0c14793e491e4fd11197ea719aa442"
+    },
+    {
+      "path": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/include/polymath/gemma4/safetensors_reader.h",
+      "sha256": "11f12734c2d27cebc29bcea73ee35b4d79fb190e6062b4dc9feae40cbbf95930"
+    },
+    {
+      "path": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/model/safetensors_reader.cpp",
+      "sha256": "9634711f6210375e29126cdae5677001900742806aaa11c387dd80c6c0e9f010"
+    },
+    {
+      "path": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/include/polymath/gemma4/c5_full_decoder_runtime.h",
+      "sha256": "66dd042544213c5eec728683c8c157ebfa1c25252eee13e37f400e1568f9c6a0"
+    },
+    {
+      "path": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp",
+      "sha256": "ca7a99ddb0812b939cb9959eb7daa6aba8215beb36a271fd3ef72855952460bc"
+    },
+    {
+      "path": "tests/test_c5_native_runtime_contract.py",
+      "sha256": "4e78280c7dbbf2cc3dc1eb188077a9d300ebaebe8882521fc5189a27651842c5"
+    },
+    {
+      "path": "runtime/reports/orchestration/c5_after_c1_native_safetensors_reader_runtime_pathset_20260701T_phase34.json",
+      "sha256": "dd9815ff410d62d10bbd948f983272a4c5eb0e7f2e8194e126fc2739403d35c8"
+    }
+  ],
+  "verification_commands": [
+    {
+      "command": "python3.11 -m py_compile integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py tests/test_c5_full_decoder_exporter.py tests/test_c5_native_runtime_contract.py",
+      "result": "passed"
+    },
+    {
+      "command": "python3.11 -m pytest -q tests/test_c5_full_decoder_exporter.py",
+      "result": "8 passed"
+    },
+    {
+      "command": "cmake --build build/gemma4_megakernel_host --target gemma4_layer_runner -j 8",
+      "result": "built"
+    },
+    {
+      "command": "python3.11 -m pytest -q tests/test_c5_native_runtime_contract.py",
+      "result": "5 passed"
+    },
+    {
+      "command": "python3.11 -m pytest -q tests/test_c5_native_runtime_contract.py tests/test_c5_phase34_qa_inference_producer.py tests/test_c5_prediction_payloads.py tests/test_c5_full_decoder_exporter.py",
+      "result": "25 passed"
+    },
+    {
+      "command": "git diff --check -- integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp tests/test_c5_full_decoder_exporter.py tests/test_c5_native_runtime_contract.py",
+      "result": "passed"
+    },
+    {
+      "command": "python3.11 -m json.tool runtime/reports/orchestration/c5_after_c1_native_safetensors_reader_runtime_pathset_20260701T_phase34.json",
+      "result": "passed"
+    }
+  ],
+  "next_owner_action_after_custody": {
+    "owner": "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c",
+    "action": "rerun the same phone-local exporter from the custody-frozen patch against the already phone-held model.safetensors SHA 43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651 and return metadata-only hashes/bytes/schema proof for decoder_manifest.json, adapter_site_policy.json, and export_report.json",
+    "fail_fast": [
+      "if exporter still fails, return the new expected/actual shape-bearing blocker JSON",
+      "if exporter passes, proceed to schema-complete component pack freeze and native C5 runtime/probe edge",
+      "do not accept old pre-runtime-fields component pack hashes as schema-complete evidence"
+    ]
+  },
+  "raw_boundary": {
+    "raw_model_payload_copied_to_git": false,
+    "raw_tensor_payload_copied_to_git": false,
+    "metadata_only": true,
+    "secrets_used_or_printed": false
+  },
+  "nonclaims": [
+    "no C5 pass",
+    "no executed metrics",
+    "no prediction JSONL",
+    "no logits",
+    "no loss/confidence/candidate_train_loss",
+    "no bridge-MSE-as-C5-loss",
+    "no learning/model-quality claim",
+    "no Phase3 readiness",
+    "no Phase4 readiness",
+    "no raw payload copied to repo"
+  ]
+}

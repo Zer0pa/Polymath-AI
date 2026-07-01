@@ -1,5 +1,6 @@
 #include "polymath/gemma4/sha256.h"
 
+#include <algorithm>
 #include <array>
 #include <cstdint>
 #include <fstream>
@@ -41,81 +42,122 @@ void store_be64(std::vector<std::uint8_t>& data, std::uint64_t value) {
   }
 }
 
-}  // namespace
-
-std::string sha256_bytes_hex(const std::vector<std::uint8_t>& bytes) {
-  std::vector<std::uint8_t> data = bytes;
-  const std::uint64_t bit_length = static_cast<std::uint64_t>(data.size()) * 8U;
-  data.push_back(0x80U);
-  while ((data.size() % 64U) != 56U) {
-    data.push_back(0U);
+void process_block(std::array<std::uint32_t, 8>& hash,
+                   const std::uint8_t* block) {
+  std::array<std::uint32_t, 64> words = {};
+  for (std::size_t index = 0U; index < 16U; ++index) {
+    words[index] = load_be32(block + (index * 4U));
   }
-  store_be64(data, bit_length);
-
-  std::array<std::uint32_t, 8> hash = {0x6a09e667U, 0xbb67ae85U, 0x3c6ef372U,
-                                       0xa54ff53aU, 0x510e527fU, 0x9b05688cU,
-                                       0x1f83d9abU, 0x5be0cd19U};
-
-  for (std::size_t offset = 0; offset < data.size(); offset += 64U) {
-    std::array<std::uint32_t, 64> words = {};
-    for (std::size_t index = 0; index < 16U; ++index) {
-      words[index] = load_be32(data.data() + offset + (index * 4U));
-    }
-    for (std::size_t index = 16U; index < 64U; ++index) {
-      const std::uint32_t s0 = rotate_right(words[index - 15U], 7U) ^
-                               rotate_right(words[index - 15U], 18U) ^
-                               (words[index - 15U] >> 3U);
-      const std::uint32_t s1 = rotate_right(words[index - 2U], 17U) ^
-                               rotate_right(words[index - 2U], 19U) ^
-                               (words[index - 2U] >> 10U);
-      words[index] = words[index - 16U] + s0 + words[index - 7U] + s1;
-    }
-
-    std::uint32_t a = hash[0];
-    std::uint32_t b = hash[1];
-    std::uint32_t c = hash[2];
-    std::uint32_t d = hash[3];
-    std::uint32_t e = hash[4];
-    std::uint32_t f = hash[5];
-    std::uint32_t g = hash[6];
-    std::uint32_t h = hash[7];
-
-    for (std::size_t index = 0; index < 64U; ++index) {
-      const std::uint32_t s1 = rotate_right(e, 6U) ^ rotate_right(e, 11U) ^
-                               rotate_right(e, 25U);
-      const std::uint32_t ch = (e & f) ^ ((~e) & g);
-      const std::uint32_t temp1 = h + s1 + ch + kRoundConstants[index] + words[index];
-      const std::uint32_t s0 = rotate_right(a, 2U) ^ rotate_right(a, 13U) ^
-                               rotate_right(a, 22U);
-      const std::uint32_t maj = (a & b) ^ (a & c) ^ (b & c);
-      const std::uint32_t temp2 = s0 + maj;
-
-      h = g;
-      g = f;
-      f = e;
-      e = d + temp1;
-      d = c;
-      c = b;
-      b = a;
-      a = temp1 + temp2;
-    }
-
-    hash[0] += a;
-    hash[1] += b;
-    hash[2] += c;
-    hash[3] += d;
-    hash[4] += e;
-    hash[5] += f;
-    hash[6] += g;
-    hash[7] += h;
+  for (std::size_t index = 16U; index < 64U; ++index) {
+    const std::uint32_t s0 = rotate_right(words[index - 15U], 7U) ^
+                             rotate_right(words[index - 15U], 18U) ^
+                             (words[index - 15U] >> 3U);
+    const std::uint32_t s1 = rotate_right(words[index - 2U], 17U) ^
+                             rotate_right(words[index - 2U], 19U) ^
+                             (words[index - 2U] >> 10U);
+    words[index] = words[index - 16U] + s0 + words[index - 7U] + s1;
   }
 
+  std::uint32_t a = hash[0];
+  std::uint32_t b = hash[1];
+  std::uint32_t c = hash[2];
+  std::uint32_t d = hash[3];
+  std::uint32_t e = hash[4];
+  std::uint32_t f = hash[5];
+  std::uint32_t g = hash[6];
+  std::uint32_t h = hash[7];
+
+  for (std::size_t index = 0U; index < 64U; ++index) {
+    const std::uint32_t s1 = rotate_right(e, 6U) ^ rotate_right(e, 11U) ^
+                             rotate_right(e, 25U);
+    const std::uint32_t ch = (e & f) ^ ((~e) & g);
+    const std::uint32_t temp1 = h + s1 + ch + kRoundConstants[index] + words[index];
+    const std::uint32_t s0 = rotate_right(a, 2U) ^ rotate_right(a, 13U) ^
+                             rotate_right(a, 22U);
+    const std::uint32_t maj = (a & b) ^ (a & c) ^ (b & c);
+    const std::uint32_t temp2 = s0 + maj;
+
+    h = g;
+    g = f;
+    f = e;
+    e = d + temp1;
+    d = c;
+    c = b;
+    b = a;
+    a = temp1 + temp2;
+  }
+
+  hash[0] += a;
+  hash[1] += b;
+  hash[2] += c;
+  hash[3] += d;
+  hash[4] += e;
+  hash[5] += f;
+  hash[6] += g;
+  hash[7] += h;
+}
+
+std::array<std::uint32_t, 8> initial_hash() {
+  return {0x6a09e667U, 0xbb67ae85U, 0x3c6ef372U, 0xa54ff53aU,
+          0x510e527fU, 0x9b05688cU, 0x1f83d9abU, 0x5be0cd19U};
+}
+
+std::string hash_to_hex(const std::array<std::uint32_t, 8>& hash) {
   std::ostringstream output;
   output << std::hex << std::setfill('0');
   for (const std::uint32_t word : hash) {
     output << std::setw(8) << word;
   }
   return output.str();
+}
+
+void sha256_update(std::array<std::uint32_t, 8>& hash,
+                   std::vector<std::uint8_t>& pending,
+                   std::uint64_t& total_size,
+                   const std::uint8_t* data,
+                   std::size_t size) {
+  total_size += static_cast<std::uint64_t>(size);
+  std::size_t offset = 0U;
+  if (!pending.empty()) {
+    const std::size_t needed = 64U - pending.size();
+    const std::size_t copied = std::min(needed, size);
+    pending.insert(pending.end(), data, data + copied);
+    offset += copied;
+    if (pending.size() == 64U) {
+      process_block(hash, pending.data());
+      pending.clear();
+    }
+  }
+  while (offset + 64U <= size) {
+    process_block(hash, data + offset);
+    offset += 64U;
+  }
+  pending.insert(pending.end(), data + offset, data + size);
+}
+
+std::string sha256_finish(std::array<std::uint32_t, 8>& hash,
+                          std::vector<std::uint8_t>& pending,
+                          std::uint64_t total_size) {
+  const std::uint64_t bit_length = total_size * 8U;
+  pending.push_back(0x80U);
+  while ((pending.size() % 64U) != 56U) {
+    pending.push_back(0U);
+  }
+  store_be64(pending, bit_length);
+  for (std::size_t offset = 0U; offset < pending.size(); offset += 64U) {
+    process_block(hash, pending.data() + offset);
+  }
+  return hash_to_hex(hash);
+}
+
+}  // namespace
+
+std::string sha256_bytes_hex(const std::vector<std::uint8_t>& bytes) {
+  std::array<std::uint32_t, 8> hash = initial_hash();
+  std::vector<std::uint8_t> pending;
+  std::uint64_t total_size = 0U;
+  sha256_update(hash, pending, total_size, bytes.data(), bytes.size());
+  return sha256_finish(hash, pending, total_size);
 }
 
 std::string sha256_text_hex(const std::string& text) {
@@ -128,9 +170,20 @@ std::string sha256_file_hex(const std::string& path) {
     throw std::runtime_error("failed to open for sha256: " + path);
   }
 
-  const std::vector<std::uint8_t> data((std::istreambuf_iterator<char>(file)),
-                                       std::istreambuf_iterator<char>());
-  return sha256_bytes_hex(data);
+  std::array<std::uint32_t, 8> hash = initial_hash();
+  std::vector<std::uint8_t> pending;
+  std::uint64_t total_size = 0U;
+  std::array<char, 1024 * 1024> chunk = {};
+  while (file) {
+    file.read(chunk.data(), static_cast<std::streamsize>(chunk.size()));
+    const std::streamsize count = file.gcount();
+    if (count > 0) {
+      const auto* bytes = reinterpret_cast<const std::uint8_t*>(chunk.data());
+      sha256_update(hash, pending, total_size, bytes,
+                    static_cast<std::size_t>(count));
+    }
+  }
+  return sha256_finish(hash, pending, total_size);
 }
 
 }  // namespace polymath::gemma4
