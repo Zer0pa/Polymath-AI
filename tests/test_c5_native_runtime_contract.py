@@ -136,6 +136,8 @@ def test_native_c5_runtime_accepts_cli_opencl_library_config(tmp_path: Path) -> 
         "env_library_variable": "POLYMATH_GEMMA4_OPENCL_LIBRARY",
         "env_library_paths_variable": "POLYMATH_GEMMA4_OPENCL_LIBRARY_PATHS",
         "android_vendor_paths_preferred_before_generic_soname": True,
+        "android_sphal_loader_fallback_enabled": True,
+        "android_sphal_loader_support_library": "libvndksupport.so",
     }
     assert not paths["output_jsonl"].exists()
 
@@ -167,6 +169,9 @@ def test_native_c5_runtime_reports_configured_opencl_dlopen_detail_redacted(
     assert payload["opencl_runtime_discovery_contract"][
         "opencl_library_cli_path_configured"
     ] is True
+    assert payload["opencl_runtime_discovery_contract"][
+        "android_sphal_loader_fallback_enabled"
+    ] is True
     assert not paths["output_jsonl"].exists()
 
 
@@ -195,6 +200,10 @@ def test_native_c5_runtime_accepts_env_opencl_library_config(tmp_path: Path) -> 
     ).hexdigest()
     assert discovery_contract["env_library_variable"] == (
         "POLYMATH_GEMMA4_OPENCL_LIBRARY"
+    )
+    assert discovery_contract["android_sphal_loader_fallback_enabled"] is True
+    assert discovery_contract["android_sphal_loader_support_library"] == (
+        "libvndksupport.so"
     )
     assert not paths["output_jsonl"].exists()
 

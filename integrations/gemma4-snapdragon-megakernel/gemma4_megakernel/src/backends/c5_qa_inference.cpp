@@ -485,7 +485,11 @@ void write_report(const C5QaInferenceRequest& request,
   write_json_string(std::cout, kOpenClLibraryEnv);
   std::cout << ",\"env_library_paths_variable\":";
   write_json_string(std::cout, kOpenClLibraryPathsEnv);
-  std::cout << ",\"android_vendor_paths_preferred_before_generic_soname\":true}";
+  std::cout << ",\"android_vendor_paths_preferred_before_generic_soname\":true";
+  std::cout << ",\"android_sphal_loader_fallback_enabled\":true";
+  std::cout << ",\"android_sphal_loader_support_library\":";
+  write_json_string(std::cout, "libvndksupport.so");
+  std::cout << "}";
   std::cout << ",\"required_runtime_components\":{";
   std::cout << "\"tokenizer_dir_present\":" << (request.tokenizer_dir.empty() ? "false" : "true");
   std::cout << ",\"decoder_manifest_present\":"

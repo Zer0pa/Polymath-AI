@@ -72,6 +72,7 @@ constexpr float kFinalLogitSoftcap = 30.0F;
 constexpr const char* kOpenClLibraryEnv = "POLYMATH_GEMMA4_OPENCL_LIBRARY";
 constexpr const char* kOpenClLibraryPathsEnv =
     "POLYMATH_GEMMA4_OPENCL_LIBRARY_PATHS";
+constexpr const char* kAndroidSphalSupportLibrary = "libvndksupport.so";
 
 float adapter_scale(std::uint32_t adapter_rank) {
   if (adapter_rank == 0U) {
@@ -260,6 +261,10 @@ std::string classify_dlopen_error(const std::string& detail) {
   return "dlopen_error_unclassified";
 }
 
+bool is_linker_namespace_or_permission_error(const std::string& detail) {
+  return classify_dlopen_error(detail) == "linker_namespace_or_permission";
+}
+
 std::string redacted_dlopen_detail(const std::string& detail,
                                    const std::string& attempted_path) {
   std::string redacted =
@@ -268,23 +273,156 @@ std::string redacted_dlopen_detail(const std::string& detail,
   return compact_diagnostic_detail(redacted);
 }
 
+std::string classified_dlopen_error_suffix(const std::string& prefix,
+                                           const std::string& detail,
+                                           const std::string& attempted_path) {
+  if (detail.empty()) {
+    return prefix + "_unavailable";
+  }
+  const std::string redacted_detail =
+      redacted_dlopen_detail(detail, attempted_path);
+  if (redacted_detail.empty()) {
+    return prefix + "_unavailable";
+  }
+  return prefix + "_category=" + classify_dlopen_error(redacted_detail) +
+         ":" + prefix + "_redacted_sha256=" + sha256_text_hex(redacted_detail) +
+         ":" + prefix + "_detail=" + redacted_detail;
+}
+
 std::string opencl_load_failure_message(bool caller_configured,
                                         const std::string& dlopen_detail,
-                                        const std::string& attempted_path) {
+                                        const std::string& attempted_path,
+                                        const std::string& route_detail = {}) {
   const std::string base =
       caller_configured ? "opencl_library_configured_load_failed"
                         : "opencl_library_load_failed";
-  if (dlopen_detail.empty()) {
-    return base + ":dlerror_unavailable";
+  std::string message =
+      base + ":" +
+      classified_dlopen_error_suffix("dlerror", dlopen_detail, attempted_path);
+  if (!route_detail.empty()) {
+    message += ":" + route_detail;
   }
-  const std::string redacted_detail =
-      redacted_dlopen_detail(dlopen_detail, attempted_path);
-  if (redacted_detail.empty()) {
-    return base + ":dlerror_unavailable";
+  return message;
+}
+
+#ifdef __ANDROID__
+std::string path_basename(const std::string& path) {
+  const std::size_t separator = path.find_last_of('/');
+  if (separator == std::string::npos) {
+    return path;
   }
-  return base + ":dlerror_category=" + classify_dlopen_error(redacted_detail) +
-         ":dlerror_redacted_sha256=" + sha256_text_hex(redacted_detail) +
-         ":dlerror_detail=" + redacted_detail;
+  if (separator + 1U >= path.size()) {
+    return path;
+  }
+  return path.substr(separator + 1U);
+}
+#endif
+
+using LibraryCloseFunction = int (*)(void*);
+
+int close_regular_dynamic_library(void* handle) {
+  return dlclose(handle);
+}
+
+struct LibraryLoadResult {
+  void* handle = nullptr;
+  void* support_handle = nullptr;
+  LibraryCloseFunction close_function = close_regular_dynamic_library;
+  std::string loaded_path;
+  std::string route_detail;
+};
+
+LibraryLoadResult try_android_sphal_opencl_load(const std::string& candidate) {
+  LibraryLoadResult result;
+#ifdef __ANDROID__
+  using AndroidLoadSphalLibrary = void* (*)(const char*, int);
+  using AndroidUnloadSphalLibrary = int (*)(void*);
+
+  dlerror();
+  void* support_handle =
+      dlopen(kAndroidSphalSupportLibrary, RTLD_NOW | RTLD_LOCAL);
+  if (support_handle == nullptr) {
+    const char* error = dlerror();
+    result.route_detail = "android_sphal_loader_unavailable:" +
+                          classified_dlopen_error_suffix(
+                              "sphal_error",
+                              error == nullptr ? std::string() : std::string(error),
+                              kAndroidSphalSupportLibrary);
+    return result;
+  }
+
+  auto close_support = [&support_handle]() {
+    if (support_handle != nullptr) {
+      dlclose(support_handle);
+      support_handle = nullptr;
+    }
+  };
+
+  dlerror();
+  auto load = reinterpret_cast<AndroidLoadSphalLibrary>(
+      dlsym(support_handle, "android_load_sphal_library"));
+  const char* load_symbol_error_raw = dlerror();
+  const std::string load_symbol_error =
+      load_symbol_error_raw == nullptr ? std::string() : load_symbol_error_raw;
+  dlerror();
+  auto unload = reinterpret_cast<AndroidUnloadSphalLibrary>(
+      dlsym(support_handle, "android_unload_sphal_library"));
+  const char* unload_symbol_error_raw = dlerror();
+  const std::string unload_symbol_error =
+      unload_symbol_error_raw == nullptr ? std::string() : unload_symbol_error_raw;
+  if (load == nullptr || unload == nullptr) {
+    const std::string detail = !load_symbol_error.empty()
+                                   ? load_symbol_error
+                                   : !unload_symbol_error.empty()
+                                         ? unload_symbol_error
+                                         : "android_sphal_loader_symbol_missing";
+    result.route_detail =
+        "android_sphal_loader_unavailable:" +
+        classified_dlopen_error_suffix("sphal_error", detail,
+                                       kAndroidSphalSupportLibrary);
+    close_support();
+    return result;
+  }
+
+  std::vector<std::string> sphal_candidates;
+  append_unique_string(sphal_candidates, candidate);
+  append_unique_string(sphal_candidates, path_basename(candidate));
+  std::string last_error;
+  std::string last_candidate;
+  for (const std::string& sphal_candidate : sphal_candidates) {
+    dlerror();
+    void* handle = load(sphal_candidate.c_str(), RTLD_NOW | RTLD_LOCAL);
+    if (handle != nullptr) {
+      result.handle = handle;
+      result.support_handle = support_handle;
+      result.close_function = unload;
+      result.loaded_path = "android_sphal:" + sphal_candidate;
+      result.route_detail = "android_sphal_loader_route=loaded";
+      return result;
+    }
+    const char* error = dlerror();
+    if (error != nullptr && error[0] != '\0') {
+      last_error = error;
+      last_candidate = sphal_candidate;
+    } else {
+      last_error = "android_load_sphal_library_returned_null_without_dlerror";
+      last_candidate = sphal_candidate;
+    }
+  }
+  result.route_detail =
+      "android_sphal_loader_route_failed:" +
+      classified_dlopen_error_suffix("sphal_error", last_error, last_candidate);
+  close_support();
+#else
+  (void)candidate;
+  result.route_detail =
+      "android_sphal_loader_unavailable:sphal_error_category=not_android_build:"
+      "sphal_error_redacted_sha256=" +
+      sha256_text_hex(std::string("not_android_build:") +
+                      kAndroidSphalSupportLibrary) +
+      ":sphal_error_detail=not_android_build";
+#endif
+  return result;
 }
 
 std::vector<std::string> default_opencl_library_candidates() {
@@ -427,6 +565,7 @@ class DynamicLibrary {
     std::uint32_t attempted_load_count = 0U;
     std::string last_dlopen_error;
     std::string last_attempted_path;
+    std::string last_route_detail;
     for (const std::string& candidate : candidates) {
       if (caller_configured && !absolute_path_exists(candidate)) {
         continue;
@@ -436,6 +575,7 @@ class DynamicLibrary {
       handle_ = dlopen(candidate.c_str(), RTLD_NOW | RTLD_LOCAL);
       if (handle_ != nullptr) {
         loaded_path_ = candidate;
+        load_route_ = "direct_dlopen";
         return;
       }
       const char* error = dlerror();
@@ -443,17 +583,35 @@ class DynamicLibrary {
         last_dlopen_error = error;
         last_attempted_path = candidate;
       }
+      if (error != nullptr &&
+          is_linker_namespace_or_permission_error(error)) {
+        LibraryLoadResult sphal_load =
+            try_android_sphal_opencl_load(candidate);
+        last_route_detail = sphal_load.route_detail;
+        if (sphal_load.handle != nullptr) {
+          handle_ = sphal_load.handle;
+          support_handle_ = sphal_load.support_handle;
+          close_function_ = sphal_load.close_function;
+          loaded_path_ = sphal_load.loaded_path;
+          load_route_ = "android_sphal";
+          return;
+        }
+      }
     }
     if (caller_configured && attempted_load_count == 0U) {
       throw std::runtime_error("opencl_library_configured_path_not_found");
     }
     throw std::runtime_error(opencl_load_failure_message(
-        caller_configured, last_dlopen_error, last_attempted_path));
+        caller_configured, last_dlopen_error, last_attempted_path,
+        last_route_detail));
   }
 
   ~DynamicLibrary() {
     if (handle_ != nullptr) {
-      dlclose(handle_);
+      close_function_(handle_);
+    }
+    if (support_handle_ != nullptr) {
+      dlclose(support_handle_);
     }
   }
 
@@ -462,10 +620,14 @@ class DynamicLibrary {
 
   void* handle() const { return handle_; }
   const std::string& loaded_path() const { return loaded_path_; }
+  const std::string& load_route() const { return load_route_; }
 
  private:
   void* handle_ = nullptr;
+  void* support_handle_ = nullptr;
+  LibraryCloseFunction close_function_ = close_regular_dynamic_library;
   std::string loaded_path_;
+  std::string load_route_;
 };
 
 struct OpenClRuntimeStats {
@@ -3806,14 +3968,20 @@ LayerForwardResult run_opencl_layer_values(const std::string& pack_dir,
 
 Status probe_opencl_layer_runtime_available(
     const OpenClRuntimeDiscoveryConfig& config) {
+  std::string loaded_route;
   try {
     DynamicLibrary library(config);
+    loaded_route = library.load_route();
     OpenClApi api(library.handle());
     ClRuntime runtime(api);
     return Status::ok();
   } catch (const std::exception& error) {
-    return Status::invalid(std::string("opencl_single_token_layer_runtime_unavailable:") +
-                           error.what());
+    std::string message = "opencl_single_token_layer_runtime_unavailable:";
+    if (!loaded_route.empty()) {
+      message += "opencl_library_load_route=" + loaded_route + ":";
+    }
+    message += error.what();
+    return Status::invalid(message);
   }
 }
 

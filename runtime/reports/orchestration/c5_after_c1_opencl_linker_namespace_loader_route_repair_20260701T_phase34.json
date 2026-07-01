@@ -1,0 +1,154 @@
+{
+  "schema_version": "polymath_phase34_opencl_linker_namespace_loader_route_repair_v1",
+  "created_utc": "20260701T183000Z",
+  "lane": "phase34_c5_opencl_runtime",
+  "status": "opencl_linker_namespace_loader_route_repair_pathset_ready_for_custodian",
+  "governing_gate": "WaveB_C5_after_C1_vendor_opencl_linker_namespace_repair_pending_after_dlopen_detail_probe",
+  "first_missing_green_field_before_repair": "c5_full_decoder_opencl_parity_runtime_unavailable:opencl_single_token_layer_runtime_unavailable:opencl_library_configured_load_failed:dlerror_category=linker_namespace_or_permission",
+  "first_missing_green_field_after_repair_pending_execution": "post_custody_phone_probe_needed_for_android_sphal_loader_route_or_exact_loader_blocker",
+  "research_escalation": "bounded_sprint_required: configured vendor OpenCL library dlopen failed in the Termux/default namespace; repaired boundary is existing OpenCL loader plus run_c5_full_decoder_runtime path",
+  "aosp_references": [
+    {
+      "url": "https://source.android.com/docs/core/architecture/vndk/linker-namespace",
+      "relevance": "AOSP linker namespace model: framework/default, vndk, and sphal namespaces are isolated; SP-HALs load in sphal namespace."
+    },
+    {
+      "url": "https://android.googlesource.com/platform/system/core/+/master/libvndksupport/include/vndksupport/linker.h",
+      "relevance": "LLNDK libvndksupport interface exposes android_load_sphal_library and android_unload_sphal_library."
+    },
+    {
+      "url": "https://android.googlesource.com/platform/system/core/+/android16-qpr2-release/libvndksupport/linker.cpp",
+      "relevance": "AOSP implementation routes android_load_sphal_library through exported sphal/vendor namespaces using android_dlopen_ext."
+    }
+  ],
+  "evidence_consumed": {
+    "probe_root": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_vendor_opencl_dlopen_detail_20260701T180904Z",
+    "candidate_probe_stdout_sha256": "5f60271cf0f3d20708fdd88a6ed020ab8ab0844dcb5094a54bf370a32706fb5e",
+    "candidate_probe_stderr_sha256": "153ae145a59c2dd1c073551daf1c038442e9c00a4b108f187b56f57e52671e19",
+    "meminfo_before_sha256": "308c10e1195186441fe2f85e8c07eb848124aa32564ec3e8d07520ceecc849f4",
+    "meminfo_after_sha256": "7adcd7642e31a8c8b70f0c740b15d56718d97217c28919406ad563a32a6a5c4d",
+    "runner_sha256": "a2378e109c811ae2fbc6219a7fd39b1d2141f5a6033cbfce76e914214e5d2a5c",
+    "runner_bytes": 529720,
+    "configured_opencl_library_path_string_sha256": "59a8850fb37433061fd59e105ee6af8547f7149e8711d42d2cb37f70e27cf5c2",
+    "dlerror_category": "linker_namespace_or_permission",
+    "dlerror_redacted_sha256": "4c6bcb2f08feefeea9a3b043cce1d289a9c3f6ba8a1f6f06d6a80c8171c6cbf4",
+    "dlerror_redacted_detail": "dlopen failed: library \"<configured_opencl_library>\" needed or dlopened by \"<absolute_path>\" is not accessible for the namespace \"(default)\""
+  },
+  "repair_summary": {
+    "existing_surface_preserved": "--run-c5-qa-predict -> run_c5_full_decoder_runtime -> OpenCL parity dispatch -> DynamicLibrary",
+    "new_loader_route": "direct dlopen remains first; if the failure category is linker_namespace_or_permission, the loader dynamically opens libvndksupport.so and calls android_load_sphal_library for the same OpenCL library plus basename fallback",
+    "route_closure": "android_unload_sphal_library is used for SP-HAL-loaded handles; libvndksupport handle remains live until OpenCL handle close",
+    "route_marker": "after a successful load, later OpenCL runtime failures include opencl_library_load_route=direct_dlopen or opencl_library_load_route=android_sphal",
+    "report_contract_update": "C5 native report declares android_sphal_loader_fallback_enabled and libvndksupport.so support library"
+  },
+  "artifact_paths": [
+    {
+      "path": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/opencl_layer_runner.cpp",
+      "sha256": "b8d5c7fde2e43e78f0a333c5b7d339f2b85f1353d959654b027a30f1023f1560",
+      "role": "source_repair"
+    },
+    {
+      "path": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_qa_inference.cpp",
+      "sha256": "190611d2ad9939d263cb16a4e30627caa61285ab4477e55aaecf20e15c07cedd",
+      "role": "metadata_report_contract_update"
+    },
+    {
+      "path": "tests/test_c5_native_runtime_contract.py",
+      "sha256": "0df6a128b2b7cdf87d07a9cf9212768a385c7dc95119f3fc462080b8b1f6a8be",
+      "role": "focused_regression_tests"
+    },
+    {
+      "path": "runtime/reports/orchestration/c5_after_c1_opencl_linker_namespace_loader_route_repair_20260701T_phase34.json",
+      "sha256_external": "compute after write",
+      "role": "metadata_only_repair_report"
+    }
+  ],
+  "local_build_identity": {
+    "path": "build/gemma4_megakernel_host/gemma4_layer_runner",
+    "sha256": "29e53dc46a3bc2af425c7c1e2e4864ade8e7eeabce24f56e3d59db1f61cbea05",
+    "note": "host rebuild identity only; Execution must use a rebuilt phone runner from the custodied source patch"
+  },
+  "verification": [
+    {
+      "command": "cmake --build build/gemma4_megakernel_host --target gemma4_layer_runner -- -j2",
+      "result": "passed"
+    },
+    {
+      "command": "python3 -m pytest tests/test_c5_native_runtime_contract.py -q",
+      "result": "passed: 14 passed in 117.48s"
+    },
+    {
+      "command": "python3 -m pytest tests/test_c5_*.py -q",
+      "result": "passed: 49 passed in 126.72s"
+    },
+    {
+      "command": "ctest --test-dir build/gemma4_megakernel_host --output-on-failure",
+      "result": "passed: 4/4"
+    },
+    {
+      "command": "git diff --check -- integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/opencl_layer_runner.cpp integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_qa_inference.cpp tests/test_c5_native_runtime_contract.py",
+      "result": "passed"
+    }
+  ],
+  "next_execution_probe": {
+    "owner": "Execution after Repo Custodian freezes this pathset and rebuilds/copies a repaired phone runner",
+    "probe_scope": "single bounded C5_after_C1 forced vendor OpenCL probe only",
+    "runner_requirement": "must be rebuilt from this custodied repair source; do not reuse runner sha a2378e109c811ae2fbc6219a7fd39b1d2141f5a6033cbfce76e914214e5d2a5c for the repaired proof",
+    "outside_git_input_environment": {
+      "POLYMATH_C5_CANDIDATE_ADAPTER_PAYLOAD_OUTSIDE_GIT": "candidate adapter payload path; SHA must equal 1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f",
+      "POLYMATH_C5_HELDOUT_QA_JSONL_OUTSIDE_GIT": "heldout QA JSONL path; SHA must equal da41c5362398f24e0e0dd9df9a5cf0594435a455871fa77ab74d9312e6c8e9b2",
+      "POLYMATH_C5_CANDIDATE_PREDICTION_JSONL_OUTSIDE_GIT": "outside-git prediction JSONL output path",
+      "POLYMATH_C5_TOKENIZER_DIR_OUTSIDE_GIT": "tokenizer directory path",
+      "POLYMATH_C5_FULL_DECODER_COMPONENT_PACK_OUTSIDE_GIT": "full decoder component pack directory path"
+    },
+    "command_template": [
+      "RUNNER=\"$HOME/polymath_c5/C5_after_C1/bin/gemma4_layer_runner_c5_opencl_sphal\"",
+      "CANDIDATE_ADAPTER_PAYLOAD=\"$POLYMATH_C5_CANDIDATE_ADAPTER_PAYLOAD_OUTSIDE_GIT\"",
+      "HELDOUT_QA_JSONL=\"$POLYMATH_C5_HELDOUT_QA_JSONL_OUTSIDE_GIT\"",
+      "PREDICTION_JSONL=\"$POLYMATH_C5_CANDIDATE_PREDICTION_JSONL_OUTSIDE_GIT\"",
+      "TOKENIZER_DIR=\"$POLYMATH_C5_TOKENIZER_DIR_OUTSIDE_GIT\"",
+      "DECODER_COMPONENT_PACK=\"$POLYMATH_C5_FULL_DECODER_COMPONENT_PACK_OUTSIDE_GIT\"",
+      "test -x \"$RUNNER\" || { echo \"repaired_runner_missing_or_not_executable\" >&2; exit 90; }",
+      "test -n \"$CANDIDATE_ADAPTER_PAYLOAD\" || { echo \"candidate_adapter_payload_path_missing\" >&2; exit 91; }",
+      "test -n \"$HELDOUT_QA_JSONL\" || { echo \"heldout_qa_jsonl_path_missing\" >&2; exit 92; }",
+      "test -n \"$PREDICTION_JSONL\" || { echo \"prediction_jsonl_output_path_missing\" >&2; exit 93; }",
+      "test -n \"$TOKENIZER_DIR\" || { echo \"tokenizer_dir_path_missing\" >&2; exit 94; }",
+      "test -n \"$DECODER_COMPONENT_PACK\" || { echo \"decoder_component_pack_path_missing\" >&2; exit 95; }",
+      "\"$RUNNER\" --help | grep -- '--opencl-library' >/dev/null || { echo \"bounded_opencl_probe_command_runner_missing_opencl_library_flag\" >&2; exit 98; }",
+      "OUT=\"$HOME/polymath_c5/C5_after_C1/native_probe_vendor_opencl_sphal_$(date -u +%Y%m%dT%H%M%SZ)\"",
+      "mkdir -p \"$OUT\"",
+      "cat /proc/meminfo > \"$OUT/meminfo_before.txt\"",
+      "\"$RUNNER\" --run-c5-qa-predict --run-label c5_after_c1_vendor_opencl_sphal_probe --eval-point C5_after_C1 --checkpoint-role candidate --checkpoint-payload \"$CANDIDATE_ADAPTER_PAYLOAD\" --checkpoint-sha256 1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f --heldout-qa-jsonl \"$HELDOUT_QA_JSONL\" --output-jsonl \"$PREDICTION_JSONL\" --tokenizer-dir \"$TOKENIZER_DIR\" --decoder-component-pack \"$DECODER_COMPONENT_PACK\" --vocab-chunk-size 4096 --max-generation-tokens 1 --opencl-library /vendor/lib64/libOpenCL.so > \"$OUT/candidate_probe_stdout.json\" 2> \"$OUT/candidate_probe_stderr.log\"",
+      "CODE=$?",
+      "cat /proc/meminfo > \"$OUT/meminfo_after.txt\"",
+      "sha256sum \"$OUT\"/*",
+      "exit \"$CODE\""
+    ],
+    "expected_green_field": "first_missing_green_field advances past c5_full_decoder_opencl_parity_runtime_unavailable",
+    "expected_route_proof_if_opencl_runtime_still_fails_after_load": "opencl_library_load_route=android_sphal",
+    "expected_fail_field_if_sphal_unavailable_or_rejected": "android_sphal_loader_unavailable or android_sphal_loader_route_failed in first_missing_green_field",
+    "true_blocker_if_repeated_after_repair": "opencl_linker_namespace_loader_blocker with the exact sphal loader failure category/detail"
+  },
+  "raw_boundary_proof": {
+    "raw_payload_bytes_in_report": false,
+    "prediction_jsonl_written": false,
+    "checkpoint_payload_copied_to_repo": false,
+    "model_payload_copied_to_repo": false,
+    "adapter_payload_copied_to_repo": false,
+    "tensor_payload_copied_to_repo": false,
+    "raw_input_paths_in_report": false,
+    "dlopen_paths_redacted_in_runtime_status": true
+  },
+  "authorization_needed": "Repo Custodian custody freeze, then Execution bounded phone runner rebuild/copy and one forced vendor OpenCL SP-HAL probe",
+  "user_action_required": false,
+  "nonclaims": [
+    "no C5 pass",
+    "no executed C5 metrics",
+    "no prediction JSONL/logits/loss/confidence/candidate_train_loss",
+    "no bridge-MSE-as-C5-loss",
+    "no learning/model-quality claim",
+    "no Phase3/4 readiness",
+    "no 100k/1M Phase2 authority",
+    "no Comet-backed accepted run"
+  ]
+}
