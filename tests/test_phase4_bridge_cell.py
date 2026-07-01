@@ -8,6 +8,9 @@ from polymath_ai.polar.phase4_bridge_cell import (
     validate_phase4_bridge_report,
 )
 
+SOURCE_PJP1_SHA256 = "e347676432fa7a76489f402f3c3e38ab492b6554f71930f14bc7d36ed1b3ecf5"
+CONTEXT_SHA256 = "7f5dc16fd5c547a85f10c8a09f8b78e2171787c43d30af682d5dc7bfe4b7d3c4"
+
 
 def valid_report() -> dict:
     return {
@@ -23,7 +26,7 @@ def valid_report() -> dict:
             "dtype": "float32_le",
             "sha256": "d29e8cf2a034ade4185ae7a5d1130becb0137395c912825b29ac8c50de3351c6",
             "sha256_match": True,
-            "context_sha256": "context",
+            "context_sha256": CONTEXT_SHA256,
             "backend": "/data/local/tmp/qairt-2.44/lib/aarch64-android/libQnnHtp.so",
             "graph": "gemma_hidden2560_relu",
         },
@@ -33,7 +36,7 @@ def valid_report() -> dict:
             "dtype": "float32_le",
             "sha256": "704ffdab04f3b1b585b6246957ad576027a847b2c43367a927a23ef63ee55db7",
             "sha256_match": True,
-            "source_pjp1_sha256": "e347676432fa7a76489f402f3c3e38ab492b6554f71930f14bc7d36ed1b3ecf5",
+            "source_pjp1_sha256": SOURCE_PJP1_SHA256,
             "bridge_rule": "target hidden[h] = +1.0 if target_polar[token,h%256] bit is 1 else -1.0",
         },
         "opencl_device_is_adreno": True,
@@ -154,6 +157,17 @@ def test_valid_report_passes() -> None:
     assert validate_phase4_bridge_report(valid_report()) == []
 
 
+def test_valid_report_passes_with_expected_lineage() -> None:
+    blockers = validate_phase4_bridge_report(
+        valid_report(),
+        expected_source_pjp1_sha256=SOURCE_PJP1_SHA256,
+        expected_phase3_context_sha256=CONTEXT_SHA256,
+        expected_corpus_phase="C1_diagnostic",
+    )
+
+    assert blockers == []
+
+
 def test_rejects_readiness_and_learning_claims() -> None:
     report = valid_report()
     report["phase3_ready_claim"] = True
@@ -183,6 +197,38 @@ def test_rejects_cpu_update_and_missing_phase3_lineage() -> None:
 
     assert "cpu_objective_gradient_update_present" in blockers
     assert "missing_phase3_context_sha256" in blockers
+
+
+def test_rejects_placeholder_context_identity() -> None:
+    report = valid_report()
+    report["phase3_output"]["context_sha256"] = "p13_existing_context_identity_recorded_not_pulled"
+
+    assert "bad_phase3_context_sha256" in validate_phase4_bridge_report(report)
+
+
+def test_rejects_target_pjp1_sha256_mismatch() -> None:
+    report = valid_report()
+    expected = "a9e191c1e9ec0f7110fabe5991033f3176cf60c152dcc78b54e2e786a66604bc"
+
+    blockers = validate_phase4_bridge_report(report, expected_source_pjp1_sha256=expected)
+
+    assert "target_pjp1_sha256_mismatch" in blockers
+
+
+def test_rejects_bad_target_pjp1_sha256_shape() -> None:
+    report = valid_report()
+    report["phase4_target"]["source_pjp1_sha256"] = "measured_from_output_payload_metadata"
+
+    assert "bad_target_pjp1_sha256" in validate_phase4_bridge_report(report)
+
+
+def test_rejects_bridge_metric_namespace_mismatch() -> None:
+    report = report_for_phase("C2")
+    report["metrics"] = valid_report()["metrics"]
+
+    blockers = validate_phase4_bridge_report(report, expected_corpus_phase="C2")
+
+    assert "missing_metric:phase3/C2/pjp1_preflight_status" in blockers
 
 
 def test_rejects_nonfinite_metrics() -> None:

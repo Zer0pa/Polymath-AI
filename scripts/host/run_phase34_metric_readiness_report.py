@@ -59,7 +59,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--htp-report", default=DEFAULT_HTP_REPORT)
     parser.add_argument("--phase4-report", default=DEFAULT_PHASE4_REPORT)
     parser.add_argument("--output", default=DEFAULT_OUTPUT)
-    parser.add_argument("--corpus-phase", default="C1_diagnostic")
+    parser.add_argument("--corpus-phase", default="C1")
     return parser.parse_args()
 
 

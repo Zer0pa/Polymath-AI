@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import math
+import re
 from typing import Any
 
 
@@ -11,6 +12,11 @@ EXPECTED_SHAPE = [1, 16, 2560]
 EXPECTED_DTYPE = "float32_le"
 CURRICULUM_CORPUS_PHASES = ("C1", "C2", "C2_5", "C3", "C4")
 DIAGNOSTIC_CORPUS_PHASES = ("C1_diagnostic",)
+PLACEHOLDER_IDENTITY_VALUES = {
+    "p13_existing_context_identity_recorded_not_pulled",
+    "measured_from_output_payload_metadata",
+}
+SHA256_PATTERN = re.compile(r"^[0-9a-f]{64}$")
 ALLOWED_RAW_PREFIXES = (
     "/data/local/tmp/",
     "/sdcard/",
@@ -77,11 +83,24 @@ OPTIONAL_WHEN_UNSUPPORTED = {
 }
 
 
-def validate_phase4_bridge_report(report: dict[str, Any]) -> list[str]:
+def validate_phase4_bridge_report(
+    report: dict[str, Any],
+    *,
+    expected_source_pjp1_sha256: str | None = None,
+    expected_phase3_context_sha256: str | None = None,
+    expected_corpus_phase: str | None = None,
+) -> list[str]:
     """Return fail-closed blocker codes for a compact Phase 4 bridge report."""
 
     blockers: list[str] = []
     require_equal(blockers, report.get("cell_id"), CELL_ID, "wrong_cell_id")
+    corpus_phase = report.get("corpus_phase")
+    require_present(blockers, corpus_phase, "missing_corpus_phase")
+    if isinstance(corpus_phase, str) and corpus_phase:
+        if corpus_phase not in CURRICULUM_CORPUS_PHASES + DIAGNOSTIC_CORPUS_PHASES:
+            blockers.append(f"unsupported_corpus_phase:{corpus_phase}")
+        if expected_corpus_phase is not None:
+            require_equal(blockers, corpus_phase, expected_corpus_phase, "wrong_corpus_phase")
     require_false(blockers, report.get("phase3_ready_claim"), "phase3_ready_claim_true")
     require_false(blockers, report.get("phase4_ready_claim"), "phase4_ready_claim_true")
     require_false(blockers, report.get("learning_claim"), "learning_claim_true")
@@ -93,12 +112,18 @@ def validate_phase4_bridge_report(report: dict[str, Any]) -> list[str]:
         validate_tensor_lineage(blockers, phase3, "phase3_output")
         require_true(blockers, phase3.get("sha256_match"), "phase3_output_sha256_mismatch")
         require_present(blockers, phase3.get("context_sha256"), "missing_phase3_context_sha256")
+        require_sha256(blockers, phase3.get("context_sha256"), "bad_phase3_context_sha256")
+        if expected_phase3_context_sha256 is not None:
+            require_equal(blockers, phase3.get("context_sha256"), expected_phase3_context_sha256, "phase3_context_sha256_mismatch")
         require_present(blockers, phase3.get("backend"), "missing_phase3_backend")
         require_present(blockers, phase3.get("graph"), "missing_phase3_graph")
     if target:
         validate_tensor_lineage(blockers, target, "phase4_target")
         require_true(blockers, target.get("sha256_match"), "phase4_target_sha256_mismatch")
         require_present(blockers, target.get("source_pjp1_sha256"), "missing_target_pjp1_sha256")
+        require_sha256(blockers, target.get("source_pjp1_sha256"), "bad_target_pjp1_sha256")
+        if expected_source_pjp1_sha256 is not None:
+            require_equal(blockers, target.get("source_pjp1_sha256"), expected_source_pjp1_sha256, "target_pjp1_sha256_mismatch")
         require_present(blockers, target.get("bridge_rule"), "missing_target_bridge_rule")
 
     require_equal(blockers, report.get("opencl_device_is_adreno"), True, "opencl_device_not_adreno")
@@ -139,6 +164,9 @@ def validate_phase4_bridge_report(report: dict[str, Any]) -> list[str]:
         for path in raw_rules.get("repo_paths", []):
             if str(path).endswith(FORBIDDEN_REPO_RAW_SUFFIXES):
                 blockers.append("raw_payload_path_in_repo")
+
+    if isinstance(corpus_phase, str) and corpus_phase:
+        blockers.extend(validate_phase34_metric_readiness(report, corpus_phase=corpus_phase))
 
     return blockers
 
@@ -237,6 +265,14 @@ def require_mapping(blockers: list[str], value: Any, code: str) -> dict[str, Any
 
 def require_present(blockers: list[str], value: Any, code: str) -> None:
     if value in (None, ""):
+        blockers.append(code)
+
+
+def require_sha256(blockers: list[str], value: Any, code: str) -> None:
+    if not isinstance(value, str):
+        blockers.append(code)
+        return
+    if value in PLACEHOLDER_IDENTITY_VALUES or SHA256_PATTERN.fullmatch(value) is None:
         blockers.append(code)
 
 
