@@ -1,12 +1,12 @@
 {
   "active_bottleneck": {
     "artifact_waiting_on": [
-      "Phase3/4 locates or declares the outside-git candidate checkpoint/adapter payload path whose file SHA is 1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f.",
-      "Phase3/4 locates or declares the outside-git stable-baseline checkpoint/adapter payload path whose file SHA is e0d1c66ac876c2b6fbbe9e88f1b02dd37201d8ffba10afcd44f1c558fc32f7c9.",
-      "Phase3/4 provides a finite candidate_train_loss aligned to the candidate checkpoint identity, or returns the exact report/command needed to recover it.",
-      "Engineering identifies an accepted real inference producer command prefix implementing the argv contract printed by scripts/host/run_c5_prediction_payloads.py --print-contract, or returns a smallest implementation pathset / exact runtime gap.",
-      "Execution reruns run_c5_prediction_payloads.py after payload paths, producer command, and train loss are ready, producing outside-git candidate_predictions.jsonl and stable_baseline_predictions.jsonl.",
-      "Execution then runs run_c5_heldout_eval.py and run_c5_eval.py to emit and validate polymath_c5_executed_metrics_v1 metadata."
+      "Phase3/4 implements or returns exact source blocker for gemma4_layer_runner --run-c5-qa-predict real QA logits/generation surface.",
+      "New runtime must consume the resolved C5_after_C1 candidate/stable adapter payload paths and heldout QA without raw payloads in git.",
+      "Host wrapper scripts/host/run_c5_phase34_qa_inference_producer.py must match the frozen prediction-payload argv contract.",
+      "Runtime must emit outside-git candidate/stable prediction JSONL with record_id,prediction,finite loss,confidence.",
+      "Finite candidate_train_loss must come from real logits/training runtime, not Phase4 bridge MSE.",
+      "Execution then runs run_c5_prediction_payloads.py, run_c5_heldout_eval.py, and run_c5_eval.py to emit/validate polymath_c5_executed_metrics_v1."
     ],
     "c5_after_c1_eval_split_identity": {
       "artifact_path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/c5_eval_split_identity_C5_after_C1.json",
@@ -59,10 +59,10 @@
       "schema_version": "polymath_c5_prediction_payload_probe_v1",
       "artifact_path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/prediction_payload_probe/c5_prediction_payload_probe_20260701T023007Z.json",
       "artifact_sha256": "f00951a83523e7fd19c4e2dc6db3103fb1d8107dab6f09d2f80d8bde37405036",
-      "status": "c5_after_c1_pending_real_inference_payloads",
-      "status_classification": "PENDING_ACTION",
+      "status": "c5_after_c1_payload_paths_resolved_runtime_missing",
+      "status_classification": "PENDING_ACTION_PHASE34_C5_QA_RUNTIME_IMPLEMENTATION",
       "freeze_commit_consumed": "634a06a6e66f7d99f88bcf5bba7cc83c916fd9e1",
-      "first_missing_green_field": "candidate_checkpoint_payload_path_missing",
+      "first_missing_green_field": "c5_qa_logits_generation_surface_missing",
       "verified_inputs": {
         "heldout_qa_jsonl_path": "/tmp/polymath_c5/C5_after_C1/phase_C1_test.qa.jsonl",
         "heldout_qa_jsonl_is_symlink": true,
@@ -83,7 +83,34 @@
         "/tmp/polymath_c5/C5_after_C1/stable_baseline_predictions.jsonl"
       ],
       "raw_boundary": "No raw QA/prediction/checkpoint/adapter payloads copied into git. Heldout QA is symlinked outside git; prediction JSONL remains absent/outside git.",
-      "user_action_required": false
+      "user_action_required": false,
+      "resolved_payloads": {
+        "status": "c5_after_c1_payload_paths_hash_probe_ready",
+        "status_classification": "PENDING_ACTION",
+        "first_missing_green_field_after_probe": "producer_command_missing",
+        "device_access": "FY25013101C8 device",
+        "probe_type": "bounded adb shell hash-only; no adb pull; no raw payload copied into git",
+        "repo_head_observed_by_execution": "634a06a6e66f7d99f88bcf5bba7cc83c916fd9e1",
+        "canonical_candidate_payload": {
+          "path": "/sdcard/Download/polymath_phase34_lineage_repair/c1_c4_waveB_rerun_20260630T230411Z_C1_lineage_repair/phase4_bridge_cell/adapter_post_rank16.f32.bin",
+          "sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f",
+          "bytes": 327680
+        },
+        "canonical_stable_baseline_payload": {
+          "path": "/sdcard/Download/polymath_phase34_lineage_repair/c1_c4_waveB_rerun_20260630T230411Z_C1_lineage_repair/phase4_bridge_cell/adapter_pre_rank16.f32.bin",
+          "sha256": "e0d1c66ac876c2b6fbbe9e88f1b02dd37201d8ffba10afcd44f1c558fc32f7c9",
+          "bytes": 327680
+        },
+        "duplicate_stable_baseline_note": "stable baseline hash appeared in multiple bounded C1-C4 roots; C1 lineage-repair pair chosen as canonical for C5_after_C1",
+        "remaining_missing_green_fields": [
+          "accepted real C5 QA inference producer command/runtime",
+          "finite candidate_train_loss from real logits/training runtime",
+          "outside-git candidate_predictions.jsonl",
+          "outside-git stable_baseline_predictions.jsonl",
+          "polymath_c5_executed_metrics_v1 JSON"
+        ],
+        "raw_boundary": "hash/bytes/path metadata only; raw adapter binaries remained on device/outside git"
+      }
     },
     "c5_after_c1_fail_closed_preflight": {
       "artifact_path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/c5_eval_C5_after_C1_c1_c4_waveB_rerun_20260630T230411Z.json",
@@ -320,9 +347,9 @@
       "split_count": 5,
       "status": "c5_remaining_eval_split_identity_matrix_ready"
     },
-    "current_gate": "WaveB_C5_after_C1_real_inference_payload_surface_pending",
+    "current_gate": "WaveB_C5_after_C1_c5_qa_logits_generation_surface_missing",
     "dominant_failure_domain": "phase5_eval_failure",
-    "drift_deleted_or_pending": "C5 scorer and prediction-payload wrapper drift are frozen. Current pending drift/hardening edge is absence of a verified real inference payload/producer surface; stale completed markers are reclassified as orchestration_failure if not mobilized.",
+    "drift_deleted_or_pending": "payload-path drift resolved by hash-only probe; current pending drift is absent real QA logits/generation runtime. Bridge MSE and diagnostic Phase4 metrics must not be relabeled as C5 loss or C5 pass.",
     "engineering_evaluator_implementation": {
       "artifact_paths_in_progress": [
         "polymath_ai/polar/c5_heldout_eval.py",
@@ -419,7 +446,7 @@
       "existing_surface_role": "run_c5_eval.py validates supplied metrics JSON; it does not compute metrics",
       "status": "c5_after_c1_real_evaluator_surface_missing"
     },
-    "first_missing_green_field": "candidate_checkpoint_payload_path_missing",
+    "first_missing_green_field": "c5_qa_logits_generation_surface_missing",
     "hardening_policy": {
       "deleted_or_repaired_drift": [
         "forced_non_packaged_child_exec_default_for_phase1",
@@ -433,15 +460,15 @@
       "next_hardening_surface": "Real C5 evaluator implementation and metrics schema: fail closed on absent command surface, identity mismatch, raw payload leakage, or metadata-derived metric substitution."
     },
     "lane_poll": {
-      "engineering_orchestrator": "nudged for real inference producer command/implementation",
-      "execution_orchestrator": "completed probe; waiting for payload paths, producer command, and train loss",
-      "phase34_engineer": "nudged for payload paths and candidate_train_loss",
-      "pipeline_integrator": "waiting for emitted polymath_c5_executed_metrics_v1 artifact",
-      "repo_custodian_replacement": "nudged: freeze exact C5 evaluator producer pathset plus probe/state mirrors if clean",
+      "engineering_orchestrator": "completed runtime design: extend gemma4_layer_runner --run-c5-qa-predict; no accepted runtime exists yet",
+      "execution_orchestrator": "completed bounded hash-only payload path probe; waiting for C5 QA runtime/producer and candidate_train_loss",
+      "phase34_engineer": "nudged to implement C5 QA logits/generation runtime pathset or return exact source blocker",
+      "pipeline_integrator": "waiting for emitted prediction payloads and polymath_c5_executed_metrics_v1 artifact",
+      "repo_custodian_replacement": "previous state/probe freeze complete at 7290fbec13c6a13e88710afddfe4af70637096f9; new state mirror will need custody after meta validation",
       "training_material_steward": "complete for material identities",
       "ui_engineer": "not nudged until C5 evidence-backed status exists"
     },
-    "last_concrete_action": "Execution consumed frozen C5 prediction-payload contract commit 634a06a6e66f7d99f88bcf5bba7cc83c916fd9e1, verified the contract and accepted C5_after_C1 identities, staged heldout QA outside git at /tmp with SHA da41c5362398f24e0e0dd9df9a5cf0594435a455871fa77ab74d9312e6c8e9b2 and 53 rows, and wrote metadata-only pending-input probe SHA f00951a83523e7fd19c4e2dc6db3103fb1d8107dab6f09d2f80d8bde37405036. No predictions or metrics were fabricated.",
+    "last_concrete_action": "Execution completed a bounded ADB hash-only probe and resolved the canonical C5_after_C1 candidate/stable adapter payload paths. Engineering then ruled out existing fake/bridge surfaces and returned the exact gemma4_layer_runner C5 QA runtime design boundary. Meta nudged Phase3/4 to implement or return the exact source blocker.",
     "lineage_drift_repair_status": {
       "commit": "ee74ae572322e05624deac6f6f8788c2c6e2f692",
       "proof_required": [
@@ -457,7 +484,7 @@
       ],
       "status": "source_repair_frozen_pending_execution_proof"
     },
-    "next_concrete_action": "Phase3/4 returns exact outside-git candidate/stable payload paths matching the accepted hashes plus finite candidate_train_loss, or an exact PENDING_ACTION_EXECUTION_HASH_PROBE. Engineering returns an accepted real inference producer command prefix or a narrow implementation/runtime gap. When both are green, Execution runs run_c5_prediction_payloads.py, then run_c5_heldout_eval.py, then run_c5_eval.py.",
+    "next_concrete_action": "Phase3/4 implements gemma4_layer_runner --run-c5-qa-predict plus scripts/host/run_c5_phase34_qa_inference_producer.py, or returns c5_after_c1_c5_qa_runtime_pending_exact_source_blocker with the first missing runtime component. After custody freeze, Execution produces prediction JSONL outside git and scores C5_after_C1.",
     "nonclaims": [
       "development-cycle evidence only unless stronger gates pass",
       "no C5 pass",
@@ -476,7 +503,7 @@
       "not 100k/1M Phase2 authority",
       "no Comet-backed accepted run claim yet"
     ],
-    "owner": "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 for payload paths/train loss; Engineering Orchestrator 019f138b-d229-7640-98b7-2f185d6beae0 for producer command; Execution Orchestrator after both are green",
+    "owner": "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 owns C5 QA runtime implementation/pathset; Engineering Orchestrator 019f138b-d229-7640-98b7-2f185d6beae0 owns design support; Execution resumes after runtime, candidate_train_loss, and producer command are green",
     "phase2_status_by_phase": {
       "C1": {
         "packets": 5180,
@@ -656,35 +683,98 @@
       "phase34": "raw PJP1, HTP raw output, OpenCL tensors, and adapters remain on device/Termux; repair must keep compact JSON only",
       "report_root_scan": "metadata-freeze report root had 179 tracked files and clean forbidden suffix scans; raw payloads not committed"
     },
-    "recursive_improvement_next_step": "payload paths + producer command + train loss -> Execution generates prediction JSONL outside git -> heldout scorer emits polymath_c5_executed_metrics_v1 -> Pipeline validates -> Custodian freezes metadata -> route the measured weakest failure domain and rerun smallest proof path.",
+    "recursive_improvement_next_step": "C5 QA runtime pathset -> Custodian freeze -> Execution prediction payloads outside git -> heldout scorer emits polymath_c5_executed_metrics_v1 -> Pipeline validates -> route measured weakest failure domain and rerun smallest proof path.",
     "repo_custody_state_freeze": {
       "branch": "origin/gemma4-megakernel-native-training",
-      "commit": "3de535adec9219017565f71eddb5cf324d995528",
+      "commit": "7290fbec13c6a13e88710afddfe4af70637096f9",
       "pathset": [
         "docs/PRD-C1-C5-DRIFT-FREE-METRICS-COMET-EXECUTION-2026-06-30.md",
         "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json",
         "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md"
       ],
-      "status": "c5_evaluator_mobilization_state_committed_pushed"
+      "status": "executive_state_c5_inference_payload_edge_committed_pushed"
     },
     "run_label": "c1_c4_waveB_rerun_20260630T230411Z",
     "run_root": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z",
-    "status_classification": "PENDING_ACTION_PHASE34_ENGINEERING_C5_REAL_INFERENCE_PAYLOADS",
+    "status_classification": "PENDING_ACTION_PHASE34_ENGINEERING_C5_QA_RUNTIME_IMPLEMENTATION",
     "threads_nudged_this_tick": [
-      "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4: provide outside-git candidate/stable payload paths and candidate_train_loss, or exact hash-probe action.",
-      "Engineering Orchestrator 019f138b-d229-7640-98b7-2f185d6beae0: provide accepted real inference producer command prefix or exact implementation/runtime gap."
+      "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4: implement gemma4_layer_runner --run-c5-qa-predict plus host producer wrapper, or return exact source/runtime blocker."
     ],
-    "timestamp_utc": "2026-07-01T02:35:16Z",
-    "user_action_required": false
+    "timestamp_utc": "2026-07-01T02:45:16Z",
+    "user_action_required": false,
+    "c5_after_c1_payload_paths_hash_probe": {
+      "status": "c5_after_c1_payload_paths_hash_probe_ready",
+      "status_classification": "PENDING_ACTION",
+      "first_missing_green_field_after_probe": "producer_command_missing",
+      "device_access": "FY25013101C8 device",
+      "probe_type": "bounded adb shell hash-only; no adb pull; no raw payload copied into git",
+      "repo_head_observed_by_execution": "634a06a6e66f7d99f88bcf5bba7cc83c916fd9e1",
+      "canonical_candidate_payload": {
+        "path": "/sdcard/Download/polymath_phase34_lineage_repair/c1_c4_waveB_rerun_20260630T230411Z_C1_lineage_repair/phase4_bridge_cell/adapter_post_rank16.f32.bin",
+        "sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f",
+        "bytes": 327680
+      },
+      "canonical_stable_baseline_payload": {
+        "path": "/sdcard/Download/polymath_phase34_lineage_repair/c1_c4_waveB_rerun_20260630T230411Z_C1_lineage_repair/phase4_bridge_cell/adapter_pre_rank16.f32.bin",
+        "sha256": "e0d1c66ac876c2b6fbbe9e88f1b02dd37201d8ffba10afcd44f1c558fc32f7c9",
+        "bytes": 327680
+      },
+      "duplicate_stable_baseline_note": "stable baseline hash appeared in multiple bounded C1-C4 roots; C1 lineage-repair pair chosen as canonical for C5_after_C1",
+      "remaining_missing_green_fields": [
+        "accepted real C5 QA inference producer command/runtime",
+        "finite candidate_train_loss from real logits/training runtime",
+        "outside-git candidate_predictions.jsonl",
+        "outside-git stable_baseline_predictions.jsonl",
+        "polymath_c5_executed_metrics_v1 JSON"
+      ],
+      "raw_boundary": "hash/bytes/path metadata only; raw adapter binaries remained on device/outside git"
+    },
+    "c5_after_c1_real_inference_runtime_design": {
+      "status": "c5_after_c1_real_inference_runtime_design_ready_for_phase34_execution",
+      "status_classification": "PENDING_ACTION_PHASE34_C5_QA_RUNTIME_IMPLEMENTATION",
+      "first_missing_green_field": "c5_qa_logits_generation_surface_missing",
+      "extendable_runtime_surface": "gemma4_layer_runner",
+      "rejected_surfaces": [
+        "Phase4 bridge cell hidden-space MSE adapter proof is not a generative QA/logits runtime",
+        "existing Gemma runner modes do not emit autoregressive QA record_id,prediction,loss,confidence JSONL"
+      ],
+      "required_source_pathset": [
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/runner/main.cpp",
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/include/polymath/gemma4/c5_qa_inference.h",
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_qa_inference.cpp",
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/CMakeLists.txt",
+        "scripts/host/run_c5_phase34_qa_inference_producer.py"
+      ],
+      "required_cli": "gemma4_layer_runner --run-c5-qa-predict",
+      "producer_contract": "compatible with scripts/host/run_c5_prediction_payloads.py --print-contract appended argv: --checkpoint-role, --checkpoint-payload, --checkpoint-sha256, --heldout-qa-jsonl, --output-jsonl",
+      "required_output": "outside-git JSONL rows with record_id, prediction, finite nonnegative loss, confidence in [0,1]",
+      "real_metric_policy": {
+        "prediction": "autoregressive decode from C5 heldout question prompt",
+        "loss": "teacher-forced answer-token NLL from real logits over heldout answers",
+        "confidence": "normalized answer-token probabilities from the same logits",
+        "candidate_train_loss": "same loss kind over accepted train/validation slice or emitted by real training runtime; Phase4 bridge MSE is not acceptable"
+      },
+      "fail_closed_tests_to_add": [
+        "reject missing tokenizer, full decoder/layer-pack manifest, LM head/unembedding, adapter-site policy, or payload hash wiring",
+        "reject Phase4 bridge MSE as C5 train loss",
+        "reject outputs missing record_id,prediction,loss,confidence",
+        "reject raw outputs inside git",
+        "verify producer JSONL is accepted by run_c5_heldout_eval.py"
+      ],
+      "engineering_validation_reported": [
+        "python3.11 scripts/host/run_c5_prediction_payloads.py --print-contract -> pass",
+        "python3.11 -m pytest -q tests/test_c5_prediction_payloads.py tests/test_c5_heldout_eval.py -> 7 passed"
+      ]
+    }
   },
   "active_watchdog_state": {
     "artifact_waiting_on": [
-      "Phase3/4 locates or declares the outside-git candidate checkpoint/adapter payload path whose file SHA is 1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f.",
-      "Phase3/4 locates or declares the outside-git stable-baseline checkpoint/adapter payload path whose file SHA is e0d1c66ac876c2b6fbbe9e88f1b02dd37201d8ffba10afcd44f1c558fc32f7c9.",
-      "Phase3/4 provides a finite candidate_train_loss aligned to the candidate checkpoint identity, or returns the exact report/command needed to recover it.",
-      "Engineering identifies an accepted real inference producer command prefix implementing the argv contract printed by scripts/host/run_c5_prediction_payloads.py --print-contract, or returns a smallest implementation pathset / exact runtime gap.",
-      "Execution reruns run_c5_prediction_payloads.py after payload paths, producer command, and train loss are ready, producing outside-git candidate_predictions.jsonl and stable_baseline_predictions.jsonl.",
-      "Execution then runs run_c5_heldout_eval.py and run_c5_eval.py to emit and validate polymath_c5_executed_metrics_v1 metadata."
+      "Phase3/4 implements or returns exact source blocker for gemma4_layer_runner --run-c5-qa-predict real QA logits/generation surface.",
+      "New runtime must consume the resolved C5_after_C1 candidate/stable adapter payload paths and heldout QA without raw payloads in git.",
+      "Host wrapper scripts/host/run_c5_phase34_qa_inference_producer.py must match the frozen prediction-payload argv contract.",
+      "Runtime must emit outside-git candidate/stable prediction JSONL with record_id,prediction,finite loss,confidence.",
+      "Finite candidate_train_loss must come from real logits/training runtime, not Phase4 bridge MSE.",
+      "Execution then runs run_c5_prediction_payloads.py, run_c5_heldout_eval.py, and run_c5_eval.py to emit/validate polymath_c5_executed_metrics_v1."
     ],
     "c5_after_c1_eval_split_identity": {
       "artifact_path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/c5_eval_split_identity_C5_after_C1.json",
@@ -737,10 +827,10 @@
       "schema_version": "polymath_c5_prediction_payload_probe_v1",
       "artifact_path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/prediction_payload_probe/c5_prediction_payload_probe_20260701T023007Z.json",
       "artifact_sha256": "f00951a83523e7fd19c4e2dc6db3103fb1d8107dab6f09d2f80d8bde37405036",
-      "status": "c5_after_c1_pending_real_inference_payloads",
-      "status_classification": "PENDING_ACTION",
+      "status": "c5_after_c1_payload_paths_resolved_runtime_missing",
+      "status_classification": "PENDING_ACTION_PHASE34_C5_QA_RUNTIME_IMPLEMENTATION",
       "freeze_commit_consumed": "634a06a6e66f7d99f88bcf5bba7cc83c916fd9e1",
-      "first_missing_green_field": "candidate_checkpoint_payload_path_missing",
+      "first_missing_green_field": "c5_qa_logits_generation_surface_missing",
       "verified_inputs": {
         "heldout_qa_jsonl_path": "/tmp/polymath_c5/C5_after_C1/phase_C1_test.qa.jsonl",
         "heldout_qa_jsonl_is_symlink": true,
@@ -761,7 +851,34 @@
         "/tmp/polymath_c5/C5_after_C1/stable_baseline_predictions.jsonl"
       ],
       "raw_boundary": "No raw QA/prediction/checkpoint/adapter payloads copied into git. Heldout QA is symlinked outside git; prediction JSONL remains absent/outside git.",
-      "user_action_required": false
+      "user_action_required": false,
+      "resolved_payloads": {
+        "status": "c5_after_c1_payload_paths_hash_probe_ready",
+        "status_classification": "PENDING_ACTION",
+        "first_missing_green_field_after_probe": "producer_command_missing",
+        "device_access": "FY25013101C8 device",
+        "probe_type": "bounded adb shell hash-only; no adb pull; no raw payload copied into git",
+        "repo_head_observed_by_execution": "634a06a6e66f7d99f88bcf5bba7cc83c916fd9e1",
+        "canonical_candidate_payload": {
+          "path": "/sdcard/Download/polymath_phase34_lineage_repair/c1_c4_waveB_rerun_20260630T230411Z_C1_lineage_repair/phase4_bridge_cell/adapter_post_rank16.f32.bin",
+          "sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f",
+          "bytes": 327680
+        },
+        "canonical_stable_baseline_payload": {
+          "path": "/sdcard/Download/polymath_phase34_lineage_repair/c1_c4_waveB_rerun_20260630T230411Z_C1_lineage_repair/phase4_bridge_cell/adapter_pre_rank16.f32.bin",
+          "sha256": "e0d1c66ac876c2b6fbbe9e88f1b02dd37201d8ffba10afcd44f1c558fc32f7c9",
+          "bytes": 327680
+        },
+        "duplicate_stable_baseline_note": "stable baseline hash appeared in multiple bounded C1-C4 roots; C1 lineage-repair pair chosen as canonical for C5_after_C1",
+        "remaining_missing_green_fields": [
+          "accepted real C5 QA inference producer command/runtime",
+          "finite candidate_train_loss from real logits/training runtime",
+          "outside-git candidate_predictions.jsonl",
+          "outside-git stable_baseline_predictions.jsonl",
+          "polymath_c5_executed_metrics_v1 JSON"
+        ],
+        "raw_boundary": "hash/bytes/path metadata only; raw adapter binaries remained on device/outside git"
+      }
     },
     "c5_after_c1_fail_closed_preflight": {
       "artifact_path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/c5_eval_C5_after_C1_c1_c4_waveB_rerun_20260630T230411Z.json",
@@ -1032,9 +1149,9 @@
       "split_count": 5,
       "status": "c5_remaining_eval_split_identity_matrix_ready"
     },
-    "current_gate": "WaveB_C5_after_C1_real_inference_payload_surface_pending",
+    "current_gate": "WaveB_C5_after_C1_c5_qa_logits_generation_surface_missing",
     "dominant_failure_domain": "phase5_eval_failure",
-    "drift_deleted_or_pending": "C5 scorer and prediction-payload wrapper drift are frozen. Current pending drift/hardening edge is absence of a verified real inference payload/producer surface; stale completed markers are reclassified as orchestration_failure if not mobilized.",
+    "drift_deleted_or_pending": "payload-path drift resolved by hash-only probe; current pending drift is absent real QA logits/generation runtime. Bridge MSE and diagnostic Phase4 metrics must not be relabeled as C5 loss or C5 pass.",
     "engineering_evaluator_implementation": {
       "artifact_paths_in_progress": [
         "polymath_ai/polar/c5_heldout_eval.py",
@@ -1133,7 +1250,7 @@
       "existing_surface_role": "run_c5_eval.py validates supplied metrics JSON; it does not compute metrics",
       "status": "c5_after_c1_real_evaluator_surface_missing"
     },
-    "first_missing_green_field": "candidate_checkpoint_payload_path_missing",
+    "first_missing_green_field": "c5_qa_logits_generation_surface_missing",
     "hardening_policy": {
       "deleted_or_repaired_drift": [
         "forced_non_packaged_child_exec_default_for_phase1",
@@ -1147,15 +1264,15 @@
       "next_hardening_surface": "Real C5 evaluator implementation and metrics schema: fail closed on absent command surface, identity mismatch, raw payload leakage, or metadata-derived metric substitution."
     },
     "lane_poll": {
-      "engineering_orchestrator": "nudged for real inference producer command/implementation",
-      "execution_orchestrator": "completed probe; waiting for payload paths, producer command, and train loss",
-      "phase34_engineer": "nudged for payload paths and candidate_train_loss",
-      "pipeline_integrator": "waiting for emitted polymath_c5_executed_metrics_v1 artifact",
-      "repo_custodian_replacement": "nudged: freeze exact C5 evaluator producer pathset plus probe/state mirrors if clean",
+      "engineering_orchestrator": "completed runtime design: extend gemma4_layer_runner --run-c5-qa-predict; no accepted runtime exists yet",
+      "execution_orchestrator": "completed bounded hash-only payload path probe; waiting for C5 QA runtime/producer and candidate_train_loss",
+      "phase34_engineer": "nudged to implement C5 QA logits/generation runtime pathset or return exact source blocker",
+      "pipeline_integrator": "waiting for emitted prediction payloads and polymath_c5_executed_metrics_v1 artifact",
+      "repo_custodian_replacement": "previous state/probe freeze complete at 7290fbec13c6a13e88710afddfe4af70637096f9; new state mirror will need custody after meta validation",
       "training_material_steward": "complete for material identities",
       "ui_engineer": "not nudged until C5 evidence-backed status exists"
     },
-    "last_concrete_action": "Execution consumed frozen C5 prediction-payload contract commit 634a06a6e66f7d99f88bcf5bba7cc83c916fd9e1, verified the contract and accepted C5_after_C1 identities, staged heldout QA outside git at /tmp with SHA da41c5362398f24e0e0dd9df9a5cf0594435a455871fa77ab74d9312e6c8e9b2 and 53 rows, and wrote metadata-only pending-input probe SHA f00951a83523e7fd19c4e2dc6db3103fb1d8107dab6f09d2f80d8bde37405036. No predictions or metrics were fabricated.",
+    "last_concrete_action": "Execution completed a bounded ADB hash-only probe and resolved the canonical C5_after_C1 candidate/stable adapter payload paths. Engineering then ruled out existing fake/bridge surfaces and returned the exact gemma4_layer_runner C5 QA runtime design boundary. Meta nudged Phase3/4 to implement or return the exact source blocker.",
     "lineage_drift_repair_status": {
       "commit": "ee74ae572322e05624deac6f6f8788c2c6e2f692",
       "proof_required": [
@@ -1171,7 +1288,7 @@
       ],
       "status": "source_repair_frozen_pending_execution_proof"
     },
-    "next_concrete_action": "Phase3/4 returns exact outside-git candidate/stable payload paths matching the accepted hashes plus finite candidate_train_loss, or an exact PENDING_ACTION_EXECUTION_HASH_PROBE. Engineering returns an accepted real inference producer command prefix or a narrow implementation/runtime gap. When both are green, Execution runs run_c5_prediction_payloads.py, then run_c5_heldout_eval.py, then run_c5_eval.py.",
+    "next_concrete_action": "Phase3/4 implements gemma4_layer_runner --run-c5-qa-predict plus scripts/host/run_c5_phase34_qa_inference_producer.py, or returns c5_after_c1_c5_qa_runtime_pending_exact_source_blocker with the first missing runtime component. After custody freeze, Execution produces prediction JSONL outside git and scores C5_after_C1.",
     "nonclaims": [
       "development-cycle evidence only unless stronger gates pass",
       "no C5 pass",
@@ -1190,7 +1307,7 @@
       "not 100k/1M Phase2 authority",
       "no Comet-backed accepted run claim yet"
     ],
-    "owner": "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 for payload paths/train loss; Engineering Orchestrator 019f138b-d229-7640-98b7-2f185d6beae0 for producer command; Execution Orchestrator after both are green",
+    "owner": "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 owns C5 QA runtime implementation/pathset; Engineering Orchestrator 019f138b-d229-7640-98b7-2f185d6beae0 owns design support; Execution resumes after runtime, candidate_train_loss, and producer command are green",
     "phase2_status_by_phase": {
       "C1": {
         "packets": 5180,
@@ -1370,26 +1487,89 @@
       "phase34": "raw PJP1, HTP raw output, OpenCL tensors, and adapters remain on device/Termux; repair must keep compact JSON only",
       "report_root_scan": "metadata-freeze report root had 179 tracked files and clean forbidden suffix scans; raw payloads not committed"
     },
-    "recursive_improvement_next_step": "payload paths + producer command + train loss -> Execution generates prediction JSONL outside git -> heldout scorer emits polymath_c5_executed_metrics_v1 -> Pipeline validates -> Custodian freezes metadata -> route the measured weakest failure domain and rerun smallest proof path.",
+    "recursive_improvement_next_step": "C5 QA runtime pathset -> Custodian freeze -> Execution prediction payloads outside git -> heldout scorer emits polymath_c5_executed_metrics_v1 -> Pipeline validates -> route measured weakest failure domain and rerun smallest proof path.",
     "repo_custody_state_freeze": {
       "branch": "origin/gemma4-megakernel-native-training",
-      "commit": "3de535adec9219017565f71eddb5cf324d995528",
+      "commit": "7290fbec13c6a13e88710afddfe4af70637096f9",
       "pathset": [
         "docs/PRD-C1-C5-DRIFT-FREE-METRICS-COMET-EXECUTION-2026-06-30.md",
         "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json",
         "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md"
       ],
-      "status": "c5_evaluator_mobilization_state_committed_pushed"
+      "status": "executive_state_c5_inference_payload_edge_committed_pushed"
     },
     "run_label": "c1_c4_waveB_rerun_20260630T230411Z",
     "run_root": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z",
-    "status_classification": "PENDING_ACTION_PHASE34_ENGINEERING_C5_REAL_INFERENCE_PAYLOADS",
+    "status_classification": "PENDING_ACTION_PHASE34_ENGINEERING_C5_QA_RUNTIME_IMPLEMENTATION",
     "threads_nudged_this_tick": [
-      "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4: provide outside-git candidate/stable payload paths and candidate_train_loss, or exact hash-probe action.",
-      "Engineering Orchestrator 019f138b-d229-7640-98b7-2f185d6beae0: provide accepted real inference producer command prefix or exact implementation/runtime gap."
+      "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4: implement gemma4_layer_runner --run-c5-qa-predict plus host producer wrapper, or return exact source/runtime blocker."
     ],
-    "timestamp_utc": "2026-07-01T02:35:16Z",
-    "user_action_required": false
+    "timestamp_utc": "2026-07-01T02:45:16Z",
+    "user_action_required": false,
+    "c5_after_c1_payload_paths_hash_probe": {
+      "status": "c5_after_c1_payload_paths_hash_probe_ready",
+      "status_classification": "PENDING_ACTION",
+      "first_missing_green_field_after_probe": "producer_command_missing",
+      "device_access": "FY25013101C8 device",
+      "probe_type": "bounded adb shell hash-only; no adb pull; no raw payload copied into git",
+      "repo_head_observed_by_execution": "634a06a6e66f7d99f88bcf5bba7cc83c916fd9e1",
+      "canonical_candidate_payload": {
+        "path": "/sdcard/Download/polymath_phase34_lineage_repair/c1_c4_waveB_rerun_20260630T230411Z_C1_lineage_repair/phase4_bridge_cell/adapter_post_rank16.f32.bin",
+        "sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f",
+        "bytes": 327680
+      },
+      "canonical_stable_baseline_payload": {
+        "path": "/sdcard/Download/polymath_phase34_lineage_repair/c1_c4_waveB_rerun_20260630T230411Z_C1_lineage_repair/phase4_bridge_cell/adapter_pre_rank16.f32.bin",
+        "sha256": "e0d1c66ac876c2b6fbbe9e88f1b02dd37201d8ffba10afcd44f1c558fc32f7c9",
+        "bytes": 327680
+      },
+      "duplicate_stable_baseline_note": "stable baseline hash appeared in multiple bounded C1-C4 roots; C1 lineage-repair pair chosen as canonical for C5_after_C1",
+      "remaining_missing_green_fields": [
+        "accepted real C5 QA inference producer command/runtime",
+        "finite candidate_train_loss from real logits/training runtime",
+        "outside-git candidate_predictions.jsonl",
+        "outside-git stable_baseline_predictions.jsonl",
+        "polymath_c5_executed_metrics_v1 JSON"
+      ],
+      "raw_boundary": "hash/bytes/path metadata only; raw adapter binaries remained on device/outside git"
+    },
+    "c5_after_c1_real_inference_runtime_design": {
+      "status": "c5_after_c1_real_inference_runtime_design_ready_for_phase34_execution",
+      "status_classification": "PENDING_ACTION_PHASE34_C5_QA_RUNTIME_IMPLEMENTATION",
+      "first_missing_green_field": "c5_qa_logits_generation_surface_missing",
+      "extendable_runtime_surface": "gemma4_layer_runner",
+      "rejected_surfaces": [
+        "Phase4 bridge cell hidden-space MSE adapter proof is not a generative QA/logits runtime",
+        "existing Gemma runner modes do not emit autoregressive QA record_id,prediction,loss,confidence JSONL"
+      ],
+      "required_source_pathset": [
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/runner/main.cpp",
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/include/polymath/gemma4/c5_qa_inference.h",
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_qa_inference.cpp",
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/CMakeLists.txt",
+        "scripts/host/run_c5_phase34_qa_inference_producer.py"
+      ],
+      "required_cli": "gemma4_layer_runner --run-c5-qa-predict",
+      "producer_contract": "compatible with scripts/host/run_c5_prediction_payloads.py --print-contract appended argv: --checkpoint-role, --checkpoint-payload, --checkpoint-sha256, --heldout-qa-jsonl, --output-jsonl",
+      "required_output": "outside-git JSONL rows with record_id, prediction, finite nonnegative loss, confidence in [0,1]",
+      "real_metric_policy": {
+        "prediction": "autoregressive decode from C5 heldout question prompt",
+        "loss": "teacher-forced answer-token NLL from real logits over heldout answers",
+        "confidence": "normalized answer-token probabilities from the same logits",
+        "candidate_train_loss": "same loss kind over accepted train/validation slice or emitted by real training runtime; Phase4 bridge MSE is not acceptable"
+      },
+      "fail_closed_tests_to_add": [
+        "reject missing tokenizer, full decoder/layer-pack manifest, LM head/unembedding, adapter-site policy, or payload hash wiring",
+        "reject Phase4 bridge MSE as C5 train loss",
+        "reject outputs missing record_id,prediction,loss,confidence",
+        "reject raw outputs inside git",
+        "verify producer JSONL is accepted by run_c5_heldout_eval.py"
+      ],
+      "engineering_validation_reported": [
+        "python3.11 scripts/host/run_c5_prediction_payloads.py --print-contract -> pass",
+        "python3.11 -m pytest -q tests/test_c5_prediction_payloads.py tests/test_c5_heldout_eval.py -> 7 passed"
+      ]
+    }
   },
   "driver_tick_history": [
     {
@@ -2370,10 +2550,16 @@
   },
   "lane_status": {
     "engineering_orchestrator": {
-      "artifact_paths": [],
+      "artifact_paths": [
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/runner/main.cpp",
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/include/polymath/gemma4/c5_qa_inference.h",
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_qa_inference.cpp",
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/CMakeLists.txt",
+        "scripts/host/run_c5_phase34_qa_inference_producer.py"
+      ],
       "authorization_needed": false,
-      "first_missing_green_field": "candidate_predictions_jsonl_missing",
-      "next_action": "Engineering identifies or implements the canonical C5_after_C1 prediction-payload producer for candidate/stable checkpoint identities. The producer must output outside-git candidate_predictions.jsonl and stable_baseline_predictions.jsonl with per-record record_id, prediction, loss, confidence, plus a candidate_train_loss value. If no predictor/runtime/payload path exists, Engineering returns the exact missing artifact or command and owning lane.",
+      "first_missing_green_field": "c5_qa_logits_generation_surface_missing",
+      "next_action": "Support Phase3/4 implementation of gemma4_layer_runner --run-c5-qa-predict and host producer wrapper if exact source/runtime questions arise.",
       "nonclaims": [
         "development-cycle evidence only unless stronger gates pass",
         "no C5 pass",
@@ -2388,23 +2574,25 @@
         "heldout_split_sha256": "da41c5362398f24e0e0dd9df9a5cf0594435a455871fa77ab74d9312e6c8e9b2",
         "stable_checkpoint_baseline_sha256": "e0d1c66ac876c2b6fbbe9e88f1b02dd37201d8ffba10afcd44f1c558fc32f7c9"
       },
-      "status": "c5_after_c1_prediction_payload_producer_requested",
-      "status_classification": "PENDING_ACTION_ENGINEERING_C5_PREDICTION_PAYLOAD_PRODUCER",
+      "status": "c5_after_c1_real_inference_runtime_design_ready_for_phase34_execution",
+      "status_classification": "COMPLETE_FOR_DESIGN_PENDING_PHASE34_IMPLEMENTATION",
       "thread_id": "019f138b-d229-7640-98b7-2f185d6beae0",
       "user_action_required": false,
       "verification_commands": [
-        "pending Engineering inspection of existing C5/Phase3/4/Gemma/Phase14 prediction surfaces",
-        "pending implementation or exact missing runtime/payload contract if no valid prediction producer exists"
+        "python3.11 scripts/host/run_c5_prediction_payloads.py --print-contract -> pass",
+        "python3.11 -m pytest -q tests/test_c5_prediction_payloads.py tests/test_c5_heldout_eval.py -> 7 passed"
       ]
     },
     "execution_orchestrator": {
       "artifact_paths": [
         "/Users/Zer0pa/Polymat AI/runtime/tmp/c1_c4_integrated_20260630T164809Z/hf_packages/packages/C1/qa_bridge/phase_C1_test.qa.jsonl",
-        "scripts/host/run_c5_heldout_eval.py"
+        "scripts/host/run_c5_heldout_eval.py",
+        "/sdcard/Download/polymath_phase34_lineage_repair/c1_c4_waveB_rerun_20260630T230411Z_C1_lineage_repair/phase4_bridge_cell/adapter_post_rank16.f32.bin",
+        "/sdcard/Download/polymath_phase34_lineage_repair/c1_c4_waveB_rerun_20260630T230411Z_C1_lineage_repair/phase4_bridge_cell/adapter_pre_rank16.f32.bin"
       ],
       "authorization_needed": false,
-      "first_missing_green_field": "candidate_predictions_jsonl_missing",
-      "next_action": "Engineering identifies/implements prediction-payload producer; Execution reruns scorer after outside-git candidate/stable prediction JSONL and candidate_train_loss exist.",
+      "first_missing_green_field": "c5_qa_logits_generation_surface_missing",
+      "next_action": "Wait for Phase3/4 C5 QA runtime/producer and finite candidate_train_loss; then run frozen C5 prediction payload wrapper and heldout scorer.",
       "nonclaims": [
         "development-cycle evidence only unless stronger gates pass",
         "no C5 pass",
@@ -2418,10 +2606,12 @@
         "candidate_checkpoint_sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f",
         "commit_consumed": "bfe2cc642cfd6fe48255b30901d4f5461c817e32",
         "heldout_split_sha256": "da41c5362398f24e0e0dd9df9a5cf0594435a455871fa77ab74d9312e6c8e9b2",
-        "stable_checkpoint_baseline_sha256": "e0d1c66ac876c2b6fbbe9e88f1b02dd37201d8ffba10afcd44f1c558fc32f7c9"
+        "stable_checkpoint_baseline_sha256": "e0d1c66ac876c2b6fbbe9e88f1b02dd37201d8ffba10afcd44f1c558fc32f7c9",
+        "candidate_payload_path": "/sdcard/Download/polymath_phase34_lineage_repair/c1_c4_waveB_rerun_20260630T230411Z_C1_lineage_repair/phase4_bridge_cell/adapter_post_rank16.f32.bin",
+        "stable_baseline_payload_path": "/sdcard/Download/polymath_phase34_lineage_repair/c1_c4_waveB_rerun_20260630T230411Z_C1_lineage_repair/phase4_bridge_cell/adapter_pre_rank16.f32.bin"
       },
-      "status": "c5_after_c1_pending_execution_payloads",
-      "status_classification": "COMPLETE_FOR_EXECUTION_PROBE_PENDING_ENGINEERING_PREDICTION_PAYLOAD_PRODUCER",
+      "status": "c5_after_c1_payload_paths_hash_probe_ready",
+      "status_classification": "COMPLETE_FOR_PAYLOAD_PATH_HASH_PROBE_PENDING_C5_QA_RUNTIME",
       "thread_id": "019f138c-fb51-7c53-a41a-ab8eac950d9c",
       "user_action_required": false,
       "verification_commands": [
@@ -2432,12 +2622,16 @@
     },
     "phase34_engineer": {
       "artifact_paths": [
-        "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/c5_eval_C5_after_C1_c1_c4_waveB_rerun_20260630T230411Z.json"
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/runner/main.cpp",
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/include/polymath/gemma4/c5_qa_inference.h",
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_qa_inference.cpp",
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/CMakeLists.txt",
+        "scripts/host/run_c5_phase34_qa_inference_producer.py"
       ],
-      "first_missing_green_field": "real evaluator producer and executed metrics run",
-      "next_action": "Stand by for evidence review if the evaluator uses Phase3/4 outputs; do not fabricate metrics from metadata.",
-      "status": "c5_after_c1_no_executed_metrics_artifact_found_complete_for_scan",
-      "status_classification": "COMPLETE_FOR_METRICS_SCAN_PENDING_ENGINEERING_EVALUATOR_SURFACE",
+      "first_missing_green_field": "c5_qa_logits_generation_surface_missing",
+      "next_action": "Implement or return exact source blocker for gemma4_layer_runner --run-c5-qa-predict plus scripts/host/run_c5_phase34_qa_inference_producer.py; no fake logits/loss/confidence/train loss.",
+      "status": "c5_after_c1_c5_qa_runtime_implementation_requested",
+      "status_classification": "PENDING_ACTION_PHASE34_C5_QA_RUNTIME_IMPLEMENTATION",
       "thread_id": "019f13da-d897-7ba2-8ed1-b959892f5ed4",
       "user_action_required": false
     },
@@ -2446,15 +2640,15 @@
         "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/c5_eval_C5_after_C1_c1_c4_waveB_rerun_20260630T230411Z.json",
         "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/c5_eval_split_identity_C5_after_C1.json"
       ],
-      "first_missing_green_field": "polymath_c5_executed_metrics_v1 output after prediction payload generation and scorer run",
-      "next_action": "Validate emitted metrics JSON after Engineering supplies prediction-payload producer and Execution runs it through the C5 heldout scorer.",
+      "first_missing_green_field": "polymath_c5_executed_metrics_v1 after real prediction payload generation",
+      "next_action": "Validate runtime-produced prediction payloads and C5 metrics JSON after Execution runs the frozen scorer.",
       "sha256_or_identity_fields": {
         "code_head": "bfe2cc642cfd6fe48255b30901d4f5461c817e32",
         "eval_split_sha256": "da41c5362398f24e0e0dd9df9a5cf0594435a455871fa77ab74d9312e6c8e9b2",
         "report_sha256": "aec39de048944decbf169691964f1d0814e4e2d84695e11801b8117177bfcff8"
       },
-      "status": "waiting_for_prediction_payload_producer_then_c5_executed_metrics_json",
-      "status_classification": "PENDING_ACTION_AFTER_ENGINEERING_AND_EXECUTION",
+      "status": "waiting_for_c5_qa_runtime_then_executed_metrics_json",
+      "status_classification": "PENDING_ACTION_AFTER_PHASE34_RUNTIME_AND_EXECUTION",
       "thread_id": "019f138c-35b6-73e1-b26d-3db8c59cf850",
       "user_action_required": false
     },
@@ -2468,8 +2662,8 @@
         "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md"
       ],
       "authorization_needed": false,
-      "first_missing_green_field": "none_for_repo_custody_c5_heldout_evaluator_producer",
-      "next_action": "Execution consumes commit bfe2cc642cfd6fe48255b30901d4f5461c817e32 and verifies/runs C5_after_C1 payload evaluation.",
+      "first_missing_green_field": "new executive state mirror custody freeze after meta validation",
+      "next_action": "After meta validates current central state SHA, freeze only EXECUTIVE_DELIVERY_STATE.json and EXECUTIVE_DELIVERY_STATE.md if clean.",
       "nonclaims": [
         "development-cycle evidence only unless stronger gates pass",
         "no C5 pass",
@@ -2488,8 +2682,8 @@
         "scripts/host/run_c5_heldout_eval.py": "32e2f2c2d2d3ba4965a6869d0f97793bc990b40421c7292bab5deba2633842c9",
         "tests/test_c5_heldout_eval.py": "e8993da430ae8c86880d21edf96c3d44d969e73aace7be26c38e7f6864dbeccf"
       },
-      "status": "c5_heldout_evaluator_producer_committed_pushed",
-      "status_classification": "COMPLETE_FOR_C5_EVALUATOR_PRODUCER_CUSTODY",
+      "status": "previous_c5_inference_payload_edge_state_committed_pushed_pending_new_state_freeze",
+      "status_classification": "PENDING_ACTION_AFTER_META_STATE_UPDATE",
       "thread_id": "019f1ac2-0f0f-7721-bf46-ad402dbd9050",
       "user_action_required": false,
       "verification_commands": [
@@ -2767,6 +2961,17 @@
         "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_real_eval_surface_probe/C5_after_C1/c5_after_c1_real_eval_surface_probe_20260701T014500Z.json"
       ],
       "at_utc": "2026-07-01T02:00:26Z"
+    },
+    {
+      "at_utc": "2026-07-01T02:45:16Z",
+      "action": "normalized active edge after Execution payload hash probe and Engineering C5 QA runtime design; nudged Phase3/4 to implement fail-closed real QA logits/generation producer",
+      "artifacts": [
+        "/sdcard/Download/polymath_phase34_lineage_repair/c1_c4_waveB_rerun_20260630T230411Z_C1_lineage_repair/phase4_bridge_cell/adapter_post_rank16.f32.bin",
+        "/sdcard/Download/polymath_phase34_lineage_repair/c1_c4_waveB_rerun_20260630T230411Z_C1_lineage_repair/phase4_bridge_cell/adapter_pre_rank16.f32.bin",
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/runner/main.cpp",
+        "scripts/host/run_c5_phase34_qa_inference_producer.py"
+      ],
+      "user_action_required": false
     }
   ],
   "owner_thread": {
@@ -2778,10 +2983,10 @@
   },
   "prd_watchdog": {
     "artifact_waiting_on": [
-      "outside-git candidate/stable payload paths",
-      "finite candidate_train_loss",
-      "accepted real inference producer command",
-      "outside-git prediction JSONL",
+      "gemma4_layer_runner --run-c5-qa-predict implementation or exact source blocker",
+      "scripts/host/run_c5_phase34_qa_inference_producer.py host wrapper",
+      "finite candidate_train_loss from real logits/training runtime",
+      "outside-git candidate/stable prediction JSONL",
       "polymath_c5_executed_metrics_v1 JSON"
     ],
     "c5_prediction_payload_contract": {
@@ -2804,12 +3009,12 @@
       "status": "pathset_ready_for_custodian",
       "status_classification": "PENDING_ACTION_REPO_CUSTODY_C5_PREDICTION_PAYLOAD_CONTRACT"
     },
-    "current_gate": "WaveB_C5_after_C1_real_inference_payload_surface_pending",
+    "current_gate": "WaveB_C5_after_C1_c5_qa_logits_generation_surface_missing",
     "dominant_failure_domain": "phase5_eval_failure",
-    "drift_deleted_or_pending": "pending real inference payload/producer surface; no metrics may be derived from metadata",
-    "first_missing_green_field": "candidate_checkpoint_payload_path_missing",
-    "last_concrete_action": "Execution produced pending real-inference payload probe f00951a83523e7fd19c4e2dc6db3103fb1d8107dab6f09d2f80d8bde37405036 after consuming 634a06a and verifying heldout/identity inputs.",
-    "next_concrete_action": "Phase3/4 supplies payload paths/train loss; Engineering supplies producer command; Execution runs prediction payloads and C5 scorer after those green fields exist.",
+    "drift_deleted_or_pending": "candidate/stable payload path drift resolved; real QA runtime gap pending; metadata substitution and bridge-MSE-as-C5-loss are forbidden",
+    "first_missing_green_field": "c5_qa_logits_generation_surface_missing",
+    "last_concrete_action": "Execution resolved C5_after_C1 candidate/stable adapter payload paths by bounded hash-only ADB probe; Engineering returned the exact C5 QA runtime extension boundary; Phase3/4 was nudged to implement or return exact source blocker.",
+    "next_concrete_action": "Phase3/4 implements the C5 QA logits/generation runtime pathset, or returns exact source blocker; Custodian freezes pathset when ready; Execution then produces prediction payloads and C5 metrics.",
     "nonclaims_preserved": [
       "development-cycle evidence only unless stronger gates pass",
       "no C5 pass",
@@ -2819,14 +3024,77 @@
       "not 100k/1M Phase2 authority",
       "no Comet-backed accepted run claim yet"
     ],
-    "owner": "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 + Engineering Orchestrator 019f138b-d229-7640-98b7-2f185d6beae0",
-    "recursive_improvement_next_step": "produce prediction payloads -> score C5 -> validate -> route measured repair -> rerun smallest proof path",
-    "status_classification": "PENDING_ACTION_PHASE34_ENGINEERING_C5_REAL_INFERENCE_PAYLOADS",
+    "owner": "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 with Engineering design support; Execution resumes after runtime/producer/train-loss are green",
+    "recursive_improvement_next_step": "runtime pathset -> custody -> prediction payloads -> C5 metrics -> validation -> measured repair",
+    "status_classification": "PENDING_ACTION_PHASE34_ENGINEERING_C5_QA_RUNTIME_IMPLEMENTATION",
     "threads_nudged_this_tick": [
-      "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4",
-      "Engineering Orchestrator 019f138b-d229-7640-98b7-2f185d6beae0"
+      "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4"
     ],
-    "user_action_required": false
+    "user_action_required": false,
+    "c5_after_c1_payload_paths_hash_probe": {
+      "status": "c5_after_c1_payload_paths_hash_probe_ready",
+      "status_classification": "PENDING_ACTION",
+      "first_missing_green_field_after_probe": "producer_command_missing",
+      "device_access": "FY25013101C8 device",
+      "probe_type": "bounded adb shell hash-only; no adb pull; no raw payload copied into git",
+      "repo_head_observed_by_execution": "634a06a6e66f7d99f88bcf5bba7cc83c916fd9e1",
+      "canonical_candidate_payload": {
+        "path": "/sdcard/Download/polymath_phase34_lineage_repair/c1_c4_waveB_rerun_20260630T230411Z_C1_lineage_repair/phase4_bridge_cell/adapter_post_rank16.f32.bin",
+        "sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f",
+        "bytes": 327680
+      },
+      "canonical_stable_baseline_payload": {
+        "path": "/sdcard/Download/polymath_phase34_lineage_repair/c1_c4_waveB_rerun_20260630T230411Z_C1_lineage_repair/phase4_bridge_cell/adapter_pre_rank16.f32.bin",
+        "sha256": "e0d1c66ac876c2b6fbbe9e88f1b02dd37201d8ffba10afcd44f1c558fc32f7c9",
+        "bytes": 327680
+      },
+      "duplicate_stable_baseline_note": "stable baseline hash appeared in multiple bounded C1-C4 roots; C1 lineage-repair pair chosen as canonical for C5_after_C1",
+      "remaining_missing_green_fields": [
+        "accepted real C5 QA inference producer command/runtime",
+        "finite candidate_train_loss from real logits/training runtime",
+        "outside-git candidate_predictions.jsonl",
+        "outside-git stable_baseline_predictions.jsonl",
+        "polymath_c5_executed_metrics_v1 JSON"
+      ],
+      "raw_boundary": "hash/bytes/path metadata only; raw adapter binaries remained on device/outside git"
+    },
+    "c5_after_c1_real_inference_runtime_design": {
+      "status": "c5_after_c1_real_inference_runtime_design_ready_for_phase34_execution",
+      "status_classification": "PENDING_ACTION_PHASE34_C5_QA_RUNTIME_IMPLEMENTATION",
+      "first_missing_green_field": "c5_qa_logits_generation_surface_missing",
+      "extendable_runtime_surface": "gemma4_layer_runner",
+      "rejected_surfaces": [
+        "Phase4 bridge cell hidden-space MSE adapter proof is not a generative QA/logits runtime",
+        "existing Gemma runner modes do not emit autoregressive QA record_id,prediction,loss,confidence JSONL"
+      ],
+      "required_source_pathset": [
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/runner/main.cpp",
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/include/polymath/gemma4/c5_qa_inference.h",
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_qa_inference.cpp",
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/CMakeLists.txt",
+        "scripts/host/run_c5_phase34_qa_inference_producer.py"
+      ],
+      "required_cli": "gemma4_layer_runner --run-c5-qa-predict",
+      "producer_contract": "compatible with scripts/host/run_c5_prediction_payloads.py --print-contract appended argv: --checkpoint-role, --checkpoint-payload, --checkpoint-sha256, --heldout-qa-jsonl, --output-jsonl",
+      "required_output": "outside-git JSONL rows with record_id, prediction, finite nonnegative loss, confidence in [0,1]",
+      "real_metric_policy": {
+        "prediction": "autoregressive decode from C5 heldout question prompt",
+        "loss": "teacher-forced answer-token NLL from real logits over heldout answers",
+        "confidence": "normalized answer-token probabilities from the same logits",
+        "candidate_train_loss": "same loss kind over accepted train/validation slice or emitted by real training runtime; Phase4 bridge MSE is not acceptable"
+      },
+      "fail_closed_tests_to_add": [
+        "reject missing tokenizer, full decoder/layer-pack manifest, LM head/unembedding, adapter-site policy, or payload hash wiring",
+        "reject Phase4 bridge MSE as C5 train loss",
+        "reject outputs missing record_id,prediction,loss,confidence",
+        "reject raw outputs inside git",
+        "verify producer JSONL is accepted by run_c5_heldout_eval.py"
+      ],
+      "engineering_validation_reported": [
+        "python3.11 scripts/host/run_c5_prediction_payloads.py --print-contract -> pass",
+        "python3.11 -m pytest -q tests/test_c5_prediction_payloads.py tests/test_c5_heldout_eval.py -> 7 passed"
+      ]
+    }
   },
   "required_lane_update_protocol": {
     "block_name": "CENTRAL_STATE_UPDATE",
@@ -2844,5 +3112,5 @@
     ]
   },
   "schema_version": "polymath_executive_delivery_state_v1",
-  "updated_at_utc": "2026-07-01T02:35:16Z"
+  "updated_at_utc": "2026-07-01T02:45:16Z"
 }
