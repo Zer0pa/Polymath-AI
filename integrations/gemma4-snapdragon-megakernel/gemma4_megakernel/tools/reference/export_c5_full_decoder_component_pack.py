@@ -778,6 +778,40 @@ def build_decoder_manifest(
     }
 
 
+def validate_decoder_manifest_contract(manifest: dict[str, Any]) -> dict[str, Any]:
+    ple_runtime = manifest.get("per_layer_input_runtime")
+    if not isinstance(ple_runtime, dict):
+        raise ValueError("decoder_manifest_per_layer_input_runtime_missing")
+    roles = ple_runtime.get("roles")
+    if not isinstance(roles, dict):
+        raise ValueError("decoder_manifest_per_layer_input_runtime_missing")
+    required_roles = {
+        "embed_tokens_per_layer": PLE_TOKEN_KEY,
+        "per_layer_model_projection": PLE_PROJECTION_KEY,
+        "per_layer_projection_norm": PLE_PROJECTION_NORM_KEY,
+    }
+    for role_name, expected_key in required_roles.items():
+        role = roles.get(role_name)
+        if not isinstance(role, dict) or role.get("key") != expected_key:
+            raise ValueError("decoder_manifest_per_layer_input_runtime_missing")
+        for field in ["dtype", "shape", "data_offsets", "absolute_data_offsets", "byte_length"]:
+            if field not in role:
+                raise ValueError("decoder_manifest_per_layer_input_runtime_missing")
+
+    architecture = manifest.get("architecture_config")
+    if not isinstance(architecture, dict):
+        raise ValueError("decoder_manifest_architecture_config_missing")
+    source = architecture.get("per_layer_input_runtime_source")
+    if source != "per_layer_input_runtime.ple_assets":
+        raise ValueError("decoder_manifest_per_layer_input_runtime_source_missing")
+    return {
+        "per_layer_input_runtime_present": True,
+        "per_layer_input_runtime_source": source,
+        "per_layer_input_roles": sorted(required_roles),
+        "ple_tensor_keys": [required_roles[key] for key in sorted(required_roles)],
+    }
+
+
 def build_adapter_site_policy(
     *,
     candidate_adapter_sha256: str,
@@ -883,6 +917,11 @@ def export_component_pack(args: argparse.Namespace) -> int:
         tokenizer_vocab_sha256=args.tokenizer_vocab_sha,
         tokenizer_merges_sha256=args.tokenizer_merges_sha,
     )
+    try:
+        manifest_contract_checks = validate_decoder_manifest_contract(decoder_manifest)
+    except Exception as error:  # noqa: BLE001 - exporter must fail closed with metadata.
+        first_missing = str(error) if str(error) else "decoder_manifest_contract_invalid"
+        return fail_closed(first_missing, [first_missing])
     adapter_site_policy = build_adapter_site_policy(
         candidate_adapter_sha256=args.candidate_adapter_sha,
         stable_baseline_adapter_sha256=args.stable_baseline_sha,
@@ -915,6 +954,7 @@ def export_component_pack(args: argparse.Namespace) -> int:
         "source_model_safetensors_sha256": source_model_sha256,
         "lm_head_unembedding_sha256": lm_head_sha256,
         "lm_head_unembedding_sha256_kind": "safetensors_raw_tensor_bytes",
+        "manifest_contract_checks": manifest_contract_checks,
         "raw_boundary_proof": {
             "raw_model_payload_copied_to_git": False,
             "raw_tensor_payload_copied_to_git": False,

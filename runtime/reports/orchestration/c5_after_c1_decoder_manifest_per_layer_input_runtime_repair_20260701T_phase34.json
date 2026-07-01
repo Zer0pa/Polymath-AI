@@ -1,0 +1,101 @@
+{
+  "schema_version": "polymath_phase34_native_runtime_pathset_report_v1",
+  "lane": "phase34_native_full_decoder_consumer",
+  "status": "decoder_manifest_per_layer_input_runtime_repair_pathset_ready_for_custodian",
+  "base_lineage": {
+    "current_head_observed_before_pathset": "5802ea1e25222c068dd3fcb5050c91f20f72357b",
+    "custodian_frozen_opencl_parity_dispatch_commit_consumed_by_execution": "05bb56437b83138547301e69af14ab0fce7d4b1a",
+    "phone_probe_status_routed_to_phase34": "bounded_phone_probe_semantic_failure_decoder_manifest_per_layer_input_runtime_missing",
+    "phone_probe_first_missing_green_field": "decoder_manifest_per_layer_input_runtime_missing",
+    "phone_probe_exit_code": 13,
+    "accepted_decoder_manifest_sha256_from_probe": "2384cd0331423c46a8e0f4a510add39990c16275e5adcd72a00ef56be820bea5",
+    "accepted_adapter_policy_sha256_from_probe": "f38bd8109bbb77e9e94a5b4b34a238bc0ec0a39e7736870c97defe5aecc93357",
+    "accepted_export_report_sha256_from_probe": "3313602e8ac2ebf259c36c7aa7a9107e1536e79fea9bf7d0b275434bcda17358"
+  },
+  "diagnosis": {
+    "old_phone_component_pack_manifest_state": "stale_for_current_native_runtime_contract",
+    "old_manifest_missing_top_level_per_layer_input_runtime": true,
+    "old_manifest_missing_architecture_config_per_layer_input_runtime_source": true,
+    "native_expectation_loosened": false,
+    "repair_strategy": "harden exporter to validate and report per_layer_input_runtime before writing a component pack; harden native validation so malformed per_layer_input_runtime sections fail with the same deterministic field."
+  },
+  "implemented_boundary": {
+    "existing_runner_surface": "gemma4_layer_runner --run-c5-qa-predict",
+    "existing_runtime_function": "run_c5_full_decoder_runtime(...)",
+    "existing_exporter_surface": "export_c5_full_decoder_component_pack.py",
+    "new_exporter_contract": "decoder_manifest.json must include top-level per_layer_input_runtime.roles for PLE token, projection norm, and projection tensors plus architecture_config.per_layer_input_runtime_source.",
+    "new_native_contract": "missing or malformed per_layer_input_runtime.roles fails closed as decoder_manifest_per_layer_input_runtime_missing before runtime proceeds.",
+    "parallel_evaluator_created": false,
+    "prediction_jsonl_written": false,
+    "bridge_mse_as_c5_loss": false
+  },
+  "source_changes": [
+    {
+      "path": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py",
+      "sha256": "2e875146b8dbf58aa977f468cdd9cb03679039afe9f3f9321b5c512bed15a03a",
+      "summary": "Adds validate_decoder_manifest_contract, requires the PLE runtime roles and architecture runtime source, fails closed with metadata before writing an incomplete component pack, and records manifest_contract_checks in export_report.json."
+    },
+    {
+      "path": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp",
+      "sha256": "45f9112cadfc9f43ba17cce780b2ad2c0f0d80f1419f2d56546db107ebf3f580",
+      "summary": "Scopes PLE key checks to the top-level per_layer_input_runtime object and rejects missing or malformed roles with decoder_manifest_per_layer_input_runtime_missing."
+    },
+    {
+      "path": "tests/test_c5_full_decoder_exporter.py",
+      "sha256": "3e85411471df37c62b5e201c88caa3803faeeca761734d10ceac698b654b6a81",
+      "summary": "Adds exporter contract assertions for manifest_contract_checks and a fail-closed regression for missing per_layer_input_runtime."
+    },
+    {
+      "path": "tests/test_c5_native_runtime_contract.py",
+      "sha256": "9f65a5635046501fcd83dbed23131a69e969f13f750499ca41357410275da572",
+      "summary": "Adds native regression coverage for malformed per_layer_input_runtime preserving no-prediction behavior."
+    }
+  ],
+  "local_expected_first_missing_after_repaired_exporter_manifest": "c5_full_decoder_multi_token_qa_prompt_sequence_orchestration_missing_or_next_runtime_field_after_opencl_parity",
+  "first_missing_green_field": "PENDING_ACTION_EXECUTION_EXPORTER_RERUN_AND_BOUNDED_PHONE_PROBE",
+  "next_execution_command_class": [
+    "rerun phone/Termux exporter to regenerate decoder_manifest.json with per_layer_input_runtime and manifest_contract_checks",
+    "rebuild/copy C5-capable runner if Custodian freeze changes native source",
+    "rerun the bounded C5_after_C1 phone probe with --run-c5-qa-predict, --vocab-chunk-size 4096, and --max-generation-tokens 1"
+  ],
+  "verification": [
+    {
+      "command": "cmake -S integrations/gemma4-snapdragon-megakernel/gemma4_megakernel -B build/gemma4_megakernel_host -DGEMMA4_MEGAKERNEL_WARNINGS_AS_ERRORS=ON && cmake --build build/gemma4_megakernel_host --target gemma4_layer_runner -j 8",
+      "result": "pass"
+    },
+    {
+      "command": "python3.11 -m pytest -q tests/test_c5_full_decoder_exporter.py tests/test_c5_native_runtime_contract.py",
+      "result": "pass: 23 passed in 62.38s"
+    },
+    {
+      "command": "python3.11 -m pytest -q tests/test_c5_full_decoder_exporter.py tests/test_c5_native_runtime_contract.py tests/test_c5_phase34_qa_inference_producer.py tests/test_c5_prediction_payloads.py tests/test_c5_heldout_eval.py",
+      "result": "pass: 38 passed in 67.70s"
+    },
+    {
+      "command": "ctest --test-dir build/gemma4_megakernel_host --output-on-failure",
+      "result": "pass: 4/4 tests passed"
+    },
+    {
+      "command": "git diff --check -- integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp tests/test_c5_full_decoder_exporter.py tests/test_c5_native_runtime_contract.py",
+      "result": "pass"
+    }
+  ],
+  "research_escalation": "none",
+  "raw_boundary_proof": {
+    "raw_model_checkpoint_adapter_tensor_or_prediction_payloads_added_to_git": false,
+    "prediction_jsonl_added_to_git": false,
+    "metadata_only_report": true
+  },
+  "next_action": "Repo Custodian freeze this pathset, then Execution rerun the exporter/component-pack on phone and rerun only the bounded C5_after_C1 native phone probe against the repaired manifest/runtime contract.",
+  "nonclaims": [
+    "no C5 pass",
+    "no executed C5 metrics",
+    "no prediction JSONL",
+    "no logits/loss/confidence/candidate_train_loss claim",
+    "no bridge-MSE-as-C5-loss substitution",
+    "no learning or model-quality claim",
+    "no Phase3/4 readiness claim",
+    "no 100k/1M Phase2 authority",
+    "no Comet-backed accepted run"
+  ]
+}

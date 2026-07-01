@@ -1060,17 +1060,18 @@ void append_per_layer_input_runtime_blockers(
     const std::string& manifest,
     const SourceModelIdentity& identity,
     std::vector<std::string>& blockers) {
-  if (object_after_key(manifest, "per_layer_input_runtime").empty()) {
+  const std::string section = object_after_key(manifest, "per_layer_input_runtime");
+  if (section.empty() || object_after_key(section, "roles").empty()) {
     blockers.push_back("decoder_manifest_per_layer_input_runtime_missing");
     return;
   }
-  if (!contains(manifest, kPleTokenKey)) {
+  if (!contains(section, kPleTokenKey)) {
     blockers.push_back("decoder_manifest_per_layer_token_embedding_key_missing");
   }
-  if (!contains(manifest, kPleProjectionNormKey)) {
+  if (!contains(section, kPleProjectionNormKey)) {
     blockers.push_back("decoder_manifest_per_layer_projection_norm_key_missing");
   }
-  if (!contains(manifest, kPleProjectionKey)) {
+  if (!contains(section, kPleProjectionKey)) {
     blockers.push_back("decoder_manifest_per_layer_projection_key_missing");
   }
   if (identity.path.empty() || !file_exists(identity.path)) {

@@ -179,6 +179,12 @@ def test_c5_full_decoder_exporter_writes_metadata_from_mock_safetensors(tmp_path
     assert decoder_manifest["tensor_role_inventory"]["lm_head"]["shares_storage_with"] == "token_embedding"
     assert decoder_manifest["lm_head"]["sha256"] == hashlib.sha256(b"abcd").hexdigest()
     assert decoder_manifest["lm_head"]["sha256_kind"] == "safetensors_raw_tensor_bytes"
+    assert export_report["manifest_contract_checks"]["per_layer_input_runtime_present"] is True
+    assert export_report["manifest_contract_checks"]["per_layer_input_roles"] == [
+        "embed_tokens_per_layer",
+        "per_layer_model_projection",
+        "per_layer_projection_norm",
+    ]
     assert adapter_policy["bridge_mse_is_c5_loss"] is False
     assert export_report["lm_head_unembedding_sha256_kind"] == "safetensors_raw_tensor_bytes"
 
@@ -378,10 +384,35 @@ def test_c5_full_decoder_manifest_builder_schema() -> None:
             "token_embedding": {},
             "lm_head": {},
         },
-        per_layer_input_runtime={
-            "source": "derive_from_input_ids_with_ple_assets",
-            "roles": {},
-        },
+            per_layer_input_runtime={
+                "source": "derive_from_input_ids_with_ple_assets",
+                "roles": {
+                    "embed_tokens_per_layer": {
+                        "key": exporter.PLE_TOKEN_KEY,
+                        "dtype": "bf16",
+                        "shape": [262144, 42 * 256],
+                        "data_offsets": [0, 0],
+                        "absolute_data_offsets": [0, 0],
+                        "byte_length": 0,
+                    },
+                    "per_layer_projection_norm": {
+                        "key": exporter.PLE_PROJECTION_NORM_KEY,
+                        "dtype": "bf16",
+                        "shape": [256],
+                        "data_offsets": [0, 0],
+                        "absolute_data_offsets": [0, 0],
+                        "byte_length": 0,
+                    },
+                    "per_layer_model_projection": {
+                        "key": exporter.PLE_PROJECTION_KEY,
+                        "dtype": "bf16",
+                        "shape": [42 * 256, 2560],
+                        "data_offsets": [0, 0],
+                        "absolute_data_offsets": [0, 0],
+                        "byte_length": 0,
+                    },
+                },
+            },
         tokenizer_vocab_sha256=exporter.TOKENIZER_VOCAB_HEX_SHA256,
         tokenizer_merges_sha256=exporter.TOKENIZER_MERGES_HEX_SHA256,
     )
@@ -395,9 +426,36 @@ def test_c5_full_decoder_manifest_builder_schema() -> None:
     assert manifest["per_layer_input_runtime"]["source"] == "derive_from_input_ids_with_ple_assets"
     assert manifest["lm_head"]["embedded_in_decoder"] is True
     assert manifest["lm_head"]["shape"] == [262144, 2560]
+    assert exporter.validate_decoder_manifest_contract(manifest)[
+        "per_layer_input_runtime_present"
+    ] is True
     assert manifest["runtime_contract"]["candidate_train_loss_source"].endswith(
         "bridge MSE is forbidden"
     )
+
+
+def test_c5_full_decoder_manifest_contract_rejects_missing_ple_runtime() -> None:
+    exporter = load_exporter_module()
+    manifest = exporter.build_decoder_manifest(
+        source_model_path=Path("/outside/model.safetensors"),
+        source_model_sha256=VALID_STABLE_SHA,
+        source_model_size_bytes=123,
+        layers=[],
+        lm_head_identity={},
+        architecture_config=exporter.build_architecture_config(),
+        tensor_role_inventory={},
+        per_layer_input_runtime={},
+        tokenizer_vocab_sha256=exporter.TOKENIZER_VOCAB_HEX_SHA256,
+        tokenizer_merges_sha256=exporter.TOKENIZER_MERGES_HEX_SHA256,
+    )
+    manifest.pop("per_layer_input_runtime")
+
+    try:
+        exporter.validate_decoder_manifest_contract(manifest)
+    except ValueError as error:
+        assert str(error) == "decoder_manifest_per_layer_input_runtime_missing"
+    else:
+        raise AssertionError("missing per_layer_input_runtime must fail closed")
 
 
 def test_c5_full_decoder_adapter_policy_rejects_unknown_site() -> None:

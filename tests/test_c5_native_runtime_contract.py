@@ -143,6 +143,23 @@ def test_native_c5_runtime_rejects_missing_per_layer_input_runtime(tmp_path: Pat
     assert not paths["output_jsonl"].exists()
 
 
+def test_native_c5_runtime_rejects_malformed_per_layer_input_runtime(tmp_path: Path) -> None:
+    paths = _write_component_pack(tmp_path)
+    manifest_path = paths["pack"] / "decoder_manifest.json"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    manifest["per_layer_input_runtime"] = {
+        "source": "derive_from_input_ids_with_ple_assets"
+    }
+    manifest_path.write_text(json.dumps(manifest, sort_keys=True), encoding="utf-8")
+
+    result = _run_native(paths)
+    payload = json.loads(result.stdout)
+
+    assert result.returncode == 13
+    assert payload["first_missing_green_field"] == "decoder_manifest_per_layer_input_runtime_missing"
+    assert not paths["output_jsonl"].exists()
+
+
 def test_native_c5_runtime_rejects_empty_tensor_value_before_compute(tmp_path: Path) -> None:
     paths = _write_component_pack(
         tmp_path,
