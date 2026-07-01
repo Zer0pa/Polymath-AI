@@ -1,0 +1,163 @@
+{
+  "authorization_needed": {
+    "c5_eval": "not user-blocked; requires concrete frozen command surface and checkpoint identities before execution",
+    "remote_comet": "explicit remote Comet GO with COMET_API_KEY handling after local C5 JSON reports exist"
+  },
+  "checkpoint_identity_probe": {
+    "assessment": "no C5 checkpoint identity or stable baseline identity reports found under the validated run root",
+    "found_paths": [],
+    "required_per_eval_point": [
+      "checkpoint_sha256",
+      "stable_checkpoint_baseline_sha256",
+      "checkpoint_payload_location=outside_git"
+    ],
+    "search_command": "sh -lc find runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z -maxdepth 4 -type f \\( -iname '*c5*report*.json' -o -iname '*c5*eval*.json' -o -iname '*checkpoint*identity*.json' -o -iname '*stable*checkpoint*.json' -o -iname '*comet*summary*.json' \\) -print"
+  },
+  "comet_route": {
+    "offline_bundle_gate": "generate only after C5 local JSON exists or mark as incomplete diagnostic bundle; remote upload still requires explicit COMET_API_KEY authorization",
+    "offline_bundle_status": "planning_only_not_executed",
+    "remote_comet_status": "not_attempted",
+    "remote_reason": "C5 local JSON reports are absent; Comet accepted metric run would be incomplete under comet_logging_contract.md",
+    "secret_handling": "no secrets sourced, printed, copied, or logged"
+  },
+  "created_at_utc": "2026-07-01T00:00:00Z",
+  "discovered_execution_surfaces": {
+    "assessment": "no concrete C5 evaluator runner found; current matches are contracts, a Phase1-only Comet logger, old source snapshots, and a Phase14 heldout evaluator unrelated to this C1-C5 PRD surface",
+    "found_paths": [
+      "scripts/android_lab/log_phase1_android_game_authority_to_comet.py",
+      "scripts/host/run_phase14_p14_full_heldout_evaluator_repair.py",
+      "runtime/reports/polar_phase2_engineering_review/2026-06-26T235142Z/source_files/scripts/termux/comet_log_phase_artifacts.py",
+      "runtime/reports/polar_phase2_engineering_review/2026-06-26T235142Z/source_files/polymath_ai/telemetry/comet_logging.py",
+      "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_comet_pending_execution_packet.json",
+      "runtime/reports/orchestration/c5_eval_contract.md",
+      "runtime/reports/orchestration/c1_c5_metric_schema.json",
+      "runtime/reports/orchestration/c5_comet_execution_runbook.md",
+      "runtime/reports/orchestration/comet_logging_contract.md"
+    ],
+    "search_command": "sh -lc rg --files | rg -i '(^|/)(run_.*c5|.*c5.*\\.py|.*eval.*\\.py|.*comet.*\\.py|c5_.*|.*c5.*contract|.*comet.*contract|.*metric.*schema.*json)'",
+    "usable_c5_eval_runner_paths": []
+  },
+  "existing_green_evidence": {
+    "final_integrated_metadata_report": {
+      "path": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/final_integrated_metadata_report.json",
+      "sha256": "53c2b3a2d3a80c1418674633db89691cbe80766ca32535535a5845e49ca11b60"
+    },
+    "phase2_verified_summary": {
+      "path": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/phase2_verified_summary.json",
+      "sha256": "cb403aa4b54826bc1071e46c6d54f0083bb979a2ba0f35962eb0946f9280574f"
+    },
+    "phase34_lineage_repair_summary": {
+      "path": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/phase34_lineage_repair/phase34_lineage_repair_summary.json",
+      "sha256": "1348895a1d5ca8e7e5276de1ab2022d9f64a300b288aa7169550263b27a0e304"
+    }
+  },
+  "first_missing_green_field": {
+    "field": "executable C5 evaluator command surface implementing c5_eval_contract.md for C5_after_C1, with checkpoint_identity.checkpoint_sha256 and stable_checkpoint_baseline_sha256 inputs",
+    "first_eval_point_affected": "C5_after_C1",
+    "missing_command_surface": "no current repo runner discovered for C5 eval; rg found no scripts/**/run_*c5*.py or equivalent active C5 evaluator",
+    "missing_input_identity": "checkpoint_identity.checkpoint_sha256 and stable_baseline_identity/stable_checkpoint_baseline_sha256 for C5_after_C1"
+  },
+  "governing_contracts": {
+    "c5_comet_runbook": {
+      "path": "runtime/reports/orchestration/c5_comet_execution_runbook.md",
+      "sha256": "78abb5ec7e283b20ead72468c823814774f379d241cec2759ad33c1c76bceb84"
+    },
+    "c5_eval_contract": {
+      "path": "runtime/reports/orchestration/c5_eval_contract.md",
+      "sha256": "70581537438a25772c2485bac9872f1022b16d41dbf6056c0d721836df7f3d80"
+    },
+    "comet_logging_contract": {
+      "path": "runtime/reports/orchestration/comet_logging_contract.md",
+      "sha256": "bdc7639204087dc7ad25748921f0e9f43ee132d1ef822af12f316d1f2bc1cf1d"
+    },
+    "metric_schema": {
+      "path": "runtime/reports/orchestration/c1_c5_metric_schema.json",
+      "sha256": "b6f700aee3b3202fe84bdec76e4e5387e9514a4f1b72339cd40207af4753c2c8"
+    }
+  },
+  "lane": "execution_orchestrator",
+  "material_identity": {
+    "c5_eval_points": {
+      "C5_after_C1": [
+        "packages/C1/qa_bridge/phase_C1_test.qa.jsonl"
+      ],
+      "C5_after_C2": [
+        "packages/C1/qa_bridge/phase_C1_test.qa.jsonl",
+        "packages/C2/qa_bridge/phase_C2_test.qa.jsonl"
+      ],
+      "C5_after_C2_5": [
+        "packages/C1/qa_bridge/phase_C1_test.qa.jsonl",
+        "packages/C2/qa_bridge/phase_C2_test.qa.jsonl",
+        "packages/C2_5/qa_bridge/phase_C2.5_val.qa.jsonl"
+      ],
+      "C5_after_C3": [
+        "packages/C1/qa_bridge/phase_C1_test.qa.jsonl",
+        "packages/C2/qa_bridge/phase_C2_test.qa.jsonl",
+        "packages/C2_5/qa_bridge/phase_C2.5_val.qa.jsonl",
+        "packages/C3/qa_bridge/phase_C3_test.qa.jsonl"
+      ],
+      "C5_after_C4": [
+        "packages/C1/qa_bridge/phase_C1_test.qa.jsonl",
+        "packages/C2/qa_bridge/phase_C2_test.qa.jsonl",
+        "packages/C2_5/qa_bridge/phase_C2.5_val.qa.jsonl",
+        "packages/C3/qa_bridge/phase_C3_test.qa.jsonl",
+        "packages/C4/qa_bridge/phase_C4_test.qa.jsonl"
+      ],
+      "C5_full_curriculum_postrun": [
+        "packages/C1/qa_bridge/phase_C1_test.qa.jsonl",
+        "packages/C2/qa_bridge/phase_C2_test.qa.jsonl",
+        "packages/C2_5/qa_bridge/phase_C2.5_val.qa.jsonl",
+        "packages/C3/qa_bridge/phase_C3_test.qa.jsonl",
+        "packages/C4/qa_bridge/phase_C4_test.qa.jsonl"
+      ]
+    },
+    "hf_repo_id": "Zer0pa/polymat-gemmalit-c1-c4-commercial-corpus",
+    "immutable_revision": "504dd91c5a7c8365882d690d52f3de20697c4f7b",
+    "material_lock_path": "runtime/reports/orchestration/material_revision_lock.json",
+    "material_lock_sha256": "078a9a208fb6fae06db64b5306cd4069912af867062a6689ecc0340de2be2edc"
+  },
+  "minimum_next_command_contract_required_from_pipeline_or_engineering": {
+    "must_emit": [
+      "polymath_c5_eval_report_v1 JSON",
+      "all required c5/<eval_point>/ metrics",
+      "checkpoint and stable baseline hashes",
+      "tolerances",
+      "pass_fail",
+      "raw_payload_boundaries"
+    ],
+    "raw_boundary": "runner may consume outside-git payloads, but repo output must be compact metadata JSON only",
+    "runner": "<concrete C5 evaluator script path from frozen source>",
+    "shape": "python3.11 <runner> --run-label c1_c4_waveB_rerun_20260630T230411Z --eval-point C5_after_C1 --eval-splits <immutable HF eval slices> --checkpoint <outside-git checkpoint payload or identity> --stable-baseline <outside-git stable baseline payload or identity> --phase-reports <metadata JSON inputs> --output <repo metadata-only C5 report path>"
+  },
+  "next_action": "route to Pipeline/Engineering to freeze a C5 evaluator runner and checkpoint/baseline identity map; Execution can then run C5_after_C1 first and proceed through remaining eval points if green",
+  "nonclaims": [
+    "development_cycle_evidence_only",
+    "no_c5_pass",
+    "no_learning_claim",
+    "no_model_quality_claim",
+    "no_phase3_readiness_claim",
+    "no_phase4_readiness_claim",
+    "not_100k_or_1m_phase2_authority",
+    "remote_comet_not_called"
+  ],
+  "repo_identity": {
+    "branch_expected": "gemma4-megakernel-native-training",
+    "expected_phase34_lineage_metadata_commit": "c08a8f1474f8e3b0989051d29258dae3db4ebed3",
+    "head": "c08a8f1474f8e3b0989051d29258dae3db4ebed3"
+  },
+  "schema_version": "polymath_c5_comet_next_action_readiness_v1",
+  "status": "c5_eval_not_executable_first_missing_green_field_recorded",
+  "status_classification": "PENDING_ACTION_C5_EVAL_COMMAND_SURFACE_AND_CHECKPOINT_IDENTITY",
+  "user_action_required": false,
+  "validated_run_label": "c1_c4_waveB_rerun_20260630T230411Z",
+  "verification_commands": {
+    "c5_surface_search": "rg --files | rg -i '(^|/)(run_.*c5|.*c5.*\\.py|.*eval.*\\.py|.*comet.*\\.py|c5_.*|.*c5.*contract|.*comet.*contract|.*metric.*schema.*json)'",
+    "checkpoint_identity_search": "find runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z -maxdepth 4 -type f \\( -iname '*c5*report*.json' -o -iname '*c5*eval*.json' -o -iname '*checkpoint*identity*.json' -o -iname '*stable*checkpoint*.json' -o -iname '*comet*summary*.json' \\) -print",
+    "contract_reads": [
+      "runtime/reports/orchestration/c5_eval_contract.md",
+      "runtime/reports/orchestration/c5_comet_execution_runbook.md",
+      "runtime/reports/orchestration/comet_logging_contract.md"
+    ],
+    "repo_head": "git rev-parse HEAD"
+  }
+}
