@@ -40,6 +40,11 @@ class SafetensorsReader {
   Status read_tensor_bytes(const std::string& key,
                            std::uint64_t max_bytes,
                            std::vector<std::uint8_t>& output) const;
+  Status read_tensor_slice_bytes(const std::string& key,
+                                 std::uint64_t tensor_relative_offset,
+                                 std::uint64_t byte_count,
+                                 std::uint64_t max_bytes,
+                                 std::vector<std::uint8_t>& output) const;
 
  private:
   SafetensorsMetadata metadata_;

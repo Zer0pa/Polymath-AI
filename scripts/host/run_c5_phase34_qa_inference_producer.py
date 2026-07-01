@@ -135,6 +135,15 @@ def producer_contract() -> dict[str, Any]:
                 "required": True,
                 "purpose": "Map every decoder tensor role to safetensors key, dtype, shape, and byte range.",
             },
+            "per_layer_input_runtime": {
+                "required": True,
+                "purpose": "Map token IDs to Gemma 4 per-layer 256-wide inputs from PLE source tensors.",
+                "required_roles": [
+                    "embed_tokens_per_layer",
+                    "per_layer_projection_norm",
+                    "per_layer_model_projection",
+                ],
+            },
             "source_model_safetensors": {
                 "required_fields": ["path", "sha256", "size_bytes"],
             },
@@ -260,6 +269,21 @@ def validate_decoder_manifest(path: Path, blockers: list[str]) -> bool:
         blockers.append("decoder_manifest_architecture_config_missing")
     if not isinstance(payload.get("tensor_role_inventory"), dict):
         blockers.append("decoder_manifest_tensor_role_inventory_missing")
+    ple_runtime = payload.get("per_layer_input_runtime")
+    if not isinstance(ple_runtime, dict):
+        blockers.append("decoder_manifest_per_layer_input_runtime_missing")
+    else:
+        roles = ple_runtime.get("roles")
+        if not isinstance(roles, dict):
+            blockers.append("decoder_manifest_per_layer_input_runtime_roles_missing")
+        else:
+            for role in (
+                "embed_tokens_per_layer",
+                "per_layer_projection_norm",
+                "per_layer_model_projection",
+            ):
+                if role not in roles:
+                    blockers.append(f"decoder_manifest_per_layer_input_runtime_{role}_missing")
 
     lm_head = payload.get("lm_head")
     if lm_head is not None:

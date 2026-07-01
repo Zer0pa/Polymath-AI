@@ -1,12 +1,15 @@
 #include "polymath/gemma4/c5_full_decoder_runtime.h"
 
+#include <cmath>
 #include <cctype>
 #include <cstdint>
 #include <fstream>
+#include <limits>
 #include <stdexcept>
 #include <string>
 #include <vector>
 
+#include "polymath/gemma4/c5_decoder_math.h"
 #include "polymath/gemma4/gemma_bpe_tokenizer.h"
 #include "polymath/gemma4/safetensors_reader.h"
 #include "polymath/gemma4/sha256.h"
@@ -16,6 +19,12 @@ namespace {
 
 constexpr const char* kEmbedTokensKey =
     "model.language_model.embed_tokens.weight";
+constexpr const char* kPleTokenKey =
+    "model.language_model.embed_tokens_per_layer.weight";
+constexpr const char* kPleProjectionNormKey =
+    "model.language_model.per_layer_projection_norm.weight";
+constexpr const char* kPleProjectionKey =
+    "model.language_model.per_layer_model_projection.weight";
 constexpr std::uint32_t kLayerCount = 42;
 constexpr std::uint32_t kHiddenSize = 2560;
 constexpr std::uint32_t kVocabSize = 262144;
@@ -24,6 +33,9 @@ constexpr std::uint32_t kAttentionHeads = 8;
 constexpr std::uint32_t kKeyValueHeads = 2;
 constexpr std::uint32_t kHeadDim = 256;
 constexpr std::uint32_t kSmallInputSize = 256;
+constexpr std::uint32_t kAdapterRank = 16;
+constexpr std::uint64_t kAdapterPayloadBytes =
+    static_cast<std::uint64_t>(kHiddenSize) * kAdapterRank * 2U * sizeof(float);
 
 struct RoleSpec {
   const char* role;
@@ -105,6 +117,26 @@ std::string read_text_file(const std::string& path) {
     text.push_back('\n');
   }
   return text;
+}
+
+std::vector<std::uint8_t> read_binary_file_limited(const std::string& path,
+                                                   std::uint64_t max_bytes) {
+  std::ifstream file(path, std::ios::binary | std::ios::ate);
+  if (!file) {
+    throw std::runtime_error("binary_file_read_failed");
+  }
+  const std::uint64_t size = static_cast<std::uint64_t>(file.tellg());
+  if (size == 0U || size > max_bytes) {
+    throw std::runtime_error("binary_file_size_invalid");
+  }
+  file.seekg(0, std::ios::beg);
+  std::vector<std::uint8_t> bytes(static_cast<std::size_t>(size));
+  file.read(reinterpret_cast<char*>(bytes.data()),
+            static_cast<std::streamsize>(bytes.size()));
+  if (file.gcount() != static_cast<std::streamsize>(bytes.size())) {
+    throw std::runtime_error("binary_file_read_truncated");
+  }
+  return bytes;
 }
 
 std::string compact_json_text(const std::string& text) {
@@ -594,6 +626,53 @@ void append_tensor_role_blockers(const std::string& manifest,
   }
 }
 
+void append_per_layer_input_runtime_blockers(
+    const std::string& manifest,
+    const SourceModelIdentity& identity,
+    std::vector<std::string>& blockers) {
+  if (object_after_key(manifest, "per_layer_input_runtime").empty()) {
+    blockers.push_back("decoder_manifest_per_layer_input_runtime_missing");
+    return;
+  }
+  if (!contains(manifest, kPleTokenKey)) {
+    blockers.push_back("decoder_manifest_per_layer_token_embedding_key_missing");
+  }
+  if (!contains(manifest, kPleProjectionNormKey)) {
+    blockers.push_back("decoder_manifest_per_layer_projection_norm_key_missing");
+  }
+  if (!contains(manifest, kPleProjectionKey)) {
+    blockers.push_back("decoder_manifest_per_layer_projection_key_missing");
+  }
+  if (identity.path.empty() || !file_exists(identity.path)) {
+    return;
+  }
+
+  SafetensorsReader reader;
+  const Status open_status = reader.open(identity.path);
+  if (!open_status.is_ok()) {
+    blockers.push_back(open_status.message());
+    return;
+  }
+  const std::vector<std::string> allowed_dtypes = {"bf16", "f16", "f32"};
+  const Status token_status = reader.validate_tensor(
+      kPleTokenKey, {kVocabSize, kLayerCount * kSmallInputSize},
+      allowed_dtypes);
+  if (!token_status.is_ok()) {
+    blockers.push_back(token_status.message());
+  }
+  const Status norm_status = reader.validate_tensor(
+      kPleProjectionNormKey, {kSmallInputSize}, allowed_dtypes);
+  if (!norm_status.is_ok()) {
+    blockers.push_back(norm_status.message());
+  }
+  const Status projection_status = reader.validate_tensor(
+      kPleProjectionKey, {kLayerCount * kSmallInputSize, kHiddenSize},
+      allowed_dtypes);
+  if (!projection_status.is_ok()) {
+    blockers.push_back(projection_status.message());
+  }
+}
+
 void append_tensor_value_loader_blockers(
     const SourceModelIdentity& identity,
     std::vector<std::string>& blockers) {
@@ -613,8 +692,54 @@ void append_tensor_value_loader_blockers(
     blockers.push_back(read_status.message());
     return;
   }
-  if (layer_scalar.empty()) {
-    blockers.push_back("c5_full_decoder_tensor_value_loader_empty");
+  const SafetensorsTensorInfo* scalar_info =
+      reader.find_tensor("model.language_model.layers.0.layer_scalar");
+  if (scalar_info == nullptr) {
+    blockers.push_back("safetensors_tensor_missing:model.language_model.layers.0.layer_scalar");
+    return;
+  }
+  std::vector<float> scalar;
+  const Status decode_status =
+      decode_tensor_f32(*scalar_info, layer_scalar, scalar);
+  if (!decode_status.is_ok()) {
+    blockers.push_back(decode_status.message());
+    return;
+  }
+  if (scalar.size() != 1U || !std::isfinite(scalar[0])) {
+    blockers.push_back("c5_full_decoder_tensor_value_loader_nonfinite");
+  }
+}
+
+void append_adapter_payload_blockers(const C5QaInferenceRequest& request,
+                                     std::vector<std::string>& blockers) {
+  try {
+    const std::vector<std::uint8_t> bytes =
+        read_binary_file_limited(request.checkpoint_payload_path,
+                                 kAdapterPayloadBytes);
+    if (bytes.size() != kAdapterPayloadBytes) {
+      blockers.push_back("c5_full_decoder_rank16_adapter_payload_size_mismatch");
+      return;
+    }
+    std::vector<float> adapter;
+    const Status decode_status = decode_f32_le_bytes(bytes, adapter);
+    if (!decode_status.is_ok()) {
+      blockers.push_back(decode_status.message());
+      return;
+    }
+    if (adapter.size() !=
+        static_cast<std::size_t>(kHiddenSize * kAdapterRank * 2U)) {
+      blockers.push_back("c5_full_decoder_rank16_adapter_element_count_mismatch");
+      return;
+    }
+    for (const float value : adapter) {
+      if (!std::isfinite(value)) {
+        blockers.push_back("c5_full_decoder_rank16_adapter_nonfinite");
+        return;
+      }
+    }
+  } catch (const std::exception& error) {
+    blockers.push_back(std::string("c5_full_decoder_rank16_adapter_read_error:") +
+                       error.what());
   }
 }
 
@@ -670,6 +795,56 @@ void append_qa_prompt_token_runtime_blockers(
   }
 }
 
+void append_numeric_decoder_primitive_blockers(
+    std::vector<std::string>& blockers) {
+  std::vector<float> output;
+  const Status rms_status =
+      rms_norm_weighted({1.0F, 2.0F, 3.0F, 4.0F}, {1.0F, 0.5F}, 2U, 2U,
+                        1.0e-6F, output);
+  if (!rms_status.is_ok()) {
+    blockers.push_back(rms_status.message());
+    return;
+  }
+  const Status linear_status =
+      linear_row_major({1.0F, 2.0F}, {3.0F, 4.0F, 5.0F, 6.0F}, 1U, 2U, 2U,
+                       output);
+  if (!linear_status.is_ok()) {
+    blockers.push_back(linear_status.message());
+    return;
+  }
+  const Status gelu_status = gelu_tanh_mul({1.0F, -1.0F}, {2.0F, 3.0F}, output);
+  if (!gelu_status.is_ok()) {
+    blockers.push_back(gelu_status.message());
+    return;
+  }
+  std::vector<float> adapter_a(32U, 0.0F);
+  std::vector<float> adapter_b(32U, 0.0F);
+  adapter_a[0] = 1.0F;
+  adapter_b[0] = 1.0F;
+  const Status adapter_status =
+      adapter_rank16_residual({1.0F, 0.0F}, adapter_a, adapter_b, 1U, 2U,
+                              output);
+  if (!adapter_status.is_ok()) {
+    blockers.push_back(adapter_status.message());
+    return;
+  }
+  ChunkedNllResult nll;
+  const Status nll_first =
+      chunked_nll_from_logits({0.0F, 1.0F}, 0U, 1U, nll, false);
+  if (!nll_first.is_ok()) {
+    blockers.push_back(nll_first.message());
+    return;
+  }
+  const Status nll_final =
+      chunked_nll_from_logits({2.0F}, 2U, 1U, nll, true);
+  if (!nll_final.is_ok() || !std::isfinite(nll.nll) ||
+      nll.confidence < 0.0 || nll.confidence > 1.0) {
+    blockers.push_back(nll_final.is_ok()
+                           ? "c5_decoder_math_chunked_nll_invalid"
+                           : nll_final.message());
+  }
+}
+
 void append_full_decoder_compute_kernel_blockers(
     C5FullDecoderRuntimeResult& result) {
   result.blockers.push_back("c5_full_decoder_streamed_compute_kernel_missing");
@@ -692,11 +867,18 @@ C5FullDecoderRuntimeResult run_c5_full_decoder_runtime(
         parse_source_model_identity(manifest, result.blockers);
     append_source_model_blockers(identity, result, result.blockers);
     append_tensor_role_blockers(manifest, identity, result, result.blockers);
+    append_per_layer_input_runtime_blockers(manifest, identity, result.blockers);
     if (result.blockers.empty()) {
       append_tensor_value_loader_blockers(identity, result.blockers);
     }
     if (result.blockers.empty()) {
       append_qa_prompt_token_runtime_blockers(request, result.blockers);
+    }
+    if (result.blockers.empty()) {
+      append_adapter_payload_blockers(request, result.blockers);
+    }
+    if (result.blockers.empty()) {
+      append_numeric_decoder_primitive_blockers(result.blockers);
     }
   } catch (const std::exception& error) {
     result.blockers.push_back(std::string("c5_full_decoder_runtime_error:") +

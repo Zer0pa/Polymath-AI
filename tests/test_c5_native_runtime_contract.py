@@ -13,6 +13,7 @@ RUNNER = ROOT / "build/gemma4_megakernel_host/gemma4_layer_runner"
 MODEL_ID = "google/gemma-4-E4B"
 REVISION = "7aa32e6889efd6300124851b164f8b364314c3d8"
 STABLE_SHA = "e0d1c66ac876c2b6fbbe9e88f1b02dd37201d8ffba10afcd44f1c558fc32f7c9"
+ADAPTER_PAYLOAD_BYTES = 2560 * 16 * 2 * 4
 
 
 pytestmark = pytest.mark.skipif(
@@ -113,6 +114,22 @@ def test_native_c5_runtime_rejects_incompatible_norm_width(tmp_path: Path) -> No
 
     assert result.returncode == 13
     assert "safetensors_attention_q_norm_shape_mismatch:5" in payload["blockers"]
+    assert not paths["output_jsonl"].exists()
+
+
+def test_native_c5_runtime_rejects_missing_per_layer_input_runtime(tmp_path: Path) -> None:
+    paths = _write_component_pack(tmp_path)
+    manifest_path = paths["pack"] / "decoder_manifest.json"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    manifest.pop("per_layer_input_runtime")
+    manifest_path.write_text(json.dumps(manifest, sort_keys=True), encoding="utf-8")
+
+    result = _run_native(paths)
+    payload = json.loads(result.stdout)
+
+    assert result.returncode == 13
+    assert payload["first_missing_green_field"] == "decoder_manifest_per_layer_input_runtime_missing"
+    assert "c5_full_decoder_streamed_compute_kernel_missing" not in payload["blockers"]
     assert not paths["output_jsonl"].exists()
 
 
@@ -251,7 +268,7 @@ def _write_component_pack(
     vocab.write_text("61\t0\n", encoding="utf-8")
     merges.write_text("61\t62\t63\n", encoding="utf-8")
     checkpoint = tmp_path / "adapter_post_rank16.f32.bin"
-    checkpoint.write_bytes(b"candidate")
+    checkpoint.write_bytes(b"\x00" * ADAPTER_PAYLOAD_BYTES)
     checkpoint_sha = _sha256_file(checkpoint)
     heldout = tmp_path / "phase_C1_test.qa.jsonl"
     heldout.write_text(
@@ -357,6 +374,7 @@ def _decoder_manifest(
             "materializes_full_bsv_logits": False,
         },
         "tensor_role_inventory": _tensor_role_inventory(entries),
+        "per_layer_input_runtime": _per_layer_input_runtime(entries),
         "tokenizer_identity": {
             "vocab_hex_tsv_sha256": vocab_sha,
             "merges_hex_tsv_sha256": merges_sha,
@@ -407,6 +425,31 @@ def _tensor_role_inventory(entries: dict[str, dict]) -> dict:
     }
 
 
+def _per_layer_input_runtime(entries: dict[str, dict]) -> dict:
+    ple_token_key = "model.language_model.embed_tokens_per_layer.weight"
+    ple_norm_key = "model.language_model.per_layer_projection_norm.weight"
+    ple_projection_key = "model.language_model.per_layer_model_projection.weight"
+    return {
+        "source": "derive_from_input_ids_with_ple_assets",
+        "hidden_size_per_layer_input": 256,
+        "vocab_size_per_layer_input": 262144,
+        "num_hidden_layers": 42,
+        "scales": {
+            "embed_tokens_per_layer": 16.0,
+            "per_layer_model_projection": "1/sqrt(2560)",
+            "per_layer_input_scale": "1/sqrt(2)",
+        },
+        "roles": {
+            "embed_tokens_per_layer": {"key": ple_token_key, **entries[ple_token_key]},
+            "per_layer_projection_norm": {"key": ple_norm_key, **entries[ple_norm_key]},
+            "per_layer_model_projection": {
+                "key": ple_projection_key,
+                **entries[ple_projection_key],
+            },
+        },
+    }
+
+
 def _write_mock_safetensors(path: Path, *, tensor_mutation=None) -> dict[str, dict]:
     data = bytearray(b"abcd")
     header: dict[str, dict] = {
@@ -414,7 +457,22 @@ def _write_mock_safetensors(path: Path, *, tensor_mutation=None) -> dict[str, di
             "dtype": "BF16",
             "shape": [262144, 2560],
             "data_offsets": [0, 4],
-        }
+        },
+        "model.language_model.embed_tokens_per_layer.weight": {
+            "dtype": "BF16",
+            "shape": [262144, 42 * 256],
+            "data_offsets": [4, 4],
+        },
+        "model.language_model.per_layer_projection_norm.weight": {
+            "dtype": "BF16",
+            "shape": [256],
+            "data_offsets": [4, 4],
+        },
+        "model.language_model.per_layer_model_projection.weight": {
+            "dtype": "BF16",
+            "shape": [42 * 256, 2560],
+            "data_offsets": [4, 4],
+        },
     }
     for layer_index in range(42):
         prefix = f"model.language_model.layers.{layer_index}."

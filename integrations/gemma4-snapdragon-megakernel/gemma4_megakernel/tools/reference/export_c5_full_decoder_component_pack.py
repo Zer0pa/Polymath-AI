@@ -38,6 +38,9 @@ ROPE_THETA = 10_000.0
 FINAL_LOGIT_SOFTCAP = 30.0
 ACTIVATION = "gelu_pytorch_tanh"
 EMBED_TOKENS_KEY = "model.language_model.embed_tokens.weight"
+PLE_TOKEN_KEY = "model.language_model.embed_tokens_per_layer.weight"
+PLE_PROJECTION_NORM_KEY = "model.language_model.per_layer_projection_norm.weight"
+PLE_PROJECTION_KEY = "model.language_model.per_layer_model_projection.weight"
 LAYER_PREFIX_TEMPLATE = "model.language_model.layers.{layer_index}."
 TOKENIZER_VOCAB_HEX_SHA256 = (
     "0e43bafc96037bed92fabea31282eb10ad094ec921748a58f6be10dbf9796f74"
@@ -252,6 +255,17 @@ def schema_contract() -> dict[str, Any]:
                 "required_fields": ["path", "sha256", "size_bytes"],
             },
             "architecture_config": build_architecture_config(),
+            "per_layer_input_runtime": {
+                "source": "derive_from_input_ids_with_ple_assets",
+                "required_keys": [
+                    PLE_TOKEN_KEY,
+                    PLE_PROJECTION_NORM_KEY,
+                    PLE_PROJECTION_KEY,
+                ],
+                "hidden_size_per_layer_input": SMALL_INPUT_SIZE,
+                "vocab_size_per_layer_input": VOCAB_SIZE,
+                "layers": NUM_LAYERS,
+            },
             "tensor_role_inventory": {
                 "layer_roles": sorted(TENSOR_ROLE_SPECS),
                 "per_layer_attention_layout": [
@@ -522,7 +536,59 @@ def build_architecture_config() -> dict[str, Any]:
         "final_logit_softcap": FINAL_LOGIT_SOFTCAP,
         "dtype_policy": "bf16_f16_f32_metadata_only; runtime converts explicitly",
         "attention_layout_source": "tensor_role_inventory.per_layer_attention_layout",
+        "per_layer_input_runtime_source": "per_layer_input_runtime.ple_assets",
         "materializes_full_bsv_logits": False,
+    }
+
+
+def build_per_layer_input_runtime(
+    header: dict[str, Any],
+    *,
+    tensor_data_start: int,
+    file_size: int,
+) -> dict[str, Any]:
+    ple_token = tensor_role_entry(
+        header,
+        key=PLE_TOKEN_KEY,
+        base_role="ple_token_embedding",
+        expected_shape=[VOCAB_SIZE, NUM_LAYERS * SMALL_INPUT_SIZE],
+        tensor_data_start=tensor_data_start,
+        file_size=file_size,
+        role="per_layer_input_token_embedding",
+    )
+    ple_norm = tensor_role_entry(
+        header,
+        key=PLE_PROJECTION_NORM_KEY,
+        base_role="ple_projection_norm",
+        expected_shape=[SMALL_INPUT_SIZE],
+        tensor_data_start=tensor_data_start,
+        file_size=file_size,
+        role="per_layer_input_projection_norm",
+    )
+    ple_projection = tensor_role_entry(
+        header,
+        key=PLE_PROJECTION_KEY,
+        base_role="ple_model_projection",
+        expected_shape=[NUM_LAYERS * SMALL_INPUT_SIZE, HIDDEN_SIZE],
+        tensor_data_start=tensor_data_start,
+        file_size=file_size,
+        role="per_layer_input_model_projection",
+    )
+    return {
+        "source": "derive_from_input_ids_with_ple_assets",
+        "hidden_size_per_layer_input": SMALL_INPUT_SIZE,
+        "vocab_size_per_layer_input": VOCAB_SIZE,
+        "num_hidden_layers": NUM_LAYERS,
+        "scales": {
+            "embed_tokens_per_layer": 16.0,
+            "per_layer_model_projection": "1/sqrt(2560)",
+            "per_layer_input_scale": "1/sqrt(2)",
+        },
+        "roles": {
+            "embed_tokens_per_layer": ple_token,
+            "per_layer_projection_norm": ple_norm,
+            "per_layer_model_projection": ple_projection,
+        },
     }
 
 
@@ -579,7 +645,7 @@ def build_tensor_role_inventory(
 
 def extract_model_metadata(
     path: Path,
-) -> tuple[list[dict[str, Any]], str, str, dict[str, Any], dict[str, Any]]:
+) -> tuple[list[dict[str, Any]], str, str, dict[str, Any], dict[str, Any], dict[str, Any]]:
     header, tensor_data_start = read_safetensors_header(path)
     keys = [key for key in header if key != "__metadata__"]
     if EMBED_TOKENS_KEY not in keys:
@@ -604,7 +670,19 @@ def extract_model_metadata(
         tensor_data_start=tensor_data_start,
         file_size=path.stat().st_size,
     )
-    return layers, dtype, tensor_sha256, architecture_config, tensor_role_inventory
+    per_layer_input_runtime = build_per_layer_input_runtime(
+        header,
+        tensor_data_start=tensor_data_start,
+        file_size=path.stat().st_size,
+    )
+    return (
+        layers,
+        dtype,
+        tensor_sha256,
+        architecture_config,
+        tensor_role_inventory,
+        per_layer_input_runtime,
+    )
 
 
 def build_layer_inventory(keys: list[str]) -> list[dict[str, Any]]:
@@ -657,6 +735,7 @@ def build_decoder_manifest(
     lm_head_identity: dict[str, Any],
     architecture_config: dict[str, Any],
     tensor_role_inventory: dict[str, Any],
+    per_layer_input_runtime: dict[str, Any],
     tokenizer_vocab_sha256: str,
     tokenizer_merges_sha256: str,
 ) -> dict[str, Any]:
@@ -680,6 +759,7 @@ def build_decoder_manifest(
         },
         "architecture_config": architecture_config,
         "tensor_role_inventory": tensor_role_inventory,
+        "per_layer_input_runtime": per_layer_input_runtime,
         "tokenizer_identity": {
             "vocab_hex_tsv_sha256": tokenizer_vocab_sha256,
             "merges_hex_tsv_sha256": tokenizer_merges_sha256,
@@ -774,6 +854,7 @@ def export_component_pack(args: argparse.Namespace) -> int:
             lm_head_sha256,
             architecture_config,
             tensor_role_inventory,
+            per_layer_input_runtime,
         ) = extract_model_metadata(args.model_safetensors)
     except Exception as error:  # noqa: BLE001 - exporter must convert runtime failures into metadata.
         first_missing = str(error) if str(error) else "model_safetensors_read_failed"
@@ -798,6 +879,7 @@ def export_component_pack(args: argparse.Namespace) -> int:
         lm_head_identity=lm_head_identity,
         architecture_config=architecture_config,
         tensor_role_inventory=tensor_role_inventory,
+        per_layer_input_runtime=per_layer_input_runtime,
         tokenizer_vocab_sha256=args.tokenizer_vocab_sha,
         tokenizer_merges_sha256=args.tokenizer_merges_sha,
     )

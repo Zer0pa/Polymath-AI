@@ -501,6 +501,23 @@ def _write_valid_decoder_manifest(tmp_path: Path) -> Path:
                         "post_attention_layernorm",
                     ]
                 },
+                "per_layer_input_runtime": {
+                    "source": "derive_from_input_ids_with_ple_assets",
+                    "roles": {
+                        "embed_tokens_per_layer": {
+                            "key": "model.language_model.embed_tokens_per_layer.weight",
+                            "shape": [262144, 42 * 256],
+                        },
+                        "per_layer_projection_norm": {
+                            "key": "model.language_model.per_layer_projection_norm.weight",
+                            "shape": [256],
+                        },
+                        "per_layer_model_projection": {
+                            "key": "model.language_model.per_layer_model_projection.weight",
+                            "shape": [42 * 256, 2560],
+                        },
+                    },
+                },
             }
         ),
         encoding="utf-8",

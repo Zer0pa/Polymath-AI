@@ -148,7 +148,16 @@ def test_c5_full_decoder_exporter_writes_metadata_from_mock_safetensors(tmp_path
         decoder_manifest["architecture_config"]["attention_layout_source"]
         == "tensor_role_inventory.per_layer_attention_layout"
     )
+    assert (
+        decoder_manifest["architecture_config"]["per_layer_input_runtime_source"]
+        == "per_layer_input_runtime.ple_assets"
+    )
     assert decoder_manifest["architecture_config"]["materializes_full_bsv_logits"] is False
+    ple_runtime = decoder_manifest["per_layer_input_runtime"]
+    assert ple_runtime["source"] == "derive_from_input_ids_with_ple_assets"
+    assert ple_runtime["roles"]["embed_tokens_per_layer"]["shape"] == [262144, 42 * 256]
+    assert ple_runtime["roles"]["per_layer_projection_norm"]["shape"] == [256]
+    assert ple_runtime["roles"]["per_layer_model_projection"]["shape"] == [42 * 256, 2560]
     first_layer_roles = decoder_manifest["tensor_role_inventory"]["layers"][0]["roles"]
     assert first_layer_roles["self_attn_q_proj"]["shape"] == [2048, 2560]
     assert first_layer_roles["self_attn_k_proj"]["shape"] == [512, 2560]
@@ -369,6 +378,10 @@ def test_c5_full_decoder_manifest_builder_schema() -> None:
             "token_embedding": {},
             "lm_head": {},
         },
+        per_layer_input_runtime={
+            "source": "derive_from_input_ids_with_ple_assets",
+            "roles": {},
+        },
         tokenizer_vocab_sha256=exporter.TOKENIZER_VOCAB_HEX_SHA256,
         tokenizer_merges_sha256=exporter.TOKENIZER_MERGES_HEX_SHA256,
     )
@@ -379,6 +392,7 @@ def test_c5_full_decoder_manifest_builder_schema() -> None:
     assert manifest["decoder"]["hidden_size"] == 2560
     assert manifest["architecture_config"]["num_key_value_heads"] == 2
     assert "self_attn_q_proj" in manifest["tensor_role_inventory"]["required_roles"]
+    assert manifest["per_layer_input_runtime"]["source"] == "derive_from_input_ids_with_ple_assets"
     assert manifest["lm_head"]["embedded_in_decoder"] is True
     assert manifest["lm_head"]["shape"] == [262144, 2560]
     assert manifest["runtime_contract"]["candidate_train_loss_source"].endswith(
@@ -430,6 +444,21 @@ def _write_mock_full_decoder_safetensors(
             "dtype": "BF16",
             "shape": [262144, 2560],
             "data_offsets": [0, len(embed_bytes)],
+        },
+        "model.language_model.embed_tokens_per_layer.weight": {
+            "dtype": "BF16",
+            "shape": [262144, 42 * 256],
+            "data_offsets": [offset, offset],
+        },
+        "model.language_model.per_layer_projection_norm.weight": {
+            "dtype": "BF16",
+            "shape": [256],
+            "data_offsets": [offset, offset],
+        },
+        "model.language_model.per_layer_model_projection.weight": {
+            "dtype": "BF16",
+            "shape": [42 * 256, 2560],
+            "data_offsets": [offset, offset],
         }
     }
     role_shapes = {

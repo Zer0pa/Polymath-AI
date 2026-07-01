@@ -1,0 +1,73 @@
+{
+  "schema_version": "polymath_phase34_native_c5_pathset_report_v1",
+  "status": "native_ple_contract_decoder_math_pathset_ready_for_custodian",
+  "lane": "phase34_native_full_decoder_consumer",
+  "governing_gate": "WaveB_C5_after_C1_native_full_decoder_streamed_compute_kernel_missing_after_schema_complete_component_pack",
+  "source_freeze_base": {
+    "previous_frozen_prerequisite_commit": "4472e3dee86d88d83031eecfc94b91008e5215e0",
+    "previous_first_missing_green_field": "c5_full_decoder_streamed_compute_kernel_missing"
+  },
+  "implemented": [
+    "Added native C5 decoder math primitives for bf16/f16/f32 decode, RMS norm, row-major linear projection, GELU multiply, rank-16 residual adapter application, and chunked NLL/confidence accumulation.",
+    "Added bounded safetensors tensor slice reads so future LM-head scoring can stream vocab chunks without full B*S*V logits materialization.",
+    "Hardened native C5 runtime to require per_layer_input_runtime PLE metadata and source tensors instead of treating decoder layer weights alone as full-runtime complete.",
+    "Hardened native runtime to require a correctly sized finite rank-16 f32 adapter payload before compute.",
+    "Hardened the phone/host C5 QA producer validator and exporter contract to require per_layer_input_runtime roles.",
+    "Added regression tests for missing per_layer_input_runtime rejection while preserving the valid path to the terminal streamed compute blocker."
+  ],
+  "raw_boundary_proof": {
+    "raw_model_payload_copied_to_git": false,
+    "raw_tensor_payload_copied_to_git": false,
+    "raw_checkpoint_or_adapter_payload_copied_to_git": false,
+    "prediction_jsonl_emitted": false,
+    "report_is_metadata_only": true
+  },
+  "pathset_sha256": {
+    "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/CMakeLists.txt": "d5e5f629495fc1c86c1225b063ebc5f6a22d65e48cd8b9cec05071e6a98dbe2a",
+    "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/include/polymath/gemma4/c5_decoder_math.h": "fa76059e4377c26c9152039f5b1957814bd84b8bb3d28c66578e746ee5499991",
+    "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_decoder_math.cpp": "e42ae3a3a67ed66c45cd2975608a457b2c75b89da83700a24372186f1f4a48b0",
+    "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/include/polymath/gemma4/safetensors_reader.h": "1305efde1157f1b08f32fb8c0404136f03b6f203328be514d2721a9e5d4951cd",
+    "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/model/safetensors_reader.cpp": "7646ead0c363e4fd84aacd257f7dd9c2055b697031b008012508394be76864a4",
+    "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp": "3a4fa3db8eceefadff13cf71a3d9f6d6674ce8a729a3dbff03b7d1bae5d28515",
+    "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py": "9878c1aaf94b6270cb0b238395a41acff1a401ef94840dd29af2096c45111e87",
+    "scripts/host/run_c5_phase34_qa_inference_producer.py": "dcff49577776b943ffd201b7b949cd7c041aee93c559ba40a98ffd63bea33801",
+    "tests/test_c5_native_runtime_contract.py": "8d3883f923a8825bd9984100c0228d6d1b795d13d4057e01d5f130244cfb1ff1",
+    "tests/test_c5_full_decoder_exporter.py": "ddeaf60caed4bae746cc22f5d508a8a7f0e01ed9e4c3c5b4318e93fd89911ca0",
+    "tests/test_c5_phase34_qa_inference_producer.py": "8fd2d2300087f34a5b30ff3d279f3f6021326e8d05e6b2a6e69396cdd4053b33"
+  },
+  "verification": [
+    {
+      "command": "cmake -S integrations/gemma4-snapdragon-megakernel/gemma4_megakernel -B build/gemma4_megakernel_host -DGEMMA4_MEGAKERNEL_WARNINGS_AS_ERRORS=ON && cmake --build build/gemma4_megakernel_host --target gemma4_layer_runner -j 8",
+      "result": "pass"
+    },
+    {
+      "command": "python3.11 -m pytest -q tests/test_c5_native_runtime_contract.py tests/test_c5_full_decoder_exporter.py tests/test_c5_phase34_qa_inference_producer.py",
+      "result": "29 passed"
+    },
+    {
+      "command": "python3.11 -m pytest -q tests/test_c5_full_decoder_exporter.py tests/test_c5_native_runtime_contract.py tests/test_c5_phase34_qa_inference_producer.py tests/test_c5_prediction_payloads.py tests/test_c5_heldout_eval.py",
+      "result": "36 passed"
+    },
+    {
+      "command": "ctest --test-dir build/gemma4_megakernel_host --output-on-failure",
+      "result": "4/4 passed"
+    },
+    {
+      "command": "git diff --check -- <phase34-c5-pathset>",
+      "result": "pass"
+    }
+  ],
+  "first_missing_green_field": "c5_full_decoder_streamed_attention_mlp_kernel_body_missing_after_ple_contract",
+  "first_unresolved_technical_failure_after_valid_schema_paths": "streamed attention/MLP layer orchestration, PLE-derived per-layer input generation, adapter injection in layer stream, and chunked LM-head NLL writer are not yet combined into a successful full-decoder logits body",
+  "next_action": "Repo Custodian freeze this pathset, then Phase3/4 implement the next native full-decoder body slice: derive PLE per-layer inputs from token IDs using per_layer_input_runtime roles, wire a single-layer streamed CPU/OpenCL parity path behind run_c5_full_decoder_runtime, and preserve fail-closed no-prediction behavior until all 42 layers plus chunked LM-head NLL emit real prediction JSONL.",
+  "nonclaims": [
+    "no C5 pass",
+    "no executed C5 metrics",
+    "no prediction JSONL emitted",
+    "no loss/confidence/candidate_train_loss emitted",
+    "no learning or model-quality claim",
+    "no Phase3/4 readiness claim",
+    "not 100k/1M Phase2 authority",
+    "no Comet-backed accepted run"
+  ]
+}
