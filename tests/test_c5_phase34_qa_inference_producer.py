@@ -174,6 +174,101 @@ def test_phase34_qa_producer_rejects_invalid_runtime_component_paths_before_nati
     assert not (tmp_path / "native_invoked").exists()
 
 
+def test_phase34_qa_producer_rejects_two_layer_decoder_manifest_before_native_run(
+    tmp_path: Path,
+) -> None:
+    runner = _write_blocking_native_runner(tmp_path)
+    heldout = tmp_path / "phase_C1_test.qa.jsonl"
+    heldout.write_text(
+        json.dumps({"record_id": "r1", "question": "q", "answer": "a"}) + "\n",
+        encoding="utf-8",
+    )
+    checkpoint = tmp_path / "adapter_post_rank16.f32.bin"
+    checkpoint.write_bytes(b"candidate-adapter")
+    output_jsonl = tmp_path / "predictions/candidate_predictions.jsonl"
+    tokenizer = tmp_path / "tokenizer"
+    tokenizer.mkdir()
+    (tokenizer / "vocab.hex.tsv").write_text("61\t1\n", encoding="utf-8")
+    (tokenizer / "merges.hex.tsv").write_text("", encoding="utf-8")
+    decoder_manifest = tmp_path / "decoder_manifest.json"
+    decoder_manifest.write_text(
+        json.dumps(
+            {
+                "schema_version": "layer_bundle_v1",
+                "model_id": "google/gemma-4-E4B",
+                "decoder": {"num_hidden_layers": 2},
+            }
+        ),
+        encoding="utf-8",
+    )
+    adapter_policy = _write_valid_adapter_policy(tmp_path)
+    lm_head = tmp_path / "lm_head.bf16"
+    lm_head.write_bytes(b"lm-head-placeholder")
+
+    result = subprocess.run(
+        [
+            "python3.11",
+            str(PRODUCER),
+            "--gemma4-runner",
+            str(runner),
+            "--tokenizer-dir",
+            str(tokenizer),
+            "--decoder-manifest",
+            str(decoder_manifest),
+            "--lm-head",
+            str(lm_head),
+            "--adapter-site-policy",
+            str(adapter_policy),
+            "--run-label",
+            "unit",
+            "--eval-point",
+            "C5_after_C1",
+            "--checkpoint-role",
+            "candidate",
+            "--checkpoint-payload",
+            str(checkpoint),
+            "--checkpoint-sha256",
+            sha256_file(checkpoint),
+            "--heldout-qa-jsonl",
+            str(heldout),
+            "--output-jsonl",
+            str(output_jsonl),
+        ],
+        cwd=ROOT,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+
+    assert result.returncode == 2
+    first_missing = json.loads(result.stdout)["first_missing_green_field"]
+    assert first_missing == "decoder_manifest_schema_version_mismatch"
+    assert not output_jsonl.exists()
+    assert not (tmp_path / "native_invoked").exists()
+
+
+def _write_valid_adapter_policy(tmp_path: Path) -> Path:
+    path = tmp_path / "adapter_policy.json"
+    path.write_text(
+        json.dumps(
+            {
+                "schema_version": "polymath_c5_adapter_site_policy_v1",
+                "model_id": "google/gemma-4-E4B",
+                "adapter_rank": 16,
+                "decoder_layer_index": 1,
+                "adapter_site": "post_layer1_residual",
+                "input_shape": [1, 16, 2560],
+                "output_shape": [1, 16, 2560],
+                "candidate_adapter_sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f",
+                "stable_baseline_adapter_sha256": "e0d1c66ac876c2b6fbbe9e88f1b02dd37201d8ffba10afcd44f1c558fc32f7c9",
+                "bridge_mse_is_c5_loss": False,
+            }
+        ),
+        encoding="utf-8",
+    )
+    return path
+
+
 def _write_blocking_native_runner(tmp_path: Path) -> Path:
     runner = tmp_path / "gemma4_layer_runner_stub.py"
     runner.write_text(

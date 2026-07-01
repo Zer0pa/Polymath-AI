@@ -28,6 +28,13 @@ from polymath_ai.polar.c5_eval import EVAL_POINTS, is_sha256, sha256_file  # noq
 
 
 REPORT_SCHEMA = "polymath_c5_phase34_qa_inference_producer_report_v1"
+DECODER_MANIFEST_SCHEMA = "polymath_c5_full_decoder_manifest_v1"
+ADAPTER_SITE_POLICY_SCHEMA = "polymath_c5_adapter_site_policy_v1"
+GEMMA4_E4B_MODEL_ID = "google/gemma-4-E4B"
+GEMMA4_E4B_REVISION = "7aa32e6889efd6300124851b164f8b364314c3d8"
+GEMMA4_E4B_LAYERS = 42
+GEMMA4_E4B_HIDDEN_SIZE = 2560
+GEMMA4_E4B_VOCAB_SIZE = 262144
 
 
 def parse_args() -> argparse.Namespace:
@@ -83,6 +90,36 @@ def producer_contract() -> dict[str, Any]:
             "checkpoint_payload_must_remain_outside_git": True,
             "reports_redact_raw_paths": True,
         },
+        "decoder_manifest_schema": {
+            "schema_version": DECODER_MANIFEST_SCHEMA,
+            "model_id": GEMMA4_E4B_MODEL_ID,
+            "hf_revision": GEMMA4_E4B_REVISION,
+            "decoder": {
+                "kind": "full_gemma4_text_decoder_logits",
+                "num_hidden_layers": GEMMA4_E4B_LAYERS,
+                "hidden_size": GEMMA4_E4B_HIDDEN_SIZE,
+                "vocab_size": GEMMA4_E4B_VOCAB_SIZE,
+                "logits_vocabulary_size": GEMMA4_E4B_VOCAB_SIZE,
+            },
+            "lm_head": {
+                "embedded_in_decoder": "true if --lm-head is intentionally omitted",
+                "required_fields": ["dtype", "shape", "sha256", "vocab_size"],
+            },
+        },
+        "adapter_site_policy_schema": {
+            "schema_version": ADAPTER_SITE_POLICY_SCHEMA,
+            "model_id": GEMMA4_E4B_MODEL_ID,
+            "adapter_rank": 16,
+            "required_fields": [
+                "decoder_layer_index",
+                "adapter_site",
+                "input_shape",
+                "output_shape",
+                "candidate_adapter_sha256",
+                "stable_baseline_adapter_sha256",
+                "bridge_mse_is_c5_loss",
+            ],
+        },
     }
 
 
@@ -108,6 +145,112 @@ def is_under(path: Path, root: Path) -> bool:
     return True
 
 
+def load_json_file(path: Path, blocker_prefix: str, blockers: list[str]) -> Any | None:
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        blockers.append(f"{blocker_prefix}_json_invalid")
+    except OSError:
+        blockers.append(f"{blocker_prefix}_json_unreadable")
+    return None
+
+
+def nested_get(payload: dict[str, Any], *keys: str) -> Any:
+    current: Any = payload
+    for key in keys:
+        if not isinstance(current, dict):
+            return None
+        current = current.get(key)
+    return current
+
+
+def validate_decoder_manifest(path: Path, blockers: list[str]) -> bool:
+    payload = load_json_file(path, "decoder_manifest", blockers)
+    if not isinstance(payload, dict):
+        blockers.append("decoder_manifest_not_object")
+        return False
+
+    checks: tuple[tuple[str, Any], ...] = (
+        ("schema_version", DECODER_MANIFEST_SCHEMA),
+        ("model_id", GEMMA4_E4B_MODEL_ID),
+        ("hf_revision", GEMMA4_E4B_REVISION),
+    )
+    for field, expected in checks:
+        if payload.get(field) != expected:
+            blockers.append(f"decoder_manifest_{field}_mismatch")
+
+    decoder = payload.get("decoder")
+    if not isinstance(decoder, dict):
+        blockers.append("decoder_manifest_decoder_missing")
+    else:
+        decoder_checks: tuple[tuple[str, Any], ...] = (
+            ("kind", "full_gemma4_text_decoder_logits"),
+            ("num_hidden_layers", GEMMA4_E4B_LAYERS),
+            ("hidden_size", GEMMA4_E4B_HIDDEN_SIZE),
+            ("vocab_size", GEMMA4_E4B_VOCAB_SIZE),
+            ("logits_vocabulary_size", GEMMA4_E4B_VOCAB_SIZE),
+        )
+        for field, expected in decoder_checks:
+            if decoder.get(field) != expected:
+                blockers.append(f"decoder_manifest_decoder_{field}_mismatch")
+
+    lm_head = payload.get("lm_head")
+    if lm_head is not None:
+        validate_lm_head_identity(lm_head, "decoder_manifest_lm_head", blockers)
+    return "decoder_manifest_not_object" not in blockers
+
+
+def validate_lm_head_identity(payload: Any, prefix: str, blockers: list[str]) -> None:
+    if not isinstance(payload, dict):
+        blockers.append(f"{prefix}_not_object")
+        return
+    if payload.get("dtype") not in {"bf16", "f16", "f32"}:
+        blockers.append(f"{prefix}_dtype_invalid")
+    shape = payload.get("shape")
+    if shape != [GEMMA4_E4B_VOCAB_SIZE, GEMMA4_E4B_HIDDEN_SIZE]:
+        blockers.append(f"{prefix}_shape_mismatch")
+    if not is_sha256(str(payload.get("sha256", ""))):
+        blockers.append(f"{prefix}_sha256_invalid")
+    if payload.get("vocab_size") != GEMMA4_E4B_VOCAB_SIZE:
+        blockers.append(f"{prefix}_vocab_size_mismatch")
+
+
+def decoder_manifest_embeds_lm_head(path: Path) -> bool:
+    blockers: list[str] = []
+    payload = load_json_file(path, "decoder_manifest", blockers)
+    if not isinstance(payload, dict):
+        return False
+    return nested_get(payload, "lm_head", "embedded_in_decoder") is True
+
+
+def validate_adapter_site_policy(path: Path, blockers: list[str]) -> None:
+    payload = load_json_file(path, "adapter_site_policy", blockers)
+    if not isinstance(payload, dict):
+        blockers.append("adapter_site_policy_not_object")
+        return
+    if payload.get("schema_version") != ADAPTER_SITE_POLICY_SCHEMA:
+        blockers.append("adapter_site_policy_schema_version_mismatch")
+    if payload.get("model_id") != GEMMA4_E4B_MODEL_ID:
+        blockers.append("adapter_site_policy_model_id_mismatch")
+    if payload.get("adapter_rank") != 16:
+        blockers.append("adapter_site_policy_rank_mismatch")
+    layer_index = payload.get("decoder_layer_index")
+    if not isinstance(layer_index, int) or not 0 <= layer_index < GEMMA4_E4B_LAYERS:
+        blockers.append("adapter_site_policy_decoder_layer_index_invalid")
+    if not isinstance(payload.get("adapter_site"), str) or not payload.get("adapter_site"):
+        blockers.append("adapter_site_policy_site_missing")
+    if payload.get("input_shape") != [1, 16, GEMMA4_E4B_HIDDEN_SIZE]:
+        blockers.append("adapter_site_policy_input_shape_mismatch")
+    if payload.get("output_shape") != [1, 16, GEMMA4_E4B_HIDDEN_SIZE]:
+        blockers.append("adapter_site_policy_output_shape_mismatch")
+    if not is_sha256(str(payload.get("candidate_adapter_sha256", ""))):
+        blockers.append("adapter_site_policy_candidate_sha256_invalid")
+    if not is_sha256(str(payload.get("stable_baseline_adapter_sha256", ""))):
+        blockers.append("adapter_site_policy_stable_sha256_invalid")
+    if payload.get("bridge_mse_is_c5_loss") is not False:
+        blockers.append("adapter_site_policy_bridge_mse_loss_forbidden")
+
+
 def validate_optional_runtime_paths(args: argparse.Namespace) -> list[str]:
     blockers: list[str] = []
     if args.tokenizer_dir:
@@ -119,12 +262,26 @@ def validate_optional_runtime_paths(args: argparse.Namespace) -> list[str]:
                 blockers.append("tokenizer_vocab_hex_missing")
             if not (tokenizer_dir / "merges.hex.tsv").is_file():
                 blockers.append("tokenizer_merges_hex_missing")
-    if args.decoder_manifest and not Path(args.decoder_manifest).is_file():
-        blockers.append("decoder_manifest_path_not_found")
-    if args.lm_head and not Path(args.lm_head).is_file():
-        blockers.append("lm_head_or_unembedding_path_not_found")
-    if args.adapter_site_policy and not Path(args.adapter_site_policy).is_file():
-        blockers.append("adapter_site_policy_path_not_found")
+    if args.decoder_manifest:
+        decoder_manifest = Path(args.decoder_manifest)
+        if not decoder_manifest.is_file():
+            blockers.append("decoder_manifest_path_not_found")
+        else:
+            validate_decoder_manifest(decoder_manifest, blockers)
+    if args.lm_head:
+        lm_head = Path(args.lm_head)
+        if not lm_head.is_file():
+            blockers.append("lm_head_or_unembedding_path_not_found")
+    elif args.decoder_manifest:
+        decoder_manifest = Path(args.decoder_manifest)
+        if decoder_manifest.is_file() and not decoder_manifest_embeds_lm_head(decoder_manifest):
+            blockers.append("lm_head_or_unembedding_missing")
+    if args.adapter_site_policy:
+        adapter_site_policy = Path(args.adapter_site_policy)
+        if not adapter_site_policy.is_file():
+            blockers.append("adapter_site_policy_path_not_found")
+        else:
+            validate_adapter_site_policy(adapter_site_policy, blockers)
     return blockers
 
 

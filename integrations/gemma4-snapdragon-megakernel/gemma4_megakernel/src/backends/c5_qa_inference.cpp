@@ -15,6 +15,13 @@ namespace polymath::gemma4 {
 namespace {
 
 constexpr const char* kSchema = "polymath_c5_qa_inference_native_report_v1";
+constexpr const char* kDecoderManifestSchema =
+    "polymath_c5_full_decoder_manifest_v1";
+constexpr const char* kAdapterSitePolicySchema =
+    "polymath_c5_adapter_site_policy_v1";
+constexpr const char* kGemma4E4bModelId = "google/gemma-4-E4B";
+constexpr const char* kGemma4E4bRevision =
+    "7aa32e6889efd6300124851b164f8b364314c3d8";
 
 bool is_sha256(const std::string& value) {
   if (value.size() != 64U) {
@@ -70,6 +77,37 @@ std::uint64_t count_jsonl_records(const std::string& path) {
   return count;
 }
 
+std::string read_text_file(const std::string& path) {
+  std::ifstream file(path);
+  if (!file) {
+    throw std::runtime_error("failed to read text file: " + path);
+  }
+  std::string text;
+  std::string line;
+  while (std::getline(file, line)) {
+    text += line;
+    text.push_back('\n');
+  }
+  return text;
+}
+
+bool contains(const std::string& text, const std::string& needle) {
+  return text.find(needle) != std::string::npos;
+}
+
+bool contains_json_string_pair(const std::string& text,
+                               const std::string& key,
+                               const std::string& value) {
+  return contains(text, "\"" + key + "\"") && contains(text, "\"" + value + "\"");
+}
+
+bool contains_json_unsigned_pair(const std::string& text,
+                                 const std::string& key,
+                                 std::uint32_t value) {
+  return contains(text, "\"" + key + "\"") &&
+         contains(text, std::to_string(value));
+}
+
 void append_missing_if_empty(std::vector<std::string>& blockers,
                              const std::string& value,
                              const std::string& blocker) {
@@ -86,6 +124,26 @@ void append_file_missing_if_present(std::vector<std::string>& blockers,
   }
 }
 
+void append_missing_substring(std::vector<std::string>& blockers,
+                              const std::string& text,
+                              const std::string& needle,
+                              const std::string& blocker) {
+  if (!contains(text, needle)) {
+    blockers.push_back(blocker);
+  }
+}
+
+bool decoder_manifest_embeds_lm_head(const std::string& path) {
+  try {
+    const std::string text = read_text_file(path);
+    return contains(text, "\"lm_head\"") &&
+           contains(text, "\"embedded_in_decoder\"") &&
+           contains(text, "true");
+  } catch (const std::exception&) {
+    return false;
+  }
+}
+
 void append_tokenizer_table_blockers(std::vector<std::string>& blockers,
                                      const std::string& tokenizer_dir) {
   if (tokenizer_dir.empty()) {
@@ -96,6 +154,79 @@ void append_tokenizer_table_blockers(std::vector<std::string>& blockers,
   }
   if (!file_exists(join_path(tokenizer_dir, "merges.hex.tsv"))) {
     blockers.push_back("tokenizer_merges_hex_missing");
+  }
+}
+
+void append_decoder_manifest_blockers(std::vector<std::string>& blockers,
+                                      const std::string& path) {
+  if (path.empty() || !file_exists(path)) {
+    return;
+  }
+  try {
+    const std::string text = read_text_file(path);
+    if (!contains_json_string_pair(text, "schema_version", kDecoderManifestSchema)) {
+      blockers.push_back("decoder_manifest_schema_version_mismatch");
+    }
+    if (!contains_json_string_pair(text, "model_id", kGemma4E4bModelId)) {
+      blockers.push_back("decoder_manifest_model_id_mismatch");
+    }
+    if (!contains_json_string_pair(text, "hf_revision", kGemma4E4bRevision)) {
+      blockers.push_back("decoder_manifest_hf_revision_mismatch");
+    }
+    if (!contains_json_string_pair(text, "kind", "full_gemma4_text_decoder_logits")) {
+      blockers.push_back("decoder_manifest_decoder_kind_mismatch");
+    }
+    if (!contains_json_unsigned_pair(text, "num_hidden_layers", 42U)) {
+      blockers.push_back("decoder_manifest_decoder_num_hidden_layers_mismatch");
+    }
+    if (!contains_json_unsigned_pair(text, "hidden_size", 2560U)) {
+      blockers.push_back("decoder_manifest_decoder_hidden_size_mismatch");
+    }
+    if (!contains_json_unsigned_pair(text, "vocab_size", 262144U)) {
+      blockers.push_back("decoder_manifest_decoder_vocab_size_mismatch");
+    }
+    if (!contains_json_unsigned_pair(text, "logits_vocabulary_size", 262144U)) {
+      blockers.push_back("decoder_manifest_decoder_logits_vocabulary_size_mismatch");
+    }
+  } catch (const std::exception& error) {
+    blockers.push_back(std::string("decoder_manifest_read_error:") + error.what());
+  }
+}
+
+void append_adapter_site_policy_blockers(std::vector<std::string>& blockers,
+                                         const std::string& path) {
+  if (path.empty() || !file_exists(path)) {
+    return;
+  }
+  try {
+    const std::string text = read_text_file(path);
+    if (!contains_json_string_pair(text, "schema_version", kAdapterSitePolicySchema)) {
+      blockers.push_back("adapter_site_policy_schema_version_mismatch");
+    }
+    if (!contains_json_string_pair(text, "model_id", kGemma4E4bModelId)) {
+      blockers.push_back("adapter_site_policy_model_id_mismatch");
+    }
+    if (!contains_json_unsigned_pair(text, "adapter_rank", 16U)) {
+      blockers.push_back("adapter_site_policy_rank_mismatch");
+    }
+    append_missing_substring(blockers, text, "\"decoder_layer_index\"",
+                             "adapter_site_policy_decoder_layer_index_missing");
+    append_missing_substring(blockers, text, "\"adapter_site\"",
+                             "adapter_site_policy_site_missing");
+    append_missing_substring(blockers, text, "\"input_shape\"",
+                             "adapter_site_policy_input_shape_missing");
+    append_missing_substring(blockers, text, "\"output_shape\"",
+                             "adapter_site_policy_output_shape_missing");
+    append_missing_substring(blockers, text, "\"candidate_adapter_sha256\"",
+                             "adapter_site_policy_candidate_sha256_missing");
+    append_missing_substring(blockers, text, "\"stable_baseline_adapter_sha256\"",
+                             "adapter_site_policy_stable_sha256_missing");
+    if (!contains(text, "\"bridge_mse_is_c5_loss\"") || !contains(text, "false")) {
+      blockers.push_back("adapter_site_policy_bridge_mse_loss_forbidden");
+    }
+  } catch (const std::exception& error) {
+    blockers.push_back(std::string("adapter_site_policy_read_error:") +
+                       error.what());
   }
 }
 
@@ -253,7 +384,11 @@ Status run_c5_qa_predict(const C5QaInferenceRequest& request) {
 
   append_missing_if_empty(blockers, request.tokenizer_dir, "tokenizer_dir_missing");
   append_missing_if_empty(blockers, request.decoder_manifest_path, "decoder_manifest_missing");
-  append_missing_if_empty(blockers, request.lm_head_path, "lm_head_or_unembedding_missing");
+  if (request.lm_head_path.empty() &&
+      (request.decoder_manifest_path.empty() ||
+       !decoder_manifest_embeds_lm_head(request.decoder_manifest_path))) {
+    blockers.push_back("lm_head_or_unembedding_missing");
+  }
   append_missing_if_empty(blockers, request.adapter_site_policy_path,
                           "adapter_site_policy_missing");
   append_tokenizer_table_blockers(blockers, request.tokenizer_dir);
@@ -263,6 +398,8 @@ Status run_c5_qa_predict(const C5QaInferenceRequest& request) {
                                  "lm_head_or_unembedding_path_not_found");
   append_file_missing_if_present(blockers, request.adapter_site_policy_path,
                                  "adapter_site_policy_path_not_found");
+  append_decoder_manifest_blockers(blockers, request.decoder_manifest_path);
+  append_adapter_site_policy_blockers(blockers, request.adapter_site_policy_path);
 
   if (blockers.empty()) {
     blockers.push_back("full_decoder_logits_generation_not_implemented");

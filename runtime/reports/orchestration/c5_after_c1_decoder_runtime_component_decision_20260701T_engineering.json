@@ -1,0 +1,140 @@
+{
+  "accepted_tokenizer_identity_from_phase34": {
+    "merges_hex_tsv_sha256": "6c99efe1bfe6b70092d531cad0a57278182652a2380aa5fb33e99d4e4eeb905f",
+    "path": "/data/local/tmp/polymath_gemma4_gate/tokenizer/gemma4_e4b_bpe_v1",
+    "vocab_hex_tsv_sha256": "0e43bafc96037bed92fabea31282eb10ad094ec921748a58f6be10dbf9796f74"
+  },
+  "consumed_phase34_inventory": {
+    "first_missing_green_field": "decoder_manifest_missing",
+    "path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/orchestration/c5_after_c1_runtime_component_inventory_after_16c99_20260701T_phase34.json",
+    "sha256": "7b09bce3faa891544c46c5b6ed924a4359ebb3ffeb61ba331049f29580d0f07d",
+    "tokenizer_dir_status": "present_phone_public_outside_git_hash_verified"
+  },
+  "first_missing_green_field": "decoder_manifest_missing",
+  "first_unresolved_technical_failure_after_schema_paths": "full_decoder_logits_generation_not_implemented",
+  "implemented_hardening": [
+    "Host producer prints explicit decoder_manifest and adapter_site_policy schema contracts.",
+    "Host producer rejects two-layer/checkpoint-only decoder manifests before native invocation.",
+    "Host producer supports lm_head embedded proof in decoder manifest, but requires separate --lm-head when not embedded.",
+    "Native --run-c5-qa-predict rejects decoder manifests missing polymath_c5_full_decoder_manifest_v1/full_gemma4_text_decoder_logits/E4B 42-layer/vocab dimensions.",
+    "Native --run-c5-qa-predict rejects adapter policies missing schema/rank/layer/site/shape/SHA fields and bridge_mse_is_c5_loss=false."
+  ],
+  "lane": "engineering_c5_qa_decoder_runtime_components",
+  "nonclaims": [
+    "no C5 pass",
+    "no prediction JSONL emitted",
+    "no logits fabricated",
+    "no loss/confidence/candidate_train_loss fabricated",
+    "no bridge MSE relabeled as C5 loss",
+    "no learning or model-quality claim",
+    "no Phase3 readiness claim",
+    "no Phase4 readiness claim",
+    "not 100k or 1M Phase2 authority",
+    "no HF/Comet call"
+  ],
+  "required_adapter_site_policy_schema": {
+    "adapter_rank": 16,
+    "adapter_site": "non-empty concrete decoder residual/projection site name",
+    "bridge_mse_is_c5_loss": false,
+    "candidate_adapter_sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f",
+    "decoder_layer_index": "integer 0..41",
+    "input_shape": [
+      1,
+      16,
+      2560
+    ],
+    "model_id": "google/gemma-4-E4B",
+    "output_shape": [
+      1,
+      16,
+      2560
+    ],
+    "schema_version": "polymath_c5_adapter_site_policy_v1",
+    "stable_baseline_adapter_sha256": "e0d1c66ac876c2b6fbbe9e88f1b02dd37201d8ffba10afcd44f1c558fc32f7c9"
+  },
+  "required_decoder_manifest_schema": {
+    "decoder": {
+      "hidden_size": 2560,
+      "kind": "full_gemma4_text_decoder_logits",
+      "logits_vocabulary_size": 262144,
+      "num_hidden_layers": 42,
+      "vocab_size": 262144
+    },
+    "hf_revision": "7aa32e6889efd6300124851b164f8b364314c3d8",
+    "lm_head": {
+      "accepted_modes": [
+        "separate --lm-head file with outside-git path and matching identity",
+        "decoder manifest proof with lm_head.embedded_in_decoder=true plus dtype/shape/sha256/vocab_size"
+      ],
+      "required_identity": {
+        "dtype": "bf16|f16|f32",
+        "sha256": "<64 hex>",
+        "shape": [
+          262144,
+          2560
+        ],
+        "vocab_size": 262144
+      }
+    },
+    "model_id": "google/gemma-4-E4B",
+    "schema_version": "polymath_c5_full_decoder_manifest_v1"
+  },
+  "runtime_component_findings": {
+    "accepted_full_decoder_manifest_can_not_be_built_from_current_local_artifacts": true,
+    "native_logits_generation_status_after_valid_schema_inputs": "full_decoder_logits_generation_not_implemented",
+    "outside_git_full_decoder_manifest_found": false,
+    "outside_git_lm_head_or_unembedding_found": false,
+    "reason": "Available local artifacts are tokenizer tables, Phase4 rank16 adapter payload identities, historical two-layer layer-pack metadata, and bridge MSE reports. They do not contain the 42-layer decoder/logits path or LM-head/unembedding tensor identity required for C5 QA loss/generation."
+  },
+  "schema_version": "polymath_c5_after_c1_decoder_runtime_component_decision_v1",
+  "smallest_next_implementation_action": {
+    "action": "Implement/export an outside-git full Gemma4 E4B decoder/logits component pack and manifest, including LM-head/unembedding identity or embedded proof, then replace the current C5 native fail-closed body with streamed/chunked logits generation plus teacher-forced answer-token NLL and confidence emission.",
+    "outside_git_artifacts_needed": [
+      "<runtime_root>/c5_decoder/decoder_manifest.json",
+      "<runtime_root>/c5_decoder/lm_head_or_unembedding.* or manifest embedded proof",
+      "<runtime_root>/c5_decoder/adapter_site_policy.json",
+      "candidate/stable Phase4 rank16 adapter payload paths already hash-verified on phone"
+    ],
+    "owner": "Engineering with Phase3/4 native support; Execution runs only after custody and explicit command package.",
+    "source_boundary": [
+      "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_qa_inference.cpp",
+      "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/include/polymath/gemma4/c5_qa_inference.h",
+      "scripts/host/run_c5_phase34_qa_inference_producer.py"
+    ]
+  },
+  "source_pathset": {
+    "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_qa_inference.cpp": {
+      "exists": true,
+      "is_file": true,
+      "path": "/Users/Zer0pa/Polymat AI/Polymath-AI/integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_qa_inference.cpp",
+      "sha256": "b39ff9197c25d6b35ef6df5b392c937b29a28559f554d38811a0971d8f1c7423",
+      "size_bytes": 16485
+    },
+    "scripts/host/run_c5_phase34_qa_inference_producer.py": {
+      "exists": true,
+      "is_file": true,
+      "path": "/Users/Zer0pa/Polymat AI/Polymath-AI/scripts/host/run_c5_phase34_qa_inference_producer.py",
+      "sha256": "e260e00d9da5764e223aa2a118d3d967e078eccfd356f4598ea9b0c22686d327",
+      "size_bytes": 18939
+    },
+    "tests/test_c5_phase34_qa_inference_producer.py": {
+      "exists": true,
+      "is_file": true,
+      "path": "/Users/Zer0pa/Polymat AI/Polymath-AI/tests/test_c5_phase34_qa_inference_producer.py",
+      "sha256": "723dd6d4955aa3b3bb14eb63886b4f3e6e0d24fa3646ec1e87767f698567f842",
+      "size_bytes": 10932
+    }
+  },
+  "status": "c5_after_c1_decoder_runtime_component_pathset_ready_for_custodian",
+  "status_detail": "Tokenizer is no longer active edge. This pathset hardens the decoder_manifest/adapter-policy boundary and proves two-layer/checkpoint-only artifacts are rejected; real full decoder/logits runtime remains pending exact implementation inputs.",
+  "user_action_required": false,
+  "verification_commands": [
+    "python3.11 -m pytest -q tests/test_c5_phase34_qa_inference_producer.py tests/test_c5_prediction_payloads.py -> 9 passed",
+    "python3.11 -m py_compile scripts/host/run_c5_phase34_qa_inference_producer.py polymath_ai/polar/c5_prediction_payloads.py -> passed",
+    "git diff --check -- scripts/host/run_c5_phase34_qa_inference_producer.py integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_qa_inference.cpp tests/test_c5_phase34_qa_inference_producer.py -> clean",
+    "cmake --build build/gemma4_megakernel_host --target gemma4_layer_runner -j 8 -> built",
+    "native two-layer manifest probe -> first_missing_green_field decoder_manifest_schema_version_mismatch",
+    "native valid-schema placeholder probe -> first_missing_green_field full_decoder_logits_generation_not_implemented",
+    "find /Users/Zer0pa/Polymat AI/runtime /tmp for decoder/lm-head/unembedding artifacts -> no accepted full decoder/logits component found"
+  ]
+}
