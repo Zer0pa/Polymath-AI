@@ -1,0 +1,99 @@
+{
+  "schema_version": "polymath_phase34_native_c5_runtime_blocker_report_v1",
+  "lane": "phase34_native_c5_runtime",
+  "status": "native_chunked_lm_head_nll_writer_blocker",
+  "base_commit": "4c3dceef5df1cdc605d8b34e4636ee5b278015aa",
+  "execution_consumed_custody_commit": "412f705acb0add7ee33d80947568722054932896",
+  "branch": "gemma4-megakernel-native-training",
+  "governing_gate": "WaveB_C5_after_C1_chunked_lm_head_nll_writer_pending_after_42_layer_orchestration_green",
+  "repaired_generic_field": "c5_full_decoder_chunked_lm_head_nll_writer_missing",
+  "first_missing_green_field_after_hardening": "c5_full_decoder_final_hidden_stream_missing_for_lm_head_nll",
+  "precise_blocker": {
+    "field": "c5_full_decoder_final_hidden_stream_missing_for_lm_head_nll",
+    "source_boundary": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp::run_chunked_lm_head_nll_writer",
+    "reason": "The 42-layer path currently validates and schedules the decoder layer stream but does not emit a real final decoder hidden stream. LM-head NLL would be fabricated without that tensor."
+  },
+  "pathset": [
+    {
+      "path": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp",
+      "sha256": "5bb98d0d9d1ffac628e233a7a2efabb65951d6738506d17ec33fcf984b00bd91",
+      "role": "existing native --run-c5-qa-predict runtime body with fail-closed chunked LM-head/NLL boundary"
+    },
+    {
+      "path": "tests/test_c5_native_runtime_contract.py",
+      "sha256": "fed39a953b1d66c6e4b789a7c2a34de3aa146c468d438e7418717fcdf7bc048d",
+      "role": "focused native runtime contract regression tests"
+    }
+  ],
+  "local_build_identity": {
+    "path": "build/gemma4_megakernel_host/gemma4_layer_runner",
+    "sha256": "06fbde08b9ea707e4a4ec0653d7850fdae325529531d6865f29e10eed83675da"
+  },
+  "implementation_summary": [
+    "Adds a chunked tied-embedding LM-head projection path that uses request vocab_chunk_size and the existing ChunkedNllResult accumulator.",
+    "Applies the Gemma final logit softcap before chunked NLL accumulation.",
+    "Consumes answer target tokens only when a real final decoder hidden stream is present.",
+    "Fails closed with c5_full_decoder_final_hidden_stream_missing_for_lm_head_nll when the current schedule-only 42-layer orchestration cannot provide real final hidden rows.",
+    "Does not write prediction output, loss, confidence, or candidate_train_loss from incomplete hidden state."
+  ],
+  "design_lens_applied": {
+    "error_signal": "C5 QA loss remains teacher-forced answer-token NLL from real full-decoder logits only",
+    "local_adapter_boundary": "rank-16 local plasticity remains upstream of the final hidden stream and cannot substitute for full decoder state",
+    "stop_condition": "stop before LM-head projection unless the runtime supplies a real final hidden stream"
+  },
+  "verification": [
+    {
+      "command": "cmake --build build/gemma4_megakernel_host --target gemma4_layer_runner -- -j2",
+      "result": "passed"
+    },
+    {
+      "command": "python3 -m pytest tests/test_c5_native_runtime_contract.py -q",
+      "result": "17 passed in 129.18s"
+    },
+    {
+      "command": "python3 -m pytest tests/test_c5_*.py -q",
+      "result": "52 passed in 139.40s"
+    },
+    {
+      "command": "ctest --test-dir build/gemma4_megakernel_host --output-on-failure",
+      "result": "4/4 passed"
+    },
+    {
+      "command": "git diff --check -- integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp tests/test_c5_native_runtime_contract.py",
+      "result": "passed"
+    },
+    {
+      "command": "metadata-only raw suffix and value-shaped secret diff scan over edited pathset",
+      "result": "no matches"
+    }
+  ],
+  "accepted_identity_fields": {
+    "chunked_lm_head_probe_stdout_sha256": "55da33f7499f4fe0b6076d23ae35f205558027198a23dc9942c9e057593b807e",
+    "chunked_lm_head_probe_stderr_sha256": "2f5f6fbcac5e2090b783dc59e895ffbd5d7277e308e50304dc85069ce4fc8a3d",
+    "chunked_lm_head_probe_meminfo_before_sha256": "7f550d3cb7cd066928babea3e8e3429ca94e7125eb64831271497f8858356d10",
+    "chunked_lm_head_probe_meminfo_after_sha256": "5e08bb67a3dc69721925dbdc763cc1c907c819f9afe79cbdba261aa9119489ee",
+    "chunked_lm_head_probe_metadata_sha256": "fccc8337783b0f1228a08d2ae82cb4552604b7fef299b4ccdd1b244b832a4428",
+    "heldout_qa_sha256": "da41c5362398f24e0e0dd9df9a5cf0594435a455871fa77ab74d9312e6c8e9b2",
+    "candidate_adapter_sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f"
+  },
+  "raw_boundary_proof": {
+    "raw_payload_bytes_in_report": false,
+    "raw_runtime_paths_frozen_in_report": false,
+    "prediction_jsonl_written": false,
+    "checkpoint_payload_copied_to_repo": false,
+    "diff_raw_suffix_or_secret_scan": "clean"
+  },
+  "next_action": "Implement real final decoder hidden stream emission in the existing 42-layer runtime before rerouting LM-head/NLL execution.",
+  "next_owner": "phase34_native_c5_runtime",
+  "research_escalation": "none",
+  "nonclaims": [
+    "no C5 pass",
+    "no executed C5 metrics",
+    "no prediction JSONL, logits, loss, confidence, or candidate_train_loss claim",
+    "no bridge-MSE-as-C5-loss substitution",
+    "no learning or model-quality claim",
+    "no Phase3/4 readiness claim",
+    "no 100k/1M Phase2 authority claim",
+    "no Comet-backed accepted run"
+  ]
+}

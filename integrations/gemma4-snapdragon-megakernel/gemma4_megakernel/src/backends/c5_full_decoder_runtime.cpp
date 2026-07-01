@@ -38,6 +38,7 @@ constexpr std::uint32_t kHeadDim = 256;
 constexpr std::uint32_t kSmallInputSize = 256;
 constexpr std::uint32_t kAdapterRank = 16;
 constexpr std::uint32_t kQaPromptWindowTokens = 16;
+constexpr float kFinalLogitSoftcap = 30.0F;
 constexpr std::uint64_t kAdapterPayloadBytes =
     static_cast<std::uint64_t>(kHiddenSize) * kAdapterRank * 2U * sizeof(float);
 
@@ -80,8 +81,17 @@ struct Rank16AdapterStream {
 
 struct DecoderLayerOrchestration {
   std::vector<std::uint32_t> scheduled_layers;
+  std::vector<float> final_hidden_rows;
   std::uint64_t active_tokens = 0;
   double stream_l2 = 0.0;
+  bool final_hidden_stream_available = false;
+};
+
+struct ChunkedLmHeadNllWriterResult {
+  std::uint32_t target_token = 0;
+  std::uint32_t predicted_token = 0;
+  double nll = 0.0;
+  double confidence = 0.0;
 };
 
 struct SingleLayerBody {
@@ -2081,6 +2091,11 @@ Status build_42_layer_orchestration(
   return Status::ok();
 }
 
+float softcap_lm_logit(double value) {
+  return kFinalLogitSoftcap *
+         std::tanh(static_cast<float>(value) / kFinalLogitSoftcap);
+}
+
 void append_42_layer_orchestration_blockers(
     const SourceModelIdentity& identity,
     const QaRuntimeSequence& sequence,
@@ -2089,6 +2104,128 @@ void append_42_layer_orchestration_blockers(
     std::vector<std::string>& blockers) {
   const Status status = build_42_layer_orchestration(
       identity, sequence, adapter_stream, orchestration);
+  if (!status.is_ok()) {
+    blockers.push_back(status.message());
+  }
+}
+
+Status run_chunked_lm_head_nll_writer(
+    const C5QaInferenceRequest& request,
+    const SourceModelIdentity& identity,
+    const QaRuntimeSequence& sequence,
+    const DecoderLayerOrchestration& orchestration,
+    ChunkedLmHeadNllWriterResult& writer) {
+  writer = ChunkedLmHeadNllWriterResult{};
+  if (!orchestration.final_hidden_stream_available ||
+      orchestration.final_hidden_rows.empty()) {
+    return Status::invalid(
+        "c5_full_decoder_final_hidden_stream_missing_for_lm_head_nll");
+  }
+  if (sequence.answer_target_tokens.empty()) {
+    return Status::invalid(
+        "c5_full_decoder_lm_head_answer_target_token_missing");
+  }
+  if (request.vocab_chunk_size == 0U ||
+      request.vocab_chunk_size > kVocabSize) {
+    return Status::invalid("c5_full_decoder_lm_head_vocab_chunk_size_invalid");
+  }
+  if (identity.path.empty() || !file_exists(identity.path)) {
+    return Status::invalid("c5_full_decoder_lm_head_source_model_missing");
+  }
+  if (orchestration.active_tokens == 0U ||
+      orchestration.final_hidden_rows.size() !=
+          static_cast<std::size_t>(orchestration.active_tokens * kHiddenSize)) {
+    return Status::invalid(
+        "c5_full_decoder_lm_head_hidden_stream_shape_mismatch");
+  }
+
+  const std::uint64_t last_row =
+      static_cast<std::uint64_t>(orchestration.active_tokens - 1U);
+  const std::uint64_t hidden_offset = last_row * kHiddenSize;
+  std::vector<float> hidden(kHiddenSize);
+  for (std::uint64_t col = 0U; col < kHiddenSize; ++col) {
+    const float value =
+        orchestration.final_hidden_rows[static_cast<std::size_t>(hidden_offset + col)];
+    if (!std::isfinite(value)) {
+      return Status::invalid("c5_full_decoder_lm_head_hidden_nonfinite");
+    }
+    hidden[static_cast<std::size_t>(col)] = value;
+  }
+
+  SafetensorsReader reader;
+  Status status = reader.open(identity.path);
+  if (!status.is_ok()) {
+    return status;
+  }
+  const std::uint32_t target_token = sequence.answer_target_tokens.front();
+  if (target_token >= kVocabSize) {
+    return Status::invalid("c5_full_decoder_lm_head_target_token_out_of_vocab");
+  }
+
+  ChunkedNllResult nll;
+  for (std::uint32_t vocab_offset = 0U; vocab_offset < kVocabSize;
+       vocab_offset += request.vocab_chunk_size) {
+    const std::uint32_t remaining = kVocabSize - vocab_offset;
+    const std::uint32_t chunk =
+        std::min(request.vocab_chunk_size, remaining);
+    const std::uint64_t element_offset =
+        static_cast<std::uint64_t>(vocab_offset) * kHiddenSize;
+    const std::uint64_t element_count =
+        static_cast<std::uint64_t>(chunk) * kHiddenSize;
+    std::vector<float> embeddings;
+    status = decode_tensor_slice_f32(
+        reader, kEmbedTokensKey, element_offset, element_count,
+        element_count * sizeof(float), embeddings);
+    if (!status.is_ok()) {
+      return status;
+    }
+    if (embeddings.size() != static_cast<std::size_t>(element_count)) {
+      return Status::invalid("c5_full_decoder_lm_head_chunk_shape_mismatch");
+    }
+
+    std::vector<float> logits(chunk, 0.0F);
+    for (std::uint32_t row = 0U; row < chunk; ++row) {
+      double dot = 0.0;
+      const std::uint64_t row_offset =
+          static_cast<std::uint64_t>(row) * kHiddenSize;
+      for (std::uint64_t col = 0U; col < kHiddenSize; ++col) {
+        dot += static_cast<double>(hidden[static_cast<std::size_t>(col)]) *
+               static_cast<double>(
+                   embeddings[static_cast<std::size_t>(row_offset + col)]);
+      }
+      const float logit = softcap_lm_logit(dot);
+      if (!std::isfinite(logit)) {
+        return Status::invalid("c5_full_decoder_lm_head_logit_nonfinite");
+      }
+      logits[row] = logit;
+    }
+    status = chunked_nll_from_logits(
+        logits, vocab_offset, target_token, nll,
+        (vocab_offset + chunk) == kVocabSize);
+    if (!status.is_ok()) {
+      return status;
+    }
+  }
+  if (!std::isfinite(nll.nll) || nll.confidence < 0.0 ||
+      nll.confidence > 1.0) {
+    return Status::invalid("c5_full_decoder_lm_head_nll_nonfinite");
+  }
+  writer.target_token = target_token;
+  writer.predicted_token = nll.argmax_token;
+  writer.nll = nll.nll;
+  writer.confidence = nll.confidence;
+  return Status::ok();
+}
+
+void append_chunked_lm_head_nll_writer_blockers(
+    const C5QaInferenceRequest& request,
+    const SourceModelIdentity& identity,
+    const QaRuntimeSequence& sequence,
+    const DecoderLayerOrchestration& orchestration,
+    ChunkedLmHeadNllWriterResult& writer,
+    std::vector<std::string>& blockers) {
+  const Status status = run_chunked_lm_head_nll_writer(
+      request, identity, sequence, orchestration, writer);
   if (!status.is_ok()) {
     blockers.push_back(status.message());
   }
@@ -2160,6 +2297,7 @@ C5FullDecoderRuntimeResult run_c5_full_decoder_runtime(
     Rank16AdapterPayload adapter_payload;
     Rank16AdapterStream adapter_stream;
     DecoderLayerOrchestration orchestration;
+    ChunkedLmHeadNllWriterResult lm_head_nll;
     SingleLayerBody layer0_body;
     const std::string manifest = read_text_file(request.decoder_manifest_path);
     append_architecture_blockers(manifest, result.blockers);
@@ -2213,6 +2351,11 @@ C5FullDecoderRuntimeResult run_c5_full_decoder_runtime(
       append_42_layer_orchestration_blockers(identity, runtime_sequence,
                                              adapter_stream, orchestration,
                                              result.blockers);
+    }
+    if (result.blockers.empty()) {
+      append_chunked_lm_head_nll_writer_blockers(
+          request, identity, runtime_sequence, orchestration, lm_head_nll,
+          result.blockers);
     }
   } catch (const std::exception& error) {
     result.blockers.push_back(std::string("c5_full_decoder_runtime_error:") +
