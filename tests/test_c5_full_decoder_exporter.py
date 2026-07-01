@@ -152,12 +152,16 @@ def test_c5_full_decoder_exporter_writes_metadata_from_mock_safetensors(tmp_path
     first_layer_roles = decoder_manifest["tensor_role_inventory"]["layers"][0]["roles"]
     assert first_layer_roles["self_attn_q_proj"]["shape"] == [2048, 2560]
     assert first_layer_roles["self_attn_k_proj"]["shape"] == [512, 2560]
+    assert first_layer_roles["self_attn_q_norm"]["shape"] == [512]
+    assert first_layer_roles["self_attn_k_norm"]["shape"] == [512]
     assert first_layer_roles["mlp_down_proj"]["shape"] == [2560, 10240]
     assert decoder_manifest["tensor_role_inventory"]["layers"][0]["attention_layout"] == {
         "head_dim": 256,
         "key_value_heads": 2,
         "k_proj_shape": [512, 2560],
+        "k_norm_shape": [512],
         "o_proj_shape": [2560, 2048],
+        "q_norm_shape": [512],
         "q_proj_shape": [2048, 2560],
         "query_heads": 8,
         "query_to_key_value_group_size": 4,
@@ -210,6 +214,91 @@ def test_c5_full_decoder_exporter_records_layer_variant_attention_layout(tmp_pat
     assert layer5["attention_layout"]["query_heads"] == 10
     assert layer5["attention_layout"]["key_value_heads"] == 2
     assert layer5["attention_layout"]["query_to_key_value_group_size"] == 5
+
+
+def test_c5_full_decoder_exporter_accepts_reduced_kv_rows_with_512_norms(
+    tmp_path: Path,
+) -> None:
+    model = tmp_path / "model.safetensors"
+    output_dir = tmp_path / "component_pack"
+    layer5_overrides = {
+        "self_attn.k_proj.weight": [256, 2560],
+        "self_attn.v_proj.weight": [256, 2560],
+        "self_attn.q_norm.weight": [512],
+        "self_attn.k_norm.weight": [512],
+    }
+    _write_mock_full_decoder_safetensors(
+        model,
+        embed_bytes=b"abcd",
+        per_layer_role_shapes={5: layer5_overrides},
+    )
+
+    result = subprocess.run(
+        [
+            "python3.11",
+            str(EXPORTER),
+            "--model-safetensors",
+            str(model),
+            "--out",
+            str(output_dir),
+            "--candidate-adapter-sha",
+            VALID_SHA,
+            "--stable-baseline-sha",
+            VALID_STABLE_SHA,
+        ],
+        cwd=ROOT,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+
+    assert result.returncode == 0, result.stderr + result.stdout
+    decoder_manifest = json.loads((output_dir / "decoder_manifest.json").read_text())
+    layer5 = decoder_manifest["tensor_role_inventory"]["layers"][5]
+    assert layer5["attention_layout"]["key_value_heads"] == 1
+    assert layer5["attention_layout"]["query_to_key_value_group_size"] == 8
+    assert layer5["attention_layout"]["k_proj_shape"] == [256, 2560]
+    assert layer5["attention_layout"]["q_norm_shape"] == [512]
+    assert layer5["attention_layout"]["k_norm_shape"] == [512]
+
+
+def test_c5_full_decoder_exporter_rejects_norm_shape_not_matching_k_norm(
+    tmp_path: Path,
+) -> None:
+    model = tmp_path / "model.safetensors"
+    output_dir = tmp_path / "component_pack"
+    _write_mock_full_decoder_safetensors(
+        model,
+        embed_bytes=b"abcd",
+        per_layer_role_shapes={5: {"self_attn.q_norm.weight": [256]}},
+    )
+
+    result = subprocess.run(
+        [
+            "python3.11",
+            str(EXPORTER),
+            "--model-safetensors",
+            str(model),
+            "--out",
+            str(output_dir),
+            "--candidate-adapter-sha",
+            VALID_SHA,
+            "--stable-baseline-sha",
+            VALID_STABLE_SHA,
+        ],
+        cwd=ROOT,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+
+    assert result.returncode == 2
+    payload = json.loads(result.stdout)
+    assert (
+        payload["first_missing_green_field"]
+        == "decoder_layer_5_self_attn_q_norm_shape_mismatch_expected_[512]_actual_[256]"
+    )
+    assert not output_dir.exists()
 
 
 def test_c5_full_decoder_manifest_builder_schema() -> None:
@@ -312,8 +401,8 @@ def _write_mock_full_decoder_safetensors(
         "self_attn.k_proj.weight": [512, 2560],
         "self_attn.v_proj.weight": [512, 2560],
         "self_attn.o_proj.weight": [2560, 2048],
-        "self_attn.q_norm.weight": [256],
-        "self_attn.k_norm.weight": [256],
+        "self_attn.q_norm.weight": [512],
+        "self_attn.k_norm.weight": [512],
         "post_attention_layernorm.weight": [2560],
         "pre_feedforward_layernorm.weight": [2560],
         "mlp.gate_proj.weight": [10240, 2560],

@@ -47,8 +47,10 @@ std::vector<RoleSpec> role_specs() {
        {kKeyValueHeads * kHeadDim, kHiddenSize}},
       {"self_attn_o_proj", "self_attn.o_proj.weight",
        {kHiddenSize, kAttentionHeads * kHeadDim}},
-      {"self_attn_q_norm", "self_attn.q_norm.weight", {kHeadDim}},
-      {"self_attn_k_norm", "self_attn.k_norm.weight", {kHeadDim}},
+      {"self_attn_q_norm", "self_attn.q_norm.weight",
+       {kKeyValueHeads * kHeadDim}},
+      {"self_attn_k_norm", "self_attn.k_norm.weight",
+       {kKeyValueHeads * kHeadDim}},
       {"post_attention_layernorm", "post_attention_layernorm.weight",
        {kHiddenSize}},
       {"pre_feedforward_layernorm", "pre_feedforward_layernorm.weight",
@@ -464,6 +466,12 @@ Status validate_role_tensor(const SafetensorsReader& reader,
     }
     return Status::ok();
   }
+  if (role_name == "self_attn_q_norm" || role_name == "self_attn_k_norm") {
+    if (shape.size() != 1U || shape[0] == 0U || (shape[0] % kHeadDim) != 0U) {
+      return Status::invalid("safetensors_tensor_shape_mismatch:" + key);
+    }
+    return Status::ok();
+  }
   if (shape != role.shape) {
     return Status::invalid("safetensors_tensor_shape_mismatch:" + key);
   }
@@ -483,9 +491,15 @@ void append_attention_layout_blockers(const SafetensorsReader& reader,
       reader.find_tensor(prefix + "self_attn.v_proj.weight");
   const SafetensorsTensorInfo* o =
       reader.find_tensor(prefix + "self_attn.o_proj.weight");
+  const SafetensorsTensorInfo* q_norm =
+      reader.find_tensor(prefix + "self_attn.q_norm.weight");
+  const SafetensorsTensorInfo* k_norm =
+      reader.find_tensor(prefix + "self_attn.k_norm.weight");
   if (q == nullptr || k == nullptr || v == nullptr || o == nullptr ||
+      q_norm == nullptr || k_norm == nullptr ||
       q->shape.size() != 2U || k->shape.size() != 2U ||
-      v->shape.size() != 2U || o->shape.size() != 2U) {
+      v->shape.size() != 2U || o->shape.size() != 2U ||
+      q_norm->shape.size() != 1U || k_norm->shape.size() != 1U) {
     return;
   }
   const std::uint64_t query_heads = q->shape[0] / kHeadDim;
@@ -503,6 +517,17 @@ void append_attention_layout_blockers(const SafetensorsReader& reader,
   if (key_heads == 0U || query_heads == 0U ||
       (query_heads % key_heads) != 0U) {
     blockers.push_back("safetensors_attention_head_grouping_invalid:" +
+                       std::to_string(layer));
+  }
+  if (q_norm->shape[0] != k_norm->shape[0]) {
+    blockers.push_back("safetensors_attention_q_norm_shape_mismatch:" +
+                       std::to_string(layer));
+  }
+  const std::uint64_t norm_width = q_norm->shape[0];
+  if (k->shape[0] == 0U || norm_width == 0U || norm_width < k->shape[0] ||
+      (norm_width % k->shape[0]) != 0U ||
+      (q->shape[0] % norm_width) != 0U) {
+    blockers.push_back("safetensors_attention_k_norm_shape_mismatch:" +
                        std::to_string(layer));
   }
 }

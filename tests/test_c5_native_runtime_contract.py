@@ -27,8 +27,8 @@ ROLE_SHAPES = {
     "self_attn_k_proj": ("self_attn.k_proj.weight", [512, 2560]),
     "self_attn_v_proj": ("self_attn.v_proj.weight", [512, 2560]),
     "self_attn_o_proj": ("self_attn.o_proj.weight", [2560, 2048]),
-    "self_attn_q_norm": ("self_attn.q_norm.weight", [256]),
-    "self_attn_k_norm": ("self_attn.k_norm.weight", [256]),
+    "self_attn_q_norm": ("self_attn.q_norm.weight", [512]),
+    "self_attn_k_norm": ("self_attn.k_norm.weight", [512]),
     "post_attention_layernorm": ("post_attention_layernorm.weight", [2560]),
     "pre_feedforward_layernorm": ("pre_feedforward_layernorm.weight", [2560]),
     "mlp_gate_proj": ("mlp.gate_proj.weight", [10240, 2560]),
@@ -59,6 +59,10 @@ def test_native_c5_runtime_accepts_layer_variant_attention_layout(tmp_path: Path
     def mutate_layer5_attention(key: str, entry: dict) -> None:
         if key.endswith("layers.5.self_attn.q_proj.weight"):
             entry.update({"shape": [2560, 2560]})
+        if key.endswith("layers.5.self_attn.k_proj.weight"):
+            entry.update({"shape": [256, 2560]})
+        if key.endswith("layers.5.self_attn.v_proj.weight"):
+            entry.update({"shape": [256, 2560]})
         if key.endswith("layers.5.self_attn.o_proj.weight"):
             entry.update({"shape": [2560, 2560]})
 
@@ -70,6 +74,22 @@ def test_native_c5_runtime_accepts_layer_variant_attention_layout(tmp_path: Path
     assert result.returncode == 13
     assert payload["first_missing_green_field"] == "full_decoder_logits_generation_kernel_not_implemented"
     assert payload["blockers"] == ["full_decoder_logits_generation_kernel_not_implemented"]
+    assert not paths["output_jsonl"].exists()
+
+
+def test_native_c5_runtime_rejects_norm_shape_not_matching_kv_width(tmp_path: Path) -> None:
+    paths = _write_component_pack(
+        tmp_path,
+        tensor_mutation=lambda key, entry: entry.update({"shape": [256]})
+        if key.endswith("layers.5.self_attn.q_norm.weight")
+        else None,
+    )
+
+    result = _run_native(paths)
+    payload = json.loads(result.stdout)
+
+    assert result.returncode == 13
+    assert "safetensors_attention_q_norm_shape_mismatch:5" in payload["blockers"]
     assert not paths["output_jsonl"].exists()
 
 

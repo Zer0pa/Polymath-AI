@@ -1,0 +1,68 @@
+{
+  "schema_version": "polymath_c5_after_c1_exporter_q_norm_layout_repair_v1",
+  "lane": "engineering_orchestrator",
+  "status": "pathset_ready_for_custodian",
+  "current_gate": "WaveB_C5_after_C1_exporter_q_norm_layout_repair_pending",
+  "status_classification": "PENDING_ACTION_REPO_CUSTODY_EXPORTER_Q_NORM_LAYOUT_REPAIR",
+  "repaired_blocker": {
+    "first_missing_green_field": "decoder_layer_5_self_attn_q_norm_shape_mismatch_expected_[256]_actual_[512]",
+    "execution_exporter_exit_code": 2,
+    "execution_blocker_log": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/exporter_9e6d508_attention_layout_repair_rerun/export_stdout_9e6d508.log",
+    "execution_blocker_log_sha256": "c8cf3521ea5ed533b23cf02fe0d6dae9e8eab744d061e6bdd130b66db6834aa1",
+    "execution_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "patch_meaning": [
+    "Exporter and native validator no longer hard-code q_norm/k_norm width to K projection row count.",
+    "q_norm and k_norm must still be rank-1, head-dim aligned, equal to each other, at least the K projection width, an integer multiple of K projection width, and a divisor of Q projection rows.",
+    "The real phone failure shape, reduced K/V projection rows with q_norm and k_norm shape [512], is now covered by exporter and native regression tests.",
+    "Validation remains fail-closed for mismatched q_norm/k_norm shapes, incompatible norm widths, dtype/shape/range errors, and missing runtime compute body."
+  ],
+  "artifact_paths": [
+    "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py",
+    "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp",
+    "tests/test_c5_full_decoder_exporter.py",
+    "tests/test_c5_native_runtime_contract.py",
+    "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json",
+    "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md",
+    "runtime/reports/orchestration/c5_after_c1_exporter_q_norm_layout_repair_20260701T_engineering.json"
+  ],
+  "sha256_or_identity_fields": {
+    "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py": "0ce0a3dc8fc2d53b8c71964ed732abaedcda0d4a8938d359fc53b5ed2bca78e7",
+    "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp": "df007eb5c5a6faf4c4ed87c67bcf708f781ec994d11650df91146e0f499e4842",
+    "tests/test_c5_full_decoder_exporter.py": "b39697b6b8c59fc5ca736a5a9096df141abb407656d24b0b6c2cbd03894b7731",
+    "tests/test_c5_native_runtime_contract.py": "93cbf8c1906a9997151ed29b1176d761bb63c8dffde17e6106e61ed8a2f6fd9c"
+  },
+  "verification_commands": [
+    "python3.11 -m py_compile integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py tests/test_c5_full_decoder_exporter.py tests/test_c5_native_runtime_contract.py -> passed",
+    "python3.11 -m pytest -q tests/test_c5_full_decoder_exporter.py -> 10 passed",
+    "cmake --build build/gemma4_megakernel_host --target gemma4_layer_runner -j 8 -> built",
+    "python3.11 -m pytest -q tests/test_c5_native_runtime_contract.py -> 6 passed",
+    "python3.11 -m pytest -q tests/test_c5_full_decoder_exporter.py tests/test_c5_native_runtime_contract.py tests/test_c5_phase34_qa_inference_producer.py tests/test_c5_prediction_payloads.py -> 28 passed",
+    "ctest --test-dir build/gemma4_megakernel_host --output-on-failure -> 4/4 passed",
+    "python3.11 -m json.tool runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json -> passed",
+    "git diff --check on exact pathset -> passed",
+    "shasum -a 256 execution blocker log -> c8cf3521ea5ed533b23cf02fe0d6dae9e8eab744d061e6bdd130b66db6834aa1"
+  ],
+  "first_missing_green_field": "repo_custody_freeze_exporter_q_norm_layout_repair",
+  "next_action": "Repo Custodian verifies and freezes the exact pathset. Execution then consumes the custody commit on the phone, verifies the frozen exporter SHA, and reruns the same phone-local exporter against model SHA 43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651.",
+  "authorization_needed": "none",
+  "raw_boundary": {
+    "raw_payloads_copied_to_git": false,
+    "hf_or_comet_called": false,
+    "secrets_printed": false,
+    "report_is_metadata_only": true
+  },
+  "nonclaims": [
+    "no C5 pass",
+    "no executed C5 metrics",
+    "no prediction JSONL",
+    "no logits/loss/confidence/candidate_train_loss",
+    "no bridge MSE relabeled as C5 loss",
+    "no learning/model-quality claim",
+    "no Phase3 readiness",
+    "no Phase4 readiness",
+    "no raw payload committed",
+    "no secrets printed"
+  ],
+  "user_action_required": false
+}

@@ -78,11 +78,11 @@ TENSOR_ROLE_SPECS = {
     },
     "self_attn_q_norm": {
         "suffix": "self_attn.q_norm.weight",
-        "shape": [HEAD_DIM],
+        "shape": [NUM_KEY_VALUE_HEADS * HEAD_DIM],
     },
     "self_attn_k_norm": {
         "suffix": "self_attn.k_norm.weight",
-        "shape": [HEAD_DIM],
+        "shape": [NUM_KEY_VALUE_HEADS * HEAD_DIM],
     },
     "post_attention_layernorm": {
         "suffix": "post_attention_layernorm.weight",
@@ -381,6 +381,16 @@ def validate_tensor_role_shape(
                 )
             )
         return
+    if base_role in {"self_attn_q_norm", "self_attn_k_norm"}:
+        if len(shape) != 1 or shape[0] <= 0 or shape[0] % HEAD_DIM:
+            raise ValueError(
+                shape_mismatch_message(
+                    role,
+                    {"rank": 1, "dim0_multiple_of": HEAD_DIM},
+                    shape,
+                )
+            )
+        return
     if shape != expected_shape:
         raise ValueError(shape_mismatch_message(role, expected_shape, shape))
 
@@ -424,6 +434,8 @@ def attention_layout_for_layer(layer_index: int, roles: dict[str, Any]) -> dict[
     k_shape = roles["self_attn_k_proj"]["shape"]
     v_shape = roles["self_attn_v_proj"]["shape"]
     o_shape = roles["self_attn_o_proj"]["shape"]
+    q_norm_shape = roles["self_attn_q_norm"]["shape"]
+    k_norm_shape = roles["self_attn_k_norm"]["shape"]
     query_heads = q_shape[0] // HEAD_DIM
     key_heads = k_shape[0] // HEAD_DIM
     value_heads = v_shape[0] // HEAD_DIM
@@ -434,6 +446,31 @@ def attention_layout_for_layer(layer_index: int, roles: dict[str, Any]) -> dict[
         raise ValueError(f"decoder_layer_{layer_index}_q_o_head_shape_mismatch")
     if key_heads == 0 or query_heads == 0 or query_heads % key_heads:
         raise ValueError(f"decoder_layer_{layer_index}_attention_head_grouping_invalid")
+    expected_norm_shape = k_norm_shape
+    if q_norm_shape != expected_norm_shape:
+        raise ValueError(
+            shape_mismatch_message(
+                f"decoder_layer_{layer_index}_self_attn_q_norm",
+                expected_norm_shape,
+                q_norm_shape,
+            )
+        )
+    norm_width = q_norm_shape[0]
+    if norm_width < k_shape[0] or norm_width % k_shape[0] or q_shape[0] % norm_width:
+        expected_norm_layout = {
+            "rank": 1,
+            "dim0_multiple_of": HEAD_DIM,
+            "dim0_at_least": k_shape[0],
+            "dim0_multiple_of_k_proj_dim0": True,
+            "q_proj_dim0_multiple_of_dim0": True,
+        }
+        raise ValueError(
+            shape_mismatch_message(
+                f"decoder_layer_{layer_index}_self_attn_k_norm",
+                expected_norm_layout,
+                k_norm_shape,
+            )
+        )
     return {
         "query_heads": query_heads,
         "key_value_heads": key_heads,
@@ -443,6 +480,8 @@ def attention_layout_for_layer(layer_index: int, roles: dict[str, Any]) -> dict[
         "k_proj_shape": k_shape,
         "v_proj_shape": v_shape,
         "o_proj_shape": o_shape,
+        "q_norm_shape": q_norm_shape,
+        "k_norm_shape": k_norm_shape,
     }
 
 

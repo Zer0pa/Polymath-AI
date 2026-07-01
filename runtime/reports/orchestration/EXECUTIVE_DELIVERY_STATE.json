@@ -1,31 +1,29 @@
 {
   "active_bottleneck": {
     "artifact_waiting_on": [
-      "Engineering/Phase3/4 inspect and repair the q_norm shape rule from the phone exporter blocker decoder_layer_5_self_attn_q_norm_shape_mismatch_expected_[256]_actual_[512].",
-      "Blocker log is runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/exporter_9e6d508_attention_layout_repair_rerun/export_stdout_9e6d508.log with SHA c8cf3521ea5ed533b23cf02fe0d6dae9e8eab744d061e6bdd130b66db6834aa1; exporter rerun exit code 2 and stderr SHA e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.",
-      "Repair must determine whether Gemma 4 E4B q_norm shape [512] is valid for this attention layout or prove the header is invalid; if valid, patch exporter and native validator mirror with focused tests.",
-      "Repo Custodian freezes only the returned code/test/metadata pathset after Engineering/Phase3/4 hands it off.",
-      "Execution reruns the same phone-local exporter against model SHA 43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651 only after custody of the q_norm repair."
+      "Repo Custodian verifies, stages, commits, and pushes the exact q_norm layout repair pathset plus central mirrors.",
+      "Engineering report runtime/reports/orchestration/c5_after_c1_exporter_q_norm_layout_repair_20260701T_engineering.json SHA 533b9fcd53484114c49af9f8c963ecde10dbad455ae765d4d1646932b1b1dd9f is metadata-only and describes the repaired blocker decoder_layer_5_self_attn_q_norm_shape_mismatch_expected_[256]_actual_[512].",
+      "After custody, Execution consumes the commit on the phone, verifies the frozen exporter SHA, and reruns the same phone-local exporter against model SHA 43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651.",
+      "If the exporter still rejects, Execution returns the next expected/actual shape-bearing blocker JSON; if green, it returns schema-complete decoder_manifest.json, adapter_site_policy.json, and export_report.json identities."
     ],
-    "blocked_prior_edge": "WaveB_C5_after_C1_phone_exporter_rerun_after_attention_layout_repair_pending",
-    "blocked_prior_failure": "phone_exporter_rerun_for_schema_complete_component_pack_pending",
-    "current_gate": "WaveB_C5_after_C1_exporter_q_norm_layout_repair_pending",
-    "first_missing_green_field": "decoder_layer_5_self_attn_q_norm_shape_mismatch_expected_[256]_actual_[512]",
+    "blocked_prior_edge": "WaveB_C5_after_C1_exporter_q_norm_layout_repair_pending",
+    "blocked_prior_failure": "decoder_layer_5_self_attn_q_norm_shape_mismatch_expected_[256]_actual_[512]",
+    "current_gate": "WaveB_C5_after_C1_exporter_q_norm_layout_repair_custody_pending",
+    "first_missing_green_field": "repo_custody_freeze_exporter_q_norm_layout_repair",
     "next_after_custody": "phone_exporter_rerun_after_q_norm_layout_repair_pending",
     "next_after_export": "full_decoder_logits_generation_kernel_not_implemented_until_native_compute_body_lands",
-    "status_classification": "PENDING_ACTION_ENGINEERING_PHASE34_EXPORTER_Q_NORM_LAYOUT_REPAIR",
+    "status_classification": "PENDING_ACTION_REPO_CUSTODY_EXPORTER_Q_NORM_LAYOUT_REPAIR",
     "custody_commit": "9e6d5086aaabf24e0e08e69656ba39c074c4dfbc"
   },
-  "active_edge": "WaveB_C5_after_C1_exporter_q_norm_layout_repair_pending",
+  "active_edge": "WaveB_C5_after_C1_exporter_q_norm_layout_repair_custody_pending",
   "active_watchdog_state": {
     "adapter_site_policy_sha256": "f38bd8109bbb77e9e94a5b4b34a238bc0ec0a39e7736870c97defe5aecc93357",
     "additional_missing_runtime_field_after_contract_patch": "decoder_manifest_tensor_role_inventory_missing",
     "artifact_waiting_on": [
-      "Engineering/Phase3/4 inspect and repair the q_norm shape rule from the phone exporter blocker decoder_layer_5_self_attn_q_norm_shape_mismatch_expected_[256]_actual_[512].",
-      "Blocker log is runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/exporter_9e6d508_attention_layout_repair_rerun/export_stdout_9e6d508.log with SHA c8cf3521ea5ed533b23cf02fe0d6dae9e8eab744d061e6bdd130b66db6834aa1; exporter rerun exit code 2 and stderr SHA e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.",
-      "Repair must determine whether Gemma 4 E4B q_norm shape [512] is valid for this attention layout or prove the header is invalid; if valid, patch exporter and native validator mirror with focused tests.",
-      "Repo Custodian freezes only the returned code/test/metadata pathset after Engineering/Phase3/4 hands it off.",
-      "Execution reruns the same phone-local exporter against model SHA 43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651 only after custody of the q_norm repair."
+      "Repo Custodian verifies, stages, commits, and pushes the exact q_norm layout repair pathset plus central mirrors.",
+      "Engineering report runtime/reports/orchestration/c5_after_c1_exporter_q_norm_layout_repair_20260701T_engineering.json SHA 533b9fcd53484114c49af9f8c963ecde10dbad455ae765d4d1646932b1b1dd9f is metadata-only and describes the repaired blocker decoder_layer_5_self_attn_q_norm_shape_mismatch_expected_[256]_actual_[512].",
+      "After custody, Execution consumes the commit on the phone, verifies the frozen exporter SHA, and reruns the same phone-local exporter against model SHA 43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651.",
+      "If the exporter still rejects, Execution returns the next expected/actual shape-bearing blocker JSON; if green, it returns schema-complete decoder_manifest.json, adapter_site_policy.json, and export_report.json identities."
     ],
     "authorization_needed": "none; native implementation work is under current GO and must preserve raw/secrets boundary",
     "c5_after_c1_c5_qa_runtime_fail_closed_pathset": {
@@ -988,12 +986,12 @@
       "status": "c5_full_decoder_failure_artifacts_and_state_pending_custody",
       "user_action_required": false
     },
-    "current_gate": "WaveB_C5_after_C1_exporter_q_norm_layout_repair_pending",
+    "current_gate": "WaveB_C5_after_C1_exporter_q_norm_layout_repair_custody_pending",
     "custody_commit_latest": "bb8105a2bc91b6c9b0993603e14b49d0a5730f8d",
     "custody_status_latest": "c5_decoder_runtime_owner_state_committed_pushed",
     "decoder_manifest_sha256": "6700f3c2912bfdcb659b9e7de3cdb0831d58f3708a0f841c181ec446b3a83a5f",
     "dominant_failure_domain": "phase5_eval_failure",
-    "drift_deleted_or_pending": "Prior q_proj row-count drift was repaired/frozen, but the real phone exporter now exposed q_norm shape drift: expected [256], actual [512]. Pending repair is a narrow q_norm layout rule fix or a proof that the model header is invalid.",
+    "drift_deleted_or_pending": "q_proj row-count drift is frozen and the new q_norm width drift has a custody-ready repair pathset. Old pre-runtime-fields component-pack hashes remain superseded; native full decoder compute still remains downstream and fail-closed.",
     "engineering_evaluator_implementation": {
       "artifact_paths_in_progress": [
         "polymath_ai/polar/c5_heldout_eval.py",
@@ -1101,7 +1099,7 @@
       "status": "c5_after_c1_real_evaluator_surface_missing"
     },
     "export_report_sha256": "06fe8e91b5938ff3235cad5fa96e7b25d5b20fb3c4e456c249c84d53bf839d0f",
-    "first_missing_green_field": "decoder_layer_5_self_attn_q_norm_shape_mismatch_expected_[256]_actual_[512]",
+    "first_missing_green_field": "repo_custody_freeze_exporter_q_norm_layout_repair",
     "first_missing_green_field_after_contract_patch": "decoder_manifest_architecture_config_missing",
     "first_missing_green_field_after_custody": "phone_termux_model_safetensors_download_pending",
     "first_missing_green_field_after_export": "phone_c5_runner_rebuild_or_copy_missing",
@@ -1142,7 +1140,7 @@
       "training_material_steward": "complete for material identities",
       "ui_engineer": "not nudged until C5 evidence-backed status exists"
     },
-    "last_concrete_action": "Execution consumed custody commit 9e6d5086aaabf24e0e08e69656ba39c074c4dfbc, verified Termux exporter SHA 21f62fb37b247375492791833d2a273276f0a2a33e4785d6dd3dea0aaf665f5f, verified phone-held model SHA 43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651 without redownload, and reran the phone-local exporter. The exporter failed closed with exit code 2 at decoder_layer_5_self_attn_q_norm_shape_mismatch_expected_[256]_actual_[512]; blocker log SHA c8cf3521ea5ed533b23cf02fe0d6dae9e8eab744d061e6bdd130b66db6834aa1; stderr SHA e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855. Old component-pack files remain superseded and were not accepted as schema-complete evidence.",
+    "last_concrete_action": "Engineering patched the exporter and native validator q_norm layout rule. The rule no longer hard-codes q_norm/k_norm width to K projection rows; q_norm and k_norm must match each other, remain head-dim aligned, be at least K projection width, be an integer multiple of K projection width, and divide Q projection rows. Regression coverage now accepts the real reduced K/V rows with q_norm/k_norm [512] shape and still rejects incompatible norm layout. Verification passed: py_compile, exporter pytest 10 passed, native runner build, native runtime pytest 6 passed, combined C5 subset 28 passed, ctest 4/4 passed, JSON validation, and diff hygiene.",
     "lineage_drift_repair_status": {
       "commit": "ee74ae572322e05624deac6f6f8788c2c6e2f692",
       "proof_required": [
@@ -1317,7 +1315,7 @@
     "native_logits_contract_patch_custody_commit": "2151dbada9012a5f54806cf689e806001180521f",
     "native_probe_exit_code": 13,
     "native_probe_report_path": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe/candidate_probe_stdout.json",
-    "next_concrete_action": "Engineering/Phase3/4 patch or reject the q_norm layout rule: inspect exporter attention/norm validation and native validator mirror, determine whether q_norm [512] is valid for Gemma 4 E4B, add focused regression coverage, and return a custody-ready pathset with hashes and verification. If the shape is invalid, return the exact source/header rule proving rejection. After custody, Execution reruns the same phone exporter command.",
+    "next_concrete_action": "Repo Custodian freezes the exact q_norm repair pathset. After custody, Execution reruns the phone exporter from the frozen commit against the existing phone-held model; Phase3/4 native logits work remains downstream of schema-complete component-pack export evidence.",
     "nonclaims": [
       "development-cycle evidence only unless stronger gates pass",
       "no C5 pass",
@@ -1345,7 +1343,7 @@
       "no Comet/API call",
       "no secrets sourced"
     ],
-    "owner": "Engineering Orchestrator 019f138b-d229-7640-98b7-2f185d6beae0 and Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 own q_norm layout repair; Repo Custodian freezes the returned pathset; Execution reruns only after custody.",
+    "owner": "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050 owns q_norm repair freeze; Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c owns the post-custody phone exporter rerun.",
     "phase2_status_by_phase": {
       "C1": {
         "packets": 5180,
@@ -1557,7 +1555,7 @@
       "phase34": "raw PJP1, HTP raw output, OpenCL tensors, and adapters remain on device/Termux; repair must keep compact JSON only",
       "report_root_scan": "metadata-freeze report root had 179 tracked files and clean forbidden suffix scans; raw payloads not committed"
     },
-    "recursive_improvement_next_step": "Repair one q_norm shape rule, freeze it through Custodian, rerun the same phone exporter, and proceed to native logits only after schema-complete component-pack metadata exists.",
+    "recursive_improvement_next_step": "Custodian freezes the q_norm repair, Execution reruns the same phone exporter, then native logits implementation resumes only after schema-complete component-pack metadata exists.",
     "repo_custody_state_freeze": {
       "branch": "origin/gemma4-megakernel-native-training",
       "commit": "7290fbec13c6a13e88710afddfe4af70637096f9",
@@ -1572,10 +1570,11 @@
     "run_root": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z",
     "runner_sha256": "a5a6f9a3b93d167d9cd69eddbe2f3404443ae1c2222e1c6a0782398c9ff09e84",
     "runner_size_bytes": 369536,
-    "status": "exporter_schema_rejection_q_norm_layout_repair_pending",
-    "status_classification": "PENDING_ACTION_ENGINEERING_PHASE34_EXPORTER_Q_NORM_LAYOUT_REPAIR",
+    "status": "exporter_q_norm_layout_repair_pathset_ready_for_custody",
+    "status_classification": "PENDING_ACTION_REPO_CUSTODY_EXPORTER_Q_NORM_LAYOUT_REPAIR",
     "threads_nudged_this_tick": [
-      "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4: q_norm shape blocker routed with log path, SHA, first missing field, and fail-fast boundary."
+      "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4: q_norm shape blocker routed before Engineering patch landed.",
+      "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: q_norm repair pathset freeze requested."
     ],
     "timestamp_utc": "2026-07-01T12:50:37Z",
     "updated_utc": "2026-07-01T12:50:37Z",
@@ -1613,16 +1612,63 @@
         "no raw payload copied to repo",
         "no secrets printed"
       ]
+    },
+    "c5_after_c1_exporter_q_norm_layout_repair_20260701T_engineering": {
+      "schema_version": "polymath_c5_after_c1_exporter_q_norm_layout_repair_v1",
+      "status": "pathset_ready_for_custodian",
+      "current_gate": "WaveB_C5_after_C1_exporter_q_norm_layout_repair_custody_pending",
+      "status_classification": "PENDING_ACTION_REPO_CUSTODY_EXPORTER_Q_NORM_LAYOUT_REPAIR",
+      "first_missing_green_field": "repo_custody_freeze_exporter_q_norm_layout_repair",
+      "repaired_blocker": "decoder_layer_5_self_attn_q_norm_shape_mismatch_expected_[256]_actual_[512]",
+      "artifact_paths": [
+        "runtime/reports/orchestration/c5_after_c1_exporter_q_norm_layout_repair_20260701T_engineering.json",
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py",
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp",
+        "tests/test_c5_full_decoder_exporter.py",
+        "tests/test_c5_native_runtime_contract.py",
+        "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json",
+        "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md"
+      ],
+      "sha256_or_identity_fields": {
+        "runtime/reports/orchestration/c5_after_c1_exporter_q_norm_layout_repair_20260701T_engineering.json": "533b9fcd53484114c49af9f8c963ecde10dbad455ae765d4d1646932b1b1dd9f",
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py": "0ce0a3dc8fc2d53b8c71964ed732abaedcda0d4a8938d359fc53b5ed2bca78e7",
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp": "df007eb5c5a6faf4c4ed87c67bcf708f781ec994d11650df91146e0f499e4842",
+        "tests/test_c5_full_decoder_exporter.py": "b39697b6b8c59fc5ca736a5a9096df141abb407656d24b0b6c2cbd03894b7731",
+        "tests/test_c5_native_runtime_contract.py": "93cbf8c1906a9997151ed29b1176d761bb63c8dffde17e6106e61ed8a2f6fd9c"
+      },
+      "verification_commands": [
+        "python3.11 -m py_compile exporter/tests -> passed",
+        "python3.11 -m pytest -q tests/test_c5_full_decoder_exporter.py -> 10 passed",
+        "cmake --build build/gemma4_megakernel_host --target gemma4_layer_runner -j 8 -> built",
+        "python3.11 -m pytest -q tests/test_c5_native_runtime_contract.py -> 6 passed",
+        "python3.11 -m pytest -q tests/test_c5_full_decoder_exporter.py tests/test_c5_native_runtime_contract.py tests/test_c5_phase34_qa_inference_producer.py tests/test_c5_prediction_payloads.py -> 28 passed",
+        "ctest --test-dir build/gemma4_megakernel_host --output-on-failure -> 4/4 passed",
+        "python3.11 -m json.tool central JSON and q_norm report -> passed",
+        "git diff --check on exact pathset -> passed"
+      ],
+      "next_action": "Repo Custodian freezes the exact q_norm repair pathset. After custody, Execution reruns the phone exporter from the frozen commit against the existing phone-held model; Phase3/4 native logits work remains downstream of schema-complete component-pack export evidence.",
+      "authorization_needed": "none",
+      "user_action_required": false,
+      "nonclaims": [
+        "no C5 pass",
+        "no executed C5 metrics",
+        "no prediction JSONL",
+        "no logits/loss/confidence/candidate_train_loss",
+        "no bridge MSE relabeled as C5 loss",
+        "no learning/model-quality claim",
+        "no Phase3/4 readiness",
+        "no raw payload committed",
+        "no secrets printed"
+      ]
     }
   },
   "adapter_site_policy_sha256": "f38bd8109bbb77e9e94a5b4b34a238bc0ec0a39e7736870c97defe5aecc93357",
   "additional_missing_runtime_field_after_contract_patch": "decoder_manifest_tensor_role_inventory_missing",
   "artifact_waiting_on": [
-    "Engineering/Phase3/4 inspect and repair the q_norm shape rule from the phone exporter blocker decoder_layer_5_self_attn_q_norm_shape_mismatch_expected_[256]_actual_[512].",
-    "Blocker log is runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/exporter_9e6d508_attention_layout_repair_rerun/export_stdout_9e6d508.log with SHA c8cf3521ea5ed533b23cf02fe0d6dae9e8eab744d061e6bdd130b66db6834aa1; exporter rerun exit code 2 and stderr SHA e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.",
-    "Repair must determine whether Gemma 4 E4B q_norm shape [512] is valid for this attention layout or prove the header is invalid; if valid, patch exporter and native validator mirror with focused tests.",
-    "Repo Custodian freezes only the returned code/test/metadata pathset after Engineering/Phase3/4 hands it off.",
-    "Execution reruns the same phone-local exporter against model SHA 43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651 only after custody of the q_norm repair."
+    "Repo Custodian verifies, stages, commits, and pushes the exact q_norm layout repair pathset plus central mirrors.",
+    "Engineering report runtime/reports/orchestration/c5_after_c1_exporter_q_norm_layout_repair_20260701T_engineering.json SHA 533b9fcd53484114c49af9f8c963ecde10dbad455ae765d4d1646932b1b1dd9f is metadata-only and describes the repaired blocker decoder_layer_5_self_attn_q_norm_shape_mismatch_expected_[256]_actual_[512].",
+    "After custody, Execution consumes the commit on the phone, verifies the frozen exporter SHA, and reruns the same phone-local exporter against model SHA 43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651.",
+    "If the exporter still rejects, Execution returns the next expected/actual shape-bearing blocker JSON; if green, it returns schema-complete decoder_manifest.json, adapter_site_policy.json, and export_report.json identities."
   ],
   "authorization_needed": "none; native implementation work is under current GO and must preserve raw/secrets boundary",
   "c5_after_c1_exporter_attention_layout_repair_20260701T_engineering": {
@@ -1958,11 +2004,11 @@
     ]
   },
   "candidate_adapter_sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f",
-  "current_gate": "WaveB_C5_after_C1_exporter_q_norm_layout_repair_pending",
+  "current_gate": "WaveB_C5_after_C1_exporter_q_norm_layout_repair_custody_pending",
   "current_highest_valid_state": "C1-C4 Wave B Phase1->Phase2->Phase3->Phase4 development-cycle mechanics remain frozen as metadata evidence. Phone-local model download, original component-pack export, C5-capable runner build, heldout QA staging, native C5 probe, and native manifest-contract guard are metadata evidence only. No C5 pass or executed metrics exist; the active edge is custody of Engineering exporter runtime-field emission before phone exporter rerun.",
   "decoder_manifest_sha256": "6700f3c2912bfdcb659b9e7de3cdb0831d58f3708a0f841c181ec446b3a83a5f",
   "dominant_failure_domain": "phase5_eval_failure",
-  "drift_deleted_or_pending": "Prior q_proj row-count drift was repaired/frozen, but the real phone exporter now exposed q_norm shape drift: expected [256], actual [512]. Pending repair is a narrow q_norm layout rule fix or a proof that the model header is invalid.",
+  "drift_deleted_or_pending": "q_proj row-count drift is frozen and the new q_norm width drift has a custody-ready repair pathset. Old pre-runtime-fields component-pack hashes remain superseded; native full decoder compute still remains downstream and fail-closed.",
   "driver_tick_history": [
     {
       "artifact_waiting_on": [
@@ -2693,7 +2739,7 @@
   "export_report_sha256": "06fe8e91b5938ff3235cad5fa96e7b25d5b20fb3c4e456c249c84d53bf839d0f",
   "exporter_runtime_fields_freeze_commit": "43cf3c4130dc902fc8fd69183bac1056f0596626",
   "exporter_runtime_fields_freeze_status": "committed_pushed",
-  "first_missing_green_field": "decoder_layer_5_self_attn_q_norm_shape_mismatch_expected_[256]_actual_[512]",
+  "first_missing_green_field": "repo_custody_freeze_exporter_q_norm_layout_repair",
   "first_missing_green_field_after_contract_patch": "decoder_manifest_architecture_config_missing",
   "first_missing_green_field_after_download": "full_decoder_logits_generation_not_implemented",
   "first_missing_green_field_after_export": "c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land",
@@ -2702,7 +2748,7 @@
   "first_missing_green_field_after_runner": "heldout_qa_jsonl_staging_or_c5_predict_probe_pending",
   "first_unresolved_technical_failure_after_schema_complete_export": "c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land",
   "first_unresolved_technical_failure_after_valid_schema_paths": "c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land",
-  "governing_edge": "WaveB_C5_after_C1_exporter_q_norm_layout_repair_pending",
+  "governing_edge": "WaveB_C5_after_C1_exporter_q_norm_layout_repair_custody_pending",
   "governing_objective": {
     "nonclaims": [
       "diagnostics_are_not_100k_or_1M_authority_unless_specific_authority_gate_passes",
@@ -3502,7 +3548,7 @@
       "user_action_required": false
     }
   },
-  "last_concrete_action": "Execution consumed custody commit 9e6d5086aaabf24e0e08e69656ba39c074c4dfbc, verified Termux exporter SHA 21f62fb37b247375492791833d2a273276f0a2a33e4785d6dd3dea0aaf665f5f, verified phone-held model SHA 43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651 without redownload, and reran the phone-local exporter. The exporter failed closed with exit code 2 at decoder_layer_5_self_attn_q_norm_shape_mismatch_expected_[256]_actual_[512]; blocker log SHA c8cf3521ea5ed533b23cf02fe0d6dae9e8eab744d061e6bdd130b66db6834aa1; stderr SHA e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855. Old component-pack files remain superseded and were not accepted as schema-complete evidence.",
+  "last_concrete_action": "Engineering patched the exporter and native validator q_norm layout rule. The rule no longer hard-codes q_norm/k_norm width to K projection rows; q_norm and k_norm must match each other, remain head-dim aligned, be at least K projection width, be an integer multiple of K projection width, and divide Q projection rows. Regression coverage now accepts the real reduced K/V rows with q_norm/k_norm [512] shape and still rejects incompatible norm layout. Verification passed: py_compile, exporter pytest 10 passed, native runner build, native runtime pytest 6 passed, combined C5 subset 28 passed, ctest 4/4 passed, JSON validation, and diff hygiene.",
   "last_driver_actions": [
     {
       "action": "recorded Custodian native contract patch freeze at 2151dba, implemented Engineering exporter runtime-field emission, verified focused tests, and prepared custody plus Phase3/4 runtime routing",
@@ -3883,8 +3929,8 @@
   "model_safetensors_size_bytes": 15992595884,
   "native_probe_exit_code": 13,
   "native_probe_report_path": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe/candidate_probe_stdout.json",
-  "next_concrete_action": "Engineering/Phase3/4 patch or reject the q_norm layout rule: inspect exporter attention/norm validation and native validator mirror, determine whether q_norm [512] is valid for Gemma 4 E4B, add focused regression coverage, and return a custody-ready pathset with hashes and verification. If the shape is invalid, return the exact source/header rule proving rejection. After custody, Execution reruns the same phone exporter command.",
-  "owner": "Engineering Orchestrator 019f138b-d229-7640-98b7-2f185d6beae0 and Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 own q_norm layout repair; Repo Custodian freezes the returned pathset; Execution reruns only after custody.",
+  "next_concrete_action": "Repo Custodian freezes the exact q_norm repair pathset. After custody, Execution reruns the phone exporter from the frozen commit against the existing phone-held model; Phase3/4 native logits work remains downstream of schema-complete component-pack export evidence.",
+  "owner": "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050 owns q_norm repair freeze; Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c owns the post-custody phone exporter rerun.",
   "owner_thread": {
     "central_state_policy": "this_thread_normalizes_lane_outputs_into_this_file; lanes must return CENTRAL_STATE_UPDATE blocks instead of relying on user-forwarded handoffs",
     "heartbeat_automation_id": "polymath-orchestration-monitor",
@@ -4183,7 +4229,7 @@
     "scope": "metadata mirror only",
     "status": "central_state_phone_filesystem_paths_redacted"
   },
-  "recursive_improvement_next_step": "Repair one q_norm shape rule, freeze it through Custodian, rerun the same phone exporter, and proceed to native logits only after schema-complete component-pack metadata exists.",
+  "recursive_improvement_next_step": "Custodian freezes the q_norm repair, Execution reruns the same phone exporter, then native logits implementation resumes only after schema-complete component-pack metadata exists.",
   "required_lane_update_protocol": {
     "block_name": "CENTRAL_STATE_UPDATE",
     "meta_action": "on every heartbeat, read active threads, update this file, route the next concrete edge, and notify Execution only when both keys are green",
@@ -4202,10 +4248,11 @@
   "runner_sha256": "a5a6f9a3b93d167d9cd69eddbe2f3404443ae1c2222e1c6a0782398c9ff09e84",
   "runner_size_bytes": 369536,
   "schema_version": "polymath_executive_delivery_state_v1",
-  "status": "exporter_schema_rejection_q_norm_layout_repair_pending",
-  "status_classification": "PENDING_ACTION_ENGINEERING_PHASE34_EXPORTER_Q_NORM_LAYOUT_REPAIR",
+  "status": "exporter_q_norm_layout_repair_pathset_ready_for_custody",
+  "status_classification": "PENDING_ACTION_REPO_CUSTODY_EXPORTER_Q_NORM_LAYOUT_REPAIR",
   "threads_nudged_this_tick": [
-    "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4: q_norm shape blocker routed with log path, SHA, first missing field, and fail-fast boundary."
+    "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4: q_norm shape blocker routed before Engineering patch landed.",
+    "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: q_norm repair pathset freeze requested."
   ],
   "updated_at": "2026-07-01T14:05:30Z",
   "updated_at_utc": "2026-07-01T14:05:30Z",
@@ -4255,6 +4302,54 @@
       "no learning/model-quality claim",
       "no Phase3/4 readiness",
       "no raw payload copied to repo",
+      "no secrets printed"
+    ]
+  },
+  "c5_after_c1_exporter_q_norm_layout_repair_20260701T_engineering": {
+    "schema_version": "polymath_c5_after_c1_exporter_q_norm_layout_repair_v1",
+    "status": "pathset_ready_for_custodian",
+    "current_gate": "WaveB_C5_after_C1_exporter_q_norm_layout_repair_custody_pending",
+    "status_classification": "PENDING_ACTION_REPO_CUSTODY_EXPORTER_Q_NORM_LAYOUT_REPAIR",
+    "first_missing_green_field": "repo_custody_freeze_exporter_q_norm_layout_repair",
+    "repaired_blocker": "decoder_layer_5_self_attn_q_norm_shape_mismatch_expected_[256]_actual_[512]",
+    "artifact_paths": [
+      "runtime/reports/orchestration/c5_after_c1_exporter_q_norm_layout_repair_20260701T_engineering.json",
+      "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py",
+      "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp",
+      "tests/test_c5_full_decoder_exporter.py",
+      "tests/test_c5_native_runtime_contract.py",
+      "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json",
+      "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md"
+    ],
+    "sha256_or_identity_fields": {
+      "runtime/reports/orchestration/c5_after_c1_exporter_q_norm_layout_repair_20260701T_engineering.json": "533b9fcd53484114c49af9f8c963ecde10dbad455ae765d4d1646932b1b1dd9f",
+      "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py": "0ce0a3dc8fc2d53b8c71964ed732abaedcda0d4a8938d359fc53b5ed2bca78e7",
+      "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp": "df007eb5c5a6faf4c4ed87c67bcf708f781ec994d11650df91146e0f499e4842",
+      "tests/test_c5_full_decoder_exporter.py": "b39697b6b8c59fc5ca736a5a9096df141abb407656d24b0b6c2cbd03894b7731",
+      "tests/test_c5_native_runtime_contract.py": "93cbf8c1906a9997151ed29b1176d761bb63c8dffde17e6106e61ed8a2f6fd9c"
+    },
+    "verification_commands": [
+      "python3.11 -m py_compile exporter/tests -> passed",
+      "python3.11 -m pytest -q tests/test_c5_full_decoder_exporter.py -> 10 passed",
+      "cmake --build build/gemma4_megakernel_host --target gemma4_layer_runner -j 8 -> built",
+      "python3.11 -m pytest -q tests/test_c5_native_runtime_contract.py -> 6 passed",
+      "python3.11 -m pytest -q tests/test_c5_full_decoder_exporter.py tests/test_c5_native_runtime_contract.py tests/test_c5_phase34_qa_inference_producer.py tests/test_c5_prediction_payloads.py -> 28 passed",
+      "ctest --test-dir build/gemma4_megakernel_host --output-on-failure -> 4/4 passed",
+      "python3.11 -m json.tool central JSON and q_norm report -> passed",
+      "git diff --check on exact pathset -> passed"
+    ],
+    "next_action": "Repo Custodian freezes the exact q_norm repair pathset. After custody, Execution reruns the phone exporter from the frozen commit against the existing phone-held model; Phase3/4 native logits work remains downstream of schema-complete component-pack export evidence.",
+    "authorization_needed": "none",
+    "user_action_required": false,
+    "nonclaims": [
+      "no C5 pass",
+      "no executed C5 metrics",
+      "no prediction JSONL",
+      "no logits/loss/confidence/candidate_train_loss",
+      "no bridge MSE relabeled as C5 loss",
+      "no learning/model-quality claim",
+      "no Phase3/4 readiness",
+      "no raw payload committed",
       "no secrets printed"
     ]
   }
