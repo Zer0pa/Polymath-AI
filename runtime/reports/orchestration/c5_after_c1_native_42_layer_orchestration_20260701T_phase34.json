@@ -1,0 +1,107 @@
+{
+  "schema_version": "polymath_phase34_native_c5_runtime_pathset_report_v1",
+  "lane": "phase34_native_c5_runtime",
+  "status": "native_42_layer_orchestration_pathset_ready_for_custodian",
+  "base_commit": "4c3dceef5df1cdc605d8b34e4636ee5b278015aa",
+  "execution_consumed_custody_commit": "268c1414a03085b206532743fe957da0d9bb06c1",
+  "branch": "gemma4-megakernel-native-training",
+  "governing_gate": "WaveB_C5_after_C1_42_layer_orchestration_pending_after_rank16_adapter_stream_green",
+  "repaired_field": "c5_full_decoder_42_layer_orchestration_missing",
+  "first_missing_green_field_after_repair_expected": "c5_full_decoder_chunked_lm_head_nll_writer_missing",
+  "secondary_exposed_field": "c5_full_decoder_chunked_lm_head_nll_writer_missing",
+  "pathset": [
+    {
+      "path": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp",
+      "sha256": "ea8a833fa10e623a3c864b5c9d89c54f756c0b7fdb0763a3b7863e3ad76ac8c2",
+      "role": "existing native --run-c5-qa-predict runtime body"
+    },
+    {
+      "path": "tests/test_c5_native_runtime_contract.py",
+      "sha256": "f99e4c7d811abcc60dc1c58aa9ef2394db8aea035a397c661af82f029ba20ed7",
+      "role": "focused native runtime contract regression tests"
+    }
+  ],
+  "local_build_identity": {
+    "path": "build/gemma4_megakernel_host/gemma4_layer_runner",
+    "sha256": "322dd9b9812caa4961c73bc9136bd078f9ee7c320f2e8dfa1286043c9b3984fe"
+  },
+  "implementation_summary": [
+    "Adds a bounded DecoderLayerOrchestration contract over the existing C5 runtime stream.",
+    "Validates the adapter-injected hidden stream, prompt positions, attention mask, and PLE stream before orchestration.",
+    "Traverses all 42 manifest-backed decoder layer role contracts in order and rejects malformed tensor role, attention layout, dtype, shape, and stream inputs.",
+    "Removes the terminal 42-layer orchestration missing-body blocker and leaves chunked LM-head NLL writing as the next honest missing field."
+  ],
+  "design_lens_applied": {
+    "stable_structure": "frozen backbone and PLE tensors are treated as stable structure validated by role and shape contracts",
+    "local_plasticity": "rank-16 adapter stream remains a bounded local plasticity site feeding the layer schedule",
+    "qa_error_signal": "C5 loss remains reserved for teacher-forced answer token NLL from real full-decoder logits",
+    "forbidden_substitution": "Phase4 bridge MSE is not used as QA loss, prediction, or confidence"
+  },
+  "verification": [
+    {
+      "command": "cmake --build build/gemma4_megakernel_host --target gemma4_layer_runner -- -j2",
+      "result": "passed"
+    },
+    {
+      "command": "python3 -m pytest tests/test_c5_native_runtime_contract.py -q",
+      "result": "17 passed in 128.25s"
+    },
+    {
+      "command": "python3 -m pytest tests/test_c5_*.py -q",
+      "result": "52 passed in 141.70s"
+    },
+    {
+      "command": "ctest --test-dir build/gemma4_megakernel_host --output-on-failure",
+      "result": "4/4 passed"
+    },
+    {
+      "command": "git diff --check -- integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp tests/test_c5_native_runtime_contract.py",
+      "result": "passed"
+    },
+    {
+      "command": "metadata-only raw suffix and value-shaped secret diff scan over edited pathset",
+      "result": "no matches"
+    }
+  ],
+  "bounded_follow_up_phone_probe": {
+    "runner_destination": "/data/data/com.termux/files/home/polymath_c5/C5_after_C1/bin/gemma4_layer_runner_c5_42_layer_orchestration",
+    "command_template": "cd \"$HOME/polymath_c5/C5_after_C1\" && ./bin/gemma4_layer_runner_c5_42_layer_orchestration --run-c5-qa-predict --run-label c1_c4_waveB_rerun_20260630T230411Z --eval-point C5_after_C1 --checkpoint-role candidate --checkpoint-payload \"$CANDIDATE_ADAPTER_PAYLOAD\" --checkpoint-sha256 1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f --heldout-qa-jsonl \"$HELDOUT_QA_JSONL\" --output-jsonl \"$PREDICTION_JSONL_OUT\" --tokenizer-dir \"$TOKENIZER_DIR\" --decoder-component-pack \"$DECODER_COMPONENT_PACK\" --vocab-chunk-size 4096 --max-generation-tokens 1 --opencl-library /vendor/lib64/libOpenCL.so",
+    "raw_boundary": "Raw runtime paths are supplied by Execution-owned Termux environment variables and are not frozen into this git report.",
+    "expected_next_first_missing_green_field": "c5_full_decoder_chunked_lm_head_nll_writer_missing",
+    "regression_fail_fields": [
+      "c5_full_decoder_42_layer_orchestration_stream_shape_mismatch",
+      "c5_full_decoder_42_layer_orchestration_source_model_missing",
+      "c5_full_decoder_42_layer_orchestration_layer_count_mismatch",
+      "c5_full_decoder_42_layer_orchestration_stream_nonfinite",
+      "c5_full_decoder_opencl_parity_runtime_unavailable"
+    ]
+  },
+  "accepted_identity_fields": {
+    "rank16_probe_stdout_sha256": "9915e5d19996fb7998bb6e3dde2b8a37372e670125241f31ae58def970e2debb",
+    "rank16_probe_stderr_sha256": "b93f13041c25461d37f35148ff789e0817633d235cee54972c4c4175dcb2dc8c",
+    "rank16_probe_meminfo_before_sha256": "49982356d9bb731e6b9a1fa7d63753cc3e9def04b5c254dcc860b6ee5a385ef2",
+    "rank16_probe_meminfo_after_sha256": "634e026c3f4f619fec644124a0a3edfb6978d14703b6ced18cc71bab8fb6ecb3",
+    "rank16_probe_metadata_sha256": "fd54bc8abb048805c09cbbbd0a26e5ed3a35954d8213ef74e9896d617fb0bbaa",
+    "heldout_qa_sha256": "da41c5362398f24e0e0dd9df9a5cf0594435a455871fa77ab74d9312e6c8e9b2",
+    "candidate_adapter_sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f"
+  },
+  "raw_boundary_proof": {
+    "raw_payload_bytes_in_report": false,
+    "raw_runtime_paths_frozen_in_report": false,
+    "prediction_jsonl_written": false,
+    "checkpoint_payload_copied_to_repo": false,
+    "diff_raw_suffix_or_secret_scan": "clean"
+  },
+  "research_escalation": "none",
+  "next_action": "Repo Custodian freezes this two-source-file plus report pathset, then Execution rebuilds/copies the runner and runs the bounded C5_after_C1 phone probe.",
+  "nonclaims": [
+    "no C5 pass",
+    "no executed C5 metrics",
+    "no prediction JSONL, logits, loss, confidence, or candidate_train_loss claim",
+    "no bridge-MSE-as-C5-loss substitution",
+    "no learning or model-quality claim",
+    "no Phase3/4 readiness claim",
+    "no 100k/1M Phase2 authority claim",
+    "no Comet-backed accepted run"
+  ]
+}

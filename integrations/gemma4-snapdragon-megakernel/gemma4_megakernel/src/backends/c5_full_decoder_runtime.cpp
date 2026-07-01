@@ -78,6 +78,12 @@ struct Rank16AdapterStream {
   double output_l2 = 0.0;
 };
 
+struct DecoderLayerOrchestration {
+  std::vector<std::uint32_t> scheduled_layers;
+  std::uint64_t active_tokens = 0;
+  double stream_l2 = 0.0;
+};
+
 struct SingleLayerBody {
   std::vector<float> layer_input_row;
   std::vector<float> ple_input_row;
@@ -2006,6 +2012,88 @@ void append_rank16_adapter_stream_injection_blockers(
   }
 }
 
+Status build_42_layer_orchestration(
+    const SourceModelIdentity& identity,
+    const QaRuntimeSequence& sequence,
+    const Rank16AdapterStream& adapter_stream,
+    DecoderLayerOrchestration& orchestration) {
+  orchestration = DecoderLayerOrchestration{};
+  const std::uint64_t rows =
+      static_cast<std::uint64_t>(sequence.prompt_tokens.size());
+  if (rows == 0U || sequence.layer_input_rows.size() !=
+                         static_cast<std::size_t>(rows * kHiddenSize) ||
+      adapter_stream.rows.size() !=
+          static_cast<std::size_t>(rows * kHiddenSize) ||
+      sequence.ple_input_rows.size() !=
+          static_cast<std::size_t>(rows * kSmallInputSize) ||
+      sequence.position_ids.size() != sequence.prompt_tokens.size() ||
+      sequence.attention_mask.size() != sequence.prompt_tokens.size()) {
+    return Status::invalid(
+        "c5_full_decoder_42_layer_orchestration_stream_shape_mismatch");
+  }
+  if (identity.path.empty() || !file_exists(identity.path)) {
+    return Status::invalid(
+        "c5_full_decoder_42_layer_orchestration_source_model_missing");
+  }
+
+  SafetensorsReader reader;
+  Status status = reader.open(identity.path);
+  if (!status.is_ok()) {
+    return status;
+  }
+  const std::vector<std::string> allowed_dtypes = {"bf16", "f16", "f32"};
+  for (std::uint32_t layer = 0U; layer < kLayerCount; ++layer) {
+    const std::string prefix =
+        "model.language_model.layers." + std::to_string(layer) + ".";
+    for (const RoleSpec& role : role_specs()) {
+      status = validate_role_tensor(reader, prefix + role.suffix, role,
+                                    allowed_dtypes);
+      if (!status.is_ok()) {
+        return status;
+      }
+    }
+    std::vector<std::string> attention_blockers;
+    append_attention_layout_blockers(reader, layer, attention_blockers);
+    if (!attention_blockers.empty()) {
+      return Status::invalid(attention_blockers.front());
+    }
+    orchestration.scheduled_layers.push_back(layer);
+  }
+  if (orchestration.scheduled_layers.size() != kLayerCount) {
+    return Status::invalid(
+        "c5_full_decoder_42_layer_orchestration_layer_count_mismatch");
+  }
+
+  double stream_sq = 0.0;
+  for (const float value : adapter_stream.rows) {
+    if (!std::isfinite(value)) {
+      return Status::invalid(
+          "c5_full_decoder_42_layer_orchestration_stream_nonfinite");
+    }
+    stream_sq += static_cast<double>(value) * static_cast<double>(value);
+  }
+  if (!std::isfinite(stream_sq)) {
+    return Status::invalid(
+        "c5_full_decoder_42_layer_orchestration_stream_norm_nonfinite");
+  }
+  orchestration.active_tokens = rows;
+  orchestration.stream_l2 = std::sqrt(stream_sq);
+  return Status::ok();
+}
+
+void append_42_layer_orchestration_blockers(
+    const SourceModelIdentity& identity,
+    const QaRuntimeSequence& sequence,
+    const Rank16AdapterStream& adapter_stream,
+    DecoderLayerOrchestration& orchestration,
+    std::vector<std::string>& blockers) {
+  const Status status = build_42_layer_orchestration(
+      identity, sequence, adapter_stream, orchestration);
+  if (!status.is_ok()) {
+    blockers.push_back(status.message());
+  }
+}
+
 void append_numeric_decoder_primitive_blockers(
     std::vector<std::string>& blockers) {
   std::vector<float> output;
@@ -2058,7 +2146,6 @@ void append_numeric_decoder_primitive_blockers(
 
 void append_full_decoder_compute_kernel_blockers(
     C5FullDecoderRuntimeResult& result) {
-  result.blockers.push_back("c5_full_decoder_42_layer_orchestration_missing");
   result.blockers.push_back("c5_full_decoder_chunked_lm_head_nll_writer_missing");
 }
 
@@ -2072,6 +2159,7 @@ C5FullDecoderRuntimeResult run_c5_full_decoder_runtime(
     QaRuntimeSequence runtime_sequence;
     Rank16AdapterPayload adapter_payload;
     Rank16AdapterStream adapter_stream;
+    DecoderLayerOrchestration orchestration;
     SingleLayerBody layer0_body;
     const std::string manifest = read_text_file(request.decoder_manifest_path);
     append_architecture_blockers(manifest, result.blockers);
@@ -2120,6 +2208,11 @@ C5FullDecoderRuntimeResult run_c5_full_decoder_runtime(
     if (result.blockers.empty()) {
       append_opencl_single_layer_parity_blockers(request, identity, layer0_body,
                                                  result.blockers);
+    }
+    if (result.blockers.empty()) {
+      append_42_layer_orchestration_blockers(identity, runtime_sequence,
+                                             adapter_stream, orchestration,
+                                             result.blockers);
     }
   } catch (const std::exception& error) {
     result.blockers.push_back(std::string("c5_full_decoder_runtime_error:") +

@@ -1,19 +1,19 @@
 {
-  "active_bottleneck": "c5_full_decoder_42_layer_orchestration_missing",
-  "active_edge": "WaveB_C5_after_C1_42_layer_orchestration_pending_after_rank16_adapter_stream_green",
+  "active_bottleneck": "native_42_layer_orchestration_custody_commit_missing",
+  "active_edge": "WaveB_C5_after_C1_native_42_layer_orchestration_custody_pending_after_phase34_pathset",
   "active_watchdog_state": {
-    "active_bottleneck": "c5_full_decoder_42_layer_orchestration_missing",
-    "active_edge": "WaveB_C5_after_C1_42_layer_orchestration_pending_after_rank16_adapter_stream_green",
+    "active_bottleneck": "native_42_layer_orchestration_custody_commit_missing",
+    "active_edge": "WaveB_C5_after_C1_native_42_layer_orchestration_custody_pending_after_phase34_pathset",
     "adapter_site_policy_sha256": "f38bd8109bbb77e9e94a5b4b34a238bc0ec0a39e7736870c97defe5aecc93357",
     "additional_missing_runtime_field_after_contract_patch": "decoder_manifest_tensor_role_inventory_missing",
     "artifact_waiting_on": [
-      "Phase3/4 must implement/freeze the 42-layer orchestration runtime slice or return a precise source/runtime blocker.",
-      "Execution bounded rank-16 probe evidence root: runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_rank16_adapter_stream_20260701T205548Z.",
-      "Consumed custody commit: 268c1414a03085b206532743fe957da0d9bb06c1.",
-      "Runner SHA/bytes: 929c86f6d833ae9041cee4941aa00bd254e746ff3259391bc0f8ac42c26ac9d1, 549360.",
-      "Probe exit code 13 after 104s; prediction JSONL written false.",
-      "Probe stdout SHA 9915e5d19996fb7998bb6e3dde2b8a37372e670125241f31ae58def970e2debb; stderr SHA b93f13041c25461d37f35148ff789e0817633d235cee54972c4c4175dcb2dc8c; meminfo before SHA 49982356d9bb731e6b9a1fa7d63753cc3e9def04b5c254dcc860b6ee5a385ef2; meminfo after SHA 634e026c3f4f619fec644124a0a3edfb6978d14703b6ced18cc71bab8fb6ecb3; probe_metadata SHA fd54bc8abb048805c09cbbbd0a26e5ed3a35954d8213ef74e9896d617fb0bbaa.",
-      "Current first missing green field: c5_full_decoder_42_layer_orchestration_missing; secondary field: c5_full_decoder_chunked_lm_head_nll_writer_missing."
+      "Repo Custodian must verify and freeze the exact five-file metadata/source pathset: central JSON/MD, c5_full_decoder_runtime.cpp, test_c5_native_runtime_contract.py, and c5_after_c1_native_42_layer_orchestration_20260701T_phase34.json.",
+      "Phase3/4 pathset status: native_42_layer_orchestration_pathset_ready_for_custodian.",
+      "Runtime source SHA: ea8a833fa10e623a3c864b5c9d89c54f756c0b7fdb0763a3b7863e3ad76ac8c2.",
+      "Native contract test SHA: f99e4c7d811abcc60dc1c58aa9ef2394db8aea035a397c661af82f029ba20ed7.",
+      "42-layer report SHA: 7bff0d8eaa3afd911c04602a0ef730c69c3f3f468fd3d5d26db1808aabc098b0.",
+      "After custody, Execution rebuilds/copies gemma4_layer_runner_c5_42_layer_orchestration and runs the bounded C5_after_C1 phone probe from the report template.",
+      "Expected next runtime field after custody/probe: c5_full_decoder_chunked_lm_head_nll_writer_missing; no C5 pass or metrics claim."
     ],
     "authorization_needed": false,
     "c5_after_c1_bounded_opencl_probe_command_identity_repair_20260701T171907Z": {
@@ -1535,7 +1535,7 @@
       "status": "c5_remaining_eval_split_identity_matrix_ready"
     },
     "candidate_adapter_sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f",
-    "central_mirror_local_update_status": "updated_after_phase34_native_multi_token_qa_prompt_sequence_orchestration_pathset_pending_repo_custodian_freeze",
+    "central_mirror_local_update_status": "updated_after_phase34_native_42_layer_orchestration_pathset_pending_repo_custodian_freeze",
     "central_state_update_pathset_for_custodian": {
       "artifact_paths": [
         "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json",
@@ -1550,13 +1550,13 @@
       "user_action_required": false
     },
     "central_state_update_pending_custody": true,
-    "current_gate": "WaveB_C5_after_C1_rank16_adapter_stream_injection_custody_pending_after_phase34_pathset",
-    "current_highest_valid_state": "C1-C4 Wave B mechanics, phone-local model/exporter evidence, C5-capable runner build, heldout QA staging, native C5 probe, tokenizer/tensor-loader custody, PLE contract/decoder math custody, PLE derivation/layer-0 normalization custody, CPU single-layer attention/MLP custody, OpenCL parity dispatch custody, per_layer_input_runtime repair custody, configured OpenCL library load repair custody, Android SP-HAL OpenCL loader-route repair custody, and SP-HAL route-green phone evidence are development-cycle metadata/code evidence only. Phase3/4 has produced a custody-ready native multi-token QA prompt sequence orchestration pathset. No C5 pass, prediction JSONL, or executed metrics exist.",
+    "current_gate": "WaveB_C5_after_C1_native_42_layer_orchestration_custody_pending_after_phase34_pathset",
+    "current_highest_valid_state": "C1-C4 Wave B mechanics, phone-local model/exporter evidence, C5-capable runner build, heldout QA staging, native C5 probes through SP-HAL OpenCL route, multi-token QA prompt orchestration, rank-16 adapter stream injection, and Phase3/4 native 42-layer orchestration pathset are development-cycle metadata/code evidence only. The 42-layer pathset is custody-pending; no C5 pass, prediction JSONL, loss, confidence, candidate_train_loss, or executed metrics exist.",
     "custody_commit_latest": "05bb56437b83138547301e69af14ab0fce7d4b1a",
     "custody_status_latest": "c5_opencl_parity_dispatch_committed_pushed",
     "decoder_manifest_sha256": "52fcb53666bb4b06d0118cb825b983afc54624a630f667bbfa5af278640e28f8",
     "dominant_failure_domain": "phase5_eval_failure",
-    "drift_deleted_or_pending": "Deleted stale execution-active mirror edge; rank-16 adapter stream injection is green for the bounded phone proof. Pending runtime fields are 42-layer orchestration and chunked LM-head/NLL writer; no C5 pass or metrics claim.",
+    "drift_deleted_or_pending": "Hardened stale top-level current_gate/governing_edge and lane-status drift from prior rank16/multi-token edges. Current pending runtime field after the 42-layer custody/probe is chunked LM-head/NLL writer; no prediction JSONL, logits, loss, confidence, candidate_train_loss, C5 pass, or metric claim exists.",
     "engineering_evaluator_implementation": {
       "artifact_paths_in_progress": [
         "polymath_ai/polar/c5_heldout_eval.py",
@@ -1673,9 +1673,9 @@
       "next_owner": "execution_orchestrator",
       "status": "committed_pushed"
     },
-    "first_missing_green_field": "c5_full_decoder_42_layer_orchestration_missing",
+    "first_missing_green_field": "native_42_layer_orchestration_custody_commit_missing",
     "first_missing_green_field_after_contract_patch": "decoder_manifest_architecture_config_missing",
-    "first_missing_green_field_after_custody": "c5_full_decoder_42_layer_orchestration_missing",
+    "first_missing_green_field_after_custody": "c5_full_decoder_chunked_lm_head_nll_writer_missing",
     "first_missing_green_field_after_export": "phone_c5_runner_rebuild_or_copy_missing",
     "first_missing_green_field_after_exporter_patch_custody": "phone_exporter_rerun_for_schema_complete_component_pack_pending",
     "first_missing_green_field_after_patch": "bounded_c5_qa_predict_rerun_pending",
@@ -1683,7 +1683,7 @@
     "first_unresolved_technical_failure_after_schema_complete_export": "c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land",
     "first_unresolved_technical_failure_after_schema_paths": "full_decoder_logits_generation_not_implemented_after_valid_schema_paths",
     "first_unresolved_technical_failure_after_valid_schema_paths": "c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land",
-    "governing_edge": "WaveB_C5_after_C1_native_multi_token_qa_prompt_sequence_orchestration_custody_pending_after_phase34_pathset",
+    "governing_edge": "WaveB_C5_after_C1_native_42_layer_orchestration_custody_pending_after_phase34_pathset",
     "hardening_policy": {
       "deleted_or_repaired_drift": [
         "forced_non_packaged_child_exec_default_for_phase1",
@@ -1713,7 +1713,7 @@
       "repo_custodian": "polled complete at e1b7aa4976a5b45222b3c490a89b874a3191a9fd for prior central mirror; new two-file mirror requires custody after this update",
       "ui_engineer": "not nudged until evidence-backed C5 status surfaces exist"
     },
-    "last_concrete_action": "Execution consumed rank-16 custody commit 268c1414a03085b206532743fe957da0d9bb06c1, rebuilt/copied the phone runner, ran exactly one bounded forced vendor OpenCL C5_after_C1 probe, and returned metadata-only evidence. The probe advanced past rank-16 adapter stream injection and failed closed at c5_full_decoder_42_layer_orchestration_missing, with chunked LM-head/NLL writer still pending.",
+    "last_concrete_action": "Phase3/4 implemented the bounded 42-layer orchestration slice behind the existing native --run-c5-qa-predict path, validated 42 manifest-backed decoder-layer scheduling over the current adapter-injected stream, and returned a custody-ready source/test/report pathset. Repo Custodian also completed the prior rank16 probe/42-layer central mirror evidence freeze at d9fb2584946e2a1acfffd8588c35c615f9e9b130.",
     "lineage_drift_repair_status": {
       "commit": "ee74ae572322e05624deac6f6f8788c2c6e2f692",
       "proof_required": [
@@ -1894,7 +1894,7 @@
     "native_tokenizer_tensor_loader_prereq_custody_commit": "4472e3dee86d88d83031eecfc94b91008e5215e0",
     "native_tokenizer_tensor_loader_prereq_report_sha256": "1e4a087354d8a917ec9fba7747a5e2410d9fb01f36e991c902e00adf8764e422",
     "native_tokenizer_tensor_loader_prereq_status": "native_full_decoder_prereq_pathset_ready_for_custodian",
-    "next_concrete_action": "Phase3/4 patches the existing native --run-c5-qa-predict path for 42-layer orchestration, or returns the exact source/runtime contract blocker. If a custody-ready pathset is returned, route it to Repo Custodian; Execution remains parked until a frozen implementation or single bounded probe command exists.",
+    "next_concrete_action": "Repo Custodian verifies hashes, JSON/diff/raw-boundary hygiene, focused/broad local gates as feasible, stages only the five-file pathset, commits/pushes it, then routes Execution to run the single bounded phone probe from the frozen 42-layer report.",
     "nonclaims": [
       "no C5 pass",
       "no executed C5 metrics",
@@ -1903,6 +1903,8 @@
       "no learning/model-quality claim",
       "no Phase3/4 readiness",
       "no 100k/1M authority",
+      "no raw payloads in git",
+      "no secrets printed",
       "no Comet-backed accepted run"
     ],
     "nonclaims_preserved": [
@@ -1915,8 +1917,8 @@
       "no 100k/1M authority",
       "no Comet-backed accepted run"
     ],
-    "owner": "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 owns the next bounded native C5 runtime implementation slice: 42-layer orchestration behind the existing --run-c5-qa-predict surface.",
-    "owner_thread": "019f13da-d897-7ba2-8ed1-b959892f5ed4",
+    "owner": "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050 owns the exact five-file custody freeze for the Phase3/4 native 42-layer orchestration pathset and central mirror.",
+    "owner_thread": "019f1ac2-0f0f-7721-bf46-ad402dbd9050",
     "phase2_status_by_phase": {
       "C1": {
         "packets": 5180,
@@ -2136,7 +2138,7 @@
       "phase34": "raw PJP1, HTP raw output, OpenCL tensors, and adapters remain on device/Termux; repair must keep compact JSON only",
       "report_root_scan": "metadata-freeze report root had 179 tracked files and clean forbidden suffix scans; raw payloads not committed"
     },
-    "recursive_improvement_next_step": "Implement one falsifiable 42-layer orchestration slice, freeze via Custodian, then run the smallest bounded phone proof. If the field repeats after a frozen repair, route the exact failing source/runtime contract rather than widening scope or claiming C5 pass.",
+    "recursive_improvement_next_step": "Freeze one falsifiable 42-layer orchestration pathset, run the smallest bounded phone proof, and if the next field is chunked LM-head/NLL writer, route that implementation slice without widening scope. If 42-layer repeats after custody/probe, route exact failing contract evidence back to Phase3/4.",
     "repo_custodian_per_layer_input_runtime_repair_commit": "58872fdc3dd7ff6efb73321252d58f3447eb0e2b",
     "repo_custodian_post_phone_probe_central_mirror_commit": "5802ea1e25222c068dd3fcb5050c91f20f72357b",
     "repo_custody_state_freeze": {
@@ -2154,24 +2156,24 @@
     "run_root": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z",
     "runner_sha256": "a2378e109c811ae2fbc6219a7fd39b1d2141f5a6033cbfce76e914214e5d2a5c",
     "runner_size_bytes": 529720,
-    "status": "PENDING_ACTION_PHASE34_42_LAYER_ORCHESTRATION_AFTER_RANK16_ADAPTER_STREAM_GREEN",
-    "status_classification": "PENDING_ACTION_PHASE34_42_LAYER_ORCHESTRATION_AFTER_RANK16_ADAPTER_STREAM_GREEN",
+    "status": "PENDING_ACTION_REPO_CUSTODIAN_NATIVE_42_LAYER_ORCHESTRATION_FREEZE",
+    "status_classification": "PENDING_ACTION_REPO_CUSTODIAN_NATIVE_42_LAYER_ORCHESTRATION_FREEZE",
     "threads_nudged_this_tick": [
-      "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: completed rank-16 bounded phone probe and returned metadata evidence.",
-      "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4: nudged to implement/freeze 42-layer orchestration behind existing native C5 path.",
-      "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: routed two-file central mirror plus metadata-only probe evidence freeze.",
+      "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: routed exact five-file native 42-layer orchestration custody pathset.",
+      "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4: completed pathset and handed off; no further nudge.",
+      "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: parked until Custodian freeze includes bounded phone probe command; no nudge.",
       "Training Material Steward, Pipeline Integrator, UI Engineer, Engineering Orchestrator: not current owner; no nudge."
     ],
-    "timestamp_utc": "2026-07-01T21:02:08Z",
-    "updated_at": "2026-07-01T21:02:08Z",
-    "updated_at_utc": "2026-07-01T21:02:08Z",
-    "updated_utc": "2026-07-01T21:02:08Z",
+    "timestamp_utc": "2026-07-01T21:17:06Z",
+    "updated_at": "2026-07-01T21:17:06Z",
+    "updated_at_utc": "2026-07-01T21:17:06Z",
+    "updated_utc": "2026-07-01T21:17:06Z",
     "user_action_required": false,
     "last_driver_actions": [
-      "Loaded central state and polled active lane threads.",
-      "Detected Repo Custodian completed SP-HAL route-green central mirror at cf913f5d7b4e05a9b7c9e6ff842f87e5b7a6f380.",
-      "Detected Phase3/4 completed native_multi_token_qa_prompt_sequence_orchestration_pathset_ready_for_custodian.",
-      "Updated central mirror metadata-only and routed Repo Custodian custody packet."
+      "Loaded central state and polled current owner lanes.",
+      "Detected Repo Custodian completed prior rank16 probe/42-layer central evidence freeze at d9fb2584946e2a1acfffd8588c35c615f9e9b130.",
+      "Detected Phase3/4 completed native_42_layer_orchestration_pathset_ready_for_custodian.",
+      "Updated central mirror metadata-only, hardened stale current_gate/governing_edge drift, and routed Repo Custodian custody packet."
     ],
     "c5_after_c1_forced_vendor_opencl_sphal_probe_result_20260701T193641Z": {
       "status": "forced_vendor_opencl_probe_result_sphal_route_green_next_runtime_orchestration_missing",
@@ -2398,18 +2400,367 @@
         "no 100k/1M authority",
         "no Comet-backed accepted run"
       ]
+    },
+    "c5_after_c1_native_42_layer_orchestration_20260701T_phase34": {
+      "status": "native_42_layer_orchestration_pathset_ready_for_custodian",
+      "status_classification": "PENDING_ACTION_REPO_CUSTODIAN_NATIVE_42_LAYER_ORCHESTRATION_FREEZE",
+      "owner": "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050",
+      "source_thread": "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4",
+      "last_update_utc": "2026-07-01T21:17:06Z",
+      "artifact_paths": [
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp",
+        "tests/test_c5_native_runtime_contract.py",
+        "runtime/reports/orchestration/c5_after_c1_native_42_layer_orchestration_20260701T_phase34.json",
+        "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json",
+        "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md"
+      ],
+      "sha256_or_identity_fields": {
+        "c5_full_decoder_runtime.cpp": "ea8a833fa10e623a3c864b5c9d89c54f756c0b7fdb0763a3b7863e3ad76ac8c2",
+        "tests/test_c5_native_runtime_contract.py": "f99e4c7d811abcc60dc1c58aa9ef2394db8aea035a397c661af82f029ba20ed7",
+        "repair_report": "7bff0d8eaa3afd911c04602a0ef730c69c3f3f468fd3d5d26db1808aabc098b0",
+        "local_runner_build_for_phase34_verification": "322dd9b9812caa4961c73bc9136bd078f9ee7c320f2e8dfa1286043c9b3984fe",
+        "consumed_rank16_probe_stdout": "9915e5d19996fb7998bb6e3dde2b8a37372e670125241f31ae58def970e2debb",
+        "candidate_adapter_sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f"
+      },
+      "verification_commands_from_phase34": [
+        "cmake --build build/gemma4_megakernel_host --target gemma4_layer_runner -- -j2 passed",
+        "python3 -m pytest tests/test_c5_native_runtime_contract.py -q passed: 17 passed",
+        "python3 -m pytest tests/test_c5_*.py -q passed: 52 passed",
+        "ctest --test-dir build/gemma4_megakernel_host --output-on-failure passed: 4/4",
+        "git diff --check passed",
+        "raw suffix/value-shaped secret diff scan clean"
+      ],
+      "first_missing_green_field": "native_42_layer_orchestration_custody_commit_missing",
+      "first_missing_green_field_after_custody": "c5_full_decoder_chunked_lm_head_nll_writer_missing",
+      "next_action": "Repo Custodian freezes the five-file pathset, then routes Execution to rebuild/copy the runner and run the bounded C5_after_C1 phone probe from the report template.",
+      "research_escalation": "none",
+      "user_action_required": false,
+      "nonclaims": [
+        "no C5 pass",
+        "no executed C5 metrics",
+        "no prediction JSONL/logits/loss/confidence/candidate_train_loss unless real runtime emits them",
+        "no bridge-MSE-as-C5-loss",
+        "no learning/model-quality claim",
+        "no Phase3/4 readiness",
+        "no 100k/1M authority",
+        "no raw payloads in git",
+        "no secrets printed",
+        "no Comet-backed accepted run"
+      ],
+      "next_handoff": {
+        "schema_version": "zpp_next_handoff_v1",
+        "run_id": "c1_c4_waveB_rerun_20260630T230411Z",
+        "from_lane": "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 via Engineering/Meta watcher 019f1423-816d-7251-b7d9-945a11441c3f",
+        "to_lane": "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050",
+        "sent": true,
+        "objective": "Freeze the native 42-layer orchestration source/test/report pathset and central mirror without raw payloads, then route Execution for one bounded phone proof.",
+        "authority_metric": "Custodian commit/push of exact five-file pathset, followed only after custody by a bounded C5_after_C1 phone probe that advances to a real next runtime field.",
+        "current_edge": "WaveB_C5_after_C1_native_42_layer_orchestration_custody_pending_after_phase34_pathset",
+        "current_verdict": "pending_action",
+        "completed_work": [
+          "Phase3/4 implemented bounded 42-layer orchestration schedule validation on existing native C5 path.",
+          "Phase3/4 verification passed: build, focused native contract, broad C5 suite, ctest, diff, raw/secret scans.",
+          "Engineering/Meta updated central state and routed exact custody pathset."
+        ],
+        "evidence": [
+          {
+            "artifact": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp",
+            "sha256": "ea8a833fa10e623a3c864b5c9d89c54f756c0b7fdb0763a3b7863e3ad76ac8c2",
+            "status": "pending_custody"
+          },
+          {
+            "artifact": "tests/test_c5_native_runtime_contract.py",
+            "sha256": "f99e4c7d811abcc60dc1c58aa9ef2394db8aea035a397c661af82f029ba20ed7",
+            "status": "pending_custody"
+          },
+          {
+            "artifact": "runtime/reports/orchestration/c5_after_c1_native_42_layer_orchestration_20260701T_phase34.json",
+            "sha256": "7bff0d8eaa3afd911c04602a0ef730c69c3f3f468fd3d5d26db1808aabc098b0",
+            "status": "pending_custody"
+          },
+          {
+            "artifact": "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json",
+            "sha256": "5d181fd95f510a6d130c13328165779ce8dc8812b7c8c21022311595d17abe1e",
+            "status": "pending_custody"
+          },
+          {
+            "artifact": "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md",
+            "sha256": "f9bce636d9d5818341744636dc599301a0d9e0adf57231269d41b23f43da8007",
+            "status": "pending_custody"
+          }
+        ],
+        "first_missing_green_field": "native_42_layer_orchestration_custody_commit_missing",
+        "next_action": "Repo Custodian freezes exact five-file pathset, then routes Execution to rebuild/copy runner and run the bounded phone probe from the frozen report.",
+        "owner_thread": "019f1ac2-0f0f-7721-bf46-ad402dbd9050",
+        "research_escalation": "none",
+        "nonclaims": [
+          "no C5 pass",
+          "no learning/model-quality claim",
+          "no Phase3/4 readiness claim",
+          "no 100k/1M authority",
+          "no Comet-backed accepted run unless actually executed"
+        ],
+        "do_not_do": [
+          "do not stage unrelated dirty files",
+          "do not run phone gates in custody",
+          "do not source secrets",
+          "do not move raw payloads into git",
+          "do not claim C5 pass or metrics"
+        ]
+      }
+    },
+    "lane_status": {
+      "repo_custodian": {
+        "thread_id": "019f1ac2-0f0f-7721-bf46-ad402dbd9050",
+        "status": "custody_requested_for_native_42_layer_orchestration_pathset",
+        "status_classification": "PENDING_ACTION_REPO_CUSTODIAN_NATIVE_42_LAYER_ORCHESTRATION_FREEZE",
+        "last_update_utc": "2026-07-01T21:17:06Z",
+        "artifact_paths": [
+          "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp",
+          "tests/test_c5_native_runtime_contract.py",
+          "runtime/reports/orchestration/c5_after_c1_native_42_layer_orchestration_20260701T_phase34.json",
+          "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json",
+          "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md"
+        ],
+        "sha256_or_identity_fields": {
+          "c5_full_decoder_runtime.cpp": "ea8a833fa10e623a3c864b5c9d89c54f756c0b7fdb0763a3b7863e3ad76ac8c2",
+          "tests/test_c5_native_runtime_contract.py": "f99e4c7d811abcc60dc1c58aa9ef2394db8aea035a397c661af82f029ba20ed7",
+          "repair_report": "7bff0d8eaa3afd911c04602a0ef730c69c3f3f468fd3d5d26db1808aabc098b0",
+          "local_runner_build_for_phase34_verification": "322dd9b9812caa4961c73bc9136bd078f9ee7c320f2e8dfa1286043c9b3984fe",
+          "consumed_rank16_probe_stdout": "9915e5d19996fb7998bb6e3dde2b8a37372e670125241f31ae58def970e2debb",
+          "candidate_adapter_sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f"
+        },
+        "first_missing_green_field": "native_42_layer_orchestration_custody_commit_missing",
+        "next_action": "Freeze the exact five-file pathset, then route Execution if the report includes the bounded phone probe command.",
+        "user_action_required": false,
+        "nonclaims": [
+          "no C5 pass",
+          "no executed C5 metrics",
+          "no prediction JSONL/logits/loss/confidence/candidate_train_loss unless real runtime emits them",
+          "no bridge-MSE-as-C5-loss",
+          "no learning/model-quality claim",
+          "no Phase3/4 readiness",
+          "no 100k/1M authority",
+          "no raw payloads in git",
+          "no secrets printed",
+          "no Comet-backed accepted run"
+        ],
+        "incoming_handoff": {
+          "schema_version": "zpp_next_handoff_v1",
+          "run_id": "c1_c4_waveB_rerun_20260630T230411Z",
+          "from_lane": "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 via Engineering/Meta watcher 019f1423-816d-7251-b7d9-945a11441c3f",
+          "to_lane": "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050",
+          "sent": true,
+          "objective": "Freeze the native 42-layer orchestration source/test/report pathset and central mirror without raw payloads, then route Execution for one bounded phone proof.",
+          "authority_metric": "Custodian commit/push of exact five-file pathset, followed only after custody by a bounded C5_after_C1 phone probe that advances to a real next runtime field.",
+          "current_edge": "WaveB_C5_after_C1_native_42_layer_orchestration_custody_pending_after_phase34_pathset",
+          "current_verdict": "pending_action",
+          "completed_work": [
+            "Phase3/4 implemented bounded 42-layer orchestration schedule validation on existing native C5 path.",
+            "Phase3/4 verification passed: build, focused native contract, broad C5 suite, ctest, diff, raw/secret scans.",
+            "Engineering/Meta updated central state and routed exact custody pathset."
+          ],
+          "evidence": [
+            {
+              "artifact": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp",
+              "sha256": "ea8a833fa10e623a3c864b5c9d89c54f756c0b7fdb0763a3b7863e3ad76ac8c2",
+              "status": "pending_custody"
+            },
+            {
+              "artifact": "tests/test_c5_native_runtime_contract.py",
+              "sha256": "f99e4c7d811abcc60dc1c58aa9ef2394db8aea035a397c661af82f029ba20ed7",
+              "status": "pending_custody"
+            },
+            {
+              "artifact": "runtime/reports/orchestration/c5_after_c1_native_42_layer_orchestration_20260701T_phase34.json",
+              "sha256": "7bff0d8eaa3afd911c04602a0ef730c69c3f3f468fd3d5d26db1808aabc098b0",
+              "status": "pending_custody"
+            },
+            {
+              "artifact": "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json",
+              "sha256": "5d181fd95f510a6d130c13328165779ce8dc8812b7c8c21022311595d17abe1e",
+              "status": "pending_custody"
+            },
+            {
+              "artifact": "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md",
+              "sha256": "f9bce636d9d5818341744636dc599301a0d9e0adf57231269d41b23f43da8007",
+              "status": "pending_custody"
+            }
+          ],
+          "first_missing_green_field": "native_42_layer_orchestration_custody_commit_missing",
+          "next_action": "Repo Custodian freezes exact five-file pathset, then routes Execution to rebuild/copy runner and run the bounded phone probe from the frozen report.",
+          "owner_thread": "019f1ac2-0f0f-7721-bf46-ad402dbd9050",
+          "research_escalation": "none",
+          "nonclaims": [
+            "no C5 pass",
+            "no learning/model-quality claim",
+            "no Phase3/4 readiness claim",
+            "no 100k/1M authority",
+            "no Comet-backed accepted run unless actually executed"
+          ],
+          "do_not_do": [
+            "do not stage unrelated dirty files",
+            "do not run phone gates in custody",
+            "do not source secrets",
+            "do not move raw payloads into git",
+            "do not claim C5 pass or metrics"
+          ]
+        }
+      },
+      "phase34_engineer": {
+        "thread_id": "019f13da-d897-7ba2-8ed1-b959892f5ed4",
+        "status": "native_42_layer_orchestration_pathset_ready_for_custodian",
+        "status_classification": "COMPLETED_HANDOFF_TO_REPO_CUSTODIAN",
+        "last_update_utc": "2026-07-01T21:17:06Z",
+        "artifact_paths": [
+          "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp",
+          "tests/test_c5_native_runtime_contract.py",
+          "runtime/reports/orchestration/c5_after_c1_native_42_layer_orchestration_20260701T_phase34.json"
+        ],
+        "sha256_or_identity_fields": {
+          "c5_full_decoder_runtime.cpp": "ea8a833fa10e623a3c864b5c9d89c54f756c0b7fdb0763a3b7863e3ad76ac8c2",
+          "tests/test_c5_native_runtime_contract.py": "f99e4c7d811abcc60dc1c58aa9ef2394db8aea035a397c661af82f029ba20ed7",
+          "repair_report": "7bff0d8eaa3afd911c04602a0ef730c69c3f3f468fd3d5d26db1808aabc098b0",
+          "local_runner_build_for_phase34_verification": "322dd9b9812caa4961c73bc9136bd078f9ee7c320f2e8dfa1286043c9b3984fe",
+          "consumed_rank16_probe_stdout": "9915e5d19996fb7998bb6e3dde2b8a37372e670125241f31ae58def970e2debb",
+          "candidate_adapter_sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f"
+        },
+        "first_missing_green_field": "c5_full_decoder_chunked_lm_head_nll_writer_missing",
+        "next_action": "Wait for custody and bounded phone probe; repair the next runtime field returned by Execution.",
+        "user_action_required": false,
+        "nonclaims": [
+          "no C5 pass",
+          "no executed C5 metrics",
+          "no prediction JSONL/logits/loss/confidence/candidate_train_loss unless real runtime emits them",
+          "no bridge-MSE-as-C5-loss",
+          "no learning/model-quality claim",
+          "no Phase3/4 readiness",
+          "no 100k/1M authority",
+          "no raw payloads in git",
+          "no secrets printed",
+          "no Comet-backed accepted run"
+        ],
+        "next_handoff": {
+          "schema_version": "zpp_next_handoff_v1",
+          "run_id": "c1_c4_waveB_rerun_20260630T230411Z",
+          "from_lane": "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 via Engineering/Meta watcher 019f1423-816d-7251-b7d9-945a11441c3f",
+          "to_lane": "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050",
+          "sent": true,
+          "objective": "Freeze the native 42-layer orchestration source/test/report pathset and central mirror without raw payloads, then route Execution for one bounded phone proof.",
+          "authority_metric": "Custodian commit/push of exact five-file pathset, followed only after custody by a bounded C5_after_C1 phone probe that advances to a real next runtime field.",
+          "current_edge": "WaveB_C5_after_C1_native_42_layer_orchestration_custody_pending_after_phase34_pathset",
+          "current_verdict": "pending_action",
+          "completed_work": [
+            "Phase3/4 implemented bounded 42-layer orchestration schedule validation on existing native C5 path.",
+            "Phase3/4 verification passed: build, focused native contract, broad C5 suite, ctest, diff, raw/secret scans.",
+            "Engineering/Meta updated central state and routed exact custody pathset."
+          ],
+          "evidence": [
+            {
+              "artifact": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp",
+              "sha256": "ea8a833fa10e623a3c864b5c9d89c54f756c0b7fdb0763a3b7863e3ad76ac8c2",
+              "status": "pending_custody"
+            },
+            {
+              "artifact": "tests/test_c5_native_runtime_contract.py",
+              "sha256": "f99e4c7d811abcc60dc1c58aa9ef2394db8aea035a397c661af82f029ba20ed7",
+              "status": "pending_custody"
+            },
+            {
+              "artifact": "runtime/reports/orchestration/c5_after_c1_native_42_layer_orchestration_20260701T_phase34.json",
+              "sha256": "7bff0d8eaa3afd911c04602a0ef730c69c3f3f468fd3d5d26db1808aabc098b0",
+              "status": "pending_custody"
+            },
+            {
+              "artifact": "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json",
+              "sha256": "5d181fd95f510a6d130c13328165779ce8dc8812b7c8c21022311595d17abe1e",
+              "status": "pending_custody"
+            },
+            {
+              "artifact": "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md",
+              "sha256": "f9bce636d9d5818341744636dc599301a0d9e0adf57231269d41b23f43da8007",
+              "status": "pending_custody"
+            }
+          ],
+          "first_missing_green_field": "native_42_layer_orchestration_custody_commit_missing",
+          "next_action": "Repo Custodian freezes exact five-file pathset, then routes Execution to rebuild/copy runner and run the bounded phone probe from the frozen report.",
+          "owner_thread": "019f1ac2-0f0f-7721-bf46-ad402dbd9050",
+          "research_escalation": "none",
+          "nonclaims": [
+            "no C5 pass",
+            "no learning/model-quality claim",
+            "no Phase3/4 readiness claim",
+            "no 100k/1M authority",
+            "no Comet-backed accepted run unless actually executed"
+          ],
+          "do_not_do": [
+            "do not stage unrelated dirty files",
+            "do not run phone gates in custody",
+            "do not source secrets",
+            "do not move raw payloads into git",
+            "do not claim C5 pass or metrics"
+          ]
+        }
+      },
+      "execution_orchestrator": {
+        "thread_id": "019f138c-fb51-7c53-a41a-ab8eac950d9c",
+        "status": "parked_waiting_native_42_layer_orchestration_custody",
+        "status_classification": "PARKED_UNTIL_REPO_CUSTODIAN_FREEZE",
+        "last_update_utc": "2026-07-01T21:17:06Z",
+        "artifact_paths": [],
+        "first_missing_green_field": "post_custody_bounded_phone_probe_needed",
+        "next_action": "After custody only: rebuild/copy the 42-layer orchestration runner and run one bounded C5_after_C1 probe from the frozen report.",
+        "user_action_required": false,
+        "nonclaims": [
+          "no C5 pass",
+          "no executed C5 metrics",
+          "no prediction JSONL/logits/loss/confidence/candidate_train_loss unless real runtime emits them",
+          "no bridge-MSE-as-C5-loss",
+          "no learning/model-quality claim",
+          "no Phase3/4 readiness",
+          "no 100k/1M authority",
+          "no raw payloads in git",
+          "no secrets printed",
+          "no Comet-backed accepted run"
+        ]
+      },
+      "engineering_orchestrator": {
+        "thread_id": "019f1423-816d-7251-b7d9-945a11441c3f",
+        "status": "central_mirror_updated_after_phase34_native_42_layer_orchestration_pathset",
+        "status_classification": "ORCHESTRATION_META_UPDATED_REPO_CUSTODIAN_CUSTODY_OWNER",
+        "last_update_utc": "2026-07-01T21:17:06Z",
+        "artifact_paths": [
+          "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json",
+          "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md"
+        ],
+        "first_missing_green_field": "native_42_layer_orchestration_custody_commit_missing",
+        "next_action": "Route the exact five-file custody packet to Repo Custodian; keep Execution parked until custody completes.",
+        "user_action_required": false,
+        "nonclaims": [
+          "no C5 pass",
+          "no executed C5 metrics",
+          "no prediction JSONL/logits/loss/confidence/candidate_train_loss unless real runtime emits them",
+          "no bridge-MSE-as-C5-loss",
+          "no learning/model-quality claim",
+          "no Phase3/4 readiness",
+          "no 100k/1M authority",
+          "no raw payloads in git",
+          "no secrets printed",
+          "no Comet-backed accepted run"
+        ]
+      }
     }
   },
   "adapter_site_policy_sha256": "f38bd8109bbb77e9e94a5b4b34a238bc0ec0a39e7736870c97defe5aecc93357",
   "additional_missing_runtime_field_after_contract_patch": "decoder_manifest_tensor_role_inventory_missing",
   "artifact_waiting_on": [
-    "Phase3/4 must implement/freeze the 42-layer orchestration runtime slice or return a precise source/runtime blocker.",
-    "Execution bounded rank-16 probe evidence root: runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_rank16_adapter_stream_20260701T205548Z.",
-    "Consumed custody commit: 268c1414a03085b206532743fe957da0d9bb06c1.",
-    "Runner SHA/bytes: 929c86f6d833ae9041cee4941aa00bd254e746ff3259391bc0f8ac42c26ac9d1, 549360.",
-    "Probe exit code 13 after 104s; prediction JSONL written false.",
-    "Probe stdout SHA 9915e5d19996fb7998bb6e3dde2b8a37372e670125241f31ae58def970e2debb; stderr SHA b93f13041c25461d37f35148ff789e0817633d235cee54972c4c4175dcb2dc8c; meminfo before SHA 49982356d9bb731e6b9a1fa7d63753cc3e9def04b5c254dcc860b6ee5a385ef2; meminfo after SHA 634e026c3f4f619fec644124a0a3edfb6978d14703b6ced18cc71bab8fb6ecb3; probe_metadata SHA fd54bc8abb048805c09cbbbd0a26e5ed3a35954d8213ef74e9896d617fb0bbaa.",
-    "Current first missing green field: c5_full_decoder_42_layer_orchestration_missing; secondary field: c5_full_decoder_chunked_lm_head_nll_writer_missing."
+    "Repo Custodian must verify and freeze the exact five-file metadata/source pathset: central JSON/MD, c5_full_decoder_runtime.cpp, test_c5_native_runtime_contract.py, and c5_after_c1_native_42_layer_orchestration_20260701T_phase34.json.",
+    "Phase3/4 pathset status: native_42_layer_orchestration_pathset_ready_for_custodian.",
+    "Runtime source SHA: ea8a833fa10e623a3c864b5c9d89c54f756c0b7fdb0763a3b7863e3ad76ac8c2.",
+    "Native contract test SHA: f99e4c7d811abcc60dc1c58aa9ef2394db8aea035a397c661af82f029ba20ed7.",
+    "42-layer report SHA: 7bff0d8eaa3afd911c04602a0ef730c69c3f3f468fd3d5d26db1808aabc098b0.",
+    "After custody, Execution rebuilds/copies gemma4_layer_runner_c5_42_layer_orchestration and runs the bounded C5_after_C1 phone probe from the report template.",
+    "Expected next runtime field after custody/probe: c5_full_decoder_chunked_lm_head_nll_writer_missing; no C5 pass or metrics claim."
   ],
   "authorization_needed": false,
   "c5_after_c1_bounded_opencl_probe_command_identity_repair_20260701T171907Z": {
@@ -3940,13 +4291,13 @@
     "status": "bounded_phone_probe_repeated_resource_runtime_failure_after_opencl_discovery_repair"
   },
   "candidate_adapter_sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f",
-  "central_mirror_local_update_status": "updated_after_phase34_native_multi_token_qa_prompt_sequence_orchestration_pathset_pending_repo_custodian_freeze",
+  "central_mirror_local_update_status": "updated_after_phase34_native_42_layer_orchestration_pathset_pending_repo_custodian_freeze",
   "central_state_update_pending_custody": true,
-  "current_gate": "WaveB_C5_after_C1_rank16_adapter_stream_injection_custody_pending_after_phase34_pathset",
-  "current_highest_valid_state": "C1-C4 Wave B mechanics, phone-local model/exporter evidence, C5-capable runner build, heldout QA staging, native C5 probe, tokenizer/tensor-loader custody, PLE contract/decoder math custody, PLE derivation/layer-0 normalization custody, CPU single-layer attention/MLP custody, OpenCL parity dispatch custody, per_layer_input_runtime repair custody, configured OpenCL library load repair custody, Android SP-HAL OpenCL loader-route repair custody, and SP-HAL route-green phone evidence are development-cycle metadata/code evidence only. Phase3/4 has produced a custody-ready native multi-token QA prompt sequence orchestration pathset. No C5 pass, prediction JSONL, or executed metrics exist.",
+  "current_gate": "WaveB_C5_after_C1_native_42_layer_orchestration_custody_pending_after_phase34_pathset",
+  "current_highest_valid_state": "C1-C4 Wave B mechanics, phone-local model/exporter evidence, C5-capable runner build, heldout QA staging, native C5 probes through SP-HAL OpenCL route, multi-token QA prompt orchestration, rank-16 adapter stream injection, and Phase3/4 native 42-layer orchestration pathset are development-cycle metadata/code evidence only. The 42-layer pathset is custody-pending; no C5 pass, prediction JSONL, loss, confidence, candidate_train_loss, or executed metrics exist.",
   "decoder_manifest_sha256": "52fcb53666bb4b06d0118cb825b983afc54624a630f667bbfa5af278640e28f8",
   "dominant_failure_domain": "phase5_eval_failure",
-  "drift_deleted_or_pending": "Deleted stale execution-active mirror edge; rank-16 adapter stream injection is green for the bounded phone proof. Pending runtime fields are 42-layer orchestration and chunked LM-head/NLL writer; no C5 pass or metrics claim.",
+  "drift_deleted_or_pending": "Hardened stale top-level current_gate/governing_edge and lane-status drift from prior rank16/multi-token edges. Current pending runtime field after the 42-layer custody/probe is chunked LM-head/NLL writer; no prediction JSONL, logits, loss, confidence, candidate_train_loss, C5 pass, or metric claim exists.",
   "driver_tick_history": [
     {
       "artifact_waiting_on": [
@@ -5001,9 +5352,9 @@
   "export_report_sha256": "4774d31953a58ad6ae1f64e4196405ba820e5be75d36880ac863cfb9dae00b6c",
   "exporter_runtime_fields_freeze_commit": "43cf3c4130dc902fc8fd69183bac1056f0596626",
   "exporter_runtime_fields_freeze_status": "committed_pushed",
-  "first_missing_green_field": "c5_full_decoder_42_layer_orchestration_missing",
+  "first_missing_green_field": "native_42_layer_orchestration_custody_commit_missing",
   "first_missing_green_field_after_contract_patch": "decoder_manifest_architecture_config_missing",
-  "first_missing_green_field_after_custody": "c5_full_decoder_42_layer_orchestration_missing",
+  "first_missing_green_field_after_custody": "c5_full_decoder_chunked_lm_head_nll_writer_missing",
   "first_missing_green_field_after_download": "full_decoder_logits_generation_not_implemented",
   "first_missing_green_field_after_export": "c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land",
   "first_missing_green_field_after_exporter_patch_custody": "phone_exporter_rerun_for_schema_complete_component_pack_pending",
@@ -5011,7 +5362,7 @@
   "first_missing_green_field_after_runner": "heldout_qa_jsonl_staging_or_c5_predict_probe_pending",
   "first_unresolved_technical_failure_after_schema_complete_export": "c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land",
   "first_unresolved_technical_failure_after_valid_schema_paths": "c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land",
-  "governing_edge": "WaveB_C5_after_C1_native_multi_token_qa_prompt_sequence_orchestration_custody_pending_after_phase34_pathset",
+  "governing_edge": "WaveB_C5_after_C1_native_42_layer_orchestration_custody_pending_after_phase34_pathset",
   "governing_objective": {
     "nonclaims": [
       "diagnostics_are_not_100k_or_1M_authority_unless_specific_authority_gate_passes",
@@ -5036,8 +5387,8 @@
     "c5_qa_runtime_first_missing_after_custody": "tokenizer_dir_missing",
     "c5_qa_runtime_first_missing_after_latest_inventory": "decoder_manifest_missing",
     "c5_qa_runtime_tokenizer_dir_status": "present_phone_public_outside_git_hash_verified",
-    "central_route_mirror_commit": "89aad4cdc3e7a5eac1f59c123c5be0479d96afe0",
-    "current_gate": "WaveB_C5_after_C1_native_full_decoder_logits_implementation_failure",
+    "central_route_mirror_commit": "pending_repo_custodian_freeze_after_42_layer_pathset",
+    "current_gate": "WaveB_C5_after_C1_native_42_layer_orchestration_custody_pending_after_phase34_pathset",
     "decoder_manifest_sha256": "6700f3c2912bfdcb659b9e7de3cdb0831d58f3708a0f841c181ec446b3a83a5f",
     "engineering_key": {
       "artifact_paths": [
@@ -5280,7 +5631,7 @@
     },
     "export_report_sha256": "06fe8e91b5938ff3235cad5fa96e7b25d5b20fb3c4e456c249c84d53bf839d0f",
     "exporter_hardening_commit": "090417c75b19573146e26c77e663ac605981fae3",
-    "first_missing_green_field": "full_decoder_logits_generation_not_implemented",
+    "first_missing_green_field": "native_42_layer_orchestration_custody_commit_missing",
     "first_missing_green_field_after_custody": "full_decoder_logits_generation_not_implemented",
     "heldout_qa_sha256": "da41c5362398f24e0e0dd9df9a5cf0594435a455871fa77ab74d9312e6c8e9b2",
     "known_downstream_access_issue_after_custody": "termux_command_channel_missing",
@@ -5535,15 +5886,15 @@
   "lane_status": {
     "engineering_orchestrator": {
       "thread_id": "019f1423-816d-7251-b7d9-945a11441c3f",
-      "status": "central_mirror_updated_after_sphal_probe_edge_advance",
-      "status_classification": "ORCHESTRATION_META_UPDATED_PHASE34_OWNER_REPO_CUSTODIAN_MIRROR_CUSTODY",
-      "last_update_utc": "2026-07-01T19:40:38Z",
+      "status": "central_mirror_updated_after_phase34_native_42_layer_orchestration_pathset",
+      "status_classification": "ORCHESTRATION_META_UPDATED_REPO_CUSTODIAN_CUSTODY_OWNER",
+      "last_update_utc": "2026-07-01T21:17:06Z",
       "artifact_paths": [
         "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json",
         "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md"
       ],
-      "first_missing_green_field": "c5_full_decoder_multi_token_qa_prompt_sequence_orchestration_missing",
-      "next_action": "Route mirror custody and runtime implementation owner; keep Execution parked until custody/probe path exists.",
+      "first_missing_green_field": "native_42_layer_orchestration_custody_commit_missing",
+      "next_action": "Route the exact five-file custody packet to Repo Custodian; keep Execution parked until custody completes.",
       "user_action_required": false,
       "nonclaims": [
         "no C5 pass",
@@ -5553,17 +5904,19 @@
         "no learning/model-quality claim",
         "no Phase3/4 readiness",
         "no 100k/1M authority",
+        "no raw payloads in git",
+        "no secrets printed",
         "no Comet-backed accepted run"
       ]
     },
     "execution_orchestrator": {
       "thread_id": "019f138c-fb51-7c53-a41a-ab8eac950d9c",
-      "status": "parked_waiting_native_multi_token_orchestration_custody",
+      "status": "parked_waiting_native_42_layer_orchestration_custody",
       "status_classification": "PARKED_UNTIL_REPO_CUSTODIAN_FREEZE",
-      "last_update_utc": "2026-07-01T20:00:38Z",
+      "last_update_utc": "2026-07-01T21:17:06Z",
       "artifact_paths": [],
       "first_missing_green_field": "post_custody_bounded_phone_probe_needed",
-      "next_action": "After custody only: rebuild/copy repaired runner and run one bounded C5_after_C1 probe from the frozen report.",
+      "next_action": "After custody only: rebuild/copy the 42-layer orchestration runner and run one bounded C5_after_C1 probe from the frozen report.",
       "user_action_required": false,
       "nonclaims": [
         "no C5 pass",
@@ -5573,28 +5926,31 @@
         "no learning/model-quality claim",
         "no Phase3/4 readiness",
         "no 100k/1M authority",
+        "no raw payloads in git",
+        "no secrets printed",
         "no Comet-backed accepted run"
       ]
     },
     "phase34_engineer": {
       "thread_id": "019f13da-d897-7ba2-8ed1-b959892f5ed4",
-      "status": "native_multi_token_qa_prompt_sequence_orchestration_pathset_ready_for_custodian",
+      "status": "native_42_layer_orchestration_pathset_ready_for_custodian",
       "status_classification": "COMPLETED_HANDOFF_TO_REPO_CUSTODIAN",
-      "last_update_utc": "2026-07-01T20:00:38Z",
+      "last_update_utc": "2026-07-01T21:17:06Z",
       "artifact_paths": [
         "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp",
         "tests/test_c5_native_runtime_contract.py",
-        "runtime/reports/orchestration/c5_after_c1_native_multi_token_qa_prompt_sequence_orchestration_20260701T_phase34.json"
+        "runtime/reports/orchestration/c5_after_c1_native_42_layer_orchestration_20260701T_phase34.json"
       ],
       "sha256_or_identity_fields": {
-        "c5_full_decoder_runtime.cpp": "d8d05d4b3434e074ef88e5150813a1225a2e5a153780ae31298ca389ded2d0a8",
-        "tests/test_c5_native_runtime_contract.py": "ad5713bfa36e918aecf9eba03922d79bf640744076c698a6bd3d9e01312f0fc2",
-        "repair_report": "b6cffe27250c7e5aa5a51834f494855e2005d5292715dabf7802fe31ff2c5a7c",
-        "consumed_sphal_probe_stdout": "b424127fcb06f139019487b0a2f5d162b1b3ba4b2b9e10060acbe0044fe329fc",
-        "host_rebuilt_runner": "7734c956bbff5a3de1471a08226737afac52fb7ab255f14b3863257a47ef0dc5"
+        "c5_full_decoder_runtime.cpp": "ea8a833fa10e623a3c864b5c9d89c54f756c0b7fdb0763a3b7863e3ad76ac8c2",
+        "tests/test_c5_native_runtime_contract.py": "f99e4c7d811abcc60dc1c58aa9ef2394db8aea035a397c661af82f029ba20ed7",
+        "repair_report": "7bff0d8eaa3afd911c04602a0ef730c69c3f3f468fd3d5d26db1808aabc098b0",
+        "local_runner_build_for_phase34_verification": "322dd9b9812caa4961c73bc9136bd078f9ee7c320f2e8dfa1286043c9b3984fe",
+        "consumed_rank16_probe_stdout": "9915e5d19996fb7998bb6e3dde2b8a37372e670125241f31ae58def970e2debb",
+        "candidate_adapter_sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f"
       },
-      "first_missing_green_field": "c5_full_decoder_rank16_adapter_stream_injection_missing",
-      "next_action": "Await custody. After custody and phone probe, repair next runtime field returned by Execution.",
+      "first_missing_green_field": "c5_full_decoder_chunked_lm_head_nll_writer_missing",
+      "next_action": "Wait for custody and bounded phone probe; repair the next runtime field returned by Execution.",
       "user_action_required": false,
       "nonclaims": [
         "no C5 pass",
@@ -5604,8 +5960,71 @@
         "no learning/model-quality claim",
         "no Phase3/4 readiness",
         "no 100k/1M authority",
+        "no raw payloads in git",
+        "no secrets printed",
         "no Comet-backed accepted run"
-      ]
+      ],
+      "next_handoff": {
+        "schema_version": "zpp_next_handoff_v1",
+        "run_id": "c1_c4_waveB_rerun_20260630T230411Z",
+        "from_lane": "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 via Engineering/Meta watcher 019f1423-816d-7251-b7d9-945a11441c3f",
+        "to_lane": "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050",
+        "sent": true,
+        "objective": "Freeze the native 42-layer orchestration source/test/report pathset and central mirror without raw payloads, then route Execution for one bounded phone proof.",
+        "authority_metric": "Custodian commit/push of exact five-file pathset, followed only after custody by a bounded C5_after_C1 phone probe that advances to a real next runtime field.",
+        "current_edge": "WaveB_C5_after_C1_native_42_layer_orchestration_custody_pending_after_phase34_pathset",
+        "current_verdict": "pending_action",
+        "completed_work": [
+          "Phase3/4 implemented bounded 42-layer orchestration schedule validation on existing native C5 path.",
+          "Phase3/4 verification passed: build, focused native contract, broad C5 suite, ctest, diff, raw/secret scans.",
+          "Engineering/Meta updated central state and routed exact custody pathset."
+        ],
+        "evidence": [
+          {
+            "artifact": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp",
+            "sha256": "ea8a833fa10e623a3c864b5c9d89c54f756c0b7fdb0763a3b7863e3ad76ac8c2",
+            "status": "pending_custody"
+          },
+          {
+            "artifact": "tests/test_c5_native_runtime_contract.py",
+            "sha256": "f99e4c7d811abcc60dc1c58aa9ef2394db8aea035a397c661af82f029ba20ed7",
+            "status": "pending_custody"
+          },
+          {
+            "artifact": "runtime/reports/orchestration/c5_after_c1_native_42_layer_orchestration_20260701T_phase34.json",
+            "sha256": "7bff0d8eaa3afd911c04602a0ef730c69c3f3f468fd3d5d26db1808aabc098b0",
+            "status": "pending_custody"
+          },
+          {
+            "artifact": "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json",
+            "sha256": "5d181fd95f510a6d130c13328165779ce8dc8812b7c8c21022311595d17abe1e",
+            "status": "pending_custody"
+          },
+          {
+            "artifact": "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md",
+            "sha256": "f9bce636d9d5818341744636dc599301a0d9e0adf57231269d41b23f43da8007",
+            "status": "pending_custody"
+          }
+        ],
+        "first_missing_green_field": "native_42_layer_orchestration_custody_commit_missing",
+        "next_action": "Repo Custodian freezes exact five-file pathset, then routes Execution to rebuild/copy runner and run the bounded phone probe from the frozen report.",
+        "owner_thread": "019f1ac2-0f0f-7721-bf46-ad402dbd9050",
+        "research_escalation": "none",
+        "nonclaims": [
+          "no C5 pass",
+          "no learning/model-quality claim",
+          "no Phase3/4 readiness claim",
+          "no 100k/1M authority",
+          "no Comet-backed accepted run unless actually executed"
+        ],
+        "do_not_do": [
+          "do not stage unrelated dirty files",
+          "do not run phone gates in custody",
+          "do not source secrets",
+          "do not move raw payloads into git",
+          "do not claim C5 pass or metrics"
+        ]
+      }
     },
     "pipeline_integrator": {
       "artifact_paths": [
@@ -5627,25 +6046,26 @@
     },
     "repo_custodian": {
       "thread_id": "019f1ac2-0f0f-7721-bf46-ad402dbd9050",
-      "status": "custody_requested_for_native_multi_token_qa_prompt_sequence_orchestration_pathset",
-      "status_classification": "PENDING_ACTION_REPO_CUSTODIAN_FREEZE",
-      "last_update_utc": "2026-07-01T20:00:38Z",
+      "status": "custody_requested_for_native_42_layer_orchestration_pathset",
+      "status_classification": "PENDING_ACTION_REPO_CUSTODIAN_NATIVE_42_LAYER_ORCHESTRATION_FREEZE",
+      "last_update_utc": "2026-07-01T21:17:06Z",
       "artifact_paths": [
-        "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json",
-        "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md",
-        "runtime/reports/orchestration/c5_after_c1_native_multi_token_qa_prompt_sequence_orchestration_20260701T_phase34.json",
         "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp",
-        "tests/test_c5_native_runtime_contract.py"
+        "tests/test_c5_native_runtime_contract.py",
+        "runtime/reports/orchestration/c5_after_c1_native_42_layer_orchestration_20260701T_phase34.json",
+        "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json",
+        "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md"
       ],
       "sha256_or_identity_fields": {
-        "c5_full_decoder_runtime.cpp": "d8d05d4b3434e074ef88e5150813a1225a2e5a153780ae31298ca389ded2d0a8",
-        "tests/test_c5_native_runtime_contract.py": "ad5713bfa36e918aecf9eba03922d79bf640744076c698a6bd3d9e01312f0fc2",
-        "repair_report": "b6cffe27250c7e5aa5a51834f494855e2005d5292715dabf7802fe31ff2c5a7c",
-        "consumed_sphal_probe_stdout": "b424127fcb06f139019487b0a2f5d162b1b3ba4b2b9e10060acbe0044fe329fc",
-        "host_rebuilt_runner": "7734c956bbff5a3de1471a08226737afac52fb7ab255f14b3863257a47ef0dc5"
+        "c5_full_decoder_runtime.cpp": "ea8a833fa10e623a3c864b5c9d89c54f756c0b7fdb0763a3b7863e3ad76ac8c2",
+        "tests/test_c5_native_runtime_contract.py": "f99e4c7d811abcc60dc1c58aa9ef2394db8aea035a397c661af82f029ba20ed7",
+        "repair_report": "7bff0d8eaa3afd911c04602a0ef730c69c3f3f468fd3d5d26db1808aabc098b0",
+        "local_runner_build_for_phase34_verification": "322dd9b9812caa4961c73bc9136bd078f9ee7c320f2e8dfa1286043c9b3984fe",
+        "consumed_rank16_probe_stdout": "9915e5d19996fb7998bb6e3dde2b8a37372e670125241f31ae58def970e2debb",
+        "candidate_adapter_sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f"
       },
-      "first_missing_green_field": "native_multi_token_qa_prompt_sequence_orchestration_custody_commit_missing",
-      "next_action": "Freeze exact five-file pathset, then route Execution if report includes bounded phone probe command.",
+      "first_missing_green_field": "native_42_layer_orchestration_custody_commit_missing",
+      "next_action": "Freeze the exact five-file pathset, then route Execution if the report includes the bounded phone probe command.",
       "user_action_required": false,
       "nonclaims": [
         "no C5 pass",
@@ -5655,8 +6075,71 @@
         "no learning/model-quality claim",
         "no Phase3/4 readiness",
         "no 100k/1M authority",
+        "no raw payloads in git",
+        "no secrets printed",
         "no Comet-backed accepted run"
-      ]
+      ],
+      "incoming_handoff": {
+        "schema_version": "zpp_next_handoff_v1",
+        "run_id": "c1_c4_waveB_rerun_20260630T230411Z",
+        "from_lane": "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 via Engineering/Meta watcher 019f1423-816d-7251-b7d9-945a11441c3f",
+        "to_lane": "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050",
+        "sent": true,
+        "objective": "Freeze the native 42-layer orchestration source/test/report pathset and central mirror without raw payloads, then route Execution for one bounded phone proof.",
+        "authority_metric": "Custodian commit/push of exact five-file pathset, followed only after custody by a bounded C5_after_C1 phone probe that advances to a real next runtime field.",
+        "current_edge": "WaveB_C5_after_C1_native_42_layer_orchestration_custody_pending_after_phase34_pathset",
+        "current_verdict": "pending_action",
+        "completed_work": [
+          "Phase3/4 implemented bounded 42-layer orchestration schedule validation on existing native C5 path.",
+          "Phase3/4 verification passed: build, focused native contract, broad C5 suite, ctest, diff, raw/secret scans.",
+          "Engineering/Meta updated central state and routed exact custody pathset."
+        ],
+        "evidence": [
+          {
+            "artifact": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp",
+            "sha256": "ea8a833fa10e623a3c864b5c9d89c54f756c0b7fdb0763a3b7863e3ad76ac8c2",
+            "status": "pending_custody"
+          },
+          {
+            "artifact": "tests/test_c5_native_runtime_contract.py",
+            "sha256": "f99e4c7d811abcc60dc1c58aa9ef2394db8aea035a397c661af82f029ba20ed7",
+            "status": "pending_custody"
+          },
+          {
+            "artifact": "runtime/reports/orchestration/c5_after_c1_native_42_layer_orchestration_20260701T_phase34.json",
+            "sha256": "7bff0d8eaa3afd911c04602a0ef730c69c3f3f468fd3d5d26db1808aabc098b0",
+            "status": "pending_custody"
+          },
+          {
+            "artifact": "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json",
+            "sha256": "5d181fd95f510a6d130c13328165779ce8dc8812b7c8c21022311595d17abe1e",
+            "status": "pending_custody"
+          },
+          {
+            "artifact": "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md",
+            "sha256": "f9bce636d9d5818341744636dc599301a0d9e0adf57231269d41b23f43da8007",
+            "status": "pending_custody"
+          }
+        ],
+        "first_missing_green_field": "native_42_layer_orchestration_custody_commit_missing",
+        "next_action": "Repo Custodian freezes exact five-file pathset, then routes Execution to rebuild/copy runner and run the bounded phone probe from the frozen report.",
+        "owner_thread": "019f1ac2-0f0f-7721-bf46-ad402dbd9050",
+        "research_escalation": "none",
+        "nonclaims": [
+          "no C5 pass",
+          "no learning/model-quality claim",
+          "no Phase3/4 readiness claim",
+          "no 100k/1M authority",
+          "no Comet-backed accepted run unless actually executed"
+        ],
+        "do_not_do": [
+          "do not stage unrelated dirty files",
+          "do not run phone gates in custody",
+          "do not source secrets",
+          "do not move raw payloads into git",
+          "do not claim C5 pass or metrics"
+        ]
+      }
     },
     "training_material_steward": {
       "artifact_paths": [
@@ -5720,19 +6203,19 @@
       "user_action_required": false
     }
   },
-  "last_concrete_action": "Execution consumed rank-16 custody commit 268c1414a03085b206532743fe957da0d9bb06c1, rebuilt/copied the phone runner, ran exactly one bounded forced vendor OpenCL C5_after_C1 probe, and returned metadata-only evidence. The probe advanced past rank-16 adapter stream injection and failed closed at c5_full_decoder_42_layer_orchestration_missing, with chunked LM-head/NLL writer still pending.",
+  "last_concrete_action": "Phase3/4 implemented the bounded 42-layer orchestration slice behind the existing native --run-c5-qa-predict path, validated 42 manifest-backed decoder-layer scheduling over the current adapter-injected stream, and returned a custody-ready source/test/report pathset. Repo Custodian also completed the prior rank16 probe/42-layer central mirror evidence freeze at d9fb2584946e2a1acfffd8588c35c615f9e9b130.",
   "last_driver_actions": [
-    "Loaded central state and polled active lane threads.",
-    "Detected Repo Custodian completed SP-HAL route-green central mirror at cf913f5d7b4e05a9b7c9e6ff842f87e5b7a6f380.",
-    "Detected Phase3/4 completed native_multi_token_qa_prompt_sequence_orchestration_pathset_ready_for_custodian.",
-    "Updated central mirror metadata-only and routed Repo Custodian custody packet."
+    "Loaded central state and polled current owner lanes.",
+    "Detected Repo Custodian completed prior rank16 probe/42-layer central evidence freeze at d9fb2584946e2a1acfffd8588c35c615f9e9b130.",
+    "Detected Phase3/4 completed native_42_layer_orchestration_pathset_ready_for_custodian.",
+    "Updated central mirror metadata-only, hardened stale current_gate/governing_edge drift, and routed Repo Custodian custody packet."
   ],
   "model_safetensors_sha256": "43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651",
   "model_safetensors_size_bytes": 15992595884,
   "native_probe_elapsed_seconds": 106,
   "native_probe_exit_code": 13,
   "native_probe_report_path": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_vendor_opencl_dlopen_detail_20260701T180904Z",
-  "next_concrete_action": "Phase3/4 patches the existing native --run-c5-qa-predict path for 42-layer orchestration, or returns the exact source/runtime contract blocker. If a custody-ready pathset is returned, route it to Repo Custodian; Execution remains parked until a frozen implementation or single bounded probe command exists.",
+  "next_concrete_action": "Repo Custodian verifies hashes, JSON/diff/raw-boundary hygiene, focused/broad local gates as feasible, stages only the five-file pathset, commits/pushes it, then routes Execution to run the single bounded phone probe from the frozen 42-layer report.",
   "nonclaims": [
     "no C5 pass",
     "no executed C5 metrics",
@@ -5741,10 +6224,12 @@
     "no learning/model-quality claim",
     "no Phase3/4 readiness",
     "no 100k/1M authority",
+    "no raw payloads in git",
+    "no secrets printed",
     "no Comet-backed accepted run"
   ],
-  "owner": "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 owns the next bounded native C5 runtime implementation slice: 42-layer orchestration behind the existing --run-c5-qa-predict surface.",
-  "owner_thread": "019f13da-d897-7ba2-8ed1-b959892f5ed4",
+  "owner": "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050 owns the exact five-file custody freeze for the Phase3/4 native 42-layer orchestration pathset and central mirror.",
+  "owner_thread": "019f1ac2-0f0f-7721-bf46-ad402dbd9050",
   "phone_exporter_rerun_required_after_commit": "43cf3c4130dc902fc8fd69183bac1056f0596626",
   "prd_watchdog": {
     "active_bottleneck": "forced_vendor_opencl_probe_result_missing",
@@ -6335,7 +6820,7 @@
     "scope": "metadata mirror only",
     "status": "central_state_phone_filesystem_paths_redacted"
   },
-  "recursive_improvement_next_step": "Implement one falsifiable 42-layer orchestration slice, freeze via Custodian, then run the smallest bounded phone proof. If the field repeats after a frozen repair, route the exact failing source/runtime contract rather than widening scope or claiming C5 pass.",
+  "recursive_improvement_next_step": "Freeze one falsifiable 42-layer orchestration pathset, run the smallest bounded phone proof, and if the next field is chunked LM-head/NLL writer, route that implementation slice without widening scope. If 42-layer repeats after custody/probe, route exact failing contract evidence back to Phase3/4.",
   "required_lane_update_protocol": {
     "block_name": "CENTRAL_STATE_UPDATE",
     "meta_action": "on every heartbeat, read active threads, update this file, route the next concrete edge, and notify Execution only when both keys are green",
@@ -6355,18 +6840,18 @@
   "runner_sha256": "a2378e109c811ae2fbc6219a7fd39b1d2141f5a6033cbfce76e914214e5d2a5c",
   "runner_size_bytes": 529720,
   "schema_version": "polymath_executive_delivery_state_v1",
-  "status": "PENDING_ACTION_PHASE34_42_LAYER_ORCHESTRATION_AFTER_RANK16_ADAPTER_STREAM_GREEN",
-  "status_classification": "PENDING_ACTION_PHASE34_42_LAYER_ORCHESTRATION_AFTER_RANK16_ADAPTER_STREAM_GREEN",
+  "status": "PENDING_ACTION_REPO_CUSTODIAN_NATIVE_42_LAYER_ORCHESTRATION_FREEZE",
+  "status_classification": "PENDING_ACTION_REPO_CUSTODIAN_NATIVE_42_LAYER_ORCHESTRATION_FREEZE",
   "threads_nudged_this_tick": [
-    "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: completed rank-16 bounded phone probe and returned metadata evidence.",
-    "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4: nudged to implement/freeze 42-layer orchestration behind existing native C5 path.",
-    "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: routed two-file central mirror plus metadata-only probe evidence freeze.",
+    "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: routed exact five-file native 42-layer orchestration custody pathset.",
+    "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4: completed pathset and handed off; no further nudge.",
+    "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: parked until Custodian freeze includes bounded phone probe command; no nudge.",
     "Training Material Steward, Pipeline Integrator, UI Engineer, Engineering Orchestrator: not current owner; no nudge."
   ],
-  "timestamp_utc": "2026-07-01T21:02:08Z",
-  "updated_at": "2026-07-01T21:02:08Z",
-  "updated_at_utc": "2026-07-01T21:02:08Z",
-  "updated_utc": "2026-07-01T21:02:08Z",
+  "timestamp_utc": "2026-07-01T21:17:06Z",
+  "updated_at": "2026-07-01T21:17:06Z",
+  "updated_at_utc": "2026-07-01T21:17:06Z",
+  "updated_utc": "2026-07-01T21:17:06Z",
   "user_action_required": false,
   "c5_after_c1_forced_vendor_opencl_sphal_probe_result_20260701T193641Z": {
     "status": "forced_vendor_opencl_probe_result_sphal_route_green_next_runtime_orchestration_missing",
@@ -6645,5 +7130,113 @@
       "no 100k/1M authority",
       "no Comet-backed accepted run"
     ]
+  },
+  "c5_after_c1_native_42_layer_orchestration_20260701T_phase34": {
+    "status": "native_42_layer_orchestration_pathset_ready_for_custodian",
+    "status_classification": "PENDING_ACTION_REPO_CUSTODIAN_NATIVE_42_LAYER_ORCHESTRATION_FREEZE",
+    "owner": "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050",
+    "source_thread": "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4",
+    "last_update_utc": "2026-07-01T21:17:06Z",
+    "artifact_paths": [
+      "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp",
+      "tests/test_c5_native_runtime_contract.py",
+      "runtime/reports/orchestration/c5_after_c1_native_42_layer_orchestration_20260701T_phase34.json",
+      "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json",
+      "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md"
+    ],
+    "sha256_or_identity_fields": {
+      "c5_full_decoder_runtime.cpp": "ea8a833fa10e623a3c864b5c9d89c54f756c0b7fdb0763a3b7863e3ad76ac8c2",
+      "tests/test_c5_native_runtime_contract.py": "f99e4c7d811abcc60dc1c58aa9ef2394db8aea035a397c661af82f029ba20ed7",
+      "repair_report": "7bff0d8eaa3afd911c04602a0ef730c69c3f3f468fd3d5d26db1808aabc098b0",
+      "local_runner_build_for_phase34_verification": "322dd9b9812caa4961c73bc9136bd078f9ee7c320f2e8dfa1286043c9b3984fe",
+      "consumed_rank16_probe_stdout": "9915e5d19996fb7998bb6e3dde2b8a37372e670125241f31ae58def970e2debb",
+      "candidate_adapter_sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f"
+    },
+    "verification_commands_from_phase34": [
+      "cmake --build build/gemma4_megakernel_host --target gemma4_layer_runner -- -j2 passed",
+      "python3 -m pytest tests/test_c5_native_runtime_contract.py -q passed: 17 passed",
+      "python3 -m pytest tests/test_c5_*.py -q passed: 52 passed",
+      "ctest --test-dir build/gemma4_megakernel_host --output-on-failure passed: 4/4",
+      "git diff --check passed",
+      "raw suffix/value-shaped secret diff scan clean"
+    ],
+    "first_missing_green_field": "native_42_layer_orchestration_custody_commit_missing",
+    "first_missing_green_field_after_custody": "c5_full_decoder_chunked_lm_head_nll_writer_missing",
+    "next_action": "Repo Custodian freezes the five-file pathset, then routes Execution to rebuild/copy the runner and run the bounded C5_after_C1 phone probe from the report template.",
+    "research_escalation": "none",
+    "user_action_required": false,
+    "nonclaims": [
+      "no C5 pass",
+      "no executed C5 metrics",
+      "no prediction JSONL/logits/loss/confidence/candidate_train_loss unless real runtime emits them",
+      "no bridge-MSE-as-C5-loss",
+      "no learning/model-quality claim",
+      "no Phase3/4 readiness",
+      "no 100k/1M authority",
+      "no raw payloads in git",
+      "no secrets printed",
+      "no Comet-backed accepted run"
+    ],
+    "next_handoff": {
+      "schema_version": "zpp_next_handoff_v1",
+      "run_id": "c1_c4_waveB_rerun_20260630T230411Z",
+      "from_lane": "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 via Engineering/Meta watcher 019f1423-816d-7251-b7d9-945a11441c3f",
+      "to_lane": "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050",
+      "sent": true,
+      "objective": "Freeze the native 42-layer orchestration source/test/report pathset and central mirror without raw payloads, then route Execution for one bounded phone proof.",
+      "authority_metric": "Custodian commit/push of exact five-file pathset, followed only after custody by a bounded C5_after_C1 phone probe that advances to a real next runtime field.",
+      "current_edge": "WaveB_C5_after_C1_native_42_layer_orchestration_custody_pending_after_phase34_pathset",
+      "current_verdict": "pending_action",
+      "completed_work": [
+        "Phase3/4 implemented bounded 42-layer orchestration schedule validation on existing native C5 path.",
+        "Phase3/4 verification passed: build, focused native contract, broad C5 suite, ctest, diff, raw/secret scans.",
+        "Engineering/Meta updated central state and routed exact custody pathset."
+      ],
+      "evidence": [
+        {
+          "artifact": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp",
+          "sha256": "ea8a833fa10e623a3c864b5c9d89c54f756c0b7fdb0763a3b7863e3ad76ac8c2",
+          "status": "pending_custody"
+        },
+        {
+          "artifact": "tests/test_c5_native_runtime_contract.py",
+          "sha256": "f99e4c7d811abcc60dc1c58aa9ef2394db8aea035a397c661af82f029ba20ed7",
+          "status": "pending_custody"
+        },
+        {
+          "artifact": "runtime/reports/orchestration/c5_after_c1_native_42_layer_orchestration_20260701T_phase34.json",
+          "sha256": "7bff0d8eaa3afd911c04602a0ef730c69c3f3f468fd3d5d26db1808aabc098b0",
+          "status": "pending_custody"
+        },
+        {
+          "artifact": "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json",
+          "sha256": "5d181fd95f510a6d130c13328165779ce8dc8812b7c8c21022311595d17abe1e",
+          "status": "pending_custody"
+        },
+        {
+          "artifact": "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md",
+          "sha256": "f9bce636d9d5818341744636dc599301a0d9e0adf57231269d41b23f43da8007",
+          "status": "pending_custody"
+        }
+      ],
+      "first_missing_green_field": "native_42_layer_orchestration_custody_commit_missing",
+      "next_action": "Repo Custodian freezes exact five-file pathset, then routes Execution to rebuild/copy runner and run the bounded phone probe from the frozen report.",
+      "owner_thread": "019f1ac2-0f0f-7721-bf46-ad402dbd9050",
+      "research_escalation": "none",
+      "nonclaims": [
+        "no C5 pass",
+        "no learning/model-quality claim",
+        "no Phase3/4 readiness claim",
+        "no 100k/1M authority",
+        "no Comet-backed accepted run unless actually executed"
+      ],
+      "do_not_do": [
+        "do not stage unrelated dirty files",
+        "do not run phone gates in custody",
+        "do not source secrets",
+        "do not move raw payloads into git",
+        "do not claim C5 pass or metrics"
+      ]
+    }
   }
 }

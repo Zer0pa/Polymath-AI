@@ -67,6 +67,23 @@ def test_native_c5_runtime_validates_pack_then_stops_at_compute_kernel(tmp_path:
     assert not paths["output_jsonl"].exists()
 
 
+def test_native_c5_runtime_terminal_blocker_advances_to_lm_head_nll_writer() -> None:
+    source = (
+        ROOT
+        / "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp"
+    ).read_text(encoding="utf-8")
+
+    assert "append_42_layer_orchestration_blockers" in source
+    assert (
+        'result.blockers.push_back("c5_full_decoder_42_layer_orchestration_missing")'
+        not in source
+    )
+    assert (
+        'result.blockers.push_back("c5_full_decoder_chunked_lm_head_nll_writer_missing")'
+        in source
+    )
+
+
 def test_native_c5_runtime_rejects_short_rank16_adapter_payload_before_opencl(
     tmp_path: Path,
 ) -> None:
