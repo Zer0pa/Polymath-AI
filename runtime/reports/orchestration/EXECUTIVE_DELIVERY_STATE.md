@@ -1,14 +1,14 @@
 # Executive Delivery State
 
-Updated UTC: `2026-07-01T03:55:47Z`
+Updated UTC: `2026-07-01T04:05:47Z`
 
 ## Current Gate
 
-`WaveB_C5_after_C1_full_decoder_logits_runtime_pending_implementation`
+`WaveB_C5_after_C1_full_decoder_exporter_pathset_pending_engineering`
 
-Status classification: `PENDING_ACTION_ENGINEERING_PHASE34_C5_FULL_DECODER_LOGITS_IMPLEMENTATION`
+Status classification: `PENDING_ACTION_ENGINEERING_FULL_DECODER_EXPORTER_AND_MODEL_SOURCE_ROUTE`
 
-Owner: `Engineering Orchestrator 019f138b-d229-7640-98b7-2f185d6beae0` with native support from `Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4`. `Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050` owns only the refreshed central-state freeze.
+Owner: `Engineering Orchestrator 019f138b-d229-7640-98b7-2f185d6beae0` owns the full-decoder export/build pathset. `Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4` owns native runtime support. `Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050` owns only the metadata freeze.
 
 User action required: `false`
 
@@ -16,37 +16,34 @@ Dominant failure domain: `phase5_eval_failure`
 
 ## Artifact Waiting On
 
-- Outside-git `decoder_manifest` for the real full Gemma4 E4B decoder/logits path.
-- LM head/unembedding identity or embedded proof with dtype, shape, SHA-256, and logits vocab alignment.
-- Adapter-site policy mapping the rank-16 Phase4 adapter into a concrete decoder layer/site/tensor shape with `bridge_mse_is_c5_loss=false`.
-- Native full-decoder logits/generation and teacher-forced answer-token loss behind `gemma4_layer_runner --run-c5-qa-predict`.
-- Finite `candidate_train_loss`, outside-git candidate/stable prediction JSONL, and `polymath_c5_executed_metrics_v1`.
+- Custody freeze of the two new metadata-only exact unresolved-failure artifacts plus refreshed executive state mirror.
+- Engineering pathset for a bounded full-decoder export/build route from a real Gemma4 E4B model snapshot into an outside-git component pack.
+- Outside-git full decoder component pack once model source is authorized or mounted: `decoder_manifest.json`, LM-head/unembedding identity or embedded proof, adapter-site policy, and model/component SHA identities.
+- Native full-decoder logits/generation plus teacher-forced answer-token NLL/confidence behind `gemma4_layer_runner --run-c5-qa-predict`.
 
 ## Last Concrete Action
 
-Repo Custodian froze and pushed C5 decoder-runtime schema hardening at commit `abf94a83d65f852bcf5e8d0238c2a75a1e7f0587` on `origin/gemma4-megakernel-native-training`. The freeze verifies explicit decoder manifest and adapter policy schema guards and preserves fail-closed behavior at `full_decoder_logits_generation_not_implemented` when only placeholder schemas exist.
+Engineering returned exact unresolved runtime artifact `c5_after_c1_full_decoder_logits_runtime_failure_20260701T_engineering.json` SHA `6cf8b31689cfaaa247198063fde4ff129f0bc6de391232317571db5a45178931`. Phase3/4 returned exact native unresolved artifact `c5_after_c1_native_full_decoder_logits_unresolved_after_abf94a_20260701T_phase34.json` SHA `eede821fb7a4202161deaccf820aa2d15449066bd46f6846c8b96883075e9285`. Custodian froze the previous owner-state mirror at `bb8105a2bc91b6c9b0993603e14b49d0a5730f8d`. A bounded local search found no mounted full model, LM-head, or unembedding payload; the older RunPod report records `/workspace/models/gemma4_e4b/snapshot/model.safetensors`, but `/workspace` is not mounted locally.
 
 ## First Missing Green Field
 
 `decoder_manifest_missing`
 
-After valid schema paths are supplied, unresolved technical failure remains `full_decoder_logits_generation_not_implemented_after_valid_schema_paths` until real logits/generation is implemented.
+After valid schema paths: `full_decoder_logits_generation_not_implemented_after_valid_schema_paths`.
 
 ## Drift Deletion / Hardening
 
-Schema drift is frozen: two-layer/checkpoint-only decoder manifests and underspecified adapter policies cannot be accepted as C5 runtime evidence. Remaining pending hardening is the absent real decoder/logits runtime. Bridge MSE, metadata identities, fail-closed reports, placeholder schemas, and diagnostics are not substitutes for C5 loss, prediction JSONL, `candidate_train_loss`, or learning metrics.
+The evaluator and schema guards exist; the active missing surface is the full-decoder export/build route and actual mounted model/component pack. Metadata reports, two-layer packs, bridge MSE, and old RunPod path references are not authority until a real outside-git component pack is exported and verified.
 
 ## Next Concrete Action
 
-Engineering must supply or build the outside-git full decoder/logits component pack: `decoder_manifest.json`, LM-head/unembedding identity or embedded proof, adapter-site policy, and real native streamed/chunked decode plus teacher-forced answer-token NLL/confidence behind `gemma4_layer_runner --run-c5-qa-predict`. If implementation cannot proceed in one pathset, return the exact missing field/schema/path and the smallest next implementation action.
-
-Repo Custodian should freeze this two-file central-state mirror only if clean.
+Engineering should implement a custody-ready exporter/manifest pathset by generalizing `export_streamed_training_assets.py` or adding an adjacent full-decoder exporter. It must fail closed without a real model snapshot and must return the exact later authorization request if external model source is required.
 
 ## Threads Nudged This Tick
 
-- Engineering Orchestrator `019f138b-d229-7640-98b7-2f185d6beae0`: full decoder/logits implementation request.
-- Phase3/4 Engineer `019f13da-d897-7ba2-8ed1-b959892f5ed4`: native runner support request.
-- Repo Custodian `019f1ac2-0f0f-7721-bf46-ad402dbd9050`: refreshed central-state custody request.
+- Engineering Orchestrator `019f138b-d229-7640-98b7-2f185d6beae0`: exporter/manifest pathset request.
+- Phase3/4 Engineer `019f13da-d897-7ba2-8ed1-b959892f5ed4`: native memory/runtime support request.
+- Repo Custodian `019f1ac2-0f0f-7721-bf46-ad402dbd9050`: metadata artifact/state freeze request.
 
 ## Nonclaims Preserved
 
@@ -63,4 +60,4 @@ Repo Custodian should freeze this two-file central-state mirror only if clean.
 
 ## State Hash
 
-`EXECUTIVE_DELIVERY_STATE.json` SHA after this update: `f76b6e5099dfc54dc232eb7f570c88f5907b017f30b14d388403d84bfd54de06`
+`EXECUTIVE_DELIVERY_STATE.json` SHA after this update: `5ee907adb339f3085dddf2862dba3ea52b4825379c24c8a5a3127d19e339d0c7`

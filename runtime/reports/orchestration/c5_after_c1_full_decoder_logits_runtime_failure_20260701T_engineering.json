@@ -1,0 +1,183 @@
+{
+  "artifact_paths": {
+    "phase34_inventory": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/orchestration/c5_after_c1_runtime_component_inventory_after_16c99_20260701T_phase34.json",
+    "schema_hardening_decision": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/orchestration/c5_after_c1_decoder_runtime_component_decision_20260701T_engineering.json",
+    "this_report": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/orchestration/c5_after_c1_full_decoder_logits_runtime_failure_20260701T_engineering.json"
+  },
+  "base_commit_consumed": "abf94a83d65f852bcf5e8d0238c2a75a1e7f0587",
+  "exact_unresolved_technical_failure": {
+    "classification": "PENDING_ACTION_UNDER_ENGINEERING_PHASE34_IMPLEMENTATION",
+    "field": "outside_git_full_gemma4_e4b_decoder_logits_component_pack_missing",
+    "not_a_blocker_requiring_user": true,
+    "why_it_is_real": "C5 requires teacher-forced answer-token NLL/confidence from real Gemma4 E4B logits. Local/phone inventories expose tokenizer tables and rank16 adapter payloads, but no 42-layer decoder weights/runtime manifest and no LM-head/unembedding tensor. Existing native code only supports two-layer/student top-k or bridge MSE paths and the C5 body intentionally fails closed."
+  },
+  "expected_outside_git_paths_or_schema": {
+    "adapter_site_policy": {
+      "adapter_rank": 16,
+      "adapter_site": "<explicit decoder residual/projection site>",
+      "bridge_mse_is_c5_loss": false,
+      "candidate_adapter_sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f",
+      "decoder_layer_index": "integer 0..41",
+      "input_shape": [
+        1,
+        16,
+        2560
+      ],
+      "output_shape": [
+        1,
+        16,
+        2560
+      ],
+      "path_template": "<outside_git_runtime_root>/c5_decoder/gemma4_e4b/adapter_site_policy.json",
+      "schema_version": "polymath_c5_adapter_site_policy_v1",
+      "stable_baseline_adapter_sha256": "e0d1c66ac876c2b6fbbe9e88f1b02dd37201d8ffba10afcd44f1c558fc32f7c9"
+    },
+    "decoder_manifest": {
+      "decoder.hidden_size": 2560,
+      "decoder.kind": "full_gemma4_text_decoder_logits",
+      "decoder.logits_vocabulary_size": 262144,
+      "decoder.num_hidden_layers": 42,
+      "decoder.vocab_size": 262144,
+      "hf_revision": "7aa32e6889efd6300124851b164f8b364314c3d8",
+      "model_id": "google/gemma-4-E4B",
+      "path_template": "<outside_git_runtime_root>/c5_decoder/gemma4_e4b/decoder_manifest.json",
+      "schema_version": "polymath_c5_full_decoder_manifest_v1"
+    },
+    "lm_head_or_unembedding": {
+      "alternative": "decoder_manifest.lm_head.embedded_in_decoder=true with same dtype/shape/sha256/vocab_size proof",
+      "dtype": "bf16|f16|f32",
+      "path_template": "<outside_git_runtime_root>/c5_decoder/gemma4_e4b/lm_head_or_unembedding.<dtype>",
+      "sha256": "<real tensor sha256>",
+      "shape": [
+        262144,
+        2560
+      ],
+      "vocab_alignment": "same tokenizer vocab/ids as vocab.hex.tsv and merges.hex.tsv identities above"
+    }
+  },
+  "first_missing_green_field": "decoder_manifest_missing",
+  "first_unresolved_technical_failure_after_valid_schema_paths": "full_decoder_logits_generation_not_implemented_after_valid_schema_paths",
+  "head_commit_seen": "abf94a83d65f852bcf5e8d0238c2a75a1e7f0587",
+  "known_verified_inputs": {
+    "candidate_adapter_sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f",
+    "heldout_split": {
+      "rows": 53,
+      "sha256": "da41c5362398f24e0e0dd9df9a5cf0594435a455871fa77ab74d9312e6c8e9b2"
+    },
+    "phone_public_tokenizer_dir": "/data/local/tmp/polymath_gemma4_gate/tokenizer/gemma4_e4b_bpe_v1",
+    "stable_baseline_sha256": "e0d1c66ac876c2b6fbbe9e88f1b02dd37201d8ffba10afcd44f1c558fc32f7c9",
+    "tokenizer_merges_hex_tsv_sha256": "6c99efe1bfe6b70092d531cad0a57278182652a2380aa5fb33e99d4e4eeb905f",
+    "tokenizer_vocab_hex_tsv_sha256": "0e43bafc96037bed92fabea31282eb10ad094ec921748a58f6be10dbf9796f74"
+  },
+  "lane": "engineering_c5_full_decoder_logits_runtime",
+  "nonclaims": [
+    "no C5 pass",
+    "no prediction JSONL emitted",
+    "no logits fabricated",
+    "no loss/confidence/candidate_train_loss fabricated",
+    "no bridge MSE relabeled as C5 loss",
+    "no learning or model-quality claim",
+    "no Phase3 readiness claim",
+    "no Phase4 readiness claim",
+    "not 100k or 1M Phase2 authority",
+    "no HF/Comet/API call"
+  ],
+  "runtime_inventory_result": {
+    "existing_native_logits_runtime_scope": "two-layer/student top-k and bridge objectives only; not full 42-layer autoregressive QA logits",
+    "existing_reference_full_teacher_route": {
+      "requires_external_snapshot_dir": "/workspace/models/gemma4_e4b/snapshot",
+      "scope": "precomputed top-k teacher shard, not per-record QA generation payload producer",
+      "script": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/create_h11f_topk_teacher_shard.py",
+      "usable_for_c5_after_c1_now": false
+    },
+    "existing_streamed_asset_exporter_scope": {
+      "exports_embed_tokens": true,
+      "exports_full_42_layer_decoder": false,
+      "hardcoded_current_layers": [
+        0,
+        1
+      ],
+      "requires_model_safetensors": true,
+      "script": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_streamed_training_assets.py",
+      "usable_for_c5_after_c1_now": false
+    },
+    "local_accepted_adapter_site_policy_found": false,
+    "local_full_decoder_manifest_found": false,
+    "local_full_model_safetensors_or_gguf_found": false,
+    "local_lm_head_or_unembedding_found": false
+  },
+  "schema_version": "polymath_c5_after_c1_full_decoder_logits_runtime_failure_v1",
+  "smallest_next_implementation_action": {
+    "action": "Create a bounded full-decoder export/build step from the actual Gemma4 E4B model snapshot/weights into an outside-git component pack, then implement streamed/chunked logits and teacher-forced answer loss in c5_qa_inference.cpp.",
+    "bounded_execution_probe_for_execution_or_phase34_after_implementation": "Run gemma4_layer_runner --run-c5-qa-predict with the verified tokenizer dir, decoder_manifest, lm_head/unembedding, adapter policy, candidate/stable adapter payload, and /tmp heldout QA; output prediction JSONL under /tmp only; expect per-record record_id,prediction,finite nonnegative loss,confidence in [0,1].",
+    "candidate_train_loss_source": "Same real logits objective over accepted train/validation slice or emitted by actual training runtime; Phase4 bridge MSE is forbidden.",
+    "owner": "Phase3/4 native runtime implementation with Engineering review; Execution only runs bounded command after pathset/custody.",
+    "source_files_to_extend": [
+      "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_streamed_training_assets.py or a new adjacent full-decoder exporter if the current two-layer exporter cannot be safely generalized",
+      "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_qa_inference.cpp",
+      "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/include/polymath/gemma4/c5_qa_inference.h",
+      "scripts/host/run_c5_phase34_qa_inference_producer.py",
+      "tests/test_c5_phase34_qa_inference_producer.py plus native/contract tests for valid-schema no-longer-fails once real runtime is wired"
+    ]
+  },
+  "source_surfaces": {
+    "c5_host_producer": {
+      "exists": true,
+      "is_file": true,
+      "path": "/Users/Zer0pa/Polymat AI/Polymath-AI/scripts/host/run_c5_phase34_qa_inference_producer.py",
+      "sha256": "e260e00d9da5764e223aa2a118d3d967e078eccfd356f4598ea9b0c22686d327",
+      "size_bytes": 18939
+    },
+    "c5_native_guard": {
+      "exists": true,
+      "is_file": true,
+      "path": "/Users/Zer0pa/Polymat AI/Polymath-AI/integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_qa_inference.cpp",
+      "sha256": "b39ff9197c25d6b35ef6df5b392c937b29a28559f554d38811a0971d8f1c7423",
+      "size_bytes": 16485
+    },
+    "c5_native_header": {
+      "exists": true,
+      "is_file": true,
+      "path": "/Users/Zer0pa/Polymat AI/Polymath-AI/integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/include/polymath/gemma4/c5_qa_inference.h",
+      "sha256": "d03a1350b90c202ba1337402ef775dd9ec330b778a33d9790f0fe7ee1cbfba51",
+      "size_bytes": 709
+    },
+    "c5_tests": {
+      "exists": true,
+      "is_file": true,
+      "path": "/Users/Zer0pa/Polymat AI/Polymath-AI/tests/test_c5_phase34_qa_inference_producer.py",
+      "sha256": "723dd6d4955aa3b3bb14eb63886b4f3e6e0d24fa3646ec1e87767f698567f842",
+      "size_bytes": 10932
+    },
+    "opencl_layer_runner_existing_student_topk": {
+      "exists": true,
+      "is_file": true,
+      "path": "/Users/Zer0pa/Polymat AI/Polymath-AI/integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/opencl_layer_runner.cpp",
+      "sha256": "7cee126cbaa2597941ef8d1b876dfcb0aa354728c68a45bfba496ed1aaaba21b",
+      "size_bytes": 174612
+    },
+    "streamed_asset_exporter_existing_two_layer": {
+      "exists": true,
+      "is_file": true,
+      "path": "/Users/Zer0pa/Polymat AI/Polymath-AI/integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_streamed_training_assets.py",
+      "sha256": "9da868ac227ccc5cc390dfd29122deaec04eb317649c3b0e3573a71953aa8f00",
+      "size_bytes": 4940
+    },
+    "topk_teacher_existing_reference": {
+      "exists": true,
+      "is_file": true,
+      "path": "/Users/Zer0pa/Polymat AI/Polymath-AI/integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/create_h11f_topk_teacher_shard.py",
+      "sha256": "082d7e15ce73477f950abfa89a3b10c756cc22a09a2846299ffa7b770115fd25",
+      "size_bytes": 7459
+    }
+  },
+  "status": "c5_after_c1_full_decoder_logits_runtime_pending_exact_unresolved_technical_failure",
+  "status_classification": "PENDING_ACTION_ENGINEERING_PHASE34_C5_FULL_DECODER_LOGITS_IMPLEMENTATION",
+  "user_action_required": false,
+  "verification_commands": [
+    "git fetch origin gemma4-megakernel-native-training; rev-parse HEAD and origin -> abf94a83d65f852bcf5e8d0238c2a75a1e7f0587",
+    "find /Users/Zer0pa/Polymat AI /tmp for safetensors/gguf/full decoder/lm_head/unembedding artifacts -> no local full model/LM-head payload found",
+    "rg existing runtime surfaces -> only two-layer streamed asset export, two-layer/student top-k, bridge MSE, and external-snapshot teacher-topk references found",
+    "No phone/ADB, HF, Comet, API, or secrets used in this lane step"
+  ]
+}

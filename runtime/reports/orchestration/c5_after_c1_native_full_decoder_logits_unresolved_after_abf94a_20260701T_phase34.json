@@ -1,0 +1,137 @@
+{
+  "schema_version": "polymath_c5_after_c1_native_full_decoder_logits_unresolved_v1",
+  "lane": "phase34_c5_full_decoder_logits_runtime",
+  "status": "c5_after_c1_native_full_decoder_logits_pending_exact_unresolved_technical_failure",
+  "consumed_commits": {
+    "frozen_decoder_runtime_schema_hardening": "abf94a83d65f852bcf5e8d0238c2a75a1e7f0587",
+    "current_head_observed": "bb8105a2bc91b6c9b0993603e14b49d0a5730f8d",
+    "current_head_contains_frozen_commit": true
+  },
+  "current_gate": "WaveB_C5_after_C1_full_decoder_logits_runtime_pending_implementation",
+  "first_missing_green_field": "decoder_manifest_missing",
+  "first_unresolved_technical_failure_after_valid_schema_paths": "full_decoder_logits_generation_not_implemented_after_valid_schema_paths",
+  "implementation_feasibility_decision": {
+    "native_full_decoder_logits_implementation_feasible_from_current_artifacts": false,
+    "reason": "The canonical native C5 boundary validates schema and runtime paths, then intentionally fails closed. Current local/phone bounded inventory exposes tokenizer tables and Phase4 rank-16 adapter payload identities only; it does not expose a real full Gemma 4 E4B decoder manifest, LM head/unembedding identity/path, adapter-site policy, or full decoder layer-pack/runtime needed to emit logits, prediction, loss, confidence, or candidate_train_loss."
+  },
+  "native_source_boundary": {
+    "runner_dispatch": {
+      "path": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/runner/main.cpp",
+      "function": "run_c5_qa_predict",
+      "lines_observed": "267,358",
+      "sha256": "c7c96bfddb9dba22cc247170ceb2df028210425e6a957788c4ae7b409c96e21e"
+    },
+    "backend_terminal_boundary": {
+      "path": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_qa_inference.cpp",
+      "function": "polymath::gemma4::run_c5_qa_predict",
+      "lines_observed": "334,386,404-405",
+      "sha256": "b39ff9197c25d6b35ef6df5b392c937b29a28559f554d38811a0971d8f1c7423",
+      "terminal_behavior": "adds full_decoder_logits_generation_not_implemented when all component/schema blockers are absent"
+    },
+    "request_header": {
+      "path": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/include/polymath/gemma4/c5_qa_inference.h",
+      "sha256": "d03a1350b90c202ba1337402ef775dd9ec330b778a33d9790f0fe7ee1cbfba51"
+    },
+    "host_producer": {
+      "path": "scripts/host/run_c5_phase34_qa_inference_producer.py",
+      "functions": [
+        "validate_decoder_manifest",
+        "validate_adapter_site_policy",
+        "native_argv"
+      ],
+      "lines_observed": "167,226,390-394",
+      "sha256": "e260e00d9da5764e223aa2a118d3d967e078eccfd356f4598ea9b0c22686d327"
+    }
+  },
+  "accepted_identities_preserved": {
+    "heldout_split_sha256": "da41c5362398f24e0e0dd9df9a5cf0594435a455871fa77ab74d9312e6c8e9b2",
+    "candidate_adapter_sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f",
+    "stable_baseline_adapter_sha256": "e0d1c66ac876c2b6fbbe9e88f1b02dd37201d8ffba10afcd44f1c558fc32f7c9",
+    "tokenizer_dir": {
+      "path": "/data/local/tmp/polymath_gemma4_gate/tokenizer/gemma4_e4b_bpe_v1",
+      "vocab_hex_tsv_sha256": "0e43bafc96037bed92fabea31282eb10ad094ec921748a58f6be10dbf9796f74",
+      "merges_hex_tsv_sha256": "6c99efe1bfe6b70092d531cad0a57278182652a2380aa5fb33e99d4e4eeb905f",
+      "status": "present_phone_public_outside_git_hash_verified"
+    }
+  },
+  "exact_missing_components": {
+    "decoder_manifest": {
+      "status": "missing",
+      "first_missing_green_field": "decoder_manifest_missing",
+      "expected_path_or_format": "outside-git JSON passed as --decoder-manifest with schema_version polymath_c5_full_decoder_manifest_v1, model_id google/gemma-4-E4B, hf_revision 7aa32e6889efd6300124851b164f8b364314c3d8, decoder.kind full_gemma4_text_decoder_logits, num_hidden_layers 42, hidden_size 2560, vocab_size 262144, logits_vocabulary_size 262144",
+      "owner": "Engineering with Phase3/4 native support"
+    },
+    "lm_head_or_unembedding": {
+      "status": "missing",
+      "expected_path_or_format": "outside-git LM head/unembedding tensor identity/path, or decoder manifest proof lm_head.embedded_in_decoder=true with dtype, shape [262144, 2560], sha256, and vocab_size 262144",
+      "owner": "Engineering with Phase3/4 native support"
+    },
+    "adapter_site_policy": {
+      "status": "missing",
+      "expected_path_or_format": "outside-git JSON passed as --adapter-site-policy with schema_version polymath_c5_adapter_site_policy_v1, adapter_rank 16, decoder_layer_index 0..41, concrete adapter_site, input/output shape [1, 16, 2560], candidate/stable adapter SHA fields, and bridge_mse_is_c5_loss=false",
+      "owner": "Engineering with Phase3/4 native support"
+    },
+    "full_decoder_layer_weights_runtime": {
+      "status": "missing_or_not_wired",
+      "expected_path_or_format": "outside-git full Gemma 4 E4B decoder/logits layer pack or equivalent streamed runtime that can run teacher-forced QA answer loss and generation without materializing unbounded B*S*V logits",
+      "owner": "Engineering with Phase3/4 native support"
+    },
+    "memory_strategy": {
+      "status": "unresolved_after_component_absence",
+      "expected_path_or_format": "streamed/chunked logits projection and answer-token NLL/confidence plan compatible with phone memory limits; full B*S*V materialization is not accepted",
+      "owner": "Engineering with Phase3/4 native support"
+    },
+    "candidate_train_loss": {
+      "status": "missing_until_real_logits_or_training_runtime_emits_it",
+      "expected_path_or_format": "finite nonnegative value from the same real C5 logits/training objective; Phase4 bridge MSE is explicitly not accepted",
+      "owner": "Execution after Engineering supplies real runtime, or Engineering if emitted during native training objective"
+    }
+  },
+  "bounded_inventory_result": {
+    "mac_outside_git_roots_checked": [
+      "/Users/Zer0pa/Polymat AI/runtime",
+      "/tmp"
+    ],
+    "phone_public_roots_checked": [
+      "/data/local/tmp",
+      "/sdcard/Download"
+    ],
+    "accepted_full_decoder_manifest_found": false,
+    "accepted_lm_head_or_unembedding_found": false,
+    "accepted_adapter_site_policy_found": false,
+    "accepted_full_decoder_runtime_found": false,
+    "accepted_tokenizer_tables_found": true,
+    "raw_payload_copied_to_git": false
+  },
+  "smallest_next_action": {
+    "action": "Export or build the outside-git full Gemma 4 E4B decoder/logits component pack and manifests, then replace the terminal fail-closed branch in c5_qa_inference.cpp::run_c5_qa_predict with a streamed/chunked native decode path that emits outside-git JSONL rows containing record_id, prediction, finite nonnegative loss, and confidence in [0,1], plus finite candidate_train_loss from the same real objective.",
+    "first_code_boundary_to_modify_after_components_exist": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_qa_inference.cpp::run_c5_qa_predict",
+    "expected_command_prefix_after_components_exist": "python3.11 scripts/host/run_c5_phase34_qa_inference_producer.py --gemma4-runner <outside_git_or_build_gemma4_layer_runner> --tokenizer-dir /data/local/tmp/polymath_gemma4_gate/tokenizer/gemma4_e4b_bpe_v1 --decoder-manifest <outside_git_decoder_manifest> --lm-head <outside_git_lm_head_or_unembedding_or_omit_if_manifest_embeds> --adapter-site-policy <outside_git_adapter_site_policy>"
+  },
+  "raw_boundary_proof": {
+    "raw_qa_jsonl_copied_to_git": false,
+    "raw_prediction_jsonl_copied_to_git": false,
+    "raw_checkpoint_or_adapter_payload_copied_to_git": false,
+    "raw_model_or_tensor_payload_copied_to_git": false,
+    "reports_are_metadata_only": true
+  },
+  "verification_commands": [
+    "git merge-base --is-ancestor abf94a83d65f852bcf5e8d0238c2a75a1e7f0587 HEAD && git log --oneline --decorate -5 -> abf94a8 is in current HEAD history; HEAD bb8105a2",
+    "rg -n \"Status run_c5_qa_predict|full_decoder_logits_generation_not_implemented|append_missing_if_empty\\\\(blockers, request.decoder_manifest_path|if \\\\(blockers.empty\\\\(\\\\)\\\\)\" integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_qa_inference.cpp -> terminal fail-closed branch at lines 404-405",
+    "rg --files /Users/Zer0pa/Polymat\\ AI/runtime /tmp /Users/Zer0pa/Polymat\\ AI/Polymath-AI | rg -i \"(decoder.*manifest|full.*decoder|lm[_-]?head|unembedding|adapter.*site.*policy|site.*policy|gemma4.*manifest|layer.*pack|qnn.*context|vocab\\\\.hex\\\\.tsv|merges\\\\.hex\\\\.tsv)$\" -> only temporary tokenizer probe tables",
+    "adb shell 'find /data/local/tmp /sdcard/Download -maxdepth 7 ...' -> only accepted phone tokenizer tables found for this component class"
+  ],
+  "nonclaims": [
+    "no C5 pass",
+    "no prediction JSONL emitted",
+    "no logits fabricated",
+    "no loss, confidence, candidate_train_loss, or C5 metrics fabricated",
+    "no bridge MSE relabeled as C5 loss",
+    "no learning or model-quality claim",
+    "no Phase3 readiness claim",
+    "no Phase4 readiness claim",
+    "not 100k or 1M Phase2 authority",
+    "no HF or Comet call"
+  ],
+  "user_action_required": false
+}
