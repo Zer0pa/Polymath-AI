@@ -1,0 +1,97 @@
+{
+  "addressed_first_missing_green_field": "context_generation_failure:qnn_context_binary_generator_rejects_probe_graph:duplicate_tensor_registration:rms_square",
+  "consumed_execution_report": {
+    "path": "runtime/reports/polar_phase34_consumer_preflight/active_wave/qnn_cpp_ffn_residual_generator/qnn_device_creation_diagnostics_execution_20260702T2305Z.json",
+    "sha256": "e01313442181bc627113cf5479aef6fcc8f2ff4771122dc6625e7c6544f89f62"
+  },
+  "generated_plan_only_package": {
+    "gelu_probe_source_sha256": "0be9199dd8d17c5321c68915aef109e45391d435e655212e6232543831a311b1",
+    "matmul_probe_source_sha256": "b6d02f771d36143871121afd1b5515993df2c4435a8095598512104f264bc6c0",
+    "raw_suffix_scan_count": 0,
+    "rmsnorm_probe_source_sha256": "f03bc3bf90f2735acca2173623ab531ee2d4d2044b4a237b492746f17535d81a",
+    "root": "/tmp/wavec_qnn_duplicate_tensor_registration_repair_pathset_20260702T231500Z"
+  },
+  "governing_gate": "WaveC_full_gemma_qnn_htp_forward_consumed_tensor_route",
+  "local_verification": [
+    {
+      "command": "python3.11 -m py_compile scripts/host/run_wavec_qnn_cpp_ffn_residual_generator.py tests/test_wavec_qnn_cpp_ffn_residual_generator.py",
+      "result": "pass"
+    },
+    {
+      "command": "python3.11 scripts/host/run_wavec_qnn_cpp_ffn_residual_generator.py --print-schema",
+      "result": "pass"
+    },
+    {
+      "command": "python3.11 -m pytest tests/test_wavec_qnn_cpp_ffn_residual_generator.py tests/test_wavec_full_gemma_qnn.py tests/test_phase4_bridge_cell.py tests/test_wavec_gemma_qnn_exporter.py",
+      "result": "52 passed in 2.72s"
+    },
+    {
+      "command": "raw suffix scan over repo pathset report and fresh plan-only package",
+      "result": "0"
+    }
+  ],
+  "nonclaims": [
+    "no C5 pass",
+    "no learning/model-quality claim",
+    "no Phase3/4 readiness",
+    "no full-Gemma HTP forward claim until QNN context/net-run/profile/Phase4 consumption prove it",
+    "no 100k/1M authority",
+    "no raw payloads in git",
+    "no secrets printed",
+    "no Comet-backed accepted run"
+  ],
+  "pipeline_receiving_checklist": [
+    "source/test/pathset SHAs match current files",
+    "primitive RMSNorm generated source has no model.addTensor for rms_square/rms_mean/rms_eps/rms_rsqrt/rms_scaled/rms_output",
+    "GELU and quantized MatMul generated sources follow same output-registration rule",
+    "full-island generated source follows same output-registration rule",
+    "app-write inputs and static weights remain explicitly registered",
+    "device preflight/platform-validator, qairt_exec staging, model-library diagnostics, and ordered probe gating are preserved",
+    "raw model/context/tensor/generated QNN payloads remain outside git"
+  ],
+  "post_custody_execution_command_shape": {
+    "owner": "Engineering/Meta constructs bounded GO for Execution after custody",
+    "shape": "rerun WaveC QNN probe ladder from frozen source using prior validated materialized weights, RunPod QAIRT_HOST_ROOT, NDK root, Termux phone work root, qairt_exec staging, and device preflight; stop at first probe failure before full island"
+  },
+  "repair_contract": {
+    "applies_to": [
+      "primitive RMSNorm probe",
+      "primitive GELU-tanh probe",
+      "quantized tiny MatMul probe",
+      "full Gemma FFN/residual island"
+    ],
+    "ordered_probe_ladder_preserved": [
+      "primitive_rmsnorm_decomposition_probe",
+      "primitive_gelu_tanh_lowering_probe",
+      "quantized_tiny_matmul_static_weight_probe",
+      "full_gemma4_e4b_ffn_residual_layer0_probe gated behind prior greens"
+    ],
+    "regression_tests": [
+      "fail if RMSNorm node outputs are pre-registered",
+      "fail if GELU node outputs are pre-registered",
+      "fail if quantized matmul node outputs are pre-registered",
+      "fail if full-island node outputs are pre-registered"
+    ],
+    "tensor_registration_rule": "Generated QNN C++ sources register only graph app-write inputs and static tensors with model.addTensor(); node outputs are supplied only as addNode output tensors so the wrapper owns output registration."
+  },
+  "research_escalation": "active_parallel_signal_lane_if_QNN_tensor_registration_or_op_config_semantics_change_stop_conditions",
+  "schema_version": "waveC_qnn_duplicate_tensor_registration_repair_handoff_v1",
+  "source_pathset": [
+    {
+      "bytes": 77176,
+      "path": "scripts/host/run_wavec_qnn_cpp_ffn_residual_generator.py",
+      "sha256": "b5466aab9a9ffa1febc27b1d90d58fe76b25d0656bf787d7124e93d81b784fdf"
+    },
+    {
+      "bytes": 20612,
+      "path": "tests/test_wavec_qnn_cpp_ffn_residual_generator.py",
+      "sha256": "b35a0b01fca5a064bce6e25fadc277c45c0de97ff636b5675609839bd371523c"
+    },
+    {
+      "bytes": 26023,
+      "path": "runtime/reports/orchestration/WAVEC_QNN_DUPLICATE_TENSOR_REGISTRATION_REPAIR_PATHSET_20260702T231500Z.json",
+      "sha256": "3eae63dc0782860599b7c763eb7284280c2e3c339856e21c466c21abd555bbd3"
+    }
+  ],
+  "status": "waveC_qnn_duplicate_tensor_registration_repair_pathset_ready_for_pipeline"
+}

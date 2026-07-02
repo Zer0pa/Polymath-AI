@@ -1100,12 +1100,6 @@ def render_rmsnorm_probe_nodes(graph: str) -> str:
   uint32_t dims_hidden[] = {{1, {SEQ}, {HIDDEN}}};
   uint32_t dims_reduce[] = {{1, {SEQ}, 1}};
   VALIDATE(model.addTensor("rms_input", appTensor("rms_input", dims_hidden, 3, QNN_TENSOR_TYPE_APP_WRITE)), err);
-  VALIDATE(model.addTensor("rms_square", appTensor("rms_square", dims_hidden, 3, QNN_TENSOR_TYPE_NATIVE)), err);
-  VALIDATE(model.addTensor("rms_mean", appTensor("rms_mean", dims_reduce, 3, QNN_TENSOR_TYPE_NATIVE)), err);
-  VALIDATE(model.addTensor("rms_eps", appTensor("rms_eps", dims_reduce, 3, QNN_TENSOR_TYPE_NATIVE)), err);
-  VALIDATE(model.addTensor("rms_rsqrt", appTensor("rms_rsqrt", dims_reduce, 3, QNN_TENSOR_TYPE_NATIVE)), err);
-  VALIDATE(model.addTensor("rms_scaled", appTensor("rms_scaled", dims_hidden, 3, QNN_TENSOR_TYPE_NATIVE)), err);
-  VALIDATE(model.addTensor("rms_output", appTensor("rms_output", dims_hidden, 3, QNN_TENSOR_TYPE_APP_READ)), err);
   const char* square_inputs[] = {{"rms_input", "rms_input"}};
   Qnn_Tensor_t square_outputs[] = {{appTensor("rms_square", dims_hidden, 3, QNN_TENSOR_TYPE_NATIVE)}};
   VALIDATE(model.addNode(QNN_OPCONFIG_VERSION_1, "{graph}_square", QNN_OP_PACKAGE_NAME_QTI_AISW, QNN_OP_ELEMENT_WISE_MULTIPLY, nullptr, 0, square_inputs, 2, square_outputs, 1), err);
@@ -1135,16 +1129,6 @@ def render_gelu_probe_nodes(graph: str) -> str:
   // then ffn=gelu*up. Constants are static scalar tensors in the finalized QNN param builder.
   VALIDATE(model.addTensor("gelu_input", appTensor("gelu_input", dims_intermediate, 2, QNN_TENSOR_TYPE_APP_WRITE)), err);
   VALIDATE(model.addTensor("gelu_up", appTensor("gelu_up", dims_intermediate, 2, QNN_TENSOR_TYPE_APP_WRITE)), err);
-  VALIDATE(model.addTensor("gelu_x2", appTensor("gelu_x2", dims_intermediate, 2, QNN_TENSOR_TYPE_NATIVE)), err);
-  VALIDATE(model.addTensor("gelu_cube", appTensor("gelu_cube", dims_intermediate, 2, QNN_TENSOR_TYPE_NATIVE)), err);
-  VALIDATE(model.addTensor("gelu_cubic_scaled", appTensor("gelu_cubic_scaled", dims_intermediate, 2, QNN_TENSOR_TYPE_NATIVE)), err);
-  VALIDATE(model.addTensor("gelu_inner", appTensor("gelu_inner", dims_intermediate, 2, QNN_TENSOR_TYPE_NATIVE)), err);
-  VALIDATE(model.addTensor("gelu_tanh_arg", appTensor("gelu_tanh_arg", dims_intermediate, 2, QNN_TENSOR_TYPE_NATIVE)), err);
-  VALIDATE(model.addTensor("gelu_tanh", appTensor("gelu_tanh", dims_intermediate, 2, QNN_TENSOR_TYPE_NATIVE)), err);
-  VALIDATE(model.addTensor("gelu_shifted", appTensor("gelu_shifted", dims_intermediate, 2, QNN_TENSOR_TYPE_NATIVE)), err);
-  VALIDATE(model.addTensor("gelu_half_x", appTensor("gelu_half_x", dims_intermediate, 2, QNN_TENSOR_TYPE_NATIVE)), err);
-  VALIDATE(model.addTensor("gelu_native", appTensor("gelu_native", dims_intermediate, 2, QNN_TENSOR_TYPE_NATIVE)), err);
-  VALIDATE(model.addTensor("gelu_output", appTensor("gelu_output", dims_intermediate, 2, QNN_TENSOR_TYPE_APP_READ)), err);
   const char* x2_inputs[] = {{"gelu_input", "gelu_input"}};
   Qnn_Tensor_t x2_outputs[] = {{appTensor("gelu_x2", dims_intermediate, 2, QNN_TENSOR_TYPE_NATIVE)}};
   VALIDATE(model.addNode(QNN_OPCONFIG_VERSION_1, "{graph}_x2", QNN_OP_PACKAGE_NAME_QTI_AISW, QNN_OP_ELEMENT_WISE_MULTIPLY, nullptr, 0, x2_inputs, 2, x2_outputs, 1), err);
@@ -1188,10 +1172,7 @@ def render_quantized_matmul_probe_nodes(graph: str) -> str:
   uint32_t dims_weight[] = {{4, 3}};
   uint32_t dims_output[] = {{1, 2, 4}};
   VALIDATE(model.addTensor("qmat_input_f32", appTensor("qmat_input_f32", dims_input, 3, QNN_TENSOR_TYPE_APP_WRITE)), err);
-  VALIDATE(model.addTensor("qmat_input_u16", appTensor("qmat_input_u16", dims_input, 3, QNN_TENSOR_TYPE_NATIVE, QNN_DATATYPE_UFIXED_POINT_16)), err);
   VALIDATE(model.addTensor("qmat_weight_u8", appTensor("qmat_weight_u8", dims_weight, 2, QNN_TENSOR_TYPE_STATIC, QNN_DATATYPE_UFIXED_POINT_8)), err);
-  VALIDATE(model.addTensor("qmat_output_u16", appTensor("qmat_output_u16", dims_output, 3, QNN_TENSOR_TYPE_NATIVE, QNN_DATATYPE_UFIXED_POINT_16)), err);
-  VALIDATE(model.addTensor("qmat_output_f32", appTensor("qmat_output_f32", dims_output, 3, QNN_TENSOR_TYPE_APP_READ)), err);
   const char* quant_inputs[] = {{"qmat_input_f32"}};
   Qnn_Tensor_t quant_outputs[] = {{appTensor("qmat_input_u16", dims_input, 3, QNN_TENSOR_TYPE_NATIVE, QNN_DATATYPE_UFIXED_POINT_16)}};
   VALIDATE(model.addNode(QNN_OPCONFIG_VERSION_1, "{graph}_quantize", QNN_OP_PACKAGE_NAME_QTI_AISW, QNN_OP_QUANTIZE, nullptr, 0, quant_inputs, 1, quant_outputs, 1), err);
@@ -1266,13 +1247,6 @@ ModelError_t QnnModel_composeGraphs(Qnn_BackendHandle_t backendHandle,
   uint32_t dims_down_w[] = {{{HIDDEN}, {INTERMEDIATE}}};
 
   VALIDATE(model.addTensor("gemma_hidden_input", appTensor("gemma_hidden_input", dims_hidden, 3, QNN_TENSOR_TYPE_APP_WRITE)), err);
-  VALIDATE(model.addTensor("gemma_layer0_normed", appTensor("gemma_layer0_normed", dims_hidden, 3, QNN_TENSOR_TYPE_NATIVE)), err);
-  VALIDATE(model.addTensor("gemma_layer0_gate", appTensor("gemma_layer0_gate", dims_intermediate, 3, QNN_TENSOR_TYPE_NATIVE)), err);
-  VALIDATE(model.addTensor("gemma_layer0_up", appTensor("gemma_layer0_up", dims_intermediate, 3, QNN_TENSOR_TYPE_NATIVE)), err);
-  VALIDATE(model.addTensor("gemma_layer0_gelu", appTensor("gemma_layer0_gelu", dims_intermediate, 3, QNN_TENSOR_TYPE_NATIVE)), err);
-  VALIDATE(model.addTensor("gemma_layer0_ffn", appTensor("gemma_layer0_ffn", dims_intermediate, 3, QNN_TENSOR_TYPE_NATIVE)), err);
-  VALIDATE(model.addTensor("gemma_layer0_down", appTensor("gemma_layer0_down", dims_hidden, 3, QNN_TENSOR_TYPE_NATIVE)), err);
-  VALIDATE(model.addTensor("gemma_hidden_output", appTensor("gemma_hidden_output", dims_hidden, 3, QNN_TENSOR_TYPE_APP_READ)), err);
 
   VALIDATE(model.addTensor("gemma4_layer0_input_layernorm_f32", staticTensor("gemma4_layer0_input_layernorm_f32", dims_norm, 1, BINVARSTART(input_layernorm_f32), BINLEN(input_layernorm_f32))), err);
   VALIDATE(model.addTensor("gemma4_layer0_mlp_gate_proj_f32", staticTensor("gemma4_layer0_mlp_gate_proj_f32", dims_gate_w, 2, BINVARSTART(mlp_gate_proj_f32), BINLEN(mlp_gate_proj_f32))), err);

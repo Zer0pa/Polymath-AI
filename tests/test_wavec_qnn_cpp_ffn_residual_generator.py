@@ -333,6 +333,16 @@ def test_generator_writes_fail_closed_source_package_outside_git(tmp_path: Path)
     assert "gemma_hidden2560_relu" not in cpp
     assert "gemma_hidden2560_identity_add" not in cpp
     assert "qwen" not in cpp.lower()
+    for output_name in (
+        "gemma_layer0_normed",
+        "gemma_layer0_gate",
+        "gemma_layer0_up",
+        "gemma_layer0_gelu",
+        "gemma_layer0_ffn",
+        "gemma_layer0_down",
+        "gemma_hidden_output",
+    ):
+        assert f'model.addTensor("{output_name}"' not in cpp
     assert payload["qnn_cpp_generator"]["probe_ladder_required_before_full_island"][0]["stage"] == (
         "primitive_rmsnorm_decomposition_probe"
     )
@@ -379,15 +389,33 @@ def test_generator_writes_fail_closed_source_package_outside_git(tmp_path: Path)
     assert "QNN_OP_REDUCE_MEAN_PARAM_AXES" in rms_probe
     assert "appTensor(\"rms_input\", dims_hidden, 3" in rms_probe
     assert "appTensor(\"rms_mean\", dims_reduce, 3" in rms_probe
+    for output_name in ("rms_square", "rms_mean", "rms_eps", "rms_rsqrt", "rms_scaled", "rms_output"):
+        assert f'model.addTensor("{output_name}"' not in rms_probe
     assert "QNN_OP_GELU" not in gelu_probe
     assert "0.7978845608028654" in gelu_probe
     assert "\"gelu_native\", \"gelu_up\"" in gelu_probe
+    for output_name in (
+        "gelu_x2",
+        "gelu_cube",
+        "gelu_cubic_scaled",
+        "gelu_inner",
+        "gelu_tanh_arg",
+        "gelu_tanh",
+        "gelu_shifted",
+        "gelu_half_x",
+        "gelu_native",
+        "gelu_output",
+    ):
+        assert f'model.addTensor("{output_name}"' not in gelu_probe
     assert "QNN_OP_FULLY_CONNECTED_PARAM_KEEP_DIMS" in matmul_probe
     assert "QNN_OP_MAT_MUL_PARAM_TRANSPOSE_IN1" in matmul_probe
     assert "QNN_DATATYPE_UFIXED_POINT_16" in matmul_probe
     assert "QNN_DATATYPE_UFIXED_POINT_8" in matmul_probe
     assert "appTensor(\"qmat_input_f32\", dims_input, 3" in matmul_probe
     assert "appTensor(\"qmat_output_f32\", dims_output, 3" in matmul_probe
+    for output_name in ("qmat_input_u16", "qmat_output_u16", "qmat_output_f32"):
+        assert f'model.addTensor("{output_name}"' not in matmul_probe
+    assert 'model.addTensor("qmat_weight_u8"' in matmul_probe
 
     build_script = (work_root / "scripts" / "build_android_model_library.sh").read_text(encoding="utf-8")
     assert "ANDROID_NDK_PREBUILT" in build_script
