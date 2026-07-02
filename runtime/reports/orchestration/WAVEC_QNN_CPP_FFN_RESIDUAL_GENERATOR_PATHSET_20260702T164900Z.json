@@ -1,0 +1,175 @@
+{
+  "status": "waveC_qnn_cpp_ffn_residual_generator_pathset_ready_for_pipeline",
+  "created_utc": "2026-07-02T16:49:00Z",
+  "governing_gate": "WaveC_full_gemma_qnn_htp_forward_consumed_tensor_route",
+  "base_custody_commit": "f1364047e3cb81b0a6259be743c45941753b467e",
+  "accepted_config_pathset": {
+    "path": "runtime/reports/orchestration/WAVEC_CONFIG_MODEL_SPEC_SOURCE_PATHSET_20260702T162459Z.json",
+    "sha256": "d360d3bd1a2e94ce9ea2cc53ca83088da3c4034e31c8b7826faff7af8c81275e"
+  },
+  "source_pathset": [
+    {
+      "path": "scripts/host/run_wavec_qnn_cpp_ffn_residual_generator.py",
+      "sha256": "d7fbfab865cb12310351c7ccdc3b94468a057bcfcd97fd6975d517273c5d425d",
+      "purpose": "Fail-closed WaveC Gemma E4B layer0 FFN/residual QNN C++ model-library generator and metadata report writer."
+    },
+    {
+      "path": "tests/test_wavec_qnn_cpp_ffn_residual_generator.py",
+      "sha256": "164230f9d8b9dde0667323d672bf7f4f182d7efde30939ab639998b2ff905658",
+      "purpose": "Focused tests for schema, repo raw-boundary rejection, generated package identity, probe ladder, dtype/layout stop conditions, and QNN evidence fields."
+    },
+    {
+      "path": "runtime/reports/polar_phase34_consumer_preflight/active_wave/qnn_cpp_ffn_residual_generator/qnn_cpp_ffn_residual_generator_report_20260702T164900Z.json",
+      "sha256": "357d7383116a8ec8a8dea0a3ab76bea68a5e73ce93b35829030959ea7a384efc",
+      "purpose": "Metadata-only local generator run report; no raw weights, QNN contexts, model libraries, tensors, profiles, checkpoints, or adapters."
+    }
+  ],
+  "outside_git_generated_metadata": [
+    {
+      "path": "/private/tmp/wavec_qnn_cpp_ffn_residual_generator_pathset_20260702T164900Z/src/gemma4_e4b_ffn_residual_layer0_qnn_model.cpp",
+      "sha256": "8ee9a189cd2f9ccefdb878d8633c7bb0c5287e3dae9116030dfef6102598aadd",
+      "bytes": 7616
+    },
+    {
+      "path": "/private/tmp/wavec_qnn_cpp_ffn_residual_generator_pathset_20260702T164900Z/scripts/build_android_model_library.sh",
+      "sha256": "cc7d18e55e72726c0767fcdc8a21e29367e92cce1032de9428e2a4fb1b81131d",
+      "bytes": 991
+    },
+    {
+      "path": "/private/tmp/wavec_qnn_cpp_ffn_residual_generator_pathset_20260702T164900Z/scripts/generate_phone_context.sh",
+      "sha256": "515f9941d1189af18193e621caae65091d400157a5bf9de9356d693d94b0a44c",
+      "bytes": 1017
+    },
+    {
+      "path": "/private/tmp/wavec_qnn_cpp_ffn_residual_generator_pathset_20260702T164900Z/metadata/tensor_manifest.json",
+      "sha256": "885a9634f10abbc6efc3efb9ef8a2b19834a5ee758baa96744dec1f59e481f9f",
+      "bytes": 1706
+    }
+  ],
+  "accepted_inputs": {
+    "phone_model_safetensors_path": "/data/data/com.termux/files/home/polymath_model_sources/gemma4_e4b_7aa32e6889efd6300124851b164f8b364314c3d8/model.safetensors",
+    "phone_model_safetensors_sha256": "43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651",
+    "phone_model_safetensors_bytes": 15992595884,
+    "model_config_spec_path": "integrations/gemma4-snapdragon-megakernel/model_spec/gemma4_e4b.json",
+    "model_config_spec_sha256": "942c8eb338306edb5afbcc415a1b0bf97ae5e041a26fe5eedd62226fafd04e2b",
+    "model_id": "google/gemma-4-E4B",
+    "model_revision": "7aa32e6889efd6300124851b164f8b364314c3d8"
+  },
+  "graph_contract": {
+    "graph_name": "gemma4_e4b_ffn_residual_layer0_forward_island_seq16_hidden2560",
+    "input_shape": [1, 16, 2560],
+    "input_dtype": "float32_le",
+    "input_bytes": 163840,
+    "output_shape": [1, 16, 2560],
+    "output_dtype": "float32_le",
+    "output_bytes": 163840,
+    "required_layer0_tensors": [
+      "model.language_model.layers.0.input_layernorm.weight",
+      "model.language_model.layers.0.mlp.gate_proj.weight",
+      "model.language_model.layers.0.mlp.up_proj.weight",
+      "model.language_model.layers.0.mlp.down_proj.weight"
+    ]
+  },
+  "probe_ladder_required_before_full_island": [
+    {
+      "stage": "primitive_rmsnorm_decomposition_probe",
+      "contract": "[16,2560] hidden rows; primitive reduce/multiply/add/rsqrt path, no assumed fused RMSNorm",
+      "failure_stage": "quantization_or_layout_failure_or_context_generation_failure"
+    },
+    {
+      "stage": "primitive_gelu_tanh_lowering_probe",
+      "contract": "GELU-tanh decomposition with primitive multiply/add/tanh path, no assumed fused GELU",
+      "failure_stage": "quantization_or_layout_failure_or_context_generation_failure"
+    },
+    {
+      "stage": "quantized_tiny_matmul_static_weight_probe",
+      "contract": "deterministic tiny MatMul/FullyConnected with explicit activation/weight dtype, scale, zero point, orientation",
+      "failure_stage": "quantization_or_layout_failure_or_context_generation_failure"
+    },
+    {
+      "stage": "full_gemma4_e4b_ffn_residual_layer0_probe",
+      "contract": "[1,16,2560] to [1,16,2560] Gemma FFN/residual island with context utility, net-run, profile, and Phase4 consumption validators",
+      "failure_stage": "context_generation_failure_or_htp_runtime_failure_or_consumed_tensor_failure"
+    }
+  ],
+  "dtype_layout_stop_conditions": [
+    "all_float32_htp_matmul_not_assumed_without_qairt_context_evidence",
+    "fp16_or_fp32_boundary_requires_context_generator_and_net_run_acceptance",
+    "preferred_internal_contract_is_explicit_quantized_activations_and_weights_with_recorded_scales_zero_points_orientation",
+    "missing_scale_zero_point_orientation_or_axis_metadata_is_quantization_or_layout_failure",
+    "partial_delegation_cpu_gpu_fallback_or_missing_profile_is_fail_closed"
+  ],
+  "required_qnn_evidence_fields": [
+    "qnn_backend_path",
+    "qnn_backend_sha256",
+    "qnn_context_binary_sha256",
+    "qnn_context_const_size",
+    "qnn_context_opDataSize",
+    "qnn_context_ioTensorSize",
+    "qnn_context_spill_or_ddr_bytes",
+    "qnn_context_hvx_threads",
+    "qnn_context_binary_utility_graph_name",
+    "qnn_context_binary_utility_input_shape_dtype",
+    "qnn_context_binary_utility_output_shape_dtype",
+    "qnn_net_run_output_bytes",
+    "qnn_net_run_output_sha256",
+    "qnn_profile_log_path_hash",
+    "qnn_profile_viewer_parse_status",
+    "qnn_execute_profile_fields"
+  ],
+  "local_verification": [
+    {
+      "command": "python3.11 -m py_compile scripts/host/run_wavec_qnn_cpp_ffn_residual_generator.py tests/test_wavec_qnn_cpp_ffn_residual_generator.py",
+      "result": "pass"
+    },
+    {
+      "command": "python3.11 scripts/host/run_wavec_qnn_cpp_ffn_residual_generator.py --print-schema",
+      "result": "pass"
+    },
+    {
+      "command": "python3.11 -m pytest tests/test_wavec_qnn_cpp_ffn_residual_generator.py tests/test_wavec_gemma_qnn_exporter.py tests/test_wavec_full_gemma_qnn.py",
+      "result": "25 passed in 1.45s"
+    },
+    {
+      "command": "python3.11 scripts/host/run_wavec_qnn_cpp_ffn_residual_generator.py --model-source-location phone_preverified --model-safetensors /data/data/com.termux/files/home/polymath_model_sources/gemma4_e4b_7aa32e6889efd6300124851b164f8b364314c3d8/model.safetensors --model-safetensors-sha256 43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651 --model-safetensors-bytes 15992595884 --model-config-spec integrations/gemma4-snapdragon-megakernel/model_spec/gemma4_e4b.json --work-root /tmp/wavec_qnn_cpp_ffn_residual_generator_pathset_20260702T164900Z --qairt-root /data/local/tmp/qairt-2.44 --android-ndk-root /opt/android-ndk-r27 --report runtime/reports/polar_phase34_consumer_preflight/active_wave/qnn_cpp_ffn_residual_generator/qnn_cpp_ffn_residual_generator_report_20260702T164900Z.json",
+      "result": "pass"
+    }
+  ],
+  "post_custody_execution_command_shape": "python3.11 scripts/host/run_wavec_qnn_cpp_ffn_residual_generator.py --model-source-location phone_preverified --model-safetensors <phone_model_path> --model-safetensors-sha256 43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651 --model-safetensors-bytes 15992595884 --model-config-spec integrations/gemma4-snapdragon-megakernel/model_spec/gemma4_e4b.json --work-root <outside_git_work_root> --qairt-root <qairt_root> --android-ndk-root <android_ndk_root> --phone-work-root /data/local/tmp/polymath_gemma4_gate/wavec/full_gemma_qnn_export --materialize-weight-blobs --report <metadata_only_report_path>",
+  "pipeline_receiving_checklist": [
+    "Source/test/report pathset SHAs match this report.",
+    "Generator rejects repo-local work-root and preserves raw model/context/tensor/generated-QNN boundaries.",
+    "Graph identity is Gemma-scoped and not gemma_hidden2560_relu, gemma_hidden2560_identity_add, Qwen, CPU fallback, GPU fallback, or metadata-only linkage.",
+    "Model/config provenance uses phone-held model identity plus explicit model_spec-derived config contract; it does not claim restored HF config.json.",
+    "Primitive RMSNorm, primitive GELU-tanh, and quantized tiny MatMul probe ladder is present before full FFN/residual island.",
+    "All-float32 HTP MatMul/FullyConnected is not assumed; missing scale, zero-point, orientation, or axis metadata fails as quantization_or_layout_failure.",
+    "Execution evidence must include qnn-context-binary-generator against libQnnHtp.so, qnn-context-binary-utility graph match, qnn-net-run output identity, profile parse, and Phase4 exact tensor consumption.",
+    "Raw .safetensors, .raw, .f32.bin, .so, .qnn.bin, tensor outputs, profiles, checkpoints, adapters, and generated QNN payloads remain outside git."
+  ],
+  "stage_failure_taxonomy": [
+    "exporter_failure",
+    "quantization_or_layout_failure",
+    "model_library_failure",
+    "context_generation_failure",
+    "htp_runtime_failure",
+    "consumed_tensor_failure"
+  ],
+  "raw_boundary": {
+    "repo_receives_source_tests_metadata_only": true,
+    "raw_payloads_in_git": false,
+    "outside_git_work_root_used_for_local_metadata_run": "/tmp/wavec_qnn_cpp_ffn_residual_generator_pathset_20260702T164900Z"
+  },
+  "first_missing_green_field": "none",
+  "next_action": "Pipeline Integrator validates the receiving contract, then Repo Custodian freezes the pathset if Pipeline is green.",
+  "research_escalation": "active_parallel_signal_lane_if_qnn_cpp_op_support_or_profile_semantics_change_exporter_tests_or_stop_conditions",
+  "nonclaims": [
+    "no C5 pass",
+    "no learning/model-quality claim",
+    "no Phase3/4 readiness",
+    "no full-Gemma HTP forward claim until proven",
+    "no 100k/1M authority",
+    "no raw payloads in git",
+    "no secrets printed",
+    "no Comet-backed accepted run"
+  ]
+}
