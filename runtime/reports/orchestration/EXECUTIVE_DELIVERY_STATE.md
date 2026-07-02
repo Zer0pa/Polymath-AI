@@ -1,74 +1,77 @@
 # Executive Delivery State
 
-Updated UTC: `2026-07-02T02:49:41Z`
+Updated UTC: `2026-07-02T10:44:57Z`
 
 ## Current Gate
 
-`WaveB_C5_after_C1_canonical_payload_bounded_retry_ready_waiting_on_termux_command_access_after_producer_timeout`
+`WaveB_C5_after_C1_candidate_prediction_record_id_coverage_repair_pending_after_bounded_canonical_payload_retry_failed`
 
-Status classification: `BLOCKER_DEVICE_ACCESS_WITH_PENDING_ACTION_EXECUTION_BOUNDED_RETRY_READY_AFTER_PHASE34_TIMEOUT_COMMAND`
+Status classification: `PENDING_ACTION_PHASE34_CANDIDATE_PREDICTION_RECORD_ID_COVERAGE_REPAIR_AFTER_BOUNDED_RETRY`
 
-Owner: user/operator access plus Execution Orchestrator `019f138c-fb51-7c53-a41a-ab8eac950d9c`. Phase3/4 replacement `019f2059-e6a8-73b1-a9b8-8a2c499e838e` returned the bounded retry command; Execution remains parked until phone Termux command access is restored.
+Owner: Phase3/4 Engineer replacement `019f2059-e6a8-73b1-a9b8-8a2c499e838e`.
 
-User action required: `true`
+User action required: `false`
 
-Dominant failure domain: `termux_command_channel_access_blocked_with_bounded_retry_ready`
+Dominant failure domain: `candidate_prediction_jsonl_record_id_coverage_contract`
 
-Research escalation: `none` - this is the first canonical scorer producer-timeout/access failure after the field advanced. Escalate only if the same field repeats after repair/access recovery, an exact architecture contradiction appears, or a real memory/throughput envelope failure appears.
+Research escalation: `none` - this is the first missing-record-id contract failure after Termux access was restored and the bounded retry ran. Escalate only if the same field repeats after a Phase3/4 repair, an exact architecture contradiction appears, or a real memory/throughput envelope failure appears.
 
 ## Artifact Waiting On
 
 - Candidate prediction metadata is frozen at commit `71bc3b19014df62f398340f97a9f3bdb55d48de6`.
 - Stable-baseline prediction metadata is frozen at commit `58ce78aaa4486e440b3b8bba911c3a0fdde4f868`.
 - Candidate train-loss metadata and prior central scorer-route mirror are frozen at commit `2a91a5256eb9937e483d78e130aedf243b802bf8`.
-- The prior canonical scorer blocker central mirror is frozen at commit `ce1d16cc3c6ce55040eae2a20ea73fcccececf02`.
-- The retry-ready central mirror is frozen at commit `9946fcd0ebc247f75440a855235aeb29eeea8871`.
-- The retry-ready custody commit-record mirror is frozen at commit `2cccbe86fab521d1c2fa14987b4ab536cf809254`.
-- `candidate_train_loss`: `15.202827250350284`.
-- Loss source: `teacher_forced_answer_token_nll_from_full_decoder_logits`.
-- Phase3/4 metric-readiness report for heldout grad norm source is available at `runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/phase34_lineage_repair/C1/phase34_metric_readiness/phase34_metric_readiness_report.json`, SHA `ab8fb945b34645e72b1e607b4e3ce87d18dde082fa285e1d34ea8331363e0fc6`.
-- Phase3/4 returned `producer_timeout_retry_command_ready_for_execution`: native timeout `1500s` under wrapper timeout `1800s`, so the producer owns native cleanup before the outer wrapper fires.
-- Awaiting restored phone Termux command access before Execution can run exactly one bounded canonical payload retry.
+- Retry-ready central custody is frozen through commit `2cccbe86fab521d1c2fa14987b4ab536cf809254`; final closure push was `90f40cf1d093886f5645ec7e30872bc3690e9555`.
+- Termux command access was restored and Execution ran the bounded canonical payload retry from clean Termux worktree commit `90f40cf1d093886f5645ec7e30872bc3690e9555`.
+- The retry completed without timeout, but `run_c5_prediction_payloads.py` failed closed before heldout metrics or final C5 eval.
+- Metadata-only artifact root: `runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/canonical_payload_retry_20260702T104213Z`.
+- Payload report SHA: `d323cd9b0a0f475ed181ca955ab7e9a953596d9a3735d2f2043492c94aa01fdc`.
+- Wrapper stdout SHA: `a20145e583cd4c4a5ff9a52fb2d2332387804544193e45d3b80fdd5e3d712cec`.
+- Wrapper stderr SHA: `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`.
+- Execution metadata SHA: `6828a69043ae42c173ea765e8b04685cc2c66e56acfe3b0941465e76d0e44595`.
+- Candidate raw prediction JSONL SHA/bytes/path SHA: `a0137450ae16220a1aecc3dff60e50bceae641dba9b8207c0567f48ae4be4fc3`, `429`, `a42ed2219c9aa5a7ee71b3967114f16345b69229ed124ef182ffe18b18227215`.
+- Stable raw prediction JSONL SHA/bytes/path SHA: `a75e7804dbe4152d86c194eade3240285f16e254cd20b7cd0b0aff7ded7fff1d`, `430`, `6f355ce433f601e99a57dded4ef271ee70f108fc7581adabf6a8a13ce9e97aad`.
+- Raw prediction JSONLs remain outside git; local raw suffix scan count is `0`.
 
 ## Last Concrete Action
 
-Repo Custodian replacement froze the retry-ready custody commit record at commit `2cccbe86fab521d1c2fa14987b4ab536cf809254`. Phase3/4 replacement had already returned `producer_timeout_retry_command_ready_for_execution`; no source pathset is needed. The retry must use `--native-timeout-seconds 1500` under wrapper `--timeout-seconds 1800`.
+Execution Orchestrator ran the restored-access bounded canonical payload retry with native timeout `1500s` and wrapper timeout `1800s`. The wrapper completed with exit code `2`, status `blocked`, and first missing green field `ValueError:candidate_predictions_missing_record_ids`.
 
-Execution's preceding attempt still stands: the first wrapper attempt failed before inference because the producer prefix omitted `--run-c5-qa-predict`; the corrected real native producer exceeded the outer `1800s` timeout, and Execution force-stopped Termux to clear the over-timeout process. ADB remained live, but Termux command access was lost behind keyguard/NotificationShade.
-
-No final heldout scorer was run. No C5 pass is claimed.
+No heldout scorer was run. No final `scripts/host/run_c5_eval.py` report exists for this retry. No C5 pass is claimed.
 
 ## First Missing Green Field
 
-`producer_native_timeout_must_be_less_than_wrapper_timeout_and_termux_command_access_blocked`
+`ValueError:candidate_predictions_missing_record_ids`
 
 ## Next Concrete Action
 
-1. User/operator restores phone command access by unlocking the device or restarting Termux `sshd`.
-2. Execution runs exactly one bounded canonical payload retry using the Phase3/4 command: native timeout `1500s`, wrapper timeout `1800s`, real native producer, raw predictions outside git.
-3. If candidate producer times out at `1500s`, the wrapper reaches `1800s`, or stable times out after candidate succeeds, stop and return metadata/logs without running the scorer.
+1. Phase3/4 inspects the native C5 prediction producer and wrapper row-identity contract.
+2. Phase3/4 repairs or precisely routes the dataflow so candidate and stable prediction JSONLs cover every heldout record ID from the 53-row split.
+3. If source changes, route source pathset to Repo Custodian replacement for freeze.
+4. If no source change is required, return a bounded rerun command to Execution.
+5. Execution reruns the canonical payload wrapper only after the record-ID coverage repair is explicit. Heldout metrics and final C5 eval remain blocked until the payload wrapper status is `pass`.
 
 ## Drift Deletion / Hardening
 
-Do not regress to prediction writer, stable baseline, decoder runtime, or train-loss-source blockers. Those prerequisites remain green unless newer evidence contradicts them. Retry-ready central custody is complete; pending drift is only restored Termux command access before Execution retry.
+Do not regress to Termux access, decoder/runtime, candidate/stable prediction metadata, or finite candidate_train_loss blockers. Those prerequisites remain green unless newer evidence contradicts them. The active drift is now prediction-row identity coverage for the canonical C5 payload contract.
 
 ## Recursive Improvement Next Step
 
-Do not churn lane threads while access is blocked. Restore Termux access, then run one bounded retry where the native producer owns the `1500s` timeout. If the same timeout/access field repeats after restored access, return the exact logs to Phase3/4 or escalate as repeated same-field runtime failure.
+Use the metadata report and wrapper failure to repair the producer record-ID contract. If `candidate_predictions_missing_record_ids` repeats after a Phase3/4 repair, escalate bounded research on prediction row identity and heldout split dataflow semantics.
 
 ## Threads Nudged This Tick
 
-- Repo Custodian replacement `019f2059-ef2c-7762-ba42-963b58f3af90`: polled complete final custody commit `2cccbe86fab521d1c2fa14987b4ab536cf809254`; no further custody churn routed.
-- Execution Orchestrator `019f138c-fb51-7c53-a41a-ab8eac950d9c`: parked until user/operator restores Termux command access; no duplicate nudge.
-- Phase3/4 replacement `019f2059-e6a8-73b1-a9b8-8a2c499e838e`: no nudge; retry command already complete.
+- Execution Orchestrator `019f138c-fb51-7c53-a41a-ab8eac950d9c`: polled completed failed retry with NEXT_HANDOFF.
+- Phase3/4 Engineer replacement `019f2059-e6a8-73b1-a9b8-8a2c499e838e`: sent candidate prediction record-ID coverage repair prompt.
+- Repo Custodian replacement `019f2059-ef2c-7762-ba42-963b58f3af90`: central two-file freeze route pending.
 
 ## NEXT_HANDOFF
 
-- to: Execution Orchestrator `019f138c-fb51-7c53-a41a-ab8eac950d9c` after user/operator restores Termux command access
-- status: `producer_timeout_retry_command_ready_waiting_on_termux_access`
-- artifacts: retry-ready central custody complete through commit `2cccbe86fab521d1c2fa14987b4ab536cf809254`; no source pathset pending.
-- first_missing_green_field: `producer_native_timeout_must_be_less_than_wrapper_timeout_and_termux_command_access_blocked`
-- next_action: user/operator restores Termux command access; Execution then runs exactly one bounded canonical payload retry.
+- to: Phase3/4 Engineer replacement `019f2059-e6a8-73b1-a9b8-8a2c499e838e`
+- status: `canonical_c5_prediction_payload_report_failed`
+- artifacts: metadata root `runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/canonical_payload_retry_20260702T104213Z`, payload report SHA `d323cd9b0a0f475ed181ca955ab7e9a953596d9a3735d2f2043492c94aa01fdc`
+- first_missing_green_field: `ValueError:candidate_predictions_missing_record_ids`
+- next_action: Phase3/4 repairs the native producer record-ID coverage contract or returns a precise implementation blocker.
 - research_escalation: `none`
 
 ## Nonclaims Preserved
