@@ -1,12 +1,12 @@
 {
-  "active_bottleneck": "finite_candidate_train_loss_missing",
-  "active_edge": "WaveB_C5_after_C1_candidate_train_loss_probe_pending_after_phase34_command_ready_and_stable_metadata_frozen",
+  "active_bottleneck": "canonical_c5_payload_scorer_report_missing",
+  "active_edge": "WaveB_C5_after_C1_canonical_c5_payload_scorer_pending_after_finite_candidate_train_loss_green",
   "active_watchdog_state": {
-    "active_bottleneck": "finite_candidate_train_loss_missing",
-    "active_edge": "WaveB_C5_after_C1_candidate_train_loss_probe_pending_after_phase34_command_ready_and_stable_metadata_frozen",
+    "active_bottleneck": "canonical_c5_payload_scorer_report_missing",
+    "active_edge": "WaveB_C5_after_C1_canonical_c5_payload_scorer_pending_after_finite_candidate_train_loss_green",
     "adapter_site_policy_sha256": "f38bd8109bbb77e9e94a5b4b34a238bc0ec0a39e7736870c97defe5aecc93357",
     "additional_missing_runtime_field_after_contract_patch": "decoder_manifest_tensor_role_inventory_missing",
-    "artifact_waiting_on": "Stable-baseline metadata evidence is frozen at commit 58ce78aaa4486e440b3b8bba911c3a0fdde4f868, candidate metadata evidence is frozen at 71bc3b19014df62f398340f97a9f3bdb55d48de6, and replacement Phase3/4 returned candidate_train_loss_probe_command_ready_for_execution. Awaiting Execution metadata-only train-loss probe result: finite numeric candidate_train_loss from teacher-forced answer-token NLL/full-decoder logits, bound to candidate checkpoint SHA 1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f and train QA SHA 795c1ba36d3cc3d50cfc26cabc8ece4d6ee3ee2ae4fb775f7674b708818df86c.",
+    "artifact_waiting_on": "Finite candidate_train_loss is now green from the native train-loss probe. Awaiting Execution canonical C5 flow: run_c5_prediction_payloads.py with a real producer command, run_c5_heldout_eval.py to create executed metrics JSON, and run_c5_eval.py to produce the authority report. Raw train/prediction/checkpoint payloads remain outside git. Phase3/4 metric-readiness report for heldout grad norm source is available at SHA ab8fb945b34645e72b1e607b4e3ce87d18dde082fa285e1d34ea8331363e0fc6.",
     "authorization_needed": false,
     "c5_after_c1_bounded_opencl_probe_command_identity_repair_20260701T171907Z": {
       "execution_routed": false,
@@ -121,6 +121,167 @@
         "Meta: raw-payload filename suffix scan over exact pathset clean",
         "Meta: tight literal secret/token scan over exact pathset clean"
       ]
+    },
+    "c5_after_c1_candidate_prediction_jsonl_probe_result_20260701T234607Z": {
+      "bounded_probe": {
+        "blockers": [],
+        "elapsed_seconds": 245,
+        "exit_code": 0,
+        "first_missing_green_field": "none",
+        "native_status": "pass",
+        "opencl_library": "/vendor/lib64/libOpenCL.so",
+        "prediction_jsonl_bytes": 429,
+        "prediction_jsonl_path_sha256": "31455a2804b64ecc97c9b02c97a243d11b30295462e18b19ecbaa6561fd3714e",
+        "prediction_jsonl_sha256": "a0137450ae16220a1aecc3dff60e50bceae641dba9b8207c0567f48ae4be4fc3",
+        "prediction_jsonl_written": true
+      },
+      "build_logs": {
+        "cmake_build_log_sha256": "269dd013bc4d70953458de7a247bfb36f51f9e591b1e006351826d976bd359fb",
+        "cmake_configure_log_sha256": "f18e501c019ae547119fda4be8d8cfc41377a809f3484812b95391c11c45f9f1"
+      },
+      "consumed_commit": "48b604e7be127d9b8474e5845fc3b58745c35f30",
+      "first_missing_green_field_after_probe": "stable_baseline_prediction_payload_and_heldout_scorer_contract_missing",
+      "lane": "execution_orchestrator",
+      "metadata_files_sha256": {
+        "candidate_probe_stderr_log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "candidate_probe_stdout_json": "b5d813420e6f9bafcc86ccb634d7571acea824e452d30d5f314978fd5ad90c29",
+        "meminfo_after_txt": "e5c882e95ab9e93a07110fe375f8c1c68c69bab197606441366fd8a736aaecc7",
+        "meminfo_before_txt": "442d45cf265cf6811d4dcf40e9a98521d4966f0dd96736a6eaf03cb5bdac7adc",
+        "probe_metadata_txt": "44ed114fa85b65e077e127270019f4cf4d4e4f574061826fbbc0860658bae141"
+      },
+      "metadata_only_artifact_root": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_prediction_jsonl_writer_20260701T234607Z",
+      "metadata_only_artifact_root_abs": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_prediction_jsonl_writer_20260701T234607Z",
+      "next_action": "Engineering routes stable-baseline prediction payload and heldout scorer/candidate_train_loss contract; Repo Custodian freezes metadata-only evidence and this central mirror.",
+      "nonclaims": [
+        "no C5 pass",
+        "no stable-baseline prediction JSONL yet",
+        "no heldout scorer/candidate_train_loss yet",
+        "no learning/model-quality claim",
+        "no Phase3/4 readiness",
+        "no 100k/1M authority",
+        "no raw payloads in git",
+        "no secrets printed",
+        "no Comet-backed accepted run unless actually executed"
+      ],
+      "raw_boundary": {
+        "hf_or_comet_required": false,
+        "local_report_raw_suffix_scan_count": 0,
+        "metadata_only_report_in_repo": true,
+        "prediction_jsonl_remains_outside_git": true,
+        "secrets_required": false
+      },
+      "research_escalation": "none",
+      "runner": "/data/data/com.termux/files/home/polymath_c5/C5_after_C1/bin/gemma4_layer_runner_c5_prediction_jsonl_writer",
+      "runner_bytes": 581312,
+      "runner_sha256": "3ae0cc86b8aca491935d3a39ac5f6c4c3cc9d0f9b2949dfa944470726cd22165",
+      "status": "c5_after_c1_candidate_prediction_jsonl_probe_passed",
+      "timestamp_utc": "2026-07-01T23:57:08Z"
+    },
+    "c5_after_c1_candidate_train_loss_probe_command_20260702T011011Z": {
+      "candidate_checkpoint_sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f",
+      "expected_fail_fields": [
+        "candidate_train_loss_missing_or_nonfinite",
+        "candidate_checkpoint_sha256_mismatch",
+        "train_qa_sha256_mismatch",
+        "native_first_missing_green_field"
+      ],
+      "expected_green_fields": [
+        "native_status_pass",
+        "candidate_checkpoint_sha256_match",
+        "train_qa_sha256_match",
+        "prediction_row_loss_finite_nonnegative",
+        "loss_source_match"
+      ],
+      "lane": "phase34_replacement",
+      "loss_source_required": "teacher_forced_answer_token_nll_from_full_decoder_logits",
+      "next_action": "Execution runs exactly one bounded phone/Termux candidate_train_loss probe from the Phase3/4 command and returns metadata-only evidence.",
+      "nonclaims": [
+        "no C5 pass",
+        "no learning/model-quality claim",
+        "no Phase3/4 readiness",
+        "no 100k/1M authority",
+        "no Comet-backed accepted run"
+      ],
+      "raw_boundary": "Execution returns metadata only; raw train and prediction payload contents stay outside git.",
+      "research_escalation": "none",
+      "runner_sha256": "3ae0cc86b8aca491935d3a39ac5f6c4c3cc9d0f9b2949dfa944470726cd22165",
+      "status": "candidate_train_loss_probe_command_ready_for_execution",
+      "thread": "019f2059-e6a8-73b1-a9b8-8a2c499e838e",
+      "train_qa_rows": 4931,
+      "train_qa_sha256": "795c1ba36d3cc3d50cfc26cabc8ece4d6ee3ee2ae4fb775f7674b708818df86c"
+    },
+    "c5_after_c1_candidate_train_loss_probe_result_20260702T011806Z": {
+      "candidate_checkpoint_bytes": 327680,
+      "candidate_checkpoint_path_sha256": "70c1176a02520f0d2d1f959daa4fd451430764a2464c4afd81db47ad5ccda0d0",
+      "candidate_checkpoint_sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f",
+      "candidate_train_loss": 15.202827250350284,
+      "elapsed_seconds": 261,
+      "first_missing_green_field_after_result": "canonical_c5_payload_scorer_report_missing",
+      "local_raw_suffix_scan_count": 0,
+      "loss_source": "teacher_forced_answer_token_nll_from_full_decoder_logits",
+      "metadata_root": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_candidate_train_loss_20260702T011806Z",
+      "native_exit_code": 0,
+      "native_status": "pass",
+      "nonclaims": [
+        "no C5 pass",
+        "no heldout scorer execution yet",
+        "no learning/model-quality claim",
+        "no Phase3/4 readiness",
+        "no 100k/1M authority",
+        "no raw payloads in git",
+        "no secrets printed",
+        "no Comet-backed accepted run"
+      ],
+      "raw_output_boundary": "raw train-loss output remains outside git; central state stores identity only",
+      "raw_output_bytes": 432,
+      "raw_output_path_sha256": "bfffa1fa5909dce1e45b3994412a6faa78992ba92b7356de4a95b75550686e2a",
+      "raw_output_rows": 1,
+      "raw_output_sha256": "26403770e6b7afaf6c24ac76b2fb16fa9a8613ae9ab6779d93699e19004a6246",
+      "report_hashes": {
+        "candidate_train_loss_native_stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "candidate_train_loss_native_stdout.json": "44462febad5480dbeb0b2b7d8c410613b482c996e6741df8ea179c2099bdddba",
+        "probe_metadata.txt": "29ec23d557fda3e85e0f1a127ca6a941a974136ef81c37e862b354a620761d07"
+      },
+      "runner_bytes": 581312,
+      "runner_sha256": "3ae0cc86b8aca491935d3a39ac5f6c4c3cc9d0f9b2949dfa944470726cd22165",
+      "status": "candidate_train_loss_probe_passed",
+      "train_qa_bytes": 14230685,
+      "train_qa_path_sha256": "4395e03cf04a798bc0c189347d37214461e9e2f3e8303acd99ef49c1668237ed",
+      "train_qa_rows": 4931,
+      "train_qa_sha256": "795c1ba36d3cc3d50cfc26cabc8ece4d6ee3ee2ae4fb775f7674b708818df86c"
+    },
+    "c5_after_c1_canonical_c5_payload_scorer_route_20260702T012628Z": {
+      "candidate_train_loss": 15.202827250350284,
+      "first_expected_fail_fields": [
+        "canonical_c5_prediction_payload_report_missing_or_failed",
+        "canonical_c5_executed_metrics_json_missing_or_failed",
+        "canonical_c5_eval_report_failed",
+        "producer_command_phone_bridge_missing",
+        "canonical_c5_phase34_grad_norm_source_invalid"
+      ],
+      "first_expected_green_fields": [
+        "prediction payload report status pass",
+        "executed metrics JSON schema polymath_c5_executed_metrics_v1",
+        "final C5 eval report produced by run_c5_eval.py"
+      ],
+      "loss_source": "teacher_forced_answer_token_nll_from_full_decoder_logits",
+      "owner_thread": "019f138c-fb51-7c53-a41a-ab8eac950d9c",
+      "phase34_grad_norm_source": {
+        "finite_fields": {
+          "phase4/C1/grad_norm_l2": 0.000727404578124,
+          "phase4/C1/grad_norm_linf": 1.23325654937e-05
+        },
+        "path": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/phase34_lineage_repair/C1/phase34_metric_readiness/phase34_metric_readiness_report.json",
+        "sha256": "ab8fb945b34645e72b1e607b4e3ce87d18dde082fa285e1d34ea8331363e0fc6",
+        "use": "pass as --phase34-report to scripts/host/run_c5_heldout_eval.py unless Execution validates a stricter finite grad_norm_max_observed source"
+      },
+      "raw_boundary": "prediction outputs, train split, checkpoint payloads, and model/adapter payloads remain outside git; report metadata only",
+      "required_commands": [
+        "scripts/host/run_c5_prediction_payloads.py with the real native inference producer command",
+        "scripts/host/run_c5_heldout_eval.py using candidate/stable raw predictions outside git and candidate_train_loss 15.202827250350284",
+        "scripts/host/run_c5_eval.py with the executed metrics JSON"
+      ],
+      "status": "canonical_c5_payload_scorer_ready_for_execution_after_finite_train_loss"
     },
     "c5_after_c1_component_validation_hardening_pathset": {
       "artifact_paths": [
@@ -622,6 +783,101 @@
       "removed_blocker": "eval_split_forbidden_raw_suffix",
       "status": "post_repair_preflight_received_checkpoint_identity_missing",
       "status_classification": "PENDING_ACTION_C5_CHECKPOINT_BASELINE_METRICS"
+    },
+    "c5_after_c1_final_hidden_opencl_prompt_weight_shape_repair_20260702T_phase34": {
+      "artifact_paths": {
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp": "1f8b3199f3bcc52bfc0d6ad5af209ab40f82098724292998c3f1bf6daa0211c3",
+        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/opencl_layer_runner.cpp": "e4bfb3fdbcb6fc6411209fdd80951f178b03f16739f0cf423654d225ca9352d7",
+        "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json": "compute after meta update",
+        "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md": "compute after meta update",
+        "runtime/reports/orchestration/c5_after_c1_final_hidden_opencl_prompt_weight_shape_repair_20260702T_phase34.json": "8c49a0a6af89489764b9082e2d5d4c0588cced83c499ab4dc7437e05cb2d324e",
+        "tests/test_c5_native_runtime_contract.py": "306a635d5e05296fff64edcf6879f016f60d187b380b9c3ec34bf1723cfc5fbf"
+      },
+      "current_gate": "WaveB_C5_after_C1_final_hidden_opencl_prompt_weight_shape_repair_custody_pending_after_phase34_pathset",
+      "expected_first_missing_green_field_after_probe": "c5_full_decoder_prediction_jsonl_writer_missing_after_lm_head_nll",
+      "first_missing_green_field": "final_hidden_opencl_prompt_weight_shape_repair_custody_commit_missing",
+      "next_handoff": {
+        "authority_metric": "C5_after_C1 bounded phone runtime advances past c5_full_decoder_final_hidden_opencl_prompt_weight_shape_unsupported:5 without fabricating predictions, loss, confidence, or candidate_train_loss.",
+        "completed_work": [
+          "Phase3/4 produced dynamic layer-width OpenCL prompt shape repair pathset",
+          "Local build/test/diff/raw-boundary verification passed",
+          "Engineering/Meta updated central state metadata-only for custody pending"
+        ],
+        "current_edge": "WaveB_C5_after_C1_final_hidden_opencl_prompt_weight_shape_repair_custody_pending_after_phase34_pathset",
+        "current_verdict": "pending_action",
+        "do_not_do": [
+          "do not route Execution before custody",
+          "do not stage unrelated files",
+          "do not add raw payloads or secrets to git",
+          "do not invent prediction JSONL/loss/confidence/candidate_train_loss"
+        ],
+        "evidence": [
+          {
+            "artifact": "runtime/reports/orchestration/c5_after_c1_final_hidden_opencl_prompt_weight_shape_repair_20260702T_phase34.json",
+            "sha256": "8c49a0a6af89489764b9082e2d5d4c0588cced83c499ab4dc7437e05cb2d324e",
+            "status": "custody_input"
+          },
+          {
+            "artifact": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/opencl_layer_runner.cpp",
+            "sha256": "e4bfb3fdbcb6fc6411209fdd80951f178b03f16739f0cf423654d225ca9352d7",
+            "status": "custody_input"
+          },
+          {
+            "artifact": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp",
+            "sha256": "1f8b3199f3bcc52bfc0d6ad5af209ab40f82098724292998c3f1bf6daa0211c3",
+            "status": "custody_input"
+          },
+          {
+            "artifact": "tests/test_c5_native_runtime_contract.py",
+            "sha256": "306a635d5e05296fff64edcf6879f016f60d187b380b9c3ec34bf1723cfc5fbf",
+            "status": "custody_input"
+          }
+        ],
+        "first_missing_green_field": "final_hidden_opencl_prompt_weight_shape_repair_custody_commit_missing",
+        "from_lane": "phase34_native_c5_runtime",
+        "next_action": "Repo Custodian verifies, stages, commits, and pushes the exact six-file pathset, then routes Execution with the bounded phone probe command from the repair report.",
+        "nonclaims": [
+          "no C5 pass",
+          "no learning/model-quality claim",
+          "no Phase3/4 readiness claim",
+          "no 100k/1M authority",
+          "no Comet-backed accepted run unless actually executed"
+        ],
+        "objective": "Freeze the final-hidden OpenCL prompt weight shape repair so Execution can run exactly one bounded C5_after_C1 phone proof on the existing native --run-c5-qa-predict path.",
+        "owner_thread": "019f1ac2-0f0f-7721-bf46-ad402dbd9050",
+        "research_escalation": {
+          "packet_path": null,
+          "reason": "first_missing_green_field narrowed and a source repair exists; no repeated same-field post-repair phone failure yet",
+          "status": "none"
+        },
+        "run_id": "c5_after_c1_final_hidden_opencl_prompt_weight_shape_repair_20260702T_phase34",
+        "schema_version": "zpp_next_handoff_v1",
+        "sent": true,
+        "to_lane": "repo_custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050"
+      },
+      "nonclaims": [
+        "no C5 pass",
+        "no executed C5 metrics",
+        "no prediction JSONL/logits/loss/confidence/candidate_train_loss",
+        "no bridge-MSE-as-C5-loss",
+        "no learning/model-quality claim",
+        "no Phase3/4 readiness",
+        "no 100k/1M authority",
+        "no Comet-backed accepted run"
+      ],
+      "owner": "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050 owns the six-file final-hidden OpenCL prompt weight shape repair freeze; Execution remains parked until custody freezes the repair and includes the bounded probe command.",
+      "research_escalation": "none",
+      "status": "final_hidden_opencl_prompt_weight_shape_repair_pathset_ready_for_custodian",
+      "status_classification": "PENDING_ACTION_REPO_CUSTODIAN_FINAL_HIDDEN_OPENCL_PROMPT_WEIGHT_SHAPE_REPAIR_FREEZE",
+      "user_action_required": false,
+      "verification_commands": [
+        "Phase3/4: cmake --build build/gemma4_megakernel_host --target gemma4_layer_runner -- -j2 passed",
+        "Phase3/4: python3 -m pytest tests/test_c5_native_runtime_contract.py -q -> 18 passed",
+        "Phase3/4: python3 -m pytest tests/test_c5_*.py -q -> 53 passed",
+        "Phase3/4: ctest --test-dir build/gemma4_megakernel_host --output-on-failure -> 4/4 passed",
+        "Phase3/4: git diff --check passed",
+        "Phase3/4: raw/secret diff scan clean"
+      ]
     },
     "c5_after_c1_forced_vendor_opencl_dlopen_detail_probe_result_20260701T180904Z": {
       "candidate_probe_stderr_sha256": "153ae145a59c2dd1c073551daf1c038442e9c00a4b108f187b56f57e52671e19",
@@ -1609,6 +1865,116 @@
         "shasum -a 256 OUTSIDE_GIT_C5_HELDOUT_QA_JSONL_STAGING_PATH_REDACTED_SHA_ONLY -> accepted heldout hash; 53 rows"
       ]
     },
+    "c5_after_c1_stable_baseline_prediction_jsonl_metadata_custody_20260702T011011Z": {
+      "commit_sha": "58ce78aaa4486e440b3b8bba911c3a0fdde4f868",
+      "first_missing_green_field_after_custody": "finite_candidate_train_loss_missing",
+      "lane": "repo_custodian_replacement",
+      "metadata_files_sha256": {
+        "meminfo_after_txt": "ae5bd8c5c46720ba50c4661bc0534323ee6f8174935f56637f9bfd31999be020",
+        "meminfo_before_txt": "d52f151579e05d45a62c544df1d3171907ee740ce0a0d11db97adc2405fb93dc",
+        "probe_metadata_txt": "960cfa31fff9716ea6b2501d6c2f08c585ead04bb04c18c462fe3bf3e620ad97",
+        "stable_baseline_probe_stderr_log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stable_baseline_probe_stdout_json": "3e2f9b4557888b561f862930c162f4e63c187fcf50a03a1e0c9f61ce12d2eac8"
+      },
+      "metadata_only_artifact_root": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_stable_baseline_prediction_jsonl_writer_20260702T000308Z",
+      "next_handoff": {
+        "artifacts": [
+          "commit 58ce78aaa4486e440b3b8bba911c3a0fdde4f868",
+          "five stable-baseline metadata file SHA-256 identities recorded in metadata_files_sha256"
+        ],
+        "first_missing_green_field": "finite_candidate_train_loss_missing",
+        "next_action": "Engineering/Meta routes Execution for the candidate_train_loss probe from the replacement Phase3/4 command; no Execution handoff is needed from Custodian because this custody item contains no probe command.",
+        "nonclaims": [
+          "no C5 pass",
+          "no candidate_train_loss yet",
+          "no learning/model-quality claim",
+          "no Phase3/4 readiness",
+          "no 100k/1M authority",
+          "no raw payloads in git",
+          "no secrets printed",
+          "no Comet-backed accepted run"
+        ],
+        "research_escalation": "none",
+        "status": "stable_baseline_prediction_jsonl_metadata_evidence_committed_pushed",
+        "to": "Engineering/Meta watcher 019f1423-816d-7251-b7d9-945a11441c3f"
+      },
+      "nonclaims": [
+        "no C5 pass",
+        "no candidate_train_loss yet",
+        "no learning/model-quality claim",
+        "no Phase3/4 readiness",
+        "no 100k/1M authority",
+        "no raw payloads in git",
+        "no secrets printed",
+        "no Comet-backed accepted run"
+      ],
+      "pushed_branch": "origin/gemma4-megakernel-native-training",
+      "raw_boundary": {
+        "metadata_only_evidence_in_git": true,
+        "raw_prediction_payload_contents_in_git": false,
+        "raw_suffix_scan_count": 0,
+        "secret_scan_hits": 0
+      },
+      "status": "stable_baseline_prediction_jsonl_metadata_evidence_committed_pushed",
+      "thread": "019f2059-ef2c-7762-ba42-963b58f3af90"
+    },
+    "c5_after_c1_stable_baseline_prediction_jsonl_probe_result_20260702T000308Z": {
+      "bounded_probe": {
+        "blockers": [],
+        "elapsed_seconds": 241,
+        "exit_code": 0,
+        "first_missing_green_field": "none_for_stable_baseline_prediction_probe",
+        "native_status": "pass",
+        "opencl_library": "/vendor/lib64/libOpenCL.so",
+        "prediction_jsonl_bytes": 430,
+        "prediction_jsonl_path_sha256": "85b1890aed0802adb5948196bbce0546866e8f1f38551c29749a8a094923190a",
+        "prediction_jsonl_sha256": "a75e7804dbe4152d86c194eade3240285f16e254cd20b7cd0b0aff7ded7fff1d",
+        "prediction_jsonl_written": true
+      },
+      "consumed_commit": "48b604e7be127d9b8474e5845fc3b58745c35f30",
+      "first_missing_green_field_after_probe": "finite_candidate_train_loss_missing",
+      "heldout_qa_identity": {
+        "rows": 53,
+        "sha256": "da41c5362398f24e0e0dd9df9a5cf0594435a455871fa77ab74d9312e6c8e9b2"
+      },
+      "lane": "execution_orchestrator",
+      "metadata_files_sha256": {
+        "meminfo_after_txt": "ae5bd8c5c46720ba50c4661bc0534323ee6f8174935f56637f9bfd31999be020",
+        "meminfo_before_txt": "d52f151579e05d45a62c544df1d3171907ee740ce0a0d11db97adc2405fb93dc",
+        "probe_metadata_txt": "960cfa31fff9716ea6b2501d6c2f08c585ead04bb04c18c462fe3bf3e620ad97",
+        "stable_baseline_probe_stderr_log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stable_baseline_probe_stdout_json": "3e2f9b4557888b561f862930c162f4e63c187fcf50a03a1e0c9f61ce12d2eac8"
+      },
+      "metadata_only_artifact_root": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_stable_baseline_prediction_jsonl_writer_20260702T000308Z",
+      "next_action": "Phase3/4 provides/validates finite candidate_train_loss from the same real logits/training objective; Repo Custodian freezes stable-baseline metadata-only evidence and this central mirror.",
+      "nonclaims": [
+        "no C5 pass",
+        "no finite candidate_train_loss yet",
+        "no heldout scorer execution yet",
+        "no learning/model-quality claim",
+        "no Phase3/4 readiness",
+        "no 100k/1M authority",
+        "no raw payloads in git",
+        "no secrets printed",
+        "no Comet-backed accepted run unless actually executed"
+      ],
+      "raw_boundary": {
+        "hf_or_comet_required": false,
+        "metadata_only_report_in_repo": true,
+        "secrets_required": false,
+        "stable_prediction_jsonl_remains_outside_git": true
+      },
+      "research_escalation": "none",
+      "runner_bytes": 581312,
+      "runner_sha256": "3ae0cc86b8aca491935d3a39ac5f6c4c3cc9d0f9b2949dfa944470726cd22165",
+      "stable_payload_identity": {
+        "bytes": 327680,
+        "path_sha256": "aebabb97f75c5546aaeef61ab99db74224f1a4400a3d6ec72f88a428f69e569c",
+        "sha256": "e0d1c66ac876c2b6fbbe9e88f1b02dd37201d8ffba10afcd44f1c558fc32f7c9"
+      },
+      "status": "stable_baseline_prediction_jsonl_probe_passed_candidate_train_loss_missing",
+      "timestamp_utc": "2026-07-02T00:07:38Z"
+    },
     "c5_comet_readiness": {
       "custody_commit": "80d92c3ed34475e9637868c20203efda14a6bf17",
       "custody_status": "c5_readiness_status_ui_committed_pushed",
@@ -1856,6 +2222,8 @@
       "status": "c5_remaining_eval_split_identity_matrix_ready"
     },
     "candidate_adapter_sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f",
+    "candidate_train_loss": 15.202827250350284,
+    "candidate_train_loss_source": "teacher_forced_answer_token_nll_from_full_decoder_logits",
     "central_mirror_local_update_status": "updated_after_final_hidden_stream_phone_probe_layer5_shape_blocker",
     "central_state_update_pathset_for_custodian": {
       "artifact_paths": [
@@ -1871,14 +2239,14 @@
       "user_action_required": false
     },
     "central_state_update_pending_custody": true,
-    "current_gate": "WaveB_C5_after_C1_candidate_and_stable_prediction_jsonl_payloads_ready_finite_candidate_train_loss_pending",
-    "current_highest_valid_state": "C1-C4 Wave B mechanics, phone-local model/exporter evidence, C5-capable runner build, heldout QA staging, native C5 probes through SP-HAL OpenCL route, multi-token QA prompt orchestration, rank-16 adapter stream injection, native 42-layer orchestration, and frozen 42-layer proof evidence are development-cycle metadata/code evidence only. Phase3/4 is actively working the chunked LM-head/NLL writer boundary; no C5 pass, prediction JSONL, loss, confidence, candidate_train_loss, or executed metrics exist.",
-    "current_owner": "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c owns exactly one bounded candidate_train_loss probe from the replacement Phase3/4 command, returning metadata only; raw train and prediction payloads remain outside git.",
+    "current_gate": "WaveB_C5_after_C1_canonical_c5_payload_scorer_pending_after_finite_candidate_train_loss_green",
+    "current_highest_valid_state": "Candidate and stable-baseline prediction JSONL identities plus finite candidate_train_loss are green; no C5 pass exists until the canonical scorer report passes.",
+    "current_owner": "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c owns the canonical C5 payload, executed metrics, and final scorer report after finite candidate_train_loss went green.",
     "custody_commit_latest": "05bb56437b83138547301e69af14ab0fce7d4b1a",
     "custody_status_latest": "c5_opencl_parity_dispatch_committed_pushed",
     "decoder_manifest_sha256": "52fcb53666bb4b06d0118cb825b983afc54624a630f667bbfa5af278640e28f8",
-    "dominant_failure_domain": "training_objective_metric_execution_pending",
-    "drift_deleted_or_pending": "Deleted stalled-thread drift by replacing Phase3/4 with 019f2059-e6a8-73b1-a9b8-8a2c499e838e and Repo Custodian with 019f2059-ef2c-7762-ba42-963b58f3af90. Deleted stale stable-metadata-pending drift after Custodian commit 58ce78aaa4486e440b3b8bba911c3a0fdde4f868. Pending drift is only the Execution train-loss probe result; do not regress to prediction writer, stable baseline, or decoder runtime blockers without newer evidence.",
+    "dominant_failure_domain": "canonical_c5_scorer_execution_pending",
+    "drift_deleted_or_pending": "Deleted finite_candidate_train_loss_missing after Execution metadata proved finite native loss. Pending drift: central/train-loss metadata custody and canonical scorer execution only; do not regress to prediction writer, stable baseline, or runtime blocker fields without newer evidence.",
     "driver_tick_history": [
       {
         "artifact_waiting_on": [
@@ -2119,7 +2487,7 @@
       "next_owner": "execution_orchestrator",
       "status": "committed_pushed"
     },
-    "first_missing_green_field": "finite_candidate_train_loss_missing",
+    "first_missing_green_field": "canonical_c5_payload_scorer_report_missing",
     "first_missing_green_field_after_contract_patch": "decoder_manifest_architecture_config_missing",
     "first_missing_green_field_after_custody": "c5_full_decoder_chunked_lm_head_nll_writer_missing",
     "first_missing_green_field_after_export": "phone_c5_runner_rebuild_or_copy_missing",
@@ -2401,7 +2769,7 @@
         "user_action_required": false
       }
     },
-    "last_concrete_action": "Replacement Repo Custodian froze stable-baseline prediction metadata at commit 58ce78aaa4486e440b3b8bba911c3a0fdde4f868. Replacement Phase3/4 returned candidate_train_loss_probe_command_ready_for_execution using the existing native C5 prediction writer runner SHA 3ae0cc86b8aca491935d3a39ac5f6c4c3cc9d0f9b2949dfa944470726cd22165 and train QA SHA 795c1ba36d3cc3d50cfc26cabc8ece4d6ee3ee2ae4fb775f7674b708818df86c.",
+    "last_concrete_action": "Execution ran the bounded native candidate_train_loss probe and returned finite candidate_train_loss 15.202827250350284 from teacher-forced answer-token NLL/full-decoder logits, bound to candidate SHA 1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f and train QA SHA 795c1ba36d3cc3d50cfc26cabc8ece4d6ee3ee2ae4fb775f7674b708818df86c.",
     "last_driver_actions": [
       "Loaded central state and polled existing Phase3/4 and Custodian threads only.",
       "Detected Phase3/4 completed final_hidden_opencl_prompt_weight_shape_repair_pathset_ready_for_custodian.",
@@ -2589,7 +2957,68 @@
     "native_tokenizer_tensor_loader_prereq_custody_commit": "4472e3dee86d88d83031eecfc94b91008e5215e0",
     "native_tokenizer_tensor_loader_prereq_report_sha256": "1e4a087354d8a917ec9fba7747a5e2410d9fb01f36e991c902e00adf8764e422",
     "native_tokenizer_tensor_loader_prereq_status": "native_full_decoder_prereq_pathset_ready_for_custodian",
-    "next_concrete_action": "Execution runs exactly one bounded candidate_train_loss probe from the replacement Phase3/4 command, verifies runner/candidate/train identities, and returns metadata only with finite candidate_train_loss or the first exact fail field. If finite loss exists, Engineering routes canonical C5 payload/scorer flow; if not, return to Phase3/4 with the exact runtime/source field.",
+    "next_concrete_action": "Execution runs the canonical three-step C5 scorer path: run_c5_prediction_payloads.py, run_c5_heldout_eval.py, then run_c5_eval.py. Return metadata-only report identities and exact fail field if any step fails.",
+    "next_handoff": {
+      "authority_metric": "Heldout C5 scoring is blocked until candidate and stable prediction JSONLs plus finite candidate_train_loss exist from real runtime/training objective evidence.",
+      "completed_work": [
+        "Candidate native prediction JSONL probe emitted outside-git prediction identity and metadata evidence",
+        "Candidate metadata-only evidence was frozen by Repo Custodian at 71bc3b19014df62f398340f97a9f3bdb55d48de6",
+        "Stable-baseline native prediction JSONL probe emitted outside-git prediction identity and metadata evidence",
+        "Engineering/Meta sent the stable-baseline result back to Engineering Orchestrator"
+      ],
+      "current_edge": "WaveB_C5_after_C1_candidate_and_stable_prediction_jsonl_payloads_ready_finite_candidate_train_loss_pending",
+      "current_verdict": "pending_action",
+      "do_not_do": [
+        "do not substitute heldout loss for candidate_train_loss",
+        "do not relabel Phase4 bridge MSE as C5 loss",
+        "do not copy raw prediction JSONLs into git",
+        "do not run heldout scorer until finite candidate_train_loss exists"
+      ],
+      "evidence": [
+        {
+          "artifact": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_prediction_jsonl_writer_20260701T234607Z/candidate_probe_stdout.json",
+          "sha256": "b5d813420e6f9bafcc86ccb634d7571acea824e452d30d5f314978fd5ad90c29",
+          "status": "candidate_metadata_frozen_at_71bc3b1"
+        },
+        {
+          "artifact": "outside-git candidate prediction JSONL identity only",
+          "sha256": "a0137450ae16220a1aecc3dff60e50bceae641dba9b8207c0567f48ae4be4fc3",
+          "status": "candidate_raw_prediction_payload_not_copied_to_git"
+        },
+        {
+          "artifact": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_stable_baseline_prediction_jsonl_writer_20260702T000308Z/stable_baseline_probe_stdout.json",
+          "sha256": "3e2f9b4557888b561f862930c162f4e63c187fcf50a03a1e0c9f61ce12d2eac8",
+          "status": "stable_baseline_metadata_pending_custody"
+        },
+        {
+          "artifact": "outside-git stable-baseline prediction JSONL identity only",
+          "sha256": "a75e7804dbe4152d86c194eade3240285f16e254cd20b7cd0b0aff7ded7fff1d",
+          "status": "stable_raw_prediction_payload_not_copied_to_git"
+        }
+      ],
+      "first_missing_green_field": "finite_candidate_train_loss_missing",
+      "from_lane": "engineering_meta_watcher",
+      "next_action": "Phase3/4 returns a finite candidate_train_loss source/pathset from the same real logits/training objective, or a precise blocker; after that, Engineering routes canonical heldout scorer.",
+      "nonclaims": [
+        "no C5 pass",
+        "no finite candidate_train_loss yet",
+        "no learning/model-quality claim",
+        "no Phase3/4 readiness claim",
+        "no 100k/1M authority",
+        "no Comet-backed accepted run unless actually executed"
+      ],
+      "objective": "Provide a finite candidate_train_loss source from the same real logits/training objective so the canonical heldout scorer can run without substituting bridge MSE or heldout loss.",
+      "owner_thread": "019f13da-d897-7ba2-8ed1-b959892f5ed4",
+      "research_escalation": {
+        "packet_path": null,
+        "reason": "stable_baseline_prediction_jsonl_missing advanced; candidate_train_loss source is now the concrete missing field",
+        "status": "none"
+      },
+      "run_id": "c5_after_c1_candidate_and_stable_prediction_jsonl_ready_20260702T000738Z",
+      "schema_version": "zpp_next_handoff_v1",
+      "sent": true,
+      "to_lane": "phase34_engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4"
+    },
     "nonclaims": [
       "no C5 pass",
       "no executed C5 metrics",
@@ -2614,8 +3043,8 @@
       "no secrets printed",
       "no Comet-backed accepted run"
     ],
-    "owner": "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c is running the bounded prediction JSONL writer C5_after_C1 phone probe from custody commit 48b604e7be127d9b8474e5845fc3b58745c35f30.",
-    "owner_thread": "019f13da-d897-7ba2-8ed1-b959892f5ed4",
+    "owner": "Execution Orchestrator",
+    "owner_thread": "019f138c-fb51-7c53-a41a-ab8eac950d9c",
     "phase2_status_by_phase": {
       "C1": {
         "packets": 5180,
@@ -2837,7 +3266,7 @@
       "phase34": "raw PJP1, HTP raw output, OpenCL tensors, and adapters remain on device/Termux; repair must keep compact JSON only",
       "report_root_scan": "metadata-freeze report root had 179 tracked files and clean forbidden suffix scans; raw payloads not committed"
     },
-    "recursive_improvement_next_step": "Use the train-loss probe as the smallest falsifiable bridge into canonical C5 scoring: finite teacher-forced candidate_train_loss unlocks run_c5_prediction_payloads.py and run_c5_eval.py; missing/nonfinite loss routes the exact field back to Phase3/4.",
+    "recursive_improvement_next_step": "Use the accepted canonical chain: prediction payload producer report -> heldout executed metrics JSON -> final C5 eval report. Any failure returns the exact first_missing_green_field to the owning lane rather than narrating a pass.",
     "repo_custodian_per_layer_input_runtime_repair_commit": "58872fdc3dd7ff6efb73321252d58f3447eb0e2b",
     "repo_custodian_post_phone_probe_central_mirror_commit": "5802ea1e25222c068dd3fcb5050c91f20f72357b",
     "repo_custody_state_freeze": {
@@ -2856,8 +3285,15 @@
     "runner_sha256": "31015b6844e20d74cd67f69cbb152fa4ccba4200992d3d60cc458d145afda23c",
     "runner_size_bytes": 554312,
     "secondary_missing_green_field": "c5_full_decoder_final_hidden_stream_missing_for_lm_head_nll_if_phase34_confirms_current_precondition",
-    "status": "candidate_train_loss_probe_command_ready_for_execution_stable_metadata_frozen",
-    "status_classification": "PENDING_ACTION_EXECUTION_CANDIDATE_TRAIN_LOSS_PROBE_AFTER_PHASE34_COMMAND_READY",
+    "status": "candidate_train_loss_probe_passed_canonical_c5_payload_scorer_pending",
+    "status_classification": "PENDING_ACTION_EXECUTION_CANONICAL_C5_PAYLOADS_AND_SCORER_AFTER_FINITE_TRAIN_LOSS",
+    "thread_replacements_20260702T011011Z": {
+      "archived_stale_phase34_thread": "019f13da-d897-7ba2-8ed1-b959892f5ed4",
+      "archived_stale_repo_custodian_thread": "019f1ac2-0f0f-7721-bf46-ad402dbd9050",
+      "phase34_replacement_thread": "019f2059-e6a8-73b1-a9b8-8a2c499e838e",
+      "repo_custodian_replacement_thread": "019f2059-ef2c-7762-ba42-963b58f3af90",
+      "status": "replacement_threads_mobilized"
+    },
     "threads_nudged_this_tick": [
       "Engineering Orchestrator 019f138b-d229-7640-98b7-2f185d6beae0: sent stable-baseline prediction JSONL metadata handoff and finite_candidate_train_loss_missing status.",
       "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4: already active; no duplicate nudge.",
@@ -2868,372 +3304,11 @@
     "updated_at": "2026-07-01T23:47:08Z",
     "updated_at_utc": "2026-07-01T23:47:08Z",
     "updated_utc": "2026-07-02T00:07:38Z",
-    "user_action_required": false,
-    "c5_after_c1_final_hidden_opencl_prompt_weight_shape_repair_20260702T_phase34": {
-      "status": "final_hidden_opencl_prompt_weight_shape_repair_pathset_ready_for_custodian",
-      "current_gate": "WaveB_C5_after_C1_final_hidden_opencl_prompt_weight_shape_repair_custody_pending_after_phase34_pathset",
-      "status_classification": "PENDING_ACTION_REPO_CUSTODIAN_FINAL_HIDDEN_OPENCL_PROMPT_WEIGHT_SHAPE_REPAIR_FREEZE",
-      "owner": "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050 owns the six-file final-hidden OpenCL prompt weight shape repair freeze; Execution remains parked until custody freezes the repair and includes the bounded probe command.",
-      "first_missing_green_field": "final_hidden_opencl_prompt_weight_shape_repair_custody_commit_missing",
-      "artifact_paths": {
-        "runtime/reports/orchestration/c5_after_c1_final_hidden_opencl_prompt_weight_shape_repair_20260702T_phase34.json": "8c49a0a6af89489764b9082e2d5d4c0588cced83c499ab4dc7437e05cb2d324e",
-        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/opencl_layer_runner.cpp": "e4bfb3fdbcb6fc6411209fdd80951f178b03f16739f0cf423654d225ca9352d7",
-        "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp": "1f8b3199f3bcc52bfc0d6ad5af209ab40f82098724292998c3f1bf6daa0211c3",
-        "tests/test_c5_native_runtime_contract.py": "306a635d5e05296fff64edcf6879f016f60d187b380b9c3ec34bf1723cfc5fbf",
-        "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json": "compute after meta update",
-        "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md": "compute after meta update"
-      },
-      "verification_commands": [
-        "Phase3/4: cmake --build build/gemma4_megakernel_host --target gemma4_layer_runner -- -j2 passed",
-        "Phase3/4: python3 -m pytest tests/test_c5_native_runtime_contract.py -q -> 18 passed",
-        "Phase3/4: python3 -m pytest tests/test_c5_*.py -q -> 53 passed",
-        "Phase3/4: ctest --test-dir build/gemma4_megakernel_host --output-on-failure -> 4/4 passed",
-        "Phase3/4: git diff --check passed",
-        "Phase3/4: raw/secret diff scan clean"
-      ],
-      "expected_first_missing_green_field_after_probe": "c5_full_decoder_prediction_jsonl_writer_missing_after_lm_head_nll",
-      "research_escalation": "none",
-      "user_action_required": false,
-      "nonclaims": [
-        "no C5 pass",
-        "no executed C5 metrics",
-        "no prediction JSONL/logits/loss/confidence/candidate_train_loss",
-        "no bridge-MSE-as-C5-loss",
-        "no learning/model-quality claim",
-        "no Phase3/4 readiness",
-        "no 100k/1M authority",
-        "no Comet-backed accepted run"
-      ],
-      "next_handoff": {
-        "schema_version": "zpp_next_handoff_v1",
-        "run_id": "c5_after_c1_final_hidden_opencl_prompt_weight_shape_repair_20260702T_phase34",
-        "from_lane": "phase34_native_c5_runtime",
-        "to_lane": "repo_custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050",
-        "sent": true,
-        "objective": "Freeze the final-hidden OpenCL prompt weight shape repair so Execution can run exactly one bounded C5_after_C1 phone proof on the existing native --run-c5-qa-predict path.",
-        "authority_metric": "C5_after_C1 bounded phone runtime advances past c5_full_decoder_final_hidden_opencl_prompt_weight_shape_unsupported:5 without fabricating predictions, loss, confidence, or candidate_train_loss.",
-        "current_edge": "WaveB_C5_after_C1_final_hidden_opencl_prompt_weight_shape_repair_custody_pending_after_phase34_pathset",
-        "current_verdict": "pending_action",
-        "completed_work": [
-          "Phase3/4 produced dynamic layer-width OpenCL prompt shape repair pathset",
-          "Local build/test/diff/raw-boundary verification passed",
-          "Engineering/Meta updated central state metadata-only for custody pending"
-        ],
-        "evidence": [
-          {
-            "artifact": "runtime/reports/orchestration/c5_after_c1_final_hidden_opencl_prompt_weight_shape_repair_20260702T_phase34.json",
-            "sha256": "8c49a0a6af89489764b9082e2d5d4c0588cced83c499ab4dc7437e05cb2d324e",
-            "status": "custody_input"
-          },
-          {
-            "artifact": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/opencl_layer_runner.cpp",
-            "sha256": "e4bfb3fdbcb6fc6411209fdd80951f178b03f16739f0cf423654d225ca9352d7",
-            "status": "custody_input"
-          },
-          {
-            "artifact": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp",
-            "sha256": "1f8b3199f3bcc52bfc0d6ad5af209ab40f82098724292998c3f1bf6daa0211c3",
-            "status": "custody_input"
-          },
-          {
-            "artifact": "tests/test_c5_native_runtime_contract.py",
-            "sha256": "306a635d5e05296fff64edcf6879f016f60d187b380b9c3ec34bf1723cfc5fbf",
-            "status": "custody_input"
-          }
-        ],
-        "first_missing_green_field": "final_hidden_opencl_prompt_weight_shape_repair_custody_commit_missing",
-        "next_action": "Repo Custodian verifies, stages, commits, and pushes the exact six-file pathset, then routes Execution with the bounded phone probe command from the repair report.",
-        "owner_thread": "019f1ac2-0f0f-7721-bf46-ad402dbd9050",
-        "research_escalation": {
-          "status": "none",
-          "reason": "first_missing_green_field narrowed and a source repair exists; no repeated same-field post-repair phone failure yet",
-          "packet_path": null
-        },
-        "nonclaims": [
-          "no C5 pass",
-          "no learning/model-quality claim",
-          "no Phase3/4 readiness claim",
-          "no 100k/1M authority",
-          "no Comet-backed accepted run unless actually executed"
-        ],
-        "do_not_do": [
-          "do not route Execution before custody",
-          "do not stage unrelated files",
-          "do not add raw payloads or secrets to git",
-          "do not invent prediction JSONL/loss/confidence/candidate_train_loss"
-        ]
-      }
-    },
-    "next_handoff": {
-      "schema_version": "zpp_next_handoff_v1",
-      "run_id": "c5_after_c1_candidate_and_stable_prediction_jsonl_ready_20260702T000738Z",
-      "from_lane": "engineering_meta_watcher",
-      "to_lane": "phase34_engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4",
-      "sent": true,
-      "objective": "Provide a finite candidate_train_loss source from the same real logits/training objective so the canonical heldout scorer can run without substituting bridge MSE or heldout loss.",
-      "authority_metric": "Heldout C5 scoring is blocked until candidate and stable prediction JSONLs plus finite candidate_train_loss exist from real runtime/training objective evidence.",
-      "current_edge": "WaveB_C5_after_C1_candidate_and_stable_prediction_jsonl_payloads_ready_finite_candidate_train_loss_pending",
-      "current_verdict": "pending_action",
-      "completed_work": [
-        "Candidate native prediction JSONL probe emitted outside-git prediction identity and metadata evidence",
-        "Candidate metadata-only evidence was frozen by Repo Custodian at 71bc3b19014df62f398340f97a9f3bdb55d48de6",
-        "Stable-baseline native prediction JSONL probe emitted outside-git prediction identity and metadata evidence",
-        "Engineering/Meta sent the stable-baseline result back to Engineering Orchestrator"
-      ],
-      "evidence": [
-        {
-          "artifact": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_prediction_jsonl_writer_20260701T234607Z/candidate_probe_stdout.json",
-          "sha256": "b5d813420e6f9bafcc86ccb634d7571acea824e452d30d5f314978fd5ad90c29",
-          "status": "candidate_metadata_frozen_at_71bc3b1"
-        },
-        {
-          "artifact": "outside-git candidate prediction JSONL identity only",
-          "sha256": "a0137450ae16220a1aecc3dff60e50bceae641dba9b8207c0567f48ae4be4fc3",
-          "status": "candidate_raw_prediction_payload_not_copied_to_git"
-        },
-        {
-          "artifact": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_stable_baseline_prediction_jsonl_writer_20260702T000308Z/stable_baseline_probe_stdout.json",
-          "sha256": "3e2f9b4557888b561f862930c162f4e63c187fcf50a03a1e0c9f61ce12d2eac8",
-          "status": "stable_baseline_metadata_pending_custody"
-        },
-        {
-          "artifact": "outside-git stable-baseline prediction JSONL identity only",
-          "sha256": "a75e7804dbe4152d86c194eade3240285f16e254cd20b7cd0b0aff7ded7fff1d",
-          "status": "stable_raw_prediction_payload_not_copied_to_git"
-        }
-      ],
-      "first_missing_green_field": "finite_candidate_train_loss_missing",
-      "next_action": "Phase3/4 returns a finite candidate_train_loss source/pathset from the same real logits/training objective, or a precise blocker; after that, Engineering routes canonical heldout scorer.",
-      "owner_thread": "019f13da-d897-7ba2-8ed1-b959892f5ed4",
-      "research_escalation": {
-        "status": "none",
-        "reason": "stable_baseline_prediction_jsonl_missing advanced; candidate_train_loss source is now the concrete missing field",
-        "packet_path": null
-      },
-      "nonclaims": [
-        "no C5 pass",
-        "no finite candidate_train_loss yet",
-        "no learning/model-quality claim",
-        "no Phase3/4 readiness claim",
-        "no 100k/1M authority",
-        "no Comet-backed accepted run unless actually executed"
-      ],
-      "do_not_do": [
-        "do not substitute heldout loss for candidate_train_loss",
-        "do not relabel Phase4 bridge MSE as C5 loss",
-        "do not copy raw prediction JSONLs into git",
-        "do not run heldout scorer until finite candidate_train_loss exists"
-      ]
-    },
-    "c5_after_c1_candidate_prediction_jsonl_probe_result_20260701T234607Z": {
-      "lane": "execution_orchestrator",
-      "status": "c5_after_c1_candidate_prediction_jsonl_probe_passed",
-      "timestamp_utc": "2026-07-01T23:57:08Z",
-      "consumed_commit": "48b604e7be127d9b8474e5845fc3b58745c35f30",
-      "runner": "/data/data/com.termux/files/home/polymath_c5/C5_after_C1/bin/gemma4_layer_runner_c5_prediction_jsonl_writer",
-      "runner_sha256": "3ae0cc86b8aca491935d3a39ac5f6c4c3cc9d0f9b2949dfa944470726cd22165",
-      "runner_bytes": 581312,
-      "build_logs": {
-        "cmake_configure_log_sha256": "f18e501c019ae547119fda4be8d8cfc41377a809f3484812b95391c11c45f9f1",
-        "cmake_build_log_sha256": "269dd013bc4d70953458de7a247bfb36f51f9e591b1e006351826d976bd359fb"
-      },
-      "bounded_probe": {
-        "opencl_library": "/vendor/lib64/libOpenCL.so",
-        "exit_code": 0,
-        "elapsed_seconds": 245,
-        "native_status": "pass",
-        "first_missing_green_field": "none",
-        "blockers": [],
-        "prediction_jsonl_written": true,
-        "prediction_jsonl_bytes": 429,
-        "prediction_jsonl_sha256": "a0137450ae16220a1aecc3dff60e50bceae641dba9b8207c0567f48ae4be4fc3",
-        "prediction_jsonl_path_sha256": "31455a2804b64ecc97c9b02c97a243d11b30295462e18b19ecbaa6561fd3714e"
-      },
-      "metadata_only_artifact_root": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_prediction_jsonl_writer_20260701T234607Z",
-      "metadata_only_artifact_root_abs": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_prediction_jsonl_writer_20260701T234607Z",
-      "metadata_files_sha256": {
-        "candidate_probe_stdout_json": "b5d813420e6f9bafcc86ccb634d7571acea824e452d30d5f314978fd5ad90c29",
-        "candidate_probe_stderr_log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "meminfo_before_txt": "442d45cf265cf6811d4dcf40e9a98521d4966f0dd96736a6eaf03cb5bdac7adc",
-        "meminfo_after_txt": "e5c882e95ab9e93a07110fe375f8c1c68c69bab197606441366fd8a736aaecc7",
-        "probe_metadata_txt": "44ed114fa85b65e077e127270019f4cf4d4e4f574061826fbbc0860658bae141"
-      },
-      "raw_boundary": {
-        "prediction_jsonl_remains_outside_git": true,
-        "metadata_only_report_in_repo": true,
-        "local_report_raw_suffix_scan_count": 0,
-        "hf_or_comet_required": false,
-        "secrets_required": false
-      },
-      "first_missing_green_field_after_probe": "stable_baseline_prediction_payload_and_heldout_scorer_contract_missing",
-      "next_action": "Engineering routes stable-baseline prediction payload and heldout scorer/candidate_train_loss contract; Repo Custodian freezes metadata-only evidence and this central mirror.",
-      "research_escalation": "none",
-      "nonclaims": [
-        "no C5 pass",
-        "no stable-baseline prediction JSONL yet",
-        "no heldout scorer/candidate_train_loss yet",
-        "no learning/model-quality claim",
-        "no Phase3/4 readiness",
-        "no 100k/1M authority",
-        "no raw payloads in git",
-        "no secrets printed",
-        "no Comet-backed accepted run unless actually executed"
-      ]
-    },
-    "c5_after_c1_stable_baseline_prediction_jsonl_probe_result_20260702T000308Z": {
-      "lane": "execution_orchestrator",
-      "status": "stable_baseline_prediction_jsonl_probe_passed_candidate_train_loss_missing",
-      "timestamp_utc": "2026-07-02T00:07:38Z",
-      "consumed_commit": "48b604e7be127d9b8474e5845fc3b58745c35f30",
-      "runner_sha256": "3ae0cc86b8aca491935d3a39ac5f6c4c3cc9d0f9b2949dfa944470726cd22165",
-      "runner_bytes": 581312,
-      "bounded_probe": {
-        "opencl_library": "/vendor/lib64/libOpenCL.so",
-        "exit_code": 0,
-        "elapsed_seconds": 241,
-        "native_status": "pass",
-        "first_missing_green_field": "none_for_stable_baseline_prediction_probe",
-        "blockers": [],
-        "prediction_jsonl_written": true,
-        "prediction_jsonl_bytes": 430,
-        "prediction_jsonl_sha256": "a75e7804dbe4152d86c194eade3240285f16e254cd20b7cd0b0aff7ded7fff1d",
-        "prediction_jsonl_path_sha256": "85b1890aed0802adb5948196bbce0546866e8f1f38551c29749a8a094923190a"
-      },
-      "stable_payload_identity": {
-        "sha256": "e0d1c66ac876c2b6fbbe9e88f1b02dd37201d8ffba10afcd44f1c558fc32f7c9",
-        "bytes": 327680,
-        "path_sha256": "aebabb97f75c5546aaeef61ab99db74224f1a4400a3d6ec72f88a428f69e569c"
-      },
-      "heldout_qa_identity": {
-        "sha256": "da41c5362398f24e0e0dd9df9a5cf0594435a455871fa77ab74d9312e6c8e9b2",
-        "rows": 53
-      },
-      "metadata_only_artifact_root": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_stable_baseline_prediction_jsonl_writer_20260702T000308Z",
-      "metadata_files_sha256": {
-        "stable_baseline_probe_stdout_json": "3e2f9b4557888b561f862930c162f4e63c187fcf50a03a1e0c9f61ce12d2eac8",
-        "stable_baseline_probe_stderr_log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "probe_metadata_txt": "960cfa31fff9716ea6b2501d6c2f08c585ead04bb04c18c462fe3bf3e620ad97",
-        "meminfo_before_txt": "d52f151579e05d45a62c544df1d3171907ee740ce0a0d11db97adc2405fb93dc",
-        "meminfo_after_txt": "ae5bd8c5c46720ba50c4661bc0534323ee6f8174935f56637f9bfd31999be020"
-      },
-      "raw_boundary": {
-        "stable_prediction_jsonl_remains_outside_git": true,
-        "metadata_only_report_in_repo": true,
-        "hf_or_comet_required": false,
-        "secrets_required": false
-      },
-      "first_missing_green_field_after_probe": "finite_candidate_train_loss_missing",
-      "next_action": "Phase3/4 provides/validates finite candidate_train_loss from the same real logits/training objective; Repo Custodian freezes stable-baseline metadata-only evidence and this central mirror.",
-      "research_escalation": "none",
-      "nonclaims": [
-        "no C5 pass",
-        "no finite candidate_train_loss yet",
-        "no heldout scorer execution yet",
-        "no learning/model-quality claim",
-        "no Phase3/4 readiness",
-        "no 100k/1M authority",
-        "no raw payloads in git",
-        "no secrets printed",
-        "no Comet-backed accepted run unless actually executed"
-      ]
-    },
-    "thread_replacements_20260702T011011Z": {
-      "phase34_replacement_thread": "019f2059-e6a8-73b1-a9b8-8a2c499e838e",
-      "repo_custodian_replacement_thread": "019f2059-ef2c-7762-ba42-963b58f3af90",
-      "archived_stale_phase34_thread": "019f13da-d897-7ba2-8ed1-b959892f5ed4",
-      "archived_stale_repo_custodian_thread": "019f1ac2-0f0f-7721-bf46-ad402dbd9050",
-      "status": "replacement_threads_mobilized"
-    },
-    "c5_after_c1_stable_baseline_prediction_jsonl_metadata_custody_20260702T011011Z": {
-      "lane": "repo_custodian_replacement",
-      "thread": "019f2059-ef2c-7762-ba42-963b58f3af90",
-      "status": "stable_baseline_prediction_jsonl_metadata_evidence_committed_pushed",
-      "commit_sha": "58ce78aaa4486e440b3b8bba911c3a0fdde4f868",
-      "pushed_branch": "origin/gemma4-megakernel-native-training",
-      "metadata_only_artifact_root": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_stable_baseline_prediction_jsonl_writer_20260702T000308Z",
-      "metadata_files_sha256": {
-        "meminfo_after_txt": "ae5bd8c5c46720ba50c4661bc0534323ee6f8174935f56637f9bfd31999be020",
-        "meminfo_before_txt": "d52f151579e05d45a62c544df1d3171907ee740ce0a0d11db97adc2405fb93dc",
-        "probe_metadata_txt": "960cfa31fff9716ea6b2501d6c2f08c585ead04bb04c18c462fe3bf3e620ad97",
-        "stable_baseline_probe_stderr_log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "stable_baseline_probe_stdout_json": "3e2f9b4557888b561f862930c162f4e63c187fcf50a03a1e0c9f61ce12d2eac8"
-      },
-      "raw_boundary": {
-        "raw_prediction_payload_contents_in_git": false,
-        "metadata_only_evidence_in_git": true,
-        "raw_suffix_scan_count": 0,
-        "secret_scan_hits": 0
-      },
-      "first_missing_green_field_after_custody": "finite_candidate_train_loss_missing",
-      "nonclaims": [
-        "no C5 pass",
-        "no candidate_train_loss yet",
-        "no learning/model-quality claim",
-        "no Phase3/4 readiness",
-        "no 100k/1M authority",
-        "no raw payloads in git",
-        "no secrets printed",
-        "no Comet-backed accepted run"
-      ],
-      "next_handoff": {
-        "to": "Engineering/Meta watcher 019f1423-816d-7251-b7d9-945a11441c3f",
-        "status": "stable_baseline_prediction_jsonl_metadata_evidence_committed_pushed",
-        "artifacts": [
-          "commit 58ce78aaa4486e440b3b8bba911c3a0fdde4f868",
-          "five stable-baseline metadata file SHA-256 identities recorded in metadata_files_sha256"
-        ],
-        "first_missing_green_field": "finite_candidate_train_loss_missing",
-        "next_action": "Engineering/Meta routes Execution for the candidate_train_loss probe from the replacement Phase3/4 command; no Execution handoff is needed from Custodian because this custody item contains no probe command.",
-        "research_escalation": "none",
-        "nonclaims": [
-          "no C5 pass",
-          "no candidate_train_loss yet",
-          "no learning/model-quality claim",
-          "no Phase3/4 readiness",
-          "no 100k/1M authority",
-          "no raw payloads in git",
-          "no secrets printed",
-          "no Comet-backed accepted run"
-        ]
-      }
-    },
-    "c5_after_c1_candidate_train_loss_probe_command_20260702T011011Z": {
-      "lane": "phase34_replacement",
-      "thread": "019f2059-e6a8-73b1-a9b8-8a2c499e838e",
-      "status": "candidate_train_loss_probe_command_ready_for_execution",
-      "candidate_checkpoint_sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f",
-      "runner_sha256": "3ae0cc86b8aca491935d3a39ac5f6c4c3cc9d0f9b2949dfa944470726cd22165",
-      "train_qa_sha256": "795c1ba36d3cc3d50cfc26cabc8ece4d6ee3ee2ae4fb775f7674b708818df86c",
-      "train_qa_rows": 4931,
-      "loss_source_required": "teacher_forced_answer_token_nll_from_full_decoder_logits",
-      "expected_green_fields": [
-        "native_status_pass",
-        "candidate_checkpoint_sha256_match",
-        "train_qa_sha256_match",
-        "prediction_row_loss_finite_nonnegative",
-        "loss_source_match"
-      ],
-      "expected_fail_fields": [
-        "candidate_train_loss_missing_or_nonfinite",
-        "candidate_checkpoint_sha256_mismatch",
-        "train_qa_sha256_mismatch",
-        "native_first_missing_green_field"
-      ],
-      "raw_boundary": "Execution returns metadata only; raw train and prediction payload contents stay outside git.",
-      "next_action": "Execution runs exactly one bounded phone/Termux candidate_train_loss probe from the Phase3/4 command and returns metadata-only evidence.",
-      "research_escalation": "none",
-      "nonclaims": [
-        "no C5 pass",
-        "no learning/model-quality claim",
-        "no Phase3/4 readiness",
-        "no 100k/1M authority",
-        "no Comet-backed accepted run"
-      ]
-    }
+    "user_action_required": false
   },
   "adapter_site_policy_sha256": "f38bd8109bbb77e9e94a5b4b34a238bc0ec0a39e7736870c97defe5aecc93357",
   "additional_missing_runtime_field_after_contract_patch": "decoder_manifest_tensor_role_inventory_missing",
-  "artifact_waiting_on": "Stable-baseline metadata evidence is frozen at commit 58ce78aaa4486e440b3b8bba911c3a0fdde4f868, candidate metadata evidence is frozen at 71bc3b19014df62f398340f97a9f3bdb55d48de6, and replacement Phase3/4 returned candidate_train_loss_probe_command_ready_for_execution. Awaiting Execution metadata-only train-loss probe result: finite numeric candidate_train_loss from teacher-forced answer-token NLL/full-decoder logits, bound to candidate checkpoint SHA 1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f and train QA SHA 795c1ba36d3cc3d50cfc26cabc8ece4d6ee3ee2ae4fb775f7674b708818df86c.",
+  "artifact_waiting_on": "Finite candidate_train_loss is now green from the native train-loss probe. Awaiting Execution canonical C5 flow: run_c5_prediction_payloads.py with a real producer command, run_c5_heldout_eval.py to create executed metrics JSON, and run_c5_eval.py to produce the authority report. Raw train/prediction/checkpoint payloads remain outside git. Phase3/4 metric-readiness report for heldout grad norm source is available at SHA ab8fb945b34645e72b1e607b4e3ce87d18dde082fa285e1d34ea8331363e0fc6.",
   "authorization_needed": false,
   "c5_after_c1_42_layer_orchestration_probe_20260701T213036Z": {
     "blockers": [
@@ -3326,6 +3401,134 @@
     "runner_identity_bytes": 522560,
     "runner_identity_sha256": "6bbad7d28dc3c4716444cd1c9e55448087755e2dcd1c03eb2a4bab4d051df363",
     "status": "bounded_opencl_vendor_loader_probe_command_ready_for_execution_corrected"
+  },
+  "c5_after_c1_candidate_prediction_jsonl_probe_result_20260701T234607Z": {
+    "bounded_probe": {
+      "blockers": [],
+      "elapsed_seconds": 245,
+      "exit_code": 0,
+      "first_missing_green_field": "none",
+      "native_status": "pass",
+      "opencl_library": "/vendor/lib64/libOpenCL.so",
+      "prediction_jsonl_bytes": 429,
+      "prediction_jsonl_path_sha256": "31455a2804b64ecc97c9b02c97a243d11b30295462e18b19ecbaa6561fd3714e",
+      "prediction_jsonl_sha256": "a0137450ae16220a1aecc3dff60e50bceae641dba9b8207c0567f48ae4be4fc3",
+      "prediction_jsonl_written": true
+    },
+    "build_logs": {
+      "cmake_build_log_sha256": "269dd013bc4d70953458de7a247bfb36f51f9e591b1e006351826d976bd359fb",
+      "cmake_configure_log_sha256": "f18e501c019ae547119fda4be8d8cfc41377a809f3484812b95391c11c45f9f1"
+    },
+    "consumed_commit": "48b604e7be127d9b8474e5845fc3b58745c35f30",
+    "first_missing_green_field_after_probe": "stable_baseline_prediction_payload_and_heldout_scorer_contract_missing",
+    "lane": "execution_orchestrator",
+    "metadata_files_sha256": {
+      "candidate_probe_stderr_log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "candidate_probe_stdout_json": "b5d813420e6f9bafcc86ccb634d7571acea824e452d30d5f314978fd5ad90c29",
+      "meminfo_after_txt": "e5c882e95ab9e93a07110fe375f8c1c68c69bab197606441366fd8a736aaecc7",
+      "meminfo_before_txt": "442d45cf265cf6811d4dcf40e9a98521d4966f0dd96736a6eaf03cb5bdac7adc",
+      "probe_metadata_txt": "44ed114fa85b65e077e127270019f4cf4d4e4f574061826fbbc0860658bae141"
+    },
+    "metadata_only_artifact_root": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_prediction_jsonl_writer_20260701T234607Z",
+    "metadata_only_artifact_root_abs": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_prediction_jsonl_writer_20260701T234607Z",
+    "next_action": "Engineering routes stable-baseline prediction payload and heldout scorer/candidate_train_loss contract; Repo Custodian freezes metadata-only evidence and this central mirror.",
+    "nonclaims": [
+      "no C5 pass",
+      "no stable-baseline prediction JSONL yet",
+      "no heldout scorer/candidate_train_loss yet",
+      "no learning/model-quality claim",
+      "no Phase3/4 readiness",
+      "no 100k/1M authority",
+      "no raw payloads in git",
+      "no secrets printed",
+      "no Comet-backed accepted run unless actually executed"
+    ],
+    "raw_boundary": {
+      "hf_or_comet_required": false,
+      "local_report_raw_suffix_scan_count": 0,
+      "metadata_only_report_in_repo": true,
+      "prediction_jsonl_remains_outside_git": true,
+      "secrets_required": false
+    },
+    "research_escalation": "none",
+    "runner": "/data/data/com.termux/files/home/polymath_c5/C5_after_C1/bin/gemma4_layer_runner_c5_prediction_jsonl_writer",
+    "runner_bytes": 581312,
+    "runner_sha256": "3ae0cc86b8aca491935d3a39ac5f6c4c3cc9d0f9b2949dfa944470726cd22165",
+    "status": "c5_after_c1_candidate_prediction_jsonl_probe_passed",
+    "timestamp_utc": "2026-07-01T23:57:08Z"
+  },
+  "c5_after_c1_candidate_train_loss_probe_result_20260702T011806Z": {
+    "candidate_checkpoint_bytes": 327680,
+    "candidate_checkpoint_path_sha256": "70c1176a02520f0d2d1f959daa4fd451430764a2464c4afd81db47ad5ccda0d0",
+    "candidate_checkpoint_sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f",
+    "candidate_train_loss": 15.202827250350284,
+    "elapsed_seconds": 261,
+    "first_missing_green_field_after_result": "canonical_c5_payload_scorer_report_missing",
+    "local_raw_suffix_scan_count": 0,
+    "loss_source": "teacher_forced_answer_token_nll_from_full_decoder_logits",
+    "metadata_root": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_candidate_train_loss_20260702T011806Z",
+    "native_exit_code": 0,
+    "native_status": "pass",
+    "nonclaims": [
+      "no C5 pass",
+      "no heldout scorer execution yet",
+      "no learning/model-quality claim",
+      "no Phase3/4 readiness",
+      "no 100k/1M authority",
+      "no raw payloads in git",
+      "no secrets printed",
+      "no Comet-backed accepted run"
+    ],
+    "raw_output_boundary": "raw train-loss output remains outside git; central state stores identity only",
+    "raw_output_bytes": 432,
+    "raw_output_path_sha256": "bfffa1fa5909dce1e45b3994412a6faa78992ba92b7356de4a95b75550686e2a",
+    "raw_output_rows": 1,
+    "raw_output_sha256": "26403770e6b7afaf6c24ac76b2fb16fa9a8613ae9ab6779d93699e19004a6246",
+    "report_hashes": {
+      "candidate_train_loss_native_stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "candidate_train_loss_native_stdout.json": "44462febad5480dbeb0b2b7d8c410613b482c996e6741df8ea179c2099bdddba",
+      "probe_metadata.txt": "29ec23d557fda3e85e0f1a127ca6a941a974136ef81c37e862b354a620761d07"
+    },
+    "runner_bytes": 581312,
+    "runner_sha256": "3ae0cc86b8aca491935d3a39ac5f6c4c3cc9d0f9b2949dfa944470726cd22165",
+    "status": "candidate_train_loss_probe_passed",
+    "train_qa_bytes": 14230685,
+    "train_qa_path_sha256": "4395e03cf04a798bc0c189347d37214461e9e2f3e8303acd99ef49c1668237ed",
+    "train_qa_rows": 4931,
+    "train_qa_sha256": "795c1ba36d3cc3d50cfc26cabc8ece4d6ee3ee2ae4fb775f7674b708818df86c"
+  },
+  "c5_after_c1_canonical_c5_payload_scorer_route_20260702T012628Z": {
+    "candidate_train_loss": 15.202827250350284,
+    "first_expected_fail_fields": [
+      "canonical_c5_prediction_payload_report_missing_or_failed",
+      "canonical_c5_executed_metrics_json_missing_or_failed",
+      "canonical_c5_eval_report_failed",
+      "producer_command_phone_bridge_missing",
+      "canonical_c5_phase34_grad_norm_source_invalid"
+    ],
+    "first_expected_green_fields": [
+      "prediction payload report status pass",
+      "executed metrics JSON schema polymath_c5_executed_metrics_v1",
+      "final C5 eval report produced by run_c5_eval.py"
+    ],
+    "loss_source": "teacher_forced_answer_token_nll_from_full_decoder_logits",
+    "owner_thread": "019f138c-fb51-7c53-a41a-ab8eac950d9c",
+    "phase34_grad_norm_source": {
+      "finite_fields": {
+        "phase4/C1/grad_norm_l2": 0.000727404578124,
+        "phase4/C1/grad_norm_linf": 1.23325654937e-05
+      },
+      "path": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/phase34_lineage_repair/C1/phase34_metric_readiness/phase34_metric_readiness_report.json",
+      "sha256": "ab8fb945b34645e72b1e607b4e3ce87d18dde082fa285e1d34ea8331363e0fc6",
+      "use": "pass as --phase34-report to scripts/host/run_c5_heldout_eval.py unless Execution validates a stricter finite grad_norm_max_observed source"
+    },
+    "raw_boundary": "prediction outputs, train split, checkpoint payloads, and model/adapter payloads remain outside git; report metadata only",
+    "required_commands": [
+      "scripts/host/run_c5_prediction_payloads.py with the real native inference producer command",
+      "scripts/host/run_c5_heldout_eval.py using candidate/stable raw predictions outside git and candidate_train_loss 15.202827250350284",
+      "scripts/host/run_c5_eval.py with the executed metrics JSON"
+    ],
+    "status": "canonical_c5_payload_scorer_ready_for_execution_after_finite_train_loss"
   },
   "c5_after_c1_chunked_lm_head_nll_writer_implementation_active_20260701T214238Z": {
     "custody_commit_for_42_layer_probe_evidence": "3df47a394f022112ade79c7b33ad5bbc0c0e08ac",
@@ -3830,6 +4033,101 @@
         "command": "git diff --check -- integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/tools/reference/export_c5_full_decoder_component_pack.py tests/test_c5_full_decoder_exporter.py",
         "result": "passed"
       }
+    ]
+  },
+  "c5_after_c1_final_hidden_opencl_prompt_weight_shape_repair_20260702T_phase34": {
+    "artifact_paths": {
+      "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp": "1f8b3199f3bcc52bfc0d6ad5af209ab40f82098724292998c3f1bf6daa0211c3",
+      "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/opencl_layer_runner.cpp": "e4bfb3fdbcb6fc6411209fdd80951f178b03f16739f0cf423654d225ca9352d7",
+      "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json": "compute after meta update",
+      "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md": "compute after meta update",
+      "runtime/reports/orchestration/c5_after_c1_final_hidden_opencl_prompt_weight_shape_repair_20260702T_phase34.json": "8c49a0a6af89489764b9082e2d5d4c0588cced83c499ab4dc7437e05cb2d324e",
+      "tests/test_c5_native_runtime_contract.py": "306a635d5e05296fff64edcf6879f016f60d187b380b9c3ec34bf1723cfc5fbf"
+    },
+    "current_gate": "WaveB_C5_after_C1_final_hidden_opencl_prompt_weight_shape_repair_custody_pending_after_phase34_pathset",
+    "expected_first_missing_green_field_after_probe": "c5_full_decoder_prediction_jsonl_writer_missing_after_lm_head_nll",
+    "first_missing_green_field": "final_hidden_opencl_prompt_weight_shape_repair_custody_commit_missing",
+    "next_handoff": {
+      "authority_metric": "C5_after_C1 bounded phone runtime advances past c5_full_decoder_final_hidden_opencl_prompt_weight_shape_unsupported:5 without fabricating predictions, loss, confidence, or candidate_train_loss.",
+      "completed_work": [
+        "Phase3/4 produced dynamic layer-width OpenCL prompt shape repair pathset",
+        "Local build/test/diff/raw-boundary verification passed",
+        "Engineering/Meta updated central state metadata-only for custody pending"
+      ],
+      "current_edge": "WaveB_C5_after_C1_final_hidden_opencl_prompt_weight_shape_repair_custody_pending_after_phase34_pathset",
+      "current_verdict": "pending_action",
+      "do_not_do": [
+        "do not route Execution before custody",
+        "do not stage unrelated files",
+        "do not add raw payloads or secrets to git",
+        "do not invent prediction JSONL/loss/confidence/candidate_train_loss"
+      ],
+      "evidence": [
+        {
+          "artifact": "runtime/reports/orchestration/c5_after_c1_final_hidden_opencl_prompt_weight_shape_repair_20260702T_phase34.json",
+          "sha256": "8c49a0a6af89489764b9082e2d5d4c0588cced83c499ab4dc7437e05cb2d324e",
+          "status": "custody_input"
+        },
+        {
+          "artifact": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/opencl_layer_runner.cpp",
+          "sha256": "e4bfb3fdbcb6fc6411209fdd80951f178b03f16739f0cf423654d225ca9352d7",
+          "status": "custody_input"
+        },
+        {
+          "artifact": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp",
+          "sha256": "1f8b3199f3bcc52bfc0d6ad5af209ab40f82098724292998c3f1bf6daa0211c3",
+          "status": "custody_input"
+        },
+        {
+          "artifact": "tests/test_c5_native_runtime_contract.py",
+          "sha256": "306a635d5e05296fff64edcf6879f016f60d187b380b9c3ec34bf1723cfc5fbf",
+          "status": "custody_input"
+        }
+      ],
+      "first_missing_green_field": "final_hidden_opencl_prompt_weight_shape_repair_custody_commit_missing",
+      "from_lane": "phase34_native_c5_runtime",
+      "next_action": "Repo Custodian verifies, stages, commits, and pushes the exact six-file pathset, then routes Execution with the bounded phone probe command from the repair report.",
+      "nonclaims": [
+        "no C5 pass",
+        "no learning/model-quality claim",
+        "no Phase3/4 readiness claim",
+        "no 100k/1M authority",
+        "no Comet-backed accepted run unless actually executed"
+      ],
+      "objective": "Freeze the final-hidden OpenCL prompt weight shape repair so Execution can run exactly one bounded C5_after_C1 phone proof on the existing native --run-c5-qa-predict path.",
+      "owner_thread": "019f1ac2-0f0f-7721-bf46-ad402dbd9050",
+      "research_escalation": {
+        "packet_path": null,
+        "reason": "first_missing_green_field narrowed and a source repair exists; no repeated same-field post-repair phone failure yet",
+        "status": "none"
+      },
+      "run_id": "c5_after_c1_final_hidden_opencl_prompt_weight_shape_repair_20260702T_phase34",
+      "schema_version": "zpp_next_handoff_v1",
+      "sent": true,
+      "to_lane": "repo_custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050"
+    },
+    "nonclaims": [
+      "no C5 pass",
+      "no executed C5 metrics",
+      "no prediction JSONL/logits/loss/confidence/candidate_train_loss",
+      "no bridge-MSE-as-C5-loss",
+      "no learning/model-quality claim",
+      "no Phase3/4 readiness",
+      "no 100k/1M authority",
+      "no Comet-backed accepted run"
+    ],
+    "owner": "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050 owns the six-file final-hidden OpenCL prompt weight shape repair freeze; Execution remains parked until custody freezes the repair and includes the bounded probe command.",
+    "research_escalation": "none",
+    "status": "final_hidden_opencl_prompt_weight_shape_repair_pathset_ready_for_custodian",
+    "status_classification": "PENDING_ACTION_REPO_CUSTODIAN_FINAL_HIDDEN_OPENCL_PROMPT_WEIGHT_SHAPE_REPAIR_FREEZE",
+    "user_action_required": false,
+    "verification_commands": [
+      "Phase3/4: cmake --build build/gemma4_megakernel_host --target gemma4_layer_runner -- -j2 passed",
+      "Phase3/4: python3 -m pytest tests/test_c5_native_runtime_contract.py -q -> 18 passed",
+      "Phase3/4: python3 -m pytest tests/test_c5_*.py -q -> 53 passed",
+      "Phase3/4: ctest --test-dir build/gemma4_megakernel_host --output-on-failure -> 4/4 passed",
+      "Phase3/4: git diff --check passed",
+      "Phase3/4: raw/secret diff scan clean"
     ]
   },
   "c5_after_c1_final_hidden_stream_implementation_active_20260701T220608Z": {
@@ -4923,6 +5221,121 @@
       "Meta: local report JSON parses and pathset hashes match the custody request"
     ]
   },
+  "c5_after_c1_native_prediction_jsonl_writer_after_lm_head_nll_20260702T_phase34": {
+    "artifact_paths": {
+      "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/include/polymath/gemma4/gemma_bpe_tokenizer.h": "31416e0c21fdbb7a098581d93948672718020dcb76bbf75177c3b4f821e942de",
+      "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp": "3997732a48c00cd71a8e5742b2584aa97e96149661d8d63e1c8c8a86ed88a583",
+      "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/data/gemma_bpe_tokenizer.cpp": "135186a622660ad502499916accb836abe9cd95b9bd4a979868e7eb133cc93fe",
+      "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json": "compute after meta update",
+      "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md": "compute after meta update",
+      "runtime/reports/orchestration/c5_after_c1_native_prediction_jsonl_writer_after_lm_head_nll_20260702T_phase34.json": "7f1e4b794e05043628ef86175c5fda3358e917669b15e564c7e69de8a35e5e63",
+      "tests/test_c5_native_runtime_contract.py": "0aa321695bd004ed9850ace6acd0a1629c3906aec8bee91aaea3cc61056a5e03"
+    },
+    "consumed_base_commit": "499cd1739a3402fc498a70500e2efef081f97e46",
+    "current_gate": "WaveB_C5_after_C1_prediction_jsonl_writer_custody_pending_after_phase34_pathset",
+    "expected_execution_probe": "single bounded C5_after_C1 phone probe using command_template in the report after custody freeze",
+    "expected_runtime_after_probe": "prediction_jsonl_written=true with real runtime-emitted loss/confidence if writer works, or the next precise native/runtime field if fail-closed",
+    "first_missing_green_field": "prediction_jsonl_writer_custody_commit_missing",
+    "local_built_runner_sha256": "b8cc2dbb062c2c861397f18d8267a883455d34229823bde9ffca6364e253f400",
+    "next_handoff": {
+      "authority_metric": "Existing native C5 path writes prediction JSONL only from real runtime argmax token, finite LM-head/NLL loss, and finite confidence; no fabricated predictions or metrics.",
+      "completed_work": [
+        "Phase3/4 produced prediction JSONL writer pathset after prompt-shape repair probe exposed c5_full_decoder_prediction_jsonl_writer_missing_after_lm_head_nll",
+        "Local build/test/diff/raw-boundary verification passed in Phase3/4 thread",
+        "Engineering/Meta verified reported file hashes and updated central state metadata-only for custody pending"
+      ],
+      "current_edge": "WaveB_C5_after_C1_prediction_jsonl_writer_custody_pending_after_phase34_pathset",
+      "current_verdict": "pending_action",
+      "do_not_do": [
+        "do not route Execution before custody",
+        "do not stage unrelated files",
+        "do not add raw payloads or secrets to git",
+        "do not invent prediction JSONL/loss/confidence/candidate_train_loss"
+      ],
+      "evidence": [
+        {
+          "artifact": "runtime/reports/orchestration/c5_after_c1_native_prediction_jsonl_writer_after_lm_head_nll_20260702T_phase34.json",
+          "sha256": "7f1e4b794e05043628ef86175c5fda3358e917669b15e564c7e69de8a35e5e63",
+          "status": "custody_input"
+        },
+        {
+          "artifact": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/include/polymath/gemma4/gemma_bpe_tokenizer.h",
+          "sha256": "31416e0c21fdbb7a098581d93948672718020dcb76bbf75177c3b4f821e942de",
+          "status": "custody_input"
+        },
+        {
+          "artifact": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/data/gemma_bpe_tokenizer.cpp",
+          "sha256": "135186a622660ad502499916accb836abe9cd95b9bd4a979868e7eb133cc93fe",
+          "status": "custody_input"
+        },
+        {
+          "artifact": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp",
+          "sha256": "3997732a48c00cd71a8e5742b2584aa97e96149661d8d63e1c8c8a86ed88a583",
+          "status": "custody_input"
+        },
+        {
+          "artifact": "tests/test_c5_native_runtime_contract.py",
+          "sha256": "0aa321695bd004ed9850ace6acd0a1629c3906aec8bee91aaea3cc61056a5e03",
+          "status": "custody_input"
+        },
+        {
+          "artifact": "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json",
+          "sha256": "compute after meta update",
+          "status": "custody_input"
+        },
+        {
+          "artifact": "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md",
+          "sha256": "compute after meta update",
+          "status": "custody_input"
+        }
+      ],
+      "first_missing_green_field": "prediction_jsonl_writer_custody_commit_missing",
+      "from_lane": "engineering_meta_watcher",
+      "next_action": "Repo Custodian verifies, stages, commits, and pushes the exact seven-file pathset, then routes Execution with the bounded phone probe command from the report.",
+      "nonclaims": [
+        "no C5 pass",
+        "no learning/model-quality claim",
+        "no Phase3/4 readiness claim",
+        "no 100k/1M authority",
+        "no Comet-backed accepted run unless actually executed"
+      ],
+      "objective": "Freeze the native prediction JSONL writer pathset so Execution can run one bounded C5_after_C1 phone proof on the existing --run-c5-qa-predict path.",
+      "owner_thread": "019f1ac2-0f0f-7721-bf46-ad402dbd9050",
+      "research_escalation": {
+        "packet_path": null,
+        "reason": "first_missing_green_field narrowed and Phase3/4 produced a concrete source pathset",
+        "status": "none"
+      },
+      "run_id": "c5_after_c1_native_prediction_jsonl_writer_after_lm_head_nll_20260702T_phase34",
+      "schema_version": "zpp_next_handoff_v1",
+      "sent": true,
+      "to_lane": "repo_custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050"
+    },
+    "nonclaims": [
+      "no C5 pass",
+      "no executed C5 metrics from this custody-pending state",
+      "no candidate_train_loss claim",
+      "no learning/model-quality claim",
+      "no Phase3/4 readiness",
+      "no 100k/1M authority",
+      "no Comet-backed accepted run"
+    ],
+    "owner": "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050 owns the seven-file prediction JSONL writer freeze; Execution remains parked until custody freezes the pathset and includes the bounded phone probe command.",
+    "research_escalation": "none",
+    "runner_destination_after_custody": "/data/data/com.termux/files/home/polymath_c5/C5_after_C1/bin/gemma4_layer_runner_c5_prediction_jsonl_writer",
+    "status": "native_prediction_jsonl_writer_after_lm_head_nll_pathset_ready_for_custodian",
+    "status_classification": "PENDING_ACTION_REPO_CUSTODIAN_PREDICTION_JSONL_WRITER_FREEZE",
+    "user_action_required": false,
+    "verification_commands": [
+      "Phase3/4: cmake --build build/gemma4_megakernel_host --target gemma4_layer_runner -- -j2 passed",
+      "Phase3/4: python3 -m pytest tests/test_c5_native_runtime_contract.py -q -> 19 passed",
+      "Phase3/4: python3 -m pytest tests/test_c5_*.py -q -> 54 passed",
+      "Phase3/4: ctest --test-dir build/gemma4_megakernel_host --output-on-failure -> 4/4 passed",
+      "Phase3/4: git diff --check passed",
+      "Phase3/4: raw/secret diff scan clean",
+      "Engineering/Meta: local SHA readback matched Phase3/4 reported pathset before central mirror update"
+    ]
+  },
   "c5_after_c1_native_rank16_adapter_stream_injection_20260701T_phase34": {
     "base_commit": "104874594bc34595d6ae2de6b204e5f2352bc3de",
     "bounded_follow_up_runner_destination": "/data/data/com.termux/files/home/polymath_c5/C5_after_C1/bin/gemma4_layer_runner_c5_rank16_adapter_stream",
@@ -5347,6 +5760,204 @@
     "status": "bounded_phone_probe_semantic_failure_decoder_manifest_per_layer_input_runtime_missing",
     "throughput_available": false
   },
+  "c5_after_c1_prediction_jsonl_writer_committed_pushed_20260701T234638Z": {
+    "branch": "origin/gemma4-megakernel-native-training",
+    "commit": "48b604e7be127d9b8474e5845fc3b58745c35f30",
+    "next_handoff": {
+      "authority_metric": "Existing native --run-c5-qa-predict path emits real prediction JSONL only from runtime outputs or fails closed with the next exact field.",
+      "completed_work": [
+        "Repo Custodian verified, committed, and pushed prediction JSONL writer pathset",
+        "Repo Custodian sent bounded phone probe command to Execution"
+      ],
+      "current_edge": "WaveB_C5_after_C1_prediction_jsonl_writer_phone_probe_active_after_custody",
+      "current_verdict": "pending_action",
+      "do_not_do": [
+        "do not start duplicate phone probes",
+        "do not copy raw prediction JSONL into git",
+        "do not fabricate loss/confidence/candidate_train_loss"
+      ],
+      "evidence": [
+        {
+          "artifact": "repo commit",
+          "sha256": "48b604e7be127d9b8474e5845fc3b58745c35f30",
+          "status": "committed_pushed"
+        },
+        {
+          "artifact": "runtime/reports/orchestration/c5_after_c1_native_prediction_jsonl_writer_after_lm_head_nll_20260702T_phase34.json",
+          "sha256": "7f1e4b794e05043628ef86175c5fda3358e917669b15e564c7e69de8a35e5e63",
+          "status": "frozen_report"
+        }
+      ],
+      "first_missing_green_field": "c5_after_c1_prediction_jsonl_writer_bounded_phone_probe_pending",
+      "from_lane": "repo_custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050",
+      "next_action": "Execution rebuilds/copies gemma4_layer_runner_c5_prediction_jsonl_writer and runs exactly one bounded C5_after_C1 phone probe from the frozen report.",
+      "nonclaims": [
+        "no C5 pass",
+        "no learning/model-quality claim",
+        "no Phase3/4 readiness claim",
+        "no 100k/1M authority",
+        "no Comet-backed accepted run unless actually executed"
+      ],
+      "objective": "Run the bounded C5_after_C1 phone proof for the frozen prediction JSONL writer implementation.",
+      "owner_thread": "019f138c-fb51-7c53-a41a-ab8eac950d9c",
+      "research_escalation": {
+        "packet_path": null,
+        "reason": "custody completed and bounded Execution proof is the next falsification step",
+        "status": "none"
+      },
+      "run_id": "c5_after_c1_prediction_jsonl_writer_custody_20260701T234638Z",
+      "schema_version": "zpp_next_handoff_v1",
+      "sent": true,
+      "to_lane": "execution_orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c"
+    },
+    "next_handoff_sent_to_execution": true,
+    "pathset_sha256": {
+      "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/include/polymath/gemma4/gemma_bpe_tokenizer.h": "31416e0c21fdbb7a098581d93948672718020dcb76bbf75177c3b4f821e942de",
+      "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp": "3997732a48c00cd71a8e5742b2584aa97e96149661d8d63e1c8c8a86ed88a583",
+      "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/data/gemma_bpe_tokenizer.cpp": "135186a622660ad502499916accb836abe9cd95b9bd4a979868e7eb133cc93fe",
+      "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json": "877ad8adefc7dabc053ffcff5440ce1f01aa47e2b79c41419011a5f4a3038572",
+      "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md": "dc5f0c59426a0bfdd087905c72baa837d513662d006a41511a9a72432e0c8dee",
+      "runtime/reports/orchestration/c5_after_c1_native_prediction_jsonl_writer_after_lm_head_nll_20260702T_phase34.json": "7f1e4b794e05043628ef86175c5fda3358e917669b15e564c7e69de8a35e5e63",
+      "tests/test_c5_native_runtime_contract.py": "0aa321695bd004ed9850ace6acd0a1629c3906aec8bee91aaea3cc61056a5e03"
+    },
+    "repo_custodian_thread": "019f1ac2-0f0f-7721-bf46-ad402dbd9050",
+    "status": "prediction_jsonl_writer_committed_pushed",
+    "timestamp_utc": "2026-07-01T23:46:38Z",
+    "verification": [
+      "local and remote HEAD both 48b604e7be127d9b8474e5845fc3b58745c35f30",
+      "JSON validation passed for central state and report",
+      "ZPP linter exited 0 with pre-existing custody-state handoff warning only",
+      "git diff --check passed over exact and staged pathset",
+      "added-line raw payload path / value-shaped secret scan returned 0 hits",
+      "host build passed",
+      "focused native runtime contract 19 passed",
+      "broad C5 suite 54 passed",
+      "CTest 4/4 passed"
+    ]
+  },
+  "c5_after_c1_prediction_jsonl_writer_phone_probe_active_20260701T234708Z": {
+    "artifact_waiting_on": "Execution metadata-only probe result and NEXT_HANDOFF",
+    "consumed_commit": "48b604e7be127d9b8474e5845fc3b58745c35f30",
+    "execution_thread": "019f138c-fb51-7c53-a41a-ab8eac950d9c",
+    "expected_runtime_outcome": "prediction JSONL emitted with real runtime loss/confidence and bytes/SHA, or exact fail-closed first_missing_green_field",
+    "first_missing_green_field": "c5_after_c1_prediction_jsonl_writer_bounded_phone_probe_result_pending",
+    "nonclaims": [
+      "no C5 pass",
+      "no executed C5 metrics yet",
+      "no prediction JSONL/logits/loss/confidence/candidate_train_loss unless real runtime emits them",
+      "no bridge-MSE-as-C5-loss",
+      "no learning/model-quality claim",
+      "no Phase3/4 readiness",
+      "no 100k/1M authority",
+      "no raw payloads in git",
+      "no secrets printed",
+      "no Comet-backed accepted run"
+    ],
+    "opencl_library": "/vendor/lib64/libOpenCL.so",
+    "research_escalation": "none",
+    "runner_destination": "/data/data/com.termux/files/home/polymath_c5/C5_after_C1/bin/gemma4_layer_runner_c5_prediction_jsonl_writer",
+    "status": "prediction_jsonl_writer_phone_probe_active",
+    "timestamp_utc": "2026-07-01T23:47:08Z"
+  },
+  "c5_after_c1_prompt_shape_repair_custody_committed_20260701T231635Z": {
+    "branch": "origin/gemma4-megakernel-native-training",
+    "commit": "499cd1739a3402fc498a70500e2efef081f97e46",
+    "next_handoff_sent_to_execution": true,
+    "pathset_sha256": {
+      "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp": "1f8b3199f3bcc52bfc0d6ad5af209ab40f82098724292998c3f1bf6daa0211c3",
+      "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/opencl_layer_runner.cpp": "e4bfb3fdbcb6fc6411209fdd80951f178b03f16739f0cf423654d225ca9352d7",
+      "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json": "8e9e0b3c2485d3d715cf29c197a3821d236fee7929f15b8d395d4ce819854ec8",
+      "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md": "6e515e7bd86a0f5497afc3c5c29970670fa44ab0e67bfd3ddc59aee677d7da0d",
+      "runtime/reports/orchestration/c5_after_c1_final_hidden_opencl_prompt_weight_shape_repair_20260702T_phase34.json": "8c49a0a6af89489764b9082e2d5d4c0588cced83c499ab4dc7437e05cb2d324e",
+      "tests/test_c5_native_runtime_contract.py": "306a635d5e05296fff64edcf6879f016f60d187b380b9c3ec34bf1723cfc5fbf"
+    },
+    "repo_custodian_thread": "019f1ac2-0f0f-7721-bf46-ad402dbd9050",
+    "status": "final_hidden_opencl_prompt_weight_shape_repair_committed_pushed",
+    "timestamp_utc": "2026-07-01T23:19:03Z",
+    "verification": [
+      "branch/local/remote readback verified at 499cd1739a3402fc498a70500e2efef081f97e46",
+      "JSON validation passed for central state and repair report",
+      "ZPP linter exited 0 with only pre-existing active_watchdog_state.repo_custody_state_freeze warning",
+      "git diff --check passed over exact and staged six-file pathset",
+      "added-line raw payload path / value-shaped secret scan returned 0 hits",
+      "host build passed for gemma4_layer_runner",
+      "focused native contract 18 passed",
+      "broad C5 suite 53 passed",
+      "ctest 4/4 passed"
+    ]
+  },
+  "c5_after_c1_prompt_shape_repair_phone_probe_execution_active_20260701T231635Z": {
+    "artifact_waiting_on": "Execution metadata-only probe result and NEXT_HANDOFF",
+    "consumed_commit": "499cd1739a3402fc498a70500e2efef081f97e46",
+    "execution_thread": "019f138c-fb51-7c53-a41a-ab8eac950d9c",
+    "expected_next_runtime_field": "c5_full_decoder_prediction_jsonl_writer_missing_after_lm_head_nll unless a more precise runtime field appears",
+    "first_missing_green_field": "c5_after_c1_prompt_shape_repair_bounded_phone_probe_pending",
+    "nonclaims": [
+      "no C5 pass",
+      "no executed C5 metrics",
+      "no prediction JSONL/logits/loss/confidence/candidate_train_loss unless real runtime emits them",
+      "no bridge-MSE-as-C5-loss",
+      "no learning/model-quality claim",
+      "no Phase3/4 readiness",
+      "no 100k/1M authority",
+      "no raw payloads in git",
+      "no secrets printed",
+      "no Comet-backed accepted run"
+    ],
+    "opencl_library": "/vendor/lib64/libOpenCL.so",
+    "research_escalation": "none",
+    "runner_destination": "/data/data/com.termux/files/home/polymath_c5/C5_after_C1/bin/gemma4_layer_runner_c5_prompt_shape_repair",
+    "same_field_repeat_escalation": "If c5_full_decoder_final_hidden_opencl_prompt_weight_shape_unsupported:5 repeats after this frozen repair/probe, trigger bounded shape/manifest decomposition and route to Phase3/4.",
+    "status": "prompt_shape_repair_phone_probe_active",
+    "timestamp_utc": "2026-07-01T23:19:03Z"
+  },
+  "c5_after_c1_prompt_shape_repair_probe_result_20260701T231524Z": {
+    "artifacts_sha256": {
+      "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_prompt_shape_repair_20260701T231524Z/build_logs/cmake_build.log": "269dd013bc4d70953458de7a247bfb36f51f9e591b1e006351826d976bd359fb",
+      "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_prompt_shape_repair_20260701T231524Z/build_logs/cmake_configure.log": "addb938817086ee8d97ed867583e81fa4432a060f635eb84804594858d5dcdfd",
+      "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_prompt_shape_repair_20260701T231524Z/candidate_probe_stderr.log": "3b3698633c2ee470be9f3a0db40d8e0f35bef5720b37392ba0a94dfb5c260085",
+      "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_prompt_shape_repair_20260701T231524Z/candidate_probe_stdout.json": "6bc5a58af7b8ef7f304f7e37d39102bc05235269e0e2dc6fb92679a01bfa34c4",
+      "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_prompt_shape_repair_20260701T231524Z/meminfo_after.txt": "35f9d7825819094f6fc11ad8b4fadbbd08f7afe8ca38ace055e06e90380f219a",
+      "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_prompt_shape_repair_20260701T231524Z/meminfo_before.txt": "d624b705739005cf0b03a89ae93e03d8d9167305b8ce14f321836dc9fc05eb2a",
+      "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_prompt_shape_repair_20260701T231524Z/probe_metadata.txt": "c1a8f2fa8ef1b31795bc28c559304f9b2b20be3cce864d0327bec4c4713fdf7d"
+    },
+    "blockers": [
+      "c5_full_decoder_prediction_jsonl_writer_missing_after_lm_head_nll"
+    ],
+    "consumed_commit": "499cd1739a3402fc498a70500e2efef081f97e46",
+    "elapsed_seconds": 251,
+    "execution_thread": "019f138c-fb51-7c53-a41a-ab8eac950d9c",
+    "first_missing_green_field": "c5_full_decoder_prediction_jsonl_writer_missing_after_lm_head_nll",
+    "metadata_root": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_prompt_shape_repair_20260701T231524Z",
+    "native_status": "blocked",
+    "next_handoff": {
+      "first_missing_green_field": "c5_full_decoder_prediction_jsonl_writer_missing_after_lm_head_nll",
+      "next_action": "freeze/route prediction JSONL writer after LM-head NLL, or provide the next bounded probe",
+      "research_escalation": "none",
+      "status": "prompt_shape_repair_green_next_field_prediction_jsonl_writer_missing_after_lm_head_nll",
+      "to": "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4"
+    },
+    "nonclaims": [
+      "no C5 pass",
+      "no executed C5 metrics",
+      "no prediction JSONL/logits/loss/confidence/candidate_train_loss unless real runtime emits them",
+      "no bridge-MSE-as-C5-loss",
+      "no learning/model-quality claim",
+      "no Phase3/4 readiness",
+      "no 100k/1M authority",
+      "no raw payloads in git",
+      "no secrets printed",
+      "no Comet-backed accepted run"
+    ],
+    "prediction_jsonl_written": false,
+    "probe_exit_code": 13,
+    "raw_suffix_scan_count": 0,
+    "runner": "/data/data/com.termux/files/home/polymath_c5/C5_after_C1/bin/gemma4_layer_runner_c5_prompt_shape_repair",
+    "runner_bytes": 573000,
+    "runner_sha256": "1ef49c246a08ab032862f717836f3e098d97640aca75fe9f3e29a63451aa10b1",
+    "status": "prompt_shape_repair_probe_green_next_prediction_jsonl_writer_missing",
+    "timestamp_utc": "2026-07-01T23:22:56Z"
+  },
   "c5_after_c1_rank16_adapter_stream_injection_custody_20260701T205208Z": {
     "bounded_follow_up_runner_destination": "/data/data/com.termux/files/home/polymath_c5/C5_after_C1/bin/gemma4_layer_runner_c5_rank16_adapter_stream",
     "branch": "origin/gemma4-megakernel-native-training",
@@ -5546,10 +6157,69 @@
     "schema_version": "polymath_c5_qa_inference_native_report_v1",
     "status": "bounded_phone_probe_repeated_resource_runtime_failure_after_opencl_discovery_repair"
   },
+  "c5_after_c1_stable_baseline_prediction_jsonl_probe_result_20260702T000308Z": {
+    "bounded_probe": {
+      "blockers": [],
+      "elapsed_seconds": 241,
+      "exit_code": 0,
+      "first_missing_green_field": "none_for_stable_baseline_prediction_probe",
+      "native_status": "pass",
+      "opencl_library": "/vendor/lib64/libOpenCL.so",
+      "prediction_jsonl_bytes": 430,
+      "prediction_jsonl_path_sha256": "85b1890aed0802adb5948196bbce0546866e8f1f38551c29749a8a094923190a",
+      "prediction_jsonl_sha256": "a75e7804dbe4152d86c194eade3240285f16e254cd20b7cd0b0aff7ded7fff1d",
+      "prediction_jsonl_written": true
+    },
+    "consumed_commit": "48b604e7be127d9b8474e5845fc3b58745c35f30",
+    "first_missing_green_field_after_probe": "finite_candidate_train_loss_missing",
+    "heldout_qa_identity": {
+      "rows": 53,
+      "sha256": "da41c5362398f24e0e0dd9df9a5cf0594435a455871fa77ab74d9312e6c8e9b2"
+    },
+    "lane": "execution_orchestrator",
+    "metadata_files_sha256": {
+      "meminfo_after_txt": "ae5bd8c5c46720ba50c4661bc0534323ee6f8174935f56637f9bfd31999be020",
+      "meminfo_before_txt": "d52f151579e05d45a62c544df1d3171907ee740ce0a0d11db97adc2405fb93dc",
+      "probe_metadata_txt": "960cfa31fff9716ea6b2501d6c2f08c585ead04bb04c18c462fe3bf3e620ad97",
+      "stable_baseline_probe_stderr_log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stable_baseline_probe_stdout_json": "3e2f9b4557888b561f862930c162f4e63c187fcf50a03a1e0c9f61ce12d2eac8"
+    },
+    "metadata_only_artifact_root": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_stable_baseline_prediction_jsonl_writer_20260702T000308Z",
+    "next_action": "Phase3/4 provides/validates finite candidate_train_loss from the same real logits/training objective; Repo Custodian freezes stable-baseline metadata-only evidence and this central mirror.",
+    "nonclaims": [
+      "no C5 pass",
+      "no finite candidate_train_loss yet",
+      "no heldout scorer execution yet",
+      "no learning/model-quality claim",
+      "no Phase3/4 readiness",
+      "no 100k/1M authority",
+      "no raw payloads in git",
+      "no secrets printed",
+      "no Comet-backed accepted run unless actually executed"
+    ],
+    "raw_boundary": {
+      "hf_or_comet_required": false,
+      "metadata_only_report_in_repo": true,
+      "secrets_required": false,
+      "stable_prediction_jsonl_remains_outside_git": true
+    },
+    "research_escalation": "none",
+    "runner_bytes": 581312,
+    "runner_sha256": "3ae0cc86b8aca491935d3a39ac5f6c4c3cc9d0f9b2949dfa944470726cd22165",
+    "stable_payload_identity": {
+      "bytes": 327680,
+      "path_sha256": "aebabb97f75c5546aaeef61ab99db74224f1a4400a3d6ec72f88a428f69e569c",
+      "sha256": "e0d1c66ac876c2b6fbbe9e88f1b02dd37201d8ffba10afcd44f1c558fc32f7c9"
+    },
+    "status": "stable_baseline_prediction_jsonl_probe_passed_candidate_train_loss_missing",
+    "timestamp_utc": "2026-07-02T00:07:38Z"
+  },
   "candidate_adapter_sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f",
+  "candidate_train_loss": 15.202827250350284,
+  "candidate_train_loss_source": "teacher_forced_answer_token_nll_from_full_decoder_logits",
   "central_mirror_local_update_status": "updated_after_prompt_shape_repair_probe_prediction_jsonl_writer_missing",
   "central_state_update_pending_custody": {
-    "status": "stable_baseline_prediction_jsonl_metadata_evidence_and_central_mirror_custody_pending",
+    "custody_owner_thread": "019f1ac2-0f0f-7721-bf46-ad402dbd9050",
     "first_missing_green_field": "stable_baseline_prediction_jsonl_metadata_evidence_and_central_mirror_freeze_pending",
     "pathset": [
       "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json",
@@ -5561,13 +6231,14 @@
       "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_stable_baseline_prediction_jsonl_writer_20260702T000308Z/meminfo_after.txt"
     ],
     "raw_prediction_jsonl_included": false,
-    "custody_owner_thread": "019f1ac2-0f0f-7721-bf46-ad402dbd9050"
+    "status": "stable_baseline_prediction_jsonl_metadata_evidence_and_central_mirror_custody_pending"
   },
-  "current_gate": "WaveB_C5_after_C1_candidate_train_loss_probe_pending_after_phase34_command_ready_and_stable_metadata_frozen",
-  "current_highest_valid_state": "Candidate and stable-baseline native phone prediction JSONL identities exist outside git; heldout scorer is still blocked on finite candidate_train_loss from the same real logits/training objective.",
+  "current_gate": "WaveB_C5_after_C1_canonical_c5_payload_scorer_pending_after_finite_candidate_train_loss_green",
+  "current_highest_valid_state": "Candidate and stable-baseline prediction JSONL identities plus finite candidate_train_loss are green; no C5 pass exists until the canonical scorer report passes.",
+  "current_owner": "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c owns the canonical C5 payload, executed metrics, and final scorer report after finite candidate_train_loss went green.",
   "decoder_manifest_sha256": "52fcb53666bb4b06d0118cb825b983afc54624a630f667bbfa5af278640e28f8",
-  "dominant_failure_domain": "training_objective_metric_execution_pending",
-  "drift_deleted_or_pending": "Deleted stalled-thread drift by replacing Phase3/4 with 019f2059-e6a8-73b1-a9b8-8a2c499e838e and Repo Custodian with 019f2059-ef2c-7762-ba42-963b58f3af90. Deleted stale stable-metadata-pending drift after Custodian commit 58ce78aaa4486e440b3b8bba911c3a0fdde4f868. Pending drift is only the Execution train-loss probe result; do not regress to prediction writer, stable baseline, or decoder runtime blockers without newer evidence.",
+  "dominant_failure_domain": "canonical_c5_scorer_execution_pending",
+  "drift_deleted_or_pending": "Deleted finite_candidate_train_loss_missing after Execution metadata proved finite native loss. Pending drift: central/train-loss metadata custody and canonical scorer execution only; do not regress to prediction writer, stable baseline, or runtime blocker fields without newer evidence.",
   "driver_tick_history": [
     {
       "artifact_waiting_on": [
@@ -6819,27 +7490,51 @@
       "user_action_required": false
     },
     {
-      "timestamp_utc": "2026-07-01T23:19:45Z",
-      "current_gate": "WaveB_C5_after_C1_prompt_shape_repair_bounded_phone_probe_active_after_custody",
-      "status_classification": "PENDING_ACTION_EXECUTION_PROMPT_SHAPE_REPAIR_BOUNDED_PHONE_PROBE_ACTIVE",
-      "owner": "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c is actively running the single bounded C5_after_C1 phone probe from frozen prompt-shape repair commit 499cd1739a3402fc498a70500e2efef081f97e46; Repo Custodian only needs to freeze this two-file mirror correction.",
       "artifact_waiting_on": [
         "Execution consumed Custodian freeze commit 499cd1739a3402fc498a70500e2efef081f97e46, verified the six-file frozen pathset, built/installed gemma4_layer_runner_c5_prompt_shape_repair in Termux, verified required C5/OpenCL flags, and started the single bounded forced-vendor OpenCL C5_after_C1 phone probe. Awaiting metadata-only CENTRAL_STATE_UPDATE with exit code, first_missing_green_field, stdout/stderr/meminfo hashes, prediction JSONL presence flag, and raw-boundary proof."
       ],
-      "last_concrete_action": "Repo Custodian froze and pushed the final-hidden OpenCL prompt weight shape repair at commit 499cd1739a3402fc498a70500e2efef081f97e46 with report/source/test/central hashes verified, then directly handed Execution the bounded phone probe command. Execution accepted the handoff, verified the freeze, installed the repaired runner, confirmed required flags, and reported the native runtime probe is active after local identity checks.",
-      "next_concrete_action": "Execution must finish the current single bounded phone probe and return metadata-only evidence. If the field advances to c5_full_decoder_prediction_jsonl_writer_missing_after_lm_head_nll, route Phase3/4 to implement that exact writer boundary. If c5_full_decoder_final_hidden_opencl_prompt_weight_shape_unsupported:5 repeats, route the repeated post-repair runtime failure back to Phase3/4 and trigger the bounded shape/manifest decomposition condition. If a different precise runtime field appears, route the smallest falsifiable repair to the owning implementation lane.",
+      "central_state_updated": true,
+      "current_gate": "WaveB_C5_after_C1_prompt_shape_repair_bounded_phone_probe_active_after_custody",
       "dominant_failure_domain": "phase5_eval_failure",
       "drift_deleted_or_pending": "Deleted stale custody-pending drift: the final-hidden OpenCL prompt weight shape repair is frozen at 499cd1739a3402fc498a70500e2efef081f97e46 and Execution is already running the bounded phone proof. Do not reroute Phase3/4 or duplicate Execution while the probe is active; do not regress to phone source/exporter/schema/tokenizer/PLE/SP-HAL/multi-token/rank16/42-layer/generic LM-head blockers without new runtime evidence.",
-      "recursive_improvement_next_step": "Let the active phone probe finish, then route exactly one next owner based on the emitted first_missing_green_field. The next likely implementation field is c5_full_decoder_prediction_jsonl_writer_missing_after_lm_head_nll; a repeated layer-5 shape field becomes the bounded decomposition trigger.",
-      "user_action_required": false,
-      "central_state_updated": true,
       "first_missing_green_field": "c5_after_c1_prompt_shape_repair_bounded_phone_probe_pending",
+      "last_concrete_action": "Repo Custodian froze and pushed the final-hidden OpenCL prompt weight shape repair at commit 499cd1739a3402fc498a70500e2efef081f97e46 with report/source/test/central hashes verified, then directly handed Execution the bounded phone probe command. Execution accepted the handoff, verified the freeze, installed the repaired runner, confirmed required flags, and reported the native runtime probe is active after local identity checks.",
+      "next_concrete_action": "Execution must finish the current single bounded phone probe and return metadata-only evidence. If the field advances to c5_full_decoder_prediction_jsonl_writer_missing_after_lm_head_nll, route Phase3/4 to implement that exact writer boundary. If c5_full_decoder_final_hidden_opencl_prompt_weight_shape_unsupported:5 repeats, route the repeated post-repair runtime failure back to Phase3/4 and trigger the bounded shape/manifest decomposition condition. If a different precise runtime field appears, route the smallest falsifiable repair to the owning implementation lane.",
+      "nonclaims": [
+        "no C5 pass",
+        "no executed C5 metrics",
+        "no prediction JSONL/logits/loss/confidence/candidate_train_loss unless real runtime emits them",
+        "no bridge-MSE-as-C5-loss",
+        "no learning/model-quality claim",
+        "no Phase3/4 readiness",
+        "no 100k/1M authority",
+        "no raw payloads in git",
+        "no secrets printed",
+        "no Comet-backed accepted run"
+      ],
+      "owner": "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c is actively running the single bounded C5_after_C1 phone probe from frozen prompt-shape repair commit 499cd1739a3402fc498a70500e2efef081f97e46; Repo Custodian only needs to freeze this two-file mirror correction.",
+      "recursive_improvement_next_step": "Let the active phone probe finish, then route exactly one next owner based on the emitted first_missing_green_field. The next likely implementation field is c5_full_decoder_prediction_jsonl_writer_missing_after_lm_head_nll; a repeated layer-5 shape field becomes the bounded decomposition trigger.",
+      "status_classification": "PENDING_ACTION_EXECUTION_PROMPT_SHAPE_REPAIR_BOUNDED_PHONE_PROBE_ACTIVE",
       "threads_nudged_this_tick": [
         "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: completed six-file repair freeze at 499cd1739a3402fc498a70500e2efef081f97e46 and handed Execution the bounded probe; routed this two-file central mirror correction for custody.",
         "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: active running the prompt-shape repair bounded phone probe; no churn nudge.",
         "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4: repair pathset frozen; parked until Execution returns a runtime field.",
         "Training Material Steward, Pipeline Integrator, UI Engineer, Engineering Orchestrator: not current owner; no nudge."
       ],
+      "timestamp_utc": "2026-07-01T23:19:45Z",
+      "user_action_required": false
+    },
+    {
+      "artifact_waiting_on": [
+        "Execution completed the prompt-shape repair bounded phone probe from commit 499cd1739a3402fc498a70500e2efef081f97e46. The probe advanced past the layer-5 prompt weight shape field and failed closed at c5_full_decoder_prediction_jsonl_writer_missing_after_lm_head_nll. Awaiting Phase3/4 return of a custody-ready prediction JSONL writer pathset, a bounded probe command, or a precise source/runtime blocker. In parallel, Repo Custodian should freeze the metadata-only probe evidence plus this central mirror."
+      ],
+      "central_state_updated": true,
+      "current_gate": "WaveB_C5_after_C1_prediction_jsonl_writer_pending_after_prompt_shape_repair_probe_green",
+      "dominant_failure_domain": "phase5_eval_failure",
+      "drift_deleted_or_pending": "Deleted stale Execution-active and layer-5-shape drift: the prompt-shape repair phone proof completed and advanced past c5_full_decoder_final_hidden_opencl_prompt_weight_shape_unsupported:5. Do not regress to phone source/exporter/schema/tokenizer/PLE/SP-HAL/multi-token/rank16/42-layer/final-hidden/layer5-shape blockers without new evidence.",
+      "first_missing_green_field": "c5_full_decoder_prediction_jsonl_writer_missing_after_lm_head_nll",
+      "last_concrete_action": "Execution built/copied gemma4_layer_runner_c5_prompt_shape_repair on the phone, verified C5/OpenCL flags and inputs, ran the single bounded forced-vendor OpenCL C5_after_C1 probe, and returned exit 13 after 251s with prediction JSONL written=false, raw suffix scan=0, runner SHA 1ef49c246a08ab032862f717836f3e098d97640aca75fe9f3e29a63451aa10b1, stdout SHA 6bc5a58af7b8ef7f304f7e37d39102bc05235269e0e2dc6fb92679a01bfa34c4, and first_missing_green_field c5_full_decoder_prediction_jsonl_writer_missing_after_lm_head_nll.",
+      "next_concrete_action": "Phase3/4 must implement/freeze the prediction JSONL writer after LM-head/NLL on the existing native C5 path, or provide the next bounded probe/precise blocker. Repo Custodian should freeze the two central files plus the seven metadata-only prompt-shape probe evidence files. Execution is parked until a new frozen implementation or bounded probe command exists.",
       "nonclaims": [
         "no C5 pass",
         "no executed C5 metrics",
@@ -6851,48 +7546,24 @@
         "no raw payloads in git",
         "no secrets printed",
         "no Comet-backed accepted run"
-      ]
-    },
-    {
-      "timestamp_utc": "2026-07-01T23:22:56Z",
-      "current_gate": "WaveB_C5_after_C1_prediction_jsonl_writer_pending_after_prompt_shape_repair_probe_green",
-      "status_classification": "PENDING_ACTION_PHASE34_PREDICTION_JSONL_WRITER_AFTER_LM_HEAD_NLL",
-      "owner": "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 owns the next bounded native C5 implementation slice: prediction JSONL writer after LM-head/NLL on the existing --run-c5-qa-predict path.",
-      "artifact_waiting_on": [
-        "Execution completed the prompt-shape repair bounded phone probe from commit 499cd1739a3402fc498a70500e2efef081f97e46. The probe advanced past the layer-5 prompt weight shape field and failed closed at c5_full_decoder_prediction_jsonl_writer_missing_after_lm_head_nll. Awaiting Phase3/4 return of a custody-ready prediction JSONL writer pathset, a bounded probe command, or a precise source/runtime blocker. In parallel, Repo Custodian should freeze the metadata-only probe evidence plus this central mirror."
       ],
-      "last_concrete_action": "Execution built/copied gemma4_layer_runner_c5_prompt_shape_repair on the phone, verified C5/OpenCL flags and inputs, ran the single bounded forced-vendor OpenCL C5_after_C1 probe, and returned exit 13 after 251s with prediction JSONL written=false, raw suffix scan=0, runner SHA 1ef49c246a08ab032862f717836f3e098d97640aca75fe9f3e29a63451aa10b1, stdout SHA 6bc5a58af7b8ef7f304f7e37d39102bc05235269e0e2dc6fb92679a01bfa34c4, and first_missing_green_field c5_full_decoder_prediction_jsonl_writer_missing_after_lm_head_nll.",
-      "next_concrete_action": "Phase3/4 must implement/freeze the prediction JSONL writer after LM-head/NLL on the existing native C5 path, or provide the next bounded probe/precise blocker. Repo Custodian should freeze the two central files plus the seven metadata-only prompt-shape probe evidence files. Execution is parked until a new frozen implementation or bounded probe command exists.",
-      "dominant_failure_domain": "phase5_eval_failure",
-      "drift_deleted_or_pending": "Deleted stale Execution-active and layer-5-shape drift: the prompt-shape repair phone proof completed and advanced past c5_full_decoder_final_hidden_opencl_prompt_weight_shape_unsupported:5. Do not regress to phone source/exporter/schema/tokenizer/PLE/SP-HAL/multi-token/rank16/42-layer/final-hidden/layer5-shape blockers without new evidence.",
+      "owner": "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4 owns the next bounded native C5 implementation slice: prediction JSONL writer after LM-head/NLL on the existing --run-c5-qa-predict path.",
       "recursive_improvement_next_step": "Run one falsifiable Phase3/4 implementation slice for prediction JSONL writing after LM-head/NLL. If custody-ready, freeze it and run one bounded phone proof; if blocked, route the exact source/runtime contract field without inventing predictions or metrics.",
-      "user_action_required": false,
-      "central_state_updated": true,
-      "first_missing_green_field": "c5_full_decoder_prediction_jsonl_writer_missing_after_lm_head_nll",
+      "status_classification": "PENDING_ACTION_PHASE34_PREDICTION_JSONL_WRITER_AFTER_LM_HEAD_NLL",
       "threads_nudged_this_tick": [
         "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4: routed prediction JSONL writer after LM-head/NLL implementation handoff.",
         "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: routed metadata-only prompt-shape probe evidence plus central mirror custody request.",
         "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: completed bounded prompt-shape repair probe; now parked until next frozen implementation/probe command.",
         "Training Material Steward, Pipeline Integrator, UI Engineer, Engineering Orchestrator: not current owner; no nudge."
       ],
-      "nonclaims": [
-        "no C5 pass",
-        "no executed C5 metrics",
-        "no prediction JSONL/logits/loss/confidence/candidate_train_loss unless real runtime emits them",
-        "no bridge-MSE-as-C5-loss",
-        "no learning/model-quality claim",
-        "no Phase3/4 readiness",
-        "no 100k/1M authority",
-        "no raw payloads in git",
-        "no secrets printed",
-        "no Comet-backed accepted run"
-      ]
+      "timestamp_utc": "2026-07-01T23:22:56Z",
+      "user_action_required": false
     }
   ],
   "export_report_sha256": "4774d31953a58ad6ae1f64e4196405ba820e5be75d36880ac863cfb9dae00b6c",
   "exporter_runtime_fields_freeze_commit": "43cf3c4130dc902fc8fd69183bac1056f0596626",
   "exporter_runtime_fields_freeze_status": "committed_pushed",
-  "first_missing_green_field": "finite_candidate_train_loss_missing",
+  "first_missing_green_field": "canonical_c5_payload_scorer_report_missing",
   "first_missing_green_field_after_contract_patch": "decoder_manifest_architecture_config_missing",
   "first_missing_green_field_after_custody": "c5_full_decoder_chunked_lm_head_nll_writer_missing",
   "first_missing_green_field_after_download": "full_decoder_logits_generation_not_implemented",
@@ -7428,48 +8099,34 @@
     "engineering_orchestrator": {
       "artifact_paths": [
         "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json",
-        "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md"
+        "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md",
+        "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_candidate_train_loss_20260702T011806Z"
       ],
-      "first_missing_green_field": "c5_full_decoder_prediction_jsonl_writer_missing_after_lm_head_nll",
-      "last_update_utc": "2026-07-01T23:22:56Z",
-      "next_action": "Route Phase3/4 implementation handoff and Repo Custodian evidence freeze request.",
-      "nonclaims": [
-        "no C5 pass",
-        "no executed C5 metrics",
-        "no prediction JSONL/logits/loss/confidence/candidate_train_loss unless real runtime emits them",
-        "no bridge-MSE-as-C5-loss",
-        "no learning/model-quality claim",
-        "no Phase3/4 readiness",
-        "no 100k/1M authority",
-        "no raw payloads in git",
-        "no secrets printed",
-        "no Comet-backed accepted run"
-      ],
-      "status": "central_mirror_updated_after_prompt_shape_probe_result",
-      "status_classification": "ORCHESTRATION_META_UPDATED_PHASE34_OWNER_AND_EVIDENCE_CUSTODY_PENDING",
+      "first_missing_green_field": "canonical_c5_payload_scorer_report_missing",
+      "last_update_utc": "2026-07-02T01:26:28Z",
+      "next_action": "Route Execution canonical scorer GO and Repo Custodian metadata/central freeze request.",
+      "status": "central_mirror_updated_after_candidate_train_loss_probe_passed",
+      "status_classification": "ORCHESTRATION_META_UPDATED_EXECUTION_SCORER_OWNER_AND_CUSTODY_PENDING",
       "thread_id": "019f1423-816d-7251-b7d9-945a11441c3f",
       "user_action_required": false
     },
     "execution_orchestrator": {
-      "first_missing_green_field": "c5_full_decoder_prediction_jsonl_writer_missing_after_lm_head_nll",
-      "last_update_utc": "2026-07-01T23:22:56Z",
-      "next_action": "Park until Phase3/4/Custodian provide a frozen prediction JSONL writer implementation or bounded probe command.",
-      "status": "prompt_shape_repair_probe_completed_next_prediction_jsonl_writer_missing",
-      "status_classification": "EXECUTION_PROBE_COMPLETE_PHASE34_IMPLEMENTATION_PENDING",
+      "candidate_train_loss": 15.202827250350284,
+      "first_missing_green_field": "canonical_c5_payload_scorer_report_missing",
+      "last_update_utc": "2026-07-02T01:26:28Z",
+      "loss_source": "teacher_forced_answer_token_nll_from_full_decoder_logits",
+      "next_action": "Execution runs the canonical three-step C5 scorer path: run_c5_prediction_payloads.py, run_c5_heldout_eval.py, then run_c5_eval.py. Return metadata-only report identities and exact fail field if any step fails.",
+      "status": "candidate_train_loss_probe_passed_canonical_scorer_routed",
+      "status_classification": "PENDING_ACTION_EXECUTION_CANONICAL_C5_PAYLOADS_AND_SCORER_AFTER_FINITE_TRAIN_LOSS",
       "thread_id": "019f138c-fb51-7c53-a41a-ab8eac950d9c"
     },
     "phase34_engineer": {
-      "first_missing_green_field": "c5_full_decoder_prediction_jsonl_writer_missing_after_lm_head_nll",
-      "last_update_utc": "2026-07-01T23:22:56Z",
-      "next_action": "Implement/freeze prediction JSONL writer after LM-head/NLL on the existing native C5 path, or return exact source/runtime blocker.",
-      "observed_progress": [
-        "chunked tied-embedding LM-head/NLL writer boundary implemented",
-        "writer fails closed without real final decoder hidden stream",
-        "build, focused native contract, broad C5 suite, ctest, diff, and raw/secret scans passed"
-      ],
-      "status": "prediction_jsonl_writer_after_lm_head_nll_pending",
-      "status_classification": "PENDING_ACTION_PHASE34_PREDICTION_JSONL_WRITER_AFTER_LM_HEAD_NLL",
-      "thread_id": "019f13da-d897-7ba2-8ed1-b959892f5ed4"
+      "first_missing_green_field": "none_for_phase34_train_loss_source_after_execution_probe_passed",
+      "last_update_utc": "2026-07-02T01:26:28Z",
+      "next_action": "Stand by unless canonical scorer exposes a new source/runtime first_missing_green_field.",
+      "status": "candidate_train_loss_probe_command_completed_by_execution",
+      "status_classification": "PHASE34_FINITE_TRAIN_LOSS_SOURCE_NO_LONGER_ACTIVE_OWNER",
+      "thread_id": "019f2059-e6a8-73b1-a9b8-8a2c499e838e"
     },
     "pipeline_integrator": {
       "artifact_paths": [
@@ -7490,13 +8147,12 @@
       "user_action_required": false
     },
     "repo_custodian": {
-      "commit": "499cd1739a3402fc498a70500e2efef081f97e46",
-      "first_missing_green_field": "prompt_shape_probe_evidence_and_central_mirror_freeze_pending",
-      "last_update_utc": "2026-07-01T23:22:56Z",
-      "next_action": "Freeze the seven metadata-only prompt-shape probe evidence files plus this two-file central mirror; do not route Execution.",
-      "status": "prompt_shape_probe_evidence_and_central_mirror_freeze_pending",
-      "status_classification": "PENDING_ACTION_REPO_CUSTODIAN_PROMPT_SHAPE_PROBE_EVIDENCE_FREEZE",
-      "thread_id": "019f1ac2-0f0f-7721-bf46-ad402dbd9050"
+      "first_missing_green_field": "candidate_train_loss_metadata_and_central_mirror_freeze_pending",
+      "last_update_utc": "2026-07-02T01:26:28Z",
+      "next_action": "Freeze central JSON/MD plus three train-loss metadata files; do not stage raw output or unrelated dirty files.",
+      "status": "candidate_train_loss_metadata_and_central_mirror_custody_pending",
+      "status_classification": "PENDING_ACTION_REPO_CUSTODIAN_TRAIN_LOSS_METADATA_AND_CENTRAL_FREEZE",
+      "thread_id": "019f2059-ef2c-7762-ba42-963b58f3af90"
     },
     "training_material_steward": {
       "artifact_paths": [
@@ -7560,25 +8216,100 @@
       "user_action_required": false
     }
   },
-  "last_concrete_action": "Replacement Repo Custodian froze stable-baseline prediction metadata at commit 58ce78aaa4486e440b3b8bba911c3a0fdde4f868. Replacement Phase3/4 returned candidate_train_loss_probe_command_ready_for_execution using the existing native C5 prediction writer runner SHA 3ae0cc86b8aca491935d3a39ac5f6c4c3cc9d0f9b2949dfa944470726cd22165 and train QA SHA 795c1ba36d3cc3d50cfc26cabc8ece4d6ee3ee2ae4fb775f7674b708818df86c.",
+  "last_concrete_action": "Execution ran the bounded native candidate_train_loss probe and returned finite candidate_train_loss 15.202827250350284 from teacher-forced answer-token NLL/full-decoder logits, bound to candidate SHA 1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f and train QA SHA 795c1ba36d3cc3d50cfc26cabc8ece4d6ee3ee2ae4fb775f7674b708818df86c.",
   "last_driver_actions": [
-    "Polled Engineering, Execution, Phase3/4, and Custodian lane threads",
-    "Observed Execution stable-baseline prediction JSONL probe pass",
-    "Sent stable-baseline result handoff to Engineering Orchestrator",
-    "Left Phase3/4 unchurned because it is active on the train-loss source"
+    "Polled Execution, replacement Repo Custodian, and replacement Phase3/4 lane threads",
+    "Verified candidate_train_loss probe metadata hashes locally",
+    "Advanced central state from train-loss probe pending to canonical C5 scorer pending",
+    "Prepared custody and Execution scorer handoffs with raw payload boundaries preserved"
   ],
-  "last_update_utc": "2026-07-02T00:07:38Z",
+  "last_update_utc": "2026-07-02T01:26:28Z",
   "model_safetensors_sha256": "43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651",
   "model_safetensors_size_bytes": 15992595884,
   "native_probe_elapsed_seconds": 104,
   "native_probe_exit_code": 13,
   "native_probe_report_path": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_42_layer_orchestration_20260701T213036Z",
-  "next_concrete_action": "Execution runs exactly one bounded candidate_train_loss probe from the replacement Phase3/4 command, verifies runner/candidate/train identities, and returns metadata only with finite candidate_train_loss or the first exact fail field. If finite loss exists, Engineering routes canonical C5 payload/scorer flow; if not, return to Phase3/4 with the exact runtime/source field.",
+  "next_concrete_action": "Execution runs the canonical three-step C5 scorer path: run_c5_prediction_payloads.py, run_c5_heldout_eval.py, then run_c5_eval.py. Return metadata-only report identities and exact fail field if any step fails.",
+  "next_handoff": {
+    "authority_metric": "C5_after_C1 final report from scripts/host/run_c5_eval.py with executed metrics JSON; no C5 pass until that report status is pass.",
+    "completed_work": [
+      "candidate prediction metadata frozen",
+      "stable-baseline prediction metadata frozen",
+      "finite candidate_train_loss probe passed"
+    ],
+    "current_edge": "WaveB_C5_after_C1_canonical_c5_payload_scorer_pending_after_finite_candidate_train_loss_green",
+    "current_verdict": "pending_action",
+    "do_not_do": [
+      "do not claim C5 pass before run_c5_eval.py report passes",
+      "do not substitute metadata, bridge MSE, or heldout loss for candidate_train_loss",
+      "do not move raw train/prediction/checkpoint/model payloads into git",
+      "do not source secrets or call HF/Comet"
+    ],
+    "evidence": [
+      {
+        "artifact": "candidate_prediction_metadata_commit",
+        "sha256": "71bc3b19014df62f398340f97a9f3bdb55d48de6",
+        "status": "committed_pushed"
+      },
+      {
+        "artifact": "stable_baseline_prediction_metadata_commit",
+        "sha256": "58ce78aaa4486e440b3b8bba911c3a0fdde4f868",
+        "status": "committed_pushed"
+      },
+      {
+        "artifact": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_candidate_train_loss_20260702T011806Z/candidate_train_loss_native_stdout.json",
+        "sha256": "44462febad5480dbeb0b2b7d8c410613b482c996e6741df8ea179c2099bdddba",
+        "status": "metadata_only_pass"
+      },
+      {
+        "artifact": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_candidate_train_loss_20260702T011806Z/candidate_train_loss_native_stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "status": "metadata_only_pass"
+      },
+      {
+        "artifact": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_candidate_train_loss_20260702T011806Z/probe_metadata.txt",
+        "sha256": "29ec23d557fda3e85e0f1a127ca6a941a974136ef81c37e862b354a620761d07",
+        "status": "metadata_only_pass"
+      },
+      {
+        "artifact": "candidate_train_loss",
+        "sha256": null,
+        "status": "15.202827250350284"
+      },
+      {
+        "artifact": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/phase34_lineage_repair/C1/phase34_metric_readiness/phase34_metric_readiness_report.json",
+        "sha256": "ab8fb945b34645e72b1e607b4e3ce87d18dde082fa285e1d34ea8331363e0fc6",
+        "status": "finite_grad_norm_source_available"
+      }
+    ],
+    "first_missing_green_field": "canonical_c5_payload_scorer_report_missing",
+    "from_lane": "Engineering/Meta watcher 019f1423-816d-7251-b7d9-945a11441c3f",
+    "next_action": "Execution runs the canonical three-step C5 scorer path: run_c5_prediction_payloads.py, run_c5_heldout_eval.py, then run_c5_eval.py. Return metadata-only report identities and exact fail field if any step fails.",
+    "nonclaims": [
+      "no C5 pass",
+      "no heldout scorer execution yet",
+      "no learning/model-quality claim",
+      "no Phase3/4 readiness",
+      "no 100k/1M authority",
+      "no raw payloads in git",
+      "no secrets printed",
+      "no Comet-backed accepted run"
+    ],
+    "objective": "Run the canonical C5 payload, heldout metrics, and final scorer path now that finite candidate_train_loss exists.",
+    "owner_thread": "019f138c-fb51-7c53-a41a-ab8eac950d9c",
+    "research_escalation": {
+      "packet_path": null,
+      "reason": "field advanced to canonical scorer execution; no repeated same-field failure, architecture contradiction, or memory/runtime envelope failure",
+      "status": "none"
+    },
+    "run_id": "c5_after_c1_canonical_scorer_pending_20260702T012628Z",
+    "schema_version": "zpp_next_handoff_v1",
+    "sent": true,
+    "to_lane": "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c"
+  },
   "nonclaims": [
     "no C5 pass",
-    "no executed C5 metrics",
-    "no prediction JSONL/logits/loss/confidence/candidate_train_loss unless real runtime emits them",
-    "no bridge-MSE-as-C5-loss",
+    "no heldout scorer execution yet",
     "no learning/model-quality claim",
     "no Phase3/4 readiness",
     "no 100k/1M authority",
@@ -7588,9 +8319,7 @@
   ],
   "nonclaims_preserved": [
     "no C5 pass",
-    "no executed C5 metrics",
-    "no prediction JSONL/logits/loss/confidence/candidate_train_loss unless real runtime emits them",
-    "no bridge-MSE-as-C5-loss",
+    "no heldout scorer execution yet",
     "no learning/model-quality claim",
     "no Phase3/4 readiness",
     "no 100k/1M authority",
@@ -7599,7 +8328,7 @@
     "no Comet-backed accepted run"
   ],
   "owner": "Execution Orchestrator",
-  "owner_thread": "019f13da-d897-7ba2-8ed1-b959892f5ed4",
+  "owner_thread": "019f138c-fb51-7c53-a41a-ab8eac950d9c",
   "phone_exporter_rerun_required_after_commit": "43cf3c4130dc902fc8fd69183bac1056f0596626",
   "prd_watchdog": {
     "active_bottleneck": "forced_vendor_opencl_probe_result_missing",
@@ -8190,7 +8919,7 @@
     "scope": "metadata mirror only",
     "status": "central_state_phone_filesystem_paths_redacted"
   },
-  "recursive_improvement_next_step": "Use the train-loss probe as the smallest falsifiable bridge into canonical C5 scoring: finite teacher-forced candidate_train_loss unlocks run_c5_prediction_payloads.py and run_c5_eval.py; missing/nonfinite loss routes the exact field back to Phase3/4.",
+  "recursive_improvement_next_step": "Use the accepted canonical chain: prediction payload producer report -> heldout executed metrics JSON -> final C5 eval report. Any failure returns the exact first_missing_green_field to the owning lane rather than narrating a pass.",
   "required_lane_update_protocol": {
     "block_name": "CENTRAL_STATE_UPDATE",
     "meta_action": "on every heartbeat, read active threads, update this file, route the next concrete edge, and notify Execution only when both keys are green",
@@ -8211,602 +8940,21 @@
   "runner_size_bytes": 554312,
   "schema_version": "polymath_executive_delivery_state_v1",
   "secondary_missing_green_field": "c5_full_decoder_final_hidden_stream_missing_for_lm_head_nll_if_phase34_confirms_current_precondition",
-  "status": "candidate_train_loss_probe_command_ready_for_execution_stable_metadata_frozen",
-  "status_classification": "PENDING_ACTION_EXECUTION_CANDIDATE_TRAIN_LOSS_PROBE_AFTER_PHASE34_COMMAND_READY",
-  "threads_nudged_this_tick": [
-    "Engineering Orchestrator 019f138b-d229-7640-98b7-2f185d6beae0: sent stable-baseline prediction JSONL metadata handoff and finite_candidate_train_loss_missing status.",
-    "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4: already active; no duplicate nudge.",
-    "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: candidate metadata evidence committed at 71bc3b19014df62f398340f97a9f3bdb55d48de6; stable metadata plus central mirror custody request pending after local validation.",
-    "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: completed stable-baseline probe and is parked."
-  ],
-  "timestamp_utc": "2026-07-02T01:10:11Z",
-  "updated_at": "2026-07-02T01:10:11Z",
-  "updated_at_utc": "2026-07-02T01:10:11Z",
-  "updated_utc": "2026-07-02T01:10:11Z",
-  "user_action_required": false,
-  "current_owner": "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c owns exactly one bounded candidate_train_loss probe from the replacement Phase3/4 command, returning metadata only; raw train and prediction payloads remain outside git.",
-  "c5_after_c1_final_hidden_opencl_prompt_weight_shape_repair_20260702T_phase34": {
-    "status": "final_hidden_opencl_prompt_weight_shape_repair_pathset_ready_for_custodian",
-    "current_gate": "WaveB_C5_after_C1_final_hidden_opencl_prompt_weight_shape_repair_custody_pending_after_phase34_pathset",
-    "status_classification": "PENDING_ACTION_REPO_CUSTODIAN_FINAL_HIDDEN_OPENCL_PROMPT_WEIGHT_SHAPE_REPAIR_FREEZE",
-    "owner": "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050 owns the six-file final-hidden OpenCL prompt weight shape repair freeze; Execution remains parked until custody freezes the repair and includes the bounded probe command.",
-    "first_missing_green_field": "final_hidden_opencl_prompt_weight_shape_repair_custody_commit_missing",
-    "artifact_paths": {
-      "runtime/reports/orchestration/c5_after_c1_final_hidden_opencl_prompt_weight_shape_repair_20260702T_phase34.json": "8c49a0a6af89489764b9082e2d5d4c0588cced83c499ab4dc7437e05cb2d324e",
-      "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/opencl_layer_runner.cpp": "e4bfb3fdbcb6fc6411209fdd80951f178b03f16739f0cf423654d225ca9352d7",
-      "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp": "1f8b3199f3bcc52bfc0d6ad5af209ab40f82098724292998c3f1bf6daa0211c3",
-      "tests/test_c5_native_runtime_contract.py": "306a635d5e05296fff64edcf6879f016f60d187b380b9c3ec34bf1723cfc5fbf",
-      "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json": "compute after meta update",
-      "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md": "compute after meta update"
-    },
-    "verification_commands": [
-      "Phase3/4: cmake --build build/gemma4_megakernel_host --target gemma4_layer_runner -- -j2 passed",
-      "Phase3/4: python3 -m pytest tests/test_c5_native_runtime_contract.py -q -> 18 passed",
-      "Phase3/4: python3 -m pytest tests/test_c5_*.py -q -> 53 passed",
-      "Phase3/4: ctest --test-dir build/gemma4_megakernel_host --output-on-failure -> 4/4 passed",
-      "Phase3/4: git diff --check passed",
-      "Phase3/4: raw/secret diff scan clean"
-    ],
-    "expected_first_missing_green_field_after_probe": "c5_full_decoder_prediction_jsonl_writer_missing_after_lm_head_nll",
-    "research_escalation": "none",
-    "user_action_required": false,
-    "nonclaims": [
-      "no C5 pass",
-      "no executed C5 metrics",
-      "no prediction JSONL/logits/loss/confidence/candidate_train_loss",
-      "no bridge-MSE-as-C5-loss",
-      "no learning/model-quality claim",
-      "no Phase3/4 readiness",
-      "no 100k/1M authority",
-      "no Comet-backed accepted run"
-    ],
-    "next_handoff": {
-      "schema_version": "zpp_next_handoff_v1",
-      "run_id": "c5_after_c1_final_hidden_opencl_prompt_weight_shape_repair_20260702T_phase34",
-      "from_lane": "phase34_native_c5_runtime",
-      "to_lane": "repo_custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050",
-      "sent": true,
-      "objective": "Freeze the final-hidden OpenCL prompt weight shape repair so Execution can run exactly one bounded C5_after_C1 phone proof on the existing native --run-c5-qa-predict path.",
-      "authority_metric": "C5_after_C1 bounded phone runtime advances past c5_full_decoder_final_hidden_opencl_prompt_weight_shape_unsupported:5 without fabricating predictions, loss, confidence, or candidate_train_loss.",
-      "current_edge": "WaveB_C5_after_C1_final_hidden_opencl_prompt_weight_shape_repair_custody_pending_after_phase34_pathset",
-      "current_verdict": "pending_action",
-      "completed_work": [
-        "Phase3/4 produced dynamic layer-width OpenCL prompt shape repair pathset",
-        "Local build/test/diff/raw-boundary verification passed",
-        "Engineering/Meta updated central state metadata-only for custody pending"
-      ],
-      "evidence": [
-        {
-          "artifact": "runtime/reports/orchestration/c5_after_c1_final_hidden_opencl_prompt_weight_shape_repair_20260702T_phase34.json",
-          "sha256": "8c49a0a6af89489764b9082e2d5d4c0588cced83c499ab4dc7437e05cb2d324e",
-          "status": "custody_input"
-        },
-        {
-          "artifact": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/opencl_layer_runner.cpp",
-          "sha256": "e4bfb3fdbcb6fc6411209fdd80951f178b03f16739f0cf423654d225ca9352d7",
-          "status": "custody_input"
-        },
-        {
-          "artifact": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp",
-          "sha256": "1f8b3199f3bcc52bfc0d6ad5af209ab40f82098724292998c3f1bf6daa0211c3",
-          "status": "custody_input"
-        },
-        {
-          "artifact": "tests/test_c5_native_runtime_contract.py",
-          "sha256": "306a635d5e05296fff64edcf6879f016f60d187b380b9c3ec34bf1723cfc5fbf",
-          "status": "custody_input"
-        }
-      ],
-      "first_missing_green_field": "final_hidden_opencl_prompt_weight_shape_repair_custody_commit_missing",
-      "next_action": "Repo Custodian verifies, stages, commits, and pushes the exact six-file pathset, then routes Execution with the bounded phone probe command from the repair report.",
-      "owner_thread": "019f1ac2-0f0f-7721-bf46-ad402dbd9050",
-      "research_escalation": {
-        "status": "none",
-        "reason": "first_missing_green_field narrowed and a source repair exists; no repeated same-field post-repair phone failure yet",
-        "packet_path": null
-      },
-      "nonclaims": [
-        "no C5 pass",
-        "no learning/model-quality claim",
-        "no Phase3/4 readiness claim",
-        "no 100k/1M authority",
-        "no Comet-backed accepted run unless actually executed"
-      ],
-      "do_not_do": [
-        "do not route Execution before custody",
-        "do not stage unrelated files",
-        "do not add raw payloads or secrets to git",
-        "do not invent prediction JSONL/loss/confidence/candidate_train_loss"
-      ]
-    }
-  },
-  "c5_after_c1_prompt_shape_repair_custody_committed_20260701T231635Z": {
-    "status": "final_hidden_opencl_prompt_weight_shape_repair_committed_pushed",
-    "timestamp_utc": "2026-07-01T23:19:03Z",
-    "repo_custodian_thread": "019f1ac2-0f0f-7721-bf46-ad402dbd9050",
-    "commit": "499cd1739a3402fc498a70500e2efef081f97e46",
-    "branch": "origin/gemma4-megakernel-native-training",
-    "pathset_sha256": {
-      "runtime/reports/orchestration/c5_after_c1_final_hidden_opencl_prompt_weight_shape_repair_20260702T_phase34.json": "8c49a0a6af89489764b9082e2d5d4c0588cced83c499ab4dc7437e05cb2d324e",
-      "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/opencl_layer_runner.cpp": "e4bfb3fdbcb6fc6411209fdd80951f178b03f16739f0cf423654d225ca9352d7",
-      "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp": "1f8b3199f3bcc52bfc0d6ad5af209ab40f82098724292998c3f1bf6daa0211c3",
-      "tests/test_c5_native_runtime_contract.py": "306a635d5e05296fff64edcf6879f016f60d187b380b9c3ec34bf1723cfc5fbf",
-      "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json": "8e9e0b3c2485d3d715cf29c197a3821d236fee7929f15b8d395d4ce819854ec8",
-      "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md": "6e515e7bd86a0f5497afc3c5c29970670fa44ab0e67bfd3ddc59aee677d7da0d"
-    },
-    "verification": [
-      "branch/local/remote readback verified at 499cd1739a3402fc498a70500e2efef081f97e46",
-      "JSON validation passed for central state and repair report",
-      "ZPP linter exited 0 with only pre-existing active_watchdog_state.repo_custody_state_freeze warning",
-      "git diff --check passed over exact and staged six-file pathset",
-      "added-line raw payload path / value-shaped secret scan returned 0 hits",
-      "host build passed for gemma4_layer_runner",
-      "focused native contract 18 passed",
-      "broad C5 suite 53 passed",
-      "ctest 4/4 passed"
-    ],
-    "next_handoff_sent_to_execution": true
-  },
-  "c5_after_c1_prompt_shape_repair_phone_probe_execution_active_20260701T231635Z": {
-    "status": "prompt_shape_repair_phone_probe_active",
-    "timestamp_utc": "2026-07-01T23:19:03Z",
-    "execution_thread": "019f138c-fb51-7c53-a41a-ab8eac950d9c",
-    "consumed_commit": "499cd1739a3402fc498a70500e2efef081f97e46",
-    "runner_destination": "/data/data/com.termux/files/home/polymath_c5/C5_after_C1/bin/gemma4_layer_runner_c5_prompt_shape_repair",
-    "opencl_library": "/vendor/lib64/libOpenCL.so",
-    "first_missing_green_field": "c5_after_c1_prompt_shape_repair_bounded_phone_probe_pending",
-    "artifact_waiting_on": "Execution metadata-only probe result and NEXT_HANDOFF",
-    "expected_next_runtime_field": "c5_full_decoder_prediction_jsonl_writer_missing_after_lm_head_nll unless a more precise runtime field appears",
-    "same_field_repeat_escalation": "If c5_full_decoder_final_hidden_opencl_prompt_weight_shape_unsupported:5 repeats after this frozen repair/probe, trigger bounded shape/manifest decomposition and route to Phase3/4.",
-    "research_escalation": "none",
-    "nonclaims": [
-      "no C5 pass",
-      "no executed C5 metrics",
-      "no prediction JSONL/logits/loss/confidence/candidate_train_loss unless real runtime emits them",
-      "no bridge-MSE-as-C5-loss",
-      "no learning/model-quality claim",
-      "no Phase3/4 readiness",
-      "no 100k/1M authority",
-      "no raw payloads in git",
-      "no secrets printed",
-      "no Comet-backed accepted run"
-    ]
-  },
-  "next_handoff": {
-    "schema_version": "zpp_next_handoff_v1",
-    "run_id": "c5_after_c1_candidate_train_loss_probe_pending_20260702T011011Z",
-    "from_lane": "Engineering/Meta watcher 019f1423-816d-7251-b7d9-945a11441c3f",
-    "to_lane": "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c",
-    "sent": true,
-    "objective": "Produce finite candidate_train_loss from the same real logits/training objective before canonical C5 scoring.",
-    "authority_metric": "C5 scorer/report remains blocked until candidate_train_loss is finite and metadata-bound to candidate checkpoint SHA.",
-    "current_edge": "WaveB_C5_after_C1_candidate_train_loss_probe_pending_after_phase34_command_ready_and_stable_metadata_frozen",
-    "current_verdict": "pending_action",
-    "completed_work": [
-      "candidate prediction metadata frozen",
-      "stable-baseline prediction metadata frozen",
-      "replacement Phase3/4 command-ready train-loss probe handoff received",
-      "stale Phase3/4 and Custodian threads replaced"
-    ],
-    "evidence": [
-      {
-        "artifact": "candidate_prediction_metadata_commit",
-        "sha256": "71bc3b19014df62f398340f97a9f3bdb55d48de6",
-        "status": "committed_pushed"
-      },
-      {
-        "artifact": "stable_baseline_prediction_metadata_commit",
-        "sha256": "58ce78aaa4486e440b3b8bba911c3a0fdde4f868",
-        "status": "committed_pushed"
-      },
-      {
-        "artifact": "candidate_train_loss_probe_command",
-        "sha256": null,
-        "status": "ready_for_execution"
-      }
-    ],
-    "first_missing_green_field": "finite_candidate_train_loss_missing",
-    "next_action": "Execution runs exactly one bounded candidate_train_loss probe and returns metadata-only evidence with finite loss or the first exact fail field.",
-    "owner_thread": "019f138c-fb51-7c53-a41a-ab8eac950d9c",
-    "research_escalation": {
-      "status": "none",
-      "reason": "field advanced to executable train-loss probe; no repeated same-field failure or architecture contradiction yet",
-      "packet_path": null
-    },
-    "nonclaims": [
-      "no C5 pass",
-      "no finite candidate_train_loss yet",
-      "no heldout scorer execution yet",
-      "no learning/model-quality claim",
-      "no Phase3/4 readiness",
-      "no 100k/1M authority",
-      "no raw payloads in git",
-      "no secrets printed",
-      "no Comet-backed accepted run"
-    ],
-    "do_not_do": [
-      "do not run canonical C5 scorer before finite candidate_train_loss exists",
-      "do not substitute heldout validation loss, Phase4 bridge MSE, or metadata",
-      "do not move raw train/prediction payloads into git",
-      "do not source secrets or call HF/Comet"
-    ]
-  },
-  "c5_after_c1_prompt_shape_repair_probe_result_20260701T231524Z": {
-    "status": "prompt_shape_repair_probe_green_next_prediction_jsonl_writer_missing",
-    "timestamp_utc": "2026-07-01T23:22:56Z",
-    "execution_thread": "019f138c-fb51-7c53-a41a-ab8eac950d9c",
-    "consumed_commit": "499cd1739a3402fc498a70500e2efef081f97e46",
-    "runner": "/data/data/com.termux/files/home/polymath_c5/C5_after_C1/bin/gemma4_layer_runner_c5_prompt_shape_repair",
-    "runner_sha256": "1ef49c246a08ab032862f717836f3e098d97640aca75fe9f3e29a63451aa10b1",
-    "runner_bytes": 573000,
-    "probe_exit_code": 13,
-    "elapsed_seconds": 251,
-    "native_status": "blocked",
-    "first_missing_green_field": "c5_full_decoder_prediction_jsonl_writer_missing_after_lm_head_nll",
-    "blockers": [
-      "c5_full_decoder_prediction_jsonl_writer_missing_after_lm_head_nll"
-    ],
-    "prediction_jsonl_written": false,
-    "raw_suffix_scan_count": 0,
-    "metadata_root": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_prompt_shape_repair_20260701T231524Z",
-    "artifacts_sha256": {
-      "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_prompt_shape_repair_20260701T231524Z/candidate_probe_stdout.json": "6bc5a58af7b8ef7f304f7e37d39102bc05235269e0e2dc6fb92679a01bfa34c4",
-      "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_prompt_shape_repair_20260701T231524Z/candidate_probe_stderr.log": "3b3698633c2ee470be9f3a0db40d8e0f35bef5720b37392ba0a94dfb5c260085",
-      "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_prompt_shape_repair_20260701T231524Z/meminfo_before.txt": "d624b705739005cf0b03a89ae93e03d8d9167305b8ce14f321836dc9fc05eb2a",
-      "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_prompt_shape_repair_20260701T231524Z/meminfo_after.txt": "35f9d7825819094f6fc11ad8b4fadbbd08f7afe8ca38ace055e06e90380f219a",
-      "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_prompt_shape_repair_20260701T231524Z/probe_metadata.txt": "c1a8f2fa8ef1b31795bc28c559304f9b2b20be3cce864d0327bec4c4713fdf7d",
-      "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_prompt_shape_repair_20260701T231524Z/build_logs/cmake_configure.log": "addb938817086ee8d97ed867583e81fa4432a060f635eb84804594858d5dcdfd",
-      "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_prompt_shape_repair_20260701T231524Z/build_logs/cmake_build.log": "269dd013bc4d70953458de7a247bfb36f51f9e591b1e006351826d976bd359fb"
-    },
-    "next_handoff": {
-      "to": "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4",
-      "status": "prompt_shape_repair_green_next_field_prediction_jsonl_writer_missing_after_lm_head_nll",
-      "first_missing_green_field": "c5_full_decoder_prediction_jsonl_writer_missing_after_lm_head_nll",
-      "next_action": "freeze/route prediction JSONL writer after LM-head NLL, or provide the next bounded probe",
-      "research_escalation": "none"
-    },
-    "nonclaims": [
-      "no C5 pass",
-      "no executed C5 metrics",
-      "no prediction JSONL/logits/loss/confidence/candidate_train_loss unless real runtime emits them",
-      "no bridge-MSE-as-C5-loss",
-      "no learning/model-quality claim",
-      "no Phase3/4 readiness",
-      "no 100k/1M authority",
-      "no raw payloads in git",
-      "no secrets printed",
-      "no Comet-backed accepted run"
-    ]
-  },
-  "c5_after_c1_native_prediction_jsonl_writer_after_lm_head_nll_20260702T_phase34": {
-    "status": "native_prediction_jsonl_writer_after_lm_head_nll_pathset_ready_for_custodian",
-    "current_gate": "WaveB_C5_after_C1_prediction_jsonl_writer_custody_pending_after_phase34_pathset",
-    "status_classification": "PENDING_ACTION_REPO_CUSTODIAN_PREDICTION_JSONL_WRITER_FREEZE",
-    "owner": "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050 owns the seven-file prediction JSONL writer freeze; Execution remains parked until custody freezes the pathset and includes the bounded phone probe command.",
-    "first_missing_green_field": "prediction_jsonl_writer_custody_commit_missing",
-    "artifact_paths": {
-      "runtime/reports/orchestration/c5_after_c1_native_prediction_jsonl_writer_after_lm_head_nll_20260702T_phase34.json": "7f1e4b794e05043628ef86175c5fda3358e917669b15e564c7e69de8a35e5e63",
-      "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/include/polymath/gemma4/gemma_bpe_tokenizer.h": "31416e0c21fdbb7a098581d93948672718020dcb76bbf75177c3b4f821e942de",
-      "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/data/gemma_bpe_tokenizer.cpp": "135186a622660ad502499916accb836abe9cd95b9bd4a979868e7eb133cc93fe",
-      "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp": "3997732a48c00cd71a8e5742b2584aa97e96149661d8d63e1c8c8a86ed88a583",
-      "tests/test_c5_native_runtime_contract.py": "0aa321695bd004ed9850ace6acd0a1629c3906aec8bee91aaea3cc61056a5e03",
-      "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json": "compute after meta update",
-      "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md": "compute after meta update"
-    },
-    "verification_commands": [
-      "Phase3/4: cmake --build build/gemma4_megakernel_host --target gemma4_layer_runner -- -j2 passed",
-      "Phase3/4: python3 -m pytest tests/test_c5_native_runtime_contract.py -q -> 19 passed",
-      "Phase3/4: python3 -m pytest tests/test_c5_*.py -q -> 54 passed",
-      "Phase3/4: ctest --test-dir build/gemma4_megakernel_host --output-on-failure -> 4/4 passed",
-      "Phase3/4: git diff --check passed",
-      "Phase3/4: raw/secret diff scan clean",
-      "Engineering/Meta: local SHA readback matched Phase3/4 reported pathset before central mirror update"
-    ],
-    "consumed_base_commit": "499cd1739a3402fc498a70500e2efef081f97e46",
-    "local_built_runner_sha256": "b8cc2dbb062c2c861397f18d8267a883455d34229823bde9ffca6364e253f400",
-    "runner_destination_after_custody": "/data/data/com.termux/files/home/polymath_c5/C5_after_C1/bin/gemma4_layer_runner_c5_prediction_jsonl_writer",
-    "expected_execution_probe": "single bounded C5_after_C1 phone probe using command_template in the report after custody freeze",
-    "expected_runtime_after_probe": "prediction_jsonl_written=true with real runtime-emitted loss/confidence if writer works, or the next precise native/runtime field if fail-closed",
-    "research_escalation": "none",
-    "user_action_required": false,
-    "nonclaims": [
-      "no C5 pass",
-      "no executed C5 metrics from this custody-pending state",
-      "no candidate_train_loss claim",
-      "no learning/model-quality claim",
-      "no Phase3/4 readiness",
-      "no 100k/1M authority",
-      "no Comet-backed accepted run"
-    ],
-    "next_handoff": {
-      "schema_version": "zpp_next_handoff_v1",
-      "run_id": "c5_after_c1_native_prediction_jsonl_writer_after_lm_head_nll_20260702T_phase34",
-      "from_lane": "engineering_meta_watcher",
-      "to_lane": "repo_custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050",
-      "sent": true,
-      "objective": "Freeze the native prediction JSONL writer pathset so Execution can run one bounded C5_after_C1 phone proof on the existing --run-c5-qa-predict path.",
-      "authority_metric": "Existing native C5 path writes prediction JSONL only from real runtime argmax token, finite LM-head/NLL loss, and finite confidence; no fabricated predictions or metrics.",
-      "current_edge": "WaveB_C5_after_C1_prediction_jsonl_writer_custody_pending_after_phase34_pathset",
-      "current_verdict": "pending_action",
-      "completed_work": [
-        "Phase3/4 produced prediction JSONL writer pathset after prompt-shape repair probe exposed c5_full_decoder_prediction_jsonl_writer_missing_after_lm_head_nll",
-        "Local build/test/diff/raw-boundary verification passed in Phase3/4 thread",
-        "Engineering/Meta verified reported file hashes and updated central state metadata-only for custody pending"
-      ],
-      "evidence": [
-        {
-          "artifact": "runtime/reports/orchestration/c5_after_c1_native_prediction_jsonl_writer_after_lm_head_nll_20260702T_phase34.json",
-          "sha256": "7f1e4b794e05043628ef86175c5fda3358e917669b15e564c7e69de8a35e5e63",
-          "status": "custody_input"
-        },
-        {
-          "artifact": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/include/polymath/gemma4/gemma_bpe_tokenizer.h",
-          "sha256": "31416e0c21fdbb7a098581d93948672718020dcb76bbf75177c3b4f821e942de",
-          "status": "custody_input"
-        },
-        {
-          "artifact": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/data/gemma_bpe_tokenizer.cpp",
-          "sha256": "135186a622660ad502499916accb836abe9cd95b9bd4a979868e7eb133cc93fe",
-          "status": "custody_input"
-        },
-        {
-          "artifact": "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp",
-          "sha256": "3997732a48c00cd71a8e5742b2584aa97e96149661d8d63e1c8c8a86ed88a583",
-          "status": "custody_input"
-        },
-        {
-          "artifact": "tests/test_c5_native_runtime_contract.py",
-          "sha256": "0aa321695bd004ed9850ace6acd0a1629c3906aec8bee91aaea3cc61056a5e03",
-          "status": "custody_input"
-        },
-        {
-          "artifact": "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json",
-          "sha256": "compute after meta update",
-          "status": "custody_input"
-        },
-        {
-          "artifact": "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md",
-          "sha256": "compute after meta update",
-          "status": "custody_input"
-        }
-      ],
-      "first_missing_green_field": "prediction_jsonl_writer_custody_commit_missing",
-      "next_action": "Repo Custodian verifies, stages, commits, and pushes the exact seven-file pathset, then routes Execution with the bounded phone probe command from the report.",
-      "owner_thread": "019f1ac2-0f0f-7721-bf46-ad402dbd9050",
-      "research_escalation": {
-        "status": "none",
-        "reason": "first_missing_green_field narrowed and Phase3/4 produced a concrete source pathset",
-        "packet_path": null
-      },
-      "nonclaims": [
-        "no C5 pass",
-        "no learning/model-quality claim",
-        "no Phase3/4 readiness claim",
-        "no 100k/1M authority",
-        "no Comet-backed accepted run unless actually executed"
-      ],
-      "do_not_do": [
-        "do not route Execution before custody",
-        "do not stage unrelated files",
-        "do not add raw payloads or secrets to git",
-        "do not invent prediction JSONL/loss/confidence/candidate_train_loss"
-      ]
-    }
-  },
-  "c5_after_c1_prediction_jsonl_writer_committed_pushed_20260701T234638Z": {
-    "status": "prediction_jsonl_writer_committed_pushed",
-    "timestamp_utc": "2026-07-01T23:46:38Z",
-    "repo_custodian_thread": "019f1ac2-0f0f-7721-bf46-ad402dbd9050",
-    "commit": "48b604e7be127d9b8474e5845fc3b58745c35f30",
-    "branch": "origin/gemma4-megakernel-native-training",
-    "pathset_sha256": {
-      "runtime/reports/orchestration/c5_after_c1_native_prediction_jsonl_writer_after_lm_head_nll_20260702T_phase34.json": "7f1e4b794e05043628ef86175c5fda3358e917669b15e564c7e69de8a35e5e63",
-      "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/include/polymath/gemma4/gemma_bpe_tokenizer.h": "31416e0c21fdbb7a098581d93948672718020dcb76bbf75177c3b4f821e942de",
-      "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/data/gemma_bpe_tokenizer.cpp": "135186a622660ad502499916accb836abe9cd95b9bd4a979868e7eb133cc93fe",
-      "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp": "3997732a48c00cd71a8e5742b2584aa97e96149661d8d63e1c8c8a86ed88a583",
-      "tests/test_c5_native_runtime_contract.py": "0aa321695bd004ed9850ace6acd0a1629c3906aec8bee91aaea3cc61056a5e03",
-      "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json": "877ad8adefc7dabc053ffcff5440ce1f01aa47e2b79c41419011a5f4a3038572",
-      "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md": "dc5f0c59426a0bfdd087905c72baa837d513662d006a41511a9a72432e0c8dee"
-    },
-    "verification": [
-      "local and remote HEAD both 48b604e7be127d9b8474e5845fc3b58745c35f30",
-      "JSON validation passed for central state and report",
-      "ZPP linter exited 0 with pre-existing custody-state handoff warning only",
-      "git diff --check passed over exact and staged pathset",
-      "added-line raw payload path / value-shaped secret scan returned 0 hits",
-      "host build passed",
-      "focused native runtime contract 19 passed",
-      "broad C5 suite 54 passed",
-      "CTest 4/4 passed"
-    ],
-    "next_handoff_sent_to_execution": true,
-    "next_handoff": {
-      "schema_version": "zpp_next_handoff_v1",
-      "run_id": "c5_after_c1_prediction_jsonl_writer_custody_20260701T234638Z",
-      "from_lane": "repo_custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050",
-      "to_lane": "execution_orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c",
-      "sent": true,
-      "objective": "Run the bounded C5_after_C1 phone proof for the frozen prediction JSONL writer implementation.",
-      "authority_metric": "Existing native --run-c5-qa-predict path emits real prediction JSONL only from runtime outputs or fails closed with the next exact field.",
-      "current_edge": "WaveB_C5_after_C1_prediction_jsonl_writer_phone_probe_active_after_custody",
-      "current_verdict": "pending_action",
-      "completed_work": [
-        "Repo Custodian verified, committed, and pushed prediction JSONL writer pathset",
-        "Repo Custodian sent bounded phone probe command to Execution"
-      ],
-      "evidence": [
-        {
-          "artifact": "repo commit",
-          "sha256": "48b604e7be127d9b8474e5845fc3b58745c35f30",
-          "status": "committed_pushed"
-        },
-        {
-          "artifact": "runtime/reports/orchestration/c5_after_c1_native_prediction_jsonl_writer_after_lm_head_nll_20260702T_phase34.json",
-          "sha256": "7f1e4b794e05043628ef86175c5fda3358e917669b15e564c7e69de8a35e5e63",
-          "status": "frozen_report"
-        }
-      ],
-      "first_missing_green_field": "c5_after_c1_prediction_jsonl_writer_bounded_phone_probe_pending",
-      "next_action": "Execution rebuilds/copies gemma4_layer_runner_c5_prediction_jsonl_writer and runs exactly one bounded C5_after_C1 phone probe from the frozen report.",
-      "owner_thread": "019f138c-fb51-7c53-a41a-ab8eac950d9c",
-      "research_escalation": {
-        "status": "none",
-        "reason": "custody completed and bounded Execution proof is the next falsification step",
-        "packet_path": null
-      },
-      "nonclaims": [
-        "no C5 pass",
-        "no learning/model-quality claim",
-        "no Phase3/4 readiness claim",
-        "no 100k/1M authority",
-        "no Comet-backed accepted run unless actually executed"
-      ],
-      "do_not_do": [
-        "do not start duplicate phone probes",
-        "do not copy raw prediction JSONL into git",
-        "do not fabricate loss/confidence/candidate_train_loss"
-      ]
-    }
-  },
-  "c5_after_c1_prediction_jsonl_writer_phone_probe_active_20260701T234708Z": {
-    "status": "prediction_jsonl_writer_phone_probe_active",
-    "timestamp_utc": "2026-07-01T23:47:08Z",
-    "execution_thread": "019f138c-fb51-7c53-a41a-ab8eac950d9c",
-    "consumed_commit": "48b604e7be127d9b8474e5845fc3b58745c35f30",
-    "runner_destination": "/data/data/com.termux/files/home/polymath_c5/C5_after_C1/bin/gemma4_layer_runner_c5_prediction_jsonl_writer",
-    "opencl_library": "/vendor/lib64/libOpenCL.so",
-    "first_missing_green_field": "c5_after_c1_prediction_jsonl_writer_bounded_phone_probe_result_pending",
-    "artifact_waiting_on": "Execution metadata-only probe result and NEXT_HANDOFF",
-    "expected_runtime_outcome": "prediction JSONL emitted with real runtime loss/confidence and bytes/SHA, or exact fail-closed first_missing_green_field",
-    "research_escalation": "none",
-    "nonclaims": [
-      "no C5 pass",
-      "no executed C5 metrics yet",
-      "no prediction JSONL/logits/loss/confidence/candidate_train_loss unless real runtime emits them",
-      "no bridge-MSE-as-C5-loss",
-      "no learning/model-quality claim",
-      "no Phase3/4 readiness",
-      "no 100k/1M authority",
-      "no raw payloads in git",
-      "no secrets printed",
-      "no Comet-backed accepted run"
-    ]
-  },
-  "c5_after_c1_candidate_prediction_jsonl_probe_result_20260701T234607Z": {
-    "lane": "execution_orchestrator",
-    "status": "c5_after_c1_candidate_prediction_jsonl_probe_passed",
-    "timestamp_utc": "2026-07-01T23:57:08Z",
-    "consumed_commit": "48b604e7be127d9b8474e5845fc3b58745c35f30",
-    "runner": "/data/data/com.termux/files/home/polymath_c5/C5_after_C1/bin/gemma4_layer_runner_c5_prediction_jsonl_writer",
-    "runner_sha256": "3ae0cc86b8aca491935d3a39ac5f6c4c3cc9d0f9b2949dfa944470726cd22165",
-    "runner_bytes": 581312,
-    "build_logs": {
-      "cmake_configure_log_sha256": "f18e501c019ae547119fda4be8d8cfc41377a809f3484812b95391c11c45f9f1",
-      "cmake_build_log_sha256": "269dd013bc4d70953458de7a247bfb36f51f9e591b1e006351826d976bd359fb"
-    },
-    "bounded_probe": {
-      "opencl_library": "/vendor/lib64/libOpenCL.so",
-      "exit_code": 0,
-      "elapsed_seconds": 245,
-      "native_status": "pass",
-      "first_missing_green_field": "none",
-      "blockers": [],
-      "prediction_jsonl_written": true,
-      "prediction_jsonl_bytes": 429,
-      "prediction_jsonl_sha256": "a0137450ae16220a1aecc3dff60e50bceae641dba9b8207c0567f48ae4be4fc3",
-      "prediction_jsonl_path_sha256": "31455a2804b64ecc97c9b02c97a243d11b30295462e18b19ecbaa6561fd3714e"
-    },
-    "metadata_only_artifact_root": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_prediction_jsonl_writer_20260701T234607Z",
-    "metadata_only_artifact_root_abs": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_prediction_jsonl_writer_20260701T234607Z",
-    "metadata_files_sha256": {
-      "candidate_probe_stdout_json": "b5d813420e6f9bafcc86ccb634d7571acea824e452d30d5f314978fd5ad90c29",
-      "candidate_probe_stderr_log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "meminfo_before_txt": "442d45cf265cf6811d4dcf40e9a98521d4966f0dd96736a6eaf03cb5bdac7adc",
-      "meminfo_after_txt": "e5c882e95ab9e93a07110fe375f8c1c68c69bab197606441366fd8a736aaecc7",
-      "probe_metadata_txt": "44ed114fa85b65e077e127270019f4cf4d4e4f574061826fbbc0860658bae141"
-    },
-    "raw_boundary": {
-      "prediction_jsonl_remains_outside_git": true,
-      "metadata_only_report_in_repo": true,
-      "local_report_raw_suffix_scan_count": 0,
-      "hf_or_comet_required": false,
-      "secrets_required": false
-    },
-    "first_missing_green_field_after_probe": "stable_baseline_prediction_payload_and_heldout_scorer_contract_missing",
-    "next_action": "Engineering routes stable-baseline prediction payload and heldout scorer/candidate_train_loss contract; Repo Custodian freezes metadata-only evidence and this central mirror.",
-    "research_escalation": "none",
-    "nonclaims": [
-      "no C5 pass",
-      "no stable-baseline prediction JSONL yet",
-      "no heldout scorer/candidate_train_loss yet",
-      "no learning/model-quality claim",
-      "no Phase3/4 readiness",
-      "no 100k/1M authority",
-      "no raw payloads in git",
-      "no secrets printed",
-      "no Comet-backed accepted run unless actually executed"
-    ]
-  },
-  "c5_after_c1_stable_baseline_prediction_jsonl_probe_result_20260702T000308Z": {
-    "lane": "execution_orchestrator",
-    "status": "stable_baseline_prediction_jsonl_probe_passed_candidate_train_loss_missing",
-    "timestamp_utc": "2026-07-02T00:07:38Z",
-    "consumed_commit": "48b604e7be127d9b8474e5845fc3b58745c35f30",
-    "runner_sha256": "3ae0cc86b8aca491935d3a39ac5f6c4c3cc9d0f9b2949dfa944470726cd22165",
-    "runner_bytes": 581312,
-    "bounded_probe": {
-      "opencl_library": "/vendor/lib64/libOpenCL.so",
-      "exit_code": 0,
-      "elapsed_seconds": 241,
-      "native_status": "pass",
-      "first_missing_green_field": "none_for_stable_baseline_prediction_probe",
-      "blockers": [],
-      "prediction_jsonl_written": true,
-      "prediction_jsonl_bytes": 430,
-      "prediction_jsonl_sha256": "a75e7804dbe4152d86c194eade3240285f16e254cd20b7cd0b0aff7ded7fff1d",
-      "prediction_jsonl_path_sha256": "85b1890aed0802adb5948196bbce0546866e8f1f38551c29749a8a094923190a"
-    },
-    "stable_payload_identity": {
-      "sha256": "e0d1c66ac876c2b6fbbe9e88f1b02dd37201d8ffba10afcd44f1c558fc32f7c9",
-      "bytes": 327680,
-      "path_sha256": "aebabb97f75c5546aaeef61ab99db74224f1a4400a3d6ec72f88a428f69e569c"
-    },
-    "heldout_qa_identity": {
-      "sha256": "da41c5362398f24e0e0dd9df9a5cf0594435a455871fa77ab74d9312e6c8e9b2",
-      "rows": 53
-    },
-    "metadata_only_artifact_root": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_stable_baseline_prediction_jsonl_writer_20260702T000308Z",
-    "metadata_files_sha256": {
-      "stable_baseline_probe_stdout_json": "3e2f9b4557888b561f862930c162f4e63c187fcf50a03a1e0c9f61ce12d2eac8",
-      "stable_baseline_probe_stderr_log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "probe_metadata_txt": "960cfa31fff9716ea6b2501d6c2f08c585ead04bb04c18c462fe3bf3e620ad97",
-      "meminfo_before_txt": "d52f151579e05d45a62c544df1d3171907ee740ce0a0d11db97adc2405fb93dc",
-      "meminfo_after_txt": "ae5bd8c5c46720ba50c4661bc0534323ee6f8174935f56637f9bfd31999be020"
-    },
-    "raw_boundary": {
-      "stable_prediction_jsonl_remains_outside_git": true,
-      "metadata_only_report_in_repo": true,
-      "hf_or_comet_required": false,
-      "secrets_required": false
-    },
-    "first_missing_green_field_after_probe": "finite_candidate_train_loss_missing",
-    "next_action": "Phase3/4 provides/validates finite candidate_train_loss from the same real logits/training objective; Repo Custodian freezes stable-baseline metadata-only evidence and this central mirror.",
-    "research_escalation": "none",
-    "nonclaims": [
-      "no C5 pass",
-      "no finite candidate_train_loss yet",
-      "no heldout scorer execution yet",
-      "no learning/model-quality claim",
-      "no Phase3/4 readiness",
-      "no 100k/1M authority",
-      "no raw payloads in git",
-      "no secrets printed",
-      "no Comet-backed accepted run unless actually executed"
-    ]
-  },
+  "status": "candidate_train_loss_probe_passed_canonical_c5_payload_scorer_pending",
+  "status_classification": "PENDING_ACTION_EXECUTION_CANONICAL_C5_PAYLOADS_AND_SCORER_AFTER_FINITE_TRAIN_LOSS",
   "thread_nudges": [
-    "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: routed bounded candidate_train_loss probe command from replacement Phase3/4; raw payloads remain outside git.",
-    "Repo Custodian replacement 019f2059-ef2c-7762-ba42-963b58f3af90: routed two-file central mirror freeze after stable metadata commit 58ce78aaa4486e440b3b8bba911c3a0fdde4f868.",
-    "Phase3/4 replacement 019f2059-e6a8-73b1-a9b8-8a2c499e838e: completed command-ready handoff; no duplicate nudge."
-  ]
+    "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: routed canonical C5 payload/scorer GO after finite candidate_train_loss 15.202827250350284.",
+    "Repo Custodian replacement 019f2059-ef2c-7762-ba42-963b58f3af90: routed central mirror plus train-loss metadata freeze; raw output identity only, no raw payload staging.",
+    "Phase3/4 replacement 019f2059-e6a8-73b1-a9b8-8a2c499e838e: no duplicate nudge; train-loss source command completed by Execution and lane is parked until a new source/runtime field appears."
+  ],
+  "threads_nudged_this_tick": [
+    "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: routed canonical C5 payload/scorer GO after finite candidate_train_loss 15.202827250350284.",
+    "Repo Custodian replacement 019f2059-ef2c-7762-ba42-963b58f3af90: routed central mirror plus train-loss metadata freeze; raw output identity only, no raw payload staging.",
+    "Phase3/4 replacement 019f2059-e6a8-73b1-a9b8-8a2c499e838e: no duplicate nudge; train-loss source command completed by Execution and lane is parked until a new source/runtime field appears."
+  ],
+  "timestamp_utc": "2026-07-02T01:26:28Z",
+  "updated_at": "2026-07-02T01:26:28Z",
+  "updated_at_utc": "2026-07-02T01:26:28Z",
+  "updated_utc": "2026-07-02T01:26:28Z",
+  "user_action_required": false
 }
