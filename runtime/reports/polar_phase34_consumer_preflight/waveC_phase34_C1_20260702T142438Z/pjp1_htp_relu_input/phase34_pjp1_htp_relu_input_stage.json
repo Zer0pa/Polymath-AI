@@ -1,0 +1,144 @@
+{
+  "authority_material": "waveC_vertical_slice_only",
+  "bridge": {
+    "dtype": "float32_le",
+    "hidden_dim": 2560,
+    "name": "phase34_pjp1_polar_to_gemma_hidden_relu_bridge_v1",
+    "polar_dim": 256,
+    "repeat_factor": 10,
+    "rule": "hidden[h] = +1.0 if input_polar[token,h%256] bit is 1 else -1.0",
+    "shape": [
+      1,
+      16,
+      2560
+    ]
+  },
+  "learning_claim": false,
+  "next_required_for_phase3": [
+    "Run qnn-net-run on the derived tensor with the declared context/backend.",
+    "Verify HTP output hash against expected_relu_output_sha256 without pulling raw output to repo.",
+    "Consume the HTP output through a named route/objective/teacher/state transition."
+  ],
+  "nonclaims": [
+    "This stages a bounded derived HTP input only.",
+    "This does not execute QNN/HTP.",
+    "This does not consume HTP output.",
+    "This is not Phase 3 readiness.",
+    "This is not a real-corpus authority gate.",
+    "This does not authorize C1-C4 execution."
+  ],
+  "outputs": {
+    "expected_positive_count": 20670,
+    "expected_relu_output_bytes": 163840,
+    "expected_relu_output_sha256": "eb596435b18457cc511cd7bd6a9530d76bc07379dbae2aa8b8285d4059b918ea",
+    "expected_zero_count": 20290,
+    "input_bytes": 163840,
+    "input_sha256": "e7013138fe1e933ba0ba452204b1e43cb4578ba0a4134e08efbf250b7f012983",
+    "phase4_target_bytes": 163840,
+    "phase4_target_sha256": "348cd7afa5636ee54c89a36d69073e42fdecf3efc0913f3063dfe68c8600eb7e",
+    "remote_input_list": "/sdcard/Download/polymath_phase34/waveC_phase34_C1_20260702T142438Z/pjp1_htp_relu_input/input_list.txt",
+    "remote_input_path": "/sdcard/Download/polymath_phase34/waveC_phase34_C1_20260702T142438Z/pjp1_htp_relu_input/pjp1_packet0_tokens16_gemma_hidden.f32.bin",
+    "remote_phase4_target_path": "/sdcard/Download/polymath_phase34/waveC_phase34_C1_20260702T142438Z/pjp1_htp_relu_input/pjp1_packet0_tokens16_phase4_target.f32.bin"
+  },
+  "phase3_metrics": {
+    "blockers": [
+      "htp_not_executed_by_staging_script",
+      "forward_loss_requires_supervised_eval_objective",
+      "native_preflight_status_not_in_stage_report",
+      "i8_oracle_mismatches_not_in_stage_report"
+    ],
+    "comet_metric_prefix": "phase3/C1",
+    "comet_metrics": {
+      "phase3/C1/expected_positive_count": 20670.0,
+      "phase3/C1/expected_zero_count": 20290.0,
+      "phase3/C1/packet_count": 5180.0,
+      "phase3/C1/source_real_token_count": 216924.0,
+      "phase3/C1/source_record_count": 5180.0,
+      "phase3/C1/staged_token_count": 16.0
+    },
+    "corpus_phase": "C1",
+    "metrics": {
+      "answer_token_accuracy": null,
+      "brier_score": null,
+      "calibration_ece": null,
+      "device_compute_ms": null,
+      "device_to_host_ms": null,
+      "expected_positive_count": 20670,
+      "expected_zero_count": 20290,
+      "forward_cross_entropy": null,
+      "forward_loss": null,
+      "forward_mse": null,
+      "host_to_device_ms": null,
+      "htp_backend": null,
+      "htp_output_sha256": null,
+      "i8_oracle_mismatches": null,
+      "latency_ms": null,
+      "native_preflight_status": null,
+      "packet_count": 5180,
+      "perplexity": null,
+      "pjp1_preflight_status": "pass",
+      "source_real_token_count": 216924,
+      "source_record_count": 5180,
+      "staged_token_count": 16,
+      "tokens_per_sec": null
+    },
+    "nonclaims": [
+      "stage_metrics_do_not_claim_phase3_readiness",
+      "stage_metrics_do_not_claim_learning"
+    ],
+    "phase_family": "phase3",
+    "schema_version": "phase3_staging_metric_contract_v1",
+    "status": "partial"
+  },
+  "phase3_ready_claim": false,
+  "phase4_accepted_input_surface": {
+    "adapter_rank": 16,
+    "authority": "mechanical_consumed_output_and_gpu_update_surface_only",
+    "cell_id": "phase4_opencl_phase3_bridge_rank16_mse_sgd_cell_v0",
+    "objective": "bounded MSE between Phase 3 HTP output and PJP1 target-derived tensor",
+    "optimizer": "sgd",
+    "phase3_output_expected_dtype": "float32_le",
+    "phase3_output_expected_shape": [
+      1,
+      16,
+      2560
+    ],
+    "target_dtype": "float32_le",
+    "target_shape": [
+      1,
+      16,
+      2560
+    ]
+  },
+  "phase4_ready_claim": false,
+  "pjp1": {
+    "bytes": 46914176,
+    "embedding_dim": 2560,
+    "jl_dim": 256,
+    "packet_count": 5180,
+    "packet_len": 128,
+    "path": "/data/data/com.termux/files/home/polymath_phase2_outputs/c1_c4_waveB_rerun_20260630T230411Z/C1_phase2/raw_c1_c4_waveB_rerun_20260630T230411Z_C1_phase2.pjp1",
+    "projection_label": "dense_rademacher_k256_lsb_bitpack",
+    "sha256": "a9e191c1e9ec0f7110fabe5991033f3176cf60c152dcc78b54e2e786a66604bc",
+    "source_real_token_count": 216924,
+    "source_record_count": 5180
+  },
+  "raw_payload_rules": {
+    "derived_tensor_staging_root": "/sdcard/Download/polymath_phase34/waveC_phase34_C1_20260702T142438Z/pjp1_htp_relu_input",
+    "derived_tensor_storage": "shared_external_storage",
+    "raw_pjp1_copied": false,
+    "raw_pjp1_pulled_to_host": false,
+    "repo_may_record_hashes_only": true
+  },
+  "schema_version": "polar_phase34_pjp1_htp_relu_input_stage_v1",
+  "source_packet": {
+    "bit_order": "lsb_first",
+    "packet_index": 0,
+    "source_bytes_read": 512,
+    "source_section": "input_polar",
+    "target_bytes_read": 512,
+    "target_section": "target_polar",
+    "tokens_used": 16
+  },
+  "status": "pass"
+}

@@ -1,0 +1,105 @@
+{
+  "commit_sha": "97e80ead23a13214af99358625c2cc9f3e48ef6b",
+  "next_gap": "full_gemma_htp_forward_tensor_not_yet_consumed_by_real_lm_loss_or_adapter_update",
+  "nonclaims": [
+    "no C5 pass",
+    "no C5 scorer execution",
+    "no learning/model-quality claim",
+    "no Phase3 readiness claim",
+    "no Phase4 readiness claim",
+    "no 100k/1M authority",
+    "no raw payloads in git",
+    "no secrets printed",
+    "no Comet-backed accepted run"
+  ],
+  "phase3_tensor": {
+    "actual_matches_expected_relu": true,
+    "bytes": 163840,
+    "context_sha256": "81830ab0c0808843a7528d4c099c852957524c97a3c999c62eaa6e01f250673a",
+    "dtype": "float32_le",
+    "expected_sha256": "eb596435b18457cc511cd7bd6a9530d76bc07379dbae2aa8b8285d4059b918ea",
+    "sha256": "eb596435b18457cc511cd7bd6a9530d76bc07379dbae2aa8b8285d4059b918ea",
+    "shape": [
+      1,
+      16,
+      2560
+    ]
+  },
+  "phase4_consumption": {
+    "adapter_delta_nonzero": true,
+    "adapter_delta_norm_l2": 2.18221383802e-07,
+    "adapter_post_sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f",
+    "adapter_pre_sha256": "e0d1c66ac876c2b6fbbe9e88f1b02dd37201d8ffba10afcd44f1c558fc32f7c9",
+    "consumed_output_causes_update": true,
+    "corpus_phase": "C1",
+    "opencl_device": "QUALCOMM Adreno(TM) 830",
+    "source_pjp1_sha256": "a9e191c1e9ec0f7110fabe5991033f3176cf60c152dcc78b54e2e786a66604bc",
+    "status": "pass",
+    "target_sha256": "348cd7afa5636ee54c89a36d69073e42fdecf3efc0913f3063dfe68c8600eb7e"
+  },
+  "pjp1": {
+    "bytes": 46914176,
+    "embedding_dim": 2560,
+    "jl_dim": 256,
+    "packet_count": 5180,
+    "packet_len": 128,
+    "path": "/data/data/com.termux/files/home/polymath_phase2_outputs/c1_c4_waveB_rerun_20260630T230411Z/C1_phase2/raw_c1_c4_waveB_rerun_20260630T230411Z_C1_phase2.pjp1",
+    "projection_label": "dense_rademacher_k256_lsb_bitpack",
+    "sha256": "a9e191c1e9ec0f7110fabe5991033f3176cf60c152dcc78b54e2e786a66604bc",
+    "source_real_token_count": 216924,
+    "source_record_count": 5180
+  },
+  "reports": {
+    "htp_report": {
+      "bytes": 6139,
+      "path": "runtime/reports/polar_phase34_consumer_preflight/waveC_phase34_C1_20260702T142438Z/pjp1_htp_relu_run/phase34_pjp1_derived_htp_relu_run.json",
+      "sha256": "6e9ff7e872b2e99ee12c5f3924511546e0a751cc0415b25a51e114d9fc87376c"
+    },
+    "metric_readiness_report": {
+      "bytes": 3639,
+      "path": "runtime/reports/polar_phase34_consumer_preflight/waveC_phase34_C1_20260702T142438Z/phase34_metric_readiness/phase34_metric_readiness_report.json",
+      "sha256": "586c2ea72a9ed534e8a2025a0d3625aeaaf4ce303cef296b086fabd3157261e0"
+    },
+    "phase4_report": {
+      "bytes": 5936,
+      "path": "runtime/reports/polar_phase34_consumer_preflight/waveC_phase34_C1_20260702T142438Z/phase4_bridge_cell/phase4_bridge_cell_report.json",
+      "sha256": "99615419469db10cfdbb64aacd9392a513756a961fd8221628164e91ad266b19"
+    },
+    "stage_report": {
+      "bytes": 5342,
+      "path": "runtime/reports/polar_phase34_consumer_preflight/waveC_phase34_C1_20260702T142438Z/pjp1_htp_relu_input/phase34_pjp1_htp_relu_input_stage.json",
+      "sha256": "532a0f50534c80ee30a1181a69f591d432930d7a5d975ae7ca73a92a3fda6c56"
+    }
+  },
+  "reset_artifact_sha256": "2db6973e1f37ada09b1cac61c9b7f5e7e5413ba28d5ef63f28233d7549e8069f",
+  "route_artifact": {
+    "path": "runtime/reports/orchestration/WAVEC_PHASE34_ARCHITECTURE_DECISION_20260702T135829Z.md",
+    "sha256": "fb0018a728feba7e9a2d3c417a0d3a8f9e69c7631afe01eadb7aff3e88ce4fbe"
+  },
+  "run_label": "waveC_phase34_C1_20260702T142438Z",
+  "runner": {
+    "build_note": "frozen build script invoked with PATH-scoped Android NDK clang++ and -static-libstdc++ wrapper; source unchanged",
+    "phone_path": "/data/local/tmp/phase4_bridge_cell_runner",
+    "sha256": "c63ff6ec719c0117973478557f519b331eb867be6ae2d92572612c997b7ec737"
+  },
+  "schema_version": "waveC_phase34_vertical_slice_execution_report_v1",
+  "source_pathset_verified": {
+    "native/polar_phase34_consumer_preflight/build_phase4_bridge_cell_runner.sh": "fc75497c0a3dfdb5703138495fd3c7cf7b170628f61c1f041f58ff170d93ee95",
+    "native/polar_phase34_consumer_preflight/phase4_bridge_cell_runner.cpp": "7df10844eeea7cc10c0f66a24669fedc9656cad39068a60e90c7bf059cb2c0e6",
+    "polymath_ai/polar/phase4_bridge_cell.py": "c7da2ea73ceb21d21262561b3f179f3120d293b3d5611e4a14abdabb06abcd83",
+    "scripts/host/run_phase34_adb_htp_relu_smoke.py": "5e5fa10cb296011e80429c642810bc6da65578c1daaa6f5a9df14fb7f29f679a",
+    "scripts/host/run_phase34_adb_pjp1_derived_htp_relu.py": "8e00a731ca0b13c75e0832a144d303261f6f60ef24d61a75879cd6931be73db1",
+    "scripts/host/run_phase34_metric_readiness_report.py": "98b854f59856ea4871500e71bf528ce195df9a255fe406c09bf2b802265d424f",
+    "scripts/termux/run_phase34_pjp1_htp_relu_input_stage.py": "df666f957ee26fd42c8d86a7a4fda448e58138f8296074b8e11576a2b75927ff",
+    "tests/test_phase4_bridge_cell.py": "d06c1eff236a9d247eae5d6d69c3fd1cfb69540c75f28ef8af92c0cc4803ad3d"
+  },
+  "status": "waveC_phase34_vertical_slice_passed",
+  "validation": {
+    "bridge_validator_blockers": [],
+    "metric_readiness_blockers": [],
+    "metric_readiness_status": "pass",
+    "phase4_validator_blockers": [],
+    "raw_suffix_hit_count": 0,
+    "raw_suffix_hits": []
+  }
+}
