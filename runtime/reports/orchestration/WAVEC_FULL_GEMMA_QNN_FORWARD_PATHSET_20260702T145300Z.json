@@ -1,0 +1,180 @@
+{
+  "schema_version": "waveC_full_gemma_qnn_forward_pathset_v1",
+  "utc": "2026-07-02T14:53:00Z",
+  "gate": "WaveC_Fused_Megakernel_Reorientation",
+  "status": "waveC_full_gemma_qnn_forward_pathset_ready_for_custodian",
+  "first_missing_green_field": "none_after_source_freeze_pending_execution",
+  "classification": "source_pathset_ready_execution_requires_outside_git_full_gemma_qnn_context",
+  "source_pathset": [
+    {
+      "path": "polymath_ai/polar/wavec_full_gemma_qnn.py",
+      "sha256": "8dbd2b19101f5ec1ad43766d02426c092a269c26158aa25a05ed65fadaf8852c",
+      "role": "fail-closed full-Gemma QNN forward and consumed-tensor validators"
+    },
+    {
+      "path": "scripts/host/run_wavec_full_gemma_qnn_forward.py",
+      "sha256": "bd8468e8ca2809116c57872a20d1e1cbfd0db6413c15c594799a63c0593108e2",
+      "role": "host/ADB metadata-only QNN/HTP forward runner; rejects ReLU/identity graph names"
+    },
+    {
+      "path": "scripts/host/run_wavec_full_gemma_consumed_tensor_report.py",
+      "sha256": "ee873583ed5f69899290a11b55084ad2a414cbeb2a8f9f9126a8d0f040ea1299",
+      "role": "metadata-only join validator proving Phase4 consumed the exact QNN-produced tensor"
+    },
+    {
+      "path": "native/polar_phase34_consumer_preflight/phase4_bridge_cell_runner.cpp",
+      "sha256": "d1af7d66a50b217b5cc7c8815e7352133b8701fcabb2eb6b838c0d1c9e191fb0",
+      "role": "Phase4 OpenCL bridge now reports caller-provided Phase3 graph/backend identity"
+    },
+    {
+      "path": "tests/test_wavec_full_gemma_qnn.py",
+      "sha256": "49297c796d1ad5ba0653cbfa813830bf452fe68738e94f8d115f1bfe9f42ce33",
+      "role": "focused fail-closed validator tests"
+    },
+    {
+      "path": "tests/test_phase4_bridge_cell.py",
+      "sha256": "d06c1eff236a9d247eae5d6d69c3fd1cfb69540c75f28ef8af92c0cc4803ad3d",
+      "role": "existing Phase4 bridge validator regression tests"
+    },
+    {
+      "path": "native/polar_phase34_consumer_preflight/build_phase4_bridge_cell_runner.sh",
+      "sha256": "fc75497c0a3dfdb5703138495fd3c7cf7b170628f61c1f041f58ff170d93ee95",
+      "role": "native bridge build wrapper; use through bash because local mode is not executable"
+    }
+  ],
+  "local_verification": [
+    {
+      "command": "python3.11 -m py_compile polymath_ai/polar/wavec_full_gemma_qnn.py scripts/host/run_wavec_full_gemma_qnn_forward.py scripts/host/run_wavec_full_gemma_consumed_tensor_report.py",
+      "result": "pass"
+    },
+    {
+      "command": "python3.11 -m pytest tests/test_wavec_full_gemma_qnn.py tests/test_phase4_bridge_cell.py",
+      "result": "pass",
+      "summary": "30 passed"
+    },
+    {
+      "command": "bash native/polar_phase34_consumer_preflight/build_phase4_bridge_cell_runner.sh",
+      "result": "pass",
+      "output": "native/polar_phase34_consumer_preflight/bin/phase4_bridge_cell_runner"
+    },
+    {
+      "command": "python3.11 scripts/host/run_wavec_full_gemma_qnn_forward.py --print-schema && python3.11 scripts/host/run_wavec_full_gemma_consumed_tensor_report.py --print-schema",
+      "result": "pass_json_valid"
+    },
+    {
+      "command": "git diff --check -- polymath_ai/polar/wavec_full_gemma_qnn.py scripts/host/run_wavec_full_gemma_qnn_forward.py scripts/host/run_wavec_full_gemma_consumed_tensor_report.py native/polar_phase34_consumer_preflight/phase4_bridge_cell_runner.cpp tests/test_wavec_full_gemma_qnn.py",
+      "result": "pass"
+    },
+    {
+      "command": "raw suffix scan over source pathset",
+      "result": "pass",
+      "raw_suffix_count": 0
+    }
+  ],
+  "report_schema": {
+    "forward_report_schema_version": "waveC_full_gemma_qnn_forward_report_v1",
+    "consumed_tensor_report_schema_version": "waveC_full_gemma_consumed_tensor_report_v1",
+    "required_forward_green_fields": [
+      "qnn.context_sha256",
+      "qnn.graph",
+      "qnn.backend",
+      "qnn.profile.profile_log.remote_path",
+      "qnn.profile.profile_log.sha256",
+      "qnn.input.sha256",
+      "qnn.output.shape",
+      "qnn.output.dtype",
+      "qnn.output.bytes",
+      "qnn.output.sha256",
+      "qnn.backend_execution == qnn_htp",
+      "qnn.cpu_fallback == false",
+      "qnn.profile.qnn_profile_parse_attempted == true",
+      "qnn.profile.qnn_net_run_wall_ms",
+      "qnn.profile.qnn_accelerator_execute_ms or qnn_accelerator_execute_ms_unavailable_reason"
+    ],
+    "required_consumption_green_fields": [
+      "qnn_forward_blockers == []",
+      "phase4_bridge_blockers == []",
+      "phase4_consumption.exact_tensor_sha256_match == true",
+      "phase4_consumption.graph_match == true",
+      "phase4_consumption.backend_match == true",
+      "phase4_consumption.context_sha256_match == true",
+      "phase4_consumption.consumed_output_causes_update == true",
+      "phase4_consumption.adapter_changed == true",
+      "raw_payload_rules.raw_suffix_scan_count_zero == true"
+    ],
+    "explicit_rejections": [
+      "gemma_hidden2560_relu cannot satisfy full-Gemma proof",
+      "gemma_hidden2560_identity_add cannot satisfy full-Gemma proof",
+      "CPU reference output cannot be QNN/HTP green unless status is blocked/fallback",
+      "metadata-only linkage without exact tensor SHA match cannot pass",
+      "adapter pre/post unchanged cannot pass"
+    ]
+  },
+  "outside_git_inputs_required_for_execution": [
+    "phone-local fixed packet stage report with outputs.remote_input_path, outputs.input_sha256, outputs.remote_phase4_target_path, and pjp1.sha256",
+    "phone-local full-Gemma QNN context binary path",
+    "full-Gemma QNN graph name that is not gemma_hidden2560_relu or gemma_hidden2560_identity_add",
+    "QAIRT root on phone with qnn-net-run, libQnnHtp.so, and qnn-profile-viewer when available",
+    "raw PJP1, model, checkpoint, adapter, and tensor payloads remain outside git"
+  ],
+  "expected_execution_command": [
+    "CORPUS_PHASE=C1",
+    "RUN_LABEL=waveC_full_gemma_${CORPUS_PHASE}_$(date -u +%Y%m%dT%H%M%SZ)",
+    "HOST_REPORT_ROOT=runtime/reports/polar_phase34_consumer_preflight/${RUN_LABEL}",
+    "PHONE_STAGE_REPORT=<phone_stage_report_with_fixed_packet_input>",
+    "FULL_GEMMA_QNN_CONTEXT=<outside_git_phone_full_gemma_qnn_context>",
+    "FULL_GEMMA_QNN_GRAPH=<full_gemma_decoder_forward_island_graph_name>",
+    "python3.11 scripts/host/run_wavec_full_gemma_qnn_forward.py --stage-report \"$PHONE_STAGE_REPORT\" --context \"$FULL_GEMMA_QNN_CONTEXT\" --graph \"$FULL_GEMMA_QNN_GRAPH\" --report \"$HOST_REPORT_ROOT/full_gemma_qnn_forward/full_gemma_qnn_forward_report.json\" --corpus-phase \"$CORPUS_PHASE\" --num-inferences 1",
+    "QNN_REPORT=\"$HOST_REPORT_ROOT/full_gemma_qnn_forward/full_gemma_qnn_forward_report.json\"",
+    "test \"$(jq -r '.status' \"$QNN_REPORT\")\" = pass",
+    "bash native/polar_phase34_consumer_preflight/build_phase4_bridge_cell_runner.sh",
+    "adb push native/polar_phase34_consumer_preflight/bin/phase4_bridge_cell_runner /data/local/tmp/phase4_bridge_cell_runner",
+    "adb shell chmod 755 /data/local/tmp/phase4_bridge_cell_runner",
+    "PHONE_PHASE3_OUTPUT=$(jq -r '.qnn.output.path' \"$QNN_REPORT\")",
+    "PHONE_PHASE4_TARGET=$(jq -r '.phase4_consumer_contract.phase4_target_path' \"$QNN_REPORT\")",
+    "SOURCE_PJP1_SHA256=$(jq -r '.pjp1.sha256' \"$QNN_REPORT\")",
+    "FULL_GEMMA_CONTEXT_SHA256=$(jq -r '.qnn.context_sha256' \"$QNN_REPORT\")",
+    "FULL_GEMMA_BACKEND=$(jq -r '.qnn.backend' \"$QNN_REPORT\")",
+    "PHONE_PHASE4_OUT=/sdcard/Download/polymath_phase34/${RUN_LABEL}/phase4_bridge_cell",
+    "adb shell \"rm -rf '$PHONE_PHASE4_OUT' && /data/local/tmp/phase4_bridge_cell_runner --phase3-output '$PHONE_PHASE3_OUTPUT' --target '$PHONE_PHASE4_TARGET' --out-dir '$PHONE_PHASE4_OUT' --corpus-phase '$CORPUS_PHASE' --source-pjp1-sha256 '$SOURCE_PJP1_SHA256' --context '$FULL_GEMMA_QNN_CONTEXT' --context-sha256 '$FULL_GEMMA_CONTEXT_SHA256' --phase3-graph '$FULL_GEMMA_QNN_GRAPH' --phase3-backend '$FULL_GEMMA_BACKEND'\"",
+    "mkdir -p \"$HOST_REPORT_ROOT/phase4_bridge_cell\"",
+    "adb pull \"$PHONE_PHASE4_OUT/phase4_bridge_cell_report.json\" \"$HOST_REPORT_ROOT/phase4_bridge_cell/phase4_bridge_cell_report.json\"",
+    "python3.11 scripts/host/run_wavec_full_gemma_consumed_tensor_report.py --qnn-report \"$QNN_REPORT\" --phase4-report \"$HOST_REPORT_ROOT/phase4_bridge_cell/phase4_bridge_cell_report.json\" --output \"$HOST_REPORT_ROOT/full_gemma_consumed_tensor/full_gemma_consumed_tensor_report.json\" --report-root \"$HOST_REPORT_ROOT\"",
+    "test \"$(jq -r '.status' \"$HOST_REPORT_ROOT/full_gemma_consumed_tensor/full_gemma_consumed_tensor_report.json\")\" = pass"
+  ],
+  "stop_conditions": [
+    "stop if the graph name is gemma_hidden2560_relu or gemma_hidden2560_identity_add",
+    "stop if the full-Gemma QNN context path or context SHA is missing",
+    "stop if qnn-net-run does not execute through libQnnHtp.so",
+    "stop if qnn profile log path/SHA/bytes are missing",
+    "stop if QNN output shape/dtype/bytes differ from [1,16,2560] float32_le / 163840 bytes",
+    "stop if Phase4 report phase3_output.sha256 differs from qnn.output.sha256",
+    "stop if Phase4 graph/backend/context identity differs from QNN producer identity",
+    "stop if consumed_output_causes_update is not true",
+    "stop if adapter pre/post SHA-256 are equal or adapter_delta_norm_l2 is zero",
+    "stop if raw suffix scan under the report root is nonzero",
+    "stop and escalate research if QNN profile contradicts host-wall interpretation or full-Gemma QNN graph hits unsupported ops"
+  ],
+  "raw_boundary_rules": [
+    "do not pull raw .pjp1, .raw, .f32.bin, model, checkpoint, adapter, or tensor payloads into git",
+    "repo receives JSON metadata reports and hashes only",
+    "QNN profile log remains on phone; report records path, SHA-256, bytes, and parsed viewer metadata",
+    "Phase4 adapter pre/post payloads remain on phone; repo receives report hashes only"
+  ],
+  "git_hygiene": {
+    "no_stage_commit_push_performed": true,
+    "blocker_packet_status": "already_frozen_by_repo_custodian_at_800d95e8ee03a3e786f0bbd59a00240377bb815c",
+    "blocker_packet_not_restaged_by_this_pathset": true
+  },
+  "research_escalation": "active_parallel_signal_lane",
+  "nonclaims": [
+    "no C5 pass",
+    "no learning/model-quality claim",
+    "no Phase3/4 readiness",
+    "no full-Gemma HTP forward claim until proven",
+    "no 100k/1M authority",
+    "no raw payloads in git",
+    "no secrets printed",
+    "no Comet-backed accepted run"
+  ]
+}

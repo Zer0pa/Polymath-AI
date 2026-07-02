@@ -55,6 +55,8 @@ constexpr const char* kDefaultQnnContext =
     "/data/local/tmp/polymath_gemma4_gate/phase13/"
     "20260524T210920Z_phase13_gemma4_only_heterogeneous/"
     "p13f/htp/relu/context/gemma_hidden2560_relu.qnn.bin";
+constexpr const char* kDefaultQnnBackend = "/data/local/tmp/qairt-2.44/lib/aarch64-android/libQnnHtp.so";
+constexpr const char* kDefaultPhase3Graph = "gemma_hidden2560_relu";
 
 const char* kKernelSource = R"CLC(
 __kernel void compute_q(__global const float* x,
@@ -216,6 +218,8 @@ struct Args {
   std::string source_pjp1_sha256;
   std::string context_path = kDefaultQnnContext;
   std::string context_sha256;
+  std::string phase3_graph = kDefaultPhase3Graph;
+  std::string phase3_backend = kDefaultQnnBackend;
 };
 
 void require_cl(cl_int status, const std::string& label) {
@@ -477,6 +481,10 @@ Args parse_args(int argc, char** argv) {
       args.context_path = value;
     } else if (key == "--context-sha256") {
       args.context_sha256 = value;
+    } else if (key == "--phase3-graph") {
+      args.phase3_graph = value;
+    } else if (key == "--phase3-backend") {
+      args.phase3_backend = value;
     } else {
       throw std::runtime_error("unknown argument " + key);
     }
@@ -484,13 +492,20 @@ Args parse_args(int argc, char** argv) {
   if (args.phase3_output.empty() || args.target.empty() || args.out_dir.empty() || args.source_pjp1_sha256.empty()) {
     throw std::runtime_error(
         "usage: phase4_bridge_cell_runner --phase3-output PATH --target PATH --out-dir DIR "
-        "--source-pjp1-sha256 SHA256 [--corpus-phase C1] [--context PATH] [--context-sha256 SHA256]");
+        "--source-pjp1-sha256 SHA256 [--corpus-phase C1] [--context PATH] [--context-sha256 SHA256] "
+        "[--phase3-graph GRAPH] [--phase3-backend BACKEND]");
   }
   if (!is_sha256(args.source_pjp1_sha256)) {
     throw std::runtime_error("--source-pjp1-sha256 must be a 64-character hex SHA-256");
   }
   if (!args.context_sha256.empty() && !is_sha256(args.context_sha256)) {
     throw std::runtime_error("--context-sha256 must be a 64-character hex SHA-256");
+  }
+  if (args.phase3_graph.empty()) {
+    throw std::runtime_error("--phase3-graph must not be empty");
+  }
+  if (args.phase3_backend.empty()) {
+    throw std::runtime_error("--phase3-backend must not be empty");
   }
   return args;
 }
@@ -666,7 +681,7 @@ int main(int argc, char** argv) {
     report << "  \"phase3_ready_claim\": false,\n";
     report << "  \"phase4_ready_claim\": false,\n";
     report << "  \"learning_claim\": false,\n";
-    report << "  \"phase3_output\": {\"path\": \"" << json_escape(args.phase3_output) << "\", \"shape\": [1, 16, 2560], \"dtype\": \"float32_le\", \"sha256\": \"" << shell_sha256(args.phase3_output) << "\", \"sha256_match\": true, \"context_path\": \"" << json_escape(args.context_path) << "\", \"context_sha256\": \"" << context_sha256 << "\", \"backend\": \"/data/local/tmp/qairt-2.44/lib/aarch64-android/libQnnHtp.so\", \"graph\": \"gemma_hidden2560_relu\"},\n";
+    report << "  \"phase3_output\": {\"path\": \"" << json_escape(args.phase3_output) << "\", \"shape\": [1, 16, 2560], \"dtype\": \"float32_le\", \"sha256\": \"" << shell_sha256(args.phase3_output) << "\", \"sha256_match\": true, \"context_path\": \"" << json_escape(args.context_path) << "\", \"context_sha256\": \"" << context_sha256 << "\", \"backend\": \"" << json_escape(args.phase3_backend) << "\", \"graph\": \"" << json_escape(args.phase3_graph) << "\"},\n";
     report << "  \"phase4_target\": {\"path\": \"" << json_escape(args.target) << "\", \"shape\": [1, 16, 2560], \"dtype\": \"float32_le\", \"sha256\": \"" << shell_sha256(args.target) << "\", \"sha256_match\": true, \"source_pjp1_sha256\": \"" << args.source_pjp1_sha256 << "\", \"bridge_rule\": \"target hidden[h] = +1.0 if target_polar[token,h%256] bit is 1 else -1.0\"},\n";
     report << "  \"opencl_device_is_adreno\": true,\n";
     report << "  \"opencl_device_name\": \"" << json_escape(device_name(api, device)) << "\",\n";
@@ -696,7 +711,7 @@ int main(int argc, char** argv) {
     report << "    \"" << json_escape(phase3_metric_prefix) << "/pjp1_preflight_status\": \"pass\",\n";
     report << "    \"" << json_escape(phase3_metric_prefix) << "/native_preflight_status\": \"pass\",\n";
     report << "    \"" << json_escape(phase3_metric_prefix) << "/i8_oracle_mismatches\": 0,\n";
-    report << "    \"" << json_escape(phase3_metric_prefix) << "/htp_backend\": \"/data/local/tmp/qairt-2.44/lib/aarch64-android/libQnnHtp.so\",\n";
+    report << "    \"" << json_escape(phase3_metric_prefix) << "/htp_backend\": \"" << json_escape(args.phase3_backend) << "\",\n";
     report << "    \"" << json_escape(phase3_metric_prefix) << "/htp_output_sha256\": \"" << shell_sha256(args.phase3_output) << "\",\n";
     report << "    \"" << json_escape(phase3_metric_prefix) << "/forward_loss\": " << loss_pre_update << ",\n";
     report << "    \"" << json_escape(phase3_metric_prefix) << "/forward_mse\": " << loss_pre_update << ",\n";
