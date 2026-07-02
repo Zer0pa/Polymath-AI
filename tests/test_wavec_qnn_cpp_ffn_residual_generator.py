@@ -69,6 +69,87 @@ def test_generator_rejects_repo_work_root(tmp_path: Path) -> None:
     assert "work_root_inside_repo" in payload["blockers"]
 
 
+def test_local_materialization_still_requires_local_model_file(tmp_path: Path) -> None:
+    report = tmp_path / "report.json"
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            "--model-source-location",
+            "local",
+            "--model-safetensors",
+            str(tmp_path / "missing_model.safetensors"),
+            "--model-safetensors-sha256",
+            PHONE_MODEL_SHA,
+            "--model-safetensors-bytes",
+            PHONE_MODEL_BYTES,
+            "--model-config-spec",
+            str(MODEL_SPEC),
+            "--work-root",
+            str(tmp_path / "outside_work"),
+            "--materialize-weight-blobs",
+            "--report",
+            str(report),
+        ],
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+
+    payload = json.loads(report.read_text(encoding="utf-8"))
+    assert result.returncode == 2
+    assert payload["first_missing_green_field"] == (
+        "source_missing:materialize_weight_blobs_requires_local_readable_model_safetensors"
+    )
+
+
+def test_phone_preverified_materialization_plan_does_not_require_host_model(tmp_path: Path) -> None:
+    work_root = tmp_path / "outside_work"
+    report = tmp_path / "report.json"
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            "--model-source-location",
+            "phone_preverified",
+            "--model-safetensors",
+            PHONE_MODEL,
+            "--model-safetensors-sha256",
+            PHONE_MODEL_SHA,
+            "--model-safetensors-bytes",
+            PHONE_MODEL_BYTES,
+            "--model-config-spec",
+            str(MODEL_SPEC),
+            "--work-root",
+            str(work_root),
+            "--materialize-weight-blobs",
+            "--phone-materialization-plan-only",
+            "--report",
+            str(report),
+        ],
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+
+    payload = json.loads(report.read_text(encoding="utf-8"))
+    manifest = payload["qnn_cpp_generator"]["tensor_manifest"]
+
+    assert result.returncode == 0
+    assert payload["status"] == "pass"
+    assert payload["first_missing_green_field"] == "none"
+    assert payload["model_source"]["materialization"]["method"] == (
+        "phone_ssh_selected_safetensors_range_extraction_plan_only"
+    )
+    assert manifest["mlp_gate_proj"]["materialization_method"] == "phone_ssh_selected_safetensors_range_extraction"
+    assert manifest["mlp_gate_proj"]["phone_model_path"] == PHONE_MODEL
+    assert manifest["mlp_gate_proj"]["materialized"] is False
+    assert (work_root / "scripts" / "phone_materialize_selected_safetensors.py").is_file()
+    assert (work_root / "metadata" / "phone_materialization_plan.json").is_file()
+    assert not (work_root / "weights" / "mlp_gate_proj_f32.raw").exists()
+
+
 def test_generator_writes_fail_closed_source_package_outside_git(tmp_path: Path) -> None:
     work_root = tmp_path / "outside_work"
     report = tmp_path / "report.json"

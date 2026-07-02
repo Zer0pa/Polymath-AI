@@ -1,0 +1,351 @@
+{
+  "blockers": [],
+  "config_spec": {
+    "path": "integrations/gemma4-snapdragon-megakernel/model_spec/gemma4_e4b.json",
+    "required_config": {
+      "head_dim": 256,
+      "hidden_size": 2560,
+      "intermediate_size": 10240,
+      "num_attention_heads": 8,
+      "num_hidden_layers": 42,
+      "num_key_value_heads": 2
+    },
+    "sha256": "942c8eb338306edb5afbcc415a1b0bf97ae5e041a26fe5eedd62226fafd04e2b"
+  },
+  "dtype_layout_stop_conditions": [
+    "all_float32_htp_matmul_not_assumed_without_qairt_context_evidence",
+    "fp16_or_fp32_boundary_requires_context_generator_and_net_run_acceptance",
+    "preferred_internal_contract_is_explicit_quantized_activations_and_weights_with_recorded_scales_zero_points_orientation",
+    "missing_scale_zero_point_orientation_or_axis_metadata_is_quantization_or_layout_failure",
+    "partial_delegation_cpu_gpu_fallback_or_missing_profile_is_fail_closed"
+  ],
+  "execution_contract": {
+    "build_script": "/private/tmp/wavec_phone_source_weight_materialization_pathset_20260702T173000Z/scripts/build_android_model_library.sh",
+    "context_name": "gemma4_e4b_ffn_residual_layer0.qnn.bin",
+    "context_script": "/private/tmp/wavec_phone_source_weight_materialization_pathset_20260702T173000Z/scripts/generate_phone_context.sh",
+    "expected_first_green_fields": [
+      "primitive_rmsnorm_decomposition_probe_green",
+      "primitive_gelu_tanh_lowering_probe_green",
+      "quantized_tiny_matmul_static_weight_probe_green",
+      "qnn_cpp_source_generated",
+      "qnn_static_weight_blobs_outside_git",
+      "android_model_library_built",
+      "qnn_context_binary_generated",
+      "qnn_context_utility_graph_match",
+      "qnn_net_run_output_163840_bytes",
+      "qnn_profile_metadata_present",
+      "phase4_exact_tensor_consumption"
+    ],
+    "model_library_name": "libgemma4_e4b_ffn_residual_layer0.so",
+    "next_validators": [
+      "scripts/host/run_wavec_full_gemma_qnn_forward.py",
+      "scripts/host/run_wavec_full_gemma_consumed_tensor_report.py"
+    ],
+    "required_qnn_evidence_fields": [
+      "qnn_backend_path",
+      "qnn_backend_sha256",
+      "qnn_context_binary_sha256",
+      "qnn_context_const_size",
+      "qnn_context_opDataSize",
+      "qnn_context_ioTensorSize",
+      "qnn_context_spill_or_ddr_bytes",
+      "qnn_context_hvx_threads",
+      "qnn_context_binary_utility_graph_name",
+      "qnn_context_binary_utility_input_shape_dtype",
+      "qnn_context_binary_utility_output_shape_dtype",
+      "qnn_net_run_output_bytes",
+      "qnn_net_run_output_sha256",
+      "qnn_profile_log_path_hash",
+      "qnn_profile_viewer_parse_status",
+      "qnn_execute_profile_fields"
+    ]
+  },
+  "failure_taxonomy": [
+    "source_missing",
+    "exporter_failure",
+    "quantization_or_layout_failure",
+    "model_library_failure",
+    "context_generation_failure",
+    "htp_runtime_failure",
+    "consumed_tensor_failure"
+  ],
+  "first_missing_green_field": "none",
+  "full_gemma_htp_forward_claim": false,
+  "graph": {
+    "input": {
+      "bytes": 163840,
+      "dtype": "float32_le",
+      "shape": [
+        1,
+        16,
+        2560
+      ]
+    },
+    "name": "gemma4_e4b_ffn_residual_layer0_forward_island_seq16_hidden2560",
+    "op_plan": [
+      "RMSNorm",
+      "MatMul(gate)",
+      "MatMul(up)",
+      "GELU_TANH",
+      "ElementWiseMultiply",
+      "MatMul(down)",
+      "ElementWiseAdd(residual)"
+    ],
+    "output": {
+      "bytes": 163840,
+      "dtype": "float32_le",
+      "shape": [
+        1,
+        16,
+        2560
+      ]
+    },
+    "scope": "gemma4_e4b_ffn_residual_layer0"
+  },
+  "learning_claim": false,
+  "model_source": {
+    "bytes": 15992595884,
+    "materialization": {
+      "method": "phone_ssh_selected_safetensors_range_extraction_plan_only",
+      "phone_ssh_host": "127.0.0.1",
+      "phone_ssh_port": 8022,
+      "phone_ssh_user": "u0_a536",
+      "phone_work_root": "/data/local/tmp/polymath_gemma4_gate/wavec/full_gemma_qnn_export",
+      "plan_only": true,
+      "requested": true,
+      "requires_full_local_model_copy": false
+    },
+    "model_id": "google/gemma-4-E4B",
+    "path": "/data/data/com.termux/files/home/polymath_model_sources/gemma4_e4b_7aa32e6889efd6300124851b164f8b364314c3d8/model.safetensors",
+    "revision": "7aa32e6889efd6300124851b164f8b364314c3d8",
+    "sha256": "43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651",
+    "source_location": "phone_preverified"
+  },
+  "nonclaims": [
+    "No C5 pass.",
+    "No learning or model-quality claim.",
+    "No Phase3/4 readiness.",
+    "No full-Gemma HTP forward claim until QNN context/net-run/profile and Phase4 consumption validate."
+  ],
+  "phase3_ready_claim": false,
+  "phase4_ready_claim": false,
+  "probe_ladder": [
+    {
+      "contract": "[16,2560] hidden rows; primitive reduce/multiply/add/rsqrt path, no assumed fused RMSNorm",
+      "failure_stage": "quantization_or_layout_failure_or_context_generation_failure",
+      "stage": "primitive_rmsnorm_decomposition_probe"
+    },
+    {
+      "contract": "GELU-tanh decomposition with primitive multiply/add/tanh path, no assumed fused GELU",
+      "failure_stage": "quantization_or_layout_failure_or_context_generation_failure",
+      "stage": "primitive_gelu_tanh_lowering_probe"
+    },
+    {
+      "contract": "deterministic tiny MatMul/FullyConnected with explicit activation/weight dtype, scale, zero point, orientation",
+      "failure_stage": "quantization_or_layout_failure_or_context_generation_failure",
+      "stage": "quantized_tiny_matmul_static_weight_probe"
+    },
+    {
+      "contract": "[1,16,2560] -> [1,16,2560] Gemma FFN/residual island with context utility, net-run, profile, and Phase4 consumption validators",
+      "failure_stage": "context_generation_failure_or_htp_runtime_failure_or_consumed_tensor_failure",
+      "stage": "full_gemma4_e4b_ffn_residual_layer0_probe"
+    }
+  ],
+  "qnn_cpp_generator": {
+    "authority_note": "Generated full-island C++ is not authority until the primitive/quantized probe ladder, QNN HTP context generation, qnn-net-run output, profile parse, and Phase4 consumption validate.",
+    "dtype_layout_stop_conditions": [
+      "all_float32_htp_matmul_not_assumed_without_qairt_context_evidence",
+      "fp16_or_fp32_boundary_requires_context_generator_and_net_run_acceptance",
+      "preferred_internal_contract_is_explicit_quantized_activations_and_weights_with_recorded_scales_zero_points_orientation",
+      "missing_scale_zero_point_orientation_or_axis_metadata_is_quantization_or_layout_failure",
+      "partial_delegation_cpu_gpu_fallback_or_missing_profile_is_fail_closed"
+    ],
+    "generated": {
+      "build_script": {
+        "bytes": 1035,
+        "path": "/private/tmp/wavec_phone_source_weight_materialization_pathset_20260702T173000Z/scripts/build_android_model_library.sh",
+        "sha256": "3780768a3b8ac208b8bb7b688442e5628a3ba8eb81accae6ee301455cdeb4b01"
+      },
+      "context_script": {
+        "bytes": 1017,
+        "path": "/private/tmp/wavec_phone_source_weight_materialization_pathset_20260702T173000Z/scripts/generate_phone_context.sh",
+        "sha256": "515f9941d1189af18193e621caae65091d400157a5bf9de9356d693d94b0a44c"
+      },
+      "cpp_source": {
+        "bytes": 7616,
+        "path": "/private/tmp/wavec_phone_source_weight_materialization_pathset_20260702T173000Z/src/gemma4_e4b_ffn_residual_layer0_qnn_model.cpp",
+        "sha256": "8ee9a189cd2f9ccefdb878d8633c7bb0c5287e3dae9116030dfef6102598aadd"
+      },
+      "tensor_manifest": {
+        "bytes": 5434,
+        "path": "/private/tmp/wavec_phone_source_weight_materialization_pathset_20260702T173000Z/metadata/tensor_manifest.json",
+        "sha256": "aa8a92d33f23e69bf801b5db1ed0a6dacce324042da9fda42732d8f90148dc95"
+      }
+    },
+    "probe_ladder_required_before_full_island": [
+      {
+        "contract": "[16,2560] hidden rows; primitive reduce/multiply/add/rsqrt path, no assumed fused RMSNorm",
+        "failure_stage": "quantization_or_layout_failure_or_context_generation_failure",
+        "stage": "primitive_rmsnorm_decomposition_probe"
+      },
+      {
+        "contract": "GELU-tanh decomposition with primitive multiply/add/tanh path, no assumed fused GELU",
+        "failure_stage": "quantization_or_layout_failure_or_context_generation_failure",
+        "stage": "primitive_gelu_tanh_lowering_probe"
+      },
+      {
+        "contract": "deterministic tiny MatMul/FullyConnected with explicit activation/weight dtype, scale, zero point, orientation",
+        "failure_stage": "quantization_or_layout_failure_or_context_generation_failure",
+        "stage": "quantized_tiny_matmul_static_weight_probe"
+      },
+      {
+        "contract": "[1,16,2560] -> [1,16,2560] Gemma FFN/residual island with context utility, net-run, profile, and Phase4 consumption validators",
+        "failure_stage": "context_generation_failure_or_htp_runtime_failure_or_consumed_tensor_failure",
+        "stage": "full_gemma4_e4b_ffn_residual_layer0_probe"
+      }
+    ],
+    "qnn_op_lowering_failure_stage_if_rejected": "quantization_or_layout_failure_or_model_library_failure_or_context_generation_failure",
+    "qnn_op_lowering_status": "candidate_qnn_builtin_lowering_pending_compile_and_context_generation",
+    "required_tensors": {
+      "input_layernorm": {
+        "blob": "input_layernorm_f32.raw",
+        "key": "model.language_model.layers.0.input_layernorm.weight",
+        "qnn_tensor": "gemma4_layer0_input_layernorm_f32",
+        "shape": [
+          2560
+        ]
+      },
+      "mlp_down_proj": {
+        "blob": "mlp_down_proj_f32.raw",
+        "key": "model.language_model.layers.0.mlp.down_proj.weight",
+        "qnn_tensor": "gemma4_layer0_mlp_down_proj_f32",
+        "shape": [
+          2560,
+          10240
+        ]
+      },
+      "mlp_gate_proj": {
+        "blob": "mlp_gate_proj_f32.raw",
+        "key": "model.language_model.layers.0.mlp.gate_proj.weight",
+        "qnn_tensor": "gemma4_layer0_mlp_gate_proj_f32",
+        "shape": [
+          10240,
+          2560
+        ]
+      },
+      "mlp_up_proj": {
+        "blob": "mlp_up_proj_f32.raw",
+        "key": "model.language_model.layers.0.mlp.up_proj.weight",
+        "qnn_tensor": "gemma4_layer0_mlp_up_proj_f32",
+        "shape": [
+          10240,
+          2560
+        ]
+      }
+    },
+    "route": "qnn_cpp_generated_model_library",
+    "tensor_manifest": {
+      "input_layernorm": {
+        "expected_dtype": "bf16_or_f16_or_f32_converted_to_f32_static_blob",
+        "expected_shape": [
+          2560
+        ],
+        "local_materialization_plan": "/private/tmp/wavec_phone_source_weight_materialization_pathset_20260702T173000Z/metadata/phone_materialization_plan.json",
+        "local_materializer_script": "/private/tmp/wavec_phone_source_weight_materialization_pathset_20260702T173000Z/scripts/phone_materialize_selected_safetensors.py",
+        "materialization_method": "phone_ssh_selected_safetensors_range_extraction",
+        "materialized": false,
+        "outside_git_blob": "/tmp/wavec_phone_source_weight_materialization_pathset_20260702T173000Z/weights/input_layernorm_f32.raw",
+        "phone_blob_path": "/data/local/tmp/polymath_gemma4_gate/wavec/full_gemma_qnn_export/weights/input_layernorm_f32.raw",
+        "phone_model_path": "/data/data/com.termux/files/home/polymath_model_sources/gemma4_e4b_7aa32e6889efd6300124851b164f8b364314c3d8/model.safetensors",
+        "phone_work_root": "/data/local/tmp/polymath_gemma4_gate/wavec/full_gemma_qnn_export",
+        "plan_only": true,
+        "qnn_tensor": "gemma4_layer0_input_layernorm_f32",
+        "remote_manifest": "/data/local/tmp/polymath_gemma4_gate/wavec/full_gemma_qnn_export/metadata/materialized_weight_manifest.json",
+        "source_key": "model.language_model.layers.0.input_layernorm.weight"
+      },
+      "mlp_down_proj": {
+        "expected_dtype": "bf16_or_f16_or_f32_converted_to_f32_static_blob",
+        "expected_shape": [
+          2560,
+          10240
+        ],
+        "local_materialization_plan": "/private/tmp/wavec_phone_source_weight_materialization_pathset_20260702T173000Z/metadata/phone_materialization_plan.json",
+        "local_materializer_script": "/private/tmp/wavec_phone_source_weight_materialization_pathset_20260702T173000Z/scripts/phone_materialize_selected_safetensors.py",
+        "materialization_method": "phone_ssh_selected_safetensors_range_extraction",
+        "materialized": false,
+        "outside_git_blob": "/tmp/wavec_phone_source_weight_materialization_pathset_20260702T173000Z/weights/mlp_down_proj_f32.raw",
+        "phone_blob_path": "/data/local/tmp/polymath_gemma4_gate/wavec/full_gemma_qnn_export/weights/mlp_down_proj_f32.raw",
+        "phone_model_path": "/data/data/com.termux/files/home/polymath_model_sources/gemma4_e4b_7aa32e6889efd6300124851b164f8b364314c3d8/model.safetensors",
+        "phone_work_root": "/data/local/tmp/polymath_gemma4_gate/wavec/full_gemma_qnn_export",
+        "plan_only": true,
+        "qnn_tensor": "gemma4_layer0_mlp_down_proj_f32",
+        "remote_manifest": "/data/local/tmp/polymath_gemma4_gate/wavec/full_gemma_qnn_export/metadata/materialized_weight_manifest.json",
+        "source_key": "model.language_model.layers.0.mlp.down_proj.weight"
+      },
+      "mlp_gate_proj": {
+        "expected_dtype": "bf16_or_f16_or_f32_converted_to_f32_static_blob",
+        "expected_shape": [
+          10240,
+          2560
+        ],
+        "local_materialization_plan": "/private/tmp/wavec_phone_source_weight_materialization_pathset_20260702T173000Z/metadata/phone_materialization_plan.json",
+        "local_materializer_script": "/private/tmp/wavec_phone_source_weight_materialization_pathset_20260702T173000Z/scripts/phone_materialize_selected_safetensors.py",
+        "materialization_method": "phone_ssh_selected_safetensors_range_extraction",
+        "materialized": false,
+        "outside_git_blob": "/tmp/wavec_phone_source_weight_materialization_pathset_20260702T173000Z/weights/mlp_gate_proj_f32.raw",
+        "phone_blob_path": "/data/local/tmp/polymath_gemma4_gate/wavec/full_gemma_qnn_export/weights/mlp_gate_proj_f32.raw",
+        "phone_model_path": "/data/data/com.termux/files/home/polymath_model_sources/gemma4_e4b_7aa32e6889efd6300124851b164f8b364314c3d8/model.safetensors",
+        "phone_work_root": "/data/local/tmp/polymath_gemma4_gate/wavec/full_gemma_qnn_export",
+        "plan_only": true,
+        "qnn_tensor": "gemma4_layer0_mlp_gate_proj_f32",
+        "remote_manifest": "/data/local/tmp/polymath_gemma4_gate/wavec/full_gemma_qnn_export/metadata/materialized_weight_manifest.json",
+        "source_key": "model.language_model.layers.0.mlp.gate_proj.weight"
+      },
+      "mlp_up_proj": {
+        "expected_dtype": "bf16_or_f16_or_f32_converted_to_f32_static_blob",
+        "expected_shape": [
+          10240,
+          2560
+        ],
+        "local_materialization_plan": "/private/tmp/wavec_phone_source_weight_materialization_pathset_20260702T173000Z/metadata/phone_materialization_plan.json",
+        "local_materializer_script": "/private/tmp/wavec_phone_source_weight_materialization_pathset_20260702T173000Z/scripts/phone_materialize_selected_safetensors.py",
+        "materialization_method": "phone_ssh_selected_safetensors_range_extraction",
+        "materialized": false,
+        "outside_git_blob": "/tmp/wavec_phone_source_weight_materialization_pathset_20260702T173000Z/weights/mlp_up_proj_f32.raw",
+        "phone_blob_path": "/data/local/tmp/polymath_gemma4_gate/wavec/full_gemma_qnn_export/weights/mlp_up_proj_f32.raw",
+        "phone_model_path": "/data/data/com.termux/files/home/polymath_model_sources/gemma4_e4b_7aa32e6889efd6300124851b164f8b364314c3d8/model.safetensors",
+        "phone_work_root": "/data/local/tmp/polymath_gemma4_gate/wavec/full_gemma_qnn_export",
+        "plan_only": true,
+        "qnn_tensor": "gemma4_layer0_mlp_up_proj_f32",
+        "remote_manifest": "/data/local/tmp/polymath_gemma4_gate/wavec/full_gemma_qnn_export/metadata/materialized_weight_manifest.json",
+        "source_key": "model.language_model.layers.0.mlp.up_proj.weight"
+      }
+    }
+  },
+  "raw_payload_rules": {
+    "raw_model_context_tensor_generated_qnn_payloads_in_git": false,
+    "repo_receives_metadata_only": true,
+    "work_root": "/tmp/wavec_phone_source_weight_materialization_pathset_20260702T173000Z",
+    "work_root_outside_git": true
+  },
+  "required_qnn_evidence_fields": [
+    "qnn_backend_path",
+    "qnn_backend_sha256",
+    "qnn_context_binary_sha256",
+    "qnn_context_const_size",
+    "qnn_context_opDataSize",
+    "qnn_context_ioTensorSize",
+    "qnn_context_spill_or_ddr_bytes",
+    "qnn_context_hvx_threads",
+    "qnn_context_binary_utility_graph_name",
+    "qnn_context_binary_utility_input_shape_dtype",
+    "qnn_context_binary_utility_output_shape_dtype",
+    "qnn_net_run_output_bytes",
+    "qnn_net_run_output_sha256",
+    "qnn_profile_log_path_hash",
+    "qnn_profile_viewer_parse_status",
+    "qnn_execute_profile_fields"
+  ],
+  "schema_version": "waveC_qnn_cpp_ffn_residual_generator_report_v1",
+  "status": "pass"
+}

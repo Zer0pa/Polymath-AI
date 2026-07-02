@@ -9,6 +9,7 @@ import json
 from pathlib import Path
 import shlex
 import struct
+import subprocess
 import sys
 from typing import Any
 
@@ -59,6 +60,7 @@ REQUIRED_TENSORS = {
     },
 }
 FAILURE_TAXONOMY = (
+    "source_missing",
     "exporter_failure",
     "quantization_or_layout_failure",
     "model_library_failure",
@@ -140,6 +142,13 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--qairt-root", required=False, default="/data/local/tmp/qairt-2.44")
     parser.add_argument("--android-ndk-root", required=False, default="")
     parser.add_argument("--phone-work-root", default="/data/local/tmp/polymath_gemma4_gate/wavec/full_gemma_qnn_export")
+    parser.add_argument("--phone-ssh-host", default="127.0.0.1")
+    parser.add_argument("--phone-ssh-port", type=int, default=8022)
+    parser.add_argument("--phone-ssh-user", default="u0_a536")
+    parser.add_argument("--phone-ssh-identity", default="")
+    parser.add_argument("--phone-ssh-extra-arg", action="append", default=[])
+    parser.add_argument("--phone-materialization-timeout-sec", type=int, default=7200)
+    parser.add_argument("--phone-materialization-plan-only", action="store_true")
     parser.add_argument("--materialize-weight-blobs", action="store_true")
     parser.add_argument(
         "--report",
@@ -171,6 +180,12 @@ def print_schema() -> None:
                 "output": {"shape": EXPECTED_SHAPE, "dtype": EXPECTED_DTYPE, "bytes": EXPECTED_BYTES},
                 "required_layer0_tensors": REQUIRED_TENSORS,
                 "failure_taxonomy": list(FAILURE_TAXONOMY),
+                "phone_materialization_contract": {
+                    "method": "phone_ssh_selected_safetensors_range_extraction",
+                    "requires_full_local_model_copy": False,
+                    "selected_tensors_only": list(REQUIRED_TENSORS),
+                    "plan_only_flag": "--phone-materialization-plan-only",
+                },
                 "probe_ladder": PROBE_LADDER,
                 "dtype_layout_stop_conditions": DTYPE_LAYOUT_STOP_CONDITIONS,
                 "required_qnn_evidence_fields": REQUIRED_QNN_EVIDENCE_FIELDS,
@@ -189,11 +204,14 @@ def generate_package(args: argparse.Namespace) -> dict[str, Any]:
     if not blockers:
         work_root = args.work_root.expanduser().resolve()
         create_layout(work_root)
-        if args.materialize_weight_blobs:
-            tensor_manifest = materialize_weight_blobs(Path(args.model_safetensors), work_root / "weights")
-        else:
-            tensor_manifest = expected_weight_manifest(args)
-        generated = write_generated_files(args, work_root, tensor_manifest)
+        try:
+            if args.materialize_weight_blobs:
+                tensor_manifest = materialize_weight_blobs(args, work_root)
+            else:
+                tensor_manifest = expected_weight_manifest(args)
+            generated = write_generated_files(args, work_root, tensor_manifest)
+        except RuntimeError as exc:
+            blockers.append(str(exc))
 
     status = "pass" if not blockers else "blocked"
     return {
@@ -226,6 +244,16 @@ def generate_package(args: argparse.Namespace) -> dict[str, Any]:
             "source_location": args.model_source_location,
             "model_id": EXPECTED_MODEL_ID,
             "revision": EXPECTED_MODEL_REVISION,
+            "materialization": {
+                "requested": args.materialize_weight_blobs,
+                "method": materialization_method(args),
+                "phone_work_root": args.phone_work_root,
+                "phone_ssh_host": args.phone_ssh_host,
+                "phone_ssh_port": args.phone_ssh_port,
+                "phone_ssh_user": args.phone_ssh_user,
+                "plan_only": args.phone_materialization_plan_only,
+                "requires_full_local_model_copy": False,
+            },
         },
         "config_spec": {
             "path": str(args.model_config_spec),
@@ -302,14 +330,29 @@ def validate_inputs(args: argparse.Namespace) -> list[str]:
         blockers.append("model_config_spec_sha256_mismatch")
     if args.work_root and path_in_repo(args.work_root):
         blockers.append("work_root_inside_repo")
-    if args.materialize_weight_blobs and not Path(args.model_safetensors).is_file():
-        blockers.append("materialize_weight_blobs_requires_local_readable_model_safetensors")
+    if args.materialize_weight_blobs and args.model_source_location == "local" and not Path(args.model_safetensors).is_file():
+        blockers.append("source_missing:materialize_weight_blobs_requires_local_readable_model_safetensors")
+    if args.materialize_weight_blobs and args.model_source_location == "phone_preverified":
+        if not args.phone_materialization_plan_only and (not args.phone_ssh_host or not args.phone_ssh_user):
+            blockers.append("source_missing:phone_materialization_ssh_config_missing")
+        if args.phone_materialization_timeout_sec <= 0:
+            blockers.append("source_missing:phone_materialization_timeout_invalid")
     return blockers
 
 
 def create_layout(work_root: Path) -> None:
     for child in ("src", "scripts", "weights", "out", "context", "run", "metadata"):
         (work_root / child).mkdir(parents=True, exist_ok=True)
+
+
+def materialization_method(args: argparse.Namespace) -> str:
+    if not args.materialize_weight_blobs:
+        return "not_requested"
+    if args.model_source_location == "local":
+        return "host_local_safetensors_selected_range_extraction"
+    if args.phone_materialization_plan_only:
+        return "phone_ssh_selected_safetensors_range_extraction_plan_only"
+    return "phone_ssh_selected_safetensors_range_extraction"
 
 
 def expected_weight_manifest(args: argparse.Namespace) -> dict[str, Any]:
@@ -326,7 +369,13 @@ def expected_weight_manifest(args: argparse.Namespace) -> dict[str, Any]:
     }
 
 
-def materialize_weight_blobs(model_path: Path, weights_root: Path) -> dict[str, Any]:
+def materialize_weight_blobs(args: argparse.Namespace, work_root: Path) -> dict[str, Any]:
+    if args.model_source_location == "phone_preverified":
+        return materialize_phone_weight_blobs(args, work_root)
+    return materialize_local_weight_blobs(Path(args.model_safetensors), work_root / "weights")
+
+
+def materialize_local_weight_blobs(model_path: Path, weights_root: Path) -> dict[str, Any]:
     header, data_start = read_safetensors_header(model_path)
     manifest: dict[str, Any] = {}
     for role, spec in REQUIRED_TENSORS.items():
@@ -354,8 +403,324 @@ def materialize_weight_blobs(model_path: Path, weights_root: Path) -> dict[str, 
             "sha256": sha256_file(blob_path),
             "qnn_tensor": spec["qnn_tensor"],
             "materialized": True,
+            "materialization_method": "host_local_safetensors_selected_range_extraction",
         }
     return manifest
+
+
+def materialize_phone_weight_blobs(args: argparse.Namespace, work_root: Path) -> dict[str, Any]:
+    local_script = work_root / "scripts" / "phone_materialize_selected_safetensors.py"
+    local_plan = work_root / "metadata" / "phone_materialization_plan.json"
+    remote_root = args.phone_work_root.rstrip("/")
+    remote_script = f"{remote_root}/scripts/phone_materialize_selected_safetensors.py"
+    remote_manifest = f"{remote_root}/metadata/materialized_weight_manifest.json"
+    local_script.write_text(render_phone_materializer_script(), encoding="utf-8")
+    local_plan.write_text(
+        json.dumps(phone_materialization_plan(args, remote_script, remote_manifest), indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+
+    if args.phone_materialization_plan_only:
+        return expected_phone_weight_manifest(args, work_root, local_script, local_plan, remote_manifest)
+
+    run_checked(
+        ssh_command(args, f"mkdir -p {shlex.quote(remote_root)}/scripts {shlex.quote(remote_root)}/metadata {shlex.quote(remote_root)}/weights"),
+        "source_missing:phone_materialization_remote_mkdir_failed",
+        timeout=60,
+    )
+    run_checked(
+        scp_to_phone_command(args, local_script, remote_script),
+        "source_missing:phone_materialization_script_push_failed",
+        timeout=120,
+    )
+    remote_command = " ".join(
+        [
+            "python3",
+            shlex.quote(remote_script),
+            "--model",
+            shlex.quote(args.model_safetensors),
+            "--expected-sha256",
+            shlex.quote(args.model_safetensors_sha256),
+            "--expected-bytes",
+            str(args.model_safetensors_bytes),
+            "--out-root",
+            shlex.quote(remote_root),
+            "--manifest",
+            shlex.quote(remote_manifest),
+        ]
+    )
+    run_checked(
+        ssh_command(args, remote_command),
+        "source_missing:phone_materialization_remote_extract_failed",
+        timeout=args.phone_materialization_timeout_sec,
+    )
+
+    local_manifest = work_root / "metadata" / "materialized_weight_manifest.json"
+    run_checked(
+        scp_from_phone_command(args, remote_manifest, local_manifest),
+        "source_missing:phone_materialization_manifest_pull_failed",
+        timeout=120,
+    )
+    manifest = json.loads(local_manifest.read_text(encoding="utf-8"))
+    for role, spec in REQUIRED_TENSORS.items():
+        remote_blob = manifest[role]["phone_blob_path"]
+        local_blob = work_root / "weights" / spec["blob"]
+        run_checked(
+            scp_from_phone_command(args, remote_blob, local_blob),
+            f"source_missing:phone_materialization_blob_pull_failed:{role}",
+            timeout=args.phone_materialization_timeout_sec,
+        )
+        if local_blob.stat().st_size != int(manifest[role]["bytes"]):
+            raise RuntimeError(f"source_missing:phone_materialization_partial_blob_transfer:{role}")
+        actual_sha = sha256_file(local_blob)
+        if actual_sha != manifest[role]["sha256"]:
+            raise RuntimeError(f"source_missing:phone_materialization_blob_sha256_mismatch:{role}")
+        manifest[role]["outside_git_blob"] = str(local_blob)
+        manifest[role]["host_blob_sha256"] = actual_sha
+        manifest[role]["host_blob_bytes"] = local_blob.stat().st_size
+    return manifest
+
+
+def expected_phone_weight_manifest(
+    args: argparse.Namespace,
+    work_root: Path,
+    local_script: Path,
+    local_plan: Path,
+    remote_manifest: str,
+) -> dict[str, Any]:
+    manifest = expected_weight_manifest(args)
+    for role, spec in REQUIRED_TENSORS.items():
+        manifest[role].update(
+            {
+                "materialization_method": "phone_ssh_selected_safetensors_range_extraction",
+                "phone_model_path": args.model_safetensors,
+                "phone_work_root": args.phone_work_root,
+                "phone_blob_path": f"{args.phone_work_root.rstrip('/')}/weights/{spec['blob']}",
+                "remote_manifest": remote_manifest,
+                "local_materializer_script": str(local_script),
+                "local_materialization_plan": str(local_plan),
+                "materialized": False,
+                "plan_only": True,
+            }
+        )
+    return manifest
+
+
+def phone_materialization_plan(args: argparse.Namespace, remote_script: str, remote_manifest: str) -> dict[str, Any]:
+    return {
+        "method": "phone_ssh_selected_safetensors_range_extraction",
+        "model_source": {
+            "phone_path": args.model_safetensors,
+            "expected_sha256": args.model_safetensors_sha256,
+            "expected_bytes": args.model_safetensors_bytes,
+        },
+        "transport": {
+            "ssh_host": args.phone_ssh_host,
+            "ssh_port": args.phone_ssh_port,
+            "ssh_user": args.phone_ssh_user,
+            "identity_path_present": bool(args.phone_ssh_identity),
+            "extra_arg_count": len(args.phone_ssh_extra_arg or []),
+            "timeout_sec": args.phone_materialization_timeout_sec,
+        },
+        "remote": {
+            "phone_work_root": args.phone_work_root,
+            "script": remote_script,
+            "manifest": remote_manifest,
+        },
+        "required_tensors": REQUIRED_TENSORS,
+        "raw_boundary": {
+            "copies_full_model_to_host": False,
+            "copies_selected_weight_blobs_only": True,
+            "host_work_root_must_be_outside_git": True,
+        },
+    }
+
+
+def render_phone_materializer_script() -> str:
+    tensors_json = json.dumps(REQUIRED_TENSORS, sort_keys=True)
+    return f'''#!/usr/bin/env python3
+from __future__ import annotations
+
+import argparse
+import hashlib
+import json
+from pathlib import Path
+import struct
+
+TENSORS = json.loads({tensors_json!r})
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description="Materialize selected Gemma E4B safetensors ranges on Termux.")
+    parser.add_argument("--model", required=True)
+    parser.add_argument("--expected-sha256", required=True)
+    parser.add_argument("--expected-bytes", type=int, required=True)
+    parser.add_argument("--out-root", required=True)
+    parser.add_argument("--manifest", required=True)
+    args = parser.parse_args()
+
+    model = Path(args.model)
+    out_root = Path(args.out_root)
+    weights_root = out_root / "weights"
+    weights_root.mkdir(parents=True, exist_ok=True)
+    Path(args.manifest).parent.mkdir(parents=True, exist_ok=True)
+
+    if not model.is_file():
+        raise SystemExit("source_missing:phone_model_path_unreadable")
+    if model.stat().st_size != args.expected_bytes:
+        raise SystemExit("source_missing:phone_model_size_mismatch")
+    model_sha = sha256_file(model)
+    if model_sha != args.expected_sha256:
+        raise SystemExit("source_missing:phone_model_sha256_mismatch")
+
+    header, data_start = read_safetensors_header(model)
+    manifest = {{}}
+    for role, spec in TENSORS.items():
+        entry = header.get(spec["key"])
+        if not isinstance(entry, dict):
+            raise SystemExit(f"exporter_failure:missing_tensor:{{spec['key']}}")
+        shape = entry.get("shape")
+        if shape != spec["shape"]:
+            raise SystemExit(f"exporter_failure:tensor_shape_mismatch:{{spec['key']}}")
+        dtype = str(entry.get("dtype", "")).upper()
+        if dtype not in {{"BF16", "F16", "F32"}}:
+            raise SystemExit(f"quantization_or_layout_failure:tensor_dtype_unsupported:{{spec['key']}}:{{dtype}}")
+        offsets = entry.get("data_offsets")
+        if not isinstance(offsets, list) or len(offsets) != 2:
+            raise SystemExit(f"exporter_failure:tensor_offsets_invalid:{{spec['key']}}")
+        start, stop = int(offsets[0]), int(offsets[1])
+        if start < 0 or stop <= start:
+            raise SystemExit(f"exporter_failure:tensor_offsets_invalid:{{spec['key']}}")
+        absolute_start = data_start + start
+        length = stop - start
+        if absolute_start + length > args.expected_bytes:
+            raise SystemExit(f"exporter_failure:tensor_range_exceeds_file_size:{{spec['key']}}")
+
+        blob = weights_root / spec["blob"]
+        write_f32_blob(model, absolute_start, length, dtype, blob)
+        manifest[role] = {{
+            "source_key": spec["key"],
+            "shape": shape,
+            "source_dtype": dtype,
+            "data_offsets": [start, stop],
+            "absolute_data_offsets": [absolute_start, absolute_start + length],
+            "source_bytes": length,
+            "phone_blob_path": str(blob),
+            "bytes": blob.stat().st_size,
+            "sha256": sha256_file(blob),
+            "qnn_tensor": spec["qnn_tensor"],
+            "materialized": True,
+            "materialization_method": "phone_ssh_selected_safetensors_range_extraction",
+        }}
+    Path(args.manifest).write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\\n", encoding="utf-8")
+    print(args.manifest)
+    return 0
+
+
+def read_safetensors_header(path: Path) -> tuple[dict, int]:
+    with path.open("rb") as handle:
+        raw_len = handle.read(8)
+        if len(raw_len) != 8:
+            raise SystemExit("exporter_failure:safetensors_header_length_missing")
+        header_len = struct.unpack("<Q", raw_len)[0]
+        header = json.loads(handle.read(header_len).decode("utf-8"))
+    return header, 8 + int(header_len)
+
+
+def write_f32_blob(model_path: Path, offset: int, length: int, dtype: str, out: Path) -> None:
+    raw = read_range(model_path, offset, length)
+    with out.open("wb") as handle:
+        if dtype == "F32":
+            handle.write(raw)
+            return
+        if dtype == "F16":
+            for index in range(0, len(raw), 2):
+                value = struct.unpack("<e", raw[index : index + 2])[0]
+                handle.write(struct.pack("<f", float(value)))
+            return
+        for index in range(0, len(raw), 2):
+            bits = struct.unpack("<H", raw[index : index + 2])[0]
+            handle.write(struct.pack("<I", bits << 16))
+
+
+def read_range(path: Path, offset: int, length: int) -> bytes:
+    with path.open("rb") as handle:
+        handle.seek(offset)
+        data = handle.read(length)
+    if len(data) != length:
+        raise SystemExit("exporter_failure:safetensors_tensor_range_truncated")
+    return data
+
+
+def sha256_file(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
+'''
+
+
+def ssh_target(args: argparse.Namespace) -> str:
+    return f"{args.phone_ssh_user}@{args.phone_ssh_host}" if args.phone_ssh_user else args.phone_ssh_host
+
+
+def ssh_options(args: argparse.Namespace) -> list[str]:
+    options = [
+        "-p",
+        str(args.phone_ssh_port),
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=20",
+        "-o",
+        "StrictHostKeyChecking=accept-new",
+    ]
+    if args.phone_ssh_identity:
+        options.extend(["-i", args.phone_ssh_identity])
+    options.extend(args.phone_ssh_extra_arg or [])
+    return options
+
+
+def ssh_command(args: argparse.Namespace, remote_command: str) -> list[str]:
+    return ["ssh", *ssh_options(args), ssh_target(args), remote_command]
+
+
+def scp_to_phone_command(args: argparse.Namespace, local: Path, remote: str) -> list[str]:
+    return ["scp", *scp_options(args), str(local), f"{ssh_target(args)}:{remote}"]
+
+
+def scp_from_phone_command(args: argparse.Namespace, remote: str, local: Path) -> list[str]:
+    local.parent.mkdir(parents=True, exist_ok=True)
+    return ["scp", *scp_options(args), f"{ssh_target(args)}:{remote}", str(local)]
+
+
+def scp_options(args: argparse.Namespace) -> list[str]:
+    options = ssh_options(args)
+    scp = []
+    index = 0
+    while index < len(options):
+        option = options[index]
+        if option == "-p":
+            scp.extend(["-P", options[index + 1]])
+            index += 2
+            continue
+        scp.append(option)
+        index += 1
+    return scp
+
+
+def run_checked(command: list[str], failure_field: str, *, timeout: int) -> None:
+    completed = subprocess.run(command, text=True, capture_output=True, timeout=timeout, check=False)
+    if completed.returncode != 0:
+        stderr = completed.stderr.strip().splitlines()
+        stdout = completed.stdout.strip().splitlines()
+        detail = stderr[-1] if stderr else (stdout[-1] if stdout else f"exit_code_{completed.returncode}")
+        raise RuntimeError(f"{failure_field}:{detail[:240]}")
 
 
 def read_safetensors_header(path: Path) -> tuple[dict[str, Any], int]:
