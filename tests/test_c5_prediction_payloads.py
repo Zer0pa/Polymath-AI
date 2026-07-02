@@ -145,6 +145,77 @@ def test_c5_prediction_payload_runner_generates_valid_scorer_inputs(tmp_path: Pa
     assert metrics["metrics"]["c5/C5_after_C1/learning_score"] > 0.0
 
 
+def test_c5_prediction_payload_runner_rejects_missing_candidate_record_ids_before_scorer(
+    tmp_path: Path,
+) -> None:
+    inputs = _write_inputs(tmp_path)
+    producer = _write_candidate_first_row_only_producer(tmp_path)
+
+    result = subprocess.run(
+        [
+            "python3.11",
+            str(PREDICTION_RUNNER),
+            "--run-label",
+            "unit",
+            "--eval-point",
+            "C5_after_C1",
+            "--eval-split-identity",
+            str(inputs["eval_split_identity"]),
+            "--checkpoint-identity",
+            str(inputs["checkpoint_identity"]),
+            "--stable-baseline-identity",
+            str(inputs["baseline_identity"]),
+            "--heldout-qa-jsonl",
+            str(inputs["heldout"]),
+            "--candidate-checkpoint-payload",
+            str(inputs["candidate_payload"]),
+            "--stable-baseline-checkpoint-payload",
+            str(inputs["baseline_payload"]),
+            "--prediction-output-root",
+            str(tmp_path / "predictions"),
+            "--metadata-output-dir",
+            str(tmp_path / "metadata"),
+            "--producer-command",
+            f"python3.11 {producer}",
+            "--candidate-train-loss",
+            "0.4",
+        ],
+        cwd=ROOT,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+
+    assert result.returncode == 2
+    report = load_json(Path(json.loads(result.stdout)["report_path"]))
+    assert report["status"] == "blocked"
+    assert report["first_missing_green_field"] == "ValueError:candidate_predictions_missing_record_ids"
+    assert "ValueError:candidate_predictions_missing_record_ids" in report["blockers"]
+    assert report["prediction_output_validation"] is None
+
+
+def test_native_c5_runtime_iterates_heldout_records_for_prediction_payloads() -> None:
+    source = (
+        ROOT
+        / "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp"
+    ).read_text(encoding="utf-8")
+    header = (
+        ROOT
+        / "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/include/polymath/gemma4/c5_full_decoder_runtime.h"
+    ).read_text(encoding="utf-8")
+    inference_source = (
+        ROOT
+        / "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_qa_inference.cpp"
+    ).read_text(encoding="utf-8")
+
+    assert "read_qa_jsonl_records" in source
+    assert "first_nonempty_jsonl_line" not in source
+    assert "for (const QaRecord& record : qa_records)" in source
+    assert "c5_full_decoder_prediction_jsonl_record_count_mismatch" in source
+    assert "prediction_record_count" in header
+    assert "prediction_record_count_matches_heldout" in inference_source
+
+
 def test_c5_prediction_payload_runner_rejects_checkpoint_hash_mismatch(tmp_path: Path) -> None:
     inputs = _write_inputs(tmp_path)
     producer = _write_stub_producer(tmp_path)
@@ -291,6 +362,44 @@ def _write_stub_producer(tmp_path: Path) -> Path:
                         "prediction": prediction,
                         "loss": loss,
                         "confidence": confidence,
+                        "token_count": max(1, len(row["answer"].split())),
+                    }, sort_keys=True) + "\\n")
+            """
+        ),
+        encoding="utf-8",
+    )
+    return script
+
+
+def _write_candidate_first_row_only_producer(tmp_path: Path) -> Path:
+    script = tmp_path / "candidate_first_row_only_c5_prediction_producer.py"
+    script.write_text(
+        textwrap.dedent(
+            """\
+            import argparse
+            import json
+
+            parser = argparse.ArgumentParser()
+            parser.add_argument("--run-label")
+            parser.add_argument("--eval-point")
+            parser.add_argument("--checkpoint-role")
+            parser.add_argument("--checkpoint-payload")
+            parser.add_argument("--checkpoint-sha256")
+            parser.add_argument("--heldout-qa-jsonl")
+            parser.add_argument("--output-jsonl")
+            args = parser.parse_args()
+
+            with open(args.heldout_qa_jsonl, "r", encoding="utf-8") as handle:
+                rows = [json.loads(line) for line in handle if line.strip()]
+            if args.checkpoint_role == "candidate":
+                rows = rows[:1]
+            with open(args.output_jsonl, "w", encoding="utf-8") as handle:
+                for row in rows:
+                    handle.write(json.dumps({
+                        "record_id": row["record_id"],
+                        "prediction": row["answer"],
+                        "loss": 0.2,
+                        "confidence": 0.9,
                         "token_count": max(1, len(row["answer"].split())),
                     }, sort_keys=True) + "\\n")
             """

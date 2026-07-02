@@ -1,0 +1,66 @@
+{
+  "schema_version": "polymath_phase34_candidate_prediction_record_id_coverage_repair_v1",
+  "created_at_utc": "2026-07-02T11:08:13Z",
+  "status": "candidate_prediction_record_id_coverage_repair_ready",
+  "governing_gate": "WaveB_C5_after_C1_candidate_prediction_record_id_coverage_repair_pending_after_bounded_canonical_payload_retry_failed",
+  "first_missing_green_field_before_repair": "ValueError:candidate_predictions_missing_record_ids",
+  "first_missing_green_field_after_repair_pathset": "none",
+  "root_cause": {
+    "native_runtime_bug": "The C5 native full-decoder producer read only the first non-empty heldout QA JSONL row and wrote a single-row prediction JSONL with truncation.",
+    "wrapper_behavior": "scripts/host/run_c5_prediction_payloads.py correctly failed closed before scorer execution because candidate predictions did not cover every heldout record_id.",
+    "heldout_record_count": 53,
+    "heldout_sha256": "da41c5362398f24e0e0dd9df9a5cf0594435a455871fa77ab74d9312e6c8e9b2"
+  },
+  "repair_summary": {
+    "native_record_inventory": "The native runtime now reads every non-empty heldout JSONL row, requires a non-empty unique record_id/question/answer, and records heldout_record_count.",
+    "native_prediction_output": "The prediction writer now emits one row per heldout record through a temporary output file and only renames it into place after every row has been produced.",
+    "native_metadata": "Native report metadata now includes prediction_record_count and prediction_record_count_matches_heldout without embedding raw prediction payload bytes.",
+    "pre_phone_guard": "A focused host test rejects a producer that emits only the first candidate record_id before any scorer handoff."
+  },
+  "source_pathset": {
+    "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/include/polymath/gemma4/c5_full_decoder_runtime.h": "39178e82f366da7ee6c4744a2666b986f53516316fa819d6595525d90c46bb35",
+    "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp": "f772b1063f2508ad014f15b23e9034166002391f326e35f540e78041fbb53c12",
+    "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_qa_inference.cpp": "757eb96fb5f0523428cac7e7f1829d30b65e228314a01f41dad488597f570914"
+  },
+  "test_pathset": {
+    "tests/test_c5_prediction_payloads.py": "f68a93b5a36498131ea7e43ad40623d3d7e5da4c637db4c704adb0e4dc12bf9e"
+  },
+  "local_verification": [
+    {
+      "command": "git diff --check -- integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/include/polymath/gemma4/c5_full_decoder_runtime.h integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_qa_inference.cpp tests/test_c5_prediction_payloads.py",
+      "result": "passed"
+    },
+    {
+      "command": "python3.11 -m pytest tests/test_c5_prediction_payloads.py -k 'rejects_missing_candidate_record_ids_before_scorer or native_c5_runtime_iterates_heldout_records_for_prediction_payloads'",
+      "result": "2 passed, 4 deselected",
+      "scorer_execution": false,
+      "phone_execution": false
+    },
+    {
+      "command": "cmake -S integrations/gemma4-snapdragon-megakernel/gemma4_megakernel -B /tmp/polymath_c5_row_coverage_build -DCMAKE_BUILD_TYPE=Release && cmake --build /tmp/polymath_c5_row_coverage_build --target gemma4_layer_runner -j 4",
+      "result": "passed"
+    }
+  ],
+  "bounded_next_execution_command_after_custody": {
+    "precondition": "Repo Custodian freezes this pathset, Execution restores Termux command access, syncs the frozen custody commit to the Termux worktree, and supplies the existing outside-git heldout/checkpoint/component paths without copying raw payloads into git.",
+    "command": "cd <termux_custody_worktree_at_frozen_commit> && STAMP=$(date -u +%Y%m%dT%H%M%SZ) && OUT=/data/data/com.termux/files/home/polymath_c5/C5_after_C1/canonical_payload_record_id_coverage_retry_${STAMP} && mkdir -p \"$OUT/metadata\" \"$OUT/predictions\" && python3.11 scripts/host/run_c5_prediction_payloads.py --run-label c1_c4_waveB_rerun_20260630T230411Z_record_id_coverage_retry_${STAMP} --eval-point C5_after_C1 --eval-split-identity runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/c5_eval_split_identity_C5_after_C1.json --checkpoint-identity runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/checkpoint_identities/candidate_checkpoint_identity_C5_after_C1.json --stable-baseline-identity runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/checkpoint_identities/stable_baseline_checkpoint_identity_C5_after_C1.json --heldout-qa-jsonl <outside_git_heldout_qa_jsonl_sha_da41c5362398f24e0e0dd9df9a5cf0594435a455871fa77ab74d9312e6c8e9b2> --candidate-checkpoint-payload <outside_git_candidate_payload_sha_1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f> --stable-baseline-checkpoint-payload <outside_git_stable_payload_sha_e0d1c66ac876c2b6fbbe9e88f1b02dd37201d8ffba10afcd44f1c558fc32f7c9> --prediction-output-root \"$OUT/predictions\" --metadata-output-dir \"$OUT/metadata\" --producer-command 'python3.11 scripts/host/run_c5_phase34_qa_inference_producer.py --gemma4-runner <termux_gemma4_layer_runner_at_frozen_commit> --tokenizer-dir <outside_git_tokenizer_dir> --decoder-component-pack <outside_git_decoder_component_pack> --vocab-chunk-size 4096 --max-generation-tokens 128 --native-timeout-seconds 19800' --candidate-train-loss 15.202827250350284 --timeout-seconds 21600",
+    "stop_condition": "Stop after exactly one wrapper attempt. Green is wrapper status pass with candidate_prediction_count=stable_baseline_prediction_count=53 and prediction raw payloads outside git. Fail closed on any wrapper blocked status or timeout; do not run the heldout scorer in this step."
+  },
+  "raw_boundary": {
+    "raw_prediction_payloads_in_git": false,
+    "raw_checkpoint_payloads_in_git": false,
+    "raw_train_payloads_in_git": false,
+    "metadata_only": true
+  },
+  "research_escalation": "none",
+  "nonclaims": [
+    "no C5 pass",
+    "no heldout scorer execution",
+    "no learning/model-quality claim",
+    "no Phase3/4 readiness claim",
+    "no 100k/1M authority",
+    "no raw payloads in git",
+    "no secrets printed",
+    "no Comet-backed accepted run"
+  ]
+}

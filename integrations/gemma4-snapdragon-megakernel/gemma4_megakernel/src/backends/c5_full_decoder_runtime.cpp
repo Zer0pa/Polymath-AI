@@ -4,9 +4,11 @@
 #include <algorithm>
 #include <cctype>
 #include <cstdint>
+#include <cstdio>
 #include <fstream>
 #include <iomanip>
 #include <limits>
+#include <set>
 #include <stdexcept>
 #include <string>
 #include <utility>
@@ -59,6 +61,13 @@ struct SourceModelIdentity {
 struct QaTokenization {
   std::vector<std::uint32_t> question_tokens;
   std::vector<std::uint32_t> answer_tokens;
+};
+
+struct QaRecord {
+  std::string raw_json;
+  std::string record_id;
+  std::string question;
+  std::string answer;
 };
 
 struct QaRuntimeSequence {
@@ -1752,57 +1761,83 @@ void append_opencl_single_layer_parity_blockers(
   }
 }
 
-std::string first_nonempty_jsonl_line(const std::string& path) {
+bool has_jsonl_content(const std::string& line) {
+  for (const char character : line) {
+    if (std::isspace(static_cast<unsigned char>(character)) == 0) {
+      return true;
+    }
+  }
+  return false;
+}
+
+Status read_qa_jsonl_records(const std::string& path,
+                             std::vector<QaRecord>& records) {
   std::ifstream file(path);
   if (!file) {
-    throw std::runtime_error("heldout_qa_jsonl_read_failed");
+    return Status::invalid("heldout_qa_jsonl_read_failed");
   }
+  std::set<std::string> record_ids;
   std::string line;
+  std::uint64_t line_number = 0;
   while (std::getline(file, line)) {
-    bool has_content = false;
-    for (const char character : line) {
-      if (std::isspace(static_cast<unsigned char>(character)) == 0) {
-        has_content = true;
-        break;
-      }
+    ++line_number;
+    if (!has_jsonl_content(line)) {
+      continue;
     }
-    if (has_content) {
-      return line;
+
+    QaRecord record;
+    record.raw_json = line;
+    record.record_id = string_field(line, "record_id");
+    record.question = string_field(line, "question");
+    record.answer = string_field(line, "answer");
+    if (record.record_id.empty()) {
+      return Status::invalid("heldout_qa_jsonl_record_id_missing:" +
+                             std::to_string(line_number));
     }
+    if (!record_ids.insert(record.record_id).second) {
+      return Status::invalid("heldout_qa_jsonl_duplicate_record_id:" +
+                             record.record_id);
+    }
+    if (record.question.empty()) {
+      return Status::invalid("heldout_qa_jsonl_question_missing:" +
+                             record.record_id);
+    }
+    if (record.answer.empty()) {
+      return Status::invalid("heldout_qa_jsonl_answer_missing:" +
+                             record.record_id);
+    }
+    records.push_back(std::move(record));
   }
-  return {};
+  if (records.empty()) {
+    return Status::invalid("c5_qa_prompt_token_runtime_heldout_empty");
+  }
+  return Status::ok();
 }
 
 void append_qa_prompt_token_runtime_blockers(
     const C5QaInferenceRequest& request,
+    const QaRecord& record,
     QaTokenization& tokenization,
     std::vector<std::string>& blockers) {
   try {
     GemmaBpeTokenizer tokenizer;
     tokenizer.load(request.tokenizer_dir);
-    const std::string record = first_nonempty_jsonl_line(request.heldout_qa_jsonl_path);
-    if (record.empty()) {
-      blockers.push_back("c5_qa_prompt_token_runtime_heldout_empty");
-      return;
-    }
-    const std::string question = string_field(record, "question");
-    const std::string answer = string_field(record, "answer");
-    if (question.empty()) {
+    if (record.question.empty()) {
       blockers.push_back("c5_qa_prompt_token_runtime_question_missing");
     }
-    if (answer.empty()) {
+    if (record.answer.empty()) {
       blockers.push_back("c5_qa_prompt_token_runtime_answer_missing");
     }
-    if (!question.empty() && tokenizer.encode(question).empty()) {
+    if (!record.question.empty() && tokenizer.encode(record.question).empty()) {
       blockers.push_back("c5_qa_prompt_token_runtime_question_tokens_empty");
     }
-    if (!question.empty()) {
-      tokenization.question_tokens = tokenizer.encode(question);
+    if (!record.question.empty()) {
+      tokenization.question_tokens = tokenizer.encode(record.question);
     }
-    if (!answer.empty()) {
-      tokenization.answer_tokens = tokenizer.encode(answer);
+    if (!record.answer.empty()) {
+      tokenization.answer_tokens = tokenizer.encode(record.answer);
     }
-    if (!answer.empty() && tokenization.answer_tokens.size() <= 1U) {
+    if (!record.answer.empty() && tokenization.answer_tokens.size() <= 1U) {
       blockers.push_back("c5_qa_prompt_token_runtime_answer_tokens_empty");
     }
   } catch (const std::exception& error) {
@@ -2493,10 +2528,9 @@ void append_chunked_lm_head_nll_writer_blockers(
 
 Status write_prediction_jsonl_after_lm_head_nll(
     const C5QaInferenceRequest& request,
-    const ChunkedLmHeadNllWriterResult& lm_head_nll) {
-  if (request.output_jsonl_path.empty()) {
-    return Status::invalid("c5_full_decoder_prediction_jsonl_path_missing");
-  }
+    const QaRecord& record,
+    const ChunkedLmHeadNllWriterResult& lm_head_nll,
+    std::ostream& file) {
   if (lm_head_nll.predicted_token >= kVocabSize ||
       lm_head_nll.target_token >= kVocabSize) {
     return Status::invalid("c5_full_decoder_prediction_jsonl_token_out_of_vocab");
@@ -2509,9 +2543,7 @@ Status write_prediction_jsonl_after_lm_head_nll(
     return Status::invalid("c5_full_decoder_prediction_jsonl_confidence_invalid");
   }
 
-  const std::string record = first_nonempty_jsonl_line(request.heldout_qa_jsonl_path);
-  const std::string record_id = string_field(record, "record_id");
-  if (record_id.empty()) {
+  if (record.record_id.empty()) {
     return Status::invalid("c5_full_decoder_prediction_jsonl_record_id_missing");
   }
 
@@ -2524,15 +2556,13 @@ Status write_prediction_jsonl_after_lm_head_nll(
         "c5_full_decoder_prediction_jsonl_predicted_token_not_in_vocab");
   }
 
-  std::ofstream file(request.output_jsonl_path,
-                     std::ios::binary | std::ios::trunc);
   if (!file) {
     return Status::invalid("c5_full_decoder_prediction_jsonl_open_failed");
   }
   file << "{\"schema_version\":";
   write_json_string(file, "polymath_c5_prediction_payload_row_v1");
   file << ",\"record_id\":";
-  write_json_string(file, record_id);
+  write_json_string(file, record.record_id);
   file << ",\"prediction\":";
   write_json_string(file, prediction);
   file << ",\"prediction_token_id\":" << lm_head_nll.predicted_token;
@@ -2553,15 +2583,18 @@ Status write_prediction_jsonl_after_lm_head_nll(
 
 void append_prediction_jsonl_writer_blockers(
     const C5QaInferenceRequest& request,
+    const QaRecord& record,
     const ChunkedLmHeadNllWriterResult& lm_head_nll,
+    std::ostream& file,
     C5FullDecoderRuntimeResult& result) {
   const Status status =
-      write_prediction_jsonl_after_lm_head_nll(request, lm_head_nll);
+      write_prediction_jsonl_after_lm_head_nll(request, record, lm_head_nll,
+                                              file);
   if (!status.is_ok()) {
     result.blockers.push_back(status.message());
     return;
   }
-  result.prediction_jsonl_written = true;
+  ++result.prediction_record_count;
 }
 
 void append_numeric_decoder_primitive_blockers(
@@ -2619,34 +2652,36 @@ void append_numeric_decoder_primitive_blockers(
 C5FullDecoderRuntimeResult run_c5_full_decoder_runtime(
     const C5QaInferenceRequest& request) {
   C5FullDecoderRuntimeResult result;
+  std::string temporary_output_path;
   try {
-    QaTokenization tokenization;
-    QaRuntimeSequence runtime_sequence;
+    std::vector<QaRecord> qa_records;
     Rank16AdapterPayload adapter_payload;
-    Rank16AdapterStream adapter_stream;
-    DecoderLayerOrchestration orchestration;
-    ChunkedLmHeadNllWriterResult lm_head_nll;
-    SingleLayerBody layer0_body;
-    const std::string manifest = read_text_file(request.decoder_manifest_path);
-    append_architecture_blockers(manifest, result.blockers);
-    append_tokenizer_identity_blockers(manifest, request, result.blockers);
-    append_adapter_runtime_blockers(request, result.blockers);
-    const SourceModelIdentity identity =
-        parse_source_model_identity(manifest, result.blockers);
-    append_source_model_blockers(identity, result, result.blockers);
-    append_tensor_role_blockers(manifest, identity, result, result.blockers);
-    append_per_layer_input_runtime_blockers(manifest, identity, result.blockers);
+    std::ofstream prediction_file;
+    Status records_status =
+        read_qa_jsonl_records(request.heldout_qa_jsonl_path, qa_records);
+    if (!records_status.is_ok()) {
+      result.blockers.push_back(records_status.message());
+    }
+    result.heldout_record_count =
+        static_cast<std::uint64_t>(qa_records.size());
+
+    std::string manifest;
+    SourceModelIdentity identity;
     if (result.blockers.empty()) {
-      append_tensor_value_loader_blockers(identity, result.blockers);
+      manifest = read_text_file(request.decoder_manifest_path);
+      append_architecture_blockers(manifest, result.blockers);
+      append_tokenizer_identity_blockers(manifest, request, result.blockers);
+      append_adapter_runtime_blockers(request, result.blockers);
     }
     if (result.blockers.empty()) {
-      append_qa_prompt_token_runtime_blockers(request, tokenization,
+      identity = parse_source_model_identity(manifest, result.blockers);
+      append_source_model_blockers(identity, result, result.blockers);
+      append_tensor_role_blockers(manifest, identity, result, result.blockers);
+      append_per_layer_input_runtime_blockers(manifest, identity,
                                              result.blockers);
     }
     if (result.blockers.empty()) {
-      append_multi_token_qa_prompt_sequence_blockers(identity, tokenization,
-                                                     runtime_sequence,
-                                                     result.blockers);
+      append_tensor_value_loader_blockers(identity, result.blockers);
     }
     if (result.blockers.empty()) {
       const Status adapter_status =
@@ -2656,46 +2691,117 @@ C5FullDecoderRuntimeResult run_c5_full_decoder_runtime(
       }
     }
     if (result.blockers.empty()) {
-      append_rank16_adapter_stream_injection_blockers(
-          runtime_sequence, adapter_payload, adapter_stream, result.blockers);
-    }
-    if (result.blockers.empty()) {
       append_numeric_decoder_primitive_blockers(result.blockers);
     }
     if (result.blockers.empty()) {
+      if (request.output_jsonl_path.empty()) {
+        result.blockers.push_back("c5_full_decoder_prediction_jsonl_path_missing");
+      } else {
+        std::remove(request.output_jsonl_path.c_str());
+        temporary_output_path = request.output_jsonl_path + ".tmp";
+        std::remove(temporary_output_path.c_str());
+        prediction_file.open(temporary_output_path,
+                             std::ios::binary | std::ios::trunc);
+        if (!prediction_file) {
+          result.blockers.push_back(
+              "c5_full_decoder_prediction_jsonl_open_failed");
+        }
+      }
+    }
+
+    for (const QaRecord& record : qa_records) {
+      if (!result.blockers.empty()) {
+        break;
+      }
+      QaTokenization tokenization;
+      QaRuntimeSequence runtime_sequence;
+      Rank16AdapterStream adapter_stream;
+      DecoderLayerOrchestration orchestration;
+      ChunkedLmHeadNllWriterResult lm_head_nll;
+      SingleLayerBody layer0_body;
+
+      append_qa_prompt_token_runtime_blockers(request, record, tokenization,
+                                             result.blockers);
+      if (!result.blockers.empty()) {
+        break;
+      }
+      append_multi_token_qa_prompt_sequence_blockers(
+          identity, tokenization, runtime_sequence, result.blockers);
+      if (!result.blockers.empty()) {
+        break;
+      }
+      append_rank16_adapter_stream_injection_blockers(
+          runtime_sequence, adapter_payload, adapter_stream, result.blockers);
+      if (!result.blockers.empty()) {
+        break;
+      }
       append_ple_single_layer_slice_blockers(identity, tokenization,
                                              result.blockers);
-    }
-    if (result.blockers.empty()) {
+      if (!result.blockers.empty()) {
+        break;
+      }
       append_cpu_single_layer_body_blockers(identity, tokenization,
                                             layer0_body,
                                             result.blockers);
-    }
-    if (result.blockers.empty()) {
+      if (!result.blockers.empty()) {
+        break;
+      }
       append_opencl_single_layer_parity_blockers(request, identity, layer0_body,
                                                  result.blockers);
-    }
-    if (result.blockers.empty()) {
+      if (!result.blockers.empty()) {
+        break;
+      }
       append_42_layer_orchestration_blockers(identity, runtime_sequence,
                                              adapter_stream, orchestration,
                                              result.blockers);
-    }
-    if (result.blockers.empty()) {
+      if (!result.blockers.empty()) {
+        break;
+      }
       append_final_hidden_stream_blockers(request, identity, runtime_sequence,
                                           adapter_payload, orchestration,
                                           result.blockers);
-    }
-    if (result.blockers.empty()) {
+      if (!result.blockers.empty()) {
+        break;
+      }
       append_chunked_lm_head_nll_writer_blockers(
           request, identity, runtime_sequence, orchestration, lm_head_nll,
           result.blockers);
+      if (!result.blockers.empty()) {
+        break;
+      }
+      append_prediction_jsonl_writer_blockers(request, record, lm_head_nll,
+                                             prediction_file, result);
+    }
+
+    if (result.blockers.empty() &&
+        result.prediction_record_count != result.heldout_record_count) {
+      result.blockers.push_back(
+          "c5_full_decoder_prediction_jsonl_record_count_mismatch");
     }
     if (result.blockers.empty()) {
-      append_prediction_jsonl_writer_blockers(request, lm_head_nll, result);
+      prediction_file.close();
+      if (!prediction_file) {
+        result.blockers.push_back("c5_full_decoder_prediction_jsonl_write_failed");
+      } else if (std::rename(temporary_output_path.c_str(),
+                             request.output_jsonl_path.c_str()) != 0) {
+        result.blockers.push_back(
+            "c5_full_decoder_prediction_jsonl_rename_failed");
+      } else {
+        result.prediction_jsonl_written = true;
+      }
+    }
+    if (!result.blockers.empty() && !temporary_output_path.empty()) {
+      if (prediction_file.is_open()) {
+        prediction_file.close();
+      }
+      std::remove(temporary_output_path.c_str());
     }
   } catch (const std::exception& error) {
     result.blockers.push_back(std::string("c5_full_decoder_runtime_error:") +
                               error.what());
+    if (!temporary_output_path.empty()) {
+      std::remove(temporary_output_path.c_str());
+    }
   }
   return result;
 }

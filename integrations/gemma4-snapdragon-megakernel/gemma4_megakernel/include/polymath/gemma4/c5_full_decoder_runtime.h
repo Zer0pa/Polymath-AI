@@ -12,6 +12,8 @@ namespace polymath::gemma4 {
 struct C5FullDecoderRuntimeResult {
   std::vector<std::string> blockers;
   bool prediction_jsonl_written = false;
+  std::uint64_t heldout_record_count = 0;
+  std::uint64_t prediction_record_count = 0;
   std::uint64_t validated_tensor_count = 0;
   std::string source_model_sha256;
   std::uint64_t source_model_size_bytes = 0;

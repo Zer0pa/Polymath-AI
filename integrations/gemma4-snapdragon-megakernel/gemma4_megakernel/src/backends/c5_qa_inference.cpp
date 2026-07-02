@@ -398,7 +398,8 @@ void write_report(const C5QaInferenceRequest& request,
                   std::uint64_t checkpoint_size_bytes,
                   const std::string& heldout_qa_sha256,
                   std::uint64_t heldout_record_count,
-                  bool prediction_jsonl_written) {
+                  bool prediction_jsonl_written,
+                  std::uint64_t prediction_record_count) {
   const std::string first_missing =
       blockers.empty() ? std::string() : blockers.front();
   std::cout << "{\"schema_version\":";
@@ -444,7 +445,15 @@ void write_report(const C5QaInferenceRequest& request,
   write_json_string(std::cout, request.output_jsonl_path.empty()
                                    ? std::string()
                                    : sha256_text_hex(request.output_jsonl_path));
-  std::cout << ",\"path_redacted\":true,\"raw_prediction_payload_outside_git_required\":true}";
+  std::cout << ",\"path_redacted\":true";
+  std::cout << ",\"raw_prediction_payload_outside_git_required\":true";
+  std::cout << ",\"prediction_record_count\":" << prediction_record_count;
+  std::cout << ",\"prediction_record_count_matches_heldout\":"
+            << (prediction_jsonl_written &&
+                        prediction_record_count == heldout_record_count
+                    ? "true"
+                    : "false")
+            << "}";
   std::cout << ",\"decoder_component_pack_identity\":";
   write_path_identity(std::cout, request.decoder_component_pack_dir);
   std::cout << ",\"resolved_runtime_component_paths\":{";
@@ -502,6 +511,7 @@ void write_report(const C5QaInferenceRequest& request,
   std::cout << "\"raw_payload_bytes_in_report\":false,";
   std::cout << "\"prediction_jsonl_written\":"
             << (prediction_jsonl_written ? "true" : "false") << ',';
+  std::cout << "\"prediction_record_count\":" << prediction_record_count << ',';
   std::cout << "\"checkpoint_payload_copied_to_repo\":false}";
   std::cout << ",\"nonclaims\":[";
   write_json_string(std::cout, "no C5 pass");
@@ -596,17 +606,19 @@ Status run_c5_qa_predict(const C5QaInferenceRequest& request) {
                                       resolved_request.checkpoint_sha256);
 
   bool prediction_jsonl_written = false;
+  std::uint64_t prediction_record_count = 0;
   if (blockers.empty()) {
     const C5FullDecoderRuntimeResult runtime_result =
         run_c5_full_decoder_runtime(resolved_request);
     blockers.insert(blockers.end(), runtime_result.blockers.begin(),
                     runtime_result.blockers.end());
     prediction_jsonl_written = runtime_result.prediction_jsonl_written;
+    prediction_record_count = runtime_result.prediction_record_count;
   }
 
   write_report(resolved_request, blockers, checkpoint_actual_sha256, checkpoint_size,
                heldout_qa_sha256, heldout_record_count,
-               prediction_jsonl_written);
+               prediction_jsonl_written, prediction_record_count);
   if (blockers.empty()) {
     return Status::ok();
   }
