@@ -1,13 +1,13 @@
 {
-  "active_bottleneck": "canonical_c5_payload_scorer_report_missing",
-  "active_edge": "WaveB_C5_after_C1_canonical_c5_payload_scorer_pending_after_finite_candidate_train_loss_green",
+  "active_bottleneck": "producer_command_phone_bridge_timeout_then_termux_command_channel_blocked",
+  "active_edge": "WaveB_C5_after_C1_producer_timeout_termux_command_channel_blocked_before_canonical_scorer",
   "active_watchdog_state": {
-    "active_bottleneck": "canonical_c5_payload_scorer_report_missing",
-    "active_edge": "WaveB_C5_after_C1_canonical_c5_payload_scorer_pending_after_finite_candidate_train_loss_green",
+    "active_bottleneck": "producer_command_phone_bridge_timeout_then_termux_command_channel_blocked",
+    "active_edge": "WaveB_C5_after_C1_producer_timeout_termux_command_channel_blocked_before_canonical_scorer",
     "adapter_site_policy_sha256": "f38bd8109bbb77e9e94a5b4b34a238bc0ec0a39e7736870c97defe5aecc93357",
     "additional_missing_runtime_field_after_contract_patch": "decoder_manifest_tensor_role_inventory_missing",
-    "artifact_waiting_on": "Finite candidate_train_loss is now green from the native train-loss probe. Awaiting Execution canonical C5 flow: run_c5_prediction_payloads.py with a real producer command, run_c5_heldout_eval.py to create executed metrics JSON, and run_c5_eval.py to produce the authority report. Raw train/prediction/checkpoint payloads remain outside git. Phase3/4 metric-readiness report for heldout grad norm source is available at SHA ab8fb945b34645e72b1e607b4e3ce87d18dde082fa285e1d34ea8331363e0fc6.",
-    "authorization_needed": false,
+    "artifact_waiting_on": "Execution reached the canonical C5 prediction payload wrapper with the real native producer. The corrected producer exceeded the configured 1800s timeout; Execution force-stopped Termux to clear the runaway native child. ADB remains live, but the phone is locked at NotificationShade with keyguard active and Termux sshd cannot be restarted. Awaiting user/operator unlock or restored Termux command channel, plus Phase3/4 timeout repair prep or a bounded retry command before canonical scorer can resume.",
+    "authorization_needed": true,
     "c5_after_c1_bounded_opencl_probe_command_identity_repair_20260701T171907Z": {
       "execution_routed": false,
       "expected_repaired_runner_identity_sha256": "6bbad7d28dc3c4716444cd1c9e55448087755e2dcd1c03eb2a4bab4d051df363",
@@ -2239,14 +2239,14 @@
       "user_action_required": false
     },
     "central_state_update_pending_custody": true,
-    "current_gate": "WaveB_C5_after_C1_canonical_c5_payload_scorer_pending_after_finite_candidate_train_loss_green",
-    "current_highest_valid_state": "Candidate and stable-baseline prediction JSONL identities plus finite candidate_train_loss are green; no C5 pass exists until the canonical scorer report passes.",
-    "current_owner": "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c owns the canonical C5 payload, executed metrics, and final scorer report after finite candidate_train_loss went green.",
+    "current_gate": "WaveB_C5_after_C1_producer_timeout_termux_command_channel_blocked_before_canonical_scorer",
+    "current_highest_valid_state": "candidate_and_stable_prediction_payloads_and_finite_train_loss_green_canonical_scorer_not_executed",
+    "current_owner": "Phase3/4 Engineer replacement + User/Operator access",
     "custody_commit_latest": "05bb56437b83138547301e69af14ab0fce7d4b1a",
     "custody_status_latest": "c5_opencl_parity_dispatch_committed_pushed",
     "decoder_manifest_sha256": "52fcb53666bb4b06d0118cb825b983afc54624a630f667bbfa5af278640e28f8",
-    "dominant_failure_domain": "canonical_c5_scorer_execution_pending",
-    "drift_deleted_or_pending": "Deleted finite_candidate_train_loss_missing after Execution metadata proved finite native loss. Pending drift: central/train-loss metadata custody and canonical scorer execution only; do not regress to prediction writer, stable baseline, or runtime blocker fields without newer evidence.",
+    "dominant_failure_domain": "producer_timeout_and_termux_command_channel_access_blocked",
+    "drift_deleted_or_pending": "No stale prerequisite regression. Pending drift: central mirror must record the Execution fail-closed blocker and route timeout repair/access recovery.",
     "driver_tick_history": [
       {
         "artifact_waiting_on": [
@@ -2487,7 +2487,7 @@
       "next_owner": "execution_orchestrator",
       "status": "committed_pushed"
     },
-    "first_missing_green_field": "canonical_c5_payload_scorer_report_missing",
+    "first_missing_green_field": "producer_command_phone_bridge_timeout_then_termux_command_channel_blocked",
     "first_missing_green_field_after_contract_patch": "decoder_manifest_architecture_config_missing",
     "first_missing_green_field_after_custody": "c5_full_decoder_chunked_lm_head_nll_writer_missing",
     "first_missing_green_field_after_export": "phone_c5_runner_rebuild_or_copy_missing",
@@ -2498,7 +2498,7 @@
     "first_unresolved_technical_failure_after_schema_complete_export": "c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land",
     "first_unresolved_technical_failure_after_schema_paths": "full_decoder_logits_generation_not_implemented_after_valid_schema_paths",
     "first_unresolved_technical_failure_after_valid_schema_paths": "c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land",
-    "governing_edge": "WaveB_C5_after_C1_prediction_jsonl_writer_pending_after_prompt_shape_repair_probe_green",
+    "governing_edge": "WaveB_C5_after_C1_producer_timeout_termux_command_channel_blocked_before_canonical_scorer",
     "hardening_policy": {
       "deleted_or_repaired_drift": [
         "forced_non_packaged_child_exec_default_for_phase1",
@@ -2769,7 +2769,7 @@
         "user_action_required": false
       }
     },
-    "last_concrete_action": "Execution ran the bounded native candidate_train_loss probe and returned finite candidate_train_loss 15.202827250350284 from teacher-forced answer-token NLL/full-decoder logits, bound to candidate SHA 1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f and train QA SHA 795c1ba36d3cc3d50cfc26cabc8ece4d6ee3ee2ae4fb775f7674b708818df86c.",
+    "last_concrete_action": "Execution ran the canonical C5 payload wrapper. The first attempt failed before inference because the producer prefix omitted --run-c5-qa-predict. The corrected attempt invoked the real Termux native producer, but the native child exceeded the 1800s producer timeout; Execution cleared the over-timeout processes and reported no final scorer execution and no C5 pass.",
     "last_driver_actions": [
       "Loaded central state and polled existing Phase3/4 and Custodian threads only.",
       "Detected Phase3/4 completed final_hidden_opencl_prompt_weight_shape_repair_pathset_ready_for_custodian.",
@@ -2957,7 +2957,7 @@
     "native_tokenizer_tensor_loader_prereq_custody_commit": "4472e3dee86d88d83031eecfc94b91008e5215e0",
     "native_tokenizer_tensor_loader_prereq_report_sha256": "1e4a087354d8a917ec9fba7747a5e2410d9fb01f36e991c902e00adf8764e422",
     "native_tokenizer_tensor_loader_prereq_status": "native_full_decoder_prereq_pathset_ready_for_custodian",
-    "next_concrete_action": "Execution runs the canonical three-step C5 scorer path: run_c5_prediction_payloads.py, run_c5_heldout_eval.py, then run_c5_eval.py. Return metadata-only report identities and exact fail field if any step fails.",
+    "next_concrete_action": "User/operator restores phone command access by unlocking the device or restarting Termux sshd. In parallel, Phase3/4 inspects the producer timeout and returns the smallest bounded repair, precise blocker, or safe retry command. After access and repair/command are available, Execution reruns the canonical C5 payload wrapper.",
     "next_handoff": {
       "authority_metric": "Heldout C5 scoring is blocked until candidate and stable prediction JSONLs plus finite candidate_train_loss exist from real runtime/training objective evidence.",
       "completed_work": [
@@ -3043,8 +3043,8 @@
       "no secrets printed",
       "no Comet-backed accepted run"
     ],
-    "owner": "Execution Orchestrator",
-    "owner_thread": "019f138c-fb51-7c53-a41a-ab8eac950d9c",
+    "owner": "Phase3/4 Engineer replacement + User/Operator access",
+    "owner_thread": "019f2059-e6a8-73b1-a9b8-8a2c499e838e",
     "phase2_status_by_phase": {
       "C1": {
         "packets": 5180,
@@ -3266,7 +3266,7 @@
       "phase34": "raw PJP1, HTP raw output, OpenCL tensors, and adapters remain on device/Termux; repair must keep compact JSON only",
       "report_root_scan": "metadata-freeze report root had 179 tracked files and clean forbidden suffix scans; raw payloads not committed"
     },
-    "recursive_improvement_next_step": "Use the accepted canonical chain: prediction payload producer report -> heldout executed metrics JSON -> final C5 eval report. Any failure returns the exact first_missing_green_field to the owning lane rather than narrating a pass.",
+    "recursive_improvement_next_step": "Do not wait passively on the scorer. Split the failure: user/operator restores Termux command access; Phase3/4 prepares the timeout repair or bounded retry; Execution resumes only after a concrete command path exists.",
     "repo_custodian_per_layer_input_runtime_repair_commit": "58872fdc3dd7ff6efb73321252d58f3447eb0e2b",
     "repo_custodian_post_phone_probe_central_mirror_commit": "5802ea1e25222c068dd3fcb5050c91f20f72357b",
     "repo_custody_state_freeze": {
@@ -3285,8 +3285,8 @@
     "runner_sha256": "31015b6844e20d74cd67f69cbb152fa4ccba4200992d3d60cc458d145afda23c",
     "runner_size_bytes": 554312,
     "secondary_missing_green_field": "c5_full_decoder_final_hidden_stream_missing_for_lm_head_nll_if_phase34_confirms_current_precondition",
-    "status": "candidate_train_loss_probe_passed_canonical_c5_payload_scorer_pending",
-    "status_classification": "PENDING_ACTION_EXECUTION_CANONICAL_C5_PAYLOADS_AND_SCORER_AFTER_FINITE_TRAIN_LOSS",
+    "status": "canonical_c5_payload_scorer_blocked_before_scorer",
+    "status_classification": "BLOCKER_DEVICE_ACCESS_WITH_PENDING_ACTION_PHASE34_PRODUCER_TIMEOUT_REPAIR",
     "thread_replacements_20260702T011011Z": {
       "archived_stale_phase34_thread": "019f13da-d897-7ba2-8ed1-b959892f5ed4",
       "archived_stale_repo_custodian_thread": "019f1ac2-0f0f-7721-bf46-ad402dbd9050",
@@ -3295,21 +3295,19 @@
       "status": "replacement_threads_mobilized"
     },
     "threads_nudged_this_tick": [
-      "Engineering Orchestrator 019f138b-d229-7640-98b7-2f185d6beae0: sent stable-baseline prediction JSONL metadata handoff and finite_candidate_train_loss_missing status.",
-      "Phase3/4 Engineer 019f13da-d897-7ba2-8ed1-b959892f5ed4: already active; no duplicate nudge.",
-      "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: candidate metadata evidence committed at 71bc3b19014df62f398340f97a9f3bdb55d48de6; stable metadata plus central mirror custody request pending after local validation.",
-      "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: completed stable-baseline probe and is parked."
+      "Phase3/4 Engineer replacement 019f2059-e6a8-73b1-a9b8-8a2c499e838e: route producer timeout repair prep after Execution fail-closed handoff.",
+      "Repo Custodian replacement 019f2059-ef2c-7762-ba42-963b58f3af90: route two-file central mirror freeze for this blocker update."
     ],
-    "timestamp_utc": "2026-07-02T00:07:38Z",
-    "updated_at": "2026-07-01T23:47:08Z",
-    "updated_at_utc": "2026-07-01T23:47:08Z",
-    "updated_utc": "2026-07-02T00:07:38Z",
-    "user_action_required": false
+    "timestamp_utc": "2026-07-02T02:18:41Z",
+    "updated_at": "2026-07-02T02:18:41Z",
+    "updated_at_utc": "2026-07-02T02:18:41Z",
+    "updated_utc": "2026-07-02T02:18:41Z",
+    "user_action_required": true
   },
   "adapter_site_policy_sha256": "f38bd8109bbb77e9e94a5b4b34a238bc0ec0a39e7736870c97defe5aecc93357",
   "additional_missing_runtime_field_after_contract_patch": "decoder_manifest_tensor_role_inventory_missing",
-  "artifact_waiting_on": "Finite candidate_train_loss is now green from the native train-loss probe. Awaiting Execution canonical C5 flow: run_c5_prediction_payloads.py with a real producer command, run_c5_heldout_eval.py to create executed metrics JSON, and run_c5_eval.py to produce the authority report. Raw train/prediction/checkpoint payloads remain outside git. Phase3/4 metric-readiness report for heldout grad norm source is available at SHA ab8fb945b34645e72b1e607b4e3ce87d18dde082fa285e1d34ea8331363e0fc6.",
-  "authorization_needed": false,
+  "artifact_waiting_on": "Execution reached the canonical C5 prediction payload wrapper with the real native producer. The corrected producer exceeded the configured 1800s timeout; Execution force-stopped Termux to clear the runaway native child. ADB remains live, but the phone is locked at NotificationShade with keyguard active and Termux sshd cannot be restarted. Awaiting user/operator unlock or restored Termux command channel, plus Phase3/4 timeout repair prep or a bounded retry command before canonical scorer can resume.",
+  "authorization_needed": true,
   "c5_after_c1_42_layer_orchestration_probe_20260701T213036Z": {
     "blockers": [
       "c5_full_decoder_chunked_lm_head_nll_writer_missing"
@@ -3496,6 +3494,68 @@
     "train_qa_path_sha256": "4395e03cf04a798bc0c189347d37214461e9e2f3e8303acd99ef49c1668237ed",
     "train_qa_rows": 4931,
     "train_qa_sha256": "795c1ba36d3cc3d50cfc26cabc8ece4d6ee3ee2ae4fb775f7674b708818df86c"
+  },
+  "c5_after_c1_canonical_c5_payload_scorer_blocker_20260702T021841Z": {
+    "access_failure": {
+      "adb_live": true,
+      "focus": "NotificationShade",
+      "keyguard": "mDreamingLockscreen=true",
+      "required_user_action": "unlock phone or otherwise restore Termux sshd command channel",
+      "termux_sshd_reachable": false
+    },
+    "adb_device": "FY25013101C8",
+    "current_gate": "WaveB_C5_after_C1_producer_timeout_termux_command_channel_blocked_before_canonical_scorer",
+    "execution_result": {
+      "c5_pass_claimed": false,
+      "cleanup": "am_force_stop_com.termux_to_clear_runaway_native_child",
+      "corrected_attempt": "real_native_producer_exceeded_configured_timeout",
+      "final_scorer_executed": false,
+      "first_attempt": "failed_before_inference_missing_run_c5_qa_predict_mode_flag",
+      "new_repo_metadata_artifact": null
+    },
+    "execution_thread": "019f138c-fb51-7c53-a41a-ab8eac950d9c",
+    "first_missing_green_field": "producer_command_phone_bridge_timeout_then_termux_command_channel_blocked",
+    "next_action": "User/operator restores phone command access by unlocking the device or restarting Termux sshd. In parallel, Phase3/4 inspects the producer timeout and returns the smallest bounded repair, precise blocker, or safe retry command. After access and repair/command are available, Execution reruns the canonical C5 payload wrapper.",
+    "nonclaims": [
+      "no C5 pass",
+      "no heldout scorer execution",
+      "no learning/model-quality claim",
+      "no Phase3/4 readiness",
+      "no 100k/1M authority",
+      "no raw payloads in git",
+      "no secrets printed",
+      "no Comet-backed accepted run"
+    ],
+    "observed_processes_before_cleanup": {
+      "native_runner": "gemma4_layer_runner_c5_prediction_jsonl_writer",
+      "native_runner_pid": 22179,
+      "python3_pid": 21880
+    },
+    "owner_thread": "019f2059-e6a8-73b1-a9b8-8a2c499e838e",
+    "phone_access_state_after_cleanup": {
+      "adb_live": true,
+      "focus": "NotificationShade",
+      "keyguard": "mDreamingLockscreen=true",
+      "sshd_reachable": false,
+      "termux_running": true
+    },
+    "prior_green_inputs_preserved": {
+      "candidate_prediction_metadata_commit": "71bc3b19014df62f398340f97a9f3bdb55d48de6",
+      "candidate_train_loss": 15.202827250350284,
+      "candidate_train_loss_metadata_central_commit": "2a91a5256eb9937e483d78e130aedf243b802bf8",
+      "candidate_train_loss_source": "teacher_forced_answer_token_nll_from_full_decoder_logits",
+      "stable_prediction_metadata_commit": "58ce78aaa4486e440b3b8bba911c3a0fdde4f868"
+    },
+    "producer_timeout_seconds": 1800,
+    "research_escalation": "none",
+    "status": "canonical_c5_payload_scorer_blocked_before_scorer",
+    "status_classification": "BLOCKER_DEVICE_ACCESS_WITH_PENDING_ACTION_PHASE34_PRODUCER_TIMEOUT_REPAIR",
+    "technical_failure": {
+      "failure": "real native producer exceeded configured producer timeout before canonical scorer could continue",
+      "native_runner": "gemma4_layer_runner_c5_prediction_jsonl_writer",
+      "producer_timeout_seconds": 1800
+    },
+    "user_action_required": true
   },
   "c5_after_c1_canonical_c5_payload_scorer_route_20260702T012628Z": {
     "candidate_train_loss": 15.202827250350284,
@@ -6217,28 +6277,24 @@
   "candidate_adapter_sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f",
   "candidate_train_loss": 15.202827250350284,
   "candidate_train_loss_source": "teacher_forced_answer_token_nll_from_full_decoder_logits",
-  "central_mirror_local_update_status": "updated_after_prompt_shape_repair_probe_prediction_jsonl_writer_missing",
+  "central_mirror_local_update_status": "canonical_scorer_blocker_central_mirror_updated_pending_custody",
   "central_state_update_pending_custody": {
-    "custody_owner_thread": "019f1ac2-0f0f-7721-bf46-ad402dbd9050",
-    "first_missing_green_field": "stable_baseline_prediction_jsonl_metadata_evidence_and_central_mirror_freeze_pending",
+    "custody_owner_thread": "019f2059-ef2c-7762-ba42-963b58f3af90",
+    "first_missing_green_field": "canonical_scorer_blocker_central_mirror_freeze_pending",
     "pathset": [
       "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json",
-      "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md",
-      "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_stable_baseline_prediction_jsonl_writer_20260702T000308Z/stable_baseline_probe_stdout.json",
-      "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_stable_baseline_prediction_jsonl_writer_20260702T000308Z/stable_baseline_probe_stderr.log",
-      "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_stable_baseline_prediction_jsonl_writer_20260702T000308Z/probe_metadata.txt",
-      "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_stable_baseline_prediction_jsonl_writer_20260702T000308Z/meminfo_before.txt",
-      "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_stable_baseline_prediction_jsonl_writer_20260702T000308Z/meminfo_after.txt"
+      "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md"
     ],
+    "prior_train_loss_metadata_central_commit": "2a91a5256eb9937e483d78e130aedf243b802bf8",
     "raw_prediction_jsonl_included": false,
-    "status": "stable_baseline_prediction_jsonl_metadata_evidence_and_central_mirror_custody_pending"
+    "status": "canonical_scorer_blocker_central_mirror_custody_pending"
   },
-  "current_gate": "WaveB_C5_after_C1_canonical_c5_payload_scorer_pending_after_finite_candidate_train_loss_green",
-  "current_highest_valid_state": "Candidate and stable-baseline prediction JSONL identities plus finite candidate_train_loss are green; no C5 pass exists until the canonical scorer report passes.",
-  "current_owner": "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c owns the canonical C5 payload, executed metrics, and final scorer report after finite candidate_train_loss went green.",
+  "current_gate": "WaveB_C5_after_C1_producer_timeout_termux_command_channel_blocked_before_canonical_scorer",
+  "current_highest_valid_state": "candidate_and_stable_prediction_payloads_and_finite_train_loss_green_canonical_scorer_not_executed",
+  "current_owner": "Phase3/4 Engineer replacement + User/Operator access",
   "decoder_manifest_sha256": "52fcb53666bb4b06d0118cb825b983afc54624a630f667bbfa5af278640e28f8",
-  "dominant_failure_domain": "canonical_c5_scorer_execution_pending",
-  "drift_deleted_or_pending": "Deleted finite_candidate_train_loss_missing after Execution metadata proved finite native loss. Pending drift: central/train-loss metadata custody and canonical scorer execution only; do not regress to prediction writer, stable baseline, or runtime blocker fields without newer evidence.",
+  "dominant_failure_domain": "producer_timeout_and_termux_command_channel_access_blocked",
+  "drift_deleted_or_pending": "No stale prerequisite regression. Pending drift: central mirror must record the Execution fail-closed blocker and route timeout repair/access recovery.",
   "driver_tick_history": [
     {
       "artifact_waiting_on": [
@@ -7558,12 +7614,21 @@
       ],
       "timestamp_utc": "2026-07-01T23:22:56Z",
       "user_action_required": false
+    },
+    {
+      "action": "central_updated_after_execution_blocker",
+      "current_gate": "WaveB_C5_after_C1_producer_timeout_termux_command_channel_blocked_before_canonical_scorer",
+      "first_missing_green_field": "producer_command_phone_bridge_timeout_then_termux_command_channel_blocked",
+      "owner": "Phase3/4 Engineer replacement + User/Operator access",
+      "status_classification": "BLOCKER_DEVICE_ACCESS_WITH_PENDING_ACTION_PHASE34_PRODUCER_TIMEOUT_REPAIR",
+      "timestamp_utc": "2026-07-02T02:18:41Z",
+      "user_action_required": true
     }
   ],
   "export_report_sha256": "4774d31953a58ad6ae1f64e4196405ba820e5be75d36880ac863cfb9dae00b6c",
   "exporter_runtime_fields_freeze_commit": "43cf3c4130dc902fc8fd69183bac1056f0596626",
   "exporter_runtime_fields_freeze_status": "committed_pushed",
-  "first_missing_green_field": "canonical_c5_payload_scorer_report_missing",
+  "first_missing_green_field": "producer_command_phone_bridge_timeout_then_termux_command_channel_blocked",
   "first_missing_green_field_after_contract_patch": "decoder_manifest_architecture_config_missing",
   "first_missing_green_field_after_custody": "c5_full_decoder_chunked_lm_head_nll_writer_missing",
   "first_missing_green_field_after_download": "full_decoder_logits_generation_not_implemented",
@@ -7574,7 +7639,7 @@
   "first_missing_green_field_after_runner": "heldout_qa_jsonl_staging_or_c5_predict_probe_pending",
   "first_unresolved_technical_failure_after_schema_complete_export": "c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land",
   "first_unresolved_technical_failure_after_valid_schema_paths": "c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land",
-  "governing_edge": "WaveB_C5_after_C1_prediction_jsonl_writer_pending_after_prompt_shape_repair_probe_green",
+  "governing_edge": "WaveB_C5_after_C1_producer_timeout_termux_command_channel_blocked_before_canonical_scorer",
   "governing_objective": {
     "nonclaims": [
       "diagnostics_are_not_100k_or_1M_authority_unless_specific_authority_gate_passes",
@@ -8097,36 +8162,31 @@
   "known_downstream_access_issue_after_download": "native_full_decoder_logits_implementation_failure",
   "lane_status": {
     "engineering_orchestrator": {
-      "artifact_paths": [
-        "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json",
-        "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md",
-        "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_candidate_train_loss_20260702T011806Z"
-      ],
-      "first_missing_green_field": "canonical_c5_payload_scorer_report_missing",
-      "last_update_utc": "2026-07-02T01:26:28Z",
-      "next_action": "Route Execution canonical scorer GO and Repo Custodian metadata/central freeze request.",
-      "status": "central_mirror_updated_after_candidate_train_loss_probe_passed",
-      "status_classification": "ORCHESTRATION_META_UPDATED_EXECUTION_SCORER_OWNER_AND_CUSTODY_PENDING",
+      "first_missing_green_field": "producer_command_phone_bridge_timeout_then_termux_command_channel_blocked",
+      "last_update_utc": "2026-07-02T02:18:41Z",
+      "next_action": "Route Phase3/4 timeout repair prep and Repo Custodian central mirror freeze; report user action required for phone unlock/Termux SSH restoration.",
+      "status": "central_mirror_updated_for_canonical_scorer_blocker",
+      "status_classification": "ORCHESTRATION_META_UPDATED_ACCESS_BLOCKER_AND_PHASE34_TIMEOUT_REPAIR_ROUTE",
       "thread_id": "019f1423-816d-7251-b7d9-945a11441c3f",
-      "user_action_required": false
+      "user_action_required": true
     },
     "execution_orchestrator": {
-      "candidate_train_loss": 15.202827250350284,
-      "first_missing_green_field": "canonical_c5_payload_scorer_report_missing",
-      "last_update_utc": "2026-07-02T01:26:28Z",
-      "loss_source": "teacher_forced_answer_token_nll_from_full_decoder_logits",
-      "next_action": "Execution runs the canonical three-step C5 scorer path: run_c5_prediction_payloads.py, run_c5_heldout_eval.py, then run_c5_eval.py. Return metadata-only report identities and exact fail field if any step fails.",
-      "status": "candidate_train_loss_probe_passed_canonical_scorer_routed",
-      "status_classification": "PENDING_ACTION_EXECUTION_CANONICAL_C5_PAYLOADS_AND_SCORER_AFTER_FINITE_TRAIN_LOSS",
-      "thread_id": "019f138c-fb51-7c53-a41a-ab8eac950d9c"
+      "first_missing_green_field": "producer_command_phone_bridge_timeout_then_termux_command_channel_blocked",
+      "last_update_utc": "2026-07-02T02:18:41Z",
+      "next_action": "Wait for restored Termux command channel and timeout repair/retry command; do not rerun until access is restored.",
+      "status": "canonical_c5_payload_scorer_blocked_before_scorer",
+      "status_classification": "BLOCKER_PRODUCER_TIMEOUT_AND_TERMUX_COMMAND_CHANNEL_ACCESS",
+      "thread_id": "019f138c-fb51-7c53-a41a-ab8eac950d9c",
+      "user_action_required": true
     },
     "phase34_engineer": {
-      "first_missing_green_field": "none_for_phase34_train_loss_source_after_execution_probe_passed",
-      "last_update_utc": "2026-07-02T01:26:28Z",
-      "next_action": "Stand by unless canonical scorer exposes a new source/runtime first_missing_green_field.",
-      "status": "candidate_train_loss_probe_command_completed_by_execution",
-      "status_classification": "PHASE34_FINITE_TRAIN_LOSS_SOURCE_NO_LONGER_ACTIVE_OWNER",
-      "thread_id": "019f2059-e6a8-73b1-a9b8-8a2c499e838e"
+      "first_missing_green_field": "producer_command_phone_bridge_timeout_then_termux_command_channel_blocked",
+      "last_update_utc": "2026-07-02T02:18:41Z",
+      "next_action": "Inspect real native producer timeout from canonical wrapper path and return smallest repair pathset, precise blocker, or bounded retry command. Do not run phone or move raw payloads.",
+      "status": "producer_timeout_repair_prep_requested_after_execution_blocker",
+      "status_classification": "PENDING_ACTION_PHASE34_PRODUCER_TIMEOUT_REPAIR_PREP",
+      "thread_id": "019f2059-e6a8-73b1-a9b8-8a2c499e838e",
+      "user_action_required": false
     },
     "pipeline_integrator": {
       "artifact_paths": [
@@ -8147,12 +8207,14 @@
       "user_action_required": false
     },
     "repo_custodian": {
-      "first_missing_green_field": "candidate_train_loss_metadata_and_central_mirror_freeze_pending",
-      "last_update_utc": "2026-07-02T01:26:28Z",
-      "next_action": "Freeze central JSON/MD plus three train-loss metadata files; do not stage raw output or unrelated dirty files.",
-      "status": "candidate_train_loss_metadata_and_central_mirror_custody_pending",
-      "status_classification": "PENDING_ACTION_REPO_CUSTODIAN_TRAIN_LOSS_METADATA_AND_CENTRAL_FREEZE",
-      "thread_id": "019f2059-ef2c-7762-ba42-963b58f3af90"
+      "first_missing_green_field": "canonical_scorer_blocker_central_mirror_freeze_pending",
+      "last_update_utc": "2026-07-02T02:18:41Z",
+      "next_action": "Freeze only EXECUTIVE_DELIVERY_STATE.json and EXECUTIVE_DELIVERY_STATE.md after Engineering validates and provides SHA-256s.",
+      "prior_train_loss_metadata_central_commit": "2a91a5256eb9937e483d78e130aedf243b802bf8",
+      "status": "canonical_scorer_blocker_central_mirror_custody_pending",
+      "status_classification": "PENDING_ACTION_REPO_CUSTODIAN_TWO_FILE_CENTRAL_MIRROR_FREEZE",
+      "thread_id": "019f2059-ef2c-7762-ba42-963b58f3af90",
+      "user_action_required": false
     },
     "training_material_steward": {
       "artifact_paths": [
@@ -8216,12 +8278,11 @@
       "user_action_required": false
     }
   },
-  "last_concrete_action": "Execution ran the bounded native candidate_train_loss probe and returned finite candidate_train_loss 15.202827250350284 from teacher-forced answer-token NLL/full-decoder logits, bound to candidate SHA 1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f and train QA SHA 795c1ba36d3cc3d50cfc26cabc8ece4d6ee3ee2ae4fb775f7674b708818df86c.",
+  "last_concrete_action": "Execution ran the canonical C5 payload wrapper. The first attempt failed before inference because the producer prefix omitted --run-c5-qa-predict. The corrected attempt invoked the real Termux native producer, but the native child exceeded the 1800s producer timeout; Execution cleared the over-timeout processes and reported no final scorer execution and no C5 pass.",
   "last_driver_actions": [
-    "Polled Execution, replacement Repo Custodian, and replacement Phase3/4 lane threads",
-    "Verified candidate_train_loss probe metadata hashes locally",
-    "Advanced central state from train-loss probe pending to canonical C5 scorer pending",
-    "Prepared custody and Execution scorer handoffs with raw payload boundaries preserved"
+    "Loaded central state and polled Execution Orchestrator.",
+    "Consumed Execution fail-closed handoff: producer timeout then Termux command channel blocked by keyguard.",
+    "Updated central state metadata-only; routing Phase3/4 timeout repair prep and Repo Custodian central mirror freeze."
   ],
   "last_update_utc": "2026-07-02T01:26:28Z",
   "model_safetensors_sha256": "43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651",
@@ -8229,65 +8290,46 @@
   "native_probe_elapsed_seconds": 104,
   "native_probe_exit_code": 13,
   "native_probe_report_path": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_42_layer_orchestration_20260701T213036Z",
-  "next_concrete_action": "Execution runs the canonical three-step C5 scorer path: run_c5_prediction_payloads.py, run_c5_heldout_eval.py, then run_c5_eval.py. Return metadata-only report identities and exact fail field if any step fails.",
+  "next_concrete_action": "User/operator restores phone command access by unlocking the device or restarting Termux sshd. In parallel, Phase3/4 inspects the producer timeout and returns the smallest bounded repair, precise blocker, or safe retry command. After access and repair/command are available, Execution reruns the canonical C5 payload wrapper.",
   "next_handoff": {
     "authority_metric": "C5_after_C1 final report from scripts/host/run_c5_eval.py with executed metrics JSON; no C5 pass until that report status is pass.",
     "completed_work": [
       "candidate prediction metadata frozen",
       "stable-baseline prediction metadata frozen",
-      "finite candidate_train_loss probe passed"
+      "finite candidate_train_loss probe passed",
+      "canonical scorer attempt reached real native producer but timed out before scorer"
     ],
-    "current_edge": "WaveB_C5_after_C1_canonical_c5_payload_scorer_pending_after_finite_candidate_train_loss_green",
-    "current_verdict": "pending_action",
+    "current_edge": "WaveB_C5_after_C1_producer_timeout_termux_command_channel_blocked_before_canonical_scorer",
+    "current_verdict": "blocked",
     "do_not_do": [
-      "do not claim C5 pass before run_c5_eval.py report passes",
-      "do not substitute metadata, bridge MSE, or heldout loss for candidate_train_loss",
-      "do not move raw train/prediction/checkpoint/model payloads into git",
+      "do not claim C5 pass",
+      "do not rerun phone scorer while Termux command channel is blocked",
+      "do not move raw payloads into git",
       "do not source secrets or call HF/Comet"
     ],
     "evidence": [
       {
-        "artifact": "candidate_prediction_metadata_commit",
-        "sha256": "71bc3b19014df62f398340f97a9f3bdb55d48de6",
-        "status": "committed_pushed"
-      },
-      {
-        "artifact": "stable_baseline_prediction_metadata_commit",
-        "sha256": "58ce78aaa4486e440b3b8bba911c3a0fdde4f868",
-        "status": "committed_pushed"
-      },
-      {
-        "artifact": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_candidate_train_loss_20260702T011806Z/candidate_train_loss_native_stdout.json",
-        "sha256": "44462febad5480dbeb0b2b7d8c410613b482c996e6741df8ea179c2099bdddba",
-        "status": "metadata_only_pass"
-      },
-      {
-        "artifact": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_candidate_train_loss_20260702T011806Z/candidate_train_loss_native_stderr.log",
-        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "status": "metadata_only_pass"
-      },
-      {
-        "artifact": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_candidate_train_loss_20260702T011806Z/probe_metadata.txt",
-        "sha256": "29ec23d557fda3e85e0f1a127ca6a941a974136ef81c37e862b354a620761d07",
-        "status": "metadata_only_pass"
-      },
-      {
-        "artifact": "candidate_train_loss",
+        "artifact": "execution_handoff_status",
         "sha256": null,
-        "status": "15.202827250350284"
+        "status": "canonical_c5_payload_scorer_blocked_before_scorer"
       },
       {
-        "artifact": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/phase34_lineage_repair/C1/phase34_metric_readiness/phase34_metric_readiness_report.json",
-        "sha256": "ab8fb945b34645e72b1e607b4e3ce87d18dde082fa285e1d34ea8331363e0fc6",
-        "status": "finite_grad_norm_source_available"
+        "artifact": "first_missing_green_field",
+        "sha256": null,
+        "status": "producer_command_phone_bridge_timeout_then_termux_command_channel_blocked"
+      },
+      {
+        "artifact": "candidate_train_loss_metadata_central_commit",
+        "sha256": "2a91a5256eb9937e483d78e130aedf243b802bf8",
+        "status": "committed_pushed"
       }
     ],
-    "first_missing_green_field": "canonical_c5_payload_scorer_report_missing",
+    "first_missing_green_field": "producer_command_phone_bridge_timeout_then_termux_command_channel_blocked",
     "from_lane": "Engineering/Meta watcher 019f1423-816d-7251-b7d9-945a11441c3f",
-    "next_action": "Execution runs the canonical three-step C5 scorer path: run_c5_prediction_payloads.py, run_c5_heldout_eval.py, then run_c5_eval.py. Return metadata-only report identities and exact fail field if any step fails.",
+    "next_action": "Phase3/4 inspects the producer timeout and returns a source pathset, precise blocker, or bounded retry command. User/operator must restore phone Termux command channel before Execution can rerun.",
     "nonclaims": [
       "no C5 pass",
-      "no heldout scorer execution yet",
+      "no heldout scorer execution",
       "no learning/model-quality claim",
       "no Phase3/4 readiness",
       "no 100k/1M authority",
@@ -8295,17 +8337,17 @@
       "no secrets printed",
       "no Comet-backed accepted run"
     ],
-    "objective": "Run the canonical C5 payload, heldout metrics, and final scorer path now that finite candidate_train_loss exists.",
-    "owner_thread": "019f138c-fb51-7c53-a41a-ab8eac950d9c",
+    "objective": "Repair or bound the canonical C5 native producer timeout while user/operator restores Termux command access.",
+    "owner_thread": "019f2059-e6a8-73b1-a9b8-8a2c499e838e",
     "research_escalation": {
       "packet_path": null,
-      "reason": "field advanced to canonical scorer execution; no repeated same-field failure, architecture contradiction, or memory/runtime envelope failure",
+      "reason": "single scorer/producers timeout plus access blocker; no repeated same-field cycle yet",
       "status": "none"
     },
-    "run_id": "c5_after_c1_canonical_scorer_pending_20260702T012628Z",
+    "run_id": "c5_after_c1_canonical_scorer_blocker_20260702T021841Z",
     "schema_version": "zpp_next_handoff_v1",
-    "sent": true,
-    "to_lane": "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c"
+    "sent": false,
+    "to_lane": "Phase3/4 Engineer replacement 019f2059-e6a8-73b1-a9b8-8a2c499e838e"
   },
   "nonclaims": [
     "no C5 pass",
@@ -8315,7 +8357,8 @@
     "no 100k/1M authority",
     "no raw payloads in git",
     "no secrets printed",
-    "no Comet-backed accepted run"
+    "no Comet-backed accepted run",
+    "no heldout scorer execution"
   ],
   "nonclaims_preserved": [
     "no C5 pass",
@@ -8325,10 +8368,11 @@
     "no 100k/1M authority",
     "no raw payloads in git",
     "no secrets printed",
-    "no Comet-backed accepted run"
+    "no Comet-backed accepted run",
+    "no heldout scorer execution"
   ],
-  "owner": "Execution Orchestrator",
-  "owner_thread": "019f138c-fb51-7c53-a41a-ab8eac950d9c",
+  "owner": "Phase3/4 Engineer replacement + User/Operator access",
+  "owner_thread": "019f2059-e6a8-73b1-a9b8-8a2c499e838e",
   "phone_exporter_rerun_required_after_commit": "43cf3c4130dc902fc8fd69183bac1056f0596626",
   "prd_watchdog": {
     "active_bottleneck": "forced_vendor_opencl_probe_result_missing",
@@ -8919,7 +8963,7 @@
     "scope": "metadata mirror only",
     "status": "central_state_phone_filesystem_paths_redacted"
   },
-  "recursive_improvement_next_step": "Use the accepted canonical chain: prediction payload producer report -> heldout executed metrics JSON -> final C5 eval report. Any failure returns the exact first_missing_green_field to the owning lane rather than narrating a pass.",
+  "recursive_improvement_next_step": "Do not wait passively on the scorer. Split the failure: user/operator restores Termux command access; Phase3/4 prepares the timeout repair or bounded retry; Execution resumes only after a concrete command path exists.",
   "required_lane_update_protocol": {
     "block_name": "CENTRAL_STATE_UPDATE",
     "meta_action": "on every heartbeat, read active threads, update this file, route the next concrete edge, and notify Execution only when both keys are green",
@@ -8940,21 +8984,28 @@
   "runner_size_bytes": 554312,
   "schema_version": "polymath_executive_delivery_state_v1",
   "secondary_missing_green_field": "c5_full_decoder_final_hidden_stream_missing_for_lm_head_nll_if_phase34_confirms_current_precondition",
-  "status": "candidate_train_loss_probe_passed_canonical_c5_payload_scorer_pending",
-  "status_classification": "PENDING_ACTION_EXECUTION_CANONICAL_C5_PAYLOADS_AND_SCORER_AFTER_FINITE_TRAIN_LOSS",
+  "status": "canonical_c5_payload_scorer_blocked_before_scorer",
+  "status_classification": "BLOCKER_DEVICE_ACCESS_WITH_PENDING_ACTION_PHASE34_PRODUCER_TIMEOUT_REPAIR",
   "thread_nudges": [
     "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: routed canonical C5 payload/scorer GO after finite candidate_train_loss 15.202827250350284.",
     "Repo Custodian replacement 019f2059-ef2c-7762-ba42-963b58f3af90: routed central mirror plus train-loss metadata freeze; raw output identity only, no raw payload staging.",
-    "Phase3/4 replacement 019f2059-e6a8-73b1-a9b8-8a2c499e838e: no duplicate nudge; train-loss source command completed by Execution and lane is parked until a new source/runtime field appears."
+    "Phase3/4 replacement 019f2059-e6a8-73b1-a9b8-8a2c499e838e: no duplicate nudge; train-loss source command completed by Execution and lane is parked until a new source/runtime field appears.",
+    {
+      "reason": "canonical scorer producer timeout and Termux command-channel access blocker",
+      "threads": [
+        "019f2059-e6a8-73b1-a9b8-8a2c499e838e",
+        "019f2059-ef2c-7762-ba42-963b58f3af90"
+      ],
+      "timestamp_utc": "2026-07-02T02:18:41Z"
+    }
   ],
   "threads_nudged_this_tick": [
-    "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: routed canonical C5 payload/scorer GO after finite candidate_train_loss 15.202827250350284.",
-    "Repo Custodian replacement 019f2059-ef2c-7762-ba42-963b58f3af90: routed central mirror plus train-loss metadata freeze; raw output identity only, no raw payload staging.",
-    "Phase3/4 replacement 019f2059-e6a8-73b1-a9b8-8a2c499e838e: no duplicate nudge; train-loss source command completed by Execution and lane is parked until a new source/runtime field appears."
+    "Phase3/4 Engineer replacement 019f2059-e6a8-73b1-a9b8-8a2c499e838e: producer timeout repair prep routed.",
+    "Repo Custodian replacement 019f2059-ef2c-7762-ba42-963b58f3af90: two-file central mirror freeze routed."
   ],
-  "timestamp_utc": "2026-07-02T01:26:28Z",
-  "updated_at": "2026-07-02T01:26:28Z",
-  "updated_at_utc": "2026-07-02T01:26:28Z",
-  "updated_utc": "2026-07-02T01:26:28Z",
-  "user_action_required": false
+  "timestamp_utc": "2026-07-02T02:18:41Z",
+  "updated_at": "2026-07-02T02:18:41Z",
+  "updated_at_utc": "2026-07-02T02:18:41Z",
+  "updated_utc": "2026-07-02T02:18:41Z",
+  "user_action_required": true
 }
