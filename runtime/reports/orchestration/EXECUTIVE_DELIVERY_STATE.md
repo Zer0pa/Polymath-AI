@@ -1,60 +1,71 @@
 # Executive Delivery State
 
-Updated UTC: `2026-07-01T23:47:08Z`
+Updated UTC: `2026-07-01T23:57:08Z`
 
 ## Current Gate
 
-`WaveB_C5_after_C1_prediction_jsonl_writer_phone_probe_active_after_custody`
+`WaveB_C5_after_C1_candidate_prediction_jsonl_metadata_ready_after_native_phone_probe_pass`
 
-Status classification: `PENDING_ACTION_EXECUTION_PREDICTION_JSONL_WRITER_BOUNDED_PHONE_PROBE_ACTIVE`
+Status classification: `PENDING_ACTION_ENGINEERING_ORCHESTRATOR_ROUTE_STABLE_BASELINE_AND_SCORER_CONTRACT`
 
-Owner: Execution Orchestrator `019f138c-fb51-7c53-a41a-ab8eac950d9c` owns the active bounded phone probe.
+Owner: Engineering Orchestrator 019f138b-d229-7640-98b7-2f185d6beae0 owns routing the stable-baseline prediction payload and heldout scorer/candidate_train_loss contract after the native phone candidate prediction JSONL probe emitted a real metadata-identified prediction file.
 
 User action required: `false`
 
-Dominant failure domain: `runtime_execution_pending`
+Dominant failure domain: `eval_pipeline_incomplete`
 
-Research escalation: `none` - custody completed and the next bounded runtime proof is actively running. Escalate only if the same writer field repeats after this repair/probe, an architecture contradiction appears, or phone memory/throughput fails.
+Research escalation: `none` - first_missing_green_field advanced to stable-baseline/scorer contract after the native candidate prediction JSONL writer proof. Escalate only if the scorer/baseline contract is ambiguous enough to invalidate C5 loss, the same field repeats across two cycles, or a real device/runtime/memory envelope failure appears.
 
 ## Artifact Waiting On
 
-- Repo Custodian froze and pushed prediction JSONL writer commit `48b604e7be127d9b8474e5845fc3b58745c35f30`.
-- Frozen report: `runtime/reports/orchestration/c5_after_c1_native_prediction_jsonl_writer_after_lm_head_nll_20260702T_phase34.json` SHA `7f1e4b794e05043628ef86175c5fda3358e917669b15e564c7e69de8a35e5e63`.
-- Execution consumed the freeze, installed the runner at `/data/data/com.termux/files/home/polymath_c5/C5_after_C1/bin/gemma4_layer_runner_c5_prediction_jsonl_writer`, and started the single bounded C5_after_C1 phone probe.
-- Awaiting Execution metadata-only result and NEXT_HANDOFF.
+- Execution completed the bounded phone probe from custody commit `48b604e7be127d9b8474e5845fc3b58745c35f30`.
+- Runner: `/data/data/com.termux/files/home/polymath_c5/C5_after_C1/bin/gemma4_layer_runner_c5_prediction_jsonl_writer` SHA `3ae0cc86b8aca491935d3a39ac5f6c4c3cc9d0f9b2949dfa944470726cd22165`, bytes `581312`.
+- Native probe: exit `0`, elapsed `245s`, status `pass` for this bounded candidate prediction-writer proof.
+- Candidate prediction JSONL was written outside git: bytes `429`, SHA `a0137450ae16220a1aecc3dff60e50bceae641dba9b8207c0567f48ae4be4fc3`, path SHA `31455a2804b64ecc97c9b02c97a243d11b30295462e18b19ecbaa6561fd3714e`.
+- Metadata-only evidence root: `runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_prediction_jsonl_writer_20260701T234607Z`.
+- Awaiting Engineering route for stable-baseline prediction payload and heldout scorer/candidate_train_loss contract.
+- Awaiting Repo Custodian freeze of metadata-only probe evidence plus this central mirror.
 
 ## Last Concrete Action
 
-Repo Custodian completed prediction_jsonl_writer_committed_pushed at commit 48b604e7be127d9b8474e5845fc3b58745c35f30 with focused native contract 19 passed, broad C5 suite 54 passed, CTest 4/4, JSON/diff/raw-boundary verification, and direct Execution handoff. Execution consumed the freeze, installed the prediction-writer runner, and started the bounded phone probe.
+Execution built/copied /data/data/com.termux/files/home/polymath_c5/C5_after_C1/bin/gemma4_layer_runner_c5_prediction_jsonl_writer (SHA 3ae0cc86b8aca491935d3a39ac5f6c4c3cc9d0f9b2949dfa944470726cd22165), ran exactly one bounded phone probe with --opencl-library /vendor/lib64/libOpenCL.so, exited 0 after 245s, and reported prediction JSONL bytes/SHA while keeping the raw JSONL outside git.
 
 ## First Missing Green Field
 
-`c5_after_c1_prediction_jsonl_writer_bounded_phone_probe_result_pending`
+`stable_baseline_prediction_payload_and_heldout_scorer_contract_missing`
 
 ## Next Concrete Action
 
-Wait for Execution to finish the single bounded phone probe and return metadata-only evidence. If prediction JSONL is emitted, report only bytes/SHA and route receiving evidence appropriately; if fail-closed, route the exact first_missing_green_field to Phase3/4. Do not start duplicate probes.
+Engineering Orchestrator defines/routes the stable-baseline prediction payload and heldout scorer/candidate_train_loss contract; Repo Custodian freezes the metadata-only execution evidence and central mirror. Execution remains parked until it receives a bounded scorer/baseline command or custody-frozen pathset.
 
 ## Drift Deletion / Hardening
 
-Deleted stale custody-pending drift for the prediction writer pathset. Do not regress to rank16, 42-layer, final-hidden, layer-5 shape, prompt-shape, or writer-custody blockers without new evidence. The live edge is the active bounded phone proof.
+Deleted stale execution-active drift for the prediction writer probe. Pending metadata-only custody for the probe evidence and pending Engineering route for stable-baseline/scorer contract. Do not regress to rank16, 42-layer, OpenCL/SP-HAL, final-hidden, prompt-shape, or writer-missing blockers without newer evidence.
 
 ## Recursive Improvement Next Step
 
-Classify the prediction-writer phone proof from real runtime output: either custody/route metadata for emitted prediction JSONL identity, or send the next exact native/runtime field back to Phase3/4 without fabricating metrics.
+Turn the emitted candidate prediction identity into a falsifiable comparison by producing the stable-baseline prediction payload and a heldout scorer/candidate_train_loss contract from real runtime outputs.
 
 ## Threads Nudged This Tick
 
-- Repo Custodian `019f1ac2-0f0f-7721-bf46-ad402dbd9050`: completed `prediction_jsonl_writer_committed_pushed` and handed off Execution.
-- Execution Orchestrator `019f138c-fb51-7c53-a41a-ab8eac950d9c`: active on bounded prediction JSONL writer phone probe; no nudge.
-- Phase3/4 Engineer `019f13da-d897-7ba2-8ed1-b959892f5ed4`: not current owner; no nudge.
+- Engineering Orchestrator `019f138b-d229-7640-98b7-2f185d6beae0`: sent Execution candidate prediction JSONL metadata handoff and requested stable-baseline/scorer contract routing.
+- Repo Custodian `019f1ac2-0f0f-7721-bf46-ad402dbd9050`: pending metadata-only evidence plus central mirror custody request after local validation.
+- Execution Orchestrator `019f138c-fb51-7c53-a41a-ab8eac950d9c`: completed and parked; no duplicate probe routed.
+
+## NEXT_HANDOFF
+
+- to: Engineering Orchestrator `019f138b-d229-7640-98b7-2f185d6beae0`
+- status: `candidate_prediction_jsonl_native_probe_passed_metadata_ready`
+- artifacts: `runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_prediction_jsonl_writer_20260701T234607Z`; stdout SHA `b5d813420e6f9bafcc86ccb634d7571acea824e452d30d5f314978fd5ad90c29`; outside-git prediction JSONL SHA `a0137450ae16220a1aecc3dff60e50bceae641dba9b8207c0567f48ae4be4fc3`
+- first_missing_green_field: `stable_baseline_prediction_payload_and_heldout_scorer_contract_missing`
+- next_action: define/route stable-baseline prediction payload and heldout scorer/candidate_train_loss contract, or return the exact next owner/pathset/blocker.
+- research_escalation: `none`
 
 ## Nonclaims Preserved
 
 - no C5 pass.
-- no executed C5 metrics yet.
-- no prediction JSONL/logits/loss/confidence/candidate_train_loss unless real runtime emits them.
-- no bridge-MSE-as-C5-loss.
+- no stable-baseline prediction JSONL yet.
+- no heldout scorer/candidate_train_loss yet.
 - no learning/model-quality claim.
 - no Phase3/4 readiness.
 - no 100k/1M authority.
