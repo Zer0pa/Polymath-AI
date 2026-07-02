@@ -256,6 +256,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--work-root", type=Path, required=False)
     parser.add_argument("--qairt-root", required=False, default="/data/local/tmp/qairt-2.44")
     parser.add_argument("--host-qairt-root", required=False, default="")
+    parser.add_argument("--qnn-backend-config", required=False, default="")
     parser.add_argument("--android-ndk-root", required=False, default="")
     parser.add_argument("--phone-work-root", default="/data/local/tmp/polymath_gemma4_gate/wavec/full_gemma_qnn_export")
     parser.add_argument("--phone-ssh-host", default="127.0.0.1")
@@ -407,6 +408,18 @@ def generate_package(args: argparse.Namespace) -> dict[str, Any]:
                 "staged_qairt_root": str(args.work_root / "qairt_host") if args.work_root else "",
                 "stage_from_phone_when_host_missing": True,
                 "failure_field": "model_library_failure:missing_host_qairt_wrapper_sources",
+            },
+            "qnn_backend_device_preflight": {
+                "platform_validator": "qnn-platform-validator --backend dsp --libVersion --coreVersion --testBackend",
+                "backend_config": args.qnn_backend_config,
+                "failure_field": "context_generation_failure:qnn_htp_device_creation_platform_validator_failed",
+                "diagnostic_fields": [
+                    "backend and skeleton SHA256 identities",
+                    "ADSP_LIBRARY_PATH",
+                    "LD_LIBRARY_PATH",
+                    "qnn-platform-validator stdout/stderr",
+                    "optional qnn backend config path and SHA256",
+                ],
             },
             "next_validators": [
                 "scripts/host/run_wavec_full_gemma_qnn_forward.py",
@@ -1473,6 +1486,7 @@ fi
 def render_probe_ladder_context_script(args: argparse.Namespace) -> str:
     phone_root = args.phone_work_root.rstrip("/")
     qairt = args.qairt_root.rstrip("/")
+    backend_config = args.qnn_backend_config.rstrip()
     steps = []
     for index, probe in enumerate(PROBE_LADDER_SOURCES):
         prerequisite = ""
@@ -1495,6 +1509,7 @@ mkdir -p "$OUT"
 "$Q/bin/aarch64-android/qnn-context-binary-generator" \\
   --model="$LIB" \\
   --backend="$Q/lib/aarch64-android/libQnnHtp.so" \\
+  "${{CONFIG_ARGS[@]}}" \\
   --binary_file="{probe['context']}" \\
   --output_dir="$OUT" \\
   --log_level info > "$OUT/context_stdout.log" 2> "$OUT/context_stderr.log"
@@ -1511,6 +1526,7 @@ printf '{{"stage":"%s","graph":"%s","status":"green"}}\\n' "$STAGE" "$GRAPH" > "
 set -euo pipefail
 PHONE_ROOT={shlex.quote(phone_root)}
 Q_SRC={shlex.quote(qairt)}
+QNN_BACKEND_CONFIG_DEFAULT={shlex.quote(backend_config)}
 {render_phone_qairt_exec_resolution_script()}
 mkdir -p "$PHONE_ROOT/probe_ladder"
 {chr(10).join(steps)}
@@ -1520,10 +1536,12 @@ mkdir -p "$PHONE_ROOT/probe_ladder"
 def render_context_script(args: argparse.Namespace) -> str:
     phone_root = args.phone_work_root.rstrip("/")
     qairt = args.qairt_root.rstrip("/")
+    backend_config = args.qnn_backend_config.rstrip()
     return f"""#!/usr/bin/env bash
 set -euo pipefail
 PHONE_ROOT={shlex.quote(phone_root)}
 Q_SRC={shlex.quote(qairt)}
+QNN_BACKEND_CONFIG_DEFAULT={shlex.quote(backend_config)}
 {render_phone_qairt_exec_resolution_script()}
 MODEL="$PHONE_ROOT/models/{MODEL_LIBRARY_NAME}"
 CONTEXT_DIR="$PHONE_ROOT/context"
@@ -1531,6 +1549,7 @@ mkdir -p "$CONTEXT_DIR"
 "$Q/bin/aarch64-android/qnn-context-binary-generator" \\
   --model="$MODEL" \\
   --backend="$Q/lib/aarch64-android/libQnnHtp.so" \\
+  "${{CONFIG_ARGS[@]}}" \\
   --binary_file="{CONTEXT_NAME}" \\
   --output_dir="$CONTEXT_DIR" \\
   --log_level info > "$CONTEXT_DIR/context_stdout.log" 2> "$CONTEXT_DIR/context_stderr.log"
@@ -1545,20 +1564,24 @@ wc -c "$CONTEXT_DIR/{CONTEXT_NAME}" > "$CONTEXT_DIR/context.bytes"
 
 def render_phone_qairt_exec_resolution_script() -> str:
     return r"""Q_EXEC="${QAIRT_EXEC_ROOT:-$PHONE_ROOT/qairt_exec}"
+QNN_DIAG_DIR="$PHONE_ROOT/qnn_device_diagnostics"
 
 prepare_qairt_exec_root() {
   mkdir -p "$Q_EXEC/bin" "$Q_EXEC/lib"
-  rm -rf "$Q_EXEC/bin/aarch64-android" "$Q_EXEC/lib/aarch64-android" "$Q_EXEC/lib/hexagon-v79" "$Q_EXEC/lib/hexagon-v81"
+  rm -rf "$Q_EXEC/bin/aarch64-android" "$Q_EXEC/lib/aarch64-android" "$Q_EXEC/lib/hexagon-v75" "$Q_EXEC/lib/hexagon-v79" "$Q_EXEC/lib/hexagon-v81"
   cp -R "$Q_SRC/bin/aarch64-android" "$Q_EXEC/bin/" || return 1
   cp -R "$Q_SRC/lib/aarch64-android" "$Q_EXEC/lib/" || return 1
+  if [ -d "$Q_SRC/lib/hexagon-v75" ]; then cp -R "$Q_SRC/lib/hexagon-v75" "$Q_EXEC/lib/"; fi
   if [ -d "$Q_SRC/lib/hexagon-v79" ]; then cp -R "$Q_SRC/lib/hexagon-v79" "$Q_EXEC/lib/"; fi
   if [ -d "$Q_SRC/lib/hexagon-v81" ]; then cp -R "$Q_SRC/lib/hexagon-v81" "$Q_EXEC/lib/"; fi
   chmod 755 "$Q_EXEC/bin/aarch64-android/qnn-context-binary-generator" \
     "$Q_EXEC/bin/aarch64-android/qnn-context-binary-utility" \
     "$Q_EXEC/bin/aarch64-android/qnn-net-run" \
-    "$Q_EXEC/bin/aarch64-android/qnn-profile-viewer" || return 1
+    "$Q_EXEC/bin/aarch64-android/qnn-profile-viewer" \
+    "$Q_EXEC/bin/aarch64-android/qnn-platform-validator" || return 1
   [ -x "$Q_EXEC/bin/aarch64-android/qnn-context-binary-generator" ] || return 1
   [ -x "$Q_EXEC/bin/aarch64-android/qnn-context-binary-utility" ] || return 1
+  [ -x "$Q_EXEC/bin/aarch64-android/qnn-platform-validator" ] || return 1
 }
 
 if ! prepare_qairt_exec_root; then
@@ -1566,8 +1589,46 @@ if ! prepare_qairt_exec_root; then
   exit 126
 fi
 Q="$Q_EXEC"
-export LD_LIBRARY_PATH="$Q/lib/aarch64-android:$Q_SRC/lib/aarch64-android:${LD_LIBRARY_PATH:-}"
-export ADSP_LIBRARY_PATH="$Q/lib/hexagon-v79/unsigned;$Q/lib/hexagon-v81/unsigned;$Q_SRC/lib/hexagon-v79/unsigned;$Q_SRC/lib/hexagon-v81/unsigned;/vendor/dsp/cdsp;/vendor/lib/rfsa/adsp;/system/lib/rfsa/adsp"
+export LD_LIBRARY_PATH="$Q/lib/aarch64-android:$Q_SRC/lib/aarch64-android:/vendor/lib64:/system/lib64:${LD_LIBRARY_PATH:-}"
+export ADSP_LIBRARY_PATH="$Q/lib/hexagon-v81/unsigned;$Q/lib/hexagon-v79/unsigned;$Q/lib/hexagon-v75/unsigned;$Q_SRC/lib/hexagon-v81/unsigned;$Q_SRC/lib/hexagon-v79/unsigned;$Q_SRC/lib/hexagon-v75/unsigned;/vendor/dsp/cdsp;/vendor/lib/rfsa/adsp;/system/lib/rfsa/adsp;/dsp"
+
+mkdir -p "$QNN_DIAG_DIR/platform_validator"
+{
+  echo "Q=$Q"
+  echo "Q_SRC=$Q_SRC"
+  echo "LD_LIBRARY_PATH=$LD_LIBRARY_PATH"
+  echo "ADSP_LIBRARY_PATH=$ADSP_LIBRARY_PATH"
+  uname -a || true
+  getprop ro.soc.model 2>/dev/null || true
+  getprop ro.board.platform 2>/dev/null || true
+  getprop ro.vendor.qti.soc_id 2>/dev/null || true
+  find "$Q/lib" -maxdepth 3 -type f \( -name 'libQnnHtp*.so' -o -name 'libQnnHexagonSkel*.so' -o -name '*Skel*.so' -o -name '*.cat' \) -print 2>/dev/null | sort
+} > "$QNN_DIAG_DIR/environment.txt" 2>&1 || true
+sha256sum "$Q/lib/aarch64-android/libQnnHtp.so" > "$QNN_DIAG_DIR/backend.sha256" 2>/dev/null || true
+find "$Q/lib" -maxdepth 3 -type f \( -name 'libQnnHtp*.so' -o -name 'libQnnHexagonSkel*.so' -o -name '*Skel*.so' -o -name '*.cat' \) -print0 2>/dev/null |
+  xargs -0 sha256sum > "$QNN_DIAG_DIR/htp_skeletons.sha256" 2>/dev/null || true
+
+BACKEND_CONFIG="${QNN_BACKEND_CONFIG:-${QNN_BACKEND_CONFIG_DEFAULT:-}}"
+CONFIG_ARGS=()
+if [ -n "$BACKEND_CONFIG" ]; then
+  if [ ! -f "$BACKEND_CONFIG" ]; then
+    echo "context_generation_failure:qnn_backend_config_missing:$BACKEND_CONFIG" >&2
+    exit 11
+  fi
+  sha256sum "$BACKEND_CONFIG" > "$QNN_DIAG_DIR/backend_config.sha256" 2>/dev/null || true
+  CONFIG_ARGS=(--config_file "$BACKEND_CONFIG")
+fi
+
+if ! "$Q/bin/aarch64-android/qnn-platform-validator" \
+  --backend dsp \
+  --libVersion \
+  --coreVersion \
+  --testBackend \
+  --targetPath "$QNN_DIAG_DIR/platform_validator" \
+  --debug > "$QNN_DIAG_DIR/platform_validator_stdout.log" 2> "$QNN_DIAG_DIR/platform_validator_stderr.log"; then
+  echo "context_generation_failure:qnn_htp_device_creation_platform_validator_failed" >&2
+  exit 11
+fi
 """
 
 

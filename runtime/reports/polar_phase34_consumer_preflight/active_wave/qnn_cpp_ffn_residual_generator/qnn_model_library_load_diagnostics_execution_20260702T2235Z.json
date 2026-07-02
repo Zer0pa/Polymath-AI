@@ -1,0 +1,861 @@
+{
+  "blockers": [
+    "context_generation_failure:qnn_context_binary_generator_rejects_probe_graph:device_creation_failure"
+  ],
+  "build": {
+    "android_ndk_root": "/usr/local/share/android-commandlinetools/ndk/28.2.13676358",
+    "command": "QAIRT_HOST_ROOT=/tmp/wavec_runpod_qairt_host_root_20260702T205000Z/qairt_host bash /private/tmp/wavec_qnn_model_library_load_diagnostics_pathset_20260702T220500Z/scripts/build_probe_ladder.sh",
+    "compiler_path": "/usr/local/share/android-commandlinetools/ndk/28.2.13676358/toolchains/llvm/prebuilt/darwin-x86_64/bin/aarch64-linux-android35-clang++",
+    "diagnostic_checks": {
+      "all_have_QnnModel_composeGraphs": true,
+      "all_have_QnnModel_freeGraphsInfo": true,
+      "any_libcxx_shared_dependency": false
+    },
+    "generated_model_libraries": [
+      {
+        "bytes": 1784872,
+        "exports": {
+          "QnnModel_composeGraphs": true,
+          "QnnModel_freeGraphsInfo": true
+        },
+        "libcxx_shared_dependency_present": false,
+        "needed": {
+          "bytes": 1304,
+          "path": "/private/tmp/wavec_qnn_model_library_load_diagnostics_pathset_20260702T220500Z/out/libgemma4_e4b_ffn_residual_layer0.so.needed.txt",
+          "sha256": "48501349578c8fd0aac170ec324a957a61a72b91d47ab88917644a324b94b534"
+        },
+        "path": "/private/tmp/wavec_qnn_model_library_load_diagnostics_pathset_20260702T220500Z/out/libgemma4_e4b_ffn_residual_layer0.so",
+        "sha256": "249862d921207689cef438fd145b7f400d3efb16296005b12faf3dbff50b46dc",
+        "symbols": {
+          "bytes": 16298,
+          "path": "/private/tmp/wavec_qnn_model_library_load_diagnostics_pathset_20260702T220500Z/out/libgemma4_e4b_ffn_residual_layer0.so.symbols.txt",
+          "sha256": "f928de3c337fcf51788623fe807972f4fbc4bbb679b05abc2f0ac7a7de8a6c29"
+        }
+      },
+      {
+        "bytes": 1785032,
+        "exports": {
+          "QnnModel_composeGraphs": true,
+          "QnnModel_freeGraphsInfo": true
+        },
+        "libcxx_shared_dependency_present": false,
+        "needed": {
+          "bytes": 1304,
+          "path": "/private/tmp/wavec_qnn_model_library_load_diagnostics_pathset_20260702T220500Z/out/libgemma4_probe_primitive_gelu_tanh.so.needed.txt",
+          "sha256": "fb6b5fc1c36e1eab433c5828c2388b280fc3c182d3c2d6e1cff0d87d53a6893f"
+        },
+        "path": "/private/tmp/wavec_qnn_model_library_load_diagnostics_pathset_20260702T220500Z/out/libgemma4_probe_primitive_gelu_tanh.so",
+        "sha256": "7fa5c09212727cc14d6dca978fd2d70d4cab88ef998ebb040f5641b4c4bbe02c",
+        "symbols": {
+          "bytes": 15778,
+          "path": "/private/tmp/wavec_qnn_model_library_load_diagnostics_pathset_20260702T220500Z/out/libgemma4_probe_primitive_gelu_tanh.so.symbols.txt",
+          "sha256": "4d59ce01421e7c13841ac8e9693f844de54d5b6a8fe779bd9e397fa181ab41af"
+        }
+      },
+      {
+        "bytes": 1781016,
+        "exports": {
+          "QnnModel_composeGraphs": true,
+          "QnnModel_freeGraphsInfo": true
+        },
+        "libcxx_shared_dependency_present": false,
+        "needed": {
+          "bytes": 1304,
+          "path": "/private/tmp/wavec_qnn_model_library_load_diagnostics_pathset_20260702T220500Z/out/libgemma4_probe_primitive_rmsnorm.so.needed.txt",
+          "sha256": "75b53047a1a33ad932a27d2c88373fd297da8f6fc4f99a66baba2c81c3b66127"
+        },
+        "path": "/private/tmp/wavec_qnn_model_library_load_diagnostics_pathset_20260702T220500Z/out/libgemma4_probe_primitive_rmsnorm.so",
+        "sha256": "413b58536a48afaaa1a0b722e77b2d7981336fcaa4a37a430dfcf9b4ac71d2fd",
+        "symbols": {
+          "bytes": 15778,
+          "path": "/private/tmp/wavec_qnn_model_library_load_diagnostics_pathset_20260702T220500Z/out/libgemma4_probe_primitive_rmsnorm.so.symbols.txt",
+          "sha256": "c228c8865dde2b7e8432e603e63b4ac7022606629800086abab4b6d74454c916"
+        }
+      },
+      {
+        "bytes": 1778928,
+        "exports": {
+          "QnnModel_composeGraphs": true,
+          "QnnModel_freeGraphsInfo": true
+        },
+        "libcxx_shared_dependency_present": false,
+        "needed": {
+          "bytes": 1304,
+          "path": "/private/tmp/wavec_qnn_model_library_load_diagnostics_pathset_20260702T220500Z/out/libgemma4_probe_quantized_tiny_matmul.so.needed.txt",
+          "sha256": "d539cc0c33b3c7fe69337c492e0449334ba383043e0d23d27fce16b59ece3f2f"
+        },
+        "path": "/private/tmp/wavec_qnn_model_library_load_diagnostics_pathset_20260702T220500Z/out/libgemma4_probe_quantized_tiny_matmul.so",
+        "sha256": "1530908006b1876b7c2772ae7eea22377ee0e4f22cddf9778aff7a921c958f1a",
+        "symbols": {
+          "bytes": 15778,
+          "path": "/private/tmp/wavec_qnn_model_library_load_diagnostics_pathset_20260702T220500Z/out/libgemma4_probe_quantized_tiny_matmul.so.symbols.txt",
+          "sha256": "dd1688d68597886fc2477e3ef5b508f8f5d2f0ab3bbed6c762432dcf0678d36c"
+        }
+      }
+    ],
+    "ndk_prebuilt_selected": "darwin-x86_64",
+    "rc": 0,
+    "stderr": {
+      "bytes": 0,
+      "path": "/tmp/wavec_qnn_model_library_load_diagnostics_build_20260702T2235Z/build_stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr_snippet": "",
+    "stdout": {
+      "bytes": 0,
+      "path": "/tmp/wavec_qnn_model_library_load_diagnostics_build_20260702T2235Z/build_stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stdout_snippet": ""
+  },
+  "first_missing_green_field": "context_generation_failure:qnn_context_binary_generator_rejects_probe_graph:device_creation_failure",
+  "governing_gate": "WaveC_full_gemma_qnn_htp_forward_consumed_tensor_route",
+  "lane": "execution_orchestrator",
+  "nonclaims": [
+    "no C5 pass",
+    "no learning/model-quality claim",
+    "no Phase3/4 readiness",
+    "no full-Gemma HTP forward claim until QNN context/net-run/profile/Phase4 consumption prove it",
+    "no 100k/1M authority",
+    "no raw payloads in git",
+    "no secrets printed",
+    "no Comet-backed accepted run"
+  ],
+  "observability": {
+    "context_stdout_stderr_captured": true,
+    "qnn_net_run_output_profile_captured": false,
+    "qnn_tool_identities_captured": true,
+    "reason": "context generation failed before qnn-net-run/profile and Phase4",
+    "satisfied": "partial"
+  },
+  "package": {
+    "checks": [
+      {
+        "actual_sha256": "b77b24449a1bae75a35f6fc6de86155e476b37a56c657c5d36fcf4e0d61e8d0b",
+        "expected_sha256": "b77b24449a1bae75a35f6fc6de86155e476b37a56c657c5d36fcf4e0d61e8d0b",
+        "match": true,
+        "path": "/private/tmp/wavec_qnn_model_library_load_diagnostics_pathset_20260702T220500Z/scripts/build_probe_ladder.sh"
+      },
+      {
+        "actual_sha256": "7fb038f29ea29bc7e3b6d70d7323a0efae623354af99d67c278e9584d37dab8b",
+        "expected_sha256": "7fb038f29ea29bc7e3b6d70d7323a0efae623354af99d67c278e9584d37dab8b",
+        "match": true,
+        "path": "/private/tmp/wavec_qnn_model_library_load_diagnostics_pathset_20260702T220500Z/scripts/run_probe_ladder_contexts.sh"
+      },
+      {
+        "actual_sha256": "76af3a2e159d0f385e20df34caba6d512389ee615d9cc7ab40930bbf6cc86047",
+        "expected_sha256": "76af3a2e159d0f385e20df34caba6d512389ee615d9cc7ab40930bbf6cc86047",
+        "match": true,
+        "path": "/private/tmp/wavec_qnn_model_library_load_diagnostics_pathset_20260702T220500Z/scripts/build_android_model_library.sh"
+      },
+      {
+        "actual_sha256": "c1432e15c379a38f402790e5991286e20c298fd5f6a972a40d40412e318d37d3",
+        "expected_sha256": "c1432e15c379a38f402790e5991286e20c298fd5f6a972a40d40412e318d37d3",
+        "match": true,
+        "path": "/private/tmp/wavec_qnn_model_library_load_diagnostics_pathset_20260702T220500Z/scripts/generate_phone_context.sh"
+      },
+      {
+        "actual_sha256": "b6c42672aa199df2bc16e267b31d5f14151e89a4bab146d827f97d9cf623733f",
+        "expected_sha256": "b6c42672aa199df2bc16e267b31d5f14151e89a4bab146d827f97d9cf623733f",
+        "match": true,
+        "path": "/private/tmp/wavec_qnn_model_library_load_diagnostics_pathset_20260702T220500Z/metadata/probe_ladder_manifest.json"
+      },
+      {
+        "actual_sha256": "b7abd38a9e7b8fa743da29ccfee70f72b24cd84b0d62c287692c32699d410929",
+        "expected_sha256": "b7abd38a9e7b8fa743da29ccfee70f72b24cd84b0d62c287692c32699d410929",
+        "match": true,
+        "path": "/private/tmp/wavec_qnn_model_library_load_diagnostics_pathset_20260702T220500Z/metadata/tensor_manifest.json"
+      }
+    ],
+    "root": "/private/tmp/wavec_qnn_model_library_load_diagnostics_pathset_20260702T220500Z"
+  },
+  "phone_copy": {
+    "copied_only": [
+      "generated .so model libraries",
+      "scripts/run_probe_ladder_contexts.sh"
+    ],
+    "phone_root": "/data/data/com.termux/files/home/polymath_gemma4_gate/wavec/full_gemma_qnn_export",
+    "raw_payloads_copied_to_git": false
+  },
+  "phone_probe": {
+    "command": "bash /data/data/com.termux/files/home/polymath_gemma4_gate/wavec/full_gemma_qnn_export/scripts/run_probe_ladder_contexts.sh",
+    "context_generator_stderr_snippet": "Device Creation failure\n",
+    "context_generator_stdout_snippet": "qnn-context-binary-generator pid:17738\n",
+    "first_attempted_stage": "primitive_rmsnorm_decomposition_probe",
+    "full_island_executed": false,
+    "green_markers": [
+      "primitive_rmsnorm_decomposition_probe:missing",
+      "primitive_gelu_tanh_lowering_probe:missing",
+      "quantized_tiny_matmul_static_weight_probe:missing",
+      "full_gemma4_e4b_ffn_residual_layer0_probe:missing"
+    ],
+    "profile_reached": false,
+    "profile_unavailable_reason": "context generation failed before qnn-net-run/profile",
+    "qnn_net_run_reached": false,
+    "rc": 11,
+    "remote_files": [
+      {
+        "bytes": 24,
+        "path": "probe_ladder/primitive_rmsnorm_decomposition_probe/context_stderr.log",
+        "sha256": "6d28fcf0c2a5861df5af4760623ba4438db6902ed00c448d0a7955612327a4fa"
+      },
+      {
+        "bytes": 39,
+        "path": "probe_ladder/primitive_rmsnorm_decomposition_probe/context_stdout.log",
+        "sha256": "89b2f7e4c5d2d96683ecba6042407b32e816730b9bf190300814797e62fcdf26"
+      },
+      {
+        "bytes": 773064,
+        "path": "qairt_exec/bin/aarch64-android/genie-app",
+        "sha256": "f5f597eb5368b9db0b00fcbcc0db12a745e8b8623f04c97fad7e62933d78c79f"
+      },
+      {
+        "bytes": 487328,
+        "path": "qairt_exec/bin/aarch64-android/genie-t2e-run",
+        "sha256": "be81c16c2b5ce45ab59e1d84bfd91c46f2dd0949e2ec6216e79290c8bcfb67ea"
+      },
+      {
+        "bytes": 564056,
+        "path": "qairt_exec/bin/aarch64-android/genie-t2t-run",
+        "sha256": "5e57676cdc1ad302b1417e85fe920016315c86af344a0ac6b3e4f81f78895219"
+      },
+      {
+        "bytes": 9194472,
+        "path": "qairt_exec/bin/aarch64-android/qairt-lora-adapter-bin-updater",
+        "sha256": "45dc43691150482d5cd38605bf9b9ba063ae96b5f5f5a9fef989a21fb055471a"
+      },
+      {
+        "bytes": 3866664,
+        "path": "qairt_exec/bin/aarch64-android/qnn-context-binary-generator",
+        "sha256": "4b2b1bd2752bd119e3a896a4444433f0bbd6e69f887b47d5148337d935a2de1e"
+      },
+      {
+        "bytes": 833680,
+        "path": "qairt_exec/bin/aarch64-android/qnn-context-binary-utility",
+        "sha256": "a2b96364ee44008ca244848ff91cab644bd94b63767e950ecaf22f69471e2ffb"
+      },
+      {
+        "bytes": 1026768,
+        "path": "qairt_exec/bin/aarch64-android/qnn-gpu-target-server",
+        "sha256": "3b5deb6e42ee6fd55577744ea7be6700f00932f2daa609cf41467a4cc31b785b"
+      },
+      {
+        "bytes": 4462720,
+        "path": "qairt_exec/bin/aarch64-android/qnn-net-run",
+        "sha256": "bd98535e89e5ea36b2c08891013e008d48738c2ffcf87c30352a8accec2fe20e"
+      },
+      {
+        "bytes": 881864,
+        "path": "qairt_exec/bin/aarch64-android/qnn-platform-validator",
+        "sha256": "9a2af9cd25a0c447969481f2926fef7031d76e054fe52cb25f252aa64153192e"
+      },
+      {
+        "bytes": 672984,
+        "path": "qairt_exec/bin/aarch64-android/qnn-profile-viewer",
+        "sha256": "1f607b595c0db25265395ce332346ae8e25019e128ef447cb4420cdef14e9560"
+      },
+      {
+        "bytes": 3307488,
+        "path": "qairt_exec/bin/aarch64-android/qnn-throughput-net-run",
+        "sha256": "b6fb3f81e1a7bdb3ca68491a7d88107b822b75b700efadb786ed0598f78d3bc6"
+      },
+      {
+        "bytes": 3701408,
+        "path": "qairt_exec/bin/aarch64-android/qtld-net-run",
+        "sha256": "906f1176e1af71dea0fd5f40dae826ca05c4d6f73c9079fec85c15a822c8e58b"
+      },
+      {
+        "bytes": 1147504,
+        "path": "qairt_exec/bin/aarch64-android/snpe-net-run",
+        "sha256": "cf1fb58580a5c5901abcf41b9f933dd48795c7d85309b02f88cc98314ca09072"
+      },
+      {
+        "bytes": 766928,
+        "path": "qairt_exec/bin/aarch64-android/snpe-parallel-run",
+        "sha256": "11b41605a27dee773a9569d060879460eae0f3db20d84c4785eee7ebdc7c64ea"
+      },
+      {
+        "bytes": 14089320,
+        "path": "qairt_exec/bin/aarch64-android/snpe-platform-validator",
+        "sha256": "cb0da05c7641055cda260b8aabe06a13ada4d9cd4ea8e1fe2ef5ae1f7e4cf9ad"
+      },
+      {
+        "bytes": 1397072,
+        "path": "qairt_exec/bin/aarch64-android/snpe-throughput-net-run",
+        "sha256": "8df2a5ea9045c490eef1c1304c2205c64ac6ba68ab58b9ee6a71dc0db54d0752"
+      },
+      {
+        "bytes": 7724704,
+        "path": "qairt_exec/lib/aarch64-android/libGenie.so",
+        "sha256": "11565f7dde1525330746e78bc7a90d7d88dada24ad25cf49df04520835893788"
+      },
+      {
+        "bytes": 14087232,
+        "path": "qairt_exec/lib/aarch64-android/libPlatformValidatorShared.so",
+        "sha256": "a7a8423f88afc90a896dc71594fa834f27c5b3751ba7b91646b2949f91d765e9"
+      },
+      {
+        "bytes": 633560,
+        "path": "qairt_exec/lib/aarch64-android/libQnnChrometraceProfilingReader.so",
+        "sha256": "f9616e361be14e1108a08fdab592af3f8ff9d9e8820bf81d649ffc2dbcd589c9"
+      },
+      {
+        "bytes": 6658336,
+        "path": "qairt_exec/lib/aarch64-android/libQnnCpu.so",
+        "sha256": "042a91a3146c4e328d58fa155e97ab2ebddabe5598af18d24ba92334ec894d8d"
+      },
+      {
+        "bytes": 416888,
+        "path": "qairt_exec/lib/aarch64-android/libQnnCpuNetRunExtensions.so",
+        "sha256": "ddca5a77b238dc8261ea0f5da266b6592a7de9e2c48996fe746aa3db0d6a9868"
+      },
+      {
+        "bytes": 1560184,
+        "path": "qairt_exec/lib/aarch64-android/libQnnDsp.so",
+        "sha256": "f4a811ad7836b660a147615e3822f6df3fa0d68246fa5d19c2630e7c1a87cb66"
+      },
+      {
+        "bytes": 430672,
+        "path": "qairt_exec/lib/aarch64-android/libQnnDspNetRunExtensions.so",
+        "sha256": "8aa818d96470d66e039b6675c798a544f6a9b55b9bac4d596a1a2afd34fb29d2"
+      },
+      {
+        "bytes": 250144,
+        "path": "qairt_exec/lib/aarch64-android/libQnnDspV66CalculatorStub.so",
+        "sha256": "58a751ef6553bb153a6ebb10e6494b838b66839747aa7e917b729801eb2fb880"
+      },
+      {
+        "bytes": 321512,
+        "path": "qairt_exec/lib/aarch64-android/libQnnDspV66Stub.so",
+        "sha256": "775cb862ed35febcae931625cfeca1283d0319cf0e7fade7f48ccfbcd74f12c6"
+      },
+      {
+        "bytes": 792408,
+        "path": "qairt_exec/lib/aarch64-android/libQnnGenAiTransformer.so",
+        "sha256": "c976d748c02f58934d0adc2cca19815524f186eadb3293d003573126a111d167"
+      },
+      {
+        "bytes": 1736920,
+        "path": "qairt_exec/lib/aarch64-android/libQnnGenAiTransformerCpuOpPkg.so",
+        "sha256": "7fd52b130d7bbe19e9ca946af0bf59d231730972737cda48d315564e681113a1"
+      },
+      {
+        "bytes": 234608,
+        "path": "qairt_exec/lib/aarch64-android/libQnnGenAiTransformerModel.so",
+        "sha256": "5b648f38b9541ac14e40597a345d436e030f801c2b5f80c22e4c2813205a8197"
+      },
+      {
+        "bytes": 6416824,
+        "path": "qairt_exec/lib/aarch64-android/libQnnGpu.so",
+        "sha256": "314e33c5ce27219979581e7ef6c5ce114d4d5ef37501bafca2a83492c1e14694"
+      },
+      {
+        "bytes": 425344,
+        "path": "qairt_exec/lib/aarch64-android/libQnnGpuNetRunExtensions.so",
+        "sha256": "5fbdad61dce2ea05589af27e25ad17fc408b1011425c68683daf96b6daf31fec"
+      },
+      {
+        "bytes": 637832,
+        "path": "qairt_exec/lib/aarch64-android/libQnnGpuProfilingReader.so",
+        "sha256": "602e201b769bb81f926a6c2f63341c1e7e04876682fbb5834426cfeb37665106"
+      },
+      {
+        "bytes": 985928,
+        "path": "qairt_exec/lib/aarch64-android/libQnnHta.so",
+        "sha256": "a811e2315fdf7b96d272f6e2970cdf56842ccdbcb3da3c3f74be0afa05a3f6df"
+      },
+      {
+        "bytes": 414712,
+        "path": "qairt_exec/lib/aarch64-android/libQnnHtaNetRunExtensions.so",
+        "sha256": "2921942706e067cc91fe8b463edb980bd38968c8bc074dfd2cf56c623eda8885"
+      },
+      {
+        "bytes": 2778176,
+        "path": "qairt_exec/lib/aarch64-android/libQnnHtp.so",
+        "sha256": "090e993822564851eab1405aff171643b21e644e3f696c95c96f2732aaed813a"
+      },
+      {
+        "bytes": 906000,
+        "path": "qairt_exec/lib/aarch64-android/libQnnHtpNetRunExtensions.so",
+        "sha256": "950421ba9354c68e93fd73aaf37842d5963464292aaaf36aa327cc002a8f0064"
+      },
+      {
+        "bytes": 3333288,
+        "path": "qairt_exec/lib/aarch64-android/libQnnHtpOptraceProfilingReader.so",
+        "sha256": "65fb15ad12dcb4cd84a2b98e9105fb53f935b0d3cf3b70795378b7608e703d4c"
+      },
+      {
+        "bytes": 85539184,
+        "path": "qairt_exec/lib/aarch64-android/libQnnHtpPrepare.so",
+        "sha256": "09b1c15c62b6875af49ffd3d841961c098b85c367f584fee370f986c62511298"
+      },
+      {
+        "bytes": 624312,
+        "path": "qairt_exec/lib/aarch64-android/libQnnHtpProfilingReader.so",
+        "sha256": "99ec082817b24066bb9594482bc7153d3e3a3f9dfd6fe82c129c2bab05c2d068"
+      },
+      {
+        "bytes": 250712,
+        "path": "qairt_exec/lib/aarch64-android/libQnnHtpV68CalculatorStub.so",
+        "sha256": "d4d8333943b537511d454b94a22ae9f9d022b2b20e40d54512e2da98303e81a7"
+      },
+      {
+        "bytes": 672648,
+        "path": "qairt_exec/lib/aarch64-android/libQnnHtpV68Stub.so",
+        "sha256": "8cd5522ac8bd2919d0d65693eaaff202e208b575143bfd736fef81e2c47ae9c0"
+      },
+      {
+        "bytes": 250712,
+        "path": "qairt_exec/lib/aarch64-android/libQnnHtpV69CalculatorStub.so",
+        "sha256": "a458fd6fc4938d2fc9f1cc2ec0d25aa7e30cad341b9bb5a7ac68c07e08b0fffb"
+      },
+      {
+        "bytes": 672648,
+        "path": "qairt_exec/lib/aarch64-android/libQnnHtpV69Stub.so",
+        "sha256": "5703b806359918f81165a31a7eff3abcff9e724a2c2931b1a2f18bfd703bd92d"
+      },
+      {
+        "bytes": 250712,
+        "path": "qairt_exec/lib/aarch64-android/libQnnHtpV73CalculatorStub.so",
+        "sha256": "328500aeeb983309f397178e4b11e6d90a3e48f784f46cfa12b60840eaa7b331"
+      },
+      {
+        "bytes": 679168,
+        "path": "qairt_exec/lib/aarch64-android/libQnnHtpV73Stub.so",
+        "sha256": "ef0d0cbbdd423a81c19fb0f60d1451b602bcd60c08b3564f1c82e632fb59f157"
+      },
+      {
+        "bytes": 250712,
+        "path": "qairt_exec/lib/aarch64-android/libQnnHtpV75CalculatorStub.so",
+        "sha256": "97bc9b542017e857e2de9ebf59c399607e317e33c13cf9886525e0910a148262"
+      },
+      {
+        "bytes": 679168,
+        "path": "qairt_exec/lib/aarch64-android/libQnnHtpV75Stub.so",
+        "sha256": "07eb7cd2e68f6fb82bfbcd6e2cf09455670fb5ca31537e9b6725d044d378c306"
+      },
+      {
+        "bytes": 250712,
+        "path": "qairt_exec/lib/aarch64-android/libQnnHtpV79CalculatorStub.so",
+        "sha256": "98fc84063f17dda1fede0149c81fae987a4a8feb31965d6961f886993336153d"
+      },
+      {
+        "bytes": 679168,
+        "path": "qairt_exec/lib/aarch64-android/libQnnHtpV79Stub.so",
+        "sha256": "005bd3de462851ce3dde55260d7d8560d6d07dbc309f554780b1f6412e6d9df1"
+      },
+      {
+        "bytes": 250712,
+        "path": "qairt_exec/lib/aarch64-android/libQnnHtpV81CalculatorStub.so",
+        "sha256": "d8e1b289614e6285dafb460949e7a318c74ba656875dd8f1d4a1b80b31078aad"
+      },
+      {
+        "bytes": 755464,
+        "path": "qairt_exec/lib/aarch64-android/libQnnHtpV81Stub.so",
+        "sha256": "f85cc467bda23b8253f085c4fa2680a1428e5b94c6c5a3e572abaa20c5b13ba1"
+      },
+      {
+        "bytes": 1741288,
+        "path": "qairt_exec/lib/aarch64-android/libQnnIr.so",
+        "sha256": "982d7e403eec3de800219bf8de7039e7fa020749618e0505f831fcecfd2bd85d"
+      },
+      {
+        "bytes": 670744,
+        "path": "qairt_exec/lib/aarch64-android/libQnnJsonProfilingReader.so",
+        "sha256": "06f0cb388dbf332fc1941b6fad01325067583d5737311f394fffdf7383466c85"
+      },
+      {
+        "bytes": 790328,
+        "path": "qairt_exec/lib/aarch64-android/libQnnLpai.so",
+        "sha256": "6463a38f40bcb68d754f12324357ae465b9ea037b2110f129215a994731336fd"
+      },
+      {
+        "bytes": 699584,
+        "path": "qairt_exec/lib/aarch64-android/libQnnLpaiNetRunExtensions.so",
+        "sha256": "8c5e66339797002a18415bbeae6caaf320c5ffacb54b448b6d2087d7bb5cf78d"
+      },
+      {
+        "bytes": 682608,
+        "path": "qairt_exec/lib/aarch64-android/libQnnLpaiProfilingReader.so",
+        "sha256": "16fc3fb54d23512f25483d0cd8f6f8fb682a36bb9f27ac96fdac18ddf7beb4d6"
+      },
+      {
+        "bytes": 302480,
+        "path": "qairt_exec/lib/aarch64-android/libQnnLpaiStub.so",
+        "sha256": "7f07233731857da8a5778a611da78433bf07a7a069ebed9b1d839be4af4d43ef"
+      },
+      {
+        "bytes": 2699344,
+        "path": "qairt_exec/lib/aarch64-android/libQnnModelDlc.so",
+        "sha256": "c3ebc8bb3434f256f39942008a8ab6325674c59adbfec165a1b74aa3613806fc"
+      },
+      {
+        "bytes": 917112,
+        "path": "qairt_exec/lib/aarch64-android/libQnnNetRunDirectV79Stub.so",
+        "sha256": "1c2b1b2de431fa77baa7de1b5b5fd9fb4003e0272e8334d23ad71886f7950f8c"
+      },
+      {
+        "bytes": 974576,
+        "path": "qairt_exec/lib/aarch64-android/libQnnNetRunDirectV81Stub.so",
+        "sha256": "c616f002009d4675793898c347694996deb0290a2280e56dc51c2fe65a9d6404"
+      },
+      {
+        "bytes": 788048,
+        "path": "qairt_exec/lib/aarch64-android/libQnnSaver.so",
+        "sha256": "5dbe2eb7f17c217d035ce288b75b6cc9445df551739dba787ccb55097af48b0e"
+      },
+      {
+        "bytes": 2983560,
+        "path": "qairt_exec/lib/aarch64-android/libQnnSystem.so",
+        "sha256": "7e69258e1278cc9b2bb62dbc6e2a52c227a100d6505a13fd6324a87993d0bba8"
+      },
+      {
+        "bytes": 1027120,
+        "path": "qairt_exec/lib/aarch64-android/libQnnTFLiteDelegate.so",
+        "sha256": "125f9b8a9718bd3e4e3b391cf2e04219050a41e36a7523196ffb949e8e6926bd"
+      },
+      {
+        "bytes": 20432472,
+        "path": "qairt_exec/lib/aarch64-android/libSNPE.so",
+        "sha256": "faefe21313a4ad89bfa0276b65e20459c7a296a372d2c9655cbc691f55718130"
+      },
+      {
+        "bytes": 1624672,
+        "path": "qairt_exec/lib/aarch64-android/libSnpeDspV66Stub.so",
+        "sha256": "86d4efffb9ca56eedaf192c0aca8cf4b7538e1982003aa57108d4a4819499c5a"
+      },
+      {
+        "bytes": 985928,
+        "path": "qairt_exec/lib/aarch64-android/libSnpeHta.so",
+        "sha256": "343705d4b3474b418140b0418a12c3ae1a4d1429ba5129e98dd9bbf4bb4f6794"
+      },
+      {
+        "bytes": 85539184,
+        "path": "qairt_exec/lib/aarch64-android/libSnpeHtpPrepare.so",
+        "sha256": "ac793c0bb75a2e3ba21bea9845353de6e8ed63a92d95a237965e0d5a1f659320"
+      },
+      {
+        "bytes": 250712,
+        "path": "qairt_exec/lib/aarch64-android/libSnpeHtpV68CalculatorStub.so",
+        "sha256": "6b46f260a30a1794477de2b17d60d61df2d7d68218bdf132a2ce84d572c25e2c"
+      },
+      {
+        "bytes": 672664,
+        "path": "qairt_exec/lib/aarch64-android/libSnpeHtpV68Stub.so",
+        "sha256": "94e91ee5ae2cbc4480ce4905d2cc9a08f7ce80dbe7fa5d7bbeaba924c9aedc4e"
+      },
+      {
+        "bytes": 250712,
+        "path": "qairt_exec/lib/aarch64-android/libSnpeHtpV69CalculatorStub.so",
+        "sha256": "f052ca448760ce966e42ad1a8901d24bbe23e537a8ca23a46a3f751f30fb24ad"
+      },
+      {
+        "bytes": 672664,
+        "path": "qairt_exec/lib/aarch64-android/libSnpeHtpV69Stub.so",
+        "sha256": "d206092e2c3a549bb4ba47341535040afc4bdca482f56209e58083b0c3975688"
+      },
+      {
+        "bytes": 250712,
+        "path": "qairt_exec/lib/aarch64-android/libSnpeHtpV73CalculatorStub.so",
+        "sha256": "5dfc74c4edb96dfbd1a14e988acaafebc8f7390ec32c4b7562bea963898a969e"
+      },
+      {
+        "bytes": 679168,
+        "path": "qairt_exec/lib/aarch64-android/libSnpeHtpV73Stub.so",
+        "sha256": "a2ca430c2568cbb484590c84677f13e9ae10a4b340eaa520d84326d48b1ef8d2"
+      },
+      {
+        "bytes": 250712,
+        "path": "qairt_exec/lib/aarch64-android/libSnpeHtpV75CalculatorStub.so",
+        "sha256": "3bbfcb6f73498c6c534ead1b4797468f7cb654a0c63eff71a47e323a2929ac0b"
+      },
+      {
+        "bytes": 679168,
+        "path": "qairt_exec/lib/aarch64-android/libSnpeHtpV75Stub.so",
+        "sha256": "9a3adf88871b3b8738e4268871ff7e7712ff2d4679615fcc0bddc33ea9cd7206"
+      },
+      {
+        "bytes": 250712,
+        "path": "qairt_exec/lib/aarch64-android/libSnpeHtpV79CalculatorStub.so",
+        "sha256": "708d29023d760d2d4c57c5b014718c37b8f26920deae9c0509e8e9209f8a8f99"
+      },
+      {
+        "bytes": 679168,
+        "path": "qairt_exec/lib/aarch64-android/libSnpeHtpV79Stub.so",
+        "sha256": "96dc62317fb8f8852b8561520b6fac8ac7a58b8352be0793c50f690104c5773f"
+      },
+      {
+        "bytes": 250712,
+        "path": "qairt_exec/lib/aarch64-android/libSnpeHtpV81CalculatorStub.so",
+        "sha256": "f7b7ac1474a3148c5b38fd2cb0b7c54b47d450eed3630e25092b2b9709738378"
+      },
+      {
+        "bytes": 755464,
+        "path": "qairt_exec/lib/aarch64-android/libSnpeHtpV81Stub.so",
+        "sha256": "4141039889330bacca937fd54ef22a8c01c5c7a5cfbc6a6a27b9c09b6b9214b8"
+      },
+      {
+        "bytes": 250144,
+        "path": "qairt_exec/lib/aarch64-android/libcalculator.so",
+        "sha256": "bd4b504e55d90ee175c272b08bca5b62627a840ce783641e8a11c98c61f30ccc"
+      },
+      {
+        "bytes": 2400192,
+        "path": "qairt_exec/lib/aarch64-android/libhta_hexagon_runtime_qnn.so",
+        "sha256": "37019611eb370f25008e26b86016efb5c90c097184ef38cc79a7d3d3bbbca340"
+      },
+      {
+        "bytes": 2400192,
+        "path": "qairt_exec/lib/aarch64-android/libhta_hexagon_runtime_snpe.so",
+        "sha256": "37019611eb370f25008e26b86016efb5c90c097184ef38cc79a7d3d3bbbca340"
+      },
+      {
+        "bytes": 5656,
+        "path": "qairt_exec/lib/hexagon-v79/unsigned/libCalculator_skel.so",
+        "sha256": "df61851440b10d202c97db87daa34d4d457ed145676d157b2794b20cabc83ef7"
+      },
+      {
+        "bytes": 26884,
+        "path": "qairt_exec/lib/hexagon-v79/unsigned/libQnnHexagonSkel_dspApp.so",
+        "sha256": "d785ada354acc62fc9be08881e564ad2a7f56f562fbaad6af93bd03ed16c140f"
+      },
+      {
+        "bytes": 14754848,
+        "path": "qairt_exec/lib/hexagon-v79/unsigned/libQnnHtpV79.so",
+        "sha256": "e0c8f9bfd44024acbeaa59a7119a51f52ef78e24a4503a630142c3736d73e648"
+      },
+      {
+        "bytes": 10975268,
+        "path": "qairt_exec/lib/hexagon-v79/unsigned/libQnnHtpV79Skel.so",
+        "sha256": "41f83395ed4b1bcfc43417a1b82f3f137c825747711c9ab4c9d50034ed198f98"
+      },
+      {
+        "bytes": 2013852,
+        "path": "qairt_exec/lib/hexagon-v79/unsigned/libQnnNetRunDirectV79Skel.so",
+        "sha256": "10a458695d6ef02be7fd0f70b0636d8fef74dd6163b837c42225b06c47d169f2"
+      },
+      {
+        "bytes": 318312,
+        "path": "qairt_exec/lib/hexagon-v79/unsigned/libQnnSaver.so",
+        "sha256": "1e5f8f77a932995a75d175b610ad6834913bba4547103ff9f8e2e254a280bf08"
+      },
+      {
+        "bytes": 199772,
+        "path": "qairt_exec/lib/hexagon-v79/unsigned/libQnnSystem.so",
+        "sha256": "8b86ca9b1faff6cb4a0828e41d177dc6d2666506a8cb5c10b67dcba244155c84"
+      },
+      {
+        "bytes": 11292972,
+        "path": "qairt_exec/lib/hexagon-v79/unsigned/libSnpeHtpV79Skel.so",
+        "sha256": "98cb6a6c61ffd0bf18fd2dc88616a50f2875c897549a5e816c5e587f5c3641b0"
+      },
+      {
+        "bytes": 5656,
+        "path": "qairt_exec/lib/hexagon-v81/unsigned/libCalculator_skel.so",
+        "sha256": "2fb338bb671155d89a4ebb6f81ee211c46fcde9b7d1fc8a5f4d528d98c494c9b"
+      },
+      {
+        "bytes": 256836,
+        "path": "qairt_exec/lib/hexagon-v81/unsigned/libQnnHexagonSkel_dspApp.so",
+        "sha256": "7eb9343a15012136fe604157e021a6e90b4e850dd35a677e6b5daecca75743d8"
+      },
+      {
+        "bytes": 15314568,
+        "path": "qairt_exec/lib/hexagon-v81/unsigned/libQnnHtpV81.so",
+        "sha256": "9ded421928e479d97077adfa2a436f11b8f193e95dbb8de9c7e4dde1b87d9740"
+      },
+      {
+        "bytes": 11797220,
+        "path": "qairt_exec/lib/hexagon-v81/unsigned/libQnnHtpV81Skel.so",
+        "sha256": "66719325303f22562679edfed509d540cbff53ac59127b6e4ead84b62f1dc655"
+      },
+      {
+        "bytes": 2634788,
+        "path": "qairt_exec/lib/hexagon-v81/unsigned/libQnnNetRunDirectV81Skel.so",
+        "sha256": "251532750371bd5ec699bfb5b41bc5b6c11bf6e72f45768db629cacce3dabfe3"
+      },
+      {
+        "bytes": 927396,
+        "path": "qairt_exec/lib/hexagon-v81/unsigned/libQnnSaver.so",
+        "sha256": "9fc7e0f99ee560602bef28a505d903ae51093b1440543403791fc00335d06805"
+      },
+      {
+        "bytes": 809228,
+        "path": "qairt_exec/lib/hexagon-v81/unsigned/libQnnSystem.so",
+        "sha256": "c548680607536e9b633a6f6680b92779f6ba8bed92b34dbcc0d0b104963b4735"
+      },
+      {
+        "bytes": 12098220,
+        "path": "qairt_exec/lib/hexagon-v81/unsigned/libSnpeHtpV81Skel.so",
+        "sha256": "f88fc62eb2fddf3a266555349c66256b12d7893517fd841da836c427dbc33242"
+      },
+      {
+        "bytes": 12216,
+        "path": "qairt_exec/lib/hexagon-v81/unsigned/libqnnhtpv81.cat",
+        "sha256": "c1c13240215fff6480a6e59b5590255e4b583f07239ccfb2602f271655459830"
+      },
+      {
+        "bytes": 12223,
+        "path": "qairt_exec/lib/hexagon-v81/unsigned/libsnpehtpv81.cat",
+        "sha256": "896e77e4f50103f130fb50d0b0756e0dd9e9e6a4261bcf4d6948b0905657e22e"
+      }
+    ],
+    "top_level_stderr": {
+      "bytes": 0,
+      "path": "/tmp/wavec_qnn_model_library_load_diagnostics_phone_20260702T2235Z/phone_stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "top_level_stdout": {
+      "bytes": 0,
+      "path": "/tmp/wavec_qnn_model_library_load_diagnostics_phone_20260702T2235Z/phone_stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "qairt_exec_root": {
+    "path": "/data/data/com.termux/files/home/polymath_gemma4_gate/wavec/full_gemma_qnn_export/qairt_exec",
+    "qnn_context_binary_generator_executable_from_qairt_exec_root": true,
+    "staged_under_termux_home": true,
+    "tool_identities": [
+      {
+        "bytes": 3866664,
+        "path": "qairt_exec/bin/aarch64-android/qnn-context-binary-generator",
+        "sha256": "4b2b1bd2752bd119e3a896a4444433f0bbd6e69f887b47d5148337d935a2de1e"
+      },
+      {
+        "bytes": 833680,
+        "path": "qairt_exec/bin/aarch64-android/qnn-context-binary-utility",
+        "sha256": "a2b96364ee44008ca244848ff91cab644bd94b63767e950ecaf22f69471e2ffb"
+      },
+      {
+        "bytes": 1026768,
+        "path": "qairt_exec/bin/aarch64-android/qnn-gpu-target-server",
+        "sha256": "3b5deb6e42ee6fd55577744ea7be6700f00932f2daa609cf41467a4cc31b785b"
+      },
+      {
+        "bytes": 4462720,
+        "path": "qairt_exec/bin/aarch64-android/qnn-net-run",
+        "sha256": "bd98535e89e5ea36b2c08891013e008d48738c2ffcf87c30352a8accec2fe20e"
+      },
+      {
+        "bytes": 881864,
+        "path": "qairt_exec/bin/aarch64-android/qnn-platform-validator",
+        "sha256": "9a2af9cd25a0c447969481f2926fef7031d76e054fe52cb25f252aa64153192e"
+      },
+      {
+        "bytes": 672984,
+        "path": "qairt_exec/bin/aarch64-android/qnn-profile-viewer",
+        "sha256": "1f607b595c0db25265395ce332346ae8e25019e128ef447cb4420cdef14e9560"
+      },
+      {
+        "bytes": 3307488,
+        "path": "qairt_exec/bin/aarch64-android/qnn-throughput-net-run",
+        "sha256": "b6fb3f81e1a7bdb3ca68491a7d88107b822b75b700efadb786ed0598f78d3bc6"
+      },
+      {
+        "bytes": 2778176,
+        "path": "qairt_exec/lib/aarch64-android/libQnnHtp.so",
+        "sha256": "090e993822564851eab1405aff171643b21e644e3f696c95c96f2732aaed813a"
+      }
+    ]
+  },
+  "raw_boundary": {
+    "outside_git_generated_payload_roots": [
+      "/private/tmp/wavec_qnn_model_library_load_diagnostics_pathset_20260702T220500Z",
+      "/private/tmp/wavec_qnn_model_library_load_diagnostics_pathset_20260702T220500Z/out",
+      "/data/data/com.termux/files/home/polymath_gemma4_gate/wavec/full_gemma_qnn_export"
+    ],
+    "repo_artifacts_metadata_only": true,
+    "repo_report_root": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/polar_phase34_consumer_preflight/active_wave/qnn_cpp_ffn_residual_generator",
+    "repo_report_root_raw_suffix_hits": [],
+    "repo_report_root_raw_suffix_scan_count": 0
+  },
+  "repo": {
+    "dirty_status_observed_count": 237,
+    "expected_commit": "7c33a5f38d65d4815a94d2ae26cbb5abd43b1052",
+    "frozen_artifact_checks": [
+      {
+        "actual_sha256": "9188f60e531251453e9a8188aaadbbb037cd1fd447e501ef0555be6b828bed06",
+        "expected_sha256": "9188f60e531251453e9a8188aaadbbb037cd1fd447e501ef0555be6b828bed06",
+        "match": true,
+        "path": "scripts/host/run_wavec_qnn_cpp_ffn_residual_generator.py"
+      },
+      {
+        "actual_sha256": "a4eda02838d3904b029d2d7bd549c6eb27ca9797cc274fb4d29d0acbe89697b5",
+        "expected_sha256": "a4eda02838d3904b029d2d7bd549c6eb27ca9797cc274fb4d29d0acbe89697b5",
+        "match": true,
+        "path": "tests/test_wavec_qnn_cpp_ffn_residual_generator.py"
+      },
+      {
+        "actual_sha256": "98b17bd9fd16a23b24785562d33cf69b3eb8f958efbf93c171283932f13680d6",
+        "expected_sha256": "98b17bd9fd16a23b24785562d33cf69b3eb8f958efbf93c171283932f13680d6",
+        "match": true,
+        "path": "runtime/reports/orchestration/WAVEC_QNN_MODEL_LIBRARY_LOAD_DIAGNOSTICS_PATHSET_20260702T220500Z.json"
+      },
+      {
+        "actual_sha256": "0da238e1bbcc278ee70e2948e1fc6dd9278749eb06c383ba1440f93ac4169a04",
+        "expected_sha256": "0da238e1bbcc278ee70e2948e1fc6dd9278749eb06c383ba1440f93ac4169a04",
+        "match": true,
+        "path": "runtime/reports/orchestration/WAVEC_QNN_MODEL_LIBRARY_LOAD_DIAGNOSTICS_HANDOFF_20260702T220500Z.json"
+      },
+      {
+        "actual_sha256": "e3cacea572dd9d9fb46a93d17dd69ece0e82d95a2c801a75aab65262f556617a",
+        "expected_sha256": "e3cacea572dd9d9fb46a93d17dd69ece0e82d95a2c801a75aab65262f556617a",
+        "match": true,
+        "path": "runtime/reports/polar_phase34_consumer_preflight/active_wave/qnn_cpp_ffn_residual_generator/qnn_context_exec_route_execution_20260702T2145Z.json"
+      }
+    ],
+    "head": "7c33a5f38d65d4815a94d2ae26cbb5abd43b1052",
+    "head_matches_expected": true,
+    "origin_gemma4_megakernel_native_training": "7c33a5f38d65d4815a94d2ae26cbb5abd43b1052",
+    "origin_matches_expected": true
+  },
+  "runpod_qairt_host_root": {
+    "checks": [
+      {
+        "actual_sha256": "dcbe22ca914d6725c00f170fd2dc16082e88e3b2de773dd597e59a11c2f87abb",
+        "expected_sha256": "dcbe22ca914d6725c00f170fd2dc16082e88e3b2de773dd597e59a11c2f87abb",
+        "match": true,
+        "path": "/tmp/wavec_runpod_qairt_host_root_20260702T205000Z/qairt_host/include/QNN/QnnTypes.h"
+      },
+      {
+        "actual_sha256": "e0ace2c06914a51ccfcb307ec6a3746127024147bac4ee58fc480b43de48ee0a",
+        "expected_sha256": "e0ace2c06914a51ccfcb307ec6a3746127024147bac4ee58fc480b43de48ee0a",
+        "match": true,
+        "path": "/tmp/wavec_runpod_qairt_host_root_20260702T205000Z/qairt_host/include/QNN/QnnOpDef.h"
+      },
+      {
+        "actual_sha256": "e818434b7110885f0871a63429d6f1ea7b281fce6982cf453a4e7c1fe71b43bb",
+        "expected_sha256": "e818434b7110885f0871a63429d6f1ea7b281fce6982cf453a4e7c1fe71b43bb",
+        "match": true,
+        "path": "/tmp/wavec_runpod_qairt_host_root_20260702T205000Z/qairt_host/include/QNN/QnnInterface.h"
+      },
+      {
+        "actual_sha256": "9b61ae746cf38769ba3929976c1ce6bf5b9d55a07b1620bb710ffb5f3496ff0b",
+        "expected_sha256": "9b61ae746cf38769ba3929976c1ce6bf5b9d55a07b1620bb710ffb5f3496ff0b",
+        "match": true,
+        "path": "/tmp/wavec_runpod_qairt_host_root_20260702T205000Z/qairt_host/share/QNN/converter/jni/QnnModel.cpp"
+      },
+      {
+        "actual_sha256": "ba4e6ef9faedcd538f3c7ead91495744a7976d4f71504e8a984a772eebf2bdb8",
+        "expected_sha256": "ba4e6ef9faedcd538f3c7ead91495744a7976d4f71504e8a984a772eebf2bdb8",
+        "match": true,
+        "path": "/tmp/wavec_runpod_qairt_host_root_20260702T205000Z/qairt_host/share/QNN/converter/jni/QnnWrapperUtils.cpp"
+      },
+      {
+        "actual_sha256": "cd175508b73513119462bf9a6f2c326e28175923b03e25044f931e6242c556e9",
+        "expected_sha256": "cd175508b73513119462bf9a6f2c326e28175923b03e25044f931e6242c556e9",
+        "match": true,
+        "path": "/tmp/wavec_runpod_qairt_host_root_20260702T205000Z/qairt_host/share/QNN/converter/jni/linux/QnnModelPal.cpp"
+      }
+    ],
+    "consumed_as_QAIRT_HOST_ROOT": true,
+    "root": "/tmp/wavec_runpod_qairt_host_root_20260702T205000Z/qairt_host"
+  },
+  "schema_version": "waveC_qnn_model_library_load_diagnostics_execution_report_v1",
+  "secret_scan": {
+    "hits": [],
+    "repo_report_root_secret_shaped_scan_count": 0
+  },
+  "status": "blocked",
+  "status_classification": "context_generation_failure"
+}

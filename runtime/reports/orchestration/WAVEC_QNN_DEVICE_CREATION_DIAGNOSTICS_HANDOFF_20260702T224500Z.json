@@ -1,0 +1,96 @@
+{
+  "addressed_first_missing_green_field": "context_generation_failure:qnn_context_binary_generator_rejects_probe_graph:device_creation_failure",
+  "consumed_execution_report": {
+    "path": "runtime/reports/polar_phase34_consumer_preflight/active_wave/qnn_cpp_ffn_residual_generator/qnn_model_library_load_diagnostics_execution_20260702T2235Z.json",
+    "sha256": "cdc9ada6a0c2b7b367c93ac2c8a567e87a50a41a22e980347497bc688fb98bbc"
+  },
+  "generated_plan_only_package": {
+    "probe_ladder_context_script_sha256": "2e9255714020ba325f6709163529513084d50863b6b25c9cda6e994b36bd822e",
+    "raw_suffix_scan_count": 0,
+    "root": "/tmp/wavec_qnn_device_creation_diagnostics_pathset_20260702T224500Z"
+  },
+  "governing_gate": "WaveC_full_gemma_qnn_htp_forward_consumed_tensor_route",
+  "local_verification": [
+    {
+      "command": "python3.11 -m py_compile scripts/host/run_wavec_qnn_cpp_ffn_residual_generator.py tests/test_wavec_qnn_cpp_ffn_residual_generator.py",
+      "result": "pass"
+    },
+    {
+      "command": "python3.11 scripts/host/run_wavec_qnn_cpp_ffn_residual_generator.py --print-schema",
+      "result": "pass"
+    },
+    {
+      "command": "python3.11 -m pytest tests/test_wavec_qnn_cpp_ffn_residual_generator.py tests/test_wavec_full_gemma_qnn.py tests/test_phase4_bridge_cell.py tests/test_wavec_gemma_qnn_exporter.py",
+      "result": "52 passed in 2.57s"
+    },
+    {
+      "command": "raw suffix scan over repo pathset report and fresh plan-only package",
+      "result": "0"
+    }
+  ],
+  "nonclaims": [
+    "no C5 pass",
+    "no learning/model-quality claim",
+    "no Phase3/4 readiness",
+    "no full-Gemma HTP forward claim until QNN context/net-run/profile/Phase4 consumption prove it",
+    "no 100k/1M authority",
+    "no raw payloads in git",
+    "no secrets printed",
+    "no Comet-backed accepted run"
+  ],
+  "pipeline_receiving_checklist": [
+    "source/test/pathset SHAs match current files",
+    "context scripts run qnn-platform-validator before first probe context generation",
+    "ADSP_LIBRARY_PATH includes staged hexagon-v81/v79/v75 unsigned paths and /dsp",
+    "optional QNN_BACKEND_CONFIG is wired to --config_file and fails closed if missing",
+    "backend and skeleton identities are emitted before device creation diagnosis",
+    "full island remains gated until ordered probes are green",
+    "raw model/context/tensor/generated QNN payloads remain outside git"
+  ],
+  "post_custody_execution_command_shape": {
+    "owner": "Engineering/Meta constructs bounded GO for Execution after custody",
+    "shape": "rerun WaveC QNN probe ladder from frozen source using RunPod QAIRT_HOST_ROOT, repaired NDK root, Termux phone work root, selected materialized weights, and optional QNN_BACKEND_CONFIG only if Engineering/Meta supplies one; stop at platform-validator or first probe failure before full island"
+  },
+  "repair_contract": {
+    "device_preflight": "Generated phone context scripts stage QAIRT tools under Termux home, then run qnn-platform-validator --backend dsp --libVersion --coreVersion --testBackend before the first probe context generation.",
+    "diagnostics": [
+      "capture LD_LIBRARY_PATH and ADSP_LIBRARY_PATH",
+      "capture backend libQnnHtp.so SHA",
+      "capture HTP skeleton/catalog file list and SHA256s",
+      "capture platform-validator stdout/stderr under qnn_device_diagnostics",
+      "capture optional QNN backend config path and SHA when provided"
+    ],
+    "fail_closed_fields": [
+      "context_generation_failure:qnn_htp_device_creation_platform_validator_failed",
+      "context_generation_failure:qnn_backend_config_missing",
+      "context_generation_failure:qnn_context_binary_generator_permission_denied_or_unstageable",
+      "context_generation_failure:qnn_context_binary_generator_rejects_probe_graph"
+    ],
+    "ordered_probe_ladder_preserved": [
+      "primitive_rmsnorm_decomposition_probe",
+      "primitive_gelu_tanh_lowering_probe",
+      "quantized_tiny_matmul_static_weight_probe",
+      "full_gemma4_e4b_ffn_residual_layer0_probe gated behind prior greens"
+    ]
+  },
+  "research_escalation": "active_parallel_signal_lane_if_QNN_device_creation_backend_ADSP_unsigned_PD_or_runtime_envelope_changes_stop_conditions",
+  "schema_version": "waveC_qnn_device_creation_diagnostics_handoff_v1",
+  "source_pathset": [
+    {
+      "bytes": 80401,
+      "path": "scripts/host/run_wavec_qnn_cpp_ffn_residual_generator.py",
+      "sha256": "d6e92693abc3a75f30036e2ecfa6366498d78551167cfbe1ae4b0d091affe8f8"
+    },
+    {
+      "bytes": 19602,
+      "path": "tests/test_wavec_qnn_cpp_ffn_residual_generator.py",
+      "sha256": "ba1a32936c622d223371676281fe3892df80f9aa3b4bac326cb904f42428f240"
+    },
+    {
+      "bytes": 25789,
+      "path": "runtime/reports/orchestration/WAVEC_QNN_DEVICE_CREATION_DIAGNOSTICS_PATHSET_20260702T224500Z.json",
+      "sha256": "d26ae790e3a955fe683c8480186976e1e058884675d55d878074c5f9d9e68d25"
+    }
+  ],
+  "status": "waveC_qnn_device_creation_diagnostics_pathset_ready_for_pipeline"
+}

@@ -352,6 +352,12 @@ def test_generator_writes_fail_closed_source_package_outside_git(tmp_path: Path)
     assert payload["execution_contract"]["qairt_wrapper_source_route"]["failure_field"] == (
         "model_library_failure:missing_host_qairt_wrapper_sources"
     )
+    assert payload["execution_contract"]["qnn_backend_device_preflight"]["platform_validator"] == (
+        "qnn-platform-validator --backend dsp --libVersion --coreVersion --testBackend"
+    )
+    assert payload["execution_contract"]["qnn_backend_device_preflight"]["failure_field"] == (
+        "context_generation_failure:qnn_htp_device_creation_platform_validator_failed"
+    )
     assert (work_root / "scripts" / "build_android_model_library.sh").is_file()
     assert (work_root / "scripts" / "generate_phone_context.sh").is_file()
     assert (work_root / "src" / "probes" / "primitive_rmsnorm_decomposition_probe.cpp").is_file()
@@ -419,6 +425,17 @@ def test_generator_writes_fail_closed_source_package_outside_git(tmp_path: Path)
     assert "qnn_context_binary_generator_permission_denied_or_unstageable" in context_script
     assert "Q_SRC=/data/local/tmp/qairt-2.44" in context_script
     assert "Q=\"$Q_EXEC\"" in context_script
+    assert "qnn-platform-validator" in context_script
+    assert "--backend dsp" in context_script
+    assert "--testBackend" in context_script
+    assert "QNN_DIAG_DIR" in context_script
+    assert "platform_validator_stdout.log" in context_script
+    assert "platform_validator_stderr.log" in context_script
+    assert "context_generation_failure:qnn_htp_device_creation_platform_validator_failed" in context_script
+    assert "/dsp" in context_script
+    assert "QNN_BACKEND_CONFIG" in context_script
+    assert "CONFIG_ARGS=(--config_file \"$BACKEND_CONFIG\")" in context_script
+    assert "context_generation_failure:qnn_backend_config_missing" in context_script
 
     probe_manifest = json.loads((work_root / "metadata" / "probe_ladder_manifest.json").read_text(encoding="utf-8"))
     assert probe_manifest["stage_order"] == [
