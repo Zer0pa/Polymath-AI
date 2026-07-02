@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import importlib.util
 import json
 import subprocess
 import sys
@@ -11,6 +12,8 @@ from polymath_ai.polar.wavec_gemma_qnn_exporter import (
     EXPECTED_GRAPH,
     EXPECTED_MODEL_ID,
     EXPECTED_MODEL_REVISION,
+    EXPECTED_ORIGINAL_CONFIG_OID,
+    EXPECTED_ORIGINAL_CONFIG_SIZE_BYTES,
     EXPECTED_PRODUCER_KIND,
     EXPORTER_SCHEMA_VERSION,
     REQUIRED_CONFIG,
@@ -22,8 +25,16 @@ SHA_A = "a" * 64
 SHA_B = "b" * 64
 SHA_C = "c" * 64
 PHONE_ROOT = "/data/local/tmp/polymath_gemma4_gate/wavec/full_gemma_qnn_export"
+PHONE_MODEL = (
+    "/data/data/com.termux/files/home/polymath_model_sources/"
+    "gemma4_e4b_7aa32e6889efd6300124851b164f8b364314c3d8/model.safetensors"
+)
+PHONE_MODEL_SHA = "43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651"
+PHONE_MODEL_BYTES = 15_992_595_884
+MODEL_SPEC_SHA = "942c8eb338306edb5afbcc415a1b0bf97ae5e041a26fe5eedd62226fafd04e2b"
 BACKEND = "/data/local/tmp/qairt-2.44/lib/aarch64-android/libQnnHtp.so"
 SCRIPT = Path("scripts/host/run_wavec_gemma_decoder_to_qnn_exporter.py")
+MODEL_SPEC = Path("integrations/gemma4-snapdragon-megakernel/model_spec/gemma4_e4b.json")
 
 
 def valid_exporter_report() -> dict:
@@ -45,6 +56,16 @@ def valid_exporter_report() -> dict:
             "model_safetensors_sha256": SHA_A,
             "model_safetensors_bytes": 15_992_595_884,
             "config": dict(REQUIRED_CONFIG),
+            "config_source": {
+                "kind": "model_spec_derived_metadata",
+                "path": str(MODEL_SPEC),
+                "model_spec_sha256": MODEL_SPEC_SHA,
+                "explicitly_not_original_hf_config_restored": True,
+                "repo_id": EXPECTED_MODEL_ID,
+                "revision": EXPECTED_MODEL_REVISION,
+                "expected_original_config_oid": EXPECTED_ORIGINAL_CONFIG_OID,
+                "expected_original_config_size_bytes": EXPECTED_ORIGINAL_CONFIG_SIZE_BYTES,
+            },
         },
         "graph": {
             "name": EXPECTED_GRAPH,
@@ -166,6 +187,17 @@ def test_rejects_raw_export_payload_in_repo_path() -> None:
     assert "raw_export_payload_path_in_repo" in validate_gemma_decoder_to_qnn_exporter_report(report)
 
 
+def test_rejects_model_spec_config_missing_provenance() -> None:
+    report = valid_exporter_report()
+    report["model_source"]["config_source"]["expected_original_config_oid"] = "wrong"
+    report["model_source"]["config_source"]["explicitly_not_original_hf_config_restored"] = False
+
+    blockers = validate_gemma_decoder_to_qnn_exporter_report(report)
+
+    assert "config_source_original_config_oid_mismatch" in blockers
+    assert "model_spec_config_not_explicitly_labeled_derived" in blockers
+
+
 def test_exporter_script_blocks_without_model_source(tmp_path: Path) -> None:
     report = tmp_path / "report.json"
     result = subprocess.run(
@@ -181,3 +213,81 @@ def test_exporter_script_blocks_without_model_source(tmp_path: Path) -> None:
     assert payload["first_missing_green_field"] == "gemma_e4b_model_safetensors_for_context_export_missing"
     assert "gemma_e4b_model_safetensors_for_context_export_missing" in payload["blockers"]
     assert payload["conversion"]["route"] == "qnn_cpp_model_library_to_context"
+
+
+def test_exporter_accepts_repo_model_spec_hf_config_summary_layout() -> None:
+    module = load_exporter_script_module()
+
+    summary = module.load_config_summary(MODEL_SPEC)
+
+    assert summary == REQUIRED_CONFIG
+
+
+def test_exporter_report_from_repo_model_spec_has_no_config_mismatch(tmp_path: Path) -> None:
+    model = tmp_path / "model.safetensors"
+    model.write_bytes(b"not-real-weights-but-validates-config-reader")
+    report = tmp_path / "report.json"
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            "--model-safetensors",
+            str(model),
+            "--model-config-spec",
+            str(MODEL_SPEC),
+            "--report",
+            str(report),
+        ],
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+
+    payload = json.loads(report.read_text(encoding="utf-8"))
+    assert result.returncode == 2
+    assert payload["model_source"]["config"] == REQUIRED_CONFIG
+    assert not any(blocker.startswith("model_config_") for blocker in payload["blockers"])
+
+
+def test_exporter_accepts_preverified_phone_model_with_repo_model_spec(tmp_path: Path) -> None:
+    report = tmp_path / "report.json"
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            "--model-source-location",
+            "phone_preverified",
+            "--model-safetensors",
+            PHONE_MODEL,
+            "--model-safetensors-sha256",
+            PHONE_MODEL_SHA,
+            "--model-safetensors-bytes",
+            str(PHONE_MODEL_BYTES),
+            "--model-config-spec",
+            str(MODEL_SPEC),
+            "--report",
+            str(report),
+        ],
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+
+    payload = json.loads(report.read_text(encoding="utf-8"))
+    assert result.returncode == 2
+    assert payload["model_source"]["model_safetensors_present"] is True
+    assert payload["model_source"]["model_safetensors_sha256"] == PHONE_MODEL_SHA
+    assert payload["model_source"]["model_safetensors_bytes"] == PHONE_MODEL_BYTES
+    assert payload["model_source"]["config"] == REQUIRED_CONFIG
+    assert "gemma_e4b_model_safetensors_for_context_export_missing" not in payload["blockers"]
+    assert "gemma_e4b_config_json_for_context_export_missing" not in payload["blockers"]
+    assert payload["first_missing_green_field"] == "qnn_context_not_generated"
+
+
+def load_exporter_script_module():
+    spec = importlib.util.spec_from_file_location("wavec_gemma_decoder_to_qnn_exporter_script", SCRIPT)
+    assert spec is not None
+    assert spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module

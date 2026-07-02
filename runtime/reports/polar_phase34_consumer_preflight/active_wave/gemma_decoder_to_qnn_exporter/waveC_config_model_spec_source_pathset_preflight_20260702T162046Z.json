@@ -1,0 +1,189 @@
+{
+  "authority_material": "waveC_gemma_decoder_to_qnn_exporter_preflight_only",
+  "blockers": [
+    "bad_model_library_bytes",
+    "bad_model_library_sha256",
+    "bad_qnn_context_binary_generator_identity_sha256",
+    "bad_qnn_context_binary_utility_identity_sha256",
+    "bad_qnn_context_bytes",
+    "bad_qnn_context_sha256",
+    "bad_qnn_net_run_identity_sha256",
+    "missing_android_ndk_version",
+    "missing_model_library_path",
+    "missing_qairt_root",
+    "missing_qairt_sdk_version",
+    "missing_qnn_backend",
+    "missing_qnn_context_binary_generator_path",
+    "missing_qnn_context_binary_utility_path",
+    "missing_qnn_context_path",
+    "missing_qnn_net_run_path",
+    "model_library_not_outside_git",
+    "model_library_path_in_repo",
+    "qnn_backend_not_libQnnHtp",
+    "qnn_context_binary_generator_path_not_phone_path",
+    "qnn_context_binary_utility_path_not_phone_path",
+    "qnn_context_not_generated",
+    "qnn_context_path_not_phone_path",
+    "qnn_context_utility_graph_mismatch",
+    "qnn_net_run_path_not_phone_path"
+  ],
+  "conversion": {
+    "android_ndk_root": "",
+    "android_ndk_version": "",
+    "cpu_fallback": false,
+    "generated_artifact_contract": {
+      "android_model_library": "outside_work_root/out/libgemma4_e4b_ffn_residual_layer0.so",
+      "source_cpp": "outside_work_root/gemma4_e4b_ffn_residual_layer0_qnn_model.cpp",
+      "weight_blobs": "outside_work_root/weights/*.raw"
+    },
+    "litert_aot_primary": false,
+    "metadata_only_manifest": false,
+    "model_library": {
+      "bytes": 0,
+      "outside_git": false,
+      "path": "",
+      "sha256": ""
+    },
+    "preferred_route": "qnn_cpp_generated_model_library",
+    "qairt_root": "",
+    "qairt_sdk_version": "",
+    "qnn_op_plan": [
+      "RMSNorm(input, input_layernorm.weight, epsilon=1e-6)",
+      "MatMul(normed, mlp.gate_proj.weight^T)",
+      "MatMul(normed, mlp.up_proj.weight^T)",
+      "GELU_TANH(gate)",
+      "ElementWiseMultiply(activation, up)",
+      "MatMul(ffn, mlp.down_proj.weight^T)",
+      "ElementWiseAdd(input, down_projection)"
+    ],
+    "random_init_weights": false,
+    "route": "qnn_cpp_model_library_to_context",
+    "secondary_route": "litert_aot_only_if_same_qnn_context_contract_no_fallback",
+    "uses_real_restored_weights": true
+  },
+  "first_missing_green_field": "qnn_context_not_generated",
+  "full_gemma_htp_forward_claim": false,
+  "graph": {
+    "input": {
+      "bytes": 163840,
+      "dtype": "float32_le",
+      "shape": [
+        1,
+        16,
+        2560
+      ]
+    },
+    "name": "gemma4_e4b_ffn_residual_layer0_forward_island_seq16_hidden2560",
+    "output": {
+      "bytes": 163840,
+      "dtype": "float32_le",
+      "shape": [
+        1,
+        16,
+        2560
+      ]
+    },
+    "producer_kind": "gemma4_e4b_decoder_to_qnn_context_exporter",
+    "qnn_op_plan": [
+      "RMSNorm(input, input_layernorm.weight, epsilon=1e-6)",
+      "MatMul(normed, mlp.gate_proj.weight^T)",
+      "MatMul(normed, mlp.up_proj.weight^T)",
+      "GELU_TANH(gate)",
+      "ElementWiseMultiply(activation, up)",
+      "MatMul(ffn, mlp.down_proj.weight^T)",
+      "ElementWiseAdd(input, down_projection)"
+    ],
+    "scope": "gemma4_e4b_ffn_residual_layer0"
+  },
+  "learning_claim": false,
+  "model_source": {
+    "config": {
+      "head_dim": 256,
+      "hidden_size": 2560,
+      "intermediate_size": 10240,
+      "num_attention_heads": 8,
+      "num_hidden_layers": 42,
+      "num_key_value_heads": 2
+    },
+    "config_json_present": true,
+    "config_path": "integrations/gemma4-snapdragon-megakernel/model_spec/gemma4_e4b.json",
+    "config_source": {
+      "expected_original_config_oid": "080fd8d51bb6e846df168157c9d57b928a2a2687",
+      "expected_original_config_size_bytes": 5105,
+      "explicitly_not_original_hf_config_restored": true,
+      "kind": "model_spec_derived_metadata",
+      "model_spec_sha256": "942c8eb338306edb5afbcc415a1b0bf97ae5e041a26fe5eedd62226fafd04e2b",
+      "path": "integrations/gemma4-snapdragon-megakernel/model_spec/gemma4_e4b.json",
+      "repo_id": "google/gemma-4-E4B",
+      "revision": "7aa32e6889efd6300124851b164f8b364314c3d8"
+    },
+    "model_id": "google/gemma-4-E4B",
+    "model_safetensors_bytes": 15992595884,
+    "model_safetensors_present": true,
+    "model_safetensors_sha256": "43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651",
+    "outside_git": true,
+    "path": "/data/data/com.termux/files/home/polymath_model_sources/gemma4_e4b_7aa32e6889efd6300124851b164f8b364314c3d8/model.safetensors",
+    "revision": "7aa32e6889efd6300124851b164f8b364314c3d8",
+    "source_location": "phone_preverified"
+  },
+  "nonclaims": [
+    "No C5 pass.",
+    "No learning or model-quality claim.",
+    "No Phase3/4 readiness.",
+    "No full-Gemma HTP forward claim until phone QNN context/run/profile evidence validates."
+  ],
+  "phase3_ready_claim": false,
+  "phase4_ready_claim": false,
+  "qnn_context": {
+    "backend": "",
+    "backend_execution": "qnn_htp",
+    "context_bytes": 0,
+    "context_generated": false,
+    "context_path": "",
+    "context_sha256": "",
+    "context_utility_graph_match": false,
+    "cpu_fallback": false,
+    "graph_name": "gemma4_e4b_ffn_residual_layer0_forward_island_seq16_hidden2560",
+    "phone_work_root": "/data/local/tmp/polymath_gemma4_gate/wavec/full_gemma_qnn_export",
+    "qairt_root": "",
+    "tool_identities": {
+      "qnn_context_binary_generator": {
+        "identity_sha256": "",
+        "path": ""
+      },
+      "qnn_context_binary_utility": {
+        "identity_sha256": "",
+        "path": ""
+      },
+      "qnn_net_run": {
+        "identity_sha256": "",
+        "path": ""
+      }
+    }
+  },
+  "raw_payload_rules": {
+    "metadata_report_only_in_repo": true,
+    "raw_model_context_tensor_payloads_outside_git": true,
+    "raw_payloads_in_git": false,
+    "repo_paths": [
+      "runtime/reports/polar_phase34_consumer_preflight/active_wave/gemma_decoder_to_qnn_exporter/waveC_config_model_spec_source_pathset_preflight_20260702T162046Z.json"
+    ]
+  },
+  "receiving_validators": {
+    "phase4_consumed_tensor": "scripts/host/run_wavec_full_gemma_consumed_tensor_report.py",
+    "qnn_forward": "scripts/host/run_wavec_full_gemma_qnn_forward.py"
+  },
+  "schema_version": "waveC_gemma_decoder_to_qnn_exporter_report_v1",
+  "status": "blocked",
+  "stop_conditions": [
+    "gemma_e4b_model_safetensors_for_context_export_missing",
+    "qnn_cpp_model_library_build_failed",
+    "qnn_context_binary_generator_failed",
+    "qnn_context_utility_graph_mismatch",
+    "qnn_net_run_output_contract_mismatch",
+    "qnn_profile_metadata_missing",
+    "phase4_consumed_tensor_sha_mismatch",
+    "adapter_pre_post_sha_unchanged",
+    "raw_payload_entered_git"
+  ]
+}

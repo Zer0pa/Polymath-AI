@@ -1,0 +1,131 @@
+{
+  "schema_version": "waveC_config_model_spec_source_pathset_v1",
+  "created_at_utc": "2026-07-02T16:24:59Z",
+  "status": "waveC_config_model_spec_source_pathset_ready_for_pipeline",
+  "governing_gate": "WaveC_full_gemma_qnn_htp_forward_consumed_tensor_route",
+  "first_missing_green_field": "qnn_context_not_generated",
+  "classification": {
+    "phone_model_source": "provisionally_green_from_existing_phone_identity_evidence",
+    "config_source": "model_spec_derived_metadata_explicit_contract_not_original_hf_config_restored",
+    "qnn_converted_context": "missing",
+    "execution_go_package": "not_ready"
+  },
+  "accepted_pipeline_decision": {
+    "status": "waveC_config_contract_accepts_model_spec_derived_metadata",
+    "accepted_only_as": "explicit_exporter_contract_source_change",
+    "not_a_drop_in_hf_config_json": true
+  },
+  "model_source_identity": {
+    "path": "/data/data/com.termux/files/home/polymath_model_sources/gemma4_e4b_7aa32e6889efd6300124851b164f8b364314c3d8/model.safetensors",
+    "sha256": "43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651",
+    "bytes": 15992595884,
+    "status": "PENDING_ACTION_PHONE_MODEL_PATH_AND_EXPORT_VALIDATION",
+    "note": "Do not ask for generic model download unless phone path/readability/hash/size validation later fails."
+  },
+  "config_contract": {
+    "flag": "--model-config-spec",
+    "source_path": "integrations/gemma4-snapdragon-megakernel/model_spec/gemma4_e4b.json",
+    "source_sha256": "942c8eb338306edb5afbcc415a1b0bf97ae5e041a26fe5eedd62226fafd04e2b",
+    "parser": "hf_config_summary.text_config",
+    "required_values": {
+      "hidden_size": 2560,
+      "num_hidden_layers": 42,
+      "num_attention_heads": 8,
+      "num_key_value_heads": 2,
+      "head_dim": 256,
+      "intermediate_size": 10240
+    },
+    "provenance_binding": {
+      "repo_id": "google/gemma-4-E4B",
+      "revision": "7aa32e6889efd6300124851b164f8b364314c3d8",
+      "expected_original_config_oid": "080fd8d51bb6e846df168157c9d57b928a2a2687",
+      "expected_original_config_size_bytes": 5105,
+      "explicitly_not_original_hf_config_restored": true
+    }
+  },
+  "pathset": {
+    "source": [
+      {
+        "path": "polymath_ai/polar/wavec_gemma_qnn_exporter.py",
+        "sha256": "fbdbfc2d0b47f6ab859c51704ae427e8667b2bc68b4f08d2b1de31307f3d184b"
+      },
+      {
+        "path": "scripts/host/run_wavec_gemma_decoder_to_qnn_exporter.py",
+        "sha256": "c10b47f5a79506fe2255a3f7c1a2f4ebec12222d1094086f3580a231399f7411"
+      }
+    ],
+    "tests": [
+      {
+        "path": "tests/test_wavec_gemma_qnn_exporter.py",
+        "sha256": "563865a3c9e1dd5eb05ccd04da8ee906e4f39f8d694379b3d55024577c42d661"
+      },
+      {
+        "path": "tests/test_wavec_full_gemma_qnn.py",
+        "role": "existing_receiving_validator_tests"
+      }
+    ],
+    "metadata_reports": [
+      {
+        "path": "runtime/reports/polar_phase34_consumer_preflight/active_wave/gemma_decoder_to_qnn_exporter/waveC_config_model_spec_source_pathset_preflight_20260702T162046Z.json",
+        "sha256": "82f20e87b496ff54a6a5649fea5390c3683946a9fca9e54961a9c939779c29a0",
+        "status": "blocked_at_qnn_context_not_generated_after_model_and_config_identity"
+      }
+    ]
+  },
+  "local_verification": [
+    {
+      "command": "python3.11 -m py_compile polymath_ai/polar/wavec_gemma_qnn_exporter.py scripts/host/run_wavec_gemma_decoder_to_qnn_exporter.py tests/test_wavec_gemma_qnn_exporter.py",
+      "result": "pass"
+    },
+    {
+      "command": "python3.11 -m pytest tests/test_wavec_gemma_qnn_exporter.py tests/test_wavec_full_gemma_qnn.py",
+      "result": "pass",
+      "summary": "22 passed in 0.77s"
+    },
+    {
+      "command": "python3.11 scripts/host/run_wavec_gemma_decoder_to_qnn_exporter.py --model-source-location phone_preverified --model-safetensors /data/data/com.termux/files/home/polymath_model_sources/gemma4_e4b_7aa32e6889efd6300124851b164f8b364314c3d8/model.safetensors --model-safetensors-sha256 43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651 --model-safetensors-bytes 15992595884 --model-config-spec integrations/gemma4-snapdragon-megakernel/model_spec/gemma4_e4b.json --report runtime/reports/polar_phase34_consumer_preflight/active_wave/gemma_decoder_to_qnn_exporter/waveC_config_model_spec_source_pathset_preflight_20260702T162046Z.json",
+      "result": "blocked_as_expected_at_qnn_context_not_generated",
+      "exit_code": 2,
+      "model_source_missing_blocker_present": false,
+      "config_missing_blocker_present": false
+    },
+    {
+      "command": "raw suffix scan under runtime/reports/polar_phase34_consumer_preflight/active_wave/gemma_decoder_to_qnn_exporter",
+      "result": "pass",
+      "raw_suffix_count": 0
+    }
+  ],
+  "failure_stage_taxonomy": {
+    "exporter_failure": "Gemma E4B layer island graph or tensor-role extraction cannot be built.",
+    "quantization_or_layout_failure": "QNN/HTP dtype/layout/packing/scale contract cannot be produced.",
+    "model_library_failure": "Generated QNN C++ artifact cannot compile/link/load.",
+    "context_generation_failure": "qnn-context-binary-generator rejects graph/backend/op/layout.",
+    "htp_runtime_failure": "Context exists but qnn-net-run fails, output bytes/shape/dtype mismatches, or profile metadata is absent.",
+    "consumed_tensor_failure": "QNN output exists but Phase4 does not consume exact SHA or adapter pre/post SHA is unchanged."
+  },
+  "pipeline_receiving_checklist": [
+    "Confirm --model-config-spec is explicit and cannot be confused with restored HF config.json.",
+    "Confirm parser reads hf_config_summary.text_config from the repo model spec.",
+    "Confirm required Gemma E4B values match hidden_size=2560, num_hidden_layers=42, num_attention_heads=8, num_key_value_heads=2, head_dim=256, intermediate_size=10240.",
+    "Confirm provenance binds repo_id google/gemma-4-E4B, revision 7aa32e6889efd6300124851b164f8b364314c3d8, original config oid 080fd8d51bb6e846df168157c9d57b928a2a2687, and original config size 5105.",
+    "Confirm phone model source identity remains metadata-only and no raw model/context/tensor payloads enter git.",
+    "Confirm post-config first missing field is QNN/export/context generation, not generic model download.",
+    "Confirm no Execution GO package should be emitted from this pathset."
+  ],
+  "raw_boundary": {
+    "metadata_only": true,
+    "raw_model_context_tensor_adapter_checkpoint_payloads_in_git": false,
+    "raw_suffix_scan_count": 0
+  },
+  "research_escalation": "active_parallel_signal_lane_if_qnn_cpp_op_support_or_profile_semantics_change_exporter_tests_or_stop_conditions",
+  "nonclaims": [
+    "no C5 pass",
+    "no learning/model-quality claim",
+    "no Phase3/4 readiness",
+    "no full-Gemma HTP forward claim until proven",
+    "no 100k/1M authority",
+    "no raw payloads in git",
+    "no secrets printed",
+    "no Comet-backed accepted run"
+  ]
+}

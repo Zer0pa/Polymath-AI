@@ -21,6 +21,8 @@ EXPORTER_SCHEMA_VERSION = "waveC_gemma_decoder_to_qnn_exporter_report_v1"
 EXPORTER_STATUS_PASS = "pass"
 EXPECTED_MODEL_ID = "google/gemma-4-E4B"
 EXPECTED_MODEL_REVISION = "7aa32e6889efd6300124851b164f8b364314c3d8"
+EXPECTED_ORIGINAL_CONFIG_OID = "080fd8d51bb6e846df168157c9d57b928a2a2687"
+EXPECTED_ORIGINAL_CONFIG_SIZE_BYTES = 5105
 EXPECTED_GRAPH = "gemma4_e4b_ffn_residual_layer0_forward_island_seq16_hidden2560"
 EXPECTED_PRODUCER_KIND = "gemma4_e4b_decoder_to_qnn_context_exporter"
 AUTHORITY_MATERIAL = "waveC_gemma_decoder_to_qnn_exporter_preflight_only"
@@ -87,6 +89,38 @@ def validate_model_source(blockers: list[str], model_source: dict[str, Any]) -> 
     if config:
         for key, expected in REQUIRED_CONFIG.items():
             require_equal(blockers, config.get(key), expected, f"model_config_{key}_mismatch")
+    validate_config_source(blockers, model_source.get("config_source"))
+
+
+def validate_config_source(blockers: list[str], config_source: Any) -> None:
+    mapping = require_mapping(blockers, config_source, "missing_config_source")
+    if not mapping:
+        return
+    kind = mapping.get("kind")
+    if kind not in {"hf_config_json", "model_spec_derived_metadata"}:
+        blockers.append("unknown_config_source_kind")
+    if kind != "model_spec_derived_metadata":
+        return
+    require_true(
+        blockers,
+        mapping.get("explicitly_not_original_hf_config_restored"),
+        "model_spec_config_not_explicitly_labeled_derived",
+    )
+    require_equal(blockers, mapping.get("repo_id"), EXPECTED_MODEL_ID, "config_source_repo_id_mismatch")
+    require_equal(blockers, mapping.get("revision"), EXPECTED_MODEL_REVISION, "config_source_revision_mismatch")
+    require_equal(
+        blockers,
+        mapping.get("expected_original_config_oid"),
+        EXPECTED_ORIGINAL_CONFIG_OID,
+        "config_source_original_config_oid_mismatch",
+    )
+    require_equal(
+        blockers,
+        mapping.get("expected_original_config_size_bytes"),
+        EXPECTED_ORIGINAL_CONFIG_SIZE_BYTES,
+        "config_source_original_config_size_mismatch",
+    )
+    require_sha256(blockers, mapping.get("model_spec_sha256"), "bad_model_spec_sha256")
 
 
 def validate_graph(blockers: list[str], graph: dict[str, Any]) -> None:
