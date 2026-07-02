@@ -392,6 +392,12 @@ def test_generator_writes_fail_closed_source_package_outside_git(tmp_path: Path)
     assert "QnnModel.cpp" in build_script
     assert "QnnWrapperUtils.cpp" in build_script
     assert "QnnModelPal.cpp" in build_script
+    assert "-static-libstdc++" in build_script
+    assert "llvm-readelf" in build_script
+    assert "llvm-nm" in build_script
+    assert "model_library_failure:model_library_export_symbol_missing:QnnModel_composeGraphs" in build_script
+    assert "model_library_failure:model_library_export_symbol_missing:QnnModel_freeGraphsInfo" in build_script
+    assert "model_library_failure:model_library_dynamic_dependency_unresolved:libc++_shared.so" in build_script
     assert 'NDK_PREBUILT="darwin-x86_64"' in build_script
     assert 'NDK_PREBUILT="linux-x86_64"' in build_script
     assert "model_library_failure:ndk_prebuilt_compiler_missing" in build_script
@@ -400,6 +406,12 @@ def test_generator_writes_fail_closed_source_package_outside_git(tmp_path: Path)
     assert "QAIRT_HOST_ROOT" in probe_build_script
     assert "stage_qairt_wrappers_from_phone" in probe_build_script
     assert "model_library_failure:missing_host_qairt_wrapper_sources" in probe_build_script
+    assert "-static-libstdc++" in probe_build_script
+    assert "llvm-readelf" in probe_build_script
+    assert "llvm-nm" in probe_build_script
+    assert "model_library_failure:model_library_dynamic_dependency_unresolved:libc++_shared.so" in probe_build_script
+    assert "libgemma4_probe_primitive_rmsnorm.so.needed.txt" in probe_build_script
+    assert "libgemma4_probe_primitive_rmsnorm.so.symbols.txt" in probe_build_script
     context_script = (work_root / "scripts" / "run_probe_ladder_contexts.sh").read_text(encoding="utf-8")
     assert "QAIRT_EXEC_ROOT" in context_script
     assert "prepare_qairt_exec_root" in context_script

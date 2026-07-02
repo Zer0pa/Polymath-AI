@@ -1,0 +1,556 @@
+{
+  "blockers": [],
+  "config_spec": {
+    "path": "integrations/gemma4-snapdragon-megakernel/model_spec/gemma4_e4b.json",
+    "required_config": {
+      "head_dim": 256,
+      "hidden_size": 2560,
+      "intermediate_size": 10240,
+      "num_attention_heads": 8,
+      "num_hidden_layers": 42,
+      "num_key_value_heads": 2
+    },
+    "sha256": "942c8eb338306edb5afbcc415a1b0bf97ae5e041a26fe5eedd62226fafd04e2b"
+  },
+  "dtype_layout_stop_conditions": [
+    "all_float32_htp_matmul_not_assumed_without_qairt_context_evidence",
+    "fp16_or_fp32_boundary_requires_context_generator_and_net_run_acceptance",
+    "preferred_internal_contract_is_explicit_quantized_activations_and_weights_with_recorded_scales_zero_points_orientation",
+    "missing_scale_zero_point_orientation_or_axis_metadata_is_quantization_or_layout_failure",
+    "partial_delegation_cpu_gpu_fallback_or_missing_profile_is_fail_closed"
+  ],
+  "execution_contract": {
+    "build_script": "/private/tmp/wavec_qnn_model_library_load_diagnostics_pathset_20260702T220500Z/scripts/build_android_model_library.sh",
+    "context_name": "gemma4_e4b_ffn_residual_layer0.qnn.bin",
+    "context_script": "/private/tmp/wavec_qnn_model_library_load_diagnostics_pathset_20260702T220500Z/scripts/generate_phone_context.sh",
+    "expected_first_green_fields": [
+      "primitive_rmsnorm_decomposition_probe_green",
+      "primitive_gelu_tanh_lowering_probe_green",
+      "quantized_tiny_matmul_static_weight_probe_green",
+      "qnn_cpp_source_generated",
+      "qnn_static_weight_blobs_outside_git",
+      "android_model_library_built",
+      "qnn_context_binary_generated",
+      "qnn_context_utility_graph_match",
+      "qnn_net_run_output_163840_bytes",
+      "qnn_profile_metadata_present",
+      "phase4_exact_tensor_consumption"
+    ],
+    "model_library_name": "libgemma4_e4b_ffn_residual_layer0.so",
+    "next_validators": [
+      "scripts/host/run_wavec_full_gemma_qnn_forward.py",
+      "scripts/host/run_wavec_full_gemma_consumed_tensor_report.py"
+    ],
+    "qairt_wrapper_source_route": {
+      "failure_field": "model_library_failure:missing_host_qairt_wrapper_sources",
+      "host_qairt_root": "/workspace/qairt-2.43/qairt/2.43.0.260128",
+      "phone_qairt_root": "/data/local/tmp/qairt-2.44",
+      "stage_from_phone_when_host_missing": true,
+      "staged_qairt_root": "/tmp/wavec_qnn_model_library_load_diagnostics_pathset_20260702T220500Z/qairt_host"
+    },
+    "required_qnn_evidence_fields": [
+      "qnn_backend_path",
+      "qnn_backend_sha256",
+      "qnn_context_binary_sha256",
+      "qnn_context_const_size",
+      "qnn_context_opDataSize",
+      "qnn_context_ioTensorSize",
+      "qnn_context_spill_or_ddr_bytes",
+      "qnn_context_hvx_threads",
+      "qnn_context_binary_utility_graph_name",
+      "qnn_context_binary_utility_input_shape_dtype",
+      "qnn_context_binary_utility_output_shape_dtype",
+      "qnn_net_run_output_bytes",
+      "qnn_net_run_output_sha256",
+      "qnn_profile_log_path_hash",
+      "qnn_profile_viewer_parse_status",
+      "qnn_execute_profile_fields"
+    ]
+  },
+  "failure_taxonomy": [
+    "source_missing",
+    "exporter_failure",
+    "quantization_or_layout_failure",
+    "model_library_failure",
+    "context_generation_failure",
+    "htp_runtime_failure",
+    "consumed_tensor_failure"
+  ],
+  "first_missing_green_field": "none",
+  "full_gemma_htp_forward_claim": false,
+  "graph": {
+    "input": {
+      "bytes": 163840,
+      "dtype": "float32_le",
+      "shape": [
+        1,
+        16,
+        2560
+      ]
+    },
+    "name": "gemma4_e4b_ffn_residual_layer0_forward_island_seq16_hidden2560",
+    "op_plan": [
+      "RMSNorm",
+      "MatMul(gate)",
+      "MatMul(up)",
+      "GELU_TANH",
+      "ElementWiseMultiply",
+      "MatMul(down)",
+      "ElementWiseAdd(residual)"
+    ],
+    "output": {
+      "bytes": 163840,
+      "dtype": "float32_le",
+      "shape": [
+        1,
+        16,
+        2560
+      ]
+    },
+    "scope": "gemma4_e4b_ffn_residual_layer0"
+  },
+  "learning_claim": false,
+  "model_source": {
+    "bytes": 15992595884,
+    "materialization": {
+      "method": "phone_ssh_selected_safetensors_range_extraction_plan_only",
+      "phone_ssh_config": {
+        "provided": false
+      },
+      "phone_ssh_extra_arg_count": 0,
+      "phone_ssh_host": "127.0.0.1",
+      "phone_ssh_identity": {
+        "provided": false
+      },
+      "phone_ssh_port": 8022,
+      "phone_ssh_user": "u0_a536",
+      "phone_work_root": "/data/data/com.termux/files/home/polymath_gemma4_gate/wavec/full_gemma_qnn_export",
+      "plan_only": true,
+      "requested": true,
+      "requires_full_local_model_copy": false
+    },
+    "model_id": "google/gemma-4-E4B",
+    "path": "/data/data/com.termux/files/home/polymath_model_sources/gemma4_e4b_7aa32e6889efd6300124851b164f8b364314c3d8/model.safetensors",
+    "revision": "7aa32e6889efd6300124851b164f8b364314c3d8",
+    "sha256": "43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651",
+    "source_location": "phone_preverified"
+  },
+  "nonclaims": [
+    "No C5 pass.",
+    "No learning or model-quality claim.",
+    "No Phase3/4 readiness.",
+    "No full-Gemma HTP forward claim until QNN context/net-run/profile and Phase4 consumption validate."
+  ],
+  "phase3_ready_claim": false,
+  "phase4_ready_claim": false,
+  "probe_ladder": [
+    {
+      "contract": "[16,2560] hidden rows; primitive reduce/multiply/add/rsqrt path, no assumed fused RMSNorm",
+      "failure_stage": "quantization_or_layout_failure_or_context_generation_failure",
+      "stage": "primitive_rmsnorm_decomposition_probe"
+    },
+    {
+      "contract": "GELU-tanh decomposition with primitive multiply/add/tanh path, no assumed fused GELU",
+      "failure_stage": "quantization_or_layout_failure_or_context_generation_failure",
+      "stage": "primitive_gelu_tanh_lowering_probe"
+    },
+    {
+      "contract": "deterministic tiny MatMul/FullyConnected with explicit activation/weight dtype, scale, zero point, orientation",
+      "failure_stage": "quantization_or_layout_failure_or_context_generation_failure",
+      "stage": "quantized_tiny_matmul_static_weight_probe"
+    },
+    {
+      "contract": "[1,16,2560] -> [1,16,2560] Gemma FFN/residual island with context utility, net-run, profile, and Phase4 consumption validators",
+      "failure_stage": "context_generation_failure_or_htp_runtime_failure_or_consumed_tensor_failure",
+      "stage": "full_gemma4_e4b_ffn_residual_layer0_probe"
+    }
+  ],
+  "qnn_cpp_generator": {
+    "authority_note": "Generated full-island C++ is not authority until the primitive/quantized probe ladder, QNN HTP context generation, qnn-net-run output, profile parse, and Phase4 consumption validate.",
+    "dtype_layout_stop_conditions": [
+      "all_float32_htp_matmul_not_assumed_without_qairt_context_evidence",
+      "fp16_or_fp32_boundary_requires_context_generator_and_net_run_acceptance",
+      "preferred_internal_contract_is_explicit_quantized_activations_and_weights_with_recorded_scales_zero_points_orientation",
+      "missing_scale_zero_point_orientation_or_axis_metadata_is_quantization_or_layout_failure",
+      "partial_delegation_cpu_gpu_fallback_or_missing_profile_is_fail_closed"
+    ],
+    "generated": {
+      "build_script": {
+        "bytes": 4113,
+        "path": "/private/tmp/wavec_qnn_model_library_load_diagnostics_pathset_20260702T220500Z/scripts/build_android_model_library.sh",
+        "sha256": "76af3a2e159d0f385e20df34caba6d512389ee615d9cc7ab40930bbf6cc86047"
+      },
+      "context_script": {
+        "bytes": 2478,
+        "path": "/private/tmp/wavec_qnn_model_library_load_diagnostics_pathset_20260702T220500Z/scripts/generate_phone_context.sh",
+        "sha256": "c1432e15c379a38f402790e5991286e20c298fd5f6a972a40d40412e318d37d3"
+      },
+      "cpp_source": {
+        "bytes": 7616,
+        "path": "/private/tmp/wavec_qnn_model_library_load_diagnostics_pathset_20260702T220500Z/src/gemma4_e4b_ffn_residual_layer0_qnn_model.cpp",
+        "sha256": "8ee9a189cd2f9ccefdb878d8633c7bb0c5287e3dae9116030dfef6102598aadd"
+      },
+      "probe_ladder_build_script": {
+        "bytes": 9730,
+        "path": "/private/tmp/wavec_qnn_model_library_load_diagnostics_pathset_20260702T220500Z/scripts/build_probe_ladder.sh",
+        "sha256": "b77b24449a1bae75a35f6fc6de86155e476b37a56c657c5d36fcf4e0d61e8d0b"
+      },
+      "probe_ladder_context_script": {
+        "bytes": 6045,
+        "path": "/private/tmp/wavec_qnn_model_library_load_diagnostics_pathset_20260702T220500Z/scripts/run_probe_ladder_contexts.sh",
+        "sha256": "7fb038f29ea29bc7e3b6d70d7323a0efae623354af99d67c278e9584d37dab8b"
+      },
+      "probe_ladder_manifest": {
+        "bytes": 7317,
+        "path": "/private/tmp/wavec_qnn_model_library_load_diagnostics_pathset_20260702T220500Z/metadata/probe_ladder_manifest.json",
+        "sha256": "b6c42672aa199df2bc16e267b31d5f14151e89a4bab146d827f97d9cf623733f"
+      },
+      "probe_sources": {
+        "primitive_gelu_tanh_lowering_probe.cpp": {
+          "bytes": 8957,
+          "path": "/private/tmp/wavec_qnn_model_library_load_diagnostics_pathset_20260702T220500Z/src/probes/primitive_gelu_tanh_lowering_probe.cpp",
+          "sha256": "708978a45a7fab2953d71f3280a833ddbab8f23ea1e4b3f68668276fdb046a75"
+        },
+        "primitive_rmsnorm_decomposition_probe.cpp": {
+          "bytes": 6587,
+          "path": "/private/tmp/wavec_qnn_model_library_load_diagnostics_pathset_20260702T220500Z/src/probes/primitive_rmsnorm_decomposition_probe.cpp",
+          "sha256": "283728e374f6335965e1e77c112a657d9f7f606aa37f5ffde5e722e45ab9170d"
+        },
+        "quantized_tiny_matmul_static_weight_probe.cpp": {
+          "bytes": 6016,
+          "path": "/private/tmp/wavec_qnn_model_library_load_diagnostics_pathset_20260702T220500Z/src/probes/quantized_tiny_matmul_static_weight_probe.cpp",
+          "sha256": "06413dd9490c715b90d2f6866f18ad4edf2017ee80f65662201eb3788905f8bd"
+        }
+      },
+      "tensor_manifest": {
+        "bytes": 5626,
+        "path": "/private/tmp/wavec_qnn_model_library_load_diagnostics_pathset_20260702T220500Z/metadata/tensor_manifest.json",
+        "sha256": "b7abd38a9e7b8fa743da29ccfee70f72b24cd84b0d62c287692c32699d410929"
+      }
+    },
+    "probe_ladder_required_before_full_island": [
+      {
+        "contract": "[16,2560] hidden rows; primitive reduce/multiply/add/rsqrt path, no assumed fused RMSNorm",
+        "failure_stage": "quantization_or_layout_failure_or_context_generation_failure",
+        "stage": "primitive_rmsnorm_decomposition_probe"
+      },
+      {
+        "contract": "GELU-tanh decomposition with primitive multiply/add/tanh path, no assumed fused GELU",
+        "failure_stage": "quantization_or_layout_failure_or_context_generation_failure",
+        "stage": "primitive_gelu_tanh_lowering_probe"
+      },
+      {
+        "contract": "deterministic tiny MatMul/FullyConnected with explicit activation/weight dtype, scale, zero point, orientation",
+        "failure_stage": "quantization_or_layout_failure_or_context_generation_failure",
+        "stage": "quantized_tiny_matmul_static_weight_probe"
+      },
+      {
+        "contract": "[1,16,2560] -> [1,16,2560] Gemma FFN/residual island with context utility, net-run, profile, and Phase4 consumption validators",
+        "failure_stage": "context_generation_failure_or_htp_runtime_failure_or_consumed_tensor_failure",
+        "stage": "full_gemma4_e4b_ffn_residual_layer0_probe"
+      }
+    ],
+    "probe_ladder_sources": [
+      {
+        "axis": 2,
+        "broadcast_shape": [
+          1,
+          16,
+          1
+        ],
+        "context": "gemma4_probe_primitive_rmsnorm.qnn.bin",
+        "epsilon": 1e-06,
+        "failure_stage": "quantization_or_layout_failure_or_context_generation_failure",
+        "graph": "gemma4_e4b_probe_primitive_rmsnorm_seq16_hidden2560",
+        "input_dtype": "float32_le",
+        "input_shape": [
+          1,
+          16,
+          2560
+        ],
+        "keep_dims": true,
+        "library": "libgemma4_probe_primitive_rmsnorm.so",
+        "op_lowering": [
+          "QNN_OP_ELEMENT_WISE_MULTIPLY(x,x)",
+          "QNN_OP_REDUCE_MEAN(axis=2,keep_dims=true)",
+          "QNN_OP_ELEMENT_WISE_ADD(static_epsilon=1e-6)",
+          "QNN_OP_ELEMENT_WISE_RSQRT",
+          "QNN_OP_ELEMENT_WISE_MULTIPLY(hidden)",
+          "QNN_OP_ELEMENT_WISE_MULTIPLY(input_layernorm_weight_reshaped_1x1x2560)"
+        ],
+        "output_dtype": "float32_le",
+        "output_shape": [
+          1,
+          16,
+          2560
+        ],
+        "reduce_mean_param": "QNN_OP_REDUCE_MEAN_PARAM_AXES",
+        "source": "primitive_rmsnorm_decomposition_probe.cpp",
+        "stage": "primitive_rmsnorm_decomposition_probe",
+        "weight_shape": [
+          1,
+          1,
+          2560
+        ]
+      },
+      {
+        "constants": {
+          "gelu_cubic": 0.044715,
+          "half": 0.5,
+          "one": 1.0,
+          "sqrt_2_over_pi": 0.7978845608028654
+        },
+        "context": "gemma4_probe_primitive_gelu_tanh.qnn.bin",
+        "failure_stage": "quantization_or_layout_failure_or_context_generation_failure",
+        "graph": "gemma4_e4b_probe_primitive_gelu_tanh_seq16_intermediate10240",
+        "input_dtype": "float32_le",
+        "input_shape": [
+          16,
+          10240
+        ],
+        "library": "libgemma4_probe_primitive_gelu_tanh.so",
+        "op_lowering": [
+          "QNN_OP_ELEMENT_WISE_MULTIPLY(x,x)=x2",
+          "QNN_OP_ELEMENT_WISE_MULTIPLY(x2,x)=x3",
+          "QNN_OP_ELEMENT_WISE_MULTIPLY(0.044715,x3)=cubic",
+          "QNN_OP_ELEMENT_WISE_ADD(x,cubic)=inner0",
+          "QNN_OP_ELEMENT_WISE_MULTIPLY(0.7978845608028654,inner0)=inner",
+          "QNN_OP_TANH",
+          "QNN_OP_ELEMENT_WISE_ADD(1.0,tanh)=one_plus",
+          "QNN_OP_ELEMENT_WISE_MULTIPLY(0.5,x)=half_x",
+          "QNN_OP_ELEMENT_WISE_MULTIPLY(half_x,one_plus)=gelu",
+          "QNN_OP_ELEMENT_WISE_MULTIPLY(gelu,up)=ffn"
+        ],
+        "output_dtype": "float32_le",
+        "output_shape": [
+          16,
+          10240
+        ],
+        "secondary_input": "up_activation_for_ffn_multiply",
+        "source": "primitive_gelu_tanh_lowering_probe.cpp",
+        "stage": "primitive_gelu_tanh_lowering_probe"
+      },
+      {
+        "activation_dtype": "uint16_asymmetric",
+        "activation_scale": 0.00390625,
+        "activation_zero_point": 0,
+        "axis": "per_tensor",
+        "context": "gemma4_probe_quantized_tiny_matmul.qnn.bin",
+        "expected_dequantized_tolerance": 0.05,
+        "failure_stage": "quantization_or_layout_failure_or_context_generation_failure",
+        "float_boundary_output_dtype": "float32_le",
+        "fully_connected_keep_dims_param": "QNN_OP_FULLY_CONNECTED_PARAM_KEEP_DIMS=true",
+        "graph": "gemma4_e4b_probe_quantized_tiny_matmul_static_weight",
+        "input_shape": [
+          1,
+          2,
+          3
+        ],
+        "library": "libgemma4_probe_quantized_tiny_matmul.so",
+        "matmul_variant_param": "QNN_OP_MAT_MUL_PARAM_TRANSPOSE_IN1=false_with_pretransposed_weight_3x4",
+        "matmul_variant_weight_shape": [
+          3,
+          4
+        ],
+        "op_lowering": [
+          "QNN_OP_QUANTIZE(input_float32_to_u16)",
+          "QNN_OP_FULLY_CONNECTED(static_u8_weight)",
+          "QNN_OP_MAT_MUL(static_u8_pretransposed_weight_variant)",
+          "QNN_OP_DEQUANTIZE(output_to_float32)"
+        ],
+        "orientation": "fully_connected_source_weight_out_in_4x3; matmul_variant_weight_in_out_3x4",
+        "output_dtype": "uint16_asymmetric",
+        "output_scale": 0.00390625,
+        "output_shape": [
+          1,
+          2,
+          4
+        ],
+        "output_zero_point": 0,
+        "preferred_op": "QNN_OP_FULLY_CONNECTED",
+        "quant_max": 65535,
+        "quant_min": 0,
+        "real_max": 1.0,
+        "real_min": 0.0,
+        "saturation_count": 0,
+        "source": "quantized_tiny_matmul_static_weight_probe.cpp",
+        "source_weight_shape": [
+          4,
+          3
+        ],
+        "stage": "quantized_tiny_matmul_static_weight_probe",
+        "weight_dtype": "uint8_asymmetric",
+        "weight_scale": 0.0078125,
+        "weight_zero_point": 0
+      },
+      {
+        "context": "gemma4_e4b_ffn_residual_layer0.qnn.bin",
+        "failure_stage": "context_generation_failure_or_htp_runtime_failure_or_consumed_tensor_failure",
+        "graph": "gemma4_e4b_ffn_residual_layer0_forward_island_seq16_hidden2560",
+        "input_dtype": "float32_le",
+        "input_shape": [
+          1,
+          16,
+          2560
+        ],
+        "library": "libgemma4_e4b_ffn_residual_layer0.so",
+        "output_dtype": "float32_le",
+        "output_shape": [
+          1,
+          16,
+          2560
+        ],
+        "requires_green_prerequisites": [
+          "primitive_rmsnorm_decomposition_probe",
+          "primitive_gelu_tanh_lowering_probe",
+          "quantized_tiny_matmul_static_weight_probe"
+        ],
+        "source": "gemma4_e4b_ffn_residual_layer0_qnn_model.cpp",
+        "stage": "full_gemma4_e4b_ffn_residual_layer0_probe"
+      }
+    ],
+    "qnn_op_lowering_failure_stage_if_rejected": "quantization_or_layout_failure_or_model_library_failure_or_context_generation_failure",
+    "qnn_op_lowering_status": "candidate_qnn_builtin_lowering_pending_compile_and_context_generation",
+    "required_tensors": {
+      "input_layernorm": {
+        "blob": "input_layernorm_f32.raw",
+        "key": "model.language_model.layers.0.input_layernorm.weight",
+        "qnn_tensor": "gemma4_layer0_input_layernorm_f32",
+        "shape": [
+          2560
+        ]
+      },
+      "mlp_down_proj": {
+        "blob": "mlp_down_proj_f32.raw",
+        "key": "model.language_model.layers.0.mlp.down_proj.weight",
+        "qnn_tensor": "gemma4_layer0_mlp_down_proj_f32",
+        "shape": [
+          2560,
+          10240
+        ]
+      },
+      "mlp_gate_proj": {
+        "blob": "mlp_gate_proj_f32.raw",
+        "key": "model.language_model.layers.0.mlp.gate_proj.weight",
+        "qnn_tensor": "gemma4_layer0_mlp_gate_proj_f32",
+        "shape": [
+          10240,
+          2560
+        ]
+      },
+      "mlp_up_proj": {
+        "blob": "mlp_up_proj_f32.raw",
+        "key": "model.language_model.layers.0.mlp.up_proj.weight",
+        "qnn_tensor": "gemma4_layer0_mlp_up_proj_f32",
+        "shape": [
+          10240,
+          2560
+        ]
+      }
+    },
+    "route": "qnn_cpp_generated_model_library",
+    "tensor_manifest": {
+      "input_layernorm": {
+        "expected_dtype": "bf16_or_f16_or_f32_converted_to_f32_static_blob",
+        "expected_shape": [
+          2560
+        ],
+        "local_materialization_plan": "/private/tmp/wavec_qnn_model_library_load_diagnostics_pathset_20260702T220500Z/metadata/phone_materialization_plan.json",
+        "local_materializer_script": "/private/tmp/wavec_qnn_model_library_load_diagnostics_pathset_20260702T220500Z/scripts/phone_materialize_selected_safetensors.py",
+        "materialization_method": "phone_ssh_selected_safetensors_range_extraction",
+        "materialized": false,
+        "outside_git_blob": "/tmp/wavec_qnn_model_library_load_diagnostics_pathset_20260702T220500Z/weights/input_layernorm_f32.raw",
+        "phone_blob_path": "/data/data/com.termux/files/home/polymath_gemma4_gate/wavec/full_gemma_qnn_export/weights/input_layernorm_f32.raw",
+        "phone_model_path": "/data/data/com.termux/files/home/polymath_model_sources/gemma4_e4b_7aa32e6889efd6300124851b164f8b364314c3d8/model.safetensors",
+        "phone_work_root": "/data/data/com.termux/files/home/polymath_gemma4_gate/wavec/full_gemma_qnn_export",
+        "plan_only": true,
+        "qnn_tensor": "gemma4_layer0_input_layernorm_f32",
+        "remote_manifest": "/data/data/com.termux/files/home/polymath_gemma4_gate/wavec/full_gemma_qnn_export/metadata/materialized_weight_manifest.json",
+        "source_key": "model.language_model.layers.0.input_layernorm.weight"
+      },
+      "mlp_down_proj": {
+        "expected_dtype": "bf16_or_f16_or_f32_converted_to_f32_static_blob",
+        "expected_shape": [
+          2560,
+          10240
+        ],
+        "local_materialization_plan": "/private/tmp/wavec_qnn_model_library_load_diagnostics_pathset_20260702T220500Z/metadata/phone_materialization_plan.json",
+        "local_materializer_script": "/private/tmp/wavec_qnn_model_library_load_diagnostics_pathset_20260702T220500Z/scripts/phone_materialize_selected_safetensors.py",
+        "materialization_method": "phone_ssh_selected_safetensors_range_extraction",
+        "materialized": false,
+        "outside_git_blob": "/tmp/wavec_qnn_model_library_load_diagnostics_pathset_20260702T220500Z/weights/mlp_down_proj_f32.raw",
+        "phone_blob_path": "/data/data/com.termux/files/home/polymath_gemma4_gate/wavec/full_gemma_qnn_export/weights/mlp_down_proj_f32.raw",
+        "phone_model_path": "/data/data/com.termux/files/home/polymath_model_sources/gemma4_e4b_7aa32e6889efd6300124851b164f8b364314c3d8/model.safetensors",
+        "phone_work_root": "/data/data/com.termux/files/home/polymath_gemma4_gate/wavec/full_gemma_qnn_export",
+        "plan_only": true,
+        "qnn_tensor": "gemma4_layer0_mlp_down_proj_f32",
+        "remote_manifest": "/data/data/com.termux/files/home/polymath_gemma4_gate/wavec/full_gemma_qnn_export/metadata/materialized_weight_manifest.json",
+        "source_key": "model.language_model.layers.0.mlp.down_proj.weight"
+      },
+      "mlp_gate_proj": {
+        "expected_dtype": "bf16_or_f16_or_f32_converted_to_f32_static_blob",
+        "expected_shape": [
+          10240,
+          2560
+        ],
+        "local_materialization_plan": "/private/tmp/wavec_qnn_model_library_load_diagnostics_pathset_20260702T220500Z/metadata/phone_materialization_plan.json",
+        "local_materializer_script": "/private/tmp/wavec_qnn_model_library_load_diagnostics_pathset_20260702T220500Z/scripts/phone_materialize_selected_safetensors.py",
+        "materialization_method": "phone_ssh_selected_safetensors_range_extraction",
+        "materialized": false,
+        "outside_git_blob": "/tmp/wavec_qnn_model_library_load_diagnostics_pathset_20260702T220500Z/weights/mlp_gate_proj_f32.raw",
+        "phone_blob_path": "/data/data/com.termux/files/home/polymath_gemma4_gate/wavec/full_gemma_qnn_export/weights/mlp_gate_proj_f32.raw",
+        "phone_model_path": "/data/data/com.termux/files/home/polymath_model_sources/gemma4_e4b_7aa32e6889efd6300124851b164f8b364314c3d8/model.safetensors",
+        "phone_work_root": "/data/data/com.termux/files/home/polymath_gemma4_gate/wavec/full_gemma_qnn_export",
+        "plan_only": true,
+        "qnn_tensor": "gemma4_layer0_mlp_gate_proj_f32",
+        "remote_manifest": "/data/data/com.termux/files/home/polymath_gemma4_gate/wavec/full_gemma_qnn_export/metadata/materialized_weight_manifest.json",
+        "source_key": "model.language_model.layers.0.mlp.gate_proj.weight"
+      },
+      "mlp_up_proj": {
+        "expected_dtype": "bf16_or_f16_or_f32_converted_to_f32_static_blob",
+        "expected_shape": [
+          10240,
+          2560
+        ],
+        "local_materialization_plan": "/private/tmp/wavec_qnn_model_library_load_diagnostics_pathset_20260702T220500Z/metadata/phone_materialization_plan.json",
+        "local_materializer_script": "/private/tmp/wavec_qnn_model_library_load_diagnostics_pathset_20260702T220500Z/scripts/phone_materialize_selected_safetensors.py",
+        "materialization_method": "phone_ssh_selected_safetensors_range_extraction",
+        "materialized": false,
+        "outside_git_blob": "/tmp/wavec_qnn_model_library_load_diagnostics_pathset_20260702T220500Z/weights/mlp_up_proj_f32.raw",
+        "phone_blob_path": "/data/data/com.termux/files/home/polymath_gemma4_gate/wavec/full_gemma_qnn_export/weights/mlp_up_proj_f32.raw",
+        "phone_model_path": "/data/data/com.termux/files/home/polymath_model_sources/gemma4_e4b_7aa32e6889efd6300124851b164f8b364314c3d8/model.safetensors",
+        "phone_work_root": "/data/data/com.termux/files/home/polymath_gemma4_gate/wavec/full_gemma_qnn_export",
+        "plan_only": true,
+        "qnn_tensor": "gemma4_layer0_mlp_up_proj_f32",
+        "remote_manifest": "/data/data/com.termux/files/home/polymath_gemma4_gate/wavec/full_gemma_qnn_export/metadata/materialized_weight_manifest.json",
+        "source_key": "model.language_model.layers.0.mlp.up_proj.weight"
+      }
+    }
+  },
+  "raw_payload_rules": {
+    "raw_model_context_tensor_generated_qnn_payloads_in_git": false,
+    "repo_receives_metadata_only": true,
+    "work_root": "/tmp/wavec_qnn_model_library_load_diagnostics_pathset_20260702T220500Z",
+    "work_root_outside_git": true
+  },
+  "required_qnn_evidence_fields": [
+    "qnn_backend_path",
+    "qnn_backend_sha256",
+    "qnn_context_binary_sha256",
+    "qnn_context_const_size",
+    "qnn_context_opDataSize",
+    "qnn_context_ioTensorSize",
+    "qnn_context_spill_or_ddr_bytes",
+    "qnn_context_hvx_threads",
+    "qnn_context_binary_utility_graph_name",
+    "qnn_context_binary_utility_input_shape_dtype",
+    "qnn_context_binary_utility_output_shape_dtype",
+    "qnn_net_run_output_bytes",
+    "qnn_net_run_output_sha256",
+    "qnn_profile_log_path_hash",
+    "qnn_profile_viewer_parse_status",
+    "qnn_execute_profile_fields"
+  ],
+  "schema_version": "waveC_qnn_cpp_ffn_residual_generator_report_v1",
+  "status": "pass"
+}

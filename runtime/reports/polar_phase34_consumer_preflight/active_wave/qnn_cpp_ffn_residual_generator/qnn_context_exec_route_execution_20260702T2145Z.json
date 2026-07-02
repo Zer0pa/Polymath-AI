@@ -1,0 +1,213 @@
+{
+  "blockers": [
+    "context_generation_failure:qnn_context_binary_generator_rejects_probe_graph:model_library_load_failure"
+  ],
+  "build": {
+    "compiler_path": "/usr/local/share/android-commandlinetools/ndk/28.2.13676358/toolchains/llvm/prebuilt/darwin-x86_64/bin/aarch64-linux-android35-clang++",
+    "generated_model_libraries": [
+      {
+        "bytes": 84696,
+        "path": "/tmp/wavec_qnn_context_exec_route_execution_20260702T2145Z/qnn_probe_ladder_work/out/libgemma4_e4b_ffn_residual_layer0.so",
+        "sha256": "254d0af5c1b1b94a84c6e7536146ccbb99916e6b5794901df76b7a0bdf3f6e88"
+      },
+      {
+        "bytes": 84840,
+        "path": "/tmp/wavec_qnn_context_exec_route_execution_20260702T2145Z/qnn_probe_ladder_work/out/libgemma4_probe_primitive_gelu_tanh.so",
+        "sha256": "112c978f53b34523cd82ada9631b43ca311c98094659721d752ed5b0df3e5ddb"
+      },
+      {
+        "bytes": 80856,
+        "path": "/tmp/wavec_qnn_context_exec_route_execution_20260702T2145Z/qnn_probe_ladder_work/out/libgemma4_probe_primitive_rmsnorm.so",
+        "sha256": "4640d30c7f3b28b1eeecd00891b7abfa25ca7dcf6dd60d8babc97d6409b3b7bb"
+      },
+      {
+        "bytes": 78744,
+        "path": "/tmp/wavec_qnn_context_exec_route_execution_20260702T2145Z/qnn_probe_ladder_work/out/libgemma4_probe_quantized_tiny_matmul.so",
+        "sha256": "f6ca864079d23db3b68dd31f56e743d14cff106558c711bb10a5302e237c3cd2"
+      }
+    ],
+    "ndk_prebuilt_selected": "darwin-x86_64",
+    "rc": 0,
+    "stderr": {
+      "bytes": 0,
+      "path": "/tmp/wavec_qnn_context_exec_route_build_20260702T2145Z.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stdout": {
+      "bytes": 0,
+      "path": "/tmp/wavec_qnn_context_exec_route_build_20260702T2145Z.stdout",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "command_contract": {
+    "generator_report_before_phone_attempt_sha256": "1ae1610369935a24ee1578fde6d2f621348d2b99755dfa548eff7c6ebdc5957d",
+    "report_path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/polar_phase34_consumer_preflight/active_wave/qnn_cpp_ffn_residual_generator/qnn_context_exec_route_execution_20260702T2145Z.json"
+  },
+  "first_missing_green_field": "context_generation_failure:qnn_context_binary_generator_rejects_probe_graph:model_library_load_failure",
+  "full_island": {
+    "executed": false,
+    "gated": true,
+    "reason": "primitive_rmsnorm_decomposition_probe did not produce green marker"
+  },
+  "generator": {
+    "exited_zero": true,
+    "host_qairt_root_consumed": true,
+    "work_root": "/tmp/wavec_qnn_context_exec_route_execution_20260702T2145Z/qnn_probe_ladder_work"
+  },
+  "lane": "execution_orchestrator",
+  "nonclaims": [
+    "no_C5_pass",
+    "no_learning_or_model_quality_claim",
+    "no_Phase3_or_Phase4_readiness_claim",
+    "no_full_Gemma_HTP_forward_claim",
+    "no_100k_or_1M_authority",
+    "no_raw_payloads_in_git",
+    "no_secrets_printed",
+    "no_Comet_backed_accepted_run"
+  ],
+  "observability": {
+    "addendum_consumed": true,
+    "meminfo_first_lines": "MemTotal:       23662784 kB\nMemFree:          160296 kB\nMemAvailable:   18267340 kB\nBuffers:            9608 kB\nCached:         18466548 kB\nSwapCached:         4388 kB\nActive:          3446208 kB\nInactive:       17029896 kB\nActive(anon):    2351396 kB\nInactive(anon):        0 kB\nActive(file):    1094812 kB\nInactive(file): 17029896 kB\n",
+    "opencl_phase4": "not_reached",
+    "qnn_net_run": "not_attempted_context_generation_failed",
+    "qnn_profile": "profile_unavailable_metadata_only: context generation failed before qnn-net-run/profile",
+    "qnn_profile_viewer": "not_attempted_no_profile_log",
+    "satisfaction": "partially_satisfied",
+    "thermalservice": "unavailable: Termux lacks android.permission.DUMP for dumpsys thermalservice"
+  },
+  "phone_copy": {
+    "copied_only": [
+      "generated .so model libraries",
+      "run_probe_ladder_contexts.sh"
+    ],
+    "phone_root": "/data/data/com.termux/files/home/polymath_gemma4_gate/wavec/full_gemma_qnn_export"
+  },
+  "phone_probe": {
+    "command": "bash /data/data/com.termux/files/home/polymath_gemma4_gate/wavec/full_gemma_qnn_export/scripts/run_probe_ladder_contexts.sh",
+    "context_stderr_snippet": "Unable to load model. dlerror(): (null)\nFailed to load ModelLib!\nCould not load model : /data/data/com.termux/files/home/polymath_gemma4_gate/wavec/full_gemma_qnn_export/models/libgemma4_probe_primitive_rmsnorm.so!\nInitialization failure\n",
+    "context_stdout_snippet": "qnn-context-binary-generator pid:16400\n",
+    "failure_detail": "qnn-context-binary-generator started from qairt_exec root but failed to load the primitive RMSNorm model library: Unable to load model; Failed to load ModelLib; Could not load model.",
+    "first_stage": "primitive_rmsnorm_decomposition_probe",
+    "first_stage_graph": "gemma4_e4b_probe_primitive_rmsnorm_seq16_hidden2560",
+    "rc": 9,
+    "remote_stage_files_listing": "bc38ceaa8a09b09d8e897279349e33efff90b038500729a8a64e7974dce2f9c4 238 /data/data/com.termux/files/home/polymath_gemma4_gate/wavec/full_gemma_qnn_export/probe_ladder/primitive_rmsnorm_decomposition_probe/context_stderr.log\naf6380ce9a4ffb77ee0c68679512ca68cd80871a6b51d9e787e79b23d5952a54 39 /data/data/com.termux/files/home/polymath_gemma4_gate/wavec/full_gemma_qnn_export/probe_ladder/primitive_rmsnorm_decomposition_probe/context_stdout.log\n",
+    "stderr": {
+      "bytes": 0,
+      "path": "/tmp/wavec_qnn_context_exec_route_phone_20260702T2145Z.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stdout": {
+      "bytes": 0,
+      "path": "/tmp/wavec_qnn_context_exec_route_phone_20260702T2145Z.stdout",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "qairt_exec_root": {
+    "path": "/data/data/com.termux/files/home/polymath_gemma4_gate/wavec/full_gemma_qnn_export/qairt_exec",
+    "staged_under_termux_home": true,
+    "tool_identities": {
+      "libQnnHtp": {
+        "bytes": 2778176,
+        "path": "/data/data/com.termux/files/home/polymath_gemma4_gate/wavec/full_gemma_qnn_export/qairt_exec/lib/aarch64-android/libQnnHtp.so",
+        "sha256": "090e993822564851eab1405aff171643b21e644e3f696c95c96f2732aaed813a"
+      },
+      "qnn_context_binary_generator": {
+        "bytes": 3866664,
+        "path": "/data/data/com.termux/files/home/polymath_gemma4_gate/wavec/full_gemma_qnn_export/qairt_exec/bin/aarch64-android/qnn-context-binary-generator",
+        "sha256": "4b2b1bd2752bd119e3a896a4444433f0bbd6e69f887b47d5148337d935a2de1e"
+      },
+      "qnn_context_binary_utility": {
+        "bytes": 833680,
+        "path": "/data/data/com.termux/files/home/polymath_gemma4_gate/wavec/full_gemma_qnn_export/qairt_exec/bin/aarch64-android/qnn-context-binary-utility",
+        "sha256": "a2b96364ee44008ca244848ff91cab644bd94b63767e950ecaf22f69471e2ffb"
+      },
+      "qnn_net_run": {
+        "bytes": 4462720,
+        "path": "/data/data/com.termux/files/home/polymath_gemma4_gate/wavec/full_gemma_qnn_export/qairt_exec/bin/aarch64-android/qnn-net-run",
+        "sha256": "bd98535e89e5ea36b2c08891013e008d48738c2ffcf87c30352a8accec2fe20e"
+      },
+      "qnn_profile_viewer": {
+        "bytes": 672984,
+        "path": "/data/data/com.termux/files/home/polymath_gemma4_gate/wavec/full_gemma_qnn_export/qairt_exec/bin/aarch64-android/qnn-profile-viewer",
+        "sha256": "1f607b595c0db25265395ce332346ae8e25019e128ef447cb4420cdef14e9560"
+      }
+    }
+  },
+  "raw_boundary": {
+    "outside_git_work_root": "/tmp/wavec_qnn_context_exec_route_execution_20260702T2145Z",
+    "outside_git_work_root_raw_suffix_count": 4,
+    "raw_payloads_entered_git": false,
+    "repo_report_root_raw_suffix_count": 0
+  },
+  "repo": {
+    "commit_match": true,
+    "expected_commit": "bb81dd0c7c7818cea8e5f6bb10e32f3e85a3b857",
+    "head": "bb81dd0c7c7818cea8e5f6bb10e32f3e85a3b857",
+    "origin_gemma4_megakernel_native_training": "bb81dd0c7c7818cea8e5f6bb10e32f3e85a3b857"
+  },
+  "runpod_qairt": {
+    "required_files": {
+      "include/QNN/QnnInterface.h": {
+        "bytes": 31567,
+        "expected_sha256": "e818434b7110885f0871a63429d6f1ea7b281fce6982cf453a4e7c1fe71b43bb",
+        "match": true,
+        "path": "/tmp/wavec_runpod_qairt_host_root_20260702T205000Z/qairt_host/include/QNN/QnnInterface.h",
+        "sha256": "e818434b7110885f0871a63429d6f1ea7b281fce6982cf453a4e7c1fe71b43bb"
+      },
+      "include/QNN/QnnOpDef.h": {
+        "bytes": 34028,
+        "expected_sha256": "e0ace2c06914a51ccfcb307ec6a3746127024147bac4ee58fc480b43de48ee0a",
+        "match": true,
+        "path": "/tmp/wavec_runpod_qairt_host_root_20260702T205000Z/qairt_host/include/QNN/QnnOpDef.h",
+        "sha256": "e0ace2c06914a51ccfcb307ec6a3746127024147bac4ee58fc480b43de48ee0a"
+      },
+      "include/QNN/QnnTypes.h": {
+        "bytes": 67088,
+        "expected_sha256": "dcbe22ca914d6725c00f170fd2dc16082e88e3b2de773dd597e59a11c2f87abb",
+        "match": true,
+        "path": "/tmp/wavec_runpod_qairt_host_root_20260702T205000Z/qairt_host/include/QNN/QnnTypes.h",
+        "sha256": "dcbe22ca914d6725c00f170fd2dc16082e88e3b2de773dd597e59a11c2f87abb"
+      },
+      "share/QNN/converter/jni/QnnModel.cpp": {
+        "bytes": 17995,
+        "expected_sha256": "9b61ae746cf38769ba3929976c1ce6bf5b9d55a07b1620bb710ffb5f3496ff0b",
+        "match": true,
+        "path": "/tmp/wavec_runpod_qairt_host_root_20260702T205000Z/qairt_host/share/QNN/converter/jni/QnnModel.cpp",
+        "sha256": "9b61ae746cf38769ba3929976c1ce6bf5b9d55a07b1620bb710ffb5f3496ff0b"
+      },
+      "share/QNN/converter/jni/QnnWrapperUtils.cpp": {
+        "bytes": 8866,
+        "expected_sha256": "ba4e6ef9faedcd538f3c7ead91495744a7976d4f71504e8a984a772eebf2bdb8",
+        "match": true,
+        "path": "/tmp/wavec_runpod_qairt_host_root_20260702T205000Z/qairt_host/share/QNN/converter/jni/QnnWrapperUtils.cpp",
+        "sha256": "ba4e6ef9faedcd538f3c7ead91495744a7976d4f71504e8a984a772eebf2bdb8"
+      },
+      "share/QNN/converter/jni/linux/QnnModelPal.cpp": {
+        "bytes": 751,
+        "expected_sha256": "cd175508b73513119462bf9a6f2c326e28175923b03e25044f931e6242c556e9",
+        "match": true,
+        "path": "/tmp/wavec_runpod_qairt_host_root_20260702T205000Z/qairt_host/share/QNN/converter/jni/linux/QnnModelPal.cpp",
+        "sha256": "cd175508b73513119462bf9a6f2c326e28175923b03e25044f931e6242c556e9"
+      }
+    },
+    "staged_root": "/tmp/wavec_runpod_qairt_host_root_20260702T205000Z/qairt_host"
+  },
+  "schema_version": "waveC_qnn_context_exec_route_execution_report_v1",
+  "secret_scan": {
+    "github_tokens": 0,
+    "hf_tokens": 0,
+    "openai_keys": 0,
+    "private_key_block": 0
+  },
+  "stages_attempted": [
+    {
+      "context_generator_rc": 9,
+      "context_present": false,
+      "green_marker_present": false,
+      "stage": "primitive_rmsnorm_decomposition_probe",
+      "utility_attempted": false
+    }
+  ],
+  "status": "blocked",
+  "status_classification": "context_generation_failure"
+}

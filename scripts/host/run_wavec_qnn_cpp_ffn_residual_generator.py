@@ -1386,7 +1386,7 @@ if [ ! -x "$COMPILER" ]; then
 fi
 mkdir -p "$WORK_ROOT/out" "$WORK_ROOT/obj"
 "$COMPILER" \\
-  -std=c++20 -O2 -fPIC -fvisibility=hidden -shared \\
+  -std=c++20 -O2 -fPIC -fvisibility=hidden -shared -static-libstdc++ \\
   "-DQNN_API=__attribute__((visibility(\\\"default\\\")))" \\
   -I"$Q/include/QNN" -I"$Q/share/QNN/converter/jni" -I"$Q/share/QNN/converter/jni/linux" \\
   "$Q/share/QNN/converter/jni/QnnModel.cpp" \\
@@ -1394,6 +1394,7 @@ mkdir -p "$WORK_ROOT/out" "$WORK_ROOT/obj"
   "$Q/share/QNN/converter/jni/linux/QnnModelPal.cpp" \\
   "$WORK_ROOT/src/gemma4_e4b_ffn_residual_layer0_qnn_model.cpp" \\
   -ldl -o "$WORK_ROOT/out/{MODEL_LIBRARY_NAME}"
+{render_model_library_diagnostics_shell(f"$WORK_ROOT/out/{MODEL_LIBRARY_NAME}", "$WORK_ROOT/out/model_library")}
 sha256sum "$WORK_ROOT/out/{MODEL_LIBRARY_NAME}" > "$WORK_ROOT/out/model_library.sha256"
 wc -c "$WORK_ROOT/out/{MODEL_LIBRARY_NAME}" > "$WORK_ROOT/out/model_library.bytes"
 """
@@ -1410,6 +1411,7 @@ def render_probe_ladder_build_script(args: argparse.Namespace, work_root: Path) 
         )
         probe_lines.append(
             f'''"$COMPILER" "${{COMMON[@]}}" {source} -ldl -o "$WORK_ROOT/out/{probe['library']}"\n'''
+            f'''{render_model_library_diagnostics_shell(f"$WORK_ROOT/out/{probe['library']}", f"$WORK_ROOT/out/{probe['library']}")}\n'''
             f'''sha256sum "$WORK_ROOT/out/{probe['library']}" > "$WORK_ROOT/out/{probe['library']}.sha256"\n'''
             f'''wc -c "$WORK_ROOT/out/{probe['library']}" > "$WORK_ROOT/out/{probe['library']}.bytes"'''
         )
@@ -1432,7 +1434,7 @@ if [ ! -x "$COMPILER" ]; then
 fi
 mkdir -p "$WORK_ROOT/out" "$WORK_ROOT/obj"
 COMMON=(
-  -std=c++20 -O2 -fPIC -fvisibility=hidden -shared
+  -std=c++20 -O2 -fPIC -fvisibility=hidden -shared -static-libstdc++
   "-DQNN_API=__attribute__((visibility(\\\"default\\\")))"
   -I"$Q/include/QNN" -I"$Q/share/QNN/converter/jni" -I"$Q/share/QNN/converter/jni/linux"
   "$Q/share/QNN/converter/jni/QnnModel.cpp"
@@ -1440,6 +1442,31 @@ COMMON=(
   "$Q/share/QNN/converter/jni/linux/QnnModelPal.cpp"
 )
 {chr(10).join(probe_lines)}
+"""
+
+
+def render_model_library_diagnostics_shell(library: str, prefix: str) -> str:
+    return f"""TOOLCHAIN_BIN="$(dirname "$COMPILER")"
+LLVM_READELF="${{LLVM_READELF:-$TOOLCHAIN_BIN/llvm-readelf}}"
+LLVM_NM="${{LLVM_NM:-$TOOLCHAIN_BIN/llvm-nm}}"
+if [ ! -x "$LLVM_READELF" ] || [ ! -x "$LLVM_NM" ]; then
+  echo "model_library_failure:model_library_diagnostic_tool_missing:$LLVM_READELF:$LLVM_NM" >&2
+  exit 2
+fi
+"$LLVM_READELF" -d "{library}" > "{prefix}.needed.txt"
+"$LLVM_NM" -D "{library}" > "{prefix}.symbols.txt"
+if ! grep -q "QnnModel_composeGraphs" "{prefix}.symbols.txt"; then
+  echo "model_library_failure:model_library_export_symbol_missing:QnnModel_composeGraphs:{library}" >&2
+  exit 2
+fi
+if ! grep -q "QnnModel_freeGraphsInfo" "{prefix}.symbols.txt"; then
+  echo "model_library_failure:model_library_export_symbol_missing:QnnModel_freeGraphsInfo:{library}" >&2
+  exit 2
+fi
+if grep -q "libc++_shared.so" "{prefix}.needed.txt"; then
+  echo "model_library_failure:model_library_dynamic_dependency_unresolved:libc++_shared.so:{library}" >&2
+  exit 2
+fi
 """
 
 
