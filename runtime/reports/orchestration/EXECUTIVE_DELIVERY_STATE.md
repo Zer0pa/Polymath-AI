@@ -1,71 +1,69 @@
 # Executive Delivery State
 
-Updated UTC: `2026-07-01T23:57:08Z`
+Updated UTC: `2026-07-02T01:10:11Z`
 
 ## Current Gate
 
-`WaveB_C5_after_C1_candidate_prediction_jsonl_metadata_ready_after_native_phone_probe_pass`
+`WaveB_C5_after_C1_candidate_train_loss_probe_pending_after_phase34_command_ready_and_stable_metadata_frozen`
 
-Status classification: `PENDING_ACTION_ENGINEERING_ORCHESTRATOR_ROUTE_STABLE_BASELINE_AND_SCORER_CONTRACT`
+Status classification: `PENDING_ACTION_EXECUTION_CANDIDATE_TRAIN_LOSS_PROBE_AFTER_PHASE34_COMMAND_READY`
 
-Owner: Engineering Orchestrator 019f138b-d229-7640-98b7-2f185d6beae0 owns routing the stable-baseline prediction payload and heldout scorer/candidate_train_loss contract after the native phone candidate prediction JSONL probe emitted a real metadata-identified prediction file.
+Owner: Execution Orchestrator `019f138c-fb51-7c53-a41a-ab8eac950d9c` owns exactly one bounded candidate_train_loss probe from the replacement Phase3/4 command.
 
 User action required: `false`
 
-Dominant failure domain: `eval_pipeline_incomplete`
+Dominant failure domain: `training_objective_metric_execution_pending`
 
-Research escalation: `none` - first_missing_green_field advanced to stable-baseline/scorer contract after the native candidate prediction JSONL writer proof. Escalate only if the scorer/baseline contract is ambiguous enough to invalidate C5 loss, the same field repeats across two cycles, or a real device/runtime/memory envelope failure appears.
+Research escalation: `none` - the field advanced from source identification to an executable train-loss probe. Escalate only on repeated same-field failure, exact architecture contradiction, or real device/runtime/memory envelope failure.
 
 ## Artifact Waiting On
 
-- Execution completed the bounded phone probe from custody commit `48b604e7be127d9b8474e5845fc3b58745c35f30`.
-- Runner: `/data/data/com.termux/files/home/polymath_c5/C5_after_C1/bin/gemma4_layer_runner_c5_prediction_jsonl_writer` SHA `3ae0cc86b8aca491935d3a39ac5f6c4c3cc9d0f9b2949dfa944470726cd22165`, bytes `581312`.
-- Native probe: exit `0`, elapsed `245s`, status `pass` for this bounded candidate prediction-writer proof.
-- Candidate prediction JSONL was written outside git: bytes `429`, SHA `a0137450ae16220a1aecc3dff60e50bceae641dba9b8207c0567f48ae4be4fc3`, path SHA `31455a2804b64ecc97c9b02c97a243d11b30295462e18b19ecbaa6561fd3714e`.
-- Metadata-only evidence root: `runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_prediction_jsonl_writer_20260701T234607Z`.
-- Awaiting Engineering route for stable-baseline prediction payload and heldout scorer/candidate_train_loss contract.
-- Awaiting Repo Custodian freeze of metadata-only probe evidence plus this central mirror.
+- Candidate prediction metadata is frozen at commit `71bc3b19014df62f398340f97a9f3bdb55d48de6`.
+- Stable-baseline prediction metadata is frozen at commit `58ce78aaa4486e440b3b8bba911c3a0fdde4f868`.
+- Replacement Phase3/4 thread `019f2059-e6a8-73b1-a9b8-8a2c499e838e` returned `candidate_train_loss_probe_command_ready_for_execution`.
+- Awaiting Execution metadata-only train-loss probe result: finite numeric candidate_train_loss from teacher-forced answer-token NLL/full-decoder logits, bound to candidate checkpoint SHA `1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f` and train QA SHA `795c1ba36d3cc3d50cfc26cabc8ece4d6ee3ee2ae4fb775f7674b708818df86c`.
+- Awaiting Repo Custodian replacement `019f2059-ef2c-7762-ba42-963b58f3af90` freeze of this two-file central mirror.
 
 ## Last Concrete Action
 
-Execution built/copied /data/data/com.termux/files/home/polymath_c5/C5_after_C1/bin/gemma4_layer_runner_c5_prediction_jsonl_writer (SHA 3ae0cc86b8aca491935d3a39ac5f6c4c3cc9d0f9b2949dfa944470726cd22165), ran exactly one bounded phone probe with --opencl-library /vendor/lib64/libOpenCL.so, exited 0 after 245s, and reported prediction JSONL bytes/SHA while keeping the raw JSONL outside git.
+Replacement Repo Custodian froze stable-baseline prediction metadata at commit `58ce78aaa4486e440b3b8bba911c3a0fdde4f868`. Replacement Phase3/4 returned `candidate_train_loss_probe_command_ready_for_execution` using the existing native C5 prediction writer runner SHA `3ae0cc86b8aca491935d3a39ac5f6c4c3cc9d0f9b2949dfa944470726cd22165` and train QA SHA `795c1ba36d3cc3d50cfc26cabc8ece4d6ee3ee2ae4fb775f7674b708818df86c`.
 
 ## First Missing Green Field
 
-`stable_baseline_prediction_payload_and_heldout_scorer_contract_missing`
+`finite_candidate_train_loss_missing`
 
 ## Next Concrete Action
 
-Engineering Orchestrator defines/routes the stable-baseline prediction payload and heldout scorer/candidate_train_loss contract; Repo Custodian freezes the metadata-only execution evidence and central mirror. Execution remains parked until it receives a bounded scorer/baseline command or custody-frozen pathset.
+Execution runs exactly one bounded candidate_train_loss probe from the replacement Phase3/4 command, verifies runner/candidate/train identities, and returns metadata only with finite candidate_train_loss or the first exact fail field. If finite loss exists, Engineering routes canonical C5 payload/scorer flow; if not, return to Phase3/4 with the exact runtime/source field.
 
 ## Drift Deletion / Hardening
 
-Deleted stale execution-active drift for the prediction writer probe. Pending metadata-only custody for the probe evidence and pending Engineering route for stable-baseline/scorer contract. Do not regress to rank16, 42-layer, OpenCL/SP-HAL, final-hidden, prompt-shape, or writer-missing blockers without newer evidence.
+Deleted stalled-thread drift by replacing Phase3/4 with `019f2059-e6a8-73b1-a9b8-8a2c499e838e` and Repo Custodian with `019f2059-ef2c-7762-ba42-963b58f3af90`. Deleted stale stable-metadata-pending drift after Custodian commit `58ce78aaa4486e440b3b8bba911c3a0fdde4f868`. Pending drift is only the Execution train-loss probe result; do not regress to prediction writer, stable baseline, or decoder runtime blockers without newer evidence.
 
 ## Recursive Improvement Next Step
 
-Turn the emitted candidate prediction identity into a falsifiable comparison by producing the stable-baseline prediction payload and a heldout scorer/candidate_train_loss contract from real runtime outputs.
+Use the train-loss probe as the smallest falsifiable bridge into canonical C5 scoring: finite teacher-forced candidate_train_loss unlocks `run_c5_prediction_payloads.py` and `run_c5_eval.py`; missing or nonfinite loss routes the exact field back to Phase3/4.
 
 ## Threads Nudged This Tick
 
-- Engineering Orchestrator `019f138b-d229-7640-98b7-2f185d6beae0`: sent Execution candidate prediction JSONL metadata handoff and requested stable-baseline/scorer contract routing.
-- Repo Custodian `019f1ac2-0f0f-7721-bf46-ad402dbd9050`: pending metadata-only evidence plus central mirror custody request after local validation.
-- Execution Orchestrator `019f138c-fb51-7c53-a41a-ab8eac950d9c`: completed and parked; no duplicate probe routed.
+- Execution Orchestrator `019f138c-fb51-7c53-a41a-ab8eac950d9c`: routed bounded candidate_train_loss probe command from replacement Phase3/4; raw payloads remain outside git.
+- Repo Custodian replacement `019f2059-ef2c-7762-ba42-963b58f3af90`: routed two-file central mirror freeze after stable metadata commit `58ce78aaa4486e440b3b8bba911c3a0fdde4f868`.
+- Phase3/4 replacement `019f2059-e6a8-73b1-a9b8-8a2c499e838e`: completed command-ready handoff; no duplicate nudge.
 
 ## NEXT_HANDOFF
 
-- to: Engineering Orchestrator `019f138b-d229-7640-98b7-2f185d6beae0`
-- status: `candidate_prediction_jsonl_native_probe_passed_metadata_ready`
-- artifacts: `runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_prediction_jsonl_writer_20260701T234607Z`; stdout SHA `b5d813420e6f9bafcc86ccb634d7571acea824e452d30d5f314978fd5ad90c29`; outside-git prediction JSONL SHA `a0137450ae16220a1aecc3dff60e50bceae641dba9b8207c0567f48ae4be4fc3`
-- first_missing_green_field: `stable_baseline_prediction_payload_and_heldout_scorer_contract_missing`
-- next_action: define/route stable-baseline prediction payload and heldout scorer/candidate_train_loss contract, or return the exact next owner/pathset/blocker.
+- to: Execution Orchestrator `019f138c-fb51-7c53-a41a-ab8eac950d9c`
+- status: `candidate_train_loss_probe_command_ready_for_execution`
+- artifacts: candidate metadata commit `71bc3b19014df62f398340f97a9f3bdb55d48de6`; stable metadata commit `58ce78aaa4486e440b3b8bba911c3a0fdde4f868`; runner SHA `3ae0cc86b8aca491935d3a39ac5f6c4c3cc9d0f9b2949dfa944470726cd22165`; train QA SHA `795c1ba36d3cc3d50cfc26cabc8ece4d6ee3ee2ae4fb775f7674b708818df86c`.
+- first_missing_green_field: `finite_candidate_train_loss_missing`
+- next_action: run exactly one bounded candidate_train_loss probe and return metadata-only evidence with finite loss or the first exact fail field.
 - research_escalation: `none`
 
 ## Nonclaims Preserved
 
 - no C5 pass.
-- no stable-baseline prediction JSONL yet.
-- no heldout scorer/candidate_train_loss yet.
+- no finite candidate_train_loss yet.
+- no heldout scorer execution yet.
 - no learning/model-quality claim.
 - no Phase3/4 readiness.
 - no 100k/1M authority.
