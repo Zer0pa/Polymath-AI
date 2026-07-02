@@ -6,7 +6,7 @@
     "active_edge": "WaveB_C5_after_C1_canonical_payload_bounded_retry_ready_waiting_on_termux_command_access_after_producer_timeout",
     "adapter_site_policy_sha256": "f38bd8109bbb77e9e94a5b4b34a238bc0ec0a39e7736870c97defe5aecc93357",
     "additional_missing_runtime_field_after_contract_patch": "decoder_manifest_tensor_role_inventory_missing",
-    "artifact_waiting_on": "Retry-ready central mirror is frozen at commit 9946fcd0ebc247f75440a855235aeb29eeea8871. Awaiting user/operator restoration of the Termux command channel before Execution can run exactly one bounded canonical payload retry.",
+    "artifact_waiting_on": "Custody is complete through commit 2cccbe86fab521d1c2fa14987b4ab536cf809254. Awaiting user/operator restoration of the Termux command channel before Execution can run exactly one bounded canonical payload retry.",
     "authorization_needed": true,
     "c5_after_c1_bounded_opencl_probe_command_identity_repair_20260701T171907Z": {
       "execution_routed": false,
@@ -2224,7 +2224,7 @@
     "candidate_adapter_sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f",
     "candidate_train_loss": 15.202827250350284,
     "candidate_train_loss_source": "teacher_forced_answer_token_nll_from_full_decoder_logits",
-    "central_mirror_local_update_status": "producer_timeout_retry_ready_custody_commit_recorded_locally_pending_final_mirror_freeze",
+    "central_mirror_local_update_status": "producer_timeout_retry_custody_complete_local_record_no_new_custody_routed",
     "central_state_update_pathset_for_custodian": {
       "artifact_paths": [
         "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json",
@@ -2238,17 +2238,7 @@
       "status": "opencl_runtime_availability_repair_state_pending_custody",
       "user_action_required": false
     },
-    "central_state_update_pending_custody": {
-      "status": "producer_timeout_retry_ready_custody_commit_record_central_mirror_pending",
-      "custody_owner_thread": "019f2059-ef2c-7762-ba42-963b58f3af90",
-      "first_missing_green_field": "producer_timeout_retry_ready_custody_commit_record_freeze_pending",
-      "pathset": [
-        "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json",
-        "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md"
-      ],
-      "records_custody_commit": "9946fcd0ebc247f75440a855235aeb29eeea8871",
-      "raw_prediction_jsonl_included": false
-    },
+    "central_state_update_pending_custody": false,
     "current_gate": "WaveB_C5_after_C1_canonical_payload_bounded_retry_ready_waiting_on_termux_command_access_after_producer_timeout",
     "current_highest_valid_state": "candidate_and_stable_prediction_payloads_and_finite_train_loss_green_canonical_scorer_not_executed",
     "current_owner": "Phase3/4 Engineer replacement + User/Operator access",
@@ -2256,7 +2246,7 @@
     "custody_status_latest": "c5_opencl_parity_dispatch_committed_pushed",
     "decoder_manifest_sha256": "52fcb53666bb4b06d0118cb825b983afc54624a630f667bbfa5af278640e28f8",
     "dominant_failure_domain": "termux_command_channel_access_blocked_with_bounded_retry_ready",
-    "drift_deleted_or_pending": "Retry-ready central mirror custody is complete at 9946fcd0ebc247f75440a855235aeb29eeea8871. No regression to candidate/stable prediction JSONL or finite candidate_train_loss blockers. Pending drift is only restored Termux command access before Execution retry.",
+    "drift_deleted_or_pending": "All retry-ready central custody is complete through 2cccbe86fab521d1c2fa14987b4ab536cf809254. No regression to candidate/stable prediction JSONL or finite candidate_train_loss blockers. Pending drift is only restored Termux command access before Execution retry.",
     "driver_tick_history": [
       {
         "artifact_waiting_on": [
@@ -2779,7 +2769,7 @@
         "user_action_required": false
       }
     },
-    "last_concrete_action": "Repo Custodian replacement froze the retry-ready central mirror at commit 9946fcd0ebc247f75440a855235aeb29eeea8871. Phase3/4 replacement had already returned producer_timeout_retry_command_ready_for_execution: retry with --native-timeout-seconds 1500 and wrapper --timeout-seconds 1800 after Termux access is restored. No source pathset was requested.",
+    "last_concrete_action": "Repo Custodian replacement froze the retry-ready custody commit record at commit 2cccbe86fab521d1c2fa14987b4ab536cf809254. No source pathset remains pending; no heldout scorer was run and no C5 pass is claimed.",
     "last_driver_actions": [
       "Loaded central state and polled existing Phase3/4 and Custodian threads only.",
       "Detected Phase3/4 completed final_hidden_opencl_prompt_weight_shape_repair_pathset_ready_for_custodian.",
@@ -3272,7 +3262,7 @@
       "phase34": "raw PJP1, HTP raw output, OpenCL tensors, and adapters remain on device/Termux; repair must keep compact JSON only",
       "report_root_scan": "metadata-freeze report root had 179 tracked files and clean forbidden suffix scans; raw payloads not committed"
     },
-    "recursive_improvement_next_step": "Do not rerun the old outer-timeout path and do not churn Execution while access is blocked. Restore Termux access, then run one bounded retry where the native producer owns the 1500s timeout. If the same timeout/access field repeats after restored access, return exact logs to Phase3/4 or escalate as repeated same-field runtime failure.",
+    "recursive_improvement_next_step": "Do not churn lane threads while access is blocked. Restore Termux access, then run one bounded retry where the native producer owns the 1500s timeout. If the same timeout/access field repeats after restored access, return exact logs to Phase3/4 or escalate as repeated same-field runtime failure.",
     "repo_custodian_per_layer_input_runtime_repair_commit": "58872fdc3dd7ff6efb73321252d58f3447eb0e2b",
     "repo_custodian_post_phone_probe_central_mirror_commit": "5802ea1e25222c068dd3fcb5050c91f20f72357b",
     "repo_custody_state_freeze": {
@@ -3301,14 +3291,14 @@
       "status": "replacement_threads_mobilized"
     },
     "threads_nudged_this_tick": [
-      "Repo Custodian replacement 019f2059-ef2c-7762-ba42-963b58f3af90: polled complete retry-ready central mirror commit 9946fcd0ebc247f75440a855235aeb29eeea8871; new two-file commit-record mirror routed.",
-      "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: parked until user/operator restores Termux command access; no duplicate nudge.",
+      "Repo Custodian replacement 019f2059-ef2c-7762-ba42-963b58f3af90: polled complete final custody commit 2cccbe86fab521d1c2fa14987b4ab536cf809254; no further custody churn routed.",
+      "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: parked until user/operator restores Termux command access; no nudge.",
       "Phase3/4 replacement 019f2059-e6a8-73b1-a9b8-8a2c499e838e: no nudge; retry command already complete."
     ],
-    "timestamp_utc": "2026-07-02T02:39:11Z",
-    "updated_at": "2026-07-02T02:39:11Z",
-    "updated_at_utc": "2026-07-02T02:39:11Z",
-    "updated_utc": "2026-07-02T02:39:11Z",
+    "timestamp_utc": "2026-07-02T02:49:41Z",
+    "updated_at": "2026-07-02T02:49:41Z",
+    "updated_at_utc": "2026-07-02T02:49:41Z",
+    "updated_utc": "2026-07-02T02:49:41Z",
     "user_action_required": true,
     "canonical_scorer_blocker_central_mirror_custody_20260702T022841Z": {
       "status": "canonical_scorer_blocker_central_mirror_committed_pushed",
@@ -3441,11 +3431,100 @@
           "do not claim pass without final run_c5_eval.py report pass"
         ]
       }
+    },
+    "producer_timeout_retry_custody_commit_record_central_mirror_custody_20260702T024941Z": {
+      "status": "producer_timeout_retry_custody_commit_record_central_mirror_committed_pushed",
+      "custody_thread": "019f2059-ef2c-7762-ba42-963b58f3af90",
+      "commit": "2cccbe86fab521d1c2fa14987b4ab536cf809254",
+      "branch": "origin/gemma4-megakernel-native-training",
+      "frozen_pathset": {
+        "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json": "3c7cb3804b1e39002cc4edea105af2f82f29177f0af08fb5fc05a6079f12c98e",
+        "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md": "bf714f661fb4dfc821d9e7ba63c21668b06aff2dea8ec2f4c4acf5f0baaf7ccf"
+      },
+      "verification": [
+        "JSON validity passed",
+        "strict ZPP lint passed",
+        "scoped diff hygiene passed",
+        "cached diff hygiene passed",
+        "added-line raw suffix scan 0",
+        "added-line value-shaped secret/token scan 0",
+        "cached raw suffix name scan 0",
+        "staged pathset exactly two files",
+        "local HEAD matches remote branch"
+      ],
+      "first_missing_green_field": "producer_native_timeout_must_be_less_than_wrapper_timeout_and_termux_command_access_blocked",
+      "next_action": "User/operator restores Termux command access, then Execution runs exactly one bounded canonical payload retry with native timeout 1500s and wrapper timeout 1800s.",
+      "nonclaims": [
+        "no C5 pass",
+        "no heldout scorer execution after the timeout",
+        "no learning/model-quality claim",
+        "no Phase3/4 readiness",
+        "no 100k/1M authority",
+        "no raw payloads in git",
+        "no secrets printed",
+        "no Comet-backed accepted run"
+      ],
+      "next_handoff": {
+        "schema_version": "zpp_next_handoff_v1",
+        "run_id": "c5_after_c1_producer_timeout_retry_custody_commit_record_20260702T024941Z",
+        "from_lane": "repo_custodian_replacement",
+        "to_lane": "engineering_meta_watcher",
+        "sent": true,
+        "objective": "Close central custody for retry-ready canonical C5 payload state without claiming authority pass.",
+        "authority_metric": "Final C5 authority still requires scripts/host/run_c5_eval.py pass_fail.status=pass from executed metrics; this packet is custody metadata only.",
+        "current_edge": "WaveB_C5_after_C1_canonical_payload_bounded_retry_ready_waiting_on_termux_command_access_after_producer_timeout",
+        "current_verdict": "blocked",
+        "completed_work": [
+          "frozen commit-record central mirror",
+          "verified raw/secret boundaries",
+          "pushed origin/gemma4-megakernel-native-training"
+        ],
+        "evidence": [
+          {
+            "artifact": "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json",
+            "sha256": "3c7cb3804b1e39002cc4edea105af2f82f29177f0af08fb5fc05a6079f12c98e",
+            "status": "frozen_in_commit_2cccbe86fab521d1c2fa14987b4ab536cf809254"
+          },
+          {
+            "artifact": "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md",
+            "sha256": "bf714f661fb4dfc821d9e7ba63c21668b06aff2dea8ec2f4c4acf5f0baaf7ccf",
+            "status": "frozen_in_commit_2cccbe86fab521d1c2fa14987b4ab536cf809254"
+          },
+          {
+            "artifact": "origin/gemma4-megakernel-native-training",
+            "sha256": null,
+            "status": "commit_2cccbe86fab521d1c2fa14987b4ab536cf809254"
+          }
+        ],
+        "first_missing_green_field": "producer_native_timeout_must_be_less_than_wrapper_timeout_and_termux_command_access_blocked",
+        "next_action": "User/operator restores Termux command access; then Execution runs exactly one bounded canonical payload retry with native timeout 1500s and wrapper timeout 1800s.",
+        "owner_thread": "019f138c-fb51-7c53-a41a-ab8eac950d9c",
+        "research_escalation": {
+          "status": "none",
+          "reason": "access blocker remains first occurrence after retry command; no repeated same-field failure after restored access yet",
+          "packet_path": null
+        },
+        "nonclaims": [
+          "no C5 pass",
+          "no heldout scorer execution after the timeout",
+          "no learning/model-quality claim",
+          "no Phase3/4 readiness",
+          "no 100k/1M authority",
+          "no raw payloads in git",
+          "no secrets printed",
+          "no Comet-backed accepted run"
+        ],
+        "do_not_do": [
+          "do not nudge Execution until Termux command access is restored",
+          "do not move raw payloads into git",
+          "do not claim pass without final run_c5_eval.py report pass"
+        ]
+      }
     }
   },
   "adapter_site_policy_sha256": "f38bd8109bbb77e9e94a5b4b34a238bc0ec0a39e7736870c97defe5aecc93357",
   "additional_missing_runtime_field_after_contract_patch": "decoder_manifest_tensor_role_inventory_missing",
-  "artifact_waiting_on": "Retry-ready central mirror is frozen at commit 9946fcd0ebc247f75440a855235aeb29eeea8871. Awaiting user/operator restoration of the Termux command channel before Execution can run exactly one bounded canonical payload retry.",
+  "artifact_waiting_on": "Custody is complete through commit 2cccbe86fab521d1c2fa14987b4ab536cf809254. Awaiting user/operator restoration of the Termux command channel before Execution can run exactly one bounded canonical payload retry.",
   "authorization_needed": true,
   "c5_after_c1_42_layer_orchestration_probe_20260701T213036Z": {
     "blockers": [
@@ -6416,24 +6495,14 @@
   "candidate_adapter_sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f",
   "candidate_train_loss": 15.202827250350284,
   "candidate_train_loss_source": "teacher_forced_answer_token_nll_from_full_decoder_logits",
-  "central_mirror_local_update_status": "producer_timeout_retry_ready_custody_commit_recorded_locally_pending_final_mirror_freeze",
-  "central_state_update_pending_custody": {
-    "status": "producer_timeout_retry_ready_custody_commit_record_central_mirror_pending",
-    "custody_owner_thread": "019f2059-ef2c-7762-ba42-963b58f3af90",
-    "first_missing_green_field": "producer_timeout_retry_ready_custody_commit_record_freeze_pending",
-    "pathset": [
-      "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json",
-      "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md"
-    ],
-    "records_custody_commit": "9946fcd0ebc247f75440a855235aeb29eeea8871",
-    "raw_prediction_jsonl_included": false
-  },
+  "central_mirror_local_update_status": "producer_timeout_retry_custody_complete_local_record_no_new_custody_routed",
+  "central_state_update_pending_custody": false,
   "current_gate": "WaveB_C5_after_C1_canonical_payload_bounded_retry_ready_waiting_on_termux_command_access_after_producer_timeout",
   "current_highest_valid_state": "candidate_and_stable_prediction_payloads_and_finite_train_loss_green_canonical_scorer_not_executed",
   "current_owner": "Phase3/4 Engineer replacement + User/Operator access",
   "decoder_manifest_sha256": "52fcb53666bb4b06d0118cb825b983afc54624a630f667bbfa5af278640e28f8",
   "dominant_failure_domain": "termux_command_channel_access_blocked_with_bounded_retry_ready",
-  "drift_deleted_or_pending": "Retry-ready central mirror custody is complete at 9946fcd0ebc247f75440a855235aeb29eeea8871. No regression to candidate/stable prediction JSONL or finite candidate_train_loss blockers. Pending drift is only restored Termux command access before Execution retry.",
+  "drift_deleted_or_pending": "All retry-ready central custody is complete through 2cccbe86fab521d1c2fa14987b4ab536cf809254. No regression to candidate/stable prediction JSONL or finite candidate_train_loss blockers. Pending drift is only restored Termux command access before Execution retry.",
   "driver_tick_history": [
     {
       "artifact_waiting_on": [
@@ -8417,7 +8486,7 @@
       "user_action_required": false
     }
   },
-  "last_concrete_action": "Repo Custodian replacement froze the retry-ready central mirror at commit 9946fcd0ebc247f75440a855235aeb29eeea8871. Phase3/4 replacement had already returned producer_timeout_retry_command_ready_for_execution: retry with --native-timeout-seconds 1500 and wrapper --timeout-seconds 1800 after Termux access is restored. No source pathset was requested.",
+  "last_concrete_action": "Repo Custodian replacement froze the retry-ready custody commit record at commit 2cccbe86fab521d1c2fa14987b4ab536cf809254. No source pathset remains pending; no heldout scorer was run and no C5 pass is claimed.",
   "last_driver_actions": [
     "Loaded central state and polled Execution Orchestrator.",
     "Consumed Execution fail-closed handoff: producer timeout then Termux command channel blocked by keyguard.",
@@ -9100,7 +9169,7 @@
     "scope": "metadata mirror only",
     "status": "central_state_phone_filesystem_paths_redacted"
   },
-  "recursive_improvement_next_step": "Do not rerun the old outer-timeout path and do not churn Execution while access is blocked. Restore Termux access, then run one bounded retry where the native producer owns the 1500s timeout. If the same timeout/access field repeats after restored access, return exact logs to Phase3/4 or escalate as repeated same-field runtime failure.",
+  "recursive_improvement_next_step": "Do not churn lane threads while access is blocked. Restore Termux access, then run one bounded retry where the native producer owns the 1500s timeout. If the same timeout/access field repeats after restored access, return exact logs to Phase3/4 or escalate as repeated same-field runtime failure.",
   "required_lane_update_protocol": {
     "block_name": "CENTRAL_STATE_UPDATE",
     "meta_action": "on every heartbeat, read active threads, update this file, route the next concrete edge, and notify Execution only when both keys are green",
@@ -9149,17 +9218,24 @@
       "threads": [
         "019f2059-ef2c-7762-ba42-963b58f3af90"
       ]
+    },
+    {
+      "timestamp_utc": "2026-07-02T02:49:41Z",
+      "reason": "Custodian completed final retry-ready commit-record central mirror; active edge now waits only on user/operator Termux access restoration",
+      "threads": [
+        "019f2059-ef2c-7762-ba42-963b58f3af90"
+      ]
     }
   ],
   "threads_nudged_this_tick": [
-    "Repo Custodian replacement 019f2059-ef2c-7762-ba42-963b58f3af90: polled complete retry-ready central mirror commit 9946fcd0ebc247f75440a855235aeb29eeea8871; new two-file commit-record mirror routed.",
-    "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: parked until user/operator restores Termux command access; no duplicate nudge.",
+    "Repo Custodian replacement 019f2059-ef2c-7762-ba42-963b58f3af90: polled complete final custody commit 2cccbe86fab521d1c2fa14987b4ab536cf809254; no further custody churn routed.",
+    "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: parked until user/operator restores Termux command access; no nudge.",
     "Phase3/4 replacement 019f2059-e6a8-73b1-a9b8-8a2c499e838e: no nudge; retry command already complete."
   ],
-  "timestamp_utc": "2026-07-02T02:39:11Z",
-  "updated_at": "2026-07-02T02:39:11Z",
-  "updated_at_utc": "2026-07-02T02:39:11Z",
-  "updated_utc": "2026-07-02T02:39:11Z",
+  "timestamp_utc": "2026-07-02T02:49:41Z",
+  "updated_at": "2026-07-02T02:49:41Z",
+  "updated_at_utc": "2026-07-02T02:49:41Z",
+  "updated_utc": "2026-07-02T02:49:41Z",
   "user_action_required": true,
   "canonical_scorer_blocker_central_mirror_custody_20260702T022841Z": {
     "status": "canonical_scorer_blocker_central_mirror_committed_pushed",
@@ -9289,6 +9365,95 @@
       "do_not_do": [
         "do not rerun Execution until Termux command access is restored",
         "do not move raw prediction/checkpoint/train payloads into git",
+        "do not claim pass without final run_c5_eval.py report pass"
+      ]
+    }
+  },
+  "producer_timeout_retry_custody_commit_record_central_mirror_custody_20260702T024941Z": {
+    "status": "producer_timeout_retry_custody_commit_record_central_mirror_committed_pushed",
+    "custody_thread": "019f2059-ef2c-7762-ba42-963b58f3af90",
+    "commit": "2cccbe86fab521d1c2fa14987b4ab536cf809254",
+    "branch": "origin/gemma4-megakernel-native-training",
+    "frozen_pathset": {
+      "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json": "3c7cb3804b1e39002cc4edea105af2f82f29177f0af08fb5fc05a6079f12c98e",
+      "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md": "bf714f661fb4dfc821d9e7ba63c21668b06aff2dea8ec2f4c4acf5f0baaf7ccf"
+    },
+    "verification": [
+      "JSON validity passed",
+      "strict ZPP lint passed",
+      "scoped diff hygiene passed",
+      "cached diff hygiene passed",
+      "added-line raw suffix scan 0",
+      "added-line value-shaped secret/token scan 0",
+      "cached raw suffix name scan 0",
+      "staged pathset exactly two files",
+      "local HEAD matches remote branch"
+    ],
+    "first_missing_green_field": "producer_native_timeout_must_be_less_than_wrapper_timeout_and_termux_command_access_blocked",
+    "next_action": "User/operator restores Termux command access, then Execution runs exactly one bounded canonical payload retry with native timeout 1500s and wrapper timeout 1800s.",
+    "nonclaims": [
+      "no C5 pass",
+      "no heldout scorer execution after the timeout",
+      "no learning/model-quality claim",
+      "no Phase3/4 readiness",
+      "no 100k/1M authority",
+      "no raw payloads in git",
+      "no secrets printed",
+      "no Comet-backed accepted run"
+    ],
+    "next_handoff": {
+      "schema_version": "zpp_next_handoff_v1",
+      "run_id": "c5_after_c1_producer_timeout_retry_custody_commit_record_20260702T024941Z",
+      "from_lane": "repo_custodian_replacement",
+      "to_lane": "engineering_meta_watcher",
+      "sent": true,
+      "objective": "Close central custody for retry-ready canonical C5 payload state without claiming authority pass.",
+      "authority_metric": "Final C5 authority still requires scripts/host/run_c5_eval.py pass_fail.status=pass from executed metrics; this packet is custody metadata only.",
+      "current_edge": "WaveB_C5_after_C1_canonical_payload_bounded_retry_ready_waiting_on_termux_command_access_after_producer_timeout",
+      "current_verdict": "blocked",
+      "completed_work": [
+        "frozen commit-record central mirror",
+        "verified raw/secret boundaries",
+        "pushed origin/gemma4-megakernel-native-training"
+      ],
+      "evidence": [
+        {
+          "artifact": "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json",
+          "sha256": "3c7cb3804b1e39002cc4edea105af2f82f29177f0af08fb5fc05a6079f12c98e",
+          "status": "frozen_in_commit_2cccbe86fab521d1c2fa14987b4ab536cf809254"
+        },
+        {
+          "artifact": "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md",
+          "sha256": "bf714f661fb4dfc821d9e7ba63c21668b06aff2dea8ec2f4c4acf5f0baaf7ccf",
+          "status": "frozen_in_commit_2cccbe86fab521d1c2fa14987b4ab536cf809254"
+        },
+        {
+          "artifact": "origin/gemma4-megakernel-native-training",
+          "sha256": null,
+          "status": "commit_2cccbe86fab521d1c2fa14987b4ab536cf809254"
+        }
+      ],
+      "first_missing_green_field": "producer_native_timeout_must_be_less_than_wrapper_timeout_and_termux_command_access_blocked",
+      "next_action": "User/operator restores Termux command access; then Execution runs exactly one bounded canonical payload retry with native timeout 1500s and wrapper timeout 1800s.",
+      "owner_thread": "019f138c-fb51-7c53-a41a-ab8eac950d9c",
+      "research_escalation": {
+        "status": "none",
+        "reason": "access blocker remains first occurrence after retry command; no repeated same-field failure after restored access yet",
+        "packet_path": null
+      },
+      "nonclaims": [
+        "no C5 pass",
+        "no heldout scorer execution after the timeout",
+        "no learning/model-quality claim",
+        "no Phase3/4 readiness",
+        "no 100k/1M authority",
+        "no raw payloads in git",
+        "no secrets printed",
+        "no Comet-backed accepted run"
+      ],
+      "do_not_do": [
+        "do not nudge Execution until Termux command access is restored",
+        "do not move raw payloads into git",
         "do not claim pass without final run_c5_eval.py report pass"
       ]
     }
