@@ -38,8 +38,40 @@ def valid_forward_report() -> dict:
             "qnn_htp_backend_verified": True,
             "context_path": "/data/local/tmp/polymath_gemma4_gate/wavec/context/full_gemma.qnn.bin",
             "context_sha256": SHA_A,
+            "context_bytes": 123456,
             "backend": BACKEND,
             "graph": GRAPH,
+            "tool_identities": {
+                "qnn_net_run": {"path": "/data/local/tmp/qairt-2.44/bin/aarch64-android/qnn-net-run", "sha256": SHA_A, "bytes": 1},
+                "qnn_context_binary_utility": {
+                    "path": "/data/local/tmp/qairt-2.44/bin/aarch64-android/qnn-context-binary-utility",
+                    "sha256": SHA_B,
+                    "bytes": 1,
+                },
+                "qnn_profile_viewer": {
+                    "path": "/data/local/tmp/qairt-2.44/bin/aarch64-android/qnn-profile-viewer",
+                    "sha256": SHA_C,
+                    "bytes": 1,
+                },
+                "backend_libQnnHtp": {
+                    "path": BACKEND,
+                    "sha256": SHA_D,
+                    "bytes": 1,
+                },
+            },
+            "context_utility": {
+                "status": "pass",
+                "remote_path": "/data/local/tmp/polymath_gemma4_gate/wavec/context_info.json",
+                "sha256": SHA_D,
+                "bytes": 1024,
+                "graph_name": GRAPH,
+                "tensor_summary": {
+                    "input_shape": EXPECTED_SHAPE,
+                    "input_dtype": EXPECTED_DTYPE,
+                    "output_shape": EXPECTED_SHAPE,
+                    "output_dtype": EXPECTED_DTYPE,
+                },
+            },
             "input": {
                 "path": "/sdcard/Download/polymath_phase34/wavec/input.f32.bin",
                 "shape": EXPECTED_SHAPE,
@@ -58,14 +90,26 @@ def valid_forward_report() -> dict:
             },
             "profile": {
                 "qnn_profile_parse_attempted": True,
+                "qnn_profile_viewer_parse_status": "unavailable",
                 "qnn_net_run_wall_ms": 548.272958,
                 "qnn_accelerator_execute_ms": None,
                 "qnn_accelerator_execute_ms_unavailable_reason": "profile_viewer_did_not_expose_execute_duration",
+                "netrun_fields": {},
+                "qnn_fields": {},
+                "rpc_fields": {},
+                "accelerator_fields": {},
+                "hvx_fields": {},
+                "ips_fields": {},
                 "profile_log": {
                     "remote_path": "/sdcard/Download/polymath_phase34/wavec/run/qnn-profiling-data_0.log",
                     "sha256": SHA_D,
                     "bytes": 4096,
                 },
+            },
+            "data_movement_ledger": {
+                "qnn_input_bytes": EXPECTED_BYTES,
+                "qnn_output_bytes": EXPECTED_BYTES,
+                "qnn_profile_bytes": 4096,
             },
         },
         "raw_payload_rules": {
@@ -94,6 +138,25 @@ def valid_consumed_report() -> dict:
             "graph": GRAPH,
             "backend": BACKEND,
             "output_sha256": SHA_C,
+            "context_utility": {
+                "status": "pass",
+                "remote_path": "/data/local/tmp/polymath_gemma4_gate/wavec/context_info.json",
+                "sha256": SHA_D,
+                "bytes": 1024,
+                "graph_name": GRAPH,
+                "tensor_summary": {
+                    "input_shape": EXPECTED_SHAPE,
+                    "input_dtype": EXPECTED_DTYPE,
+                    "output_shape": EXPECTED_SHAPE,
+                    "output_dtype": EXPECTED_DTYPE,
+                },
+            },
+            "tool_identities": valid_forward_report()["qnn"]["tool_identities"],
+            "data_movement_ledger": {
+                "qnn_input_bytes": EXPECTED_BYTES,
+                "qnn_output_bytes": EXPECTED_BYTES,
+                "qnn_profile_bytes": 4096,
+            },
         },
         "phase4_consumption": {
             "phase3_output_sha256": SHA_C,
@@ -155,6 +218,17 @@ def test_requires_profile_log_identity() -> None:
     blockers = validate_full_gemma_qnn_forward_report(report)
 
     assert "bad_qnn_profile_log_sha256" in blockers
+
+
+def test_requires_observability_identity_chain() -> None:
+    report = valid_forward_report()
+    report["qnn"].pop("context_utility")
+    report["qnn"]["tool_identities"]["backend_libQnnHtp"]["sha256"] = ""
+
+    blockers = validate_full_gemma_qnn_forward_report(report)
+
+    assert "missing_qnn_context_utility" in blockers
+    assert "bad_qnn_tool_backend_libQnnHtp_sha256" in blockers
 
 
 def test_rejects_raw_payload_path_in_repo() -> None:

@@ -1,0 +1,118 @@
+{
+  "status": "waveC_runpod_qairt_host_root_command_ready_for_execution",
+  "created_utc": "2026-07-02T20:50:00Z",
+  "governing_gate": "WaveC_full_gemma_qnn_htp_forward_consumed_tensor_route",
+  "reclassification_consumed": {
+    "old_status": "AUTHORIZATION_PENDING_QAIRT_SDK_RETRIEVAL_OR_USER_PROVIDED_WRAPPER_ROOT",
+    "new_status": "PENDING_ACTION_PHASE34_CONSUME_RUNPOD_QAIRT_HOST_ROOT",
+    "first_missing_green_field": "qairt_host_root_consumed_by_wavec_qnn_cpp_ffn_residual_generator"
+  },
+  "runpod_qairt_root_ready_artifact": {
+    "path": "runtime/reports/orchestration/WAVEC_RUNPOD_QAIRT_HOST_ROOT_SSH_READY_20260702T185605Z.json",
+    "sha256": "577e332fe481f1d4901001ebb33e5dd9d892e6618478eaad2203b26ca6d087fb"
+  },
+  "consumed_source_pathset": {
+    "source": {
+      "path": "scripts/host/run_wavec_qnn_cpp_ffn_residual_generator.py",
+      "sha256": "503ffe7f12ef416aa5a4e3037eef8b1d8f203fda6ce073d8af60ab6d612b6704"
+    },
+    "tests": {
+      "path": "tests/test_wavec_qnn_cpp_ffn_residual_generator.py",
+      "sha256": "d81119c3b7586fbc16387c5c761765058603b3ceb7a3aecd04382f38caac8fa5"
+    },
+    "wrapper_route_pathset": {
+      "path": "runtime/reports/orchestration/WAVEC_QNN_WRAPPER_SOURCE_ROUTE_PATHSET_20260702T201500Z.json",
+      "sha256": "5e31b98bf291289f9c81cd4846ed9cabff27dd06ce86340bab3e695296f80646"
+    }
+  },
+  "runpod_access_contract": {
+    "direct_tcp_ssh_command_shape": "ssh -p 30173 root@38.80.152.147",
+    "container_hostname": "9dea02c07670",
+    "runpod_qairt_root": "/workspace/qairt-2.43/qairt/2.43.0.260128",
+    "host_staged_qairt_root": "/tmp/wavec_runpod_qairt_host_root_20260702T205000Z/qairt_host",
+    "private_key_contents_read_or_printed": false
+  },
+  "required_runpod_qairt_files": [
+    {
+      "path": "include/QNN/QnnTypes.h",
+      "bytes": 67088,
+      "sha256": "dcbe22ca914d6725c00f170fd2dc16082e88e3b2de773dd597e59a11c2f87abb"
+    },
+    {
+      "path": "include/QNN/QnnOpDef.h",
+      "bytes": 34028,
+      "sha256": "e0ace2c06914a51ccfcb307ec6a3746127024147bac4ee58fc480b43de48ee0a"
+    },
+    {
+      "path": "include/QNN/QnnInterface.h",
+      "bytes": 31567,
+      "sha256": "e818434b7110885f0871a63429d6f1ea7b281fce6982cf453a4e7c1fe71b43bb"
+    },
+    {
+      "path": "share/QNN/converter/jni/QnnModel.cpp",
+      "bytes": 17995,
+      "sha256": "9b61ae746cf38769ba3929976c1ce6bf5b9d55a07b1620bb710ffb5f3496ff0b"
+    },
+    {
+      "path": "share/QNN/converter/jni/QnnWrapperUtils.cpp",
+      "bytes": 8866,
+      "sha256": "ba4e6ef9faedcd538f3c7ead91495744a7976d4f71504e8a984a772eebf2bdb8"
+    },
+    {
+      "path": "share/QNN/converter/jni/linux/QnnModelPal.cpp",
+      "bytes": 751,
+      "sha256": "cd175508b73513119462bf9a6f2c326e28175923b03e25044f931e6242c556e9"
+    }
+  ],
+  "bounded_execution_command": "set -euo pipefail\nREPO='/Users/Zer0pa/Polymat AI/Polymath-AI'\nRUN_ID='waveC_runpod_qairt_host_root_20260702T205000Z'\nRUNPOD_SSH='root@38.80.152.147'\nRUNPOD_PORT='30173'\nRUNPOD_QAIRT_ROOT='/workspace/qairt-2.43/qairt/2.43.0.260128'\nHOST_QAIRT_ROOT=\"/tmp/${RUN_ID}/qairt_host\"\nWORK_ROOT=\"/tmp/${RUN_ID}/qnn_probe_ladder_work\"\nREPORT=\"$REPO/runtime/reports/polar_phase34_consumer_preflight/active_wave/qnn_cpp_ffn_residual_generator/qnn_runpod_qairt_host_root_execution_20260702T205000Z.json\"\nmkdir -p \"$HOST_QAIRT_ROOT/include\" \"$HOST_QAIRT_ROOT/share/QNN/converter\" \"$WORK_ROOT\"\nssh -p \"$RUNPOD_PORT\" \"$RUNPOD_SSH\" \"test -d '$RUNPOD_QAIRT_ROOT/include/QNN' && test -f '$RUNPOD_QAIRT_ROOT/share/QNN/converter/jni/QnnModel.cpp' && test -f '$RUNPOD_QAIRT_ROOT/share/QNN/converter/jni/QnnWrapperUtils.cpp' && test -f '$RUNPOD_QAIRT_ROOT/share/QNN/converter/jni/linux/QnnModelPal.cpp'\"\nscp -P \"$RUNPOD_PORT\" -r \"$RUNPOD_SSH:$RUNPOD_QAIRT_ROOT/include/QNN\" \"$HOST_QAIRT_ROOT/include/\"\nscp -P \"$RUNPOD_PORT\" -r \"$RUNPOD_SSH:$RUNPOD_QAIRT_ROOT/share/QNN/converter/jni\" \"$HOST_QAIRT_ROOT/share/QNN/converter/\"\nshasum -a 256 \"$HOST_QAIRT_ROOT/include/QNN/QnnTypes.h\" \"$HOST_QAIRT_ROOT/include/QNN/QnnOpDef.h\" \"$HOST_QAIRT_ROOT/include/QNN/QnnInterface.h\" \"$HOST_QAIRT_ROOT/share/QNN/converter/jni/QnnModel.cpp\" \"$HOST_QAIRT_ROOT/share/QNN/converter/jni/QnnWrapperUtils.cpp\" \"$HOST_QAIRT_ROOT/share/QNN/converter/jni/linux/QnnModelPal.cpp\"\ncd \"$REPO\"\npython3.11 scripts/host/run_wavec_qnn_cpp_ffn_residual_generator.py --model-source-location phone_preverified --model-safetensors /data/data/com.termux/files/home/polymath_model_sources/gemma4_e4b_7aa32e6889efd6300124851b164f8b364314c3d8/model.safetensors --model-safetensors-sha256 43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651 --model-safetensors-bytes 15992595884 --model-config-spec integrations/gemma4-snapdragon-megakernel/model_spec/gemma4_e4b.json --work-root \"$WORK_ROOT\" --qairt-root /data/local/tmp/qairt-2.44 --host-qairt-root \"$HOST_QAIRT_ROOT\" --android-ndk-root /usr/local/share/android-commandlinetools/ndk/28.2.13676358 --phone-work-root /data/data/com.termux/files/home/polymath_gemma4_gate/wavec/full_gemma_qnn_export --phone-ssh-host 127.0.0.1 --phone-ssh-port 8022 --phone-ssh-user u0_a536 --phone-ssh-identity /Users/prinivenpillay/.ssh/polymath_host --materialize-weight-blobs --report \"$REPORT\"\nbash \"$WORK_ROOT/scripts/build_probe_ladder.sh\"",
+  "expected_output_paths": {
+    "host_staged_qairt_root": "/tmp/wavec_runpod_qairt_host_root_20260702T205000Z/qairt_host",
+    "outside_git_work_root": "/tmp/wavec_runpod_qairt_host_root_20260702T205000Z/qnn_probe_ladder_work",
+    "metadata_only_report": "runtime/reports/polar_phase34_consumer_preflight/active_wave/qnn_cpp_ffn_residual_generator/qnn_runpod_qairt_host_root_execution_20260702T205000Z.json",
+    "model_library_outputs": "/tmp/wavec_runpod_qairt_host_root_20260702T205000Z/qnn_probe_ladder_work/out"
+  },
+  "expected_first_green_fields": [
+    "runpod_direct_ssh_green",
+    "qairt_host_root_required_files_present",
+    "qairt_host_root_staged_outside_git",
+    "qairt_host_root_sha256s_match_ready_artifact",
+    "qairt_host_root_consumed_by_wavec_qnn_cpp_ffn_residual_generator",
+    "build_probe_ladder_progressed_past_qairt_wrapper_source_resolution"
+  ],
+  "expected_first_fail_fields": [
+    "model_library_failure:runpod_qairt_host_root_ssh_unreachable",
+    "model_library_failure:qairt_host_root_required_file_missing_or_sha_mismatch",
+    "model_library_failure:missing_host_qairt_wrapper_sources",
+    "model_library_failure:ndk_prebuilt_compiler_missing",
+    "model_library_failure:qnn_wrapper_compile_or_link_failure",
+    "quantization_or_layout_failure:qnn_primitive_rmsnorm_axis_or_param_contract_missing",
+    "quantization_or_layout_failure:qnn_gelu_tanh_primitive_param_contract_missing",
+    "quantization_or_layout_failure:qnn_quantized_matmul_scale_zero_point_orientation_missing"
+  ],
+  "stop_conditions": [
+    "Do not use /data/local/tmp/qairt-2.44 as QAIRT_HOST_ROOT.",
+    "Stop before build if RunPod direct SSH fails.",
+    "Stop before build if any required QAIRT header/wrapper source is missing or SHA mismatched after staging.",
+    "Stop if SDK/model/context/tensor/generated QNN payloads would enter git.",
+    "Stop at first model_library_failure, quantization_or_layout_failure, context_generation_failure, htp_runtime_failure, or consumed_tensor_failure and report exact field."
+  ],
+  "raw_boundary_rules": {
+    "sdk_staging_root_outside_git": true,
+    "work_root_outside_git": true,
+    "repo_artifacts_metadata_only": true,
+    "do_not_copy_sdk_model_context_tensor_payloads_into_git": true,
+    "do_not_print_private_key_or_secrets": true
+  },
+  "first_missing_green_field": "none",
+  "next_action": "Engineering/Meta constructs a bounded Execution GO from this command packet; Execution stages the verified RunPod QAIRT wrapper/include tree outside git and reruns the existing WaveC QNN C++ probe-ladder build route.",
+  "research_escalation": "none_for_sdk_presence; active_parallel_signal_lane_only_if_QNN_tool_version_or_op_layout_changes_stop_conditions",
+  "nonclaims": [
+    "no C5 pass",
+    "no learning/model-quality claim",
+    "no Phase3/4 readiness",
+    "no full-Gemma HTP forward claim until QNN context/net-run/profile/Phase4 consumption prove it",
+    "no raw payloads in git",
+    "no secrets printed",
+    "no Comet-backed accepted run"
+  ]
+}

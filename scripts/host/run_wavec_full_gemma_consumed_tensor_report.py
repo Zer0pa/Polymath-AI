@@ -84,6 +84,10 @@ def main() -> int:
             "output_path": qnn_output.get("path"),
             "output_sha256": qnn_output.get("sha256"),
             "output_bytes": qnn_output.get("bytes"),
+            "context_utility": qnn.get("context_utility"),
+            "profile": qnn.get("profile"),
+            "tool_identities": qnn.get("tool_identities"),
+            "data_movement_ledger": qnn.get("data_movement_ledger"),
         },
         "phase4_consumption": {
             "phase3_output_path": phase3_output.get("path"),
@@ -100,6 +104,7 @@ def main() -> int:
             "adapter_delta_norm_l2": phase4_report.get("adapter_delta_norm_l2"),
             "loss_source": "phase4_opencl_adapter_update_from_full_gemma_qnn_tensor",
         },
+        "opencl_observability": phase4_report.get("telemetry", {}),
         "raw_payload_rules": {
             "raw_suffix_scan_root": args.report_root or str(Path(args.output).parent),
             "raw_suffix_scan_count": raw_suffix_count,

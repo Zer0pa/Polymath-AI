@@ -1,0 +1,142 @@
+{
+  "schema": "polymath_wavec_research_runtime_observability_capability_v1",
+  "created_utc": "2026-07-02T19:02:13Z",
+  "status": "research_signal_runtime_observability_capability_defined",
+  "status_classification": "PENDING_ACTION_RESEARCH_DEFINE_BLACK_BOX_VISIBILITY_PACKETS_AND_EXECUTION_CAPTURE_CONTRACT",
+  "objective": "Give the Research Signal Agent a standing capability to interpret NPU/HTP, GPU/OpenCL, CPU, memory, and data-move behavior during WaveC execution without owning execution or mutating raw payloads.",
+  "qairt_root": {
+    "artifact": "runtime/reports/orchestration/WAVEC_RUNPOD_QAIRT_HOST_ROOT_SSH_READY_20260702T185605Z.json",
+    "artifact_sha256": "577e332fe481f1d4901001ebb33e5dd9d892e6618478eaad2203b26ca6d087fb",
+    "runpod_direct_ssh": "ssh -p 30173 root@38.80.152.147",
+    "qairt_host_root": "/workspace/qairt-2.43/qairt/2.43.0.260128"
+  },
+  "observed_qairt_tools": {
+    "host_tools": [
+      "bin/x86_64-linux-clang/qnn-context-binary-generator",
+      "bin/x86_64-linux-clang/qnn-context-binary-utility",
+      "bin/x86_64-linux-clang/qnn-net-run",
+      "bin/x86_64-linux-clang/qnn-profile-viewer",
+      "bin/x86_64-linux-clang/qnn-throughput-net-run",
+      "bin/x86_64-linux-clang/qnn-platform-validator",
+      "bin/x86_64-linux-clang/qnn-architecture-checker",
+      "bin/x86_64-linux-clang/qnn-accuracy-debugger",
+      "bin/x86_64-linux-clang/qairt-accuracy-debugger",
+      "bin/x86_64-linux-clang/qairt-accuracy-evaluator",
+      "bin/x86_64-linux-clang/qairt-dlc-info",
+      "bin/x86_64-linux-clang/qairt-dlc-to-json",
+      "bin/x86_64-linux-clang/qairt-quantizer",
+      "bin/x86_64-linux-clang/qairt-lora-model-creator",
+      "bin/x86_64-linux-clang/qairt-lora-mapper",
+      "bin/x86_64-linux-clang/qairt-lora-adapter-bin-updater"
+    ],
+    "android_target_tools": [
+      "bin/aarch64-android/qnn-net-run",
+      "bin/aarch64-android/qnn-profile-viewer",
+      "bin/aarch64-android/qnn-throughput-net-run",
+      "bin/aarch64-android/qnn-context-binary-utility",
+      "bin/aarch64-android/qnn-platform-validator",
+      "bin/aarch64-android/qnn-gpu-target-server"
+    ],
+    "host_tool_loader_gap": {
+      "status": "host_qnn_tools_need_libcxx_runtime_resolution",
+      "evidence": "qnn-net-run, qnn-profile-viewer, qnn-context-binary-utility, and qnn-throughput-net-run currently fail on RunPod host with missing libc++.so.1 when invoked directly.",
+      "libcxx_search_result": "no libc++.so* or libc++abi.so* found under /workspace/qairt-2.43, /usr, /opt, or /lib in bounded probe",
+      "owner": "Phase3/4 or Execution for tool-runtime setup; Research for interpreting why this affects observability and stop conditions"
+    }
+  },
+  "research_capability_boundary": {
+    "research_owns": [
+      "telemetry schema design for NPU/HTP, GPU/OpenCL, CPU, memory, data movement, and thermal/profiling signals",
+      "hypothesis generation from profile evidence",
+      "falsifiers and stop conditions for black-box execution behavior",
+      "recommendations for additional instrumentation hooks",
+      "interpretation of QNN profile/context/throughput output once Execution captures it"
+    ],
+    "research_does_not_own": [
+      "phone gate execution",
+      "RunPod build or export execution unless explicitly routed",
+      "raw payload copying",
+      "custody commits",
+      "claiming Phase3/4 readiness or learning quality"
+    ],
+    "execution_owns": [
+      "running profiled commands on phone/RunPod from frozen GO packages",
+      "capturing compact metadata-only logs and SHA identities",
+      "bounded device recovery during authorized runs"
+    ],
+    "phase34_owns": [
+      "adding instrumentation hooks to QNN/OpenCL/native runners",
+      "ensuring profile output is emitted and parseable",
+      "fixing tool-runtime gaps such as missing host libc++ when needed"
+    ],
+    "pipeline_owns": [
+      "receiving validation of telemetry schemas and report contracts",
+      "ensuring metrics are comparable across runs"
+    ]
+  },
+  "minimum_visibility_packet": {
+    "npu_htp_qnn": [
+      "context binary path SHA and graph name",
+      "backend library identity and HTP stub/architecture identity",
+      "qnn-context-binary-utility graph/tensor summary",
+      "qnn-net-run status, backend, input/output bytes, output SHA",
+      "qnn-profile-viewer parsed profile when available",
+      "qnn-throughput-net-run summary when available",
+      "context const size, opDataSize, ioTensorSize, spill/DDR, HVX threads when available",
+      "unsupported op/layout/dtype evidence with first failing command"
+    ],
+    "gpu_opencl": [
+      "OpenCL platform/device identity",
+      "kernel names and per-kernel timing when event profiling is enabled",
+      "adapter pre/post SHA delta",
+      "input tensor SHA equality against Phase3 output",
+      "device memory allocation sizes and transfer byte counts when available"
+    ],
+    "cpu_scheduler_memory": [
+      "cpuset/cpus_allowed_list",
+      "process/thread identity",
+      "RSS/VSS/meminfo before/after",
+      "host wall time and device elapsed time",
+      "thermal/performance mode evidence when available"
+    ],
+    "data_movement": [
+      "source PJP1/PQA1/tensor identity by SHA and byte count only",
+      "all raw payload paths outside git",
+      "stage in/out byte counts",
+      "report-root raw suffix scan count"
+    ]
+  },
+  "black_box_falsifiers": [
+    "QNN graph name or backend indicates synthetic ReLU/identity/Qwen instead of Gemma-scoped graph",
+    "QNN profile missing when the run claims HTP visibility",
+    "CPU/GPU fallback appears in a claimed HTP run",
+    "Phase4 consumes a tensor SHA different from the QNN output SHA",
+    "OpenCL adapter pre/post SHA does not change when update is claimed",
+    "host wall time increases while QNN execute/profile time is near zero, indicating orchestration/data-move bottleneck",
+    "tooling loader gap prevents qnn-profile-viewer/qnn-net-run from producing metadata"
+  ],
+  "research_prompt_to_send": "Research Signal Agent: adopt RunPod QAIRT/QNN observability as a standing capability. Use QAIRT_HOST_ROOT=/workspace/qairt-2.43/qairt/2.43.0.260128 via direct SSH `ssh -p 30173 root@38.80.152.147` as the current SDK root. Define black-box visibility packets for NPU/HTP QNN profiles, GPU/OpenCL timing, CPU scheduler/memory, and data movement. Do not run gates or copy raw payloads. Return mechanisms, metrics, falsifiers, stop conditions, and exact instrumentation requests to Phase3/4/Execution/Pipeline. Note current host-tool loader gap: missing libc++.so.1 for x86_64 QNN tools unless Phase3/4/Execution resolves the runtime path.",
+  "next_handoff": {
+    "to": "Research Signal Agent 019f229a-a514-7443-b7ed-91972233ac93",
+    "status": "runtime_observability_capability_ready_for_research_signal_lane",
+    "first_missing_green_field": "research_black_box_visibility_packet_missing",
+    "next_action": "Research defines the observability packet and routes exact instrumentation/capture requirements to Phase3/4, Execution, and Pipeline.",
+    "research_escalation": "bounded_research_sprint if profile semantics or hardware counters alter stop conditions",
+    "nonclaims": [
+      "no C5 pass",
+      "no learning_or_model_quality_claim",
+      "no Phase3_4_readiness_claim",
+      "no full_Gemma_HTP_forward_claim_until_proven",
+      "no 100k_1M_authority",
+      "no raw_payloads_in_git",
+      "no secrets_printed",
+      "no Comet_backed_accepted_run"
+    ]
+  },
+  "raw_boundary": {
+    "sdk_payload_copied_into_repo": false,
+    "model_payload_copied_into_repo": false,
+    "raw_execution_payloads_copied_into_repo": false,
+    "secrets_sourced_or_printed": false
+  }
+}

@@ -71,6 +71,21 @@ REQUIRED_PHASE4_METRICS = (
     "tokens_per_sec",
     "latency_ms",
 )
+REQUIRED_OPENCL_TELEMETRY_FIELDS = (
+    "dispatch_count",
+    "profiled_dispatch_count",
+    "sync_count",
+    "host_device_bytes",
+    "blocking_read_bytes",
+    "kernel_elapsed_ns",
+)
+REQUIRED_OPENCL_DATA_LEDGER_FIELDS = (
+    "phase3_tensor_read_bytes",
+    "target_read_bytes",
+    "opencl_host_to_device_bytes",
+    "opencl_device_to_host_bytes",
+    "adapter_read_write_bytes",
+)
 OPTIONAL_WHEN_UNSUPPORTED = {
     "forward_cross_entropy": "cross_entropy",
     "perplexity": "perplexity",
@@ -151,10 +166,25 @@ def validate_phase4_bridge_report(
 
     telemetry = require_mapping(blockers, report.get("telemetry"), "missing_telemetry")
     if telemetry:
-        for key in ("dispatch_count", "profiled_dispatch_count", "sync_count", "host_device_bytes", "blocking_read_bytes", "kernel_elapsed_ns"):
+        for key in REQUIRED_OPENCL_TELEMETRY_FIELDS:
             require_nonnegative_int(blockers, telemetry.get(key), f"bad_telemetry_{key}")
         require_true(blockers, telemetry.get("thermal_stop_band_pass"), "thermal_stop_band_failed")
         require_present(blockers, telemetry.get("kernel_lineage_class"), "missing_kernel_lineage_class")
+        kernel_names = telemetry.get("kernel_names")
+        if not isinstance(kernel_names, list) or not kernel_names:
+            blockers.append("missing_opencl_kernel_names")
+        require_present(blockers, telemetry.get("opencl_platform"), "missing_opencl_platform")
+        require_present(blockers, telemetry.get("opencl_device"), "missing_opencl_device")
+        require_present(blockers, telemetry.get("opencl_library_identity"), "missing_opencl_library_identity")
+        data_ledger = require_mapping(blockers, telemetry.get("data_movement_ledger"), "missing_opencl_data_movement_ledger")
+        if data_ledger:
+            for key in REQUIRED_OPENCL_DATA_LEDGER_FIELDS:
+                require_nonnegative_int(blockers, data_ledger.get(key), f"bad_opencl_data_movement_{key}")
+        runtime_state = require_mapping(blockers, telemetry.get("runtime_state"), "missing_runtime_state")
+        if runtime_state:
+            for key in ("cpuset", "rss_hwm_kb", "meminfo_kb", "thermal_state", "performance_state"):
+                if key not in runtime_state:
+                    blockers.append(f"missing_runtime_state_{key}")
 
     raw_rules = require_mapping(blockers, report.get("raw_payload_rules"), "missing_raw_payload_rules")
     if raw_rules:

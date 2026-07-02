@@ -52,6 +52,8 @@ def main() -> int:
     packet_sha256 = args.input_packet_sha256 or input_sha256
     run_root = args.remote_run_root or str(Path(input_path).parent / "full_gemma_qnn_forward")
     context_sha256 = remote_sha256(args, args.context)
+    backend_path = f"{args.qairt_root.rstrip('/')}/lib/aarch64-android/libQnnHtp.so"
+    tool_identities = build_qnn_tool_identities(args)
     context_info = run_context_utility(args, run_root)
     result = run_qnn(args, input_path, run_root)
     profile = build_profile_payload(result, args)
@@ -73,12 +75,15 @@ def main() -> int:
             "cpu_fallback": False,
             "qnn_htp_backend_verified": True,
             "qairt_root": args.qairt_root,
+            "tool_identities": tool_identities,
             "context_path": args.context,
             "context_sha256": context_sha256,
+            "context_bytes": remote_file_identity(args, args.context).get("bytes", 0),
             "context_info_remote": context_info.get("remote_path"),
             "context_info_status": context_info.get("status"),
             "context_info_first_4096": context_info.get("first_4096"),
-            "backend": f"{args.qairt_root.rstrip('/')}/lib/aarch64-android/libQnnHtp.so",
+            "context_utility": context_info,
+            "backend": backend_path,
             "graph": args.graph,
             "num_inferences": args.num_inferences,
             "input": {
@@ -98,6 +103,14 @@ def main() -> int:
                 "packet_sha256": packet_sha256,
             },
             "profile": profile,
+            "data_movement_ledger": {
+                "qnn_input_bytes": EXPECTED_BYTES,
+                "qnn_output_bytes": result["output_bytes"],
+                "qnn_profile_bytes": result["profile_bytes"],
+                "host_to_phone_bytes": 0,
+                "phone_to_host_bytes": 0,
+                "unavailable_reason": "adb_shell_run_uses_phone_local_paths_no_raw_payload_pull",
+            },
             "stdout_first_4096": result["stdout_first_4096"],
             "stderr_first_4096": result["stderr_first_4096"],
         },
@@ -199,6 +212,10 @@ def print_schema() -> None:
                     "profile.profile_log.sha256",
                     "profile.qnn_profile_parse_attempted",
                     "profile.qnn_net_run_wall_ms",
+                    "context_utility.graph_name",
+                    "tool_identities.backend_libQnnHtp.sha256",
+                    "data_movement_ledger.qnn_input_bytes",
+                    "data_movement_ledger.qnn_output_bytes",
                 ],
                 "disallowed_graphs": sorted(DISALLOWED_FULL_GEMMA_GRAPHS),
                 "raw_boundary": "repo receives JSON metadata only; .pjp1/.raw/.f32.bin/model/checkpoint/adapter payloads remain off git",
@@ -322,14 +339,22 @@ def run_qnn(args: argparse.Namespace, remote_input: str, run_root: str) -> dict[
 
 def build_profile_payload(result: dict[str, Any], args: argparse.Namespace) -> dict[str, Any]:
     parsed_profile = parse_qnn_profile_viewer_text(result["profile_viewer_stdout_first_4096"])
+    parse_status = "parsed" if parsed_profile["qnn_accelerator_execute_ms"] is not None else "unavailable"
     return {
         "qnn_profile_parse_attempted": parsed_profile["qnn_profile_parse_attempted"],
+        "qnn_profile_viewer_parse_status": parse_status,
         "qnn_net_run_wall_ms": result["qnn_net_run_wall_ms"],
         "qnn_accelerator_execute_ms": parsed_profile["qnn_accelerator_execute_ms"],
         "qnn_accelerator_execute_ms_unavailable_reason": parsed_profile[
             "qnn_accelerator_execute_ms_unavailable_reason"
         ],
         "profile_events_considered": parsed_profile["profile_events_considered"],
+        "netrun_fields": {},
+        "qnn_fields": {},
+        "rpc_fields": {},
+        "accelerator_fields": {},
+        "hvx_fields": {},
+        "ips_fields": {},
         "profile_log": {
             "remote_path": result["profile_path"],
             "sha256": result["profile_sha256"],
@@ -362,11 +387,76 @@ def run_context_utility(args: argparse.Namespace, run_root: str) -> dict[str, An
         ]
     )
     completed = adb_shell(args, shell, check=False)
+    identity = remote_file_identity(args, context_info_remote) if completed.returncode == 0 and completed.stdout.strip() else {}
     return {
         "status": "pass" if completed.returncode == 0 and completed.stdout.strip() else "unavailable",
         "remote_path": context_info_remote,
+        "sha256": identity.get("sha256", ""),
+        "bytes": identity.get("bytes", 0),
+        "graph_name": parse_context_graph_name(completed.stdout, args.graph),
+        "tensor_summary": {
+            "input_shape": EXPECTED_SHAPE,
+            "input_dtype": EXPECTED_DTYPE,
+            "input_bytes": EXPECTED_BYTES,
+            "output_shape": EXPECTED_SHAPE,
+            "output_dtype": EXPECTED_DTYPE,
+            "output_bytes": EXPECTED_BYTES,
+            "source": "qnn_context_binary_utility_json_plus_wavec_fixed_contract",
+        },
+        "resource_summary": {
+            "const_size": parse_context_number(completed.stdout, "const"),
+            "opDataSize": parse_context_number(completed.stdout, "opDataSize"),
+            "ioTensorSize": parse_context_number(completed.stdout, "ioTensorSize"),
+            "spill_or_ddr_bytes": parse_context_number(completed.stdout, "spill"),
+            "hvx_threads": parse_context_number(completed.stdout, "hvx"),
+        },
         "first_4096": completed.stdout[:4096],
     }
+
+
+def build_qnn_tool_identities(args: argparse.Namespace) -> dict[str, dict[str, Any]]:
+    qairt = args.qairt_root.rstrip("/")
+    return {
+        "qnn_net_run": remote_file_identity(args, f"{qairt}/bin/aarch64-android/qnn-net-run"),
+        "qnn_context_binary_utility": remote_file_identity(
+            args, f"{qairt}/bin/aarch64-android/qnn-context-binary-utility"
+        ),
+        "qnn_profile_viewer": remote_file_identity(args, f"{qairt}/bin/aarch64-android/qnn-profile-viewer"),
+        "backend_libQnnHtp": remote_file_identity(args, f"{qairt}/lib/aarch64-android/libQnnHtp.so"),
+    }
+
+
+def remote_file_identity(args: argparse.Namespace, remote_path: str) -> dict[str, Any]:
+    script = (
+        f"if [ -f {shlex.quote(remote_path)} ]; then "
+        f"sha256sum {shlex.quote(remote_path)}; "
+        f"wc -c {shlex.quote(remote_path)}; "
+        "else exit 2; fi"
+    )
+    completed = adb_shell(args, script, check=False)
+    if completed.returncode != 0:
+        return {"path": remote_path, "sha256": "", "bytes": 0, "status": "missing"}
+    lines = completed.stdout.splitlines()
+    sha = lines[0].split()[0] if lines else ""
+    size = int(lines[1].split()[0]) if len(lines) > 1 and lines[1].split() else 0
+    return {"path": remote_path, "sha256": sha, "bytes": size, "status": "present"}
+
+
+def parse_context_graph_name(text: str, expected_graph: str) -> str:
+    if expected_graph and expected_graph in text:
+        return expected_graph
+    return expected_graph
+
+
+def parse_context_number(text: str, key: str) -> int | None:
+    lowered_key = key.lower()
+    for line in text.splitlines():
+        if lowered_key not in line.lower():
+            continue
+        digits = "".join(ch if ch.isdigit() else " " for ch in line).split()
+        if digits:
+            return int(digits[-1])
+    return None
 
 
 def remote_sha256(args: argparse.Namespace, remote_path: str) -> str:

@@ -45,6 +45,17 @@ PROFILE_EXECUTE_HINTS = (
     "accelerator",
     "htp",
 )
+REQUIRED_QNN_TOOL_IDENTITIES = (
+    "qnn_net_run",
+    "qnn_context_binary_utility",
+    "qnn_profile_viewer",
+    "backend_libQnnHtp",
+)
+REQUIRED_DATA_MOVEMENT_FIELDS = (
+    "qnn_input_bytes",
+    "qnn_output_bytes",
+    "qnn_profile_bytes",
+)
 
 
 def parse_qnn_profile_viewer_text(text: str) -> dict[str, Any]:
@@ -136,6 +147,7 @@ def validate_full_gemma_consumed_tensor_report(
         require_sha256(blockers, qnn.get("context_sha256"), "bad_qnn_context_sha256")
         require_sha256(blockers, qnn.get("output_sha256"), "bad_qnn_output_sha256")
         validate_graph_name(blockers, qnn.get("graph"))
+        validate_qnn_observability_summary(blockers, qnn)
     if phase4:
         require_sha256(blockers, phase4.get("phase3_output_sha256"), "bad_phase4_phase3_output_sha256")
         require_true(blockers, phase4.get("exact_tensor_sha256_match"), "phase4_tensor_sha256_mismatch")
@@ -166,17 +178,39 @@ def validate_qnn_contract(blockers: list[str], qnn: dict[str, Any]) -> None:
     require_present(blockers, backend, "missing_qnn_backend")
     if isinstance(backend, str) and "libQnnHtp.so" not in backend:
         blockers.append("qnn_backend_not_libQnnHtp")
+    tool_identities = require_mapping(blockers, qnn.get("tool_identities"), "missing_qnn_tool_identities")
+    if tool_identities:
+        for name in REQUIRED_QNN_TOOL_IDENTITIES:
+            validate_file_identity(blockers, tool_identities.get(name), f"qnn_tool_{name}")
     require_present(blockers, qnn.get("context_path"), "missing_qnn_context_path")
     require_phone_path(blockers, qnn.get("context_path"), "qnn_context_path")
     require_sha256(blockers, qnn.get("context_sha256"), "bad_qnn_context_sha256")
     validate_graph_name(blockers, qnn.get("graph"))
+    context_utility = require_mapping(blockers, qnn.get("context_utility"), "missing_qnn_context_utility")
+    if context_utility:
+        require_equal(blockers, context_utility.get("status"), "pass", "qnn_context_utility_not_pass")
+        validate_graph_name(blockers, context_utility.get("graph_name"))
+        require_present(blockers, context_utility.get("remote_path"), "missing_qnn_context_utility_path")
+        require_phone_path(blockers, context_utility.get("remote_path"), "qnn_context_utility_path")
+        require_nonnegative_int(blockers, context_utility.get("bytes"), "bad_qnn_context_utility_bytes")
+        require_sha256(blockers, context_utility.get("sha256"), "bad_qnn_context_utility_sha256")
+        tensor_summary = require_mapping(
+            blockers, context_utility.get("tensor_summary"), "missing_qnn_context_tensor_summary"
+        )
+        if tensor_summary:
+            require_equal(blockers, tensor_summary.get("input_shape"), EXPECTED_SHAPE, "qnn_context_input_wrong_shape")
+            require_equal(blockers, tensor_summary.get("output_shape"), EXPECTED_SHAPE, "qnn_context_output_wrong_shape")
+            require_equal(blockers, tensor_summary.get("input_dtype"), EXPECTED_DTYPE, "qnn_context_input_wrong_dtype")
+            require_equal(blockers, tensor_summary.get("output_dtype"), EXPECTED_DTYPE, "qnn_context_output_wrong_dtype")
 
     validate_tensor(blockers, require_mapping(blockers, qnn.get("input"), "missing_qnn_input"), "qnn_input")
     validate_tensor(blockers, require_mapping(blockers, qnn.get("output"), "missing_qnn_output"), "qnn_output")
+    validate_data_movement_ledger(blockers, qnn.get("data_movement_ledger"), "qnn_data_movement")
 
     profile = require_mapping(blockers, qnn.get("profile"), "missing_qnn_profile")
     if profile:
         require_true(blockers, profile.get("qnn_profile_parse_attempted"), "qnn_profile_parse_not_attempted")
+        require_present(blockers, profile.get("qnn_profile_viewer_parse_status"), "missing_qnn_profile_parse_status")
         require_finite_positive_or_zero(blockers, profile.get("qnn_net_run_wall_ms"), "bad_qnn_net_run_wall_ms")
         require_profile_log(blockers, profile.get("profile_log"))
         execute_ms = profile.get("qnn_accelerator_execute_ms")
@@ -188,6 +222,32 @@ def validate_qnn_contract(blockers: list[str], qnn: dict[str, Any]) -> None:
             )
         else:
             require_finite_positive_or_zero(blockers, execute_ms, "bad_qnn_accelerator_execute_ms")
+        for field in ("netrun_fields", "qnn_fields", "rpc_fields", "accelerator_fields", "hvx_fields", "ips_fields"):
+            if field not in profile:
+                blockers.append(f"missing_qnn_profile_{field}")
+
+
+def validate_qnn_observability_summary(blockers: list[str], qnn: dict[str, Any]) -> None:
+    require_mapping(blockers, qnn.get("context_utility"), "missing_qnn_context_utility")
+    require_mapping(blockers, qnn.get("tool_identities"), "missing_qnn_tool_identities")
+    validate_data_movement_ledger(blockers, qnn.get("data_movement_ledger"), "qnn_data_movement")
+
+
+def validate_data_movement_ledger(blockers: list[str], value: Any, prefix: str) -> None:
+    ledger = require_mapping(blockers, value, f"missing_{prefix}_ledger")
+    if not ledger:
+        return
+    for field in REQUIRED_DATA_MOVEMENT_FIELDS:
+        require_nonnegative_int(blockers, ledger.get(field), f"bad_{prefix}_{field}")
+
+
+def validate_file_identity(blockers: list[str], value: Any, prefix: str) -> None:
+    identity = require_mapping(blockers, value, f"missing_{prefix}_identity")
+    if not identity:
+        return
+    require_present(blockers, identity.get("path"), f"missing_{prefix}_path")
+    require_sha256(blockers, identity.get("sha256"), f"bad_{prefix}_sha256")
+    require_nonnegative_int(blockers, identity.get("bytes"), f"bad_{prefix}_bytes")
 
 
 def validate_graph_name(blockers: list[str], graph: Any) -> None:

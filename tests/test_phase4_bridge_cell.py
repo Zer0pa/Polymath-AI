@@ -74,6 +74,24 @@ def valid_report() -> dict:
             "kernel_elapsed_ns": 1200000,
             "thermal_stop_band_pass": True,
             "kernel_lineage_class": "fork_and_own_opencl_bridge_cell",
+            "kernel_names": ["phase4_bridge_rank16_update"],
+            "opencl_platform": "QUALCOMM",
+            "opencl_device": "QUALCOMM Adreno(TM) 830",
+            "opencl_library_identity": "libOpenCL.so:vendor_adreno",
+            "data_movement_ledger": {
+                "phase3_tensor_read_bytes": 163840,
+                "target_read_bytes": 163840,
+                "opencl_host_to_device_bytes": 327680,
+                "opencl_device_to_host_bytes": 1024,
+                "adapter_read_write_bytes": 4096,
+            },
+            "runtime_state": {
+                "cpuset": "unavailable_not_captured_by_current_bridge_runner",
+                "rss_hwm_kb": "unavailable_not_captured_by_current_bridge_runner",
+                "meminfo_kb": "unavailable_not_captured_by_current_bridge_runner",
+                "thermal_state": "unavailable_not_captured_by_current_bridge_runner",
+                "performance_state": "unavailable_not_captured_by_current_bridge_runner",
+            },
         },
         "raw_payload_rules": {
             "raw_pjp1_pulled_to_host": False,
@@ -269,6 +287,17 @@ def test_rejects_unchanged_adapter_after_update() -> None:
     report["adapter"]["post_sha256"] = report["adapter"]["pre_sha256"]
 
     assert "adapter_hash_unchanged_after_update" in validate_phase4_bridge_report(report)
+
+
+def test_rejects_missing_opencl_observability_fields() -> None:
+    report = valid_report()
+    report["telemetry"].pop("kernel_names")
+    report["telemetry"]["data_movement_ledger"].pop("opencl_device_to_host_bytes")
+
+    blockers = validate_phase4_bridge_report(report)
+
+    assert "missing_opencl_kernel_names" in blockers
+    assert "bad_opencl_data_movement_opencl_device_to_host_bytes" in blockers
 
 
 def test_metric_readiness_accepts_complete_metric_surface() -> None:

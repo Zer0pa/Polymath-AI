@@ -1,0 +1,132 @@
+{
+  "status": "waveC_runtime_observability_contract_pathset_ready_for_pipeline",
+  "created_utc": "2026-07-02T21:10:00Z",
+  "governing_gate": "WaveC_full_gemma_qnn_htp_forward_consumed_tensor_route",
+  "consumed_research_signal": {
+    "path": "runtime/reports/orchestration/WAVEC_RESEARCH_RUNTIME_OBSERVABILITY_CAPABILITY_20260702T190213Z.json",
+    "sha256": "d5e092dc7bf386464e5c9887585a32ac5f6d3d36fb2d74aca51b25f9b23c1eaf",
+    "status": "research_signal_runtime_observability_packet_ready"
+  },
+  "active_execution_go_not_interrupted": {
+    "path": "runtime/reports/orchestration/WAVEC_RUNPOD_QAIRT_HOST_ROOT_COMMAND_20260702T205000Z.json",
+    "sha256": "5c2dcbad4b02fb2b2cfb87e449b1b88e0819cd42bd58a97492f791d9507705fa",
+    "note": "This pathset is a report-contract update for the next source/custody lane; it does not invalidate the already routed RunPod QAIRT_HOST_ROOT Execution GO."
+  },
+  "source_pathset": [
+    {
+      "path": "scripts/host/run_wavec_full_gemma_qnn_forward.py",
+      "sha256": "f3fb76cb7af040ac911f7e2aba4534dea10f2ec7712bad0543611bc81019ba61",
+      "purpose": "Adds QNN tool/backend identities, context utility metadata, profile parse status, and QNN data-movement ledger to the existing full-Gemma QNN forward report."
+    },
+    {
+      "path": "polymath_ai/polar/wavec_full_gemma_qnn.py",
+      "sha256": "fc8ab15a54e561fb3749c6fd4e78136d753238479bd51533a5cd9c61288aeef2",
+      "purpose": "Extends fail-closed QNN validators for tool identities, context utility graph/tensor summary, profile parser status, and QNN data movement."
+    },
+    {
+      "path": "scripts/host/run_wavec_full_gemma_consumed_tensor_report.py",
+      "sha256": "4a6c446650b64acb111efa87369d70dcb5a1bd02aea5791bb5906aacd37cffb6",
+      "purpose": "Carries QNN observability and Phase4 OpenCL telemetry into the existing consumed-tensor summary report."
+    },
+    {
+      "path": "polymath_ai/polar/phase4_bridge_cell.py",
+      "sha256": "bd0b4e480c9b0117e5c45b15f5089a3c0106daf9d0f05c26564a3b92f60b2daa",
+      "purpose": "Requires OpenCL kernel/platform/device/library identity, dispatch/profile/sync counters, data-movement ledger, and runtime-state fields."
+    },
+    {
+      "path": "tests/test_wavec_full_gemma_qnn.py",
+      "sha256": "dcd204dedb3a1d2b0ce40e1c56a3be6c7ec27f6d80cab8a12b83b9d1f846eb3e",
+      "purpose": "Adds tests for QNN context utility/tool identity/data-movement observability and rejection of missing identity chain."
+    },
+    {
+      "path": "tests/test_phase4_bridge_cell.py",
+      "sha256": "884c059a488db6006debcc6ec8743cf44ad06d48bb14238d46d7b150c2116276",
+      "purpose": "Adds tests for OpenCL kernel identity and data-movement observability rejection."
+    }
+  ],
+  "contract_additions": {
+    "qnn_forward_report": [
+      "tool_identities.qnn_net_run",
+      "tool_identities.qnn_context_binary_utility",
+      "tool_identities.qnn_profile_viewer",
+      "tool_identities.backend_libQnnHtp",
+      "context_utility.status",
+      "context_utility.graph_name",
+      "context_utility.remote_path",
+      "context_utility.sha256",
+      "context_utility.bytes",
+      "context_utility.tensor_summary",
+      "context_utility.resource_summary",
+      "profile.qnn_profile_viewer_parse_status",
+      "profile.netrun_fields",
+      "profile.qnn_fields",
+      "profile.rpc_fields",
+      "profile.accelerator_fields",
+      "profile.hvx_fields",
+      "profile.ips_fields",
+      "data_movement_ledger.qnn_input_bytes",
+      "data_movement_ledger.qnn_output_bytes",
+      "data_movement_ledger.qnn_profile_bytes"
+    ],
+    "phase4_opencl_report": [
+      "telemetry.kernel_names",
+      "telemetry.opencl_platform",
+      "telemetry.opencl_device",
+      "telemetry.opencl_library_identity",
+      "telemetry.dispatch_count",
+      "telemetry.profiled_dispatch_count",
+      "telemetry.sync_count",
+      "telemetry.host_device_bytes",
+      "telemetry.blocking_read_bytes",
+      "telemetry.kernel_elapsed_ns",
+      "telemetry.data_movement_ledger",
+      "telemetry.runtime_state"
+    ],
+    "consumed_tensor_summary": [
+      "qnn_forward.context_utility",
+      "qnn_forward.profile",
+      "qnn_forward.tool_identities",
+      "qnn_forward.data_movement_ledger",
+      "opencl_observability"
+    ]
+  },
+  "local_verification": [
+    {
+      "command": "python3.11 -m py_compile polymath_ai/polar/wavec_full_gemma_qnn.py scripts/host/run_wavec_full_gemma_qnn_forward.py scripts/host/run_wavec_full_gemma_consumed_tensor_report.py polymath_ai/polar/phase4_bridge_cell.py tests/test_wavec_full_gemma_qnn.py tests/test_phase4_bridge_cell.py",
+      "result": "pass"
+    },
+    {
+      "command": "python3.11 scripts/host/run_wavec_full_gemma_qnn_forward.py --print-schema && python3.11 scripts/host/run_wavec_full_gemma_consumed_tensor_report.py --print-schema",
+      "result": "pass"
+    },
+    {
+      "command": "python3.11 -m pytest tests/test_wavec_full_gemma_qnn.py tests/test_phase4_bridge_cell.py tests/test_wavec_qnn_cpp_ffn_residual_generator.py tests/test_wavec_gemma_qnn_exporter.py",
+      "result": "52 passed in 2.55s"
+    },
+    {
+      "command": "scoped raw suffix scan over runtime/reports/orchestration and runtime/reports/polar_phase34_consumer_preflight/active_wave",
+      "result": "0"
+    }
+  ],
+  "pipeline_receiving_checklist": [
+    "Source/test SHAs match this packet.",
+    "No new competing schema is introduced; existing WaveC QNN forward, consumed tensor, and Phase4 bridge report contracts are extended.",
+    "QNN validator rejects missing context utility, missing tool/backend identity, CPU fallback, synthetic graph, malformed tensor identity, missing profile log identity, and missing profile parse status.",
+    "Phase4 bridge validator rejects missing OpenCL kernel names, platform/device/library identity, dispatch/profile/sync counters, data movement, runtime state, no adapter delta, and CPU objective update.",
+    "Consumed tensor report carries QNN context/profile/tool/data movement and OpenCL observability forward for lineage review.",
+    "Missing QNN profile with any HTP performance claim remains a fail-closed visibility downgrade.",
+    "Raw payloads, SDK payloads, contexts, profiles, generated binaries, model/checkpoint/adapter/tensor payloads remain outside git."
+  ],
+  "first_missing_green_field": "none",
+  "next_action": "Pipeline validates the runtime observability receiving contract; if green, route to Repo Custodian for source/report freeze.",
+  "research_escalation": "active_parallel_signal_lane_for_QNN_profile_interpretation_unsupported_op_layout_or_runtime_envelope_changes",
+  "nonclaims": [
+    "no C5 pass",
+    "no learning/model-quality claim",
+    "no Phase3/4 readiness",
+    "no full-Gemma HTP forward claim until QNN context/net-run/profile/Phase4 consumption prove it",
+    "no raw payloads in git",
+    "no secrets printed",
+    "no Comet-backed accepted run"
+  ]
+}
