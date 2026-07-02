@@ -1,0 +1,143 @@
+{
+  "status": "waveC_phone_source_materializer_ssh_identity_pathset_ready_for_pipeline",
+  "created_utc": "2026-07-02T18:10:00Z",
+  "governing_gate": "WaveC_full_gemma_qnn_htp_forward_consumed_tensor_route",
+  "frozen_materialization_base_commit": "eeb19f9795fd5805acc3a659cd761a2d4f2ec5c4",
+  "execution_gap_consumed": {
+    "report": "runtime/reports/polar_phase34_consumer_preflight/active_wave/qnn_cpp_ffn_residual_generator/qnn_cpp_ffn_residual_generator_execution_20260702T1745Z.json",
+    "sha256": "8db9f982d2688b1e4e7bd92d18255987258c53c00d7c25921240446b7332788d",
+    "first_missing_green_field": "source_missing:phone_materialization_remote_mkdir_failed:u0_a536@127.0.0.1: Permission denied (publickey,keyboard-interactive)"
+  },
+  "source_pathset": [
+    {
+      "path": "scripts/host/run_wavec_qnn_cpp_ffn_residual_generator.py",
+      "sha256": "07d7bfe624427f81d4d358f96442685b75e6031b1462f6d9e7d9c19c9f701be9",
+      "purpose": "Requires an explicit phone SSH identity/config for non-plan selected-weight materialization and propagates it to every internal ssh/scp command."
+    },
+    {
+      "path": "tests/test_wavec_qnn_cpp_ffn_residual_generator.py",
+      "sha256": "984d96230720c388b9704d8a3f136de632ea0e17461de79b803eb2493b9f8df3",
+      "purpose": "Adds focused coverage for missing identity/config fail-closed behavior, unreadable identity rejection, and identity/config propagation into SSH and SCP command construction."
+    },
+    {
+      "path": "runtime/reports/polar_phase34_consumer_preflight/active_wave/qnn_cpp_ffn_residual_generator/qnn_cpp_ffn_residual_generator_ssh_identity_report_20260702T181000Z.json",
+      "sha256": "ba8b49a37ed09e6b8018b3b65bda6ebb4adb1b6de5b0f24bc144b1ac96725a81",
+      "purpose": "Metadata-only plan report showing the approved project identity path is propagated as metadata only; no key contents or raw tensors."
+    }
+  ],
+  "outside_git_generated_metadata": [
+    {
+      "path": "/private/tmp/wavec_phone_source_materializer_ssh_identity_pathset_20260702T181000Z/scripts/phone_materialize_selected_safetensors.py",
+      "sha256": "6135f922bcb455831b3b708905834fef7f2f65e0bc48afd3b343e931940bef50",
+      "bytes": 5306
+    },
+    {
+      "path": "/private/tmp/wavec_phone_source_materializer_ssh_identity_pathset_20260702T181000Z/metadata/phone_materialization_plan.json",
+      "sha256": "e1a386f18ff1c0d7085d70a1153c1bd3fe15dcff90525c6c29e008490e1eeee0",
+      "bytes": 2798
+    },
+    {
+      "path": "/private/tmp/wavec_phone_source_materializer_ssh_identity_pathset_20260702T181000Z/metadata/tensor_manifest.json",
+      "sha256": "7e6704b879c7de0ad44a3213f8f57cf5486f124a88af85109d0868b111c98177",
+      "bytes": 5666
+    }
+  ],
+  "accepted_execution_surface": {
+    "adb_device": "FY25013101C8",
+    "adb_forward": "tcp:8022 -> tcp:8022",
+    "termux_user": "u0_a536",
+    "termux_home": "/data/data/com.termux/files/home",
+    "approved_identity_path": "/Users/prinivenpillay/.ssh/polymath_host",
+    "approved_identity_path_sha256": "4bee0c8e276fcedc65a20368598d62aa68bcbd44999bda5d02eac5fc66c8c327",
+    "identity_contents_recorded": false
+  },
+  "materialization_contract": {
+    "method": "phone_ssh_selected_safetensors_range_extraction",
+    "auth_modes_supported": ["identity_file", "ssh_config", "extra_args"],
+    "non_plan_run_without_auth_fails_closed": true,
+    "identity_path_missing_or_unreadable_fails_closed": true,
+    "config_path_missing_or_unreadable_fails_closed": true,
+    "remote_command_mode": "ssh/scp with BatchMode=yes, ConnectTimeout=20, StrictHostKeyChecking=accept-new, and propagated -i or -F option",
+    "requires_full_local_model_copy": false,
+    "selected_tensors_only": [
+      "model.language_model.layers.0.input_layernorm.weight",
+      "model.language_model.layers.0.mlp.gate_proj.weight",
+      "model.language_model.layers.0.mlp.up_proj.weight",
+      "model.language_model.layers.0.mlp.down_proj.weight"
+    ],
+    "raw_payload_location": "outside-git work root only"
+  },
+  "local_verification": [
+    {
+      "command": "python3.11 -m py_compile scripts/host/run_wavec_qnn_cpp_ffn_residual_generator.py tests/test_wavec_qnn_cpp_ffn_residual_generator.py",
+      "result": "pass"
+    },
+    {
+      "command": "python3.11 scripts/host/run_wavec_qnn_cpp_ffn_residual_generator.py --print-schema",
+      "result": "pass"
+    },
+    {
+      "command": "python3.11 -m pytest tests/test_wavec_qnn_cpp_ffn_residual_generator.py tests/test_wavec_gemma_qnn_exporter.py tests/test_wavec_full_gemma_qnn.py",
+      "result": "31 passed in 2.37s"
+    },
+    {
+      "command": "python3.11 scripts/host/run_wavec_qnn_cpp_ffn_residual_generator.py --model-source-location phone_preverified --model-safetensors /data/data/com.termux/files/home/polymath_model_sources/gemma4_e4b_7aa32e6889efd6300124851b164f8b364314c3d8/model.safetensors --model-safetensors-sha256 43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651 --model-safetensors-bytes 15992595884 --model-config-spec integrations/gemma4-snapdragon-megakernel/model_spec/gemma4_e4b.json --work-root /tmp/wavec_phone_source_materializer_ssh_identity_pathset_20260702T181000Z --qairt-root /data/local/tmp/qairt-2.44 --android-ndk-root /usr/local/share/android-commandlinetools/ndk/28.2.13676358 --phone-ssh-host 127.0.0.1 --phone-ssh-port 8022 --phone-ssh-user u0_a536 --phone-ssh-identity /Users/prinivenpillay/.ssh/polymath_host --materialize-weight-blobs --phone-materialization-plan-only --report runtime/reports/polar_phase34_consumer_preflight/active_wave/qnn_cpp_ffn_residual_generator/qnn_cpp_ffn_residual_generator_ssh_identity_report_20260702T181000Z.json",
+      "result": "pass"
+    },
+    {
+      "command": "rg -n \"BEGIN .*PRIVATE|PRIVATE KEY|OPENSSH|placeholder test key\" <metadata reports and outside-git metadata plan>",
+      "result": "no matches"
+    }
+  ],
+  "pipeline_receiving_checklist": [
+    "Source/test/report pathset SHAs match this packet.",
+    "Non-plan phone_preverified materialization fails closed if no identity/config/extra auth contract is provided.",
+    "Unreadable identity and unreadable ssh config paths fail closed before remote mkdir.",
+    "Internal remote mkdir, script push, remote extraction, manifest pull, and blob pull command constructors all propagate identity/config metadata to ssh/scp.",
+    "Reports include identity/config path metadata only and never key contents.",
+    "Selected tensor extraction semantics remain unchanged: only layer0 input_layernorm, gate_proj, up_proj, and down_proj are materialized.",
+    "Full 16GB model remains phone-local; selected blobs, generated static blobs, model libraries, contexts, tensor outputs, and profiles remain outside git.",
+    "Post-materialization QNN evidence contract remains unchanged: probe ladder, Android model-library build, QNN HTP context, context utility graph identity, qnn-net-run output/profile, and Phase4 exact tensor consumption."
+  ],
+  "post_custody_execution_command_shape": "python3.11 scripts/host/run_wavec_qnn_cpp_ffn_residual_generator.py --model-source-location phone_preverified --model-safetensors /data/data/com.termux/files/home/polymath_model_sources/gemma4_e4b_7aa32e6889efd6300124851b164f8b364314c3d8/model.safetensors --model-safetensors-sha256 43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651 --model-safetensors-bytes 15992595884 --model-config-spec integrations/gemma4-snapdragon-megakernel/model_spec/gemma4_e4b.json --work-root <outside_git_work_root> --qairt-root /data/local/tmp/qairt-2.44 --android-ndk-root /usr/local/share/android-commandlinetools/ndk/28.2.13676358 --phone-work-root /data/local/tmp/polymath_gemma4_gate/wavec/full_gemma_qnn_export --phone-ssh-host 127.0.0.1 --phone-ssh-port 8022 --phone-ssh-user u0_a536 --phone-ssh-identity /Users/prinivenpillay/.ssh/polymath_host --materialize-weight-blobs --report <metadata_only_report_path>",
+  "stop_conditions": [
+    "source_missing:phone_materialization_ssh_identity_or_config_missing",
+    "source_missing:phone_materialization_ssh_identity_missing_or_unreadable",
+    "source_missing:phone_materialization_ssh_config_missing_or_unreadable",
+    "source_missing:phone_materialization_remote_mkdir_failed",
+    "source_missing:phone_materialization_script_push_failed",
+    "source_missing:phone_materialization_remote_extract_failed",
+    "source_missing:phone_materialization_manifest_pull_failed",
+    "source_missing:phone_materialization_blob_pull_failed",
+    "source_missing:phone_materialization_partial_blob_transfer",
+    "source_missing:phone_materialization_blob_sha256_mismatch",
+    "raw_payload_entered_git"
+  ],
+  "raw_boundary_proof": {
+    "repo_receives_source_tests_metadata_only": true,
+    "identity_contents_in_reports": false,
+    "raw_payloads_in_git": false
+  },
+  "stage_failure_taxonomy": [
+    "source_missing",
+    "exporter_failure",
+    "quantization_or_layout_failure",
+    "model_library_failure",
+    "context_generation_failure",
+    "htp_runtime_failure",
+    "consumed_tensor_failure"
+  ],
+  "first_missing_green_field": "none",
+  "next_action": "Pipeline Integrator validates the receiving contract, then Repo Custodian freezes the pathset if Pipeline is green.",
+  "research_escalation": "active_parallel_signal_lane_if_qnn_cpp_op_support_or_profile_semantics_change_exporter_tests_or_stop_conditions",
+  "nonclaims": [
+    "no C5 pass",
+    "no learning/model-quality claim",
+    "no Phase3/4 readiness",
+    "no full-Gemma HTP forward claim until QNN context/net-run/profile/Phase4 consumption prove it",
+    "no 100k/1M authority",
+    "no raw payloads in git",
+    "no secrets printed",
+    "no Comet-backed accepted run"
+  ]
+}

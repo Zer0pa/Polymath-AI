@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import argparse
+import importlib.util
 import json
 import subprocess
 import sys
@@ -16,6 +18,15 @@ PHONE_MODEL = (
 )
 PHONE_MODEL_SHA = "43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651"
 PHONE_MODEL_BYTES = "15992595884"
+
+
+def load_generator_module():
+    spec = importlib.util.spec_from_file_location("wavec_qnn_cpp_ffn_residual_generator", SCRIPT)
+    assert spec is not None
+    module = importlib.util.module_from_spec(spec)
+    assert spec.loader is not None
+    spec.loader.exec_module(module)
+    return module
 
 
 def test_generator_print_schema() -> None:
@@ -148,6 +159,118 @@ def test_phone_preverified_materialization_plan_does_not_require_host_model(tmp_
     assert (work_root / "scripts" / "phone_materialize_selected_safetensors.py").is_file()
     assert (work_root / "metadata" / "phone_materialization_plan.json").is_file()
     assert not (work_root / "weights" / "mlp_gate_proj_f32.raw").exists()
+
+
+def test_phone_materialization_non_plan_requires_identity_or_config(tmp_path: Path) -> None:
+    report = tmp_path / "report.json"
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            "--model-source-location",
+            "phone_preverified",
+            "--model-safetensors",
+            PHONE_MODEL,
+            "--model-safetensors-sha256",
+            PHONE_MODEL_SHA,
+            "--model-safetensors-bytes",
+            PHONE_MODEL_BYTES,
+            "--model-config-spec",
+            str(MODEL_SPEC),
+            "--work-root",
+            str(tmp_path / "outside_work"),
+            "--materialize-weight-blobs",
+            "--report",
+            str(report),
+        ],
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+
+    payload = json.loads(report.read_text(encoding="utf-8"))
+    assert result.returncode == 2
+    assert payload["first_missing_green_field"] == "source_missing:phone_materialization_ssh_identity_or_config_missing"
+
+
+def test_phone_materialization_rejects_unreadable_identity_path(tmp_path: Path) -> None:
+    report = tmp_path / "report.json"
+    missing_identity = tmp_path / "missing_identity"
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            "--model-source-location",
+            "phone_preverified",
+            "--model-safetensors",
+            PHONE_MODEL,
+            "--model-safetensors-sha256",
+            PHONE_MODEL_SHA,
+            "--model-safetensors-bytes",
+            PHONE_MODEL_BYTES,
+            "--model-config-spec",
+            str(MODEL_SPEC),
+            "--work-root",
+            str(tmp_path / "outside_work"),
+            "--materialize-weight-blobs",
+            "--phone-ssh-identity",
+            str(missing_identity),
+            "--report",
+            str(report),
+        ],
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+
+    payload = json.loads(report.read_text(encoding="utf-8"))
+    assert result.returncode == 2
+    assert payload["first_missing_green_field"] == "source_missing:phone_materialization_ssh_identity_missing_or_unreadable"
+
+
+def test_phone_materialization_ssh_identity_propagates_to_ssh_and_scp(tmp_path: Path) -> None:
+    module = load_generator_module()
+    identity = tmp_path / "polymath_host"
+    identity.write_text("placeholder test key path only\n", encoding="utf-8")
+    args = argparse.Namespace(
+        phone_ssh_host="127.0.0.1",
+        phone_ssh_port=8022,
+        phone_ssh_user="u0_a536",
+        phone_ssh_identity=str(identity),
+        phone_ssh_config="",
+        phone_ssh_extra_arg=[],
+    )
+
+    ssh_command = module.ssh_command(args, "true")
+    scp_command = module.scp_from_phone_command(args, "/remote/blob.raw", tmp_path / "blob.raw")
+
+    assert "-i" in ssh_command
+    assert str(identity) in ssh_command
+    assert "-i" in scp_command
+    assert str(identity) in scp_command
+    assert "placeholder test key path only" not in " ".join(ssh_command)
+
+
+def test_phone_materialization_ssh_config_propagates_to_ssh_and_scp(tmp_path: Path) -> None:
+    module = load_generator_module()
+    config = tmp_path / "ssh_config"
+    config.write_text("Host phone\n  HostName 127.0.0.1\n", encoding="utf-8")
+    args = argparse.Namespace(
+        phone_ssh_host="127.0.0.1",
+        phone_ssh_port=8022,
+        phone_ssh_user="u0_a536",
+        phone_ssh_identity="",
+        phone_ssh_config=str(config),
+        phone_ssh_extra_arg=[],
+    )
+
+    ssh_command = module.ssh_command(args, "true")
+    scp_command = module.scp_to_phone_command(args, tmp_path / "local.py", "/remote/local.py")
+
+    assert "-F" in ssh_command
+    assert str(config) in ssh_command
+    assert "-F" in scp_command
+    assert str(config) in scp_command
 
 
 def test_generator_writes_fail_closed_source_package_outside_git(tmp_path: Path) -> None:

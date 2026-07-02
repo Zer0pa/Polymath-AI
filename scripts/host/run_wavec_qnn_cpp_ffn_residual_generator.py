@@ -146,6 +146,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--phone-ssh-port", type=int, default=8022)
     parser.add_argument("--phone-ssh-user", default="u0_a536")
     parser.add_argument("--phone-ssh-identity", default="")
+    parser.add_argument("--phone-ssh-config", default="")
     parser.add_argument("--phone-ssh-extra-arg", action="append", default=[])
     parser.add_argument("--phone-materialization-timeout-sec", type=int, default=7200)
     parser.add_argument("--phone-materialization-plan-only", action="store_true")
@@ -251,6 +252,9 @@ def generate_package(args: argparse.Namespace) -> dict[str, Any]:
                 "phone_ssh_host": args.phone_ssh_host,
                 "phone_ssh_port": args.phone_ssh_port,
                 "phone_ssh_user": args.phone_ssh_user,
+                "phone_ssh_identity": path_metadata(args.phone_ssh_identity),
+                "phone_ssh_config": path_metadata(args.phone_ssh_config),
+                "phone_ssh_extra_arg_count": len(args.phone_ssh_extra_arg or []),
                 "plan_only": args.phone_materialization_plan_only,
                 "requires_full_local_model_copy": False,
             },
@@ -335,9 +339,42 @@ def validate_inputs(args: argparse.Namespace) -> list[str]:
     if args.materialize_weight_blobs and args.model_source_location == "phone_preverified":
         if not args.phone_materialization_plan_only and (not args.phone_ssh_host or not args.phone_ssh_user):
             blockers.append("source_missing:phone_materialization_ssh_config_missing")
+        if not args.phone_materialization_plan_only and not phone_ssh_auth_configured(args):
+            blockers.append("source_missing:phone_materialization_ssh_identity_or_config_missing")
+        if args.phone_ssh_identity and not Path(args.phone_ssh_identity).expanduser().is_file():
+            blockers.append("source_missing:phone_materialization_ssh_identity_missing_or_unreadable")
+        if args.phone_ssh_config and not Path(args.phone_ssh_config).expanduser().is_file():
+            blockers.append("source_missing:phone_materialization_ssh_config_missing_or_unreadable")
         if args.phone_materialization_timeout_sec <= 0:
             blockers.append("source_missing:phone_materialization_timeout_invalid")
     return blockers
+
+
+def phone_ssh_auth_configured(args: argparse.Namespace) -> bool:
+    return bool(args.phone_ssh_identity or args.phone_ssh_config or args.phone_ssh_extra_arg)
+
+
+def phone_ssh_auth_mode(args: argparse.Namespace) -> str:
+    modes = []
+    if args.phone_ssh_identity:
+        modes.append("identity_file")
+    if args.phone_ssh_config:
+        modes.append("ssh_config")
+    if args.phone_ssh_extra_arg:
+        modes.append("extra_args")
+    return "+".join(modes) if modes else "none"
+
+
+def path_metadata(value: str) -> dict[str, Any]:
+    if not value:
+        return {"provided": False}
+    path = Path(value).expanduser()
+    return {
+        "provided": True,
+        "path": value,
+        "exists": path.is_file(),
+        "path_sha256": hashlib.sha256(value.encode("utf-8")).hexdigest(),
+    }
 
 
 def create_layout(work_root: Path) -> None:
@@ -518,7 +555,9 @@ def phone_materialization_plan(args: argparse.Namespace, remote_script: str, rem
             "ssh_host": args.phone_ssh_host,
             "ssh_port": args.phone_ssh_port,
             "ssh_user": args.phone_ssh_user,
-            "identity_path_present": bool(args.phone_ssh_identity),
+            "auth_mode": phone_ssh_auth_mode(args),
+            "identity": path_metadata(args.phone_ssh_identity),
+            "config": path_metadata(args.phone_ssh_config),
             "extra_arg_count": len(args.phone_ssh_extra_arg or []),
             "timeout_sec": args.phone_materialization_timeout_sec,
         },
@@ -682,6 +721,8 @@ def ssh_options(args: argparse.Namespace) -> list[str]:
     ]
     if args.phone_ssh_identity:
         options.extend(["-i", args.phone_ssh_identity])
+    if args.phone_ssh_config:
+        options.extend(["-F", args.phone_ssh_config])
     options.extend(args.phone_ssh_extra_arg or [])
     return options
 
