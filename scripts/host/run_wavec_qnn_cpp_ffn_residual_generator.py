@@ -115,6 +115,121 @@ REQUIRED_QNN_EVIDENCE_FIELDS = [
     "qnn_profile_viewer_parse_status",
     "qnn_execute_profile_fields",
 ]
+PROBE_LADDER_SOURCES = [
+    {
+        "stage": "primitive_rmsnorm_decomposition_probe",
+        "graph": "gemma4_e4b_probe_primitive_rmsnorm_seq16_hidden2560",
+        "source": "primitive_rmsnorm_decomposition_probe.cpp",
+        "library": "libgemma4_probe_primitive_rmsnorm.so",
+        "context": "gemma4_probe_primitive_rmsnorm.qnn.bin",
+        "input_shape": [1, SEQ, HIDDEN],
+        "output_shape": [1, SEQ, HIDDEN],
+        "input_dtype": "float32_le",
+        "output_dtype": "float32_le",
+        "axis": 2,
+        "reduce_mean_param": "QNN_OP_REDUCE_MEAN_PARAM_AXES",
+        "keep_dims": True,
+        "broadcast_shape": [1, SEQ, 1],
+        "weight_shape": [1, 1, HIDDEN],
+        "epsilon": RMS_EPS,
+        "op_lowering": [
+            "QNN_OP_ELEMENT_WISE_MULTIPLY(x,x)",
+            "QNN_OP_REDUCE_MEAN(axis=2,keep_dims=true)",
+            "QNN_OP_ELEMENT_WISE_ADD(static_epsilon=1e-6)",
+            "QNN_OP_ELEMENT_WISE_RSQRT",
+            "QNN_OP_ELEMENT_WISE_MULTIPLY(hidden)",
+            "QNN_OP_ELEMENT_WISE_MULTIPLY(input_layernorm_weight_reshaped_1x1x2560)",
+        ],
+        "failure_stage": "quantization_or_layout_failure_or_context_generation_failure",
+    },
+    {
+        "stage": "primitive_gelu_tanh_lowering_probe",
+        "graph": "gemma4_e4b_probe_primitive_gelu_tanh_seq16_intermediate10240",
+        "source": "primitive_gelu_tanh_lowering_probe.cpp",
+        "library": "libgemma4_probe_primitive_gelu_tanh.so",
+        "context": "gemma4_probe_primitive_gelu_tanh.qnn.bin",
+        "input_shape": [16, INTERMEDIATE],
+        "output_shape": [16, INTERMEDIATE],
+        "secondary_input": "up_activation_for_ffn_multiply",
+        "input_dtype": "float32_le",
+        "output_dtype": "float32_le",
+        "constants": {
+            "gelu_cubic": 0.044715,
+            "sqrt_2_over_pi": 0.7978845608028654,
+            "one": 1.0,
+            "half": 0.5,
+        },
+        "op_lowering": [
+            "QNN_OP_ELEMENT_WISE_MULTIPLY(x,x)=x2",
+            "QNN_OP_ELEMENT_WISE_MULTIPLY(x2,x)=x3",
+            "QNN_OP_ELEMENT_WISE_MULTIPLY(0.044715,x3)=cubic",
+            "QNN_OP_ELEMENT_WISE_ADD(x,cubic)=inner0",
+            "QNN_OP_ELEMENT_WISE_MULTIPLY(0.7978845608028654,inner0)=inner",
+            "QNN_OP_TANH",
+            "QNN_OP_ELEMENT_WISE_ADD(1.0,tanh)=one_plus",
+            "QNN_OP_ELEMENT_WISE_MULTIPLY(0.5,x)=half_x",
+            "QNN_OP_ELEMENT_WISE_MULTIPLY(half_x,one_plus)=gelu",
+            "QNN_OP_ELEMENT_WISE_MULTIPLY(gelu,up)=ffn",
+        ],
+        "failure_stage": "quantization_or_layout_failure_or_context_generation_failure",
+    },
+    {
+        "stage": "quantized_tiny_matmul_static_weight_probe",
+        "graph": "gemma4_e4b_probe_quantized_tiny_matmul_static_weight",
+        "source": "quantized_tiny_matmul_static_weight_probe.cpp",
+        "library": "libgemma4_probe_quantized_tiny_matmul.so",
+        "context": "gemma4_probe_quantized_tiny_matmul.qnn.bin",
+        "input_shape": [1, 2, 3],
+        "source_weight_shape": [4, 3],
+        "matmul_variant_weight_shape": [3, 4],
+        "output_shape": [1, 2, 4],
+        "activation_dtype": "uint16_asymmetric",
+        "weight_dtype": "uint8_asymmetric",
+        "output_dtype": "uint16_asymmetric",
+        "float_boundary_output_dtype": "float32_le",
+        "activation_scale": 0.00390625,
+        "activation_zero_point": 0,
+        "weight_scale": 0.0078125,
+        "weight_zero_point": 0,
+        "output_scale": 0.00390625,
+        "output_zero_point": 0,
+        "real_min": 0.0,
+        "real_max": 1.0,
+        "quant_min": 0,
+        "quant_max": 65535,
+        "saturation_count": 0,
+        "preferred_op": "QNN_OP_FULLY_CONNECTED",
+        "fully_connected_keep_dims_param": "QNN_OP_FULLY_CONNECTED_PARAM_KEEP_DIMS=true",
+        "matmul_variant_param": "QNN_OP_MAT_MUL_PARAM_TRANSPOSE_IN1=false_with_pretransposed_weight_3x4",
+        "orientation": "fully_connected_source_weight_out_in_4x3; matmul_variant_weight_in_out_3x4",
+        "axis": "per_tensor",
+        "expected_dequantized_tolerance": 0.05,
+        "op_lowering": [
+            "QNN_OP_QUANTIZE(input_float32_to_u16)",
+            "QNN_OP_FULLY_CONNECTED(static_u8_weight)",
+            "QNN_OP_MAT_MUL(static_u8_pretransposed_weight_variant)",
+            "QNN_OP_DEQUANTIZE(output_to_float32)",
+        ],
+        "failure_stage": "quantization_or_layout_failure_or_context_generation_failure",
+    },
+    {
+        "stage": "full_gemma4_e4b_ffn_residual_layer0_probe",
+        "graph": EXPECTED_GRAPH,
+        "source": "gemma4_e4b_ffn_residual_layer0_qnn_model.cpp",
+        "library": MODEL_LIBRARY_NAME,
+        "context": CONTEXT_NAME,
+        "input_shape": EXPECTED_SHAPE,
+        "output_shape": EXPECTED_SHAPE,
+        "input_dtype": EXPECTED_DTYPE,
+        "output_dtype": EXPECTED_DTYPE,
+        "requires_green_prerequisites": [
+            "primitive_rmsnorm_decomposition_probe",
+            "primitive_gelu_tanh_lowering_probe",
+            "quantized_tiny_matmul_static_weight_probe",
+        ],
+        "failure_stage": "context_generation_failure_or_htp_runtime_failure_or_consumed_tensor_failure",
+    },
+]
 
 
 def main() -> int:
@@ -188,6 +303,7 @@ def print_schema() -> None:
                     "plan_only_flag": "--phone-materialization-plan-only",
                 },
                 "probe_ladder": PROBE_LADDER,
+                "probe_ladder_sources": PROBE_LADDER_SOURCES,
                 "dtype_layout_stop_conditions": DTYPE_LAYOUT_STOP_CONDITIONS,
                 "required_qnn_evidence_fields": REQUIRED_QNN_EVIDENCE_FIELDS,
                 "raw_boundary": "work-root must be outside git; repo receives metadata reports only",
@@ -273,6 +389,7 @@ def generate_package(args: argparse.Namespace) -> dict[str, Any]:
             ),
             "qnn_op_lowering_failure_stage_if_rejected": "quantization_or_layout_failure_or_model_library_failure_or_context_generation_failure",
             "probe_ladder_required_before_full_island": PROBE_LADDER,
+            "probe_ladder_sources": PROBE_LADDER_SOURCES,
             "dtype_layout_stop_conditions": DTYPE_LAYOUT_STOP_CONDITIONS,
             "required_tensors": REQUIRED_TENSORS,
             "tensor_manifest": tensor_manifest,
@@ -378,7 +495,7 @@ def path_metadata(value: str) -> dict[str, Any]:
 
 
 def create_layout(work_root: Path) -> None:
-    for child in ("src", "scripts", "weights", "out", "context", "run", "metadata"):
+    for child in ("src", "src/probes", "scripts", "weights", "out", "context", "run", "metadata"):
         (work_root / child).mkdir(parents=True, exist_ok=True)
 
 
@@ -802,20 +919,270 @@ def read_range(path: Path, offset: int, length: int) -> bytes:
 def write_generated_files(args: argparse.Namespace, work_root: Path, tensor_manifest: dict[str, Any]) -> dict[str, Any]:
     cpp = work_root / "src" / "gemma4_e4b_ffn_residual_layer0_qnn_model.cpp"
     build = work_root / "scripts" / "build_android_model_library.sh"
+    build_probe_ladder = work_root / "scripts" / "build_probe_ladder.sh"
+    context_probe_ladder = work_root / "scripts" / "run_probe_ladder_contexts.sh"
     context = work_root / "scripts" / "generate_phone_context.sh"
     metadata = work_root / "metadata" / "tensor_manifest.json"
+    probe_manifest = work_root / "metadata" / "probe_ladder_manifest.json"
     cpp.write_text(render_cpp_source(), encoding="utf-8")
+    probe_sources = write_probe_sources(work_root)
     build.write_text(render_build_script(args, work_root), encoding="utf-8")
+    build_probe_ladder.write_text(render_probe_ladder_build_script(args, work_root), encoding="utf-8")
+    context_probe_ladder.write_text(render_probe_ladder_context_script(args), encoding="utf-8")
     context.write_text(render_context_script(args), encoding="utf-8")
     metadata.write_text(json.dumps(tensor_manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    probe_manifest.write_text(json.dumps(probe_ladder_manifest(args), indent=2, sort_keys=True) + "\n", encoding="utf-8")
     build.chmod(0o755)
+    build_probe_ladder.chmod(0o755)
+    context_probe_ladder.chmod(0o755)
     context.chmod(0o755)
     return {
         "cpp_source": file_payload(cpp),
+        "probe_sources": {path.name: file_payload(path) for path in probe_sources},
         "build_script": file_payload(build),
+        "probe_ladder_build_script": file_payload(build_probe_ladder),
+        "probe_ladder_context_script": file_payload(context_probe_ladder),
         "context_script": file_payload(context),
         "tensor_manifest": file_payload(metadata),
+        "probe_ladder_manifest": file_payload(probe_manifest),
     }
+
+
+def write_probe_sources(work_root: Path) -> list[Path]:
+    written: list[Path] = []
+    for probe in PROBE_LADDER_SOURCES:
+        if probe["stage"] == "full_gemma4_e4b_ffn_residual_layer0_probe":
+            continue
+        path = work_root / "src" / "probes" / str(probe["source"])
+        path.write_text(render_probe_cpp_source(probe), encoding="utf-8")
+        written.append(path)
+    return written
+
+
+def probe_ladder_manifest(args: argparse.Namespace) -> dict[str, Any]:
+    return {
+        "schema_version": "waveC_qnn_context_probe_ladder_manifest_v1",
+        "stage_order": [probe["stage"] for probe in PROBE_LADDER_SOURCES],
+        "full_island_runnable_only_after": PROBE_LADDER_SOURCES[-1]["requires_green_prerequisites"],
+        "probes": PROBE_LADDER_SOURCES,
+        "host_aware_ndk_prebuilt_selection": {
+            "android_ndk_root": args.android_ndk_root,
+            "selection_order": [
+                "ANDROID_NDK_PREBUILT override",
+                "darwin-x86_64 on Darwin/macOS",
+                "linux-x86_64 on Linux",
+            ],
+            "failure_field": "model_library_failure:ndk_prebuilt_compiler_missing",
+        },
+        "required_qnn_evidence_fields": REQUIRED_QNN_EVIDENCE_FIELDS,
+        "dtype_layout_stop_conditions": DTYPE_LAYOUT_STOP_CONDITIONS,
+        "raw_boundary": {
+            "repo_receives_metadata_only": True,
+            "model_libraries_contexts_outputs_profiles_outside_git": True,
+        },
+    }
+
+
+def render_probe_cpp_source(probe: dict[str, Any]) -> str:
+    graph = str(probe["graph"])
+    stage = str(probe["stage"])
+    op_plan = "\\n".join(str(op) for op in probe.get("op_lowering", []))
+    quant_contract = json.dumps({key: probe[key] for key in (
+        "activation_dtype",
+        "weight_dtype",
+        "activation_scale",
+        "activation_zero_point",
+        "weight_scale",
+        "weight_zero_point",
+        "orientation",
+        "axis",
+    ) if key in probe}, sort_keys=True)
+    node_body = {
+        "primitive_rmsnorm_decomposition_probe": render_rmsnorm_probe_nodes(graph),
+        "primitive_gelu_tanh_lowering_probe": render_gelu_probe_nodes(graph),
+        "quantized_tiny_matmul_static_weight_probe": render_quantized_matmul_probe_nodes(graph),
+    }[stage]
+    return f'''#include "QnnModel.hpp"
+#include "QnnOpDef.h"
+
+#define DO_GRAPH_NODE_VALIDATIONS 1
+
+// WaveC probe stage: {stage}
+// Graph: {graph}
+// Primitive/quantized lowering contract:
+// {op_plan}
+// Quantized dtype/layout metadata: {quant_contract}
+// This source is an executable QNN C++ model-library candidate. It is not a
+// green proof until qnn-context-binary-generator, qnn-context-binary-utility,
+// qnn-net-run, and profile parsing validate the generated graph.
+
+using namespace qnn_wrapper_api;
+
+namespace {{
+Qnn_Tensor_t appTensor(const char* name, uint32_t* dims, uint32_t rank, Qnn_TensorType_t type, Qnn_DataType_t dtype = QNN_DATATYPE_FLOAT_32) {{
+  return (Qnn_Tensor_t){{
+      .version = QNN_TENSOR_VERSION_1,
+      .v1      = {{.id             = 0,
+             .name           = name,
+             .type           = type,
+             .dataFormat     = QNN_TENSOR_DATA_FORMAT_FLAT_BUFFER,
+             .dataType       = dtype,
+             .quantizeParams = {{QNN_DEFINITION_UNDEFINED,
+                                QNN_QUANTIZATION_ENCODING_UNDEFINED,
+                                {{.scaleOffsetEncoding = {{.scale = 0.0f, .offset = 0}}}}}},
+             .rank           = rank,
+             .dimensions     = dims,
+             .memType        = QNN_TENSORMEMTYPE_RAW,
+             .clientBuf      = {{.data = nullptr, .dataSize = 0}}}}}};
+}}
+}}
+
+extern "C" {{
+QNN_API
+ModelError_t QnnModel_composeGraphs(Qnn_BackendHandle_t backendHandle,
+                                    QNN_INTERFACE_VER_TYPE interface,
+                                    Qnn_ContextHandle_t contextHandle,
+                                    const GraphConfigInfo_t** graphsConfigInfo,
+                                    const uint32_t numGraphsConfigInfo,
+                                    GraphInfoPtr_t** graphsInfo,
+                                    uint32_t* numGraphsInfo,
+                                    bool debug,
+                                    QnnLog_Callback_t logCallback,
+                                    QnnLog_Level_t maxLogLevel) {{
+  (void)logCallback;
+  (void)maxLogLevel;
+  ModelError_t err = MODEL_NO_ERROR;
+  QnnModel model;
+  const QnnGraph_Config_t** graphConfigs = nullptr;
+  VALIDATE(getQnnGraphConfigFromInfo("{graph}", graphsConfigInfo, numGraphsConfigInfo, graphConfigs), err);
+  VALIDATE(model.initialize(backendHandle, interface, contextHandle, "{graph}", debug, DO_GRAPH_NODE_VALIDATIONS, graphConfigs), err);
+{node_body}
+  QnnModel* models[] = {{&model}};
+  uint32_t numModels = 1;
+  VALIDATE(getGraphInfoFromModels(*models, numModels, graphsInfo), err);
+  *numGraphsInfo = numModels;
+  return err;
+}}
+
+QNN_API
+ModelError_t QnnModel_freeGraphsInfo(GraphInfoPtr_t** graphs, uint32_t numGraphsInfo) {{
+  return qnn_wrapper_api::freeGraphsInfo(graphs, numGraphsInfo);
+}}
+}}
+'''
+
+
+def render_rmsnorm_probe_nodes(graph: str) -> str:
+    return f'''
+  // Required params: QNN_OP_REDUCE_MEAN_PARAM_AXES=[2], keep_dims=true, epsilon=1.0e-6,
+  // input_layernorm weight reshaped to [1,1,{HIDDEN}] for unambiguous broadcasting.
+  uint32_t dims_hidden[] = {{1, {SEQ}, {HIDDEN}}};
+  uint32_t dims_reduce[] = {{1, {SEQ}, 1}};
+  VALIDATE(model.addTensor("rms_input", appTensor("rms_input", dims_hidden, 3, QNN_TENSOR_TYPE_APP_WRITE)), err);
+  VALIDATE(model.addTensor("rms_square", appTensor("rms_square", dims_hidden, 3, QNN_TENSOR_TYPE_NATIVE)), err);
+  VALIDATE(model.addTensor("rms_mean", appTensor("rms_mean", dims_reduce, 3, QNN_TENSOR_TYPE_NATIVE)), err);
+  VALIDATE(model.addTensor("rms_eps", appTensor("rms_eps", dims_reduce, 3, QNN_TENSOR_TYPE_NATIVE)), err);
+  VALIDATE(model.addTensor("rms_rsqrt", appTensor("rms_rsqrt", dims_reduce, 3, QNN_TENSOR_TYPE_NATIVE)), err);
+  VALIDATE(model.addTensor("rms_scaled", appTensor("rms_scaled", dims_hidden, 3, QNN_TENSOR_TYPE_NATIVE)), err);
+  VALIDATE(model.addTensor("rms_output", appTensor("rms_output", dims_hidden, 3, QNN_TENSOR_TYPE_APP_READ)), err);
+  const char* square_inputs[] = {{"rms_input", "rms_input"}};
+  Qnn_Tensor_t square_outputs[] = {{appTensor("rms_square", dims_hidden, 3, QNN_TENSOR_TYPE_NATIVE)}};
+  VALIDATE(model.addNode(QNN_OPCONFIG_VERSION_1, "{graph}_square", QNN_OP_PACKAGE_NAME_QTI_AISW, QNN_OP_ELEMENT_WISE_MULTIPLY, nullptr, 0, square_inputs, 2, square_outputs, 1), err);
+  const char* mean_inputs[] = {{"rms_square"}};
+  Qnn_Tensor_t mean_outputs[] = {{appTensor("rms_mean", dims_reduce, 3, QNN_TENSOR_TYPE_NATIVE)}};
+  // QNN_OP_REDUCE_MEAN_PARAM_AXES must be set to hidden axis 2 by the finalized QNN param builder.
+  VALIDATE(model.addNode(QNN_OPCONFIG_VERSION_1, "{graph}_reduce_mean_hidden_axis", QNN_OP_PACKAGE_NAME_QTI_AISW, QNN_OP_REDUCE_MEAN, nullptr, 0, mean_inputs, 1, mean_outputs, 1), err);
+  const char* eps_inputs[] = {{"rms_mean"}};
+  Qnn_Tensor_t eps_outputs[] = {{appTensor("rms_eps", dims_reduce, 3, QNN_TENSOR_TYPE_NATIVE)}};
+  VALIDATE(model.addNode(QNN_OPCONFIG_VERSION_1, "{graph}_epsilon_add", QNN_OP_PACKAGE_NAME_QTI_AISW, QNN_OP_ELEMENT_WISE_ADD, nullptr, 0, eps_inputs, 1, eps_outputs, 1), err);
+  const char* rsqrt_inputs[] = {{"rms_eps"}};
+  Qnn_Tensor_t rsqrt_outputs[] = {{appTensor("rms_rsqrt", dims_reduce, 3, QNN_TENSOR_TYPE_NATIVE)}};
+  VALIDATE(model.addNode(QNN_OPCONFIG_VERSION_1, "{graph}_rsqrt", QNN_OP_PACKAGE_NAME_QTI_AISW, QNN_OP_ELEMENT_WISE_RSQRT, nullptr, 0, rsqrt_inputs, 1, rsqrt_outputs, 1), err);
+  const char* scale_inputs[] = {{"rms_input", "rms_rsqrt"}};
+  Qnn_Tensor_t scale_outputs[] = {{appTensor("rms_scaled", dims_hidden, 3, QNN_TENSOR_TYPE_NATIVE)}};
+  VALIDATE(model.addNode(QNN_OPCONFIG_VERSION_1, "{graph}_hidden_multiply", QNN_OP_PACKAGE_NAME_QTI_AISW, QNN_OP_ELEMENT_WISE_MULTIPLY, nullptr, 0, scale_inputs, 2, scale_outputs, 1), err);
+  const char* weight_inputs[] = {{"rms_scaled"}};
+  Qnn_Tensor_t weight_outputs[] = {{appTensor("rms_output", dims_hidden, 3, QNN_TENSOR_TYPE_APP_READ)}};
+  VALIDATE(model.addNode(QNN_OPCONFIG_VERSION_1, "{graph}_rms_weight_multiply", QNN_OP_PACKAGE_NAME_QTI_AISW, QNN_OP_ELEMENT_WISE_MULTIPLY, nullptr, 0, weight_inputs, 1, weight_outputs, 1), err);
+'''
+
+
+def render_gelu_probe_nodes(graph: str) -> str:
+    return f'''
+  uint32_t dims_intermediate[] = {{16, {INTERMEDIATE}}};
+  // GELU contract: 0.5*x*(1+tanh(0.7978845608028654*(x+0.044715*x^3)));
+  // then ffn=gelu*up. Constants are static scalar tensors in the finalized QNN param builder.
+  VALIDATE(model.addTensor("gelu_input", appTensor("gelu_input", dims_intermediate, 2, QNN_TENSOR_TYPE_APP_WRITE)), err);
+  VALIDATE(model.addTensor("gelu_up", appTensor("gelu_up", dims_intermediate, 2, QNN_TENSOR_TYPE_APP_WRITE)), err);
+  VALIDATE(model.addTensor("gelu_x2", appTensor("gelu_x2", dims_intermediate, 2, QNN_TENSOR_TYPE_NATIVE)), err);
+  VALIDATE(model.addTensor("gelu_cube", appTensor("gelu_cube", dims_intermediate, 2, QNN_TENSOR_TYPE_NATIVE)), err);
+  VALIDATE(model.addTensor("gelu_cubic_scaled", appTensor("gelu_cubic_scaled", dims_intermediate, 2, QNN_TENSOR_TYPE_NATIVE)), err);
+  VALIDATE(model.addTensor("gelu_inner", appTensor("gelu_inner", dims_intermediate, 2, QNN_TENSOR_TYPE_NATIVE)), err);
+  VALIDATE(model.addTensor("gelu_tanh_arg", appTensor("gelu_tanh_arg", dims_intermediate, 2, QNN_TENSOR_TYPE_NATIVE)), err);
+  VALIDATE(model.addTensor("gelu_tanh", appTensor("gelu_tanh", dims_intermediate, 2, QNN_TENSOR_TYPE_NATIVE)), err);
+  VALIDATE(model.addTensor("gelu_shifted", appTensor("gelu_shifted", dims_intermediate, 2, QNN_TENSOR_TYPE_NATIVE)), err);
+  VALIDATE(model.addTensor("gelu_half_x", appTensor("gelu_half_x", dims_intermediate, 2, QNN_TENSOR_TYPE_NATIVE)), err);
+  VALIDATE(model.addTensor("gelu_native", appTensor("gelu_native", dims_intermediate, 2, QNN_TENSOR_TYPE_NATIVE)), err);
+  VALIDATE(model.addTensor("gelu_output", appTensor("gelu_output", dims_intermediate, 2, QNN_TENSOR_TYPE_APP_READ)), err);
+  const char* x2_inputs[] = {{"gelu_input", "gelu_input"}};
+  Qnn_Tensor_t x2_outputs[] = {{appTensor("gelu_x2", dims_intermediate, 2, QNN_TENSOR_TYPE_NATIVE)}};
+  VALIDATE(model.addNode(QNN_OPCONFIG_VERSION_1, "{graph}_x2", QNN_OP_PACKAGE_NAME_QTI_AISW, QNN_OP_ELEMENT_WISE_MULTIPLY, nullptr, 0, x2_inputs, 2, x2_outputs, 1), err);
+  const char* cube_inputs[] = {{"gelu_x2", "gelu_input"}};
+  Qnn_Tensor_t cube_outputs[] = {{appTensor("gelu_cube", dims_intermediate, 2, QNN_TENSOR_TYPE_NATIVE)}};
+  VALIDATE(model.addNode(QNN_OPCONFIG_VERSION_1, "{graph}_x3", QNN_OP_PACKAGE_NAME_QTI_AISW, QNN_OP_ELEMENT_WISE_MULTIPLY, nullptr, 0, cube_inputs, 2, cube_outputs, 1), err);
+  const char* cubic_inputs[] = {{"gelu_cube"}};
+  Qnn_Tensor_t cubic_outputs[] = {{appTensor("gelu_cubic_scaled", dims_intermediate, 2, QNN_TENSOR_TYPE_NATIVE)}};
+  VALIDATE(model.addNode(QNN_OPCONFIG_VERSION_1, "{graph}_cubic_scale", QNN_OP_PACKAGE_NAME_QTI_AISW, QNN_OP_ELEMENT_WISE_MULTIPLY, nullptr, 0, cubic_inputs, 1, cubic_outputs, 1), err);
+  const char* inner_inputs[] = {{"gelu_input", "gelu_cubic_scaled"}};
+  Qnn_Tensor_t inner_outputs[] = {{appTensor("gelu_inner", dims_intermediate, 2, QNN_TENSOR_TYPE_NATIVE)}};
+  VALIDATE(model.addNode(QNN_OPCONFIG_VERSION_1, "{graph}_inner_add", QNN_OP_PACKAGE_NAME_QTI_AISW, QNN_OP_ELEMENT_WISE_ADD, nullptr, 0, inner_inputs, 2, inner_outputs, 1), err);
+  const char* arg_inputs[] = {{"gelu_inner"}};
+  Qnn_Tensor_t arg_outputs[] = {{appTensor("gelu_tanh_arg", dims_intermediate, 2, QNN_TENSOR_TYPE_NATIVE)}};
+  VALIDATE(model.addNode(QNN_OPCONFIG_VERSION_1, "{graph}_sqrt_2_over_pi_scale", QNN_OP_PACKAGE_NAME_QTI_AISW, QNN_OP_ELEMENT_WISE_MULTIPLY, nullptr, 0, arg_inputs, 1, arg_outputs, 1), err);
+  const char* tanh_inputs[] = {{"gelu_tanh_arg"}};
+  Qnn_Tensor_t tanh_outputs[] = {{appTensor("gelu_tanh", dims_intermediate, 2, QNN_TENSOR_TYPE_NATIVE)}};
+  VALIDATE(model.addNode(QNN_OPCONFIG_VERSION_1, "{graph}_tanh", QNN_OP_PACKAGE_NAME_QTI_AISW, QNN_OP_TANH, nullptr, 0, tanh_inputs, 1, tanh_outputs, 1), err);
+  const char* shifted_inputs[] = {{"gelu_tanh"}};
+  Qnn_Tensor_t shifted_outputs[] = {{appTensor("gelu_shifted", dims_intermediate, 2, QNN_TENSOR_TYPE_NATIVE)}};
+  VALIDATE(model.addNode(QNN_OPCONFIG_VERSION_1, "{graph}_one_plus_tanh", QNN_OP_PACKAGE_NAME_QTI_AISW, QNN_OP_ELEMENT_WISE_ADD, nullptr, 0, shifted_inputs, 1, shifted_outputs, 1), err);
+  const char* half_inputs[] = {{"gelu_input"}};
+  Qnn_Tensor_t half_outputs[] = {{appTensor("gelu_half_x", dims_intermediate, 2, QNN_TENSOR_TYPE_NATIVE)}};
+  VALIDATE(model.addNode(QNN_OPCONFIG_VERSION_1, "{graph}_half_x", QNN_OP_PACKAGE_NAME_QTI_AISW, QNN_OP_ELEMENT_WISE_MULTIPLY, nullptr, 0, half_inputs, 1, half_outputs, 1), err);
+  const char* gelu_inputs[] = {{"gelu_half_x", "gelu_shifted"}};
+  Qnn_Tensor_t gelu_outputs[] = {{appTensor("gelu_native", dims_intermediate, 2, QNN_TENSOR_TYPE_NATIVE)}};
+  VALIDATE(model.addNode(QNN_OPCONFIG_VERSION_1, "{graph}_gelu", QNN_OP_PACKAGE_NAME_QTI_AISW, QNN_OP_ELEMENT_WISE_MULTIPLY, nullptr, 0, gelu_inputs, 2, gelu_outputs, 1), err);
+  const char* out_inputs[] = {{"gelu_native", "gelu_up"}};
+  Qnn_Tensor_t out_outputs[] = {{appTensor("gelu_output", dims_intermediate, 2, QNN_TENSOR_TYPE_APP_READ)}};
+  VALIDATE(model.addNode(QNN_OPCONFIG_VERSION_1, "{graph}_gelu_then_up_multiply", QNN_OP_PACKAGE_NAME_QTI_AISW, QNN_OP_ELEMENT_WISE_MULTIPLY, nullptr, 0, out_inputs, 2, out_outputs, 1), err);
+'''
+
+
+def render_quantized_matmul_probe_nodes(graph: str) -> str:
+    return f'''
+  // Quantized contract: activation QNN_DATATYPE_UFIXED_POINT_16 scale=0.00390625 offset=0;
+  // weight QNN_DATATYPE_UFIXED_POINT_8 scale=0.0078125 offset=0; output U16 then dequantized.
+  // Preferred op is QNN_OP_FULLY_CONNECTED with QNN_OP_FULLY_CONNECTED_PARAM_KEEP_DIMS=true.
+  // MatMul variant must record QNN_OP_MAT_MUL_PARAM_TRANSPOSE_IN1=false for pretransposed [3,4].
+  uint32_t dims_input[] = {{1, 2, 3}};
+  uint32_t dims_weight[] = {{4, 3}};
+  uint32_t dims_output[] = {{1, 2, 4}};
+  VALIDATE(model.addTensor("qmat_input_f32", appTensor("qmat_input_f32", dims_input, 3, QNN_TENSOR_TYPE_APP_WRITE)), err);
+  VALIDATE(model.addTensor("qmat_input_u16", appTensor("qmat_input_u16", dims_input, 3, QNN_TENSOR_TYPE_NATIVE, QNN_DATATYPE_UFIXED_POINT_16)), err);
+  VALIDATE(model.addTensor("qmat_weight_u8", appTensor("qmat_weight_u8", dims_weight, 2, QNN_TENSOR_TYPE_STATIC, QNN_DATATYPE_UFIXED_POINT_8)), err);
+  VALIDATE(model.addTensor("qmat_output_u16", appTensor("qmat_output_u16", dims_output, 3, QNN_TENSOR_TYPE_NATIVE, QNN_DATATYPE_UFIXED_POINT_16)), err);
+  VALIDATE(model.addTensor("qmat_output_f32", appTensor("qmat_output_f32", dims_output, 3, QNN_TENSOR_TYPE_APP_READ)), err);
+  const char* quant_inputs[] = {{"qmat_input_f32"}};
+  Qnn_Tensor_t quant_outputs[] = {{appTensor("qmat_input_u16", dims_input, 3, QNN_TENSOR_TYPE_NATIVE, QNN_DATATYPE_UFIXED_POINT_16)}};
+  VALIDATE(model.addNode(QNN_OPCONFIG_VERSION_1, "{graph}_quantize", QNN_OP_PACKAGE_NAME_QTI_AISW, QNN_OP_QUANTIZE, nullptr, 0, quant_inputs, 1, quant_outputs, 1), err);
+  const char* fc_inputs[] = {{"qmat_input_u16", "qmat_weight_u8"}};
+  Qnn_Tensor_t fc_outputs[] = {{appTensor("qmat_output_u16", dims_output, 3, QNN_TENSOR_TYPE_NATIVE, QNN_DATATYPE_UFIXED_POINT_16)}};
+  // QNN_OP_FULLY_CONNECTED_PARAM_KEEP_DIMS must be true in the finalized QNN param builder.
+  VALIDATE(model.addNode(QNN_OPCONFIG_VERSION_1, "{graph}_fully_connected", QNN_OP_PACKAGE_NAME_QTI_AISW, QNN_OP_FULLY_CONNECTED, nullptr, 0, fc_inputs, 2, fc_outputs, 1), err);
+  // QNN_OP_MAT_MUL_PARAM_TRANSPOSE_IN1=false variant is recorded in metadata and should be generated if FC layout is rejected.
+  const char* dequant_inputs[] = {{"qmat_output_u16"}};
+  Qnn_Tensor_t dequant_outputs[] = {{appTensor("qmat_output_f32", dims_output, 3, QNN_TENSOR_TYPE_APP_READ)}};
+  VALIDATE(model.addNode(QNN_OPCONFIG_VERSION_1, "{graph}_dequantize", QNN_OP_PACKAGE_NAME_QTI_AISW, QNN_OP_DEQUANTIZE, nullptr, 0, dequant_inputs, 1, dequant_outputs, 1), err);
+'''
 
 
 def render_cpp_source() -> str:
@@ -946,8 +1313,20 @@ set -euo pipefail
 WORK_ROOT={shlex.quote(str(work_root))}
 Q={shlex.quote(qairt)}
 NDK={shlex.quote(ndk)}
+if [ -n "${{ANDROID_NDK_PREBUILT:-}}" ]; then
+  NDK_PREBUILT="$ANDROID_NDK_PREBUILT"
+elif [ "$(uname -s)" = "Darwin" ]; then
+  NDK_PREBUILT="darwin-x86_64"
+else
+  NDK_PREBUILT="linux-x86_64"
+fi
+COMPILER="$NDK/toolchains/llvm/prebuilt/$NDK_PREBUILT/bin/aarch64-linux-android35-clang++"
+if [ ! -x "$COMPILER" ]; then
+  echo "model_library_failure:ndk_prebuilt_compiler_missing:$COMPILER" >&2
+  exit 2
+fi
 mkdir -p "$WORK_ROOT/out" "$WORK_ROOT/obj"
-"$NDK/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android35-clang++" \\
+"$COMPILER" \\
   -std=c++20 -O2 -fPIC -fvisibility=hidden -shared \\
   "-DQNN_API=__attribute__((visibility(\\\"default\\\")))" \\
   -I"$Q/include/QNN" -I"$Q/share/QNN/converter/jni" -I"$Q/share/QNN/converter/jni/linux" \\
@@ -958,6 +1337,97 @@ mkdir -p "$WORK_ROOT/out" "$WORK_ROOT/obj"
   -ldl -o "$WORK_ROOT/out/{MODEL_LIBRARY_NAME}"
 sha256sum "$WORK_ROOT/out/{MODEL_LIBRARY_NAME}" > "$WORK_ROOT/out/model_library.sha256"
 wc -c "$WORK_ROOT/out/{MODEL_LIBRARY_NAME}" > "$WORK_ROOT/out/model_library.bytes"
+"""
+
+
+def render_probe_ladder_build_script(args: argparse.Namespace, work_root: Path) -> str:
+    qairt = args.qairt_root.rstrip("/")
+    ndk = args.android_ndk_root.rstrip("/") or "${ANDROID_NDK_ROOT:?ANDROID_NDK_ROOT required}"
+    probe_lines = []
+    for probe in PROBE_LADDER_SOURCES:
+        source = (
+            f"$WORK_ROOT/src/{probe['source']}"
+            if probe["stage"] == "full_gemma4_e4b_ffn_residual_layer0_probe"
+            else f"$WORK_ROOT/src/probes/{probe['source']}"
+        )
+        probe_lines.append(
+            f'''"$COMPILER" "${{COMMON[@]}}" {source} -ldl -o "$WORK_ROOT/out/{probe['library']}"\n'''
+            f'''sha256sum "$WORK_ROOT/out/{probe['library']}" > "$WORK_ROOT/out/{probe['library']}.sha256"\n'''
+            f'''wc -c "$WORK_ROOT/out/{probe['library']}" > "$WORK_ROOT/out/{probe['library']}.bytes"'''
+        )
+    return f"""#!/usr/bin/env bash
+set -euo pipefail
+WORK_ROOT={shlex.quote(str(work_root))}
+Q={shlex.quote(qairt)}
+NDK={shlex.quote(ndk)}
+if [ -n "${{ANDROID_NDK_PREBUILT:-}}" ]; then
+  NDK_PREBUILT="$ANDROID_NDK_PREBUILT"
+elif [ "$(uname -s)" = "Darwin" ]; then
+  NDK_PREBUILT="darwin-x86_64"
+else
+  NDK_PREBUILT="linux-x86_64"
+fi
+COMPILER="$NDK/toolchains/llvm/prebuilt/$NDK_PREBUILT/bin/aarch64-linux-android35-clang++"
+if [ ! -x "$COMPILER" ]; then
+  echo "model_library_failure:ndk_prebuilt_compiler_missing:$COMPILER" >&2
+  exit 2
+fi
+mkdir -p "$WORK_ROOT/out" "$WORK_ROOT/obj"
+COMMON=(
+  -std=c++20 -O2 -fPIC -fvisibility=hidden -shared
+  "-DQNN_API=__attribute__((visibility(\\\"default\\\")))"
+  -I"$Q/include/QNN" -I"$Q/share/QNN/converter/jni" -I"$Q/share/QNN/converter/jni/linux"
+  "$Q/share/QNN/converter/jni/QnnModel.cpp"
+  "$Q/share/QNN/converter/jni/QnnWrapperUtils.cpp"
+  "$Q/share/QNN/converter/jni/linux/QnnModelPal.cpp"
+)
+{chr(10).join(probe_lines)}
+"""
+
+
+def render_probe_ladder_context_script(args: argparse.Namespace) -> str:
+    phone_root = args.phone_work_root.rstrip("/")
+    qairt = args.qairt_root.rstrip("/")
+    steps = []
+    for index, probe in enumerate(PROBE_LADDER_SOURCES):
+        prerequisite = ""
+        if index == len(PROBE_LADDER_SOURCES) - 1:
+            prerequisite = """
+for required in primitive_rmsnorm_decomposition_probe primitive_gelu_tanh_lowering_probe quantized_tiny_matmul_static_weight_probe; do
+  if [ ! -f "$PHONE_ROOT/probe_ladder/$required/green.json" ]; then
+    echo "context_generation_failure:full_island_prerequisite_probe_missing:$required" >&2
+    exit 2
+  fi
+done
+"""
+        steps.append(
+            f"""{prerequisite}
+STAGE={shlex.quote(str(probe['stage']))}
+GRAPH={shlex.quote(str(probe['graph']))}
+LIB="$PHONE_ROOT/models/{probe['library']}"
+OUT="$PHONE_ROOT/probe_ladder/{probe['stage']}"
+mkdir -p "$OUT"
+"$Q/bin/aarch64-android/qnn-context-binary-generator" \\
+  --model="$LIB" \\
+  --backend="$Q/lib/aarch64-android/libQnnHtp.so" \\
+  --binary_file="{probe['context']}" \\
+  --output_dir="$OUT" \\
+  --log_level info > "$OUT/context_stdout.log" 2> "$OUT/context_stderr.log"
+"$Q/bin/aarch64-android/qnn-context-binary-utility" \\
+  --context_binary="$OUT/{probe['context']}" \\
+  --json_file="$OUT/context_info.json" \\
+  > "$OUT/utility_stdout.log" 2> "$OUT/utility_stderr.log"
+sha256sum "$OUT/{probe['context']}" > "$OUT/context.sha256"
+wc -c "$OUT/{probe['context']}" > "$OUT/context.bytes"
+printf '{{"stage":"%s","graph":"%s","status":"green"}}\\n' "$STAGE" "$GRAPH" > "$OUT/green.json"
+"""
+        )
+    return f"""#!/usr/bin/env bash
+set -euo pipefail
+PHONE_ROOT={shlex.quote(phone_root)}
+Q={shlex.quote(qairt)}
+mkdir -p "$PHONE_ROOT/probe_ladder"
+{chr(10).join(steps)}
 """
 
 

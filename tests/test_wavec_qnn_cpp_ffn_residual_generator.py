@@ -48,6 +48,21 @@ def test_generator_print_schema() -> None:
         "dtype_layout_stop_conditions"
     ]
     assert "qnn_profile_viewer_parse_status" in schema["required_qnn_evidence_fields"]
+    assert schema["probe_ladder_sources"][0]["source"] == "primitive_rmsnorm_decomposition_probe.cpp"
+    assert schema["probe_ladder_sources"][0]["axis"] == 2
+    assert schema["probe_ladder_sources"][0]["reduce_mean_param"] == "QNN_OP_REDUCE_MEAN_PARAM_AXES"
+    assert schema["probe_ladder_sources"][0]["keep_dims"] is True
+    assert schema["probe_ladder_sources"][1]["secondary_input"] == "up_activation_for_ffn_multiply"
+    assert schema["probe_ladder_sources"][1]["constants"]["sqrt_2_over_pi"] == 0.7978845608028654
+    assert schema["probe_ladder_sources"][2]["activation_dtype"] == "uint16_asymmetric"
+    assert schema["probe_ladder_sources"][2]["weight_dtype"] == "uint8_asymmetric"
+    assert schema["probe_ladder_sources"][2]["fully_connected_keep_dims_param"] == (
+        "QNN_OP_FULLY_CONNECTED_PARAM_KEEP_DIMS=true"
+    )
+    assert schema["probe_ladder_sources"][2]["matmul_variant_param"] == (
+        "QNN_OP_MAT_MUL_PARAM_TRANSPOSE_IN1=false_with_pretransposed_weight_3x4"
+    )
+    assert "orientation" in schema["probe_ladder_sources"][2]
 
 
 def test_generator_rejects_repo_work_root(tmp_path: Path) -> None:
@@ -334,3 +349,54 @@ def test_generator_writes_fail_closed_source_package_outside_git(tmp_path: Path)
     assert "qnn_execute_profile_fields" in payload["execution_contract"]["required_qnn_evidence_fields"]
     assert (work_root / "scripts" / "build_android_model_library.sh").is_file()
     assert (work_root / "scripts" / "generate_phone_context.sh").is_file()
+    assert (work_root / "src" / "probes" / "primitive_rmsnorm_decomposition_probe.cpp").is_file()
+    assert (work_root / "src" / "probes" / "primitive_gelu_tanh_lowering_probe.cpp").is_file()
+    assert (work_root / "src" / "probes" / "quantized_tiny_matmul_static_weight_probe.cpp").is_file()
+    assert (work_root / "metadata" / "probe_ladder_manifest.json").is_file()
+    assert (work_root / "scripts" / "build_probe_ladder.sh").is_file()
+    assert (work_root / "scripts" / "run_probe_ladder_contexts.sh").is_file()
+    rms_probe = (work_root / "src" / "probes" / "primitive_rmsnorm_decomposition_probe.cpp").read_text(
+        encoding="utf-8"
+    )
+    gelu_probe = (work_root / "src" / "probes" / "primitive_gelu_tanh_lowering_probe.cpp").read_text(
+        encoding="utf-8"
+    )
+    matmul_probe = (work_root / "src" / "probes" / "quantized_tiny_matmul_static_weight_probe.cpp").read_text(
+        encoding="utf-8"
+    )
+    assert "QNN_OP_RMS_NORM" not in rms_probe
+    assert "QNN_OP_REDUCE_MEAN_PARAM_AXES" in rms_probe
+    assert "appTensor(\"rms_input\", dims_hidden, 3" in rms_probe
+    assert "appTensor(\"rms_mean\", dims_reduce, 3" in rms_probe
+    assert "QNN_OP_GELU" not in gelu_probe
+    assert "0.7978845608028654" in gelu_probe
+    assert "\"gelu_native\", \"gelu_up\"" in gelu_probe
+    assert "QNN_OP_FULLY_CONNECTED_PARAM_KEEP_DIMS" in matmul_probe
+    assert "QNN_OP_MAT_MUL_PARAM_TRANSPOSE_IN1" in matmul_probe
+    assert "QNN_DATATYPE_UFIXED_POINT_16" in matmul_probe
+    assert "QNN_DATATYPE_UFIXED_POINT_8" in matmul_probe
+    assert "appTensor(\"qmat_input_f32\", dims_input, 3" in matmul_probe
+    assert "appTensor(\"qmat_output_f32\", dims_output, 3" in matmul_probe
+
+    build_script = (work_root / "scripts" / "build_android_model_library.sh").read_text(encoding="utf-8")
+    assert "ANDROID_NDK_PREBUILT" in build_script
+    assert 'NDK_PREBUILT="darwin-x86_64"' in build_script
+    assert 'NDK_PREBUILT="linux-x86_64"' in build_script
+    assert "model_library_failure:ndk_prebuilt_compiler_missing" in build_script
+    assert "prebuilt/linux-x86_64/bin/aarch64-linux-android35-clang++" not in build_script
+
+    probe_manifest = json.loads((work_root / "metadata" / "probe_ladder_manifest.json").read_text(encoding="utf-8"))
+    assert probe_manifest["stage_order"] == [
+        "primitive_rmsnorm_decomposition_probe",
+        "primitive_gelu_tanh_lowering_probe",
+        "quantized_tiny_matmul_static_weight_probe",
+        "full_gemma4_e4b_ffn_residual_layer0_probe",
+    ]
+    assert probe_manifest["full_island_runnable_only_after"] == [
+        "primitive_rmsnorm_decomposition_probe",
+        "primitive_gelu_tanh_lowering_probe",
+        "quantized_tiny_matmul_static_weight_probe",
+    ]
+    matmul = probe_manifest["probes"][2]
+    for field in ("activation_dtype", "weight_dtype", "activation_scale", "activation_zero_point", "weight_scale", "weight_zero_point", "orientation"):
+        assert field in matmul

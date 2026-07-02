@@ -1,0 +1,163 @@
+{
+  "status": "waveC_qnn_context_probe_ladder_pathset_ready_for_pipeline",
+  "created_utc": "2026-07-02T19:15:00Z",
+  "governing_gate": "WaveC_full_gemma_qnn_htp_forward_consumed_tensor_route",
+  "consumed_exact_failure": {
+    "path": "runtime/reports/orchestration/WAVEC_QNN_CONTEXT_PROBE_LADDER_EXACT_FAILURE_20260702T190000Z.json",
+    "sha256": "680c9eb6999c69c98eadee004dd7d198dcee74db2fb4598e9f734fe31e2dce82"
+  },
+  "validated_materialization_to_consume": {
+    "report": "runtime/reports/polar_phase34_consumer_preflight/active_wave/qnn_cpp_ffn_residual_generator/qnn_cpp_ffn_residual_generator_execution_20260702T1835Z.json",
+    "sha256": "3761fbb58dbf79cd2f9a87537438488990353c45dafd216ed6005ca9348b4754",
+    "work_root": "/private/tmp/wavec_phone_source_materializer_termux_home_execution_20260702T1835Z",
+    "materialized_weight_manifest_sha256": "f31905763b1081e6d104127d5585fa13fc31e6558df9d08d1d98dee75434ec4b",
+    "tensor_manifest_sha256": "a0213f0f79989e6c2cc3e4f90b3948e8af89e0f480384668b38f6c1dab1e6ab1",
+    "phone_materialization_plan_sha256": "2004e9528555ef777bb2ce1050ff57057a30ec18c1a1772ccb48a628684c0245"
+  },
+  "source_pathset": [
+    {
+      "path": "scripts/host/run_wavec_qnn_cpp_ffn_residual_generator.py",
+      "sha256": "0a5b7df5db068f432551b3132e8a7710387626e4ca28973757d308f2898bbb90",
+      "purpose": "Generates ordered QNN C++ probe-ladder sources, manifests, host-aware build scripts, context scripts, and fail-closed primitive/quantized probe metadata before full-island proof."
+    },
+    {
+      "path": "tests/test_wavec_qnn_cpp_ffn_residual_generator.py",
+      "sha256": "81009f287d66bbbbc80cfe0f1ecdf51081a4b56972ede4fd3bb123c1d50f3b1a",
+      "purpose": "Adds host-only falsifiers for missing probe sources/manifests/scripts, hard-coded Linux NDK prebuilt, full-island gating, missing quantized MatMul dtype/layout metadata, fused RMSNorm/GELU misuse, and rank/operand mismatches in probe sources."
+    },
+    {
+      "path": "runtime/reports/polar_phase34_consumer_preflight/active_wave/qnn_cpp_ffn_residual_generator/qnn_context_probe_ladder_report_20260702T191500Z.json",
+      "sha256": "6d017e3b996a4f8e82302ee72e651f36e66bfc0cfcbe9898e17f90156106e484",
+      "purpose": "Metadata-only generator run report. No raw blobs, model libraries, contexts, tensor outputs, profiles, checkpoints, or adapters."
+    }
+  ],
+  "outside_git_generated_metadata": [
+    {
+      "path": "/tmp/wavec_qnn_context_probe_ladder_pathset_20260702T191500Z/metadata/probe_ladder_manifest.json",
+      "sha256": "b6c42672aa199df2bc16e267b31d5f14151e89a4bab146d827f97d9cf623733f"
+    },
+    {
+      "path": "/tmp/wavec_qnn_context_probe_ladder_pathset_20260702T191500Z/scripts/build_android_model_library.sh",
+      "sha256": "54bdb5ccb788ad599d3c1d72caf5e59a636ed9477bd8e5643585141e7aa4bade"
+    },
+    {
+      "path": "/tmp/wavec_qnn_context_probe_ladder_pathset_20260702T191500Z/scripts/build_probe_ladder.sh",
+      "sha256": "d76cc162504ba670c776ab0a3aefa9d7fdcc2a59d006672d87fabc8790dfe00d"
+    },
+    {
+      "path": "/tmp/wavec_qnn_context_probe_ladder_pathset_20260702T191500Z/scripts/run_probe_ladder_contexts.sh",
+      "sha256": "0b04396711f441b0c3c08dfe1ff77c5aa9c598fa6b521b96dd85bd53ee1c14e0"
+    },
+    {
+      "path": "/tmp/wavec_qnn_context_probe_ladder_pathset_20260702T191500Z/src/probes/primitive_rmsnorm_decomposition_probe.cpp",
+      "sha256": "283728e374f6335965e1e77c112a657d9f7f606aa37f5ffde5e722e45ab9170d"
+    },
+    {
+      "path": "/tmp/wavec_qnn_context_probe_ladder_pathset_20260702T191500Z/src/probes/primitive_gelu_tanh_lowering_probe.cpp",
+      "sha256": "708978a45a7fab2953d71f3280a833ddbab8f23ea1e4b3f68668276fdb046a75"
+    },
+    {
+      "path": "/tmp/wavec_qnn_context_probe_ladder_pathset_20260702T191500Z/src/probes/quantized_tiny_matmul_static_weight_probe.cpp",
+      "sha256": "06413dd9490c715b90d2f6866f18ad4edf2017ee80f65662201eb3788905f8bd"
+    }
+  ],
+  "probe_ladder_contract": {
+    "stage_order": [
+      "primitive_rmsnorm_decomposition_probe",
+      "primitive_gelu_tanh_lowering_probe",
+      "quantized_tiny_matmul_static_weight_probe",
+      "full_gemma4_e4b_ffn_residual_layer0_probe"
+    ],
+    "full_island_runnable_only_after": [
+      "primitive_rmsnorm_decomposition_probe",
+      "primitive_gelu_tanh_lowering_probe",
+      "quantized_tiny_matmul_static_weight_probe"
+    ],
+    "quantized_tiny_matmul_required_fields": [
+      "activation_dtype",
+      "weight_dtype",
+      "activation_scale",
+      "activation_zero_point",
+      "weight_scale",
+      "weight_zero_point",
+      "orientation"
+    ],
+    "research_semantics_consumed": [
+      "primitive RMSNorm probe must avoid QNN_OP_RMS_NORM and declare QNN_OP_REDUCE_MEAN_PARAM_AXES over hidden axis 2",
+      "primitive GELU-tanh probe must avoid QNN_OP_GELU and lower tanh formula before multiplying by up activation",
+      "quantized tiny MatMul probe must declare UFIXED16 activation, UFIXED8 weight, UFIXED16 output, scale/zero-point fields, FullyConnected KEEP_DIMS, and MatMul transpose variant metadata",
+      "full Gemma FFN/residual island remains gated until the first three probes are present and ordered"
+    ],
+    "host_aware_ndk_selection": [
+      "ANDROID_NDK_PREBUILT override",
+      "darwin-x86_64 on macOS",
+      "linux-x86_64 on Linux",
+      "model_library_failure:ndk_prebuilt_compiler_missing if compiler is absent"
+    ]
+  },
+  "local_verification": [
+    {
+      "command": "python3.11 -m py_compile scripts/host/run_wavec_qnn_cpp_ffn_residual_generator.py tests/test_wavec_qnn_cpp_ffn_residual_generator.py",
+      "result": "pass"
+    },
+    {
+      "command": "python3.11 scripts/host/run_wavec_qnn_cpp_ffn_residual_generator.py --print-schema",
+      "result": "pass"
+    },
+    {
+      "command": "python3.11 -m pytest tests/test_wavec_qnn_cpp_ffn_residual_generator.py tests/test_wavec_gemma_qnn_exporter.py tests/test_wavec_full_gemma_qnn.py",
+      "result": "31 passed in 2.49s"
+    },
+    {
+      "command": "generator plan-only run to /tmp/wavec_qnn_context_probe_ladder_pathset_20260702T191500Z",
+      "result": "pass; report status pass and first_missing_green_field none"
+    },
+    {
+      "command": "scoped raw suffix scan over generated pathset and repo reports",
+      "result": "empty"
+    }
+  ],
+  "pipeline_receiving_checklist": [
+    "Source/test/report SHAs match this packet.",
+    "Generated package contains three probe source files plus full-island source, not only the monolithic full-island candidate.",
+    "Probe manifest stage_order is primitive RMSNorm, primitive GELU-tanh, quantized tiny MatMul, then full Gemma FFN/residual island.",
+    "Primitive RMSNorm probe source avoids QNN_OP_RMS_NORM and records QNN_OP_REDUCE_MEAN_PARAM_AXES, hidden axis 2, keep_dims, epsilon, and [1,1,2560] weight broadcast contract.",
+    "Primitive GELU-tanh probe source avoids QNN_OP_GELU and includes x2/x3/cubic/tanh/half-x lowering plus explicit gelu*up output multiply.",
+    "Quantized tiny MatMul probe source records UFIXED16 activation/output, UFIXED8 static weight, scale/zero-point/orientation, FullyConnected KEEP_DIMS, and MatMul transpose variant metadata.",
+    "Full-island script is gated on green.json for the first three probe stages.",
+    "Generated build scripts use ANDROID_NDK_PREBUILT override or host OS detection and no longer hard-code linux-x86_64 on macOS.",
+    "Generated build scripts fail closed with model_library_failure:ndk_prebuilt_compiler_missing when compiler is absent.",
+    "Quantized tiny MatMul metadata includes activation dtype, weight dtype, scale, zero-point, and orientation.",
+    "No raw selected blobs, model libraries, contexts, tensor outputs, profiles, checkpoints, adapters, or generated QNN payloads enter git."
+  ],
+  "post_custody_execution_command_shape": "python3.11 scripts/host/run_wavec_qnn_cpp_ffn_residual_generator.py --model-source-location phone_preverified --model-safetensors <phone_model_path> --model-safetensors-sha256 43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651 --model-safetensors-bytes 15992595884 --model-config-spec integrations/gemma4-snapdragon-megakernel/model_spec/gemma4_e4b.json --work-root <outside_git_work_root> --qairt-root /data/local/tmp/qairt-2.44 --android-ndk-root /usr/local/share/android-commandlinetools/ndk/28.2.13676358 --phone-work-root /data/data/com.termux/files/home/polymath_gemma4_gate/wavec/full_gemma_qnn_export --phone-ssh-host 127.0.0.1 --phone-ssh-port 8022 --phone-ssh-user u0_a536 --phone-ssh-identity /Users/prinivenpillay/.ssh/polymath_host --materialize-weight-blobs --report <metadata_only_report_path>; then build_probe_ladder.sh; then push model libraries to phone work root and run_probe_ladder_contexts.sh",
+  "stop_conditions": [
+    "quantization_or_layout_failure:qnn_primitive_rmsnorm_axis_or_param_contract_missing",
+    "quantization_or_layout_failure:qnn_gelu_tanh_primitive_param_contract_missing",
+    "quantization_or_layout_failure:qnn_quantized_matmul_scale_zero_point_orientation_missing",
+    "model_library_failure:ndk_prebuilt_compiler_missing",
+    "model_library_failure:qnn_wrapper_compile_or_link_failure",
+    "context_generation_failure:qnn_context_binary_generator_rejects_probe_graph",
+    "htp_runtime_failure:qnn_net_run_output_or_profile_missing",
+    "consumed_tensor_failure:phase4_exact_tensor_consumption_missing_or_adapter_unchanged",
+    "raw_payload_entered_git"
+  ],
+  "raw_boundary_proof": {
+    "repo_receives_source_tests_metadata_only": true,
+    "scoped_raw_suffix_scan_empty": true,
+    "raw_payloads_in_git": false
+  },
+  "first_missing_green_field": "none",
+  "next_action": "Pipeline validates receiving contract; if green, route to Repo Custodian for freeze.",
+  "research_escalation": "active_parallel_signal_lane_if_qnn_cpp_op_param_quantization_semantics_change_tests_or_stop_conditions",
+  "nonclaims": [
+    "no C5 pass",
+    "no learning/model-quality claim",
+    "no Phase3/4 readiness",
+    "no full-Gemma HTP forward claim until QNN context/net-run/profile/Phase4 consumption prove it",
+    "no 100k/1M authority",
+    "no raw payloads in git",
+    "no secrets printed",
+    "no Comet-backed accepted run"
+  ]
+}
