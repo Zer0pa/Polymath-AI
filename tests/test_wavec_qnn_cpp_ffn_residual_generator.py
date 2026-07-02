@@ -400,6 +400,13 @@ def test_generator_writes_fail_closed_source_package_outside_git(tmp_path: Path)
     assert "QAIRT_HOST_ROOT" in probe_build_script
     assert "stage_qairt_wrappers_from_phone" in probe_build_script
     assert "model_library_failure:missing_host_qairt_wrapper_sources" in probe_build_script
+    context_script = (work_root / "scripts" / "run_probe_ladder_contexts.sh").read_text(encoding="utf-8")
+    assert "QAIRT_EXEC_ROOT" in context_script
+    assert "prepare_qairt_exec_root" in context_script
+    assert "$PHONE_ROOT/qairt_exec" in context_script
+    assert "qnn_context_binary_generator_permission_denied_or_unstageable" in context_script
+    assert "Q_SRC=/data/local/tmp/qairt-2.44" in context_script
+    assert "Q=\"$Q_EXEC\"" in context_script
 
     probe_manifest = json.loads((work_root / "metadata" / "probe_ladder_manifest.json").read_text(encoding="utf-8"))
     assert probe_manifest["stage_order"] == [

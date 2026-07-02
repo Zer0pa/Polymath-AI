@@ -1,0 +1,123 @@
+{
+  "status": "waveC_qnn_context_exec_route_pathset_ready_for_pipeline",
+  "created_utc": "2026-07-02T21:30:00Z",
+  "governing_gate": "WaveC_full_gemma_qnn_htp_forward_consumed_tensor_route",
+  "consumed_execution_gap": {
+    "status": "waveC_runpod_qairt_host_root_report_validated_context_generator_permission_denied",
+    "report": "runtime/reports/polar_phase34_consumer_preflight/active_wave/qnn_cpp_ffn_residual_generator/qnn_runpod_qairt_host_root_execution_20260702T205000Z.json",
+    "sha256": "e41bdae98a73beed0d26be494e304d3dfc507dd7252e02d9cca3b8d388d0a1fc",
+    "first_missing_green_field": "context_generation_failure:qnn_context_binary_generator_permission_denied"
+  },
+  "source_pathset": [
+    {
+      "path": "scripts/host/run_wavec_qnn_cpp_ffn_residual_generator.py",
+      "sha256": "711ad4c0d5855038f1a7d65b8abd63327f778ae20aafeb7fd8d225266170f8a6",
+      "purpose": "Repairs generated phone context scripts to stage QAIRT runtime tools/libs into a Termux-owned executable root before invoking qnn-context-binary-generator."
+    },
+    {
+      "path": "tests/test_wavec_qnn_cpp_ffn_residual_generator.py",
+      "sha256": "dff5f92c7082bb56063a232410ac0e4b3ffca91224f5ad4a75e9532cd9a23fc8",
+      "purpose": "Adds host-only assertions for QAIRT_EXEC_ROOT, Termux-owned qairt_exec staging, and fail-closed permission/unstageable context-generator field."
+    },
+    {
+      "path": "runtime/reports/polar_phase34_consumer_preflight/active_wave/qnn_cpp_ffn_residual_generator/qnn_context_exec_route_report_20260702T213000Z.json",
+      "sha256": "dda98ba34abae4f1d838bea455cc4deffcf6fc84fec5026e3fa1a222a646d18c",
+      "purpose": "Metadata-only plan run showing regenerated scripts with Termux-owned QAIRT executable staging. No raw payloads."
+    }
+  ],
+  "outside_git_generated_artifacts": [
+    {
+      "path": "/tmp/wavec_qnn_context_exec_route_pathset_20260702T213000Z/scripts/run_probe_ladder_contexts.sh",
+      "sha256": "7fb038f29ea29bc7e3b6d70d7323a0efae623354af99d67c278e9584d37dab8b"
+    },
+    {
+      "path": "/tmp/wavec_qnn_context_exec_route_pathset_20260702T213000Z/scripts/generate_phone_context.sh",
+      "sha256": "c1432e15c379a38f402790e5991286e20c298fd5f6a972a40d40412e318d37d3"
+    },
+    {
+      "path": "/tmp/wavec_qnn_context_exec_route_pathset_20260702T213000Z/scripts/build_probe_ladder.sh",
+      "sha256": "eb8b48f82753cacfd202543c4d7b89f83c2f01fef6391ce25884d3386ccbf6e1"
+    },
+    {
+      "path": "/tmp/wavec_qnn_context_exec_route_pathset_20260702T213000Z/metadata/probe_ladder_manifest.json",
+      "sha256": "b6c42672aa199df2bc16e267b31d5f14151e89a4bab146d827f97d9cf623733f"
+    }
+  ],
+  "repair_contract": {
+    "phone_qairt_source_root": "/data/local/tmp/qairt-2.44",
+    "termux_exec_root_default": "$PHONE_ROOT/qairt_exec",
+    "termux_exec_root_override": "QAIRT_EXEC_ROOT",
+    "staged_tool_paths": [
+      "bin/aarch64-android/qnn-context-binary-generator",
+      "bin/aarch64-android/qnn-context-binary-utility",
+      "bin/aarch64-android/qnn-net-run",
+      "bin/aarch64-android/qnn-profile-viewer"
+    ],
+    "staged_library_paths": [
+      "lib/aarch64-android",
+      "lib/hexagon-v79",
+      "lib/hexagon-v81"
+    ],
+    "failure_field_if_unstageable": "context_generation_failure:qnn_context_binary_generator_permission_denied_or_unstageable",
+    "preserved_backend": "libQnnHtp.so under the staged executable root",
+    "reason": "Avoid executing qnn-context-binary-generator directly from /data/local/tmp under Termux when that path returns permission denied."
+  },
+  "local_verification": [
+    {
+      "command": "python3.11 -m py_compile scripts/host/run_wavec_qnn_cpp_ffn_residual_generator.py tests/test_wavec_qnn_cpp_ffn_residual_generator.py",
+      "result": "pass"
+    },
+    {
+      "command": "python3.11 scripts/host/run_wavec_qnn_cpp_ffn_residual_generator.py --print-schema",
+      "result": "pass"
+    },
+    {
+      "command": "python3.11 -m pytest tests/test_wavec_qnn_cpp_ffn_residual_generator.py tests/test_wavec_full_gemma_qnn.py tests/test_phase4_bridge_cell.py tests/test_wavec_gemma_qnn_exporter.py",
+      "result": "52 passed in 2.57s"
+    },
+    {
+      "command": "generator plan-only run to /tmp/wavec_qnn_context_exec_route_pathset_20260702T213000Z",
+      "result": "pass; report status pass and first_missing_green_field none"
+    },
+    {
+      "command": "scoped raw suffix scan over generated pathset and repo reports",
+      "result": "0"
+    }
+  ],
+  "pipeline_receiving_checklist": [
+    "Source/test/report SHAs match this packet.",
+    "Generated run_probe_ladder_contexts.sh and generate_phone_context.sh define Q_SRC=/data/local/tmp/qairt-2.44 and Q_EXEC=${QAIRT_EXEC_ROOT:-$PHONE_ROOT/qairt_exec}.",
+    "Generated context scripts copy QAIRT bin/aarch64-android and lib/aarch64-android plus hexagon libs when present into the Termux-owned executable root before context generation.",
+    "Generated context scripts chmod and check qnn-context-binary-generator and qnn-context-binary-utility before first probe execution.",
+    "Generated context scripts fail closed as context_generation_failure:qnn_context_binary_generator_permission_denied_or_unstageable if staging or execute checks fail.",
+    "RunPod QAIRT host-root consumption and model-library build success are not regressed.",
+    "Observability pathset remains separate and is not invalidated; no C5/scorer work is introduced.",
+    "Raw selected weights, model libraries, contexts, profiles, tensors, SDK payloads, and generated binaries remain outside git."
+  ],
+  "post_custody_execution_command_shape": "Reuse the existing RunPod QAIRT_HOST_ROOT command shape, but after freeze regenerate the package from this source pathset, push generated model libraries and the repaired run_probe_ladder_contexts.sh to the Termux work root, then run bash $PHONE_ROOT/scripts/run_probe_ladder_contexts.sh. Stop at the first context/model-library/quantization/runtime/consumption failure.",
+  "expected_first_green_fields": [
+    "qairt_exec_root_staged_under_termux_home",
+    "qnn_context_binary_generator_executable_from_qairt_exec_root",
+    "primitive_rmsnorm_decomposition_probe_context_generation_attempted",
+    "context_or_next_exact_qnn_failure_reported"
+  ],
+  "expected_first_fail_fields": [
+    "context_generation_failure:qnn_context_binary_generator_permission_denied_or_unstageable",
+    "context_generation_failure:qnn_context_binary_generator_rejects_probe_graph",
+    "model_library_failure:qnn_wrapper_compile_or_link_failure",
+    "quantization_or_layout_failure:qnn_primitive_rmsnorm_axis_or_param_contract_missing",
+    "htp_runtime_failure:qnn_net_run_output_or_profile_missing"
+  ],
+  "first_missing_green_field": "none",
+  "next_action": "Pipeline validates receiving contract; if green, route to Repo Custodian for freeze before Execution reruns context generation.",
+  "research_escalation": "active_parallel_signal_lane_if_QNN_tool_loader_policy_executable_mount_constraints_or_runtime_envelope_changes_stop_conditions",
+  "nonclaims": [
+    "no C5 pass",
+    "no learning/model-quality claim",
+    "no Phase3/4 readiness",
+    "no full-Gemma HTP forward claim until QNN context/net-run/profile/Phase4 consumption prove it",
+    "no raw payloads in git",
+    "no secrets printed",
+    "no Comet-backed accepted run"
+  ]
+}

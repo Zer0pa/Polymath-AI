@@ -1483,7 +1483,8 @@ printf '{{"stage":"%s","graph":"%s","status":"green"}}\\n' "$STAGE" "$GRAPH" > "
     return f"""#!/usr/bin/env bash
 set -euo pipefail
 PHONE_ROOT={shlex.quote(phone_root)}
-Q={shlex.quote(qairt)}
+Q_SRC={shlex.quote(qairt)}
+{render_phone_qairt_exec_resolution_script()}
 mkdir -p "$PHONE_ROOT/probe_ladder"
 {chr(10).join(steps)}
 """
@@ -1495,7 +1496,8 @@ def render_context_script(args: argparse.Namespace) -> str:
     return f"""#!/usr/bin/env bash
 set -euo pipefail
 PHONE_ROOT={shlex.quote(phone_root)}
-Q={shlex.quote(qairt)}
+Q_SRC={shlex.quote(qairt)}
+{render_phone_qairt_exec_resolution_script()}
 MODEL="$PHONE_ROOT/models/{MODEL_LIBRARY_NAME}"
 CONTEXT_DIR="$PHONE_ROOT/context"
 mkdir -p "$CONTEXT_DIR"
@@ -1511,6 +1513,34 @@ mkdir -p "$CONTEXT_DIR"
   > "$CONTEXT_DIR/utility_stdout.log" 2> "$CONTEXT_DIR/utility_stderr.log"
 sha256sum "$CONTEXT_DIR/{CONTEXT_NAME}" > "$CONTEXT_DIR/context.sha256"
 wc -c "$CONTEXT_DIR/{CONTEXT_NAME}" > "$CONTEXT_DIR/context.bytes"
+"""
+
+
+def render_phone_qairt_exec_resolution_script() -> str:
+    return r"""Q_EXEC="${QAIRT_EXEC_ROOT:-$PHONE_ROOT/qairt_exec}"
+
+prepare_qairt_exec_root() {
+  mkdir -p "$Q_EXEC/bin" "$Q_EXEC/lib"
+  rm -rf "$Q_EXEC/bin/aarch64-android" "$Q_EXEC/lib/aarch64-android" "$Q_EXEC/lib/hexagon-v79" "$Q_EXEC/lib/hexagon-v81"
+  cp -R "$Q_SRC/bin/aarch64-android" "$Q_EXEC/bin/" || return 1
+  cp -R "$Q_SRC/lib/aarch64-android" "$Q_EXEC/lib/" || return 1
+  if [ -d "$Q_SRC/lib/hexagon-v79" ]; then cp -R "$Q_SRC/lib/hexagon-v79" "$Q_EXEC/lib/"; fi
+  if [ -d "$Q_SRC/lib/hexagon-v81" ]; then cp -R "$Q_SRC/lib/hexagon-v81" "$Q_EXEC/lib/"; fi
+  chmod 755 "$Q_EXEC/bin/aarch64-android/qnn-context-binary-generator" \
+    "$Q_EXEC/bin/aarch64-android/qnn-context-binary-utility" \
+    "$Q_EXEC/bin/aarch64-android/qnn-net-run" \
+    "$Q_EXEC/bin/aarch64-android/qnn-profile-viewer" || return 1
+  [ -x "$Q_EXEC/bin/aarch64-android/qnn-context-binary-generator" ] || return 1
+  [ -x "$Q_EXEC/bin/aarch64-android/qnn-context-binary-utility" ] || return 1
+}
+
+if ! prepare_qairt_exec_root; then
+  echo "context_generation_failure:qnn_context_binary_generator_permission_denied_or_unstageable:$Q_SRC" >&2
+  exit 126
+fi
+Q="$Q_EXEC"
+export LD_LIBRARY_PATH="$Q/lib/aarch64-android:$Q_SRC/lib/aarch64-android:${LD_LIBRARY_PATH:-}"
+export ADSP_LIBRARY_PATH="$Q/lib/hexagon-v79/unsigned;$Q/lib/hexagon-v81/unsigned;$Q_SRC/lib/hexagon-v79/unsigned;$Q_SRC/lib/hexagon-v81/unsigned;/vendor/dsp/cdsp;/vendor/lib/rfsa/adsp;/system/lib/rfsa/adsp"
 """
 
 
