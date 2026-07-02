@@ -1,0 +1,134 @@
+{
+  "schema_version": "waveC_gemma_decoder_to_qnn_exporter_pathset_v1",
+  "created_at_utc": "2026-07-02T15:42:14Z",
+  "status": "waveC_gemma_decoder_to_qnn_exporter_pathset_ready_for_pipeline",
+  "governing_gate": "WaveC_full_gemma_qnn_htp_forward_consumed_tensor_route",
+  "first_missing_green_field": "gemma_e4b_model_safetensors_for_context_export_missing",
+  "material_blocker_applied": {
+    "status": "AUTHORIZATION_PENDING_EXTERNAL_MODEL_SOURCE_RETRIEVAL_OR_USER_PROVIDED_PATH",
+    "steward_artifact": "runtime/reports/orchestration/WAVEC_GEMMA_E4B_MODEL_SOURCE_EXACT_BLOCKER_20260702T_STEWARD.json",
+    "steward_artifact_sha256": "37ea05f58d940ab4facca13c7e9d6117bf78b2941b42e8410377673edf69bf24",
+    "provider_model": "google/gemma-4-E4B",
+    "revision": "7aa32e6889efd6300124851b164f8b364314c3d8",
+    "file": "model.safetensors",
+    "expected_size_bytes": 15992595884,
+    "expected_lfs_oid": "43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651"
+  },
+  "route": {
+    "preferred": "qnn_cpp_generated_model_library_to_qnn_context_binary_generator",
+    "secondary": "litert_aot_only_if_it_emits_no_fallback_sm8750_qnn_context_with_same_graph_context_profile_contract",
+    "graph": "gemma4_e4b_ffn_residual_layer0_forward_island_seq16_hidden2560",
+    "graph_scope": "gemma4_e4b_ffn_residual_layer0",
+    "input_contract": {
+      "shape": [1, 16, 2560],
+      "dtype": "float32_le",
+      "bytes": 163840
+    },
+    "output_contract": {
+      "shape": [1, 16, 2560],
+      "dtype": "float32_le",
+      "bytes": 163840
+    },
+    "qnn_op_plan": [
+      "RMSNorm(input, input_layernorm.weight, epsilon=1e-6)",
+      "MatMul(normed, mlp.gate_proj.weight^T)",
+      "MatMul(normed, mlp.up_proj.weight^T)",
+      "GELU_TANH(gate)",
+      "ElementWiseMultiply(activation, up)",
+      "MatMul(ffn, mlp.down_proj.weight^T)",
+      "ElementWiseAdd(input, down_projection)"
+    ]
+  },
+  "pathset": {
+    "source": [
+      {
+        "path": "polymath_ai/polar/wavec_gemma_qnn_exporter.py",
+        "sha256": "e09018cf3bad8e35b581bc86d44cfe5811b71d2f48f70f7328a4f067003cd2c9"
+      },
+      {
+        "path": "scripts/host/run_wavec_gemma_decoder_to_qnn_exporter.py",
+        "sha256": "e2cc718cac7addefa175eee010100672de8a66c33eb9c89e5325062284d68d49"
+      }
+    ],
+    "tests": [
+      {
+        "path": "tests/test_wavec_gemma_qnn_exporter.py",
+        "sha256": "37df3dc6c3d53c7b16c35a974b2c1305f1c1d5f65ac1be2714ea78757dd37dd5"
+      },
+      {
+        "path": "tests/test_wavec_full_gemma_qnn.py",
+        "role": "existing_receiving_validator_tests"
+      }
+    ],
+    "reports": [
+      {
+        "path": "runtime/reports/polar_phase34_consumer_preflight/active_wave/gemma_decoder_to_qnn_exporter/gemma_decoder_to_qnn_exporter_report.json",
+        "sha256": "3855a52b4aa8d281ffe2c416c7a17d7cc09d4728bf7c9dda3e2cd141a681b0fc",
+        "status": "blocked_until_authorized_outside_git_model_source_exists"
+      }
+    ]
+  },
+  "local_verification": [
+    {
+      "command": "python3.11 -m py_compile polymath_ai/polar/wavec_gemma_qnn_exporter.py scripts/host/run_wavec_gemma_decoder_to_qnn_exporter.py",
+      "result": "pass"
+    },
+    {
+      "command": "python3.11 -m pytest tests/test_wavec_gemma_qnn_exporter.py tests/test_wavec_full_gemma_qnn.py",
+      "result": "pass",
+      "summary": "18 passed in 0.30s"
+    },
+    {
+      "command": "python3.11 scripts/host/run_wavec_gemma_decoder_to_qnn_exporter.py --print-schema",
+      "result": "pass"
+    },
+    {
+      "command": "python3.11 scripts/host/run_wavec_gemma_decoder_to_qnn_exporter.py",
+      "result": "blocked_as_expected_without_model_source",
+      "exit_code": 2,
+      "first_missing_green_field": "gemma_e4b_model_safetensors_for_context_export_missing"
+    },
+    {
+      "command": "raw suffix scan under runtime/reports/polar_phase34_consumer_preflight/active_wave/gemma_decoder_to_qnn_exporter",
+      "result": "pass",
+      "raw_suffix_count": 0
+    }
+  ],
+  "pipeline_receiving_checklist": [
+    "Validate the exporter report schema blocks without model.safetensors and config.json.",
+    "Validate ReLU, identity, Qwen, metadata-only manifest, CPU fallback, GPU fallback, missing profile, context graph mismatch, wrong tensor bytes, and raw repo payload paths all fail closed.",
+    "Validate preferred route is QNN C++ generated model-library to qnn-context-binary-generator against libQnnHtp.so.",
+    "Validate LiteRT/AOT is secondary only and cannot pass unless it emits the same no-fallback SM8750 QNN context/graph/profile contract.",
+    "Validate downstream receiving validators remain scripts/host/run_wavec_full_gemma_qnn_forward.py and scripts/host/run_wavec_full_gemma_consumed_tensor_report.py.",
+    "Validate command-ready status is forbidden until a concrete outside-git Gemma E4B model source path is verified."
+  ],
+  "expected_command_after_model_source_and_pipeline_validation": "python3.11 scripts/host/run_wavec_gemma_decoder_to_qnn_exporter.py --model-safetensors <outside_git_model_source>/model.safetensors --model-config <outside_git_model_source>/config.json --work-root <outside_git_export_work_root> --qairt-root <outside_git_or_phone_qairt_root> --android-ndk-root <outside_git_android_ndk_root> --qairt-sdk-version <version> --android-ndk-version <version> --report runtime/reports/polar_phase34_consumer_preflight/active_wave/gemma_decoder_to_qnn_exporter/gemma_decoder_to_qnn_exporter_report.json",
+  "stop_conditions": [
+    "gemma_e4b_model_safetensors_for_context_export_missing",
+    "gemma_e4b_config_json_for_context_export_missing",
+    "qnn_cpp_model_library_build_failed",
+    "qnn_context_binary_generator_failed",
+    "qnn_context_utility_graph_mismatch",
+    "qnn_net_run_output_contract_mismatch",
+    "qnn_profile_metadata_missing",
+    "phase4_consumed_tensor_sha_mismatch",
+    "adapter_pre_post_sha_unchanged",
+    "raw_payload_entered_git"
+  ],
+  "raw_boundary": {
+    "repo_artifacts_are_metadata_only": true,
+    "raw_model_context_tensor_payloads_outside_git": true,
+    "raw_suffix_scan_count": 0
+  },
+  "research_escalation": "active_parallel_signal_lane_if_qnn_cpp_op_support_or_profile_semantics_change_exporter_tests_or_stop_conditions",
+  "nonclaims": [
+    "no C5 pass",
+    "no learning/model-quality claim",
+    "no Phase3/4 readiness",
+    "no full-Gemma HTP forward claim until proven",
+    "no 100k/1M authority",
+    "no raw payloads in git",
+    "no secrets printed",
+    "no Comet-backed accepted run"
+  ]
+}
