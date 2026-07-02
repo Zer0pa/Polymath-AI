@@ -1,0 +1,129 @@
+{
+  "schema_version": "waveC_full_gemma_consumed_tensor_blocker_v1",
+  "utc": "2026-07-02T14:38:25Z",
+  "gate": "WaveC_Fused_Megakernel_Reorientation",
+  "status": "waveC_full_gemma_consumed_tensor_exact_unresolved_technical_failure",
+  "first_missing_green_field": "full_gemma_htp_forward_tensor_not_yet_consumed_by_real_lm_loss_or_adapter_update",
+  "classification": "existing_source_can_rerun_waveC_relu_consumed_tensor_slice_only",
+  "decision": {
+    "command_ready": false,
+    "pathset_ready_for_custodian": false,
+    "reason": "The frozen WaveC route and accepted C1 run prove QNN/HTP ReLU tensor consumption by the OpenCL bridge. They do not provide a full-Gemma QNN/HTP forward tensor or a real language-model loss/update consuming that tensor."
+  },
+  "research_signal_consumed": {
+    "status": "waveC_runtime_envelope_research_signal_ready",
+    "route_effect": "classification_unchanged",
+    "engineering_translation": [
+      "Keep the hybrid route: QNN/HTP for static forward islands after compile/runtime proof; Adreno/OpenCL remains mainline for mutable adapter update.",
+      "Treat the observed tiny-ReLU 548.272958 ms as host-observed qnn-net-run wall time, not isolated HTP device compute.",
+      "Add QNN profile parsing before scaling: separate qnn-net-run wall, context load, RPC or accelerator execute, and file transfer when available.",
+      "Prefer qnn-profile-viewer/profiling logs plus repeat-inference or throughput mode when practical.",
+      "Replace gemma_hidden2560_relu with the smallest Gemma decoder/forward island preserving [1,16,2560] float32_le output, then prove that tensor is consumed by the existing OpenCL adapter/loss/update bridge."
+    ],
+    "route_falsifiers": [
+      "If QNN profile parsing shows the tiny ReLU graph itself really takes near 548 ms accelerator time, the host-wall interpretation is wrong and the runtime envelope needs redesign.",
+      "If the smallest Gemma island fails QNN compile/runtime, emits unsupported-op fields, changes shape/dtype, cannot be consumed by OpenCL, or leaves adapter pre/post unchanged, fail closed with the exact field."
+    ]
+  },
+  "evidence_consumed": {
+    "frozen_route_commit": "97e80ead23a13214af99358625c2cc9f3e48ef6b",
+    "route_decision_report": {
+      "path": "runtime/reports/orchestration/WAVEC_PHASE34_ARCHITECTURE_DECISION_20260702T135829Z.md",
+      "sha256": "fb0018a728feba7e9a2d3c417a0d3a8f9e69c7631afe01eadb7aff3e88ce4fbe"
+    },
+    "accepted_waveC_run": {
+      "label": "waveC_phase34_C1_20260702T142438Z",
+      "summary_report": "runtime/reports/polar_phase34_consumer_preflight/waveC_phase34_C1_20260702T142438Z/waveC_phase34_vertical_slice_execution_report.json",
+      "summary_report_sha256": "a35a008373c1d79f5e077265af127c053971897c277d4615fd4ced90176b3006",
+      "htp_report_sha256": "6e9ff7e872b2e99ee12c5f3924511546e0a751cc0415b25a51e114d9fc87376c",
+      "phase4_report_sha256": "99615419469db10cfdbb64aacd9392a513756a961fd8221628164e91ad266b19",
+      "metric_readiness_report_sha256": "586c2ea72a9ed534e8a2025a0d3625aeaaf4ce303cef296b086fabd3157261e0",
+      "phase3_tensor_shape": [1, 16, 2560],
+      "phase3_tensor_dtype": "float32_le",
+      "phase3_tensor_sha256": "eb596435b18457cc511cd7bd6a9530d76bc07379dbae2aa8b8285d4059b918ea",
+      "phase3_graph": "gemma_hidden2560_relu",
+      "phase3_context_sha256": "81830ab0c0808843a7528d4c099c852957524c97a3c999c62eaa6e01f250673a",
+      "phase4_consumed_output_causes_update": true,
+      "adapter_delta_norm_l2": 2.18221383802e-7
+    }
+  },
+  "current_runtime_fields_that_fail_the_next_gate": {
+    "phase3_full_gemma_qnn_context_path": null,
+    "phase3_full_gemma_qnn_context_sha256": null,
+    "phase3_full_gemma_qnn_graph_name": null,
+    "phase3_full_gemma_forward_tensor_shape": null,
+    "phase3_full_gemma_forward_tensor_dtype": null,
+    "phase3_full_gemma_forward_tensor_sha256": null,
+    "phase3_full_gemma_forward_backend": null,
+    "phase4_real_lm_loss_or_adapter_update_consumes_full_gemma_tensor": false,
+    "phase4_lm_loss_source": null,
+    "profiling_device_compute_ms": null,
+    "profiling_host_to_device_ms": null,
+    "profiling_device_to_host_ms": null
+  },
+  "why_existing_sources_are_not_enough": [
+    {
+      "path": "scripts/host/run_phase34_adb_pjp1_derived_htp_relu.py",
+      "sha256": "8e00a731ca0b13c75e0832a144d303261f6f60ef24d61a75879cd6931be73db1",
+      "limitation": "Runs QNN graph gemma_hidden2560_relu and records expected ReLU parity; it does not run a Gemma decoder block or language-model objective."
+    },
+    {
+      "path": "native/polar_phase34_consumer_preflight/phase4_bridge_cell_runner.cpp",
+      "sha256": "7df10844eeea7cc10c0f66a24669fedc9656cad39068a60e90c7bf059cb2c0e6",
+      "limitation": "Consumes a [1,16,2560] float32 tensor in an OpenCL rank-16 MSE adapter cell and reports cross-entropy unavailable for the bounded bridge."
+    },
+    {
+      "path": "scripts/host/run_phase34_metric_readiness_report.py",
+      "sha256": "98b854f59856ea4871500e71bf528ce195df9a255fe406c09bf2b802265d424f",
+      "limitation": "Sets forward_cross_entropy, perplexity, answer_token_accuracy, calibration, and probability-distribution metrics to unavailable for the bounded polar MSE bridge."
+    },
+    {
+      "path": "scripts/host/run_phase13_p13f_gemma_htp_context.py",
+      "sha256": "f97743e5f74c5c3a0748288d4ce5ebc275bdcafaa47cfdc75715552d1bc40e37",
+      "limitation": "Builds Gemma-compatible identity/ReLU HTP context artifacts, not a full-Gemma decoder or LM-head-facing QNN graph."
+    }
+  ],
+  "smallest_falsifiable_next_implementation_action": {
+    "owner": "Phase3/4 engineering with active Research signal lane",
+    "action": "Create a bounded full-Gemma QNN/HTP forward producer for one fixed-shape [1,16,2560] float32_le hidden-tensor route, then feed its output into the existing OpenCL adapter-update consumer or a real teacher-forced LM-loss consumer.",
+    "minimum_source_delta": [
+      "Add a host/phone runner that accepts a full-Gemma QNN context path, graph name, fixed input tensor identity, expected output bytes, and report path.",
+      "Add validation that rejects graph names gemma_hidden2560_relu and gemma_hidden2560_identity_add for this gate.",
+      "Add report fields for QNN/HTP context path/SHA, graph name, backend, tensor shape/dtype/bytes/SHA, raw boundary, profiling, consumer input SHA, loss/update identity, and CPU/OpenCL/QNN fallback flags.",
+      "Add QNN profile parsing for qnn-profile-viewer/profiling logs and separate host-observed qnn-net-run wall time from context load, RPC or accelerator execute, and file transfer fields where available.",
+      "Add a test that a report with only the ReLU graph or null cross-entropy cannot satisfy the full-Gemma consumed-tensor gate."
+    ],
+    "stop_if": [
+      "No full-Gemma QNN context or graph identity is available.",
+      "QNN runtime falls back to CPU without explicit fallback status.",
+      "Phase4 consumes metadata instead of the raw tensor path.",
+      "The update is bridge MSE relabeled as LM loss.",
+      "Raw .pjp1, .raw, .f32.bin, model, checkpoint, adapter, or tensor payloads enter git."
+    ]
+  },
+  "required_green_fields_after_next_implementation": [
+    "phase3_full_gemma_qnn_context_sha256",
+    "phase3_full_gemma_qnn_graph_name",
+    "phase3_full_gemma_forward_tensor_sha256",
+    "phase3_full_gemma_backend_equals_qnn_htp",
+    "phase4_consumed_full_gemma_tensor_sha256",
+    "phase4_consumed_output_causes_update",
+    "phase4_loss_source_is_real_lm_loss_or_named_adapter_update",
+    "qnn_profile_parse_attempted",
+    "qnn_net_run_wall_ms",
+    "qnn_accelerator_execute_ms_or_unavailable_with_reason",
+    "raw_suffix_scan_count_zero",
+    "validator_blockers_empty"
+  ],
+  "research_escalation": "active_parallel_signal_lane",
+  "nonclaims": [
+    "no C5 pass",
+    "no heldout scorer execution",
+    "no learning/model-quality claim",
+    "no Phase3/4 readiness",
+    "no 100k/1M authority",
+    "no raw payloads in git",
+    "no secrets printed",
+    "no Comet-backed accepted run"
+  ]
+}
