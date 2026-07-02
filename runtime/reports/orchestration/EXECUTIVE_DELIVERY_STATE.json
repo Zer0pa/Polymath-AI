@@ -1,12 +1,12 @@
 {
-  "active_bottleneck": "producer_command_phone_bridge_timeout_then_termux_command_channel_blocked",
-  "active_edge": "WaveB_C5_after_C1_producer_timeout_termux_command_channel_blocked_before_canonical_scorer",
+  "active_bottleneck": "producer_native_timeout_must_be_less_than_wrapper_timeout_and_termux_command_access_blocked",
+  "active_edge": "WaveB_C5_after_C1_canonical_payload_bounded_retry_ready_waiting_on_termux_command_access_after_producer_timeout",
   "active_watchdog_state": {
-    "active_bottleneck": "producer_command_phone_bridge_timeout_then_termux_command_channel_blocked",
-    "active_edge": "WaveB_C5_after_C1_producer_timeout_termux_command_channel_blocked_before_canonical_scorer",
+    "active_bottleneck": "producer_native_timeout_must_be_less_than_wrapper_timeout_and_termux_command_access_blocked",
+    "active_edge": "WaveB_C5_after_C1_canonical_payload_bounded_retry_ready_waiting_on_termux_command_access_after_producer_timeout",
     "adapter_site_policy_sha256": "f38bd8109bbb77e9e94a5b4b34a238bc0ec0a39e7736870c97defe5aecc93357",
     "additional_missing_runtime_field_after_contract_patch": "decoder_manifest_tensor_role_inventory_missing",
-    "artifact_waiting_on": "Execution reached the canonical C5 prediction payload wrapper with the real native producer. The corrected producer exceeded the configured 1800s timeout; Execution force-stopped Termux to clear the runaway native child. ADB remains live, but the phone is locked at NotificationShade with keyguard active and Termux sshd cannot be restarted. Awaiting user/operator unlock or restored Termux command channel, plus Phase3/4 timeout repair prep or a bounded retry command before canonical scorer can resume.",
+    "artifact_waiting_on": "Phase3/4 returned producer_timeout_retry_command_ready_for_execution with no source change needed: native producer timeout must be 1500s under the 1800s canonical payload wrapper timeout. Awaiting user/operator restoration of the Termux command channel before Execution can run exactly one bounded canonical payload retry.",
     "authorization_needed": true,
     "c5_after_c1_bounded_opencl_probe_command_identity_repair_20260701T171907Z": {
       "execution_routed": false,
@@ -2224,7 +2224,7 @@
     "candidate_adapter_sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f",
     "candidate_train_loss": 15.202827250350284,
     "candidate_train_loss_source": "teacher_forced_answer_token_nll_from_full_decoder_logits",
-    "central_mirror_local_update_status": "updated_after_final_hidden_stream_phone_probe_layer5_shape_blocker",
+    "central_mirror_local_update_status": "producer_timeout_retry_ready_central_mirror_updated_pending_custody",
     "central_state_update_pathset_for_custodian": {
       "artifact_paths": [
         "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json",
@@ -2238,15 +2238,25 @@
       "status": "opencl_runtime_availability_repair_state_pending_custody",
       "user_action_required": false
     },
-    "central_state_update_pending_custody": true,
-    "current_gate": "WaveB_C5_after_C1_producer_timeout_termux_command_channel_blocked_before_canonical_scorer",
+    "central_state_update_pending_custody": {
+      "status": "producer_timeout_retry_ready_central_mirror_custody_pending",
+      "custody_owner_thread": "019f2059-ef2c-7762-ba42-963b58f3af90",
+      "first_missing_green_field": "producer_timeout_retry_ready_central_mirror_freeze_pending",
+      "pathset": [
+        "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json",
+        "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md"
+      ],
+      "prior_blocker_mirror_commit": "ce1d16cc3c6ce55040eae2a20ea73fcccececf02",
+      "raw_prediction_jsonl_included": false
+    },
+    "current_gate": "WaveB_C5_after_C1_canonical_payload_bounded_retry_ready_waiting_on_termux_command_access_after_producer_timeout",
     "current_highest_valid_state": "candidate_and_stable_prediction_payloads_and_finite_train_loss_green_canonical_scorer_not_executed",
     "current_owner": "Phase3/4 Engineer replacement + User/Operator access",
     "custody_commit_latest": "05bb56437b83138547301e69af14ab0fce7d4b1a",
     "custody_status_latest": "c5_opencl_parity_dispatch_committed_pushed",
     "decoder_manifest_sha256": "52fcb53666bb4b06d0118cb825b983afc54624a630f667bbfa5af278640e28f8",
-    "dominant_failure_domain": "producer_timeout_and_termux_command_channel_access_blocked",
-    "drift_deleted_or_pending": "No stale prerequisite regression. Pending drift: central mirror must record the Execution fail-closed blocker and route timeout repair/access recovery.",
+    "dominant_failure_domain": "termux_command_channel_access_blocked_with_bounded_retry_ready",
+    "drift_deleted_or_pending": "Prior central mirror custody is complete at ce1d16cc3c6ce55040eae2a20ea73fcccececf02. No regression to candidate/stable prediction JSONL or finite candidate_train_loss blockers. Pending drift is this retry-ready central mirror freeze and restored Termux command access.",
     "driver_tick_history": [
       {
         "artifact_waiting_on": [
@@ -2487,7 +2497,7 @@
       "next_owner": "execution_orchestrator",
       "status": "committed_pushed"
     },
-    "first_missing_green_field": "producer_command_phone_bridge_timeout_then_termux_command_channel_blocked",
+    "first_missing_green_field": "producer_native_timeout_must_be_less_than_wrapper_timeout_and_termux_command_access_blocked",
     "first_missing_green_field_after_contract_patch": "decoder_manifest_architecture_config_missing",
     "first_missing_green_field_after_custody": "c5_full_decoder_chunked_lm_head_nll_writer_missing",
     "first_missing_green_field_after_export": "phone_c5_runner_rebuild_or_copy_missing",
@@ -2498,7 +2508,7 @@
     "first_unresolved_technical_failure_after_schema_complete_export": "c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land",
     "first_unresolved_technical_failure_after_schema_paths": "full_decoder_logits_generation_not_implemented_after_valid_schema_paths",
     "first_unresolved_technical_failure_after_valid_schema_paths": "c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land",
-    "governing_edge": "WaveB_C5_after_C1_producer_timeout_termux_command_channel_blocked_before_canonical_scorer",
+    "governing_edge": "WaveB_C5_after_C1_canonical_payload_bounded_retry_ready_waiting_on_termux_command_access_after_producer_timeout",
     "hardening_policy": {
       "deleted_or_repaired_drift": [
         "forced_non_packaged_child_exec_default_for_phase1",
@@ -2769,7 +2779,7 @@
         "user_action_required": false
       }
     },
-    "last_concrete_action": "Execution ran the canonical C5 payload wrapper. The first attempt failed before inference because the producer prefix omitted --run-c5-qa-predict. The corrected attempt invoked the real Termux native producer, but the native child exceeded the 1800s producer timeout; Execution cleared the over-timeout processes and reported no final scorer execution and no C5 pass.",
+    "last_concrete_action": "Repo Custodian replacement froze the prior canonical scorer blocker central mirror at commit ce1d16cc3c6ce55040eae2a20ea73fcccececf02. Phase3/4 replacement inspected the producer timeout boundary and returned producer_timeout_retry_command_ready_for_execution: retry with --native-timeout-seconds 1500 and wrapper --timeout-seconds 1800 after Termux access is restored. No source pathset was requested.",
     "last_driver_actions": [
       "Loaded central state and polled existing Phase3/4 and Custodian threads only.",
       "Detected Phase3/4 completed final_hidden_opencl_prompt_weight_shape_repair_pathset_ready_for_custodian.",
@@ -2957,7 +2967,7 @@
     "native_tokenizer_tensor_loader_prereq_custody_commit": "4472e3dee86d88d83031eecfc94b91008e5215e0",
     "native_tokenizer_tensor_loader_prereq_report_sha256": "1e4a087354d8a917ec9fba7747a5e2410d9fb01f36e991c902e00adf8764e422",
     "native_tokenizer_tensor_loader_prereq_status": "native_full_decoder_prereq_pathset_ready_for_custodian",
-    "next_concrete_action": "User/operator restores phone command access by unlocking the device or restarting Termux sshd. In parallel, Phase3/4 inspects the producer timeout and returns the smallest bounded repair, precise blocker, or safe retry command. After access and repair/command are available, Execution reruns the canonical C5 payload wrapper.",
+    "next_concrete_action": "User/operator restores phone command access by unlocking the device or restarting Termux sshd. After access is confirmed, route Execution to run exactly one bounded canonical payload retry using the Phase3/4 command: native timeout 1500s, wrapper timeout 1800s, real native producer, raw predictions outside git. If the producer times out again or the wrapper reaches timeout, stop and return metadata/logs without running scorer.",
     "next_handoff": {
       "authority_metric": "Heldout C5 scoring is blocked until candidate and stable prediction JSONLs plus finite candidate_train_loss exist from real runtime/training objective evidence.",
       "completed_work": [
@@ -3021,9 +3031,7 @@
     },
     "nonclaims": [
       "no C5 pass",
-      "no executed C5 metrics",
-      "no prediction JSONL/logits/loss/confidence/candidate_train_loss unless real runtime emits them",
-      "no bridge-MSE-as-C5-loss",
+      "no heldout scorer execution after the timeout",
       "no learning/model-quality claim",
       "no Phase3/4 readiness",
       "no 100k/1M authority",
@@ -3033,9 +3041,7 @@
     ],
     "nonclaims_preserved": [
       "no C5 pass",
-      "no executed C5 metrics",
-      "no prediction JSONL/logits/loss/confidence/candidate_train_loss unless real runtime emits them",
-      "no bridge-MSE-as-C5-loss",
+      "no heldout scorer execution after the timeout",
       "no learning/model-quality claim",
       "no Phase3/4 readiness",
       "no 100k/1M authority",
@@ -3043,8 +3049,8 @@
       "no secrets printed",
       "no Comet-backed accepted run"
     ],
-    "owner": "Phase3/4 Engineer replacement + User/Operator access",
-    "owner_thread": "019f2059-e6a8-73b1-a9b8-8a2c499e838e",
+    "owner": "User/Operator access + Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c",
+    "owner_thread": "019f138c-fb51-7c53-a41a-ab8eac950d9c",
     "phase2_status_by_phase": {
       "C1": {
         "packets": 5180,
@@ -3266,7 +3272,7 @@
       "phase34": "raw PJP1, HTP raw output, OpenCL tensors, and adapters remain on device/Termux; repair must keep compact JSON only",
       "report_root_scan": "metadata-freeze report root had 179 tracked files and clean forbidden suffix scans; raw payloads not committed"
     },
-    "recursive_improvement_next_step": "Do not wait passively on the scorer. Split the failure: user/operator restores Termux command access; Phase3/4 prepares the timeout repair or bounded retry; Execution resumes only after a concrete command path exists.",
+    "recursive_improvement_next_step": "Do not wait passively or rerun the same 1800s outer-timeout path. Restore Termux access, then run one bounded retry with native cleanup owning the 1500s timeout. If the same timeout/access field repeats after restored access, route the exact logs back to Phase3/4 or escalate as repeated same-field runtime failure.",
     "repo_custodian_per_layer_input_runtime_repair_commit": "58872fdc3dd7ff6efb73321252d58f3447eb0e2b",
     "repo_custodian_post_phone_probe_central_mirror_commit": "5802ea1e25222c068dd3fcb5050c91f20f72357b",
     "repo_custody_state_freeze": {
@@ -3285,8 +3291,8 @@
     "runner_sha256": "31015b6844e20d74cd67f69cbb152fa4ccba4200992d3d60cc458d145afda23c",
     "runner_size_bytes": 554312,
     "secondary_missing_green_field": "c5_full_decoder_final_hidden_stream_missing_for_lm_head_nll_if_phase34_confirms_current_precondition",
-    "status": "canonical_c5_payload_scorer_blocked_before_scorer",
-    "status_classification": "BLOCKER_DEVICE_ACCESS_WITH_PENDING_ACTION_PHASE34_PRODUCER_TIMEOUT_REPAIR",
+    "status": "producer_timeout_retry_command_ready_waiting_on_termux_access",
+    "status_classification": "BLOCKER_DEVICE_ACCESS_WITH_PENDING_ACTION_EXECUTION_BOUNDED_RETRY_READY_AFTER_PHASE34_TIMEOUT_COMMAND",
     "thread_replacements_20260702T011011Z": {
       "archived_stale_phase34_thread": "019f13da-d897-7ba2-8ed1-b959892f5ed4",
       "archived_stale_repo_custodian_thread": "019f1ac2-0f0f-7721-bf46-ad402dbd9050",
@@ -3295,18 +3301,62 @@
       "status": "replacement_threads_mobilized"
     },
     "threads_nudged_this_tick": [
-      "Phase3/4 Engineer replacement 019f2059-e6a8-73b1-a9b8-8a2c499e838e: route producer timeout repair prep after Execution fail-closed handoff.",
-      "Repo Custodian replacement 019f2059-ef2c-7762-ba42-963b58f3af90: route two-file central mirror freeze for this blocker update."
+      "Repo Custodian replacement 019f2059-ef2c-7762-ba42-963b58f3af90: two-file central mirror freeze routed for producer-timeout retry-ready state.",
+      "Phase3/4 replacement 019f2059-e6a8-73b1-a9b8-8a2c499e838e: polled complete retry command; no churn.",
+      "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: parked until user/operator restores Termux command access; no duplicate nudge."
     ],
-    "timestamp_utc": "2026-07-02T02:18:41Z",
-    "updated_at": "2026-07-02T02:18:41Z",
-    "updated_at_utc": "2026-07-02T02:18:41Z",
-    "updated_utc": "2026-07-02T02:18:41Z",
-    "user_action_required": true
+    "timestamp_utc": "2026-07-02T02:28:41Z",
+    "updated_at": "2026-07-02T02:28:41Z",
+    "updated_at_utc": "2026-07-02T02:28:41Z",
+    "updated_utc": "2026-07-02T02:28:41Z",
+    "user_action_required": true,
+    "canonical_scorer_blocker_central_mirror_custody_20260702T022841Z": {
+      "status": "canonical_scorer_blocker_central_mirror_committed_pushed",
+      "custody_thread": "019f2059-ef2c-7762-ba42-963b58f3af90",
+      "commit": "ce1d16cc3c6ce55040eae2a20ea73fcccececf02",
+      "branch": "origin/gemma4-megakernel-native-training",
+      "frozen_pathset": {
+        "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json": "f8c6135088be9870cf018ea6b55b14c8e70094d209d07a749889885b870078f6",
+        "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md": "ac20f0ff45c97e6f71fe830b097c09b9e27c851164181b1130c4032043f3c9cf"
+      },
+      "verification": [
+        "JSON validity passed",
+        "strict ZPP lint passed",
+        "scoped diff hygiene passed",
+        "raw suffix scans returned 0",
+        "value-shaped secret/token scans returned 0",
+        "staged pathset exactly two central files",
+        "local HEAD matches remote branch"
+      ]
+    },
+    "c5_after_c1_canonical_payload_retry_after_timeout_20260702T022841Z": {
+      "status": "producer_timeout_retry_command_ready_for_execution_pending_termux_access",
+      "phase34_thread": "019f2059-e6a8-73b1-a9b8-8a2c499e838e",
+      "phase34_returned_status": "producer_timeout_retry_command_ready_for_execution",
+      "source_change_needed": false,
+      "wrapper_timeout_seconds": 1800,
+      "native_timeout_seconds": 1500,
+      "producer_timeout_rule": "native_timeout_seconds must be less than wrapper_timeout_seconds so the producer owns native cleanup before the outer wrapper timeout fires",
+      "execution_owner_thread_after_access_restore": "019f138c-fb51-7c53-a41a-ab8eac950d9c",
+      "user_action_required": true,
+      "next_action": "Restore Termux command access, then run exactly one bounded canonical prediction payload retry from the Phase3/4 command.",
+      "stop_condition": "If candidate producer times out at 1500s or wrapper reaches 1800s, stop and return metadata/logs without scorer. If candidate succeeds but stable times out, stop and return metadata/logs. Raw prediction JSONLs remain outside git.",
+      "research_escalation": "none",
+      "nonclaims": [
+        "no C5 pass",
+        "no heldout scorer execution after the timeout",
+        "no learning/model-quality claim",
+        "no Phase3/4 readiness",
+        "no 100k/1M authority",
+        "no raw payloads in git",
+        "no secrets printed",
+        "no Comet-backed accepted run"
+      ]
+    }
   },
   "adapter_site_policy_sha256": "f38bd8109bbb77e9e94a5b4b34a238bc0ec0a39e7736870c97defe5aecc93357",
   "additional_missing_runtime_field_after_contract_patch": "decoder_manifest_tensor_role_inventory_missing",
-  "artifact_waiting_on": "Execution reached the canonical C5 prediction payload wrapper with the real native producer. The corrected producer exceeded the configured 1800s timeout; Execution force-stopped Termux to clear the runaway native child. ADB remains live, but the phone is locked at NotificationShade with keyguard active and Termux sshd cannot be restarted. Awaiting user/operator unlock or restored Termux command channel, plus Phase3/4 timeout repair prep or a bounded retry command before canonical scorer can resume.",
+  "artifact_waiting_on": "Phase3/4 returned producer_timeout_retry_command_ready_for_execution with no source change needed: native producer timeout must be 1500s under the 1800s canonical payload wrapper timeout. Awaiting user/operator restoration of the Termux command channel before Execution can run exactly one bounded canonical payload retry.",
   "authorization_needed": true,
   "c5_after_c1_42_layer_orchestration_probe_20260701T213036Z": {
     "blockers": [
@@ -6277,24 +6327,24 @@
   "candidate_adapter_sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f",
   "candidate_train_loss": 15.202827250350284,
   "candidate_train_loss_source": "teacher_forced_answer_token_nll_from_full_decoder_logits",
-  "central_mirror_local_update_status": "canonical_scorer_blocker_central_mirror_updated_pending_custody",
+  "central_mirror_local_update_status": "producer_timeout_retry_ready_central_mirror_updated_pending_custody",
   "central_state_update_pending_custody": {
+    "status": "producer_timeout_retry_ready_central_mirror_custody_pending",
     "custody_owner_thread": "019f2059-ef2c-7762-ba42-963b58f3af90",
-    "first_missing_green_field": "canonical_scorer_blocker_central_mirror_freeze_pending",
+    "first_missing_green_field": "producer_timeout_retry_ready_central_mirror_freeze_pending",
     "pathset": [
       "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json",
       "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md"
     ],
-    "prior_train_loss_metadata_central_commit": "2a91a5256eb9937e483d78e130aedf243b802bf8",
-    "raw_prediction_jsonl_included": false,
-    "status": "canonical_scorer_blocker_central_mirror_custody_pending"
+    "prior_blocker_mirror_commit": "ce1d16cc3c6ce55040eae2a20ea73fcccececf02",
+    "raw_prediction_jsonl_included": false
   },
-  "current_gate": "WaveB_C5_after_C1_producer_timeout_termux_command_channel_blocked_before_canonical_scorer",
+  "current_gate": "WaveB_C5_after_C1_canonical_payload_bounded_retry_ready_waiting_on_termux_command_access_after_producer_timeout",
   "current_highest_valid_state": "candidate_and_stable_prediction_payloads_and_finite_train_loss_green_canonical_scorer_not_executed",
   "current_owner": "Phase3/4 Engineer replacement + User/Operator access",
   "decoder_manifest_sha256": "52fcb53666bb4b06d0118cb825b983afc54624a630f667bbfa5af278640e28f8",
-  "dominant_failure_domain": "producer_timeout_and_termux_command_channel_access_blocked",
-  "drift_deleted_or_pending": "No stale prerequisite regression. Pending drift: central mirror must record the Execution fail-closed blocker and route timeout repair/access recovery.",
+  "dominant_failure_domain": "termux_command_channel_access_blocked_with_bounded_retry_ready",
+  "drift_deleted_or_pending": "Prior central mirror custody is complete at ce1d16cc3c6ce55040eae2a20ea73fcccececf02. No regression to candidate/stable prediction JSONL or finite candidate_train_loss blockers. Pending drift is this retry-ready central mirror freeze and restored Termux command access.",
   "driver_tick_history": [
     {
       "artifact_waiting_on": [
@@ -7628,7 +7678,7 @@
   "export_report_sha256": "4774d31953a58ad6ae1f64e4196405ba820e5be75d36880ac863cfb9dae00b6c",
   "exporter_runtime_fields_freeze_commit": "43cf3c4130dc902fc8fd69183bac1056f0596626",
   "exporter_runtime_fields_freeze_status": "committed_pushed",
-  "first_missing_green_field": "producer_command_phone_bridge_timeout_then_termux_command_channel_blocked",
+  "first_missing_green_field": "producer_native_timeout_must_be_less_than_wrapper_timeout_and_termux_command_access_blocked",
   "first_missing_green_field_after_contract_patch": "decoder_manifest_architecture_config_missing",
   "first_missing_green_field_after_custody": "c5_full_decoder_chunked_lm_head_nll_writer_missing",
   "first_missing_green_field_after_download": "full_decoder_logits_generation_not_implemented",
@@ -7639,7 +7689,7 @@
   "first_missing_green_field_after_runner": "heldout_qa_jsonl_staging_or_c5_predict_probe_pending",
   "first_unresolved_technical_failure_after_schema_complete_export": "c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land",
   "first_unresolved_technical_failure_after_valid_schema_paths": "c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land",
-  "governing_edge": "WaveB_C5_after_C1_producer_timeout_termux_command_channel_blocked_before_canonical_scorer",
+  "governing_edge": "WaveB_C5_after_C1_canonical_payload_bounded_retry_ready_waiting_on_termux_command_access_after_producer_timeout",
   "governing_objective": {
     "nonclaims": [
       "diagnostics_are_not_100k_or_1M_authority_unless_specific_authority_gate_passes",
@@ -8278,7 +8328,7 @@
       "user_action_required": false
     }
   },
-  "last_concrete_action": "Execution ran the canonical C5 payload wrapper. The first attempt failed before inference because the producer prefix omitted --run-c5-qa-predict. The corrected attempt invoked the real Termux native producer, but the native child exceeded the 1800s producer timeout; Execution cleared the over-timeout processes and reported no final scorer execution and no C5 pass.",
+  "last_concrete_action": "Repo Custodian replacement froze the prior canonical scorer blocker central mirror at commit ce1d16cc3c6ce55040eae2a20ea73fcccececf02. Phase3/4 replacement inspected the producer timeout boundary and returned producer_timeout_retry_command_ready_for_execution: retry with --native-timeout-seconds 1500 and wrapper --timeout-seconds 1800 after Termux access is restored. No source pathset was requested.",
   "last_driver_actions": [
     "Loaded central state and polled Execution Orchestrator.",
     "Consumed Execution fail-closed handoff: producer timeout then Termux command channel blocked by keyguard.",
@@ -8290,7 +8340,7 @@
   "native_probe_elapsed_seconds": 104,
   "native_probe_exit_code": 13,
   "native_probe_report_path": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_42_layer_orchestration_20260701T213036Z",
-  "next_concrete_action": "User/operator restores phone command access by unlocking the device or restarting Termux sshd. In parallel, Phase3/4 inspects the producer timeout and returns the smallest bounded repair, precise blocker, or safe retry command. After access and repair/command are available, Execution reruns the canonical C5 payload wrapper.",
+  "next_concrete_action": "User/operator restores phone command access by unlocking the device or restarting Termux sshd. After access is confirmed, route Execution to run exactly one bounded canonical payload retry using the Phase3/4 command: native timeout 1500s, wrapper timeout 1800s, real native producer, raw predictions outside git. If the producer times out again or the wrapper reaches timeout, stop and return metadata/logs without running scorer.",
   "next_handoff": {
     "authority_metric": "C5_after_C1 final report from scripts/host/run_c5_eval.py with executed metrics JSON; no C5 pass until that report status is pass.",
     "completed_work": [
@@ -8351,28 +8401,26 @@
   },
   "nonclaims": [
     "no C5 pass",
-    "no heldout scorer execution yet",
+    "no heldout scorer execution after the timeout",
     "no learning/model-quality claim",
     "no Phase3/4 readiness",
     "no 100k/1M authority",
     "no raw payloads in git",
     "no secrets printed",
-    "no Comet-backed accepted run",
-    "no heldout scorer execution"
+    "no Comet-backed accepted run"
   ],
   "nonclaims_preserved": [
     "no C5 pass",
-    "no heldout scorer execution yet",
+    "no heldout scorer execution after the timeout",
     "no learning/model-quality claim",
     "no Phase3/4 readiness",
     "no 100k/1M authority",
     "no raw payloads in git",
     "no secrets printed",
-    "no Comet-backed accepted run",
-    "no heldout scorer execution"
+    "no Comet-backed accepted run"
   ],
-  "owner": "Phase3/4 Engineer replacement + User/Operator access",
-  "owner_thread": "019f2059-e6a8-73b1-a9b8-8a2c499e838e",
+  "owner": "User/Operator access + Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c",
+  "owner_thread": "019f138c-fb51-7c53-a41a-ab8eac950d9c",
   "phone_exporter_rerun_required_after_commit": "43cf3c4130dc902fc8fd69183bac1056f0596626",
   "prd_watchdog": {
     "active_bottleneck": "forced_vendor_opencl_probe_result_missing",
@@ -8963,7 +9011,7 @@
     "scope": "metadata mirror only",
     "status": "central_state_phone_filesystem_paths_redacted"
   },
-  "recursive_improvement_next_step": "Do not wait passively on the scorer. Split the failure: user/operator restores Termux command access; Phase3/4 prepares the timeout repair or bounded retry; Execution resumes only after a concrete command path exists.",
+  "recursive_improvement_next_step": "Do not wait passively or rerun the same 1800s outer-timeout path. Restore Termux access, then run one bounded retry with native cleanup owning the 1500s timeout. If the same timeout/access field repeats after restored access, route the exact logs back to Phase3/4 or escalate as repeated same-field runtime failure.",
   "required_lane_update_protocol": {
     "block_name": "CENTRAL_STATE_UPDATE",
     "meta_action": "on every heartbeat, read active threads, update this file, route the next concrete edge, and notify Execution only when both keys are green",
@@ -8984,8 +9032,8 @@
   "runner_size_bytes": 554312,
   "schema_version": "polymath_executive_delivery_state_v1",
   "secondary_missing_green_field": "c5_full_decoder_final_hidden_stream_missing_for_lm_head_nll_if_phase34_confirms_current_precondition",
-  "status": "canonical_c5_payload_scorer_blocked_before_scorer",
-  "status_classification": "BLOCKER_DEVICE_ACCESS_WITH_PENDING_ACTION_PHASE34_PRODUCER_TIMEOUT_REPAIR",
+  "status": "producer_timeout_retry_command_ready_waiting_on_termux_access",
+  "status_classification": "BLOCKER_DEVICE_ACCESS_WITH_PENDING_ACTION_EXECUTION_BOUNDED_RETRY_READY_AFTER_PHASE34_TIMEOUT_COMMAND",
   "thread_nudges": [
     "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: routed canonical C5 payload/scorer GO after finite candidate_train_loss 15.202827250350284.",
     "Repo Custodian replacement 019f2059-ef2c-7762-ba42-963b58f3af90: routed central mirror plus train-loss metadata freeze; raw output identity only, no raw payload staging.",
@@ -8997,15 +9045,67 @@
         "019f2059-ef2c-7762-ba42-963b58f3af90"
       ],
       "timestamp_utc": "2026-07-02T02:18:41Z"
+    },
+    {
+      "timestamp_utc": "2026-07-02T02:28:41Z",
+      "reason": "Phase3/4 returned bounded canonical payload retry command and Custodian froze prior blocker mirror",
+      "threads": [
+        "019f2059-e6a8-73b1-a9b8-8a2c499e838e",
+        "019f2059-ef2c-7762-ba42-963b58f3af90"
+      ]
     }
   ],
   "threads_nudged_this_tick": [
-    "Phase3/4 Engineer replacement 019f2059-e6a8-73b1-a9b8-8a2c499e838e: producer timeout repair prep routed.",
-    "Repo Custodian replacement 019f2059-ef2c-7762-ba42-963b58f3af90: two-file central mirror freeze routed."
+    "Repo Custodian replacement 019f2059-ef2c-7762-ba42-963b58f3af90: two-file central mirror freeze routed for producer-timeout retry-ready state.",
+    "Phase3/4 replacement 019f2059-e6a8-73b1-a9b8-8a2c499e838e: polled complete retry command; no churn.",
+    "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: parked until user/operator restores Termux command access; no duplicate nudge."
   ],
-  "timestamp_utc": "2026-07-02T02:18:41Z",
-  "updated_at": "2026-07-02T02:18:41Z",
-  "updated_at_utc": "2026-07-02T02:18:41Z",
-  "updated_utc": "2026-07-02T02:18:41Z",
-  "user_action_required": true
+  "timestamp_utc": "2026-07-02T02:28:41Z",
+  "updated_at": "2026-07-02T02:28:41Z",
+  "updated_at_utc": "2026-07-02T02:28:41Z",
+  "updated_utc": "2026-07-02T02:28:41Z",
+  "user_action_required": true,
+  "canonical_scorer_blocker_central_mirror_custody_20260702T022841Z": {
+    "status": "canonical_scorer_blocker_central_mirror_committed_pushed",
+    "custody_thread": "019f2059-ef2c-7762-ba42-963b58f3af90",
+    "commit": "ce1d16cc3c6ce55040eae2a20ea73fcccececf02",
+    "branch": "origin/gemma4-megakernel-native-training",
+    "frozen_pathset": {
+      "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json": "f8c6135088be9870cf018ea6b55b14c8e70094d209d07a749889885b870078f6",
+      "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md": "ac20f0ff45c97e6f71fe830b097c09b9e27c851164181b1130c4032043f3c9cf"
+    },
+    "verification": [
+      "JSON validity passed",
+      "strict ZPP lint passed",
+      "scoped diff hygiene passed",
+      "raw suffix scans returned 0",
+      "value-shaped secret/token scans returned 0",
+      "staged pathset exactly two central files",
+      "local HEAD matches remote branch"
+    ]
+  },
+  "c5_after_c1_canonical_payload_retry_after_timeout_20260702T022841Z": {
+    "status": "producer_timeout_retry_command_ready_for_execution_pending_termux_access",
+    "phase34_thread": "019f2059-e6a8-73b1-a9b8-8a2c499e838e",
+    "phase34_returned_status": "producer_timeout_retry_command_ready_for_execution",
+    "source_change_needed": false,
+    "wrapper_timeout_seconds": 1800,
+    "native_timeout_seconds": 1500,
+    "producer_timeout_rule": "native_timeout_seconds must be less than wrapper_timeout_seconds so the producer owns native cleanup before the outer wrapper timeout fires",
+    "execution_owner_thread_after_access_restore": "019f138c-fb51-7c53-a41a-ab8eac950d9c",
+    "user_action_required": true,
+    "next_action": "Restore Termux command access, then run exactly one bounded canonical prediction payload retry from the Phase3/4 command.",
+    "stop_condition": "If candidate producer times out at 1500s or wrapper reaches 1800s, stop and return metadata/logs without scorer. If candidate succeeds but stable times out, stop and return metadata/logs. Raw prediction JSONLs remain outside git.",
+    "research_escalation": "none",
+    "nonclaims": [
+      "no C5 pass",
+      "no heldout scorer execution after the timeout",
+      "no learning/model-quality claim",
+      "no Phase3/4 readiness",
+      "no 100k/1M authority",
+      "no raw payloads in git",
+      "no secrets printed",
+      "no Comet-backed accepted run"
+    ]
+  }
 }
