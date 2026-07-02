@@ -1,0 +1,144 @@
+{
+  "blockers": [
+    "model_library_failure:qnn_wrapper_compile_or_link_failure:missing_host_qairt_wrapper_sources"
+  ],
+  "build": {
+    "command": "bash /tmp/wavec_qnn_context_probe_ladder_pathset_20260702T191500Z/scripts/build_probe_ladder.sh",
+    "compiler_path": "/usr/local/share/android-commandlinetools/ndk/28.2.13676358/toolchains/llvm/prebuilt/darwin-x86_64/bin/aarch64-linux-android35-clang++",
+    "compiler_version": [
+      "Android (13624864, +pgo, -bolt, +lto, -mlgo, based on r530567e) clang version 19.0.1 (https://android.googlesource.com/toolchain/llvm-project 97a699bf4812a18fb657c2779f5296a4ab2694d2)",
+      "Target: aarch64-unknown-linux-android35",
+      "Thread model: posix",
+      "InstalledDir: /usr/local/share/android-commandlinetools/ndk/28.2.13676358/toolchains/llvm/prebuilt/darwin-x86_64/bin"
+    ],
+    "failure_detail": "clang++ could not read QAIRT converter wrapper sources from /data/local/tmp/qairt-2.44/share/QNN/converter/jni on the Mac host; build stopped before phone copy/context execution.",
+    "generated_model_libraries": [],
+    "ndk_prebuilt_selected": "darwin-x86_64",
+    "rc": 1,
+    "stderr": {
+      "bytes": 343,
+      "path": "/tmp/wavec_qnn_context_probe_ladder_build_20260702T2005Z.stderr",
+      "sha256": "bffadf044366732bcf9a09e579453ddd254b2d37d77ea2f69f9a8b3997b9a813",
+      "snippet": "clang++: error: no such file or directory: '/data/local/tmp/qairt-2.44/share/QNN/converter/jni/QnnModel.cpp'\nclang++: error: no such file or directory: '/data/local/tmp/qairt-2.44/share/QNN/converter/jni/QnnWrapperUtils.cpp'\nclang++: error: no such file or directory: '/data/local/tmp/qairt-2.44/share/QNN/converter/jni/linux/QnnModelPal.cpp'\n"
+    },
+    "stdout": {
+      "bytes": 0,
+      "path": "/tmp/wavec_qnn_context_probe_ladder_build_20260702T2005Z.stdout",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "snippet": ""
+    }
+  },
+  "first_missing_green_field": "model_library_failure:qnn_wrapper_compile_or_link_failure:missing_host_qairt_wrapper_sources",
+  "full_island": {
+    "executed": false,
+    "gated": true,
+    "reason": "prerequisite probe libraries were not built"
+  },
+  "lane": "execution_orchestrator",
+  "nonclaims": [
+    "no_C5_pass",
+    "no_learning_or_model_quality_claim",
+    "no_Phase3_or_Phase4_readiness_claim",
+    "no_full_Gemma_HTP_forward_claim",
+    "no_100k_or_1M_authority",
+    "no_raw_payloads_in_git",
+    "no_secrets_printed",
+    "no_Comet_backed_accepted_run"
+  ],
+  "package": {
+    "hashes": {
+      "build_android_model_library": {
+        "bytes": 1355,
+        "path": "/tmp/wavec_qnn_context_probe_ladder_pathset_20260702T191500Z/scripts/build_android_model_library.sh",
+        "sha256": "54bdb5ccb788ad599d3c1d72caf5e59a636ed9477bd8e5643585141e7aa4bade"
+      },
+      "build_probe_ladder": {
+        "bytes": 2642,
+        "path": "/tmp/wavec_qnn_context_probe_ladder_pathset_20260702T191500Z/scripts/build_probe_ladder.sh",
+        "sha256": "d76cc162504ba670c776ab0a3aefa9d7fdcc2a59d006672d87fabc8790dfe00d"
+      },
+      "primitive_gelu_tanh_source": {
+        "bytes": 8957,
+        "path": "/tmp/wavec_qnn_context_probe_ladder_pathset_20260702T191500Z/src/probes/primitive_gelu_tanh_lowering_probe.cpp",
+        "sha256": "708978a45a7fab2953d71f3280a833ddbab8f23ea1e4b3f68668276fdb046a75"
+      },
+      "primitive_rmsnorm_source": {
+        "bytes": 6587,
+        "path": "/tmp/wavec_qnn_context_probe_ladder_pathset_20260702T191500Z/src/probes/primitive_rmsnorm_decomposition_probe.cpp",
+        "sha256": "283728e374f6335965e1e77c112a657d9f7f606aa37f5ffde5e722e45ab9170d"
+      },
+      "probe_ladder_manifest": {
+        "bytes": 7317,
+        "path": "/tmp/wavec_qnn_context_probe_ladder_pathset_20260702T191500Z/metadata/probe_ladder_manifest.json",
+        "sha256": "b6c42672aa199df2bc16e267b31d5f14151e89a4bab146d827f97d9cf623733f"
+      },
+      "quantized_tiny_matmul_source": {
+        "bytes": 6016,
+        "path": "/tmp/wavec_qnn_context_probe_ladder_pathset_20260702T191500Z/src/probes/quantized_tiny_matmul_static_weight_probe.cpp",
+        "sha256": "06413dd9490c715b90d2f6866f18ad4edf2017ee80f65662201eb3788905f8bd"
+      },
+      "run_probe_ladder_contexts": {
+        "bytes": 4601,
+        "path": "/tmp/wavec_qnn_context_probe_ladder_pathset_20260702T191500Z/scripts/run_probe_ladder_contexts.sh",
+        "sha256": "0b04396711f441b0c3c08dfe1ff77c5aa9c598fa6b521b96dd85bd53ee1c14e0"
+      }
+    },
+    "root": "/tmp/wavec_qnn_context_probe_ladder_pathset_20260702T191500Z"
+  },
+  "phone_execution": {
+    "attempted": false,
+    "reason": "local_model_library_build_failed_before_phone_copy"
+  },
+  "preflight": {
+    "adb_device": "FY25013101C8",
+    "adb_forward": "tcp:8022 tcp:8022",
+    "android_ndk_root": "/usr/local/share/android-commandlinetools/ndk/28.2.13676358",
+    "qairt_root": "/data/local/tmp/qairt-2.44",
+    "termux_ssh_identity_contents_read": false,
+    "termux_ssh_identity_path": "/Users/prinivenpillay/.ssh/polymath_host"
+  },
+  "raw_boundary": {
+    "package_root_raw_suffix_count": 0,
+    "raw_payloads_entered_git": false,
+    "repo_report_root_raw_suffix_count": 0
+  },
+  "repo": {
+    "commit_match": true,
+    "expected_commit": "f172cf4784c6a9bddb473b52d371f3a98e2250f6",
+    "head": "f172cf4784c6a9bddb473b52d371f3a98e2250f6",
+    "origin_gemma4_megakernel_native_training": "f172cf4784c6a9bddb473b52d371f3a98e2250f6",
+    "pathset": {
+      "custody_report": {
+        "bytes": 24848,
+        "path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/polar_phase34_consumer_preflight/active_wave/qnn_cpp_ffn_residual_generator/qnn_context_probe_ladder_report_20260702T191500Z.json",
+        "sha256": "6d017e3b996a4f8e82302ee72e651f36e66bfc0cfcbe9898e17f90156106e484"
+      },
+      "pathset_manifest": {
+        "bytes": 10214,
+        "path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/orchestration/WAVEC_QNN_CONTEXT_PROBE_LADDER_PATHSET_20260702T191500Z.json",
+        "sha256": "3cb7d5315761b3411b261f16d2af0ea5f966849f323c0471ad488b7a5316133b"
+      },
+      "runner": {
+        "bytes": 72010,
+        "path": "/Users/Zer0pa/Polymat AI/Polymath-AI/scripts/host/run_wavec_qnn_cpp_ffn_residual_generator.py",
+        "sha256": "0a5b7df5db068f432551b3132e8a7710387626e4ca28973757d308f2898bbb90"
+      },
+      "test": {
+        "bytes": 16114,
+        "path": "/Users/Zer0pa/Polymat AI/Polymath-AI/tests/test_wavec_qnn_cpp_ffn_residual_generator.py",
+        "sha256": "81009f287d66bbbbc80cfe0f1ecdf51081a4b56972ede4fd3bb123c1d50f3b1a"
+      }
+    }
+  },
+  "run_id": "20260702T2005Z",
+  "schema_version": "waveC_qnn_context_probe_ladder_execution_report_v1",
+  "secret_scan": {
+    "github_tokens": 0,
+    "hf_tokens": 0,
+    "openai_keys": 0,
+    "private_key_block": 0
+  },
+  "stages_attempted": [],
+  "status": "blocked",
+  "status_classification": "model_library_failure"
+}

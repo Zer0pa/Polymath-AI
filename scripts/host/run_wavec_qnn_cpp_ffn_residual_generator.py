@@ -255,6 +255,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--model-config-spec", type=Path, required=False)
     parser.add_argument("--work-root", type=Path, required=False)
     parser.add_argument("--qairt-root", required=False, default="/data/local/tmp/qairt-2.44")
+    parser.add_argument("--host-qairt-root", required=False, default="")
     parser.add_argument("--android-ndk-root", required=False, default="")
     parser.add_argument("--phone-work-root", default="/data/local/tmp/polymath_gemma4_gate/wavec/full_gemma_qnn_export")
     parser.add_argument("--phone-ssh-host", default="127.0.0.1")
@@ -400,6 +401,13 @@ def generate_package(args: argparse.Namespace) -> dict[str, Any]:
             "context_script": generated.get("context_script", {}).get("path"),
             "model_library_name": MODEL_LIBRARY_NAME,
             "context_name": CONTEXT_NAME,
+            "qairt_wrapper_source_route": {
+                "host_qairt_root": args.host_qairt_root,
+                "phone_qairt_root": args.qairt_root,
+                "staged_qairt_root": str(args.work_root / "qairt_host") if args.work_root else "",
+                "stage_from_phone_when_host_missing": True,
+                "failure_field": "model_library_failure:missing_host_qairt_wrapper_sources",
+            },
             "next_validators": [
                 "scripts/host/run_wavec_full_gemma_qnn_forward.py",
                 "scripts/host/run_wavec_full_gemma_consumed_tensor_report.py",
@@ -1305,14 +1313,65 @@ ModelError_t QnnModel_freeGraphsInfo(GraphInfoPtr_t** graphs, uint32_t numGraphs
 '''
 
 
+def render_qairt_host_resolution_script(args: argparse.Namespace, work_root: Path) -> str:
+    phone_qairt = args.qairt_root.rstrip("/")
+    host_qairt = args.host_qairt_root.rstrip()
+    staged_qairt = str(work_root / "qairt_host")
+    host_qairt_default = shlex.quote(host_qairt) if host_qairt else ""
+    ssh = shell_array(["ssh", *ssh_options(args), ssh_target(args)])
+    scp = shell_array(["scp", *scp_options(args)])
+    remote_prefix = f"{ssh_target(args)}:{phone_qairt}"
+    return f"""
+PHONE_Q={shlex.quote(phone_qairt)}
+HOST_Q=${{QAIRT_HOST_ROOT:-{host_qairt_default}}}
+STAGED_Q={shlex.quote(staged_qairt)}
+SSH_CMD={ssh}
+SCP_CMD={scp}
+SSH_TARGET={shlex.quote(ssh_target(args))}
+
+has_qairt_wrappers() {{
+  local root="$1"
+  [ -f "$root/share/QNN/converter/jni/QnnModel.cpp" ] &&
+    [ -f "$root/share/QNN/converter/jni/QnnWrapperUtils.cpp" ] &&
+    [ -f "$root/share/QNN/converter/jni/linux/QnnModelPal.cpp" ] &&
+    [ -d "$root/include/QNN" ]
+}}
+
+stage_qairt_wrappers_from_phone() {{
+  mkdir -p "$STAGED_Q/include" "$STAGED_Q/share/QNN/converter"
+  "${{SCP_CMD[@]}}" -r {shlex.quote(remote_prefix + "/include/QNN")} "$STAGED_Q/include/" || return 1
+  "${{SCP_CMD[@]}}" -r {shlex.quote(remote_prefix + "/share/QNN/converter/jni")} "$STAGED_Q/share/QNN/converter/" || return 1
+}}
+
+if [ -n "$HOST_Q" ] && has_qairt_wrappers "$HOST_Q"; then
+  Q="$HOST_Q"
+else
+  if ! has_qairt_wrappers "$STAGED_Q"; then
+    stage_qairt_wrappers_from_phone || {{
+      echo "model_library_failure:missing_host_qairt_wrapper_sources:$PHONE_Q" >&2
+      exit 2
+    }}
+  fi
+  if ! has_qairt_wrappers "$STAGED_Q"; then
+    echo "model_library_failure:missing_host_qairt_wrapper_sources:$STAGED_Q" >&2
+    exit 2
+  fi
+  Q="$STAGED_Q"
+fi
+"""
+
+
+def shell_array(items: list[str]) -> str:
+    return "(" + " ".join(shlex.quote(str(item)) for item in items) + ")"
+
+
 def render_build_script(args: argparse.Namespace, work_root: Path) -> str:
-    qairt = args.qairt_root.rstrip("/")
     ndk = args.android_ndk_root.rstrip("/") or "${ANDROID_NDK_ROOT:?ANDROID_NDK_ROOT required}"
     return f"""#!/usr/bin/env bash
 set -euo pipefail
 WORK_ROOT={shlex.quote(str(work_root))}
-Q={shlex.quote(qairt)}
 NDK={shlex.quote(ndk)}
+{render_qairt_host_resolution_script(args, work_root)}
 if [ -n "${{ANDROID_NDK_PREBUILT:-}}" ]; then
   NDK_PREBUILT="$ANDROID_NDK_PREBUILT"
 elif [ "$(uname -s)" = "Darwin" ]; then
@@ -1341,7 +1400,6 @@ wc -c "$WORK_ROOT/out/{MODEL_LIBRARY_NAME}" > "$WORK_ROOT/out/model_library.byte
 
 
 def render_probe_ladder_build_script(args: argparse.Namespace, work_root: Path) -> str:
-    qairt = args.qairt_root.rstrip("/")
     ndk = args.android_ndk_root.rstrip("/") or "${ANDROID_NDK_ROOT:?ANDROID_NDK_ROOT required}"
     probe_lines = []
     for probe in PROBE_LADDER_SOURCES:
@@ -1358,8 +1416,8 @@ def render_probe_ladder_build_script(args: argparse.Namespace, work_root: Path) 
     return f"""#!/usr/bin/env bash
 set -euo pipefail
 WORK_ROOT={shlex.quote(str(work_root))}
-Q={shlex.quote(qairt)}
 NDK={shlex.quote(ndk)}
+{render_qairt_host_resolution_script(args, work_root)}
 if [ -n "${{ANDROID_NDK_PREBUILT:-}}" ]; then
   NDK_PREBUILT="$ANDROID_NDK_PREBUILT"
 elif [ "$(uname -s)" = "Darwin" ]; then

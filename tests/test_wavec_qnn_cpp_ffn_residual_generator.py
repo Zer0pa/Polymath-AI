@@ -347,6 +347,11 @@ def test_generator_writes_fail_closed_source_package_outside_git(tmp_path: Path)
     ]["dtype_layout_stop_conditions"]
     assert "qnn_context_opDataSize" in payload["execution_contract"]["required_qnn_evidence_fields"]
     assert "qnn_execute_profile_fields" in payload["execution_contract"]["required_qnn_evidence_fields"]
+    assert payload["execution_contract"]["qairt_wrapper_source_route"]["phone_qairt_root"] == "/data/local/tmp/qairt-2.44"
+    assert payload["execution_contract"]["qairt_wrapper_source_route"]["stage_from_phone_when_host_missing"] is True
+    assert payload["execution_contract"]["qairt_wrapper_source_route"]["failure_field"] == (
+        "model_library_failure:missing_host_qairt_wrapper_sources"
+    )
     assert (work_root / "scripts" / "build_android_model_library.sh").is_file()
     assert (work_root / "scripts" / "generate_phone_context.sh").is_file()
     assert (work_root / "src" / "probes" / "primitive_rmsnorm_decomposition_probe.cpp").is_file()
@@ -380,10 +385,21 @@ def test_generator_writes_fail_closed_source_package_outside_git(tmp_path: Path)
 
     build_script = (work_root / "scripts" / "build_android_model_library.sh").read_text(encoding="utf-8")
     assert "ANDROID_NDK_PREBUILT" in build_script
+    assert "QAIRT_HOST_ROOT" in build_script
+    assert "STAGED_Q=" in build_script
+    assert "stage_qairt_wrappers_from_phone" in build_script
+    assert "model_library_failure:missing_host_qairt_wrapper_sources" in build_script
+    assert "QnnModel.cpp" in build_script
+    assert "QnnWrapperUtils.cpp" in build_script
+    assert "QnnModelPal.cpp" in build_script
     assert 'NDK_PREBUILT="darwin-x86_64"' in build_script
     assert 'NDK_PREBUILT="linux-x86_64"' in build_script
     assert "model_library_failure:ndk_prebuilt_compiler_missing" in build_script
     assert "prebuilt/linux-x86_64/bin/aarch64-linux-android35-clang++" not in build_script
+    probe_build_script = (work_root / "scripts" / "build_probe_ladder.sh").read_text(encoding="utf-8")
+    assert "QAIRT_HOST_ROOT" in probe_build_script
+    assert "stage_qairt_wrappers_from_phone" in probe_build_script
+    assert "model_library_failure:missing_host_qairt_wrapper_sources" in probe_build_script
 
     probe_manifest = json.loads((work_root / "metadata" / "probe_ladder_manifest.json").read_text(encoding="utf-8"))
     assert probe_manifest["stage_order"] == [

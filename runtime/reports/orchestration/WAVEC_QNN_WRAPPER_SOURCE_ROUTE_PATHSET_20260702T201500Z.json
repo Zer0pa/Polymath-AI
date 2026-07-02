@@ -1,0 +1,143 @@
+{
+  "status": "waveC_qnn_wrapper_source_route_pathset_ready_for_pipeline",
+  "created_utc": "2026-07-02T20:15:00Z",
+  "governing_gate": "WaveC_full_gemma_qnn_htp_forward_consumed_tensor_route",
+  "consumed_execution_gap": {
+    "status": "waveC_qnn_context_probe_ladder_execution_report_validated_model_library_build_route_gap",
+    "report": "runtime/reports/polar_phase34_consumer_preflight/active_wave/qnn_cpp_ffn_residual_generator/qnn_context_probe_ladder_execution_20260702T2005Z.json",
+    "sha256": "ad4dbfe0ddbc91102044eefe1a2960e85fee17c5ee6d37d04fac672fdb26123f",
+    "first_missing_green_field": "model_library_failure:qnn_wrapper_compile_or_link_failure:missing_host_qairt_wrapper_sources"
+  },
+  "source_pathset": [
+    {
+      "path": "scripts/host/run_wavec_qnn_cpp_ffn_residual_generator.py",
+      "sha256": "503ffe7f12ef416aa5a4e3037eef8b1d8f203fda6ce073d8af60ab6d612b6704",
+      "purpose": "Repairs QNN model-library build route by separating phone QAIRT runtime root from host/staged QAIRT wrapper source root and generating fail-closed staging logic."
+    },
+    {
+      "path": "tests/test_wavec_qnn_cpp_ffn_residual_generator.py",
+      "sha256": "d81119c3b7586fbc16387c5c761765058603b3ceb7a3aecd04382f38caac8fa5",
+      "purpose": "Adds host-only falsifiers for missing QAIRT wrapper route metadata, missing staging script logic, and missing model_library_failure classification for wrapper source absence."
+    },
+    {
+      "path": "runtime/reports/polar_phase34_consumer_preflight/active_wave/qnn_cpp_ffn_residual_generator/qnn_wrapper_source_route_report_20260702T201500Z.json",
+      "sha256": "935ee0e34885c156e86ea4fe567c76a5ea7d285087be70782fc2fbbe6c4eca8f",
+      "purpose": "Metadata-only generator report for the repaired QAIRT wrapper source route. No raw model, tensor, context, library, checkpoint, adapter, or generated QNN payloads."
+    }
+  ],
+  "outside_git_generated_metadata": [
+    {
+      "path": "/tmp/wavec_qnn_wrapper_source_route_pathset_20260702T201500Z/metadata/probe_ladder_manifest.json",
+      "sha256": "b6c42672aa199df2bc16e267b31d5f14151e89a4bab146d827f97d9cf623733f"
+    },
+    {
+      "path": "/tmp/wavec_qnn_wrapper_source_route_pathset_20260702T201500Z/scripts/build_android_model_library.sh",
+      "sha256": "4a86efaebad8d76455bbe9a4c18d0b0c4165a2f9c06dbabd4222f442014eac08"
+    },
+    {
+      "path": "/tmp/wavec_qnn_wrapper_source_route_pathset_20260702T201500Z/scripts/build_probe_ladder.sh",
+      "sha256": "e0671ac7e1ad07bc31469f241cbe694740d407ad7cddc239bbd075694b6f2aed"
+    },
+    {
+      "path": "/tmp/wavec_qnn_wrapper_source_route_pathset_20260702T201500Z/scripts/run_probe_ladder_contexts.sh",
+      "sha256": "0b04396711f441b0c3c08dfe1ff77c5aa9c598fa6b521b96dd85bd53ee1c14e0"
+    },
+    {
+      "path": "/tmp/wavec_qnn_wrapper_source_route_pathset_20260702T201500Z/src/probes/primitive_rmsnorm_decomposition_probe.cpp",
+      "sha256": "283728e374f6335965e1e77c112a657d9f7f606aa37f5ffde5e722e45ab9170d"
+    },
+    {
+      "path": "/tmp/wavec_qnn_wrapper_source_route_pathset_20260702T201500Z/src/probes/primitive_gelu_tanh_lowering_probe.cpp",
+      "sha256": "708978a45a7fab2953d71f3280a833ddbab8f23ea1e4b3f68668276fdb046a75"
+    },
+    {
+      "path": "/tmp/wavec_qnn_wrapper_source_route_pathset_20260702T201500Z/src/probes/quantized_tiny_matmul_static_weight_probe.cpp",
+      "sha256": "06413dd9490c715b90d2f6866f18ad4edf2017ee80f65662201eb3788905f8bd"
+    },
+    {
+      "path": "/tmp/wavec_qnn_wrapper_source_route_pathset_20260702T201500Z/src/gemma4_e4b_ffn_residual_layer0_qnn_model.cpp",
+      "sha256": "8ee9a189cd2f9ccefdb878d8633c7bb0c5287e3dae9116030dfef6102598aadd"
+    }
+  ],
+  "qairt_wrapper_source_route_contract": {
+    "phone_qairt_root": "/data/local/tmp/qairt-2.44",
+    "host_qairt_root_arg": "--host-qairt-root",
+    "host_qairt_root_env_override": "QAIRT_HOST_ROOT",
+    "outside_git_staged_root": "/tmp/wavec_qnn_wrapper_source_route_pathset_20260702T201500Z/qairt_host",
+    "stage_from_phone_when_host_missing": true,
+    "staged_paths": [
+      "include/QNN",
+      "share/QNN/converter/jni"
+    ],
+    "required_wrapper_sources": [
+      "share/QNN/converter/jni/QnnModel.cpp",
+      "share/QNN/converter/jni/QnnWrapperUtils.cpp",
+      "share/QNN/converter/jni/linux/QnnModelPal.cpp"
+    ],
+    "failure_field_if_unavailable": "model_library_failure:missing_host_qairt_wrapper_sources",
+    "secret_boundary": "SSH identity path may be passed to generated scp commands; private key contents are never read or printed."
+  },
+  "local_verification": [
+    {
+      "command": "python3.11 -m py_compile scripts/host/run_wavec_qnn_cpp_ffn_residual_generator.py tests/test_wavec_qnn_cpp_ffn_residual_generator.py",
+      "result": "pass"
+    },
+    {
+      "command": "python3.11 scripts/host/run_wavec_qnn_cpp_ffn_residual_generator.py --print-schema",
+      "result": "pass"
+    },
+    {
+      "command": "python3.11 -m pytest tests/test_wavec_qnn_cpp_ffn_residual_generator.py tests/test_wavec_gemma_qnn_exporter.py tests/test_wavec_full_gemma_qnn.py",
+      "result": "31 passed in 2.50s"
+    },
+    {
+      "command": "generator plan-only run to /tmp/wavec_qnn_wrapper_source_route_pathset_20260702T201500Z",
+      "result": "pass; report status pass and first_missing_green_field none"
+    },
+    {
+      "command": "scoped raw suffix scan over generated pathset and repo reports",
+      "result": "0"
+    }
+  ],
+  "pipeline_receiving_checklist": [
+    "Source/test/report SHAs match this packet.",
+    "Generated build_android_model_library.sh and build_probe_ladder.sh no longer treat /data/local/tmp/qairt-2.44 as a macOS-local QAIRT source root.",
+    "Generated build scripts accept QAIRT_HOST_ROOT or --host-qairt-root as the host-readable wrapper source root.",
+    "Generated build scripts stage include/QNN and share/QNN/converter/jni from the phone QAIRT root into the outside-git work root when host wrapper sources are absent.",
+    "Generated build scripts fail closed with model_library_failure:missing_host_qairt_wrapper_sources if required wrapper sources remain unavailable.",
+    "Host-aware NDK prebuilt selection remains present and still fails closed with model_library_failure:ndk_prebuilt_compiler_missing.",
+    "Existing probe ladder ordering, full-island gating, primitive RMSNorm/GELU guards, quantized tiny MatMul metadata, and raw-boundary rules remain intact.",
+    "No raw model, selected weight blob, model library, QNN context, tensor output, profile, checkpoint, adapter, or generated QNN payload enters git."
+  ],
+  "post_custody_execution_command_shape": "python3.11 scripts/host/run_wavec_qnn_cpp_ffn_residual_generator.py --model-source-location phone_preverified --model-safetensors <phone_model_path> --model-safetensors-sha256 43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651 --model-safetensors-bytes 15992595884 --model-config-spec integrations/gemma4-snapdragon-megakernel/model_spec/gemma4_e4b.json --work-root <outside_git_work_root> --qairt-root /data/local/tmp/qairt-2.44 --host-qairt-root <optional_host_readable_qairt_root_or_empty> --android-ndk-root /usr/local/share/android-commandlinetools/ndk/28.2.13676358 --phone-work-root /data/data/com.termux/files/home/polymath_gemma4_gate/wavec/full_gemma_qnn_export --phone-ssh-host 127.0.0.1 --phone-ssh-port 8022 --phone-ssh-user u0_a536 --phone-ssh-identity /Users/prinivenpillay/.ssh/polymath_host --materialize-weight-blobs --report <metadata_only_report_path>; then build_probe_ladder.sh; then push model libraries to phone work root and run_probe_ladder_contexts.sh",
+  "stop_conditions": [
+    "model_library_failure:missing_host_qairt_wrapper_sources",
+    "model_library_failure:ndk_prebuilt_compiler_missing",
+    "model_library_failure:qnn_wrapper_compile_or_link_failure",
+    "quantization_or_layout_failure:qnn_primitive_rmsnorm_axis_or_param_contract_missing",
+    "quantization_or_layout_failure:qnn_gelu_tanh_primitive_param_contract_missing",
+    "quantization_or_layout_failure:qnn_quantized_matmul_scale_zero_point_orientation_missing",
+    "context_generation_failure:qnn_context_binary_generator_rejects_probe_graph",
+    "htp_runtime_failure:qnn_net_run_output_or_profile_missing",
+    "consumed_tensor_failure:phase4_exact_tensor_consumption_missing_or_adapter_unchanged",
+    "raw_payload_entered_git"
+  ],
+  "raw_boundary_proof": {
+    "repo_receives_source_tests_metadata_only": true,
+    "scoped_raw_suffix_scan_count": 0,
+    "raw_payloads_in_git": false
+  },
+  "first_missing_green_field": "none",
+  "next_action": "Pipeline validates the repaired QAIRT wrapper source route; if green, route to Repo Custodian for freeze.",
+  "research_escalation": "active_parallel_signal_lane_if_qnn_wrapper_source_packaging_location_or_qnn_cpp_model_library_semantics_require_route_change",
+  "nonclaims": [
+    "no C5 pass",
+    "no learning/model-quality claim",
+    "no Phase3/4 readiness",
+    "no full-Gemma HTP forward claim until QNN context/net-run/profile/Phase4 consumption prove it",
+    "no 100k/1M authority",
+    "no raw payloads in git",
+    "no secrets printed",
+    "no Comet-backed accepted run"
+  ]
+}
