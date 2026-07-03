@@ -1,0 +1,300 @@
+{
+  "schema": "heterogeneous_closure_cell_ffn_residual_micro_island_vulkan_execution.v1",
+  "run_id": "heterogeneous_closure_cell_ffn_residual_micro_island_vulkan_execution_20260703T004500Z",
+  "created_utc": "2026-07-03T00:45:00Z",
+  "execution_completed_utc": "2026-07-03T00:56:20Z",
+  "status": "ffn_residual_micro_island_qnn_to_vulkan_adapter_update_green_pending_pipeline_validation",
+  "package_class": "next_larger_gemma_faithful_ffn_residual_micro_island_qnn_to_vulkan_adapter_update_boundary",
+  "named_graph_slice": "gemma4_e4b_ffn_residual_micro_island_seq2_hidden4_intermediate8",
+  "first_missing_green_field": "pipeline_receiving_validation_for_next_larger_gemma_faithful_qnn_to_vulkan_island_authority_chain",
+  "classification": {
+    "material_progression": "composed RMSNorm/contraction, GELU-tanh, MatMul, gated multiply, down MatMul, and residual-add families into one micro-island",
+    "qnn_context_net_run_profile": "green",
+    "fresh_qnn_output_authority": "green",
+    "app_handoff": "green",
+    "vulkan_loader_device_queue": "green",
+    "vulkan_storage_pipeline_dispatch_fence": "green",
+    "gpu_consumed_sha_equals_fresh_qnn_output_sha": true,
+    "adapter_delta": "green",
+    "finite_scalar_loss": "green",
+    "finite_update_norm": "green",
+    "physics_data_movement_ledger": "present",
+    "closure_claim": "not_broad_final; pending_pipeline_receiving_validation"
+  },
+  "frozen_input_evidence_only": {
+    "rmsnorm_contraction_chain": {
+      "report_sha256": "b8820b5f0982434ee6de2eef7ec94a135b05e51e13d4864a88148f16995a1d56",
+      "commit": "ad982294b85d584335fb44c70911bb91c67790dc"
+    },
+    "gelu_tanh_chain": {
+      "report_sha256": "349f7696280348fc47cb786c82e698c66da79e31bb48c8eca205f3084d17767c",
+      "commit": "3a10af1081169d192a573cbb7c034b85eaaba66e",
+      "caveat": "shared handoff path label discrepancy only; SHA/bytes/app-specific handoff remained GELU output"
+    },
+    "tiny_quantized_matmul_u8_chain": {
+      "report_sha256": "a3cef2956ff3221c2fe12b8bcbc2083826f5a4ce26ac4eab92174fe694640495",
+      "commit": "9fd383bbcf57e1b4daeb6b91c1e1510929a31bd8",
+      "blob": "d3c25989a29bd1e71749be6a085f05c7e2ede125"
+    }
+  },
+  "command_package": {
+    "root": "/private/tmp/heterogeneous_closure_cell_ffn_residual_micro_island_vulkan_package_20260703T004500Z",
+    "report": {
+      "path": "/private/tmp/heterogeneous_closure_cell_ffn_residual_micro_island_vulkan_package_20260703T004500Z/report.json",
+      "sha256": "5d29450400b31ae880ffd909f02c6228a48e83ce34632be59e7a93723c6d20ff"
+    },
+    "qnn_source": {
+      "path": "/private/tmp/heterogeneous_closure_cell_ffn_residual_micro_island_vulkan_package_20260703T004500Z/qnn/src/probes/ffn_residual_micro_island_probe.cpp",
+      "sha256": "65a283f35321cd087356eb73b710fb12ea299578f28110c98ac85358955acd6e"
+    },
+    "qnn_model_library": {
+      "path": "/private/tmp/heterogeneous_closure_cell_ffn_residual_micro_island_vulkan_package_20260703T004500Z/qnn/out/libgemma4_ffn_residual_micro_island.so",
+      "sha256": "b4f0dd7d69839461e7142643bf99f87a301af349ed9c4efb4a991646c5a0130e"
+    },
+    "vulkan_native_source": {
+      "path": "/private/tmp/heterogeneous_closure_cell_ffn_residual_micro_island_vulkan_package_20260703T004500Z/vulkan_app/android/app/src/main/cpp/vulkan_visibility_jni.cpp",
+      "sha256": "6e9e89cacddd7b88d407866837f439fbefdccd151cf2c56863f84c527e1ae4a1"
+    },
+    "vulkan_java_source": {
+      "path": "/private/tmp/heterogeneous_closure_cell_ffn_residual_micro_island_vulkan_package_20260703T004500Z/vulkan_app/android/app/src/main/java/ai/zer0pa/polymath/vulkanprobe/ProbeActivity.java",
+      "sha256": "9a27f6c6758733d0866473698ad0e1d9561e200f9a894f87dffdf1e8f5a71b54"
+    },
+    "vulkan_apk": {
+      "path": "/private/tmp/heterogeneous_closure_cell_ffn_residual_micro_island_vulkan_package_20260703T004500Z/vulkan_app/out/polymath-vulkan-qnn-consumer-debug.apk",
+      "sha256": "d6bc792648c8dfac5af3f4334f65b2ee235cf1a1f86733aa024579b7ad4de4f9"
+    },
+    "phone_qnn_script": {
+      "path": "/private/tmp/heterogeneous_closure_cell_ffn_residual_micro_island_vulkan_package_20260703T004500Z/scripts/phone_run_ffn_micro_island_context_net_run.sh",
+      "sha256": "add28ff8912e0f6fe4e33af11940b40163db0f6e6ccbd0e27c28c0c1c24fd73e"
+    },
+    "host_run_script": {
+      "path": "/private/tmp/heterogeneous_closure_cell_ffn_residual_micro_island_vulkan_package_20260703T004500Z/scripts/run_ffn_micro_island_qnn_to_vulkan_consumer.sh",
+      "sha256": "be71fe3990803d14b084de2f2b347a2f9852468e9861767a05054d0104cc95b6"
+    },
+    "local_build_script": {
+      "path": "/private/tmp/heterogeneous_closure_cell_ffn_residual_micro_island_vulkan_package_20260703T004500Z/qnn/scripts/build_ffn_micro_island.sh",
+      "sha256": "e08111e174c850bc0968787db5447b924908bcfe23c18ca149b04d7e8fdb0a21"
+    },
+    "artifact_sha_validation_errors": []
+  },
+  "qnn_slice_contract": {
+    "stage": "ffn_residual_micro_island_probe",
+    "graph": "gemma4_e4b_ffn_residual_micro_island_seq2_hidden4_intermediate8",
+    "context_name": "gemma4_ffn_residual_micro_island.qnn.bin",
+    "input_shape": [1, 2, 4],
+    "output_shape": [1, 2, 4],
+    "dtype": "float32",
+    "expected_output_bytes": 32,
+    "topology": "RMSNorm contraction by square + MatMul hidden-axis sum + mean scale + epsilon + Rsqrt + RMS weight multiply; gate/up MatMul; tanh-GELU lowering; gated multiply; down MatMul; residual add",
+    "ops_present": [
+      "QNN_OP_ELEMENT_WISE_MULTIPLY",
+      "QNN_OP_MAT_MUL",
+      "QNN_OP_ELEMENT_WISE_ADD",
+      "QNN_OP_ELEMENT_WISE_RSQRT",
+      "QNN_OP_TANH"
+    ],
+    "ops_intentionally_absent": [
+      "QNN_OP_RMS_NORM",
+      "reduction ops",
+      "QNN_OP_FULLY_CONNECTED"
+    ],
+    "weight_policy": "deterministic source constants for contract validation; not learned model weights"
+  },
+  "execution": {
+    "official_attempt_count": 1,
+    "command": "PHONE_SSH_IDENTITY=/Users/prinivenpillay/.ssh/polymath_host ADB=adb /private/tmp/heterogeneous_closure_cell_ffn_residual_micro_island_vulkan_package_20260703T004500Z/scripts/run_ffn_micro_island_qnn_to_vulkan_consumer.sh",
+    "rc": 0,
+    "stdout": {
+      "path": "/private/tmp/heterogeneous_closure_cell_ffn_residual_micro_island_vulkan_package_20260703T004500Z/ffn_micro_island_vulkan_consumer_run_stdout.log",
+      "sha256": "f6848ec9eff3cc3469f0f98148e515946847b693f0a50a569e9d0f6ba004cd2a",
+      "bytes": 54,
+      "snippet": "{ \"ffn_micro_island_vulkan_consumer_blockers\": [] }"
+    },
+    "stderr": {
+      "path": "/private/tmp/heterogeneous_closure_cell_ffn_residual_micro_island_vulkan_package_20260703T004500Z/ffn_micro_island_vulkan_consumer_run_stderr.log",
+      "sha256": "6ada113ff4533713020db2203e1a6396d0b7d92ca5b1e34983410c0aace11f68",
+      "bytes": 211,
+      "snippet": "/sdcard/Android/data/ai.zer0pa.polymath.vulkanprobe/files/reports/vulkan_ffn_micro_island_consumer_20260703T004500Z/app_vulkan_qnn_consumer_report.json: 1 file pulled"
+    },
+    "script_post_report_blockers": []
+  },
+  "qnn_authority_report": {
+    "local_path": "/private/tmp/heterogeneous_closure_cell_ffn_residual_micro_island_vulkan_package_20260703T004500Z/reports/ffn_micro_island_qnn_authority.json",
+    "sha256": "0c63a8cd5a81e7d4ecb6feea56e65f9ae759d9c2c74a88d3bd8f4225230c06be",
+    "bytes": 1720,
+    "schema": "heterogeneous_closure_cell_ffn_micro_island_qnn_authority.v1",
+    "stage": "ffn_residual_micro_island_probe",
+    "graph": "gemma4_e4b_ffn_residual_micro_island_seq2_hidden4_intermediate8",
+    "topology": "rmsnorm_contraction_gate_up_matmul_gelu_tanh_gated_multiply_down_matmul_residual_add",
+    "context_path": "/data/data/com.termux/files/home/polymath_gemma4_gate/wavec/full_gemma_qnn_export/probe_ladder/ffn_residual_micro_island_probe/gemma4_ffn_residual_micro_island.qnn.bin",
+    "context_sha256": "6989b422d9a05b8e8e81b81cf3bdf2c442de55dc2385a26c8f709a9c95dcae4e",
+    "context_bytes": 61440,
+    "output_path": "/data/data/com.termux/files/home/polymath_gemma4_gate/wavec/full_gemma_qnn_export/probe_ladder/ffn_residual_micro_island_probe/run/Result_0/hidden_output.raw",
+    "output_sha256": "b1e6a3e176ee0f0d9f22b8ff384d57e4c3e7ec2653faabd687241c6931f5a197",
+    "output_bytes": 32,
+    "input_shape": [1, 2, 4],
+    "output_shape": [1, 2, 4],
+    "input_dtype": "float32",
+    "output_dtype": "float32",
+    "profile_log_sha256": "479c1092d84d40680a33a568a61a58a2501d02f9bc1224521b26e786e0ece500",
+    "profile_csv_sha256": "c6902a7d33ebc990c1e2dde9d9e3b997a0b6537001b10bf13e944132d57ce0ba",
+    "primitive_green_is_not_closure": true,
+    "raw_boundary": "phone-local QNN output/profile/context; host pulled JSON metadata only"
+  },
+  "app_vulkan_consumer_report": {
+    "remote_path": "/sdcard/Android/data/ai.zer0pa.polymath.vulkanprobe/files/reports/vulkan_ffn_micro_island_consumer_20260703T004500Z/app_vulkan_qnn_consumer_report.json",
+    "local_path": "/private/tmp/heterogeneous_closure_cell_ffn_residual_micro_island_vulkan_package_20260703T004500Z/reports/app_vulkan_ffn_micro_island_qnn_consumer_report.json",
+    "sha256": "16b630453027aa833ac40d59db6da0cd0557d44e3d78c794e846db26364125c5",
+    "bytes": 9712,
+    "schema": "heterogeneous_closure_cell_app_vulkan_qnn_consumer.v1",
+    "status": "vulkan_qnn_tensor_consumption_adapter_update_green",
+    "primitive_green_is_not_closure": true
+  },
+  "vulkan_runtime": {
+    "loaded_route": "direct_dlopen",
+    "loaded_path_class": "libvulkan.so",
+    "instance_version": "1.3.0",
+    "instance_extension_status": "VK_SUCCESS",
+    "instance_extension_count": 14,
+    "vkCreateInstance_status": "VK_SUCCESS",
+    "vkEnumeratePhysicalDevices_status": "VK_SUCCESS",
+    "physical_device_count": 1,
+    "selected_device": {
+      "name": "Adreno (TM) 830",
+      "device_type": "integrated_gpu",
+      "vendor_id": 20803,
+      "device_id": 1141178369,
+      "api_version": "1.3.284",
+      "driver_version_raw": 2150760488,
+      "queue_family_count": 3,
+      "compute_queue_family_index": 0,
+      "memory_heap_count": 2,
+      "memory_type_count": 9
+    },
+    "device_extension_status": "VK_SUCCESS",
+    "device_extension_count": 163,
+    "device_extension_names_available_in_app_report": true,
+    "queue_families": [
+      {"index": 0, "flags": 415, "queue_count": 3, "compute": true},
+      {"index": 1, "flags": 2, "queue_count": 1, "compute": true},
+      {"index": 2, "flags": 8, "queue_count": 1, "compute": false}
+    ],
+    "memory_heaps": [
+      {"index": 0, "size": 24230690816, "flags": 1},
+      {"index": 1, "size": 4294963200, "flags": 1}
+    ],
+    "memory_type_count": 9,
+    "memory_type_details_available_in_app_report": true,
+    "compute_queue_visible": true,
+    "vkCreateDevice_compute_queue_status": "VK_SUCCESS"
+  },
+  "vulkan_dispatch": {
+    "storage_buffer_create_status": "VK_SUCCESS",
+    "storage_buffer_output_create_status": "VK_SUCCESS",
+    "descriptor_layout_status": "VK_SUCCESS",
+    "pipeline_layout_status": "VK_SUCCESS",
+    "shader_module_status": "VK_SUCCESS",
+    "compute_pipeline_status": "VK_SUCCESS",
+    "descriptor_pool_status": "VK_SUCCESS",
+    "descriptor_set_status": "VK_SUCCESS",
+    "command_pool_status": "VK_SUCCESS",
+    "command_buffer_status": "VK_SUCCESS",
+    "command_begin_status": "VK_SUCCESS",
+    "command_end_status": "VK_SUCCESS",
+    "fence_create_status": "VK_SUCCESS",
+    "queue_submit_status": "VK_SUCCESS",
+    "fence_wait_status": "VK_SUCCESS",
+    "dispatch_dimensions": [1, 1, 1],
+    "qnn_uint32_element_count": 8,
+    "vulkan_padded_uint32_element_count": 16,
+    "storage_buffer_input_bytes": 64,
+    "storage_buffer_output_bytes": 64,
+    "vulkan_dispatch_padding_bytes": 32,
+    "raw_buffer_bytes_captured": false
+  },
+  "authority_chain": {
+    "qnn_context_graph": "gemma4_e4b_ffn_residual_micro_island_seq2_hidden4_intermediate8",
+    "qnn_context_sha256": "6989b422d9a05b8e8e81b81cf3bdf2c442de55dc2385a26c8f709a9c95dcae4e",
+    "fresh_qnn_output_sha256": "b1e6a3e176ee0f0d9f22b8ff384d57e4c3e7ec2653faabd687241c6931f5a197",
+    "fresh_qnn_output_bytes": 32,
+    "fresh_qnn_output_shape": [1, 2, 4],
+    "fresh_qnn_output_dtype": "float32",
+    "app_handoff_sha256": "b1e6a3e176ee0f0d9f22b8ff384d57e4c3e7ec2653faabd687241c6931f5a197",
+    "gpu_consumed_tensor_sha256": "b1e6a3e176ee0f0d9f22b8ff384d57e4c3e7ec2653faabd687241c6931f5a197",
+    "gpu_consumed_equals_qnn_output": true,
+    "vulkan_padded_input_sha256": "58accee0f3193c1f6f213ec1743ab3381564273bc7144260c9685b58d2f17138",
+    "gpu_output_sha256": "e4d6a4cf883bb040a0ed2a727e42e7d8fc41a3033eab47816f08fb1dc4f6629f",
+    "expected_gpu_output_sha256": "e4d6a4cf883bb040a0ed2a727e42e7d8fc41a3033eab47816f08fb1dc4f6629f",
+    "gpu_output_matches_expected": true,
+    "adapter_scope": "gpu_written_mutable_adapter_buffer_prelude",
+    "adapter_update_source": "vulkan_storage_buffer_readback_from_exact_qnn_tensor",
+    "adapter_element_count": 256,
+    "adapter_pre_sha256": "5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+    "adapter_post_sha256": "1f31fd855655c927b5c77d899627351812964f9d1ab66c9e5b20bb4111b10bd5",
+    "adapter_delta_observed": true,
+    "update_norm_l2": 0.006338729105681303,
+    "update_norm_finite": true,
+    "scalar_loss": 0.00045760727698507253,
+    "scalar_loss_finite": true
+  },
+  "physics_data_movement_ledger": {
+    "termux_qnn_private_path": "/data/data/com.termux/files/home/polymath_gemma4_gate/wavec/full_gemma_qnn_export/probe_ladder/ffn_residual_micro_island_probe/run/Result_0/hidden_output.raw",
+    "phone_local_shared_handoff": "/sdcard/Download/polymath_heterogeneous_closure_cell/qnn/ffn_micro_island_output.raw",
+    "app_specific_handoff": "/sdcard/Android/data/ai.zer0pa.polymath.vulkanprobe/files/qnn/ffn_micro_island_output.raw",
+    "host_pulled_raw_payload": false,
+    "repo_raw_payload": false,
+    "vulkan_dispatch_padding_bytes": 32,
+    "gpu_upload_bytes": 64,
+    "gpu_readback_bytes": 64
+  },
+  "app_context_metadata": {
+    "package": "ai.zer0pa.polymath.vulkanprobe",
+    "activity": "ai.zer0pa.polymath.vulkanprobe/.ProbeActivity",
+    "action": "ai.zer0pa.polymath.vulkanprobe.RUN_VULKAN_QNN_CONSUMER",
+    "uid": 10495,
+    "app_id": 10495,
+    "code_path_class": "data_app_private_package_path",
+    "legacy_native_library_dir_class": "data_app_private_native_library_dir",
+    "primary_cpu_abi": "arm64-v8a",
+    "version_code": 1,
+    "min_sdk": 31,
+    "target_sdk": 37
+  },
+  "provider_access_state": {
+    "phone_route": "available_and_used",
+    "auth_blocker": false,
+    "provider_blocker": false,
+    "notes": "No HF, Comet, GitHub, or RunPod provider calls were needed for this bounded FFN/residual micro-island QNN-to-Vulkan execution."
+  },
+  "validation": {
+    "package_report_json": "valid",
+    "qnn_authority_json": "valid",
+    "app_report_json": "valid",
+    "execution_report_json": "valid",
+    "package_artifact_shas": "matched",
+    "script_post_report_blockers": [],
+    "raw_payload_scan": "zero_hits",
+    "secret_shaped_scan": "zero_hits"
+  },
+  "raw_boundary_scan": {
+    "report_directory_raw_payload_like_file_hits": 0,
+    "execution_report_raw_payload_like_file_hits": 0,
+    "secret_shaped_file_hits": 0,
+    "raw_payload_policy": "Host pulled only JSON metadata. Fresh FFN/residual micro-island QNN output/context/profile remained phone-local; no raw QNN output/context/profile/tensor/model/adapter payloads were copied into git."
+  },
+  "next_action": {
+    "route_to": "Pipeline Integrator Refresh 019f2470-729d-7fb1-9676-ce996bea8e61",
+    "cc": "MetaOrchestrator #3 active 019f1d69-aa89-74c1-b9c5-004119e4ff1e",
+    "recommendation": "Pipeline should perform receiving validation of the next larger Gemma-faithful FFN/residual micro-island authority chain before any wider closure-state update."
+  },
+  "nonclaims": [
+    "no C5 pass",
+    "no learning/model-quality claim",
+    "no Phase readiness claim",
+    "no full-Gemma HTP forward claim until proven",
+    "no broad final heterogeneous closure/milestone claim beyond validated frozen primitive/slice authority-chain reports",
+    "no raw payloads in git",
+    "no secrets printed",
+    "no Comet-backed accepted run"
+  ]
+}
