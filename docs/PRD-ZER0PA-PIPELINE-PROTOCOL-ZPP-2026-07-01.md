@@ -76,6 +76,9 @@ ZPP adds the missing operating law:
 - After a mechanical feasibility boundary is crossed, isolated probes are not
   progress unless they repair a named apex blocker and return directly to the
   apex gate.
+- Context is loaded by budget and task, not by anxiety. Full PRDs, full
+  central state, external packets, and old route tables are heavy sources, not
+  default lane startup material.
 - Research is not a prestige detour; it exists only to restore narrowing.
 - Every claim must survive a Hounds of Popper falsification pass.
 - Provider access is documented without exposing secrets.
@@ -135,6 +138,27 @@ executing now? A lane that proposes another island, component green, probe
 ladder, or local surface must name the apex blocker it repairs and route the
 next `NEXT_HANDOFF` back to the apex owner. Otherwise the work is drift, even
 if the local result is technically real.
+
+### 4.6 Context Diet Rule
+
+ZPP uses progressive disclosure for context. A lane starts from the smallest
+packet that can preserve the authority metric and the current gate:
+
+1. current-context capsule;
+2. `NEXT_HANDOFF` addressed to the lane;
+3. one relevant ZPP reference;
+4. targeted PRD/report/state extracts;
+5. full heavy files only when the lane owns that file or targeted extracts are
+   insufficient.
+
+Heavy files include full workstream PRDs, full ZPP PRDs, external handoff
+packets, `EXECUTIVE_DELIVERY_STATE.json`, stale route tables, historical run
+ledgers, and old watchdog mirrors. Loading a heavy file in full is allowed only
+with a written `context_load` rationale in the next handoff.
+
+This is a protocol requirement, not a token-saving preference. Overloaded
+context increases stale-state capture, completed-marker drift, and local-green
+substitution.
 
 ## 5. Alien Engineering Research Loop
 
@@ -512,6 +536,14 @@ NEXT_HANDOFF:
   first_missing_green_field: "<single field>"
   next_action: "<one concrete action>"
   prompt_to_send: "<copy-paste prompt for next lane>"
+  context_load:
+    tier: "capsule_only | targeted_reference | full_prd | full_evidence"
+    files_loaded:
+      - "<path or reference name>"
+    extraction_mode: "targeted | full"
+    rationale: "<why this much context was necessary>"
+    omitted_heavy_sources:
+      - "<heavy source intentionally not loaded>"
   provider_access_state: "PENDING_ACTION_PROVIDER_NOT_NEEDED_FOR_CURRENT_EDGE | PENDING_ACTION_PROVIDER_AVAILABLE_WHEN_EDGE_REQUIRES | PENDING_ACTION_PROVIDER_AUTH_SURFACE_MISSING | BLOCKER_PROVIDER_AUTH_FAILED"
   raw_boundary_state: "<metadata-only proof or exact blocker>"
   drift_action: "none | ignore_historical | delete_candidate | deletion_done_with_commit"
@@ -587,8 +619,10 @@ failed its job. If `authority_to_recover` is false, `next_owner` and
 8. Every user/process return in this lane must include the ZPP handoff fields:
    `to`, `status`, `reasoning_level`, `artifacts`, `authority_metric`,
    `first_missing_green_field`, `next_action`, `prompt_to_send`,
-   `provider_access_state`, `raw_boundary_state`, `drift_action`,
-   `research_escalation`, and `nonclaims`.
+   `context_load`, `provider_access_state`, `raw_boundary_state`,
+   `drift_action`, `research_escalation`, and `nonclaims`.
+9. Handoffs that loaded full heavy context must justify why targeted extracts
+   were insufficient.
 
 ### 11.1 Workstream Routing Matrices
 
@@ -641,6 +675,8 @@ The Hounds of Popper lane must check:
   `return_handoff_to_apex`?
 - Did a route-changing mobilization omit `xhigh` reasoning or an explicit
   `xhigh_unavailable_with_reason`?
+- Did a lane load full PRDs, central state, external packets, or stale route
+  tables without a `context_load` rationale?
 - Is the same missing field repeating without narrowing?
 - Did the PRD change after evidence in a way that narrows the objective?
 - Did provider access failure become a vague blocker without evidence?

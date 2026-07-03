@@ -32,6 +32,13 @@ def complete_handoff(**overrides) -> dict:
         "first_missing_green_field": "custody_commit_missing",
         "next_action": "Freeze the pathset.",
         "prompt_to_send": "Custodian: freeze the pathset.",
+        "context_load": {
+            "tier": "targeted_reference",
+            "files_loaded": ["references/next-handoff.md"],
+            "extraction_mode": "targeted",
+            "rationale": "handoff validation only",
+            "omitted_heavy_sources": ["EXECUTIVE_DELIVERY_STATE.json"],
+        },
         "provider_access_state": "PENDING_ACTION_PROVIDER_NOT_NEEDED_FOR_CURRENT_EDGE",
         "raw_boundary_state": "metadata_only_no_raw_payloads",
         "drift_action": "none",
@@ -246,6 +253,60 @@ def test_complete_state_requires_authority_fields() -> None:
 
     assert "zpp.completion.field_missing" in codes(findings)
     assert "zpp.handoff.packet_field_missing" in codes(findings)
+
+
+def test_route_changing_work_requires_context_load_contract() -> None:
+    state = base_state()
+    state["lane"] = {
+        "status": "route_green",
+        "next_handoff": complete_handoff(),
+    }
+    del state["lane"]["next_handoff"]["context_load"]
+
+    findings = lint_orchestration_state(state, strict_handoff=True, include_historical=True)
+
+    assert "zpp.context_load.missing" in codes(findings)
+    assert "zpp.handoff.packet_field_missing" in codes(findings)
+
+
+def test_context_load_rejects_invalid_tier() -> None:
+    state = base_state()
+    state["lane"] = {
+        "status": "route_green",
+        "next_handoff": complete_handoff(
+            context_load={
+                "tier": "read_everything",
+                "files_loaded": ["runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json"],
+                "extraction_mode": "full",
+                "rationale": "debugging",
+                "omitted_heavy_sources": [],
+            }
+        ),
+    }
+
+    findings = lint_orchestration_state(state, strict_handoff=True, include_historical=True)
+
+    assert "zpp.context_load.tier_invalid" in codes(findings)
+
+
+def test_context_load_over_budget_warns_without_full_tier() -> None:
+    state = base_state()
+    state["lane"] = {
+        "status": "route_green",
+        "next_handoff": complete_handoff(
+            context_load={
+                "tier": "targeted_reference",
+                "files_loaded": [f"file_{idx}.md" for idx in range(9)],
+                "extraction_mode": "targeted",
+                "rationale": "large validation set",
+                "omitted_heavy_sources": [],
+            }
+        ),
+    }
+
+    findings = lint_orchestration_state(state, strict_handoff=True, include_historical=True)
+
+    assert "zpp.context_load.over_budget" in codes(findings)
 
 
 def test_post_boundary_isolated_probe_requires_apex_over_island_fields() -> None:

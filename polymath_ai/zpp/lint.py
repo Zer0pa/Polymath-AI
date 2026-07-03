@@ -70,6 +70,7 @@ REQUIRED_HANDOFF_FIELDS = (
     "first_missing_green_field",
     "next_action",
     "prompt_to_send",
+    "context_load",
     "provider_access_state",
     "raw_boundary_state",
     "drift_action",
@@ -80,6 +81,7 @@ REQUIRED_HANDOFF_FIELDS = (
 REQUIRED_COMPLETION_FIELDS = (
     "authority_metric",
     "first_missing_green_field",
+    "context_load",
     "provider_access_state",
     "raw_boundary_state",
     "drift_action",
@@ -105,6 +107,35 @@ VALID_DRIFT_ACTIONS = (
     "ignore_historical",
     "delete_candidate",
     "deletion_done_with_commit",
+)
+
+VALID_CONTEXT_LOAD_TIERS = (
+    "capsule_only",
+    "targeted_reference",
+    "full_prd",
+    "full_evidence",
+)
+
+VALID_CONTEXT_EXTRACTION_MODES = (
+    "targeted",
+    "full",
+)
+
+CONTEXT_LOAD_REQUIRED_FIELDS = (
+    "tier",
+    "files_loaded",
+    "extraction_mode",
+    "rationale",
+    "omitted_heavy_sources",
+)
+
+HEAVY_CONTEXT_MARKERS = (
+    "EXECUTIVE_DELIVERY_STATE.json",
+    "PRD-ZER0PA-PIPELINE-PROTOCOL-ZPP",
+    "PRD-APEX-HETEROGENEOUS-CELL",
+    "POLYMATH_HETEROGENEOUS_CELL_EXTERNAL_TECHNICAL_PACKET",
+    "WAVEC_AGENT_LANE",
+    "HETEROGENEOUS_CLOSURE_CELL_ROUTE_PROTOCOL",
 )
 
 HISTORICAL_DRIFT_ACTIONS = (
@@ -172,6 +203,7 @@ def lint_orchestration_state(
     findings.extend(_xhigh_reasoning_findings(process_nodes, strict_handoff=strict_handoff))
     findings.extend(_apex_over_island_findings(state, process_nodes, strict_handoff=strict_handoff))
     findings.extend(_stale_apex_route_findings(state, process_nodes))
+    findings.extend(_context_load_findings(process_nodes, strict_handoff=strict_handoff))
     return findings
 
 
@@ -379,6 +411,7 @@ def _validate_structured_handoff(
         )
     findings.extend(_provider_access_state_value_findings(packet, path))
     findings.extend(_drift_action_value_findings(packet, path))
+    findings.extend(_context_load_value_findings(packet, path, strict_handoff=strict_handoff))
     if packet.get("to") and packet.get("sent") is False:
         findings.append(
             Finding(
@@ -403,6 +436,7 @@ def _validate_text_handoff(packet: str, path: str, *, strict_handoff: bool) -> l
         "first_missing_green_field": "first_missing_green_field:",
         "next_action": "next_action:",
         "prompt_to_send": "prompt_to_send:",
+        "context_load": "context_load:",
         "provider_access_state": "provider_access_state:",
         "raw_boundary_state": "raw_boundary_state:",
         "drift_action": "drift_action:",
@@ -453,6 +487,29 @@ def _completion_metadata_findings(
             )
         findings.extend(_provider_access_state_value_findings(node, path))
         findings.extend(_drift_action_value_findings(node, path))
+        findings.extend(_context_load_value_findings(node, path, strict_handoff=strict_handoff))
+    return findings
+
+
+def _context_load_findings(
+    nodes: list[tuple[str, dict[str, Any]]],
+    *,
+    strict_handoff: bool,
+) -> list[Finding]:
+    findings: list[Finding] = []
+    for path, node in nodes:
+        if not _looks_route_changing(node):
+            continue
+        if _field_present_on_node_or_handoff(node, "context_load"):
+            continue
+        findings.append(
+            Finding(
+                _handoff_shape_severity(strict_handoff),
+                "zpp.context_load.missing",
+                f"{path}.context_load",
+                "route-changing work must declare a bounded context_load contract",
+            )
+        )
     return findings
 
 
@@ -751,6 +808,84 @@ def _drift_action_value_findings(node: dict[str, Any], path: str) -> list[Findin
     ]
 
 
+def _context_load_value_findings(
+    node: dict[str, Any],
+    path: str,
+    *,
+    strict_handoff: bool,
+) -> list[Finding]:
+    context_load = node.get("context_load")
+    if context_load is None:
+        return []
+    if not isinstance(context_load, dict):
+        return [
+            Finding(
+                _handoff_shape_severity(strict_handoff),
+                "zpp.context_load.invalid",
+                f"{path}.context_load",
+                "context_load must be a structured packet",
+            )
+        ]
+
+    findings: list[Finding] = []
+    for field in CONTEXT_LOAD_REQUIRED_FIELDS:
+        if _field_present(context_load.get(field)):
+            continue
+        findings.append(
+            Finding(
+                _handoff_shape_severity(strict_handoff),
+                "zpp.context_load.field_missing",
+                f"{path}.context_load.{field}",
+                f"context_load is missing {field!r}",
+            )
+        )
+
+    tier = context_load.get("tier")
+    if tier is not None and tier not in VALID_CONTEXT_LOAD_TIERS:
+        findings.append(
+            Finding(
+                "error",
+                "zpp.context_load.tier_invalid",
+                f"{path}.context_load.tier",
+                "context_load tier must be capsule_only, targeted_reference, full_prd, or full_evidence",
+            )
+        )
+
+    extraction_mode = context_load.get("extraction_mode")
+    if extraction_mode is not None and extraction_mode not in VALID_CONTEXT_EXTRACTION_MODES:
+        findings.append(
+            Finding(
+                "error",
+                "zpp.context_load.extraction_mode_invalid",
+                f"{path}.context_load.extraction_mode",
+                "context_load extraction_mode must be targeted or full",
+            )
+        )
+
+    files_loaded = context_load.get("files_loaded")
+    if isinstance(files_loaded, list):
+        heavy_files = [str(item) for item in files_loaded if _looks_like_heavy_context_source(str(item))]
+        if heavy_files and extraction_mode != "targeted" and not _field_present(context_load.get("rationale")):
+            findings.append(
+                Finding(
+                    _handoff_shape_severity(strict_handoff),
+                    "zpp.context_load.heavy_without_rationale",
+                    f"{path}.context_load.files_loaded",
+                    "heavy context sources loaded in full require a concrete context_load rationale",
+                )
+            )
+        if len(files_loaded) > 8 and tier not in ("full_prd", "full_evidence"):
+            findings.append(
+                Finding(
+                    "warning",
+                    "zpp.context_load.over_budget",
+                    f"{path}.context_load.files_loaded",
+                    "context_load lists more than 8 files without full_prd/full_evidence tier",
+                )
+            )
+    return findings
+
+
 def _field_present_on_node_or_handoff(node: dict[str, Any], field: str) -> bool:
     if _field_present(node.get(field)):
         return True
@@ -866,6 +1001,10 @@ def _looks_like_stale_wavec_or_c5_surface(route_text: str) -> bool:
             "c5 scorer",
         )
     )
+
+
+def _looks_like_heavy_context_source(value: str) -> bool:
+    return any(marker in value for marker in HEAVY_CONTEXT_MARKERS)
 
 
 def _is_historical_node(node: dict[str, Any]) -> bool:
