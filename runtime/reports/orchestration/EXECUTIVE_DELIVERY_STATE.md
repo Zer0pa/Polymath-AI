@@ -1,86 +1,98 @@
 # Executive Delivery State
 
-Updated UTC: `2026-07-02T10:44:57Z`
+Updated UTC: `2026-07-03T13:31:29Z`
 
 ## Current Gate
 
-`WaveB_C5_after_C1_candidate_prediction_record_id_coverage_repair_pending_after_bounded_canonical_payload_retry_failed`
+`Apex_Gate_A_Command_Package`
 
-Status classification: `PENDING_ACTION_PHASE34_CANDIDATE_PREDICTION_RECORD_ID_COVERAGE_REPAIR_AFTER_BOUNDED_RETRY`
+Status classification: `PENDING_ACTION_GATE_A_REPAIRED_PATHSET_RECEIVING_CHECK`
 
-Owner: Phase3/4 Engineer replacement `019f2059-e6a8-73b1-a9b8-8a2c499e838e`.
+Owner: Pipeline Integrator `019f27dd-4085-7d30-85e2-af95e5302a44` for the active receiving check. If the check confirms the APK binary/hash is still missing, Phase Engineering `019f27dd-3879-79d0-9235-2a068349a706` remains the first-missing-field owner.
 
 User action required: `false`
 
-Dominant failure domain: `candidate_prediction_jsonl_record_id_coverage_contract`
+Research escalation: `none`
 
-Research escalation: `none` - this is the first missing-record-id contract failure after Termux access was restored and the bounded retry ran. Escalate only if the same field repeats after a Phase3/4 repair, an exact architecture contradiction appears, or a real memory/throughput envelope failure appears.
+## Authority Metric
 
-## Artifact Waiting On
+`integrated corpus -> tokenizer/FSM/JL packet -> Gemma QNN/HTP -> exact Adreno/Vulkan consumed tensor SHA -> polar theta-only adapter update -> repeated supervised Q/A loss loop -> metadata-only authority report`
 
-- Candidate prediction metadata is frozen at commit `71bc3b19014df62f398340f97a9f3bdb55d48de6`.
-- Stable-baseline prediction metadata is frozen at commit `58ce78aaa4486e440b3b8bba911c3a0fdde4f868`.
-- Candidate train-loss metadata and prior central scorer-route mirror are frozen at commit `2a91a5256eb9937e483d78e130aedf243b802bf8`.
-- Retry-ready central custody is frozen through commit `2cccbe86fab521d1c2fa14987b4ab536cf809254`; final closure push was `90f40cf1d093886f5645ec7e30872bc3690e9555`.
-- Termux command access was restored and Execution ran the bounded canonical payload retry from clean Termux worktree commit `90f40cf1d093886f5645ec7e30872bc3690e9555`.
-- The retry completed without timeout, but `run_c5_prediction_payloads.py` failed closed before heldout metrics or final C5 eval.
-- Metadata-only artifact root: `runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/canonical_payload_retry_20260702T104213Z`.
-- Payload report SHA: `d323cd9b0a0f475ed181ca955ab7e9a953596d9a3735d2f2043492c94aa01fdc`.
-- Wrapper stdout SHA: `a20145e583cd4c4a5ff9a52fb2d2332387804544193e45d3b80fdd5e3d712cec`.
-- Wrapper stderr SHA: `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`.
-- Execution metadata SHA: `6828a69043ae42c173ea765e8b04685cc2c66e56acfe3b0941465e76d0e44595`.
-- Candidate raw prediction JSONL SHA/bytes/path SHA: `a0137450ae16220a1aecc3dff60e50bceae641dba9b8207c0567f48ae4be4fc3`, `429`, `a42ed2219c9aa5a7ee71b3967114f16345b69229ed124ef182ffe18b18227215`.
-- Stable raw prediction JSONL SHA/bytes/path SHA: `a75e7804dbe4152d86c194eade3240285f16e254cd20b7cd0b0aff7ded7fff1d`, `430`, `6f355ce433f601e99a57dded4ef271ee70f108fc7581adabf6a8a13ce9e97aad`.
-- Raw prediction JSONLs remain outside git; local raw suffix scan count is `0`.
+## Active PRD
 
-## Last Concrete Action
+- `/Users/Zer0pa/Polymat AI/Polymath-AI/docs/PRD-APEX-HETEROGENEOUS-CELL-END-TO-END-2026-07-03.md`
+- SHA-256: `a3606c186109c1597e43a793647cd7b7f3bd63c653d3986c25e1db09bf224a93`
+- Repo custody commit: `cc52769b6f95e1b555f9cb834ca5d323ad34c450`
 
-Execution Orchestrator ran the restored-access bounded canonical payload retry with native timeout `1500s` and wrapper timeout `1800s`. The wrapper completed with exit code `2`, status `blocked`, and first missing green field `ValueError:candidate_predictions_missing_record_ids`.
+## Context-Load Protocol Custody
 
-No heldout scorer was run. No final `scripts/host/run_c5_eval.py` report exists for this retry. No C5 pass is claimed.
+- Repo custody commit: `29aec1b87ed9e67d2bdc0846f8b61339a54efe61`
+- Context-load handoffs are required for route-changing and completion states.
+- Briefs must carry the incoming `NEXT_HANDOFF`, or a marked `WATCHDOG_RECOVERY_HANDOFF`, plus the outbound `NEXT_HANDOFF` schema the lane must return.
+- Task-only prompts without handoff fields are process drift.
+
+## Context Load
+
+```yaml
+context_load:
+  tier: targeted_reference
+  files_loaded:
+    - /Users/prinivenpillay/.codex/skills/zpp-orchestrate/SKILL.md full short skill instruction
+    - /Users/prinivenpillay/.codex/skills/zpp-orchestrate/references/context-load.md full short reference
+    - /Users/prinivenpillay/.codex/skills/zpp-orchestrate/references/next-handoff.md full short reference
+    - runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json targeted top-level/watchdog handoff extracts
+    - runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md full 93-line active summary
+    - Repo Custodian incoming NEXT_HANDOFF for context-load patch commit 29aec1b87ed9e67d2bdc0846f8b61339a54efe61
+  extraction_mode: targeted
+  rationale: central migration only needed active owner/gate/handoff/template fields, the frozen context-load rule, and the Repo custody handoff; the full central JSON was parsed locally for a structured rewrite but not loaded into model context
+  omitted_heavy_sources:
+    - full Apex PRD
+    - full external packet
+    - full EXECUTIVE_DELIVERY_STATE.json in model context
+    - stale WaveC/C5 route tables
+    - historical run ledgers and raw payload roots
+```
 
 ## First Missing Green Field
 
-`ValueError:candidate_predictions_missing_record_ids`
+`gate_a_repaired_pathset_receiving_result_missing`
 
-## Next Concrete Action
+## Next Action
 
-1. Phase3/4 inspects the native C5 prediction producer and wrapper row-identity contract.
-2. Phase3/4 repairs or precisely routes the dataflow so candidate and stable prediction JSONLs cover every heldout record ID from the 53-row split.
-3. If source changes, route source pathset to Repo Custodian replacement for freeze.
-4. If no source change is required, return a bounded rerun command to Execution.
-5. Execution reruns the canonical payload wrapper only after the record-ID coverage repair is explicit. Heldout metrics and final C5 eval remain blocked until the payload wrapper status is `pass`.
+Pipeline validates Phase Engineering's Gate A repaired pathset. If APK binary/hash remains missing, route the exact missing field back to Phase Engineering; otherwise route the next unresolved apex authority field.
 
-## Drift Deletion / Hardening
+## Drift Deleted / Pending
 
-Do not regress to Termux access, decoder/runtime, candidate/stable prediction metadata, or finite candidate_train_loss blockers. Those prerequisites remain green unless newer evidence contradicts them. The active drift is now prediction-row identity coverage for the canonical C5 payload contract.
-
-## Recursive Improvement Next Step
-
-Use the metadata report and wrapper failure to repair the producer record-ID contract. If `candidate_predictions_missing_record_ids` repeats after a Phase3/4 repair, escalate bounded research on prediction row identity and heldout split dataflow semantics.
-
-## Threads Nudged This Tick
-
-- Execution Orchestrator `019f138c-fb51-7c53-a41a-ab8eac950d9c`: polled completed failed retry with NEXT_HANDOFF.
-- Phase3/4 Engineer replacement `019f2059-e6a8-73b1-a9b8-8a2c499e838e`: sent candidate prediction record-ID coverage repair prompt.
-- Repo Custodian replacement `019f2059-ef2c-7762-ba42-963b58f3af90`: central two-file freeze route pending.
+Stale WaveC/C5 route surfaces are historical/delete candidates under the active Apex PRD. Do not revive them unless a new apex `NEXT_HANDOFF` names a blocker-repair subroute.
 
 ## NEXT_HANDOFF
 
-- to: Phase3/4 Engineer replacement `019f2059-e6a8-73b1-a9b8-8a2c499e838e`
-- status: `canonical_c5_prediction_payload_report_failed`
-- artifacts: metadata root `runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/canonical_payload_retry_20260702T104213Z`, payload report SHA `d323cd9b0a0f475ed181ca955ab7e9a953596d9a3735d2f2043492c94aa01fdc`
-- first_missing_green_field: `ValueError:candidate_predictions_missing_record_ids`
-- next_action: Phase3/4 repairs the native producer record-ID coverage contract or returns a precise implementation blocker.
+- to: Pipeline Integrator `019f27dd-4085-7d30-85e2-af95e5302a44`
+- status: `PENDING_ACTION_GATE_A_REPAIRED_PATHSET_RECEIVING_CHECK`
+- reasoning_level: `xhigh`
+- authority_metric: integrated corpus -> tokenizer/FSM/JL packet -> Gemma QNN/HTP -> exact Adreno/Vulkan consumed tensor SHA -> polar theta-only adapter update -> repeated supervised Q/A loss loop -> metadata-only authority report
+- artifacts:
+  - Apex PRD SHA `a3606c186109c1597e43a793647cd7b7f3bd63c653d3986c25e1db09bf224a93`, commit `cc52769b6f95e1b555f9cb834ca5d323ad34c450`
+  - external packet SHA `8e78df8b4660b6162e343fdd9063418082e35e3e97601b8df2d801ce600ed019`, commit `581e87cd73176d688c9fff35ea1b69bdd38c61d0`
+  - ZPP context-load diet patch commit `29aec1b87ed9e67d2bdc0846f8b61339a54efe61`
+- first_missing_green_field: `gate_a_repaired_pathset_receiving_result_missing`
+- next_action: validate the active Phase Gate A repaired pathset and route the exact next missing apex field.
+- prompt_to_send: embedded in the JSON `next_handoff`; it carries the incoming `NEXT_HANDOFF`, required outbound schema, and `context_load`.
+- provider_access_state: `PENDING_ACTION_PROVIDER_NOT_NEEDED_FOR_CURRENT_EDGE`
+- raw_boundary_state: `metadata_only_no_raw_payloads`
+- drift_action: `delete_candidate`
 - research_escalation: `none`
 
 ## Nonclaims Preserved
 
+- no apex authority advance.
+- no phone/provider execution.
+- no full heterogeneous closure.
+- no full Gemma HTP/QNN forward.
+- no OpenCL final pass.
+- no C1-C4 corpus-scale training.
 - no C5 pass.
-- no heldout scorer execution.
-- no learning/model-quality claim.
-- no Phase3/4 readiness.
 - no 100k/1M authority.
+- no model-quality claim.
 - no raw payloads in git.
 - no secrets printed.
-- no Comet-backed accepted run.

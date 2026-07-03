@@ -160,6 +160,18 @@ This is a protocol requirement, not a token-saving preference. Overloaded
 context increases stale-state capture, completed-marker drift, and local-green
 substitution.
 
+### 4.7 Brief-Carried-Handoff Rule
+
+Every lane mobilization brief must contain the incoming `NEXT_HANDOFF` that
+justifies the lane's work. If Watchdog/Meta is repairing a malformed route, the
+brief must contain `WATCHDOG_RECOVERY_HANDOFF` and mark that it is not a normal
+producer handoff.
+
+The brief must also contain the outbound `NEXT_HANDOFF` schema the lane must
+return, including `context_load`. Task-only prompts without handoff fields are
+process drift because they force the next lane to infer route authority from
+heavy state.
+
 ## 5. Alien Engineering Research Loop
 
 Every ZPP run begins with a research, think, plan, innovate loop before
@@ -623,6 +635,9 @@ failed its job. If `authority_to_recover` is false, `next_owner` and
    `drift_action`, `research_escalation`, and `nonclaims`.
 9. Handoffs that loaded full heavy context must justify why targeted extracts
    were insufficient.
+10. Every mobilization brief must embed the incoming `NEXT_HANDOFF`, or a
+    clearly marked `WATCHDOG_RECOVERY_HANDOFF` for route repair, and the
+    outbound `NEXT_HANDOFF` schema the lane must return.
 
 ### 11.1 Workstream Routing Matrices
 

@@ -1,12 +1,12 @@
 {
-  "active_bottleneck": "ValueError:candidate_predictions_missing_record_ids",
-  "active_edge": "WaveB_C5_after_C1_candidate_prediction_record_id_coverage_repair_pending_after_bounded_canonical_payload_retry_failed",
+  "active_bottleneck": "gate_a_repaired_pathset_receiving_result_missing",
+  "active_edge": "Apex_Gate_A_Command_Package",
   "active_watchdog_state": {
-    "active_bottleneck": "ValueError:candidate_predictions_missing_record_ids",
-    "active_edge": "WaveB_C5_after_C1_candidate_prediction_record_id_coverage_repair_pending_after_bounded_canonical_payload_retry_failed",
+    "active_bottleneck": "gate_a_repaired_pathset_receiving_result_missing",
+    "active_edge": "Apex_Gate_A_Command_Package",
     "adapter_site_policy_sha256": "f38bd8109bbb77e9e94a5b4b34a238bc0ec0a39e7736870c97defe5aecc93357",
     "additional_missing_runtime_field_after_contract_patch": "decoder_manifest_tensor_role_inventory_missing",
-    "artifact_waiting_on": "Phase3/4 repair for canonical C5 prediction payload record coverage: candidate predictions must emit rows covering all 53 heldout record IDs before heldout metrics or final C5 eval can run.",
+    "artifact_waiting_on": "Pipeline receiving result for Phase Engineering Gate A repaired pathset; APK binary/hash status must be explicit.",
     "authorization_needed": false,
     "c5_after_c1_bounded_opencl_probe_command_identity_repair_20260701T171907Z": {
       "execution_routed": false,
@@ -282,6 +282,30 @@
         "scripts/host/run_c5_eval.py with the executed metrics JSON"
       ],
       "status": "canonical_c5_payload_scorer_ready_for_execution_after_finite_train_loss"
+    },
+    "c5_after_c1_canonical_payload_retry_after_timeout_20260702T022841Z": {
+      "execution_owner_thread_after_access_restore": "019f138c-fb51-7c53-a41a-ab8eac950d9c",
+      "native_timeout_seconds": 1500,
+      "next_action": "Restore Termux command access, then run exactly one bounded canonical prediction payload retry from the Phase3/4 command.",
+      "nonclaims": [
+        "no C5 pass",
+        "no heldout scorer execution after the timeout",
+        "no learning/model-quality claim",
+        "no Phase3/4 readiness",
+        "no 100k/1M authority",
+        "no raw payloads in git",
+        "no secrets printed",
+        "no Comet-backed accepted run"
+      ],
+      "phase34_returned_status": "producer_timeout_retry_command_ready_for_execution",
+      "phase34_thread": "019f2059-e6a8-73b1-a9b8-8a2c499e838e",
+      "producer_timeout_rule": "native_timeout_seconds must be less than wrapper_timeout_seconds so the producer owns native cleanup before the outer wrapper timeout fires",
+      "research_escalation": "none",
+      "source_change_needed": false,
+      "status": "producer_timeout_retry_command_ready_for_execution_pending_termux_access",
+      "stop_condition": "If candidate producer times out at 1500s or wrapper reaches 1800s, stop and return metadata/logs without scorer. If candidate succeeds but stable times out, stop and return metadata/logs. Raw prediction JSONLs remain outside git.",
+      "user_action_required": true,
+      "wrapper_timeout_seconds": 1800
     },
     "c5_after_c1_component_validation_hardening_pathset": {
       "artifact_paths": [
@@ -2224,6 +2248,25 @@
     "candidate_adapter_sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f",
     "candidate_train_loss": 15.202827250350284,
     "candidate_train_loss_source": "teacher_forced_answer_token_nll_from_full_decoder_logits",
+    "canonical_scorer_blocker_central_mirror_custody_20260702T022841Z": {
+      "branch": "origin/gemma4-megakernel-native-training",
+      "commit": "ce1d16cc3c6ce55040eae2a20ea73fcccececf02",
+      "custody_thread": "019f2059-ef2c-7762-ba42-963b58f3af90",
+      "frozen_pathset": {
+        "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json": "f8c6135088be9870cf018ea6b55b14c8e70094d209d07a749889885b870078f6",
+        "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md": "ac20f0ff45c97e6f71fe830b097c09b9e27c851164181b1130c4032043f3c9cf"
+      },
+      "status": "canonical_scorer_blocker_central_mirror_committed_pushed",
+      "verification": [
+        "JSON validity passed",
+        "strict ZPP lint passed",
+        "scoped diff hygiene passed",
+        "raw suffix scans returned 0",
+        "value-shaped secret/token scans returned 0",
+        "staged pathset exactly two central files",
+        "local HEAD matches remote branch"
+      ]
+    },
     "central_mirror_local_update_status": "producer_timeout_retry_custody_complete_local_record_no_new_custody_routed",
     "central_state_update_pathset_for_custodian": {
       "artifact_paths": [
@@ -2239,14 +2282,19 @@
       "user_action_required": false
     },
     "central_state_update_pending_custody": false,
-    "current_gate": "WaveB_C5_after_C1_canonical_payload_bounded_retry_ready_waiting_on_termux_command_access_after_producer_timeout",
+    "current_gate": "Apex_Gate_A_Command_Package",
     "current_highest_valid_state": "candidate_and_stable_prediction_payloads_and_finite_train_loss_green_canonical_scorer_not_executed",
-    "current_owner": "Phase3/4 Engineer replacement + User/Operator access",
+    "current_owner": "Pipeline Integrator 019f27dd-4085-7d30-85e2-af95e5302a44",
     "custody_commit_latest": "05bb56437b83138547301e69af14ab0fce7d4b1a",
     "custody_status_latest": "c5_opencl_parity_dispatch_committed_pushed",
     "decoder_manifest_sha256": "52fcb53666bb4b06d0118cb825b983afc54624a630f667bbfa5af278640e28f8",
+    "do_not_resume": [
+      "incremental_c5_prediction_jsonl_coverage_loop_as_center_of_gravity",
+      "one_field_at_a_time_native_producer_patch_as_substitute_for_fused_training_architecture",
+      "c5_scaffolding_as_proxy_for_npu_gpu_training_progress"
+    ],
     "dominant_failure_domain": "candidate_prediction_jsonl_record_id_coverage_contract",
-    "drift_deleted_or_pending": "Termux access blocker is resolved and retry-ready custody remains green. New pending drift is candidate prediction JSONL record-id coverage for the 53-row heldout split; do not regress to prior decoder/runtime/train-loss blockers.",
+    "drift_deleted_or_pending": "Stale WaveC/C5 route surfaces are historical/delete candidates under the active Apex PRD; do not revive them unless a new apex NEXT_HANDOFF names a blocker-repair subroute.",
     "driver_tick_history": [
       {
         "artifact_waiting_on": [
@@ -2399,6 +2447,60 @@
         "candidate_train_loss numeric value"
       ],
       "first_missing_green_field": "repo_custody_freeze_of_c5_heldout_evaluator_pathset",
+      "next_handoff": {
+        "authority_metric": "Final C5 authority requires executed metrics JSON and scripts/host/run_c5_eval.py pass_fail.status=pass; evaluator source readiness is not C5 pass.",
+        "completed_work": [
+          "heldout evaluator implementation pathset produced",
+          "local source/tests verification reported"
+        ],
+        "current_edge": "historical_c5_heldout_evaluator_pathset_custody",
+        "current_verdict": "pending_action",
+        "do_not_do": [
+          "do not claim C5 pass from evaluator source readiness",
+          "do not move raw payloads into git"
+        ],
+        "evidence": [
+          {
+            "artifact": "polymath_ai/polar/c5_heldout_eval.py",
+            "sha256": "0095c2ded45e2b02e68888562635e59026963bb85e385b48b42cb6e3275a05eb",
+            "status": "pathset_ready"
+          },
+          {
+            "artifact": "scripts/host/run_c5_heldout_eval.py",
+            "sha256": "32e2f2c2d2d3ba4965a6869d0f97793bc990b40421c7292bab5deba2633842c9",
+            "status": "pathset_ready"
+          },
+          {
+            "artifact": "tests/test_c5_heldout_eval.py",
+            "sha256": "e8993da430ae8c86880d21edf96c3d44d969e73aace7be26c38e7f6864dbeccf",
+            "status": "pathset_ready"
+          }
+        ],
+        "first_missing_green_field": "repo_custody_freeze_of_c5_heldout_evaluator_pathset",
+        "from_lane": "Engineering/Meta historical mirror",
+        "next_action": "Repo Custodian freezes evaluator source pathset before Execution uses it.",
+        "nonclaims": [
+          "no C5 pass",
+          "no heldout scorer execution without real payloads and candidate_train_loss",
+          "no learning/model-quality claim",
+          "no Phase3/4 readiness claim",
+          "no 100k/1M authority",
+          "no raw payloads in git",
+          "no secrets printed",
+          "no Comet-backed accepted run"
+        ],
+        "objective": "Freeze heldout evaluator implementation pathset before any C5 scoring execution.",
+        "owner_thread": null,
+        "research_escalation": {
+          "packet_path": null,
+          "reason": "historical metadata mirror lint closure",
+          "status": "none"
+        },
+        "run_id": "historical_c5_heldout_evaluator_pathset_ready_for_custodian",
+        "schema_version": "zpp_next_handoff_v1",
+        "sent": true,
+        "to_lane": "Repo Custodian"
+      },
       "sha256_or_identity_fields": {
         "polymath_ai/polar/c5_heldout_eval.py": "0095c2ded45e2b02e68888562635e59026963bb85e385b48b42cb6e3275a05eb",
         "scripts/host/run_c5_heldout_eval.py": "32e2f2c2d2d3ba4965a6869d0f97793bc990b40421c7292bab5deba2633842c9",
@@ -2487,7 +2589,7 @@
       "next_owner": "execution_orchestrator",
       "status": "committed_pushed"
     },
-    "first_missing_green_field": "ValueError:candidate_predictions_missing_record_ids",
+    "first_missing_green_field": "gate_a_repaired_pathset_receiving_result_missing",
     "first_missing_green_field_after_contract_patch": "decoder_manifest_architecture_config_missing",
     "first_missing_green_field_after_custody": "c5_full_decoder_chunked_lm_head_nll_writer_missing",
     "first_missing_green_field_after_export": "phone_c5_runner_rebuild_or_copy_missing",
@@ -2498,7 +2600,7 @@
     "first_unresolved_technical_failure_after_schema_complete_export": "c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land",
     "first_unresolved_technical_failure_after_schema_paths": "full_decoder_logits_generation_not_implemented_after_valid_schema_paths",
     "first_unresolved_technical_failure_after_valid_schema_paths": "c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land",
-    "governing_edge": "WaveB_C5_after_C1_candidate_prediction_record_id_coverage_repair_pending_after_bounded_canonical_payload_retry_failed",
+    "governing_edge": "Apex_Gate_A_Command_Package",
     "hardening_policy": {
       "deleted_or_repaired_drift": [
         "forced_non_packaged_child_exec_default_for_phase1",
@@ -2957,72 +3059,99 @@
     "native_tokenizer_tensor_loader_prereq_custody_commit": "4472e3dee86d88d83031eecfc94b91008e5215e0",
     "native_tokenizer_tensor_loader_prereq_report_sha256": "1e4a087354d8a917ec9fba7747a5e2410d9fb01f36e991c902e00adf8764e422",
     "native_tokenizer_tensor_loader_prereq_status": "native_full_decoder_prereq_pathset_ready_for_custodian",
-    "next_concrete_action": "Phase3/4 must inspect the native C5 prediction producer/wrapper row contract and make the real producer emit prediction rows for all 53 heldout record IDs, preserving raw JSONLs outside git. Return a source pathset or bounded rerun command; then route through Repo Custodian if source changed, otherwise Execution reruns the canonical payload wrapper.",
+    "next_action": "Pipeline validates Phase Engineering's Gate A repaired pathset. If APK binary/hash remains missing, route the exact missing field back to Phase Engineering; otherwise route the next unresolved apex authority field.",
+    "next_concrete_action": "Pipeline validates Phase Engineering's Gate A repaired pathset. If APK binary/hash remains missing, route the exact missing field back to Phase Engineering; otherwise route the next unresolved apex authority field.",
     "next_handoff": {
       "schema_version": "zpp_next_handoff_v1",
-      "run_id": "c5_after_c1_candidate_prediction_record_id_coverage_repair_20260702T104457Z",
-      "from_lane": "Engineering/Meta watcher 019f1423-816d-7251-b7d9-945a11441c3f",
-      "to_lane": "Phase3/4 Engineer replacement 019f2059-e6a8-73b1-a9b8-8a2c499e838e",
-      "sent": true,
-      "objective": "Repair canonical C5 prediction payload row coverage so candidate predictions include all heldout record IDs.",
-      "authority_metric": "run_c5_prediction_payloads.py status pass, then executed heldout metrics JSON and final scripts/host/run_c5_eval.py pass_fail.status; no C5 pass before final eval pass.",
-      "current_edge": "WaveB_C5_after_C1_candidate_prediction_record_id_coverage_repair_pending_after_bounded_canonical_payload_retry_failed",
-      "current_verdict": "fail",
-      "completed_work": [
-        "Termux command access restored",
-        "bounded canonical payload retry executed from clean 90f40cf Termux worktree",
-        "wrapper completed without timeout but failed closed before scorer"
+      "to": "Pipeline Integrator 019f27dd-4085-7d30-85e2-af95e5302a44",
+      "status": "PENDING_ACTION_GATE_A_REPAIRED_PATHSET_RECEIVING_CHECK",
+      "reasoning_level": "xhigh",
+      "artifacts": [
+        "/Users/Zer0pa/Polymat AI/Polymath-AI/docs/PRD-APEX-HETEROGENEOUS-CELL-END-TO-END-2026-07-03.md sha256=a3606c186109c1597e43a793647cd7b7f3bd63c653d3986c25e1db09bf224a93 repo_commit=cc52769b6f95e1b555f9cb834ca5d323ad34c450",
+        "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/external_handoff/POLYMATH_HETEROGENEOUS_CELL_EXTERNAL_TECHNICAL_PACKET_20260703.md sha256=8e78df8b4660b6162e343fdd9063418082e35e3e97601b8df2d801ce600ed019 repo_commit=581e87cd73176d688c9fff35ea1b69bdd38c61d0",
+        "ZPP context-load diet patch repo_commit=29aec1b87ed9e67d2bdc0846f8b61339a54efe61",
+        "central migration files are dirty metadata-only artifacts; exact hashes returned by Protocol after validation"
       ],
-      "evidence": [
-        {
-          "artifact": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/canonical_payload_retry_20260702T104213Z/metadata/c5_prediction_payloads_C5_after_C1_c1_c4_waveB_rerun_20260630T230411Z_canonical_payload_retry.json",
-          "sha256": "d323cd9b0a0f475ed181ca955ab7e9a953596d9a3735d2f2043492c94aa01fdc",
-          "status": "blocked"
+      "authority_metric": "integrated corpus -> tokenizer/FSM/JL packet -> Gemma QNN/HTP -> exact Adreno/Vulkan consumed tensor SHA -> polar theta-only adapter update -> repeated supervised Q/A loss loop -> metadata-only authority report",
+      "first_missing_green_field": "gate_a_repaired_pathset_receiving_result_missing",
+      "next_action": "Pipeline validates Phase Engineering's Gate A repaired pathset. If APK binary/hash remains missing, route the exact missing field back to Phase Engineering; otherwise route the next unresolved apex authority field.",
+      "prompt_to_send": "XHIGH_REASONING_REQUIRED.\n\nINCOMING NEXT_HANDOFF:\n  to: Pipeline Integrator 019f27dd-4085-7d30-85e2-af95e5302a44\n  status: PENDING_ACTION_GATE_A_REPAIRED_PATHSET_RECEIVING_CHECK\n  artifacts:\n    - /Users/Zer0pa/Polymat AI/Polymath-AI/docs/PRD-APEX-HETEROGENEOUS-CELL-END-TO-END-2026-07-03.md sha256=a3606c186109c1597e43a793647cd7b7f3bd63c653d3986c25e1db09bf224a93 repo_commit=cc52769b6f95e1b555f9cb834ca5d323ad34c450\n    - /Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/external_handoff/POLYMATH_HETEROGENEOUS_CELL_EXTERNAL_TECHNICAL_PACKET_20260703.md sha256=8e78df8b4660b6162e343fdd9063418082e35e3e97601b8df2d801ce600ed019 repo_commit=581e87cd73176d688c9fff35ea1b69bdd38c61d0\n    - ZPP context-load diet patch repo_commit=29aec1b87ed9e67d2bdc0846f8b61339a54efe61\n  authority_metric: integrated corpus -> tokenizer/FSM/JL packet -> Gemma QNN/HTP -> exact Adreno/Vulkan consumed tensor SHA -> polar theta-only adapter update -> repeated supervised Q/A loss loop -> metadata-only authority report\n  first_missing_green_field: gate_a_repaired_pathset_receiving_result_missing\n  next_action: Pipeline validates Phase Engineering's Gate A repaired pathset. If the receiving check confirms the APK binary/hash is still missing, route back to Phase Engineering 019f27dd-3879-79d0-9235-2a068349a706 with the exact missing APK binary/hash field; otherwise route the first unresolved apex authority field.\n  context_load:\n    tier: targeted_reference\n    files_loaded:\n      - incoming handoff capsule\n      - active central state top-level extract\n      - ZPP next-handoff/context-load references\n    extraction_mode: targeted\n    rationale: receiving validation only needs the Gate A pathset identity, required handoff schema, and missing-field contract\n    omitted_heavy_sources:\n      - full Apex PRD\n      - full external packet\n      - full EXECUTIVE_DELIVERY_STATE.json\n      - stale WaveC/C5 route tables\n  research_escalation: none\n  nonclaims:\n    - no apex authority advance\n    - no phone/provider execution\n    - no full heterogeneous closure\n    - no full Gemma HTP/QNN forward\n    - no OpenCL final pass\n    - no C1-C4 corpus-scale training\n    - no C5 pass\n    - no 100k/1M authority\n    - no model-quality claim\n    - no raw payloads in git\n    - no secrets printed\n\nTASK:\nValidate the active Phase Engineering Gate A repaired pathset as a receiving check only. Do not run phone/provider jobs, source secrets, move raw payloads, or revive stale route tables. Return a producer-grade NEXT_HANDOFF; task-only prompts are process drift.\n\nREQUIRED OUTBOUND NEXT_HANDOFF schema:\nNEXT_HANDOFF:\n  to: \"<next lane and thread id>\"\n  status: \"<exact status>\"\n  artifacts:\n    - \"<path plus sha256, or none with reason>\"\n  first_missing_green_field: \"<one exact field>\"\n  next_action: \"<concrete next action>\"\n  prompt_to_send: \"<ready prompt carrying this handoff for next owner>\"\n  context_load:\n    tier: \"capsule_only | targeted_reference | full_prd | full_evidence\"\n    files_loaded:\n      - \"<path or reference name>\"\n    extraction_mode: \"targeted | full\"\n    rationale: \"<why this much context was necessary>\"\n    omitted_heavy_sources:\n      - \"<heavy source intentionally not loaded>\"\n  research_escalation: \"none | active_parallel_signal_lane | required with reason\"\n  nonclaims:\n    - \"<nonclaim>\"\n",
+      "context_load": {
+        "tier": "targeted_reference",
+        "files_loaded": [
+          "/Users/prinivenpillay/.codex/skills/zpp-orchestrate/SKILL.md full short skill instruction",
+          "/Users/prinivenpillay/.codex/skills/zpp-orchestrate/references/context-load.md full short reference",
+          "/Users/prinivenpillay/.codex/skills/zpp-orchestrate/references/next-handoff.md full short reference",
+          "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json targeted top-level/watchdog handoff extracts",
+          "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md full 93-line active summary",
+          "Repo Custodian incoming NEXT_HANDOFF for context-load patch commit 29aec1b87ed9e67d2bdc0846f8b61339a54efe61"
+        ],
+        "extraction_mode": "targeted",
+        "rationale": "central migration only needed active owner/gate/handoff/template fields, the frozen context-load rule, and the Repo custody handoff; the full central JSON was parsed locally for a structured rewrite but not loaded into model context",
+        "omitted_heavy_sources": [
+          "full Apex PRD",
+          "full external packet",
+          "full EXECUTIVE_DELIVERY_STATE.json in model context",
+          "stale WaveC/C5 route tables",
+          "historical run ledgers and raw payload roots"
+        ]
+      },
+      "provider_access_state": "PENDING_ACTION_PROVIDER_NOT_NEEDED_FOR_CURRENT_EDGE",
+      "raw_boundary_state": "metadata_only_no_raw_payloads",
+      "drift_action": "delete_candidate",
+      "research_escalation": "none",
+      "brief_carried_handoff_rule": "prompt_to_send embeds incoming NEXT_HANDOFF and required outbound NEXT_HANDOFF schema; WATCHDOG_RECOVERY_HANDOFF required for malformed-route repair",
+      "outbound_next_handoff_schema": {
+        "to": "<next lane and thread id>",
+        "status": "<exact status>",
+        "artifacts": [
+          "<path plus sha256, or none with reason>"
+        ],
+        "first_missing_green_field": "<one exact field>",
+        "next_action": "<concrete next action>",
+        "prompt_to_send": "<ready prompt carrying this handoff for next owner>",
+        "context_load": {
+          "tier": "capsule_only | targeted_reference | full_prd | full_evidence",
+          "files_loaded": [
+            "<path or reference name>"
+          ],
+          "extraction_mode": "targeted | full",
+          "rationale": "<why this much context was necessary>",
+          "omitted_heavy_sources": [
+            "<heavy source intentionally not loaded>"
+          ]
         },
-        {
-          "artifact": "wrapper_stdout.json",
-          "sha256": "a20145e583cd4c4a5ff9a52fb2d2332387804544193e45d3b80fdd5e3d712cec",
-          "status": "blocked"
-        },
-        {
-          "artifact": "first_missing_green_field",
-          "sha256": null,
-          "status": "ValueError:candidate_predictions_missing_record_ids"
-        }
-      ],
-      "first_missing_green_field": "ValueError:candidate_predictions_missing_record_ids",
-      "next_action": "Phase3/4 inspects and repairs the native prediction producer record-id/dataflow contract so candidate/stable outputs cover every heldout record ID, then returns source pathset or bounded rerun command.",
-      "owner_thread": "019f2059-e6a8-73b1-a9b8-8a2c499e838e",
-      "research_escalation": {
-        "status": "none",
-        "reason": "first occurrence of missing-record-id contract failure after access restore; implementation-directed repair first",
-        "packet_path": null
+        "research_escalation": "none | active_parallel_signal_lane | required with reason",
+        "nonclaims": [
+          "<nonclaim>"
+        ]
       },
       "nonclaims": [
+        "no apex authority advance",
+        "no phone/provider execution",
+        "no full heterogeneous closure",
+        "no full Gemma HTP/QNN forward",
+        "no OpenCL final pass",
+        "no C1-C4 corpus-scale training",
         "no C5 pass",
-        "no heldout scorer execution",
-        "no learning/model-quality claim",
-        "no Phase3/4 readiness claim",
         "no 100k/1M authority",
+        "no model-quality claim",
         "no raw payloads in git",
-        "no secrets printed",
-        "no Comet-backed accepted run"
-      ],
-      "do_not_do": [
-        "do not substitute heldout loss or metadata for prediction payload pass",
-        "do not move raw JSONLs into git",
-        "do not rerun final scorer until payload wrapper passes"
+        "no secrets printed"
       ]
     },
     "nonclaims": [
+      "no apex authority advance",
+      "no phone/provider execution",
+      "no full heterogeneous closure",
+      "no full Gemma HTP/QNN forward",
+      "no OpenCL final pass",
+      "no C1-C4 corpus-scale training",
       "no C5 pass",
-      "no heldout scorer execution after the timeout",
-      "no learning/model-quality claim",
-      "no Phase3/4 readiness",
       "no 100k/1M authority",
+      "no model-quality claim",
       "no raw payloads in git",
-      "no secrets printed",
-      "no Comet-backed accepted run"
+      "no secrets printed"
     ],
     "nonclaims_preserved": [
       "no C5 pass",
@@ -3034,8 +3163,8 @@
       "no secrets printed",
       "no Comet-backed accepted run"
     ],
-    "owner": "Phase3/4 Engineer replacement 019f2059-e6a8-73b1-a9b8-8a2c499e838e",
-    "owner_thread": "019f2059-e6a8-73b1-a9b8-8a2c499e838e",
+    "owner": "Pipeline Integrator 019f27dd-4085-7d30-85e2-af95e5302a44",
+    "owner_thread": "019f27dd-4085-7d30-85e2-af95e5302a44",
     "phase2_status_by_phase": {
       "C1": {
         "packets": 5180,
@@ -3252,227 +3381,29 @@
     "prior_multi_token_orchestration_custody_status": "native_multi_token_qa_prompt_sequence_orchestration_committed_pushed",
     "probe_stderr_sha256": "2f5f6fbcac5e2090b783dc59e895ffbd5d7277e308e50304dc85069ce4fc8a3d",
     "probe_stdout_metadata_sha256": "55da33f7499f4fe0b6076d23ae35f205558027198a23dc9942c9e057593b807e",
-    "raw_payload_boundary": {
-      "phase2": "raw PJP1 remains under Termux home outside repo; repo stores compact metadata only",
-      "phase34": "raw PJP1, HTP raw output, OpenCL tensors, and adapters remain on device/Termux; repair must keep compact JSON only",
-      "report_root_scan": "metadata-freeze report root had 179 tracked files and clean forbidden suffix scans; raw payloads not committed"
-    },
-    "recursive_improvement_next_step": "Use metadata report and wrapper failure to repair the producer record-id contract. If the same missing-record-id field repeats after a Phase3/4 repair, escalate bounded research on prediction row identity/dataflow semantics.",
-    "repo_custodian_per_layer_input_runtime_repair_commit": "58872fdc3dd7ff6efb73321252d58f3447eb0e2b",
-    "repo_custodian_post_phone_probe_central_mirror_commit": "5802ea1e25222c068dd3fcb5050c91f20f72357b",
-    "repo_custody_state_freeze": {
-      "branch": "origin/gemma4-megakernel-native-training",
-      "commit": "7290fbec13c6a13e88710afddfe4af70637096f9",
-      "pathset": [
-        "docs/PRD-C1-C5-DRIFT-FREE-METRICS-COMET-EXECUTION-2026-06-30.md",
-        "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json",
-        "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md"
-      ],
-      "status": "executive_state_c5_inference_payload_edge_committed_pushed"
-    },
-    "research_escalation": "none",
-    "run_label": "c1_c4_waveB_rerun_20260630T230411Z",
-    "run_root": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z",
-    "runner_sha256": "31015b6844e20d74cd67f69cbb152fa4ccba4200992d3d60cc458d145afda23c",
-    "runner_size_bytes": 554312,
-    "secondary_missing_green_field": "c5_full_decoder_final_hidden_stream_missing_for_lm_head_nll_if_phase34_confirms_current_precondition",
-    "status": "canonical_c5_prediction_payload_report_failed_candidate_predictions_missing_record_ids",
-    "status_classification": "PENDING_ACTION_PHASE34_CANDIDATE_PREDICTION_RECORD_ID_COVERAGE_REPAIR_AFTER_BOUNDED_RETRY",
-    "thread_replacements_20260702T011011Z": {
-      "archived_stale_phase34_thread": "019f13da-d897-7ba2-8ed1-b959892f5ed4",
-      "archived_stale_repo_custodian_thread": "019f1ac2-0f0f-7721-bf46-ad402dbd9050",
-      "phase34_replacement_thread": "019f2059-e6a8-73b1-a9b8-8a2c499e838e",
-      "repo_custodian_replacement_thread": "019f2059-ef2c-7762-ba42-963b58f3af90",
-      "status": "replacement_threads_mobilized"
-    },
-    "threads_nudged_this_tick": [
-      "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: polled completed failed retry with NEXT_HANDOFF.",
-      "Phase3/4 Engineer replacement 019f2059-e6a8-73b1-a9b8-8a2c499e838e: sent candidate prediction record-ID coverage repair prompt.",
-      "Repo Custodian replacement 019f2059-ef2c-7762-ba42-963b58f3af90: central two-file freeze route pending."
-    ],
-    "timestamp_utc": "2026-07-02T10:44:57Z",
-    "updated_at": "2026-07-02T10:44:57Z",
-    "updated_at_utc": "2026-07-02T10:44:57Z",
-    "updated_utc": "2026-07-02T10:44:57Z",
-    "user_action_required": false,
-    "canonical_scorer_blocker_central_mirror_custody_20260702T022841Z": {
-      "status": "canonical_scorer_blocker_central_mirror_committed_pushed",
-      "custody_thread": "019f2059-ef2c-7762-ba42-963b58f3af90",
-      "commit": "ce1d16cc3c6ce55040eae2a20ea73fcccececf02",
-      "branch": "origin/gemma4-megakernel-native-training",
-      "frozen_pathset": {
-        "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json": "f8c6135088be9870cf018ea6b55b14c8e70094d209d07a749889885b870078f6",
-        "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md": "ac20f0ff45c97e6f71fe830b097c09b9e27c851164181b1130c4032043f3c9cf"
-      },
-      "verification": [
-        "JSON validity passed",
-        "strict ZPP lint passed",
-        "scoped diff hygiene passed",
-        "raw suffix scans returned 0",
-        "value-shaped secret/token scans returned 0",
-        "staged pathset exactly two central files",
-        "local HEAD matches remote branch"
-      ]
-    },
-    "c5_after_c1_canonical_payload_retry_after_timeout_20260702T022841Z": {
-      "status": "producer_timeout_retry_command_ready_for_execution_pending_termux_access",
-      "phase34_thread": "019f2059-e6a8-73b1-a9b8-8a2c499e838e",
-      "phase34_returned_status": "producer_timeout_retry_command_ready_for_execution",
-      "source_change_needed": false,
-      "wrapper_timeout_seconds": 1800,
-      "native_timeout_seconds": 1500,
-      "producer_timeout_rule": "native_timeout_seconds must be less than wrapper_timeout_seconds so the producer owns native cleanup before the outer wrapper timeout fires",
-      "execution_owner_thread_after_access_restore": "019f138c-fb51-7c53-a41a-ab8eac950d9c",
-      "user_action_required": true,
-      "next_action": "Restore Termux command access, then run exactly one bounded canonical prediction payload retry from the Phase3/4 command.",
-      "stop_condition": "If candidate producer times out at 1500s or wrapper reaches 1800s, stop and return metadata/logs without scorer. If candidate succeeds but stable times out, stop and return metadata/logs. Raw prediction JSONLs remain outside git.",
-      "research_escalation": "none",
-      "nonclaims": [
-        "no C5 pass",
-        "no heldout scorer execution after the timeout",
-        "no learning/model-quality claim",
-        "no Phase3/4 readiness",
-        "no 100k/1M authority",
-        "no raw payloads in git",
-        "no secrets printed",
-        "no Comet-backed accepted run"
-      ]
-    },
-    "producer_timeout_retry_ready_central_mirror_custody_20260702T023911Z": {
-      "status": "producer_timeout_retry_ready_central_mirror_committed_pushed",
-      "custody_thread": "019f2059-ef2c-7762-ba42-963b58f3af90",
-      "commit": "9946fcd0ebc247f75440a855235aeb29eeea8871",
-      "branch": "origin/gemma4-megakernel-native-training",
-      "frozen_pathset": {
-        "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json": "65981f6b30930a9a7b7a0079d7f9f782d291bd0a45984842142b8099ac9c50d9",
-        "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md": "3ad31c037a9a2f7d2217ab29d70f939b111d5113ea561ed846f79ba0f875faf8"
-      },
-      "verification": [
-        "JSON validity passed",
-        "strict ZPP lint passed",
-        "scoped diff hygiene passed",
-        "cached diff hygiene passed",
-        "added-line raw suffix scan 0",
-        "added-line value-shaped secret/token scan 0",
-        "cached raw suffix name scan 0",
-        "staged pathset exactly two files",
-        "local HEAD matches remote branch"
-      ],
-      "first_missing_green_field": "producer_native_timeout_must_be_less_than_wrapper_timeout_and_termux_command_access_blocked",
-      "next_action": "User/operator restores Termux command access, then Execution runs exactly one bounded canonical payload retry with native timeout 1500s and wrapper timeout 1800s.",
-      "nonclaims": [
-        "no C5 pass",
-        "no heldout scorer execution after the timeout",
-        "no learning/model-quality claim",
-        "no Phase3/4 readiness",
-        "no 100k/1M authority",
-        "no raw payloads in git",
-        "no secrets printed",
-        "no Comet-backed accepted run"
-      ],
-      "next_handoff": {
-        "schema_version": "zpp_next_handoff_v1",
-        "run_id": "c5_after_c1_producer_timeout_retry_ready_central_mirror_custody_20260702T023911Z",
-        "from_lane": "repo_custodian_replacement",
-        "to_lane": "engineering_meta_watcher",
-        "sent": true,
-        "objective": "Record retry-ready canonical C5 payload state after producer timeout without claiming C5 pass.",
-        "authority_metric": "Final C5 authority still requires scripts/host/run_c5_eval.py pass_fail.status=pass from executed metrics; this packet is custody metadata only.",
-        "current_edge": "WaveB_C5_after_C1_canonical_payload_bounded_retry_ready_waiting_on_termux_command_access_after_producer_timeout",
-        "current_verdict": "blocked",
-        "completed_work": [
-          "frozen two-file central retry-ready mirror",
-          "verified raw/secret boundaries",
-          "pushed origin/gemma4-megakernel-native-training"
-        ],
-        "evidence": [
-          {
-            "artifact": "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json",
-            "sha256": "65981f6b30930a9a7b7a0079d7f9f782d291bd0a45984842142b8099ac9c50d9",
-            "status": "frozen_in_commit_9946fcd0ebc247f75440a855235aeb29eeea8871"
-          },
-          {
-            "artifact": "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md",
-            "sha256": "3ad31c037a9a2f7d2217ab29d70f939b111d5113ea561ed846f79ba0f875faf8",
-            "status": "frozen_in_commit_9946fcd0ebc247f75440a855235aeb29eeea8871"
-          },
-          {
-            "artifact": "origin/gemma4-megakernel-native-training",
-            "sha256": null,
-            "status": "commit_9946fcd0ebc247f75440a855235aeb29eeea8871"
-          }
-        ],
-        "first_missing_green_field": "producer_native_timeout_must_be_less_than_wrapper_timeout_and_termux_command_access_blocked",
-        "next_action": "User/operator restores Termux command access; then Execution runs one bounded canonical payload retry with native timeout 1500s and wrapper timeout 1800s.",
-        "owner_thread": "019f138c-fb51-7c53-a41a-ab8eac950d9c",
-        "research_escalation": {
-          "status": "none",
-          "reason": "first retry-ready access blocker; no repeated same-field failure after restored access yet",
-          "packet_path": null
-        },
-        "nonclaims": [
-          "no C5 pass",
-          "no heldout scorer execution after the timeout",
-          "no learning/model-quality claim",
-          "no Phase3/4 readiness",
-          "no 100k/1M authority",
-          "no raw payloads in git",
-          "no secrets printed",
-          "no Comet-backed accepted run"
-        ],
-        "do_not_do": [
-          "do not rerun Execution until Termux command access is restored",
-          "do not move raw prediction/checkpoint/train payloads into git",
-          "do not claim pass without final run_c5_eval.py report pass"
-        ]
-      }
-    },
     "producer_timeout_retry_custody_commit_record_central_mirror_custody_20260702T024941Z": {
-      "status": "producer_timeout_retry_custody_commit_record_central_mirror_committed_pushed",
-      "custody_thread": "019f2059-ef2c-7762-ba42-963b58f3af90",
-      "commit": "2cccbe86fab521d1c2fa14987b4ab536cf809254",
       "branch": "origin/gemma4-megakernel-native-training",
+      "commit": "2cccbe86fab521d1c2fa14987b4ab536cf809254",
+      "custody_thread": "019f2059-ef2c-7762-ba42-963b58f3af90",
+      "first_missing_green_field": "producer_native_timeout_must_be_less_than_wrapper_timeout_and_termux_command_access_blocked",
       "frozen_pathset": {
         "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json": "3c7cb3804b1e39002cc4edea105af2f82f29177f0af08fb5fc05a6079f12c98e",
         "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md": "bf714f661fb4dfc821d9e7ba63c21668b06aff2dea8ec2f4c4acf5f0baaf7ccf"
       },
-      "verification": [
-        "JSON validity passed",
-        "strict ZPP lint passed",
-        "scoped diff hygiene passed",
-        "cached diff hygiene passed",
-        "added-line raw suffix scan 0",
-        "added-line value-shaped secret/token scan 0",
-        "cached raw suffix name scan 0",
-        "staged pathset exactly two files",
-        "local HEAD matches remote branch"
-      ],
-      "first_missing_green_field": "producer_native_timeout_must_be_less_than_wrapper_timeout_and_termux_command_access_blocked",
       "next_action": "User/operator restores Termux command access, then Execution runs exactly one bounded canonical payload retry with native timeout 1500s and wrapper timeout 1800s.",
-      "nonclaims": [
-        "no C5 pass",
-        "no heldout scorer execution after the timeout",
-        "no learning/model-quality claim",
-        "no Phase3/4 readiness",
-        "no 100k/1M authority",
-        "no raw payloads in git",
-        "no secrets printed",
-        "no Comet-backed accepted run"
-      ],
       "next_handoff": {
-        "schema_version": "zpp_next_handoff_v1",
-        "run_id": "c5_after_c1_producer_timeout_retry_custody_commit_record_20260702T024941Z",
-        "from_lane": "repo_custodian_replacement",
-        "to_lane": "engineering_meta_watcher",
-        "sent": true,
-        "objective": "Close central custody for retry-ready canonical C5 payload state without claiming authority pass.",
         "authority_metric": "Final C5 authority still requires scripts/host/run_c5_eval.py pass_fail.status=pass from executed metrics; this packet is custody metadata only.",
-        "current_edge": "WaveB_C5_after_C1_canonical_payload_bounded_retry_ready_waiting_on_termux_command_access_after_producer_timeout",
-        "current_verdict": "blocked",
         "completed_work": [
           "frozen commit-record central mirror",
           "verified raw/secret boundaries",
           "pushed origin/gemma4-megakernel-native-training"
+        ],
+        "current_edge": "WaveB_C5_after_C1_canonical_payload_bounded_retry_ready_waiting_on_termux_command_access_after_producer_timeout",
+        "current_verdict": "blocked",
+        "do_not_do": [
+          "do not nudge Execution until Termux command access is restored",
+          "do not move raw payloads into git",
+          "do not claim pass without final run_c5_eval.py report pass"
         ],
         "evidence": [
           {
@@ -3492,13 +3423,8 @@
           }
         ],
         "first_missing_green_field": "producer_native_timeout_must_be_less_than_wrapper_timeout_and_termux_command_access_blocked",
+        "from_lane": "repo_custodian_replacement",
         "next_action": "User/operator restores Termux command access; then Execution runs exactly one bounded canonical payload retry with native timeout 1500s and wrapper timeout 1800s.",
-        "owner_thread": "019f138c-fb51-7c53-a41a-ab8eac950d9c",
-        "research_escalation": {
-          "status": "none",
-          "reason": "access blocker remains first occurrence after retry command; no repeated same-field failure after restored access yet",
-          "packet_path": null
-        },
         "nonclaims": [
           "no C5 pass",
           "no heldout scorer execution after the timeout",
@@ -3509,18 +3435,320 @@
           "no secrets printed",
           "no Comet-backed accepted run"
         ],
+        "objective": "Close central custody for retry-ready canonical C5 payload state without claiming authority pass.",
+        "owner_thread": "019f138c-fb51-7c53-a41a-ab8eac950d9c",
+        "research_escalation": {
+          "packet_path": null,
+          "reason": "access blocker remains first occurrence after retry command; no repeated same-field failure after restored access yet",
+          "status": "none"
+        },
+        "run_id": "c5_after_c1_producer_timeout_retry_custody_commit_record_20260702T024941Z",
+        "schema_version": "zpp_next_handoff_v1",
+        "sent": true,
+        "to_lane": "engineering_meta_watcher"
+      },
+      "nonclaims": [
+        "no C5 pass",
+        "no heldout scorer execution after the timeout",
+        "no learning/model-quality claim",
+        "no Phase3/4 readiness",
+        "no 100k/1M authority",
+        "no raw payloads in git",
+        "no secrets printed",
+        "no Comet-backed accepted run"
+      ],
+      "status": "producer_timeout_retry_custody_commit_record_central_mirror_committed_pushed",
+      "verification": [
+        "JSON validity passed",
+        "strict ZPP lint passed",
+        "scoped diff hygiene passed",
+        "cached diff hygiene passed",
+        "added-line raw suffix scan 0",
+        "added-line value-shaped secret/token scan 0",
+        "cached raw suffix name scan 0",
+        "staged pathset exactly two files",
+        "local HEAD matches remote branch"
+      ]
+    },
+    "producer_timeout_retry_ready_central_mirror_custody_20260702T023911Z": {
+      "branch": "origin/gemma4-megakernel-native-training",
+      "commit": "9946fcd0ebc247f75440a855235aeb29eeea8871",
+      "custody_thread": "019f2059-ef2c-7762-ba42-963b58f3af90",
+      "first_missing_green_field": "producer_native_timeout_must_be_less_than_wrapper_timeout_and_termux_command_access_blocked",
+      "frozen_pathset": {
+        "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json": "65981f6b30930a9a7b7a0079d7f9f782d291bd0a45984842142b8099ac9c50d9",
+        "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md": "3ad31c037a9a2f7d2217ab29d70f939b111d5113ea561ed846f79ba0f875faf8"
+      },
+      "next_action": "User/operator restores Termux command access, then Execution runs exactly one bounded canonical payload retry with native timeout 1500s and wrapper timeout 1800s.",
+      "next_handoff": {
+        "authority_metric": "Final C5 authority still requires scripts/host/run_c5_eval.py pass_fail.status=pass from executed metrics; this packet is custody metadata only.",
+        "completed_work": [
+          "frozen two-file central retry-ready mirror",
+          "verified raw/secret boundaries",
+          "pushed origin/gemma4-megakernel-native-training"
+        ],
+        "current_edge": "WaveB_C5_after_C1_canonical_payload_bounded_retry_ready_waiting_on_termux_command_access_after_producer_timeout",
+        "current_verdict": "blocked",
         "do_not_do": [
-          "do not nudge Execution until Termux command access is restored",
-          "do not move raw payloads into git",
+          "do not rerun Execution until Termux command access is restored",
+          "do not move raw prediction/checkpoint/train payloads into git",
           "do not claim pass without final run_c5_eval.py report pass"
+        ],
+        "evidence": [
+          {
+            "artifact": "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json",
+            "sha256": "65981f6b30930a9a7b7a0079d7f9f782d291bd0a45984842142b8099ac9c50d9",
+            "status": "frozen_in_commit_9946fcd0ebc247f75440a855235aeb29eeea8871"
+          },
+          {
+            "artifact": "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md",
+            "sha256": "3ad31c037a9a2f7d2217ab29d70f939b111d5113ea561ed846f79ba0f875faf8",
+            "status": "frozen_in_commit_9946fcd0ebc247f75440a855235aeb29eeea8871"
+          },
+          {
+            "artifact": "origin/gemma4-megakernel-native-training",
+            "sha256": null,
+            "status": "commit_9946fcd0ebc247f75440a855235aeb29eeea8871"
+          }
+        ],
+        "first_missing_green_field": "producer_native_timeout_must_be_less_than_wrapper_timeout_and_termux_command_access_blocked",
+        "from_lane": "repo_custodian_replacement",
+        "next_action": "User/operator restores Termux command access; then Execution runs one bounded canonical payload retry with native timeout 1500s and wrapper timeout 1800s.",
+        "nonclaims": [
+          "no C5 pass",
+          "no heldout scorer execution after the timeout",
+          "no learning/model-quality claim",
+          "no Phase3/4 readiness",
+          "no 100k/1M authority",
+          "no raw payloads in git",
+          "no secrets printed",
+          "no Comet-backed accepted run"
+        ],
+        "objective": "Record retry-ready canonical C5 payload state after producer timeout without claiming C5 pass.",
+        "owner_thread": "019f138c-fb51-7c53-a41a-ab8eac950d9c",
+        "research_escalation": {
+          "packet_path": null,
+          "reason": "first retry-ready access blocker; no repeated same-field failure after restored access yet",
+          "status": "none"
+        },
+        "run_id": "c5_after_c1_producer_timeout_retry_ready_central_mirror_custody_20260702T023911Z",
+        "schema_version": "zpp_next_handoff_v1",
+        "sent": true,
+        "to_lane": "engineering_meta_watcher"
+      },
+      "nonclaims": [
+        "no C5 pass",
+        "no heldout scorer execution after the timeout",
+        "no learning/model-quality claim",
+        "no Phase3/4 readiness",
+        "no 100k/1M authority",
+        "no raw payloads in git",
+        "no secrets printed",
+        "no Comet-backed accepted run"
+      ],
+      "status": "producer_timeout_retry_ready_central_mirror_committed_pushed",
+      "verification": [
+        "JSON validity passed",
+        "strict ZPP lint passed",
+        "scoped diff hygiene passed",
+        "cached diff hygiene passed",
+        "added-line raw suffix scan 0",
+        "added-line value-shaped secret/token scan 0",
+        "cached raw suffix name scan 0",
+        "staged pathset exactly two files",
+        "local HEAD matches remote branch"
+      ]
+    },
+    "raw_payload_boundary": {
+      "phase2": "raw PJP1 remains under Termux home outside repo; repo stores compact metadata only",
+      "phase34": "raw PJP1, HTP raw output, OpenCL tensors, and adapters remain on device/Termux; repair must keep compact JSON only",
+      "report_root_scan": "metadata-freeze report root had 179 tracked files and clean forbidden suffix scans; raw payloads not committed"
+    },
+    "recursive_improvement_next_step": "Use metadata report and wrapper failure to repair the producer record-id contract. If the same missing-record-id field repeats after a Phase3/4 repair, escalate bounded research on prediction row identity/dataflow semantics.",
+    "repo_custodian_per_layer_input_runtime_repair_commit": "58872fdc3dd7ff6efb73321252d58f3447eb0e2b",
+    "repo_custodian_post_phone_probe_central_mirror_commit": "5802ea1e25222c068dd3fcb5050c91f20f72357b",
+    "repo_custody_state_freeze": {
+      "branch": "origin/gemma4-megakernel-native-training",
+      "commit": "7290fbec13c6a13e88710afddfe4af70637096f9",
+      "next_handoff": {
+        "authority_metric": "Custody commit is provenance only; final C5 authority still requires run_c5_eval.py pass report from executed metrics.",
+        "completed_work": [
+          "central state pathset committed and pushed"
+        ],
+        "current_edge": "historical_c5_inference_payload_edge_custody_freeze",
+        "current_verdict": "pending_action",
+        "do_not_do": [
+          "do not claim C5 pass from custody freeze",
+          "do not move raw payloads into git"
+        ],
+        "evidence": [
+          {
+            "artifact": "docs/PRD-C1-C5-DRIFT-FREE-METRICS-COMET-EXECUTION-2026-06-30.md",
+            "sha256": null,
+            "status": "frozen_in_commit_7290fbec13c6a13e88710afddfe4af70637096f9"
+          },
+          {
+            "artifact": "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json",
+            "sha256": null,
+            "status": "frozen_in_commit_7290fbec13c6a13e88710afddfe4af70637096f9"
+          },
+          {
+            "artifact": "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md",
+            "sha256": null,
+            "status": "frozen_in_commit_7290fbec13c6a13e88710afddfe4af70637096f9"
+          }
+        ],
+        "first_missing_green_field": "next_runtime_or_execution_gate_from_engineering_meta",
+        "from_lane": "Repo Custodian historical mirror",
+        "next_action": "Engineering/Meta routes the next runtime or custody edge based on current central state.",
+        "nonclaims": [
+          "no C5 pass",
+          "no heldout scorer execution without real payloads and candidate_train_loss",
+          "no learning/model-quality claim",
+          "no Phase3/4 readiness claim",
+          "no 100k/1M authority",
+          "no raw payloads in git",
+          "no secrets printed",
+          "no Comet-backed accepted run"
+        ],
+        "objective": "Record historical executive state custody freeze and return control to Engineering/Meta.",
+        "owner_thread": null,
+        "research_escalation": {
+          "packet_path": null,
+          "reason": "historical metadata mirror lint closure",
+          "status": "none"
+        },
+        "run_id": "historical_executive_state_c5_inference_payload_edge_committed_pushed",
+        "schema_version": "zpp_next_handoff_v1",
+        "sent": true,
+        "to_lane": "Engineering/Meta watcher"
+      },
+      "pathset": [
+        "docs/PRD-C1-C5-DRIFT-FREE-METRICS-COMET-EXECUTION-2026-06-30.md",
+        "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json",
+        "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md"
+      ],
+      "status": "executive_state_c5_inference_payload_edge_committed_pushed"
+    },
+    "research_escalation": "none",
+    "reset_artifact": "runtime/reports/orchestration/OBJECTIVE_RESET_FUSED_MEGAKERNEL_REORIENTATION_20260702T135456Z.md",
+    "reset_artifact_sha256": "2db6973e1f37ada09b1cac61c9b7f5e7e5413ba28d5ef63f28233d7549e8069f",
+    "run_label": "c1_c4_waveB_rerun_20260630T230411Z",
+    "run_root": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z",
+    "runner_sha256": "31015b6844e20d74cd67f69cbb152fa4ccba4200992d3d60cc458d145afda23c",
+    "runner_size_bytes": 554312,
+    "secondary_missing_green_field": "c5_full_decoder_final_hidden_stream_missing_for_lm_head_nll_if_phase34_confirms_current_precondition",
+    "status": "apex_gate_a_context_load_migration_active",
+    "status_classification": "PENDING_ACTION_GATE_A_REPAIRED_PATHSET_RECEIVING_CHECK",
+    "thread_replacements_20260702T011011Z": {
+      "archived_stale_phase34_thread": "019f13da-d897-7ba2-8ed1-b959892f5ed4",
+      "archived_stale_repo_custodian_thread": "019f1ac2-0f0f-7721-bf46-ad402dbd9050",
+      "phase34_replacement_thread": "019f2059-e6a8-73b1-a9b8-8a2c499e838e",
+      "repo_custodian_replacement_thread": "019f2059-ef2c-7762-ba42-963b58f3af90",
+      "status": "replacement_threads_mobilized"
+    },
+    "threads_nudged_this_tick": [
+      "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: polled completed failed retry with NEXT_HANDOFF.",
+      "Phase3/4 Engineer replacement 019f2059-e6a8-73b1-a9b8-8a2c499e838e: sent candidate prediction record-ID coverage repair prompt.",
+      "Repo Custodian replacement 019f2059-ef2c-7762-ba42-963b58f3af90: central two-file freeze route pending."
+    ],
+    "timestamp_utc": "2026-07-02T11:08:58Z",
+    "updated_at": "2026-07-02T10:44:57Z",
+    "updated_at_utc": "2026-07-03T13:31:29Z",
+    "updated_utc": "2026-07-02T14:02:02Z",
+    "user_action_required": false,
+    "waveC_phase34_route_artifact": "runtime/reports/orchestration/WAVEC_PHASE34_ARCHITECTURE_DECISION_20260702T135829Z.md",
+    "waveC_phase34_route_sha256": "fb0018a728feba7e9a2d3c417a0d3a8f9e69c7631afe01eadb7aff3e88ce4fbe",
+    "active_prd_path": "/Users/Zer0pa/Polymat AI/Polymath-AI/docs/PRD-APEX-HETEROGENEOUS-CELL-END-TO-END-2026-07-03.md",
+    "active_prd_sha256": "a3606c186109c1597e43a793647cd7b7f3bd63c653d3986c25e1db09bf224a93",
+    "authority_metric": "integrated corpus -> tokenizer/FSM/JL packet -> Gemma QNN/HTP -> exact Adreno/Vulkan consumed tensor SHA -> polar theta-only adapter update -> repeated supervised Q/A loss loop -> metadata-only authority report",
+    "mechanical_boundary_crossed": true,
+    "context_load": {
+      "tier": "targeted_reference",
+      "files_loaded": [
+        "/Users/prinivenpillay/.codex/skills/zpp-orchestrate/SKILL.md full short skill instruction",
+        "/Users/prinivenpillay/.codex/skills/zpp-orchestrate/references/context-load.md full short reference",
+        "/Users/prinivenpillay/.codex/skills/zpp-orchestrate/references/next-handoff.md full short reference",
+        "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json targeted top-level/watchdog handoff extracts",
+        "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md full 93-line active summary",
+        "Repo Custodian incoming NEXT_HANDOFF for context-load patch commit 29aec1b87ed9e67d2bdc0846f8b61339a54efe61"
+      ],
+      "extraction_mode": "targeted",
+      "rationale": "central migration only needed active owner/gate/handoff/template fields, the frozen context-load rule, and the Repo custody handoff; the full central JSON was parsed locally for a structured rewrite but not loaded into model context",
+      "omitted_heavy_sources": [
+        "full Apex PRD",
+        "full external packet",
+        "full EXECUTIVE_DELIVERY_STATE.json in model context",
+        "stale WaveC/C5 route tables",
+        "historical run ledgers and raw payload roots"
+      ]
+    },
+    "provider_access_state": "PENDING_ACTION_PROVIDER_NOT_NEEDED_FOR_CURRENT_EDGE",
+    "raw_boundary_state": "metadata_only_no_raw_payloads",
+    "drift_action": "none",
+    "active_handoff_template": {
+      "schema_version": "zpp_active_handoff_template_v1",
+      "status": "active",
+      "brief_carried_handoff_rule": {
+        "schema_version": "zpp_brief_carried_handoff_rule_v1",
+        "status": "active",
+        "rule": "Every mobilization brief must contain the incoming NEXT_HANDOFF, or WATCHDOG_RECOVERY_HANDOFF for route repair, plus the outbound NEXT_HANDOFF schema the lane must return.",
+        "required_brief_fields": [
+          "incoming_NEXT_HANDOFF_or_WATCHDOG_RECOVERY_HANDOFF",
+          "outbound_NEXT_HANDOFF_schema",
+          "context_load",
+          "first_missing_green_field",
+          "nonclaims"
+        ],
+        "process_drift": "task-only prompts without handoff fields are invalid route surfaces",
+        "watchdog_recovery_rule": "Watchdog/Meta may wrap a malformed route only when it labels the packet WATCHDOG_RECOVERY_HANDOFF rather than normal producer handoff."
+      },
+      "inbound_required": "NEXT_HANDOFF or WATCHDOG_RECOVERY_HANDOFF",
+      "outbound_required_schema": {
+        "to": "<next lane and thread id>",
+        "status": "<exact status>",
+        "artifacts": [
+          "<path plus sha256, or none with reason>"
+        ],
+        "first_missing_green_field": "<one exact field>",
+        "next_action": "<concrete next action>",
+        "prompt_to_send": "<ready prompt carrying this handoff for next owner>",
+        "context_load": {
+          "tier": "capsule_only | targeted_reference | full_prd | full_evidence",
+          "files_loaded": [
+            "<path or reference name>"
+          ],
+          "extraction_mode": "targeted | full",
+          "rationale": "<why this much context was necessary>",
+          "omitted_heavy_sources": [
+            "<heavy source intentionally not loaded>"
+          ]
+        },
+        "research_escalation": "none | active_parallel_signal_lane | required with reason",
+        "nonclaims": [
+          "<nonclaim>"
         ]
       }
+    },
+    "brief_carried_handoff_rule": {
+      "schema_version": "zpp_brief_carried_handoff_rule_v1",
+      "status": "active",
+      "rule": "Every mobilization brief must contain the incoming NEXT_HANDOFF, or WATCHDOG_RECOVERY_HANDOFF for route repair, plus the outbound NEXT_HANDOFF schema the lane must return.",
+      "required_brief_fields": [
+        "incoming_NEXT_HANDOFF_or_WATCHDOG_RECOVERY_HANDOFF",
+        "outbound_NEXT_HANDOFF_schema",
+        "context_load",
+        "first_missing_green_field",
+        "nonclaims"
+      ],
+      "process_drift": "task-only prompts without handoff fields are invalid route surfaces",
+      "watchdog_recovery_rule": "Watchdog/Meta may wrap a malformed route only when it labels the packet WATCHDOG_RECOVERY_HANDOFF rather than normal producer handoff."
     }
   },
   "adapter_site_policy_sha256": "f38bd8109bbb77e9e94a5b4b34a238bc0ec0a39e7736870c97defe5aecc93357",
   "additional_missing_runtime_field_after_contract_patch": "decoder_manifest_tensor_role_inventory_missing",
-  "artifact_waiting_on": "Phase3/4 repair for canonical C5 prediction payload record coverage: candidate predictions must emit rows covering all 53 heldout record IDs before heldout metrics or final C5 eval can run.",
-  "authorization_needed": true,
+  "artifact_waiting_on": "Pipeline receiving result for Phase Engineering Gate A repaired pathset; APK binary/hash status must be explicit.",
+  "authorization_needed": false,
   "c5_after_c1_42_layer_orchestration_probe_20260701T213036Z": {
     "blockers": [
       "c5_full_decoder_chunked_lm_head_nll_writer_missing"
@@ -3668,6 +3896,142 @@
     "status": "c5_after_c1_candidate_prediction_jsonl_probe_passed",
     "timestamp_utc": "2026-07-01T23:57:08Z"
   },
+  "c5_after_c1_candidate_prediction_record_id_coverage_repair_20260702T110813Z": {
+    "first_missing_green_field_after_repair_pathset": "none_after_custody",
+    "local_verification": [
+      {
+        "command": "git diff --check -- integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/include/polymath/gemma4/c5_full_decoder_runtime.h integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_qa_inference.cpp tests/test_c5_prediction_payloads.py",
+        "result": "passed"
+      },
+      {
+        "command": "python3.11 -m pytest tests/test_c5_prediction_payloads.py -k 'rejects_missing_candidate_record_ids_before_scorer or native_c5_runtime_iterates_heldout_records_for_prediction_payloads'",
+        "phone_execution": false,
+        "result": "2 passed, 4 deselected",
+        "scorer_execution": false
+      },
+      {
+        "command": "cmake -S integrations/gemma4-snapdragon-megakernel/gemma4_megakernel -B /tmp/polymath_c5_row_coverage_build -DCMAKE_BUILD_TYPE=Release && cmake --build /tmp/polymath_c5_row_coverage_build --target gemma4_layer_runner -j 4",
+        "result": "passed"
+      }
+    ],
+    "next_action_after_custody": "Execution reruns exactly one canonical C5 prediction payload wrapper retry from the frozen source. Green is wrapper status pass with candidate_prediction_count=stable_baseline_prediction_count=53; fail closed on blocked status or timeout and do not run final scorer unless payload wrapper passes.",
+    "nonclaims": [
+      "no C5 pass",
+      "no heldout scorer execution",
+      "no learning/model-quality claim",
+      "no Phase3/4 readiness claim",
+      "no 100k/1M authority",
+      "no raw payloads in git",
+      "no secrets printed",
+      "no Comet-backed accepted run"
+    ],
+    "raw_boundary": {
+      "metadata_only": true,
+      "raw_checkpoint_payloads_in_git": false,
+      "raw_prediction_payloads_in_git": false,
+      "raw_train_payloads_in_git": false
+    },
+    "report_path": "runtime/reports/orchestration/c5_after_c1_candidate_prediction_record_id_coverage_repair_20260702T_phase34.json",
+    "report_sha256": "8b2fb42bbfdc8ba55d1580227faf6c80fed08e8824a813620974b69d702f5823",
+    "research_escalation": "none",
+    "root_cause": "Native C5 full-decoder producer read only the first non-empty heldout QA JSONL row and emitted a single-row prediction JSONL; host wrapper correctly failed closed against the 53-row heldout split.",
+    "source_pathset": {
+      "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/include/polymath/gemma4/c5_full_decoder_runtime.h": "39178e82f366da7ee6c4744a2666b986f53516316fa819d6595525d90c46bb35",
+      "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp": "f772b1063f2508ad014f15b23e9034166002391f326e35f540e78041fbb53c12",
+      "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_qa_inference.cpp": "757eb96fb5f0523428cac7e7f1829d30b65e228314a01f41dad488597f570914",
+      "runtime/reports/orchestration/c5_after_c1_candidate_prediction_record_id_coverage_repair_20260702T_phase34.json": "8b2fb42bbfdc8ba55d1580227faf6c80fed08e8824a813620974b69d702f5823",
+      "tests/test_c5_prediction_payloads.py": "f68a93b5a36498131ea7e43ad40623d3d7e5da4c637db4c704adb0e4dc12bf9e"
+    },
+    "status": "candidate_prediction_record_id_coverage_repair_ready"
+  },
+  "c5_after_c1_candidate_prediction_record_id_coverage_repair_custody_20260702T112257Z": {
+    "branch": "origin/gemma4-megakernel-native-training",
+    "commit": "d73e0e8e70166c523dbff25011e242a17a16df1d",
+    "custody_thread": "019f2059-ef2c-7762-ba42-963b58f3af90",
+    "first_missing_green_field_after_custody": "canonical_payload_record_id_coverage_rerun_report_missing",
+    "frozen_pathset": {
+      "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/include/polymath/gemma4/c5_full_decoder_runtime.h": "39178e82f366da7ee6c4744a2666b986f53516316fa819d6595525d90c46bb35",
+      "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_full_decoder_runtime.cpp": "f772b1063f2508ad014f15b23e9034166002391f326e35f540e78041fbb53c12",
+      "integrations/gemma4-snapdragon-megakernel/gemma4_megakernel/src/backends/c5_qa_inference.cpp": "757eb96fb5f0523428cac7e7f1829d30b65e228314a01f41dad488597f570914",
+      "runtime/reports/orchestration/c5_after_c1_candidate_prediction_record_id_coverage_repair_20260702T_phase34.json": "8b2fb42bbfdc8ba55d1580227faf6c80fed08e8824a813620974b69d702f5823",
+      "tests/test_c5_prediction_payloads.py": "f68a93b5a36498131ea7e43ad40623d3d7e5da4c637db4c704adb0e4dc12bf9e"
+    },
+    "next_action": "Execution runs exactly one canonical C5 prediction payload wrapper rerun from frozen repair commit d73e0e8e70166c523dbff25011e242a17a16df1d; green requires candidate/stable coverage over all 53 heldout record IDs before scorer.",
+    "next_handoff": {
+      "authority_metric": "Final C5 authority requires run_c5_prediction_payloads.py pass, executed heldout metrics JSON, and final run_c5_eval.py pass_fail.status=pass.",
+      "completed_work": [
+        "custody committed and pushed five-file repair pathset",
+        "Engineering/Meta routed Execution with frozen commit d73e0e8e70166c523dbff25011e242a17a16df1d"
+      ],
+      "current_edge": "WaveB_C5_after_C1_canonical_payload_record_id_coverage_rerun_running_after_custody",
+      "current_verdict": "pending_action",
+      "do_not_do": [
+        "do not duplicate-run Execution while active",
+        "do not move raw payloads into git",
+        "do not claim C5 pass without final run_c5_eval.py pass report"
+      ],
+      "evidence": [
+        {
+          "artifact": "origin/gemma4-megakernel-native-training",
+          "sha256": null,
+          "status": "commit_d73e0e8e70166c523dbff25011e242a17a16df1d"
+        },
+        {
+          "artifact": "runtime/reports/orchestration/c5_after_c1_candidate_prediction_record_id_coverage_repair_20260702T_phase34.json",
+          "sha256": "8b2fb42bbfdc8ba55d1580227faf6c80fed08e8824a813620974b69d702f5823",
+          "status": "frozen"
+        }
+      ],
+      "first_missing_green_field": "canonical_payload_record_id_coverage_rerun_report_missing",
+      "from_lane": "Repo Custodian replacement",
+      "next_action": "Execution returns metadata-only wrapper rerun result, then runs heldout metrics/final C5 eval only if payload wrapper passes.",
+      "nonclaims": [
+        "no C5 pass",
+        "no heldout scorer execution",
+        "no learning/model-quality claim",
+        "no Phase3/4 readiness claim",
+        "no 100k/1M authority",
+        "no raw payloads in git",
+        "no secrets printed",
+        "no Comet-backed accepted run"
+      ],
+      "objective": "Freeze the record-ID coverage source repair and route Execution for the canonical payload rerun.",
+      "owner_thread": "019f138c-fb51-7c53-a41a-ab8eac950d9c",
+      "research_escalation": {
+        "packet_path": null,
+        "reason": "first rerun after frozen source repair is active",
+        "status": "none"
+      },
+      "run_id": "c5_after_c1_candidate_prediction_record_id_coverage_repair_custody_20260702T112257Z",
+      "schema_version": "zpp_next_handoff_v1",
+      "sent": true,
+      "to_lane": "Execution Orchestrator"
+    },
+    "nonclaims": [
+      "no C5 pass",
+      "no heldout scorer execution",
+      "no learning/model-quality claim",
+      "no Phase3/4 readiness claim",
+      "no 100k/1M authority",
+      "no raw payloads in git",
+      "no secrets printed",
+      "no Comet-backed accepted run"
+    ],
+    "status": "candidate_prediction_record_id_coverage_repair_committed_pushed",
+    "verification": [
+      "branch gemma4-megakernel-native-training verified",
+      "HEAD/remote aligned before commit",
+      "expected SHA-256 values verified",
+      "repair report JSON valid",
+      "scoped and cached git diff --check passed",
+      "staged pathset exactly five repair files",
+      "raw payload filename scan returned 0",
+      "model/checkpoint/adapter/tensor payload filename scan returned 0",
+      "value-shaped secret/token scan returned 0",
+      "index empty after commit",
+      "local HEAD matches remote branch"
+    ]
+  },
   "c5_after_c1_candidate_train_loss_probe_result_20260702T011806Z": {
     "candidate_checkpoint_bytes": 327680,
     "candidate_checkpoint_path_sha256": "70c1176a02520f0d2d1f959daa4fd451430764a2464c4afd81db47ad5ccda0d0",
@@ -3802,6 +4166,59 @@
       "scripts/host/run_c5_eval.py with the executed metrics JSON"
     ],
     "status": "canonical_c5_payload_scorer_ready_for_execution_after_finite_train_loss"
+  },
+  "c5_after_c1_canonical_payload_retry_after_timeout_20260702T022841Z": {
+    "execution_owner_thread_after_access_restore": "019f138c-fb51-7c53-a41a-ab8eac950d9c",
+    "native_timeout_seconds": 1500,
+    "next_action": "Restore Termux command access, then run exactly one bounded canonical prediction payload retry from the Phase3/4 command.",
+    "nonclaims": [
+      "no C5 pass",
+      "no heldout scorer execution after the timeout",
+      "no learning/model-quality claim",
+      "no Phase3/4 readiness",
+      "no 100k/1M authority",
+      "no raw payloads in git",
+      "no secrets printed",
+      "no Comet-backed accepted run"
+    ],
+    "phase34_returned_status": "producer_timeout_retry_command_ready_for_execution",
+    "phase34_thread": "019f2059-e6a8-73b1-a9b8-8a2c499e838e",
+    "producer_timeout_rule": "native_timeout_seconds must be less than wrapper_timeout_seconds so the producer owns native cleanup before the outer wrapper timeout fires",
+    "research_escalation": "none",
+    "source_change_needed": false,
+    "status": "producer_timeout_retry_command_ready_for_execution_pending_termux_access",
+    "stop_condition": "If candidate producer times out at 1500s or wrapper reaches 1800s, stop and return metadata/logs without scorer. If candidate succeeds but stable times out, stop and return metadata/logs. Raw prediction JSONLs remain outside git.",
+    "user_action_required": true,
+    "wrapper_timeout_seconds": 1800
+  },
+  "c5_after_c1_canonical_payload_retry_record_id_failure_20260702T104213Z": {
+    "candidate_prediction_jsonl_bytes": 429,
+    "candidate_prediction_jsonl_sha256": "a0137450ae16220a1aecc3dff60e50bceae641dba9b8207c0567f48ae4be4fc3",
+    "candidate_prediction_path_sha256": "a42ed2219c9aa5a7ee71b3967114f16345b69229ed124ef182ffe18b18227215",
+    "candidate_train_loss": 15.202827250350284,
+    "candidate_train_loss_source": "teacher_forced_answer_token_nll_from_full_decoder_logits",
+    "execution_metadata_sha256": "6828a69043ae42c173ea765e8b04685cc2c66e56acfe3b0941465e76d0e44595",
+    "first_missing_green_field": "ValueError:candidate_predictions_missing_record_ids",
+    "local_raw_suffix_scan_count": 0,
+    "metadata_root": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/canonical_payload_retry_20260702T104213Z",
+    "nonclaims": [
+      "no C5 pass",
+      "no heldout scorer execution",
+      "no raw prediction JSONL in git",
+      "no secrets printed",
+      "no Comet-backed accepted run"
+    ],
+    "report_path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/canonical_payload_retry_20260702T104213Z/metadata/c5_prediction_payloads_C5_after_C1_c1_c4_waveB_rerun_20260630T230411Z_canonical_payload_retry.json",
+    "report_sha256": "d323cd9b0a0f475ed181ca955ab7e9a953596d9a3735d2f2043492c94aa01fdc",
+    "stable_prediction_jsonl_bytes": 430,
+    "stable_prediction_jsonl_sha256": "a75e7804dbe4152d86c194eade3240285f16e254cd20b7cd0b0aff7ded7fff1d",
+    "stable_prediction_path_sha256": "6f355ce433f601e99a57dded4ef271ee70f108fc7581adabf6a8a13ce9e97aad",
+    "status": "canonical_c5_prediction_payload_report_failed",
+    "worktree_commit": "90f40cf1d093886f5645ec7e30872bc3690e9555",
+    "wrapper_exit_code": 2,
+    "wrapper_status": "blocked",
+    "wrapper_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "wrapper_stdout_sha256": "a20145e583cd4c4a5ff9a52fb2d2332387804544193e45d3b80fdd5e3d712cec"
   },
   "c5_after_c1_chunked_lm_head_nll_writer_implementation_active_20260701T214238Z": {
     "custody_commit_for_42_layer_probe_evidence": "3df47a394f022112ade79c7b33ad5bbc0c0e08ac",
@@ -6490,14 +6907,33 @@
   "candidate_adapter_sha256": "1ba7faed815cec7e802bb297d4056934f81eae51be93f38a98f915fbaa94d78f",
   "candidate_train_loss": 15.202827250350284,
   "candidate_train_loss_source": "teacher_forced_answer_token_nll_from_full_decoder_logits",
-  "central_mirror_local_update_status": "producer_timeout_retry_custody_complete_local_record_no_new_custody_routed",
+  "canonical_scorer_blocker_central_mirror_custody_20260702T022841Z": {
+    "branch": "origin/gemma4-megakernel-native-training",
+    "commit": "ce1d16cc3c6ce55040eae2a20ea73fcccececf02",
+    "custody_thread": "019f2059-ef2c-7762-ba42-963b58f3af90",
+    "frozen_pathset": {
+      "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json": "f8c6135088be9870cf018ea6b55b14c8e70094d209d07a749889885b870078f6",
+      "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md": "ac20f0ff45c97e6f71fe830b097c09b9e27c851164181b1130c4032043f3c9cf"
+    },
+    "status": "canonical_scorer_blocker_central_mirror_committed_pushed",
+    "verification": [
+      "JSON validity passed",
+      "strict ZPP lint passed",
+      "scoped diff hygiene passed",
+      "raw suffix scans returned 0",
+      "value-shaped secret/token scans returned 0",
+      "staged pathset exactly two central files",
+      "local HEAD matches remote branch"
+    ]
+  },
+  "central_mirror_local_update_status": "context_load_and_brief_carried_handoff_template_migrated_metadata_only_pending_custody",
   "central_state_update_pending_custody": true,
-  "current_gate": "WaveB_C5_after_C1_candidate_prediction_record_id_coverage_repair_pending_after_bounded_canonical_payload_retry_failed",
-  "current_highest_valid_state": "candidate_and_stable_prediction_payloads_and_finite_train_loss_green_canonical_scorer_not_executed",
-  "current_owner": "Phase3/4 Engineer replacement 019f2059-e6a8-73b1-a9b8-8a2c499e838e",
+  "current_gate": "Apex_Gate_A_Command_Package",
+  "current_highest_valid_state": "bounded_layer0_qnn_to_vulkan_adapter_update_mechanical_boundary_crossed_metadata_only",
+  "current_owner": "Pipeline Integrator 019f27dd-4085-7d30-85e2-af95e5302a44",
   "decoder_manifest_sha256": "52fcb53666bb4b06d0118cb825b983afc54624a630f667bbfa5af278640e28f8",
-  "dominant_failure_domain": "candidate_prediction_jsonl_record_id_coverage_contract",
-  "drift_deleted_or_pending": "Termux access blocker is resolved and retry-ready custody remains green. New pending drift is candidate prediction JSONL record-id coverage for the 53-row heldout split; do not regress to prior decoder/runtime/train-loss blockers.",
+  "dominant_failure_domain": "canonical_payload_record_id_coverage_runtime_rerun_after_source_repair",
+  "drift_deleted_or_pending": "Stale WaveC/C5 route surfaces are historical/delete candidates under the active Apex PRD; do not revive them unless a new apex NEXT_HANDOFF names a blocker-repair subroute.",
   "driver_tick_history": [
     {
       "artifact_waiting_on": [
@@ -7828,10 +8264,16 @@
       "user_action_required": true
     }
   ],
+  "execution_orchestrator_waveC_standdown": {
+    "first_missing_green_field": "waveC_go_package_missing",
+    "received_utc": "2026-07-02T14:02:02Z",
+    "status": "execution_stood_down_waiting_for_waveC_go_package",
+    "summary": "Execution is explicitly barred from resuming old C5 wrapper/scorer/retry until WaveC GO package exists."
+  },
   "export_report_sha256": "4774d31953a58ad6ae1f64e4196405ba820e5be75d36880ac863cfb9dae00b6c",
   "exporter_runtime_fields_freeze_commit": "43cf3c4130dc902fc8fd69183bac1056f0596626",
   "exporter_runtime_fields_freeze_status": "committed_pushed",
-  "first_missing_green_field": "ValueError:candidate_predictions_missing_record_ids",
+  "first_missing_green_field": "gate_a_repaired_pathset_receiving_result_missing",
   "first_missing_green_field_after_contract_patch": "decoder_manifest_architecture_config_missing",
   "first_missing_green_field_after_custody": "c5_full_decoder_chunked_lm_head_nll_writer_missing",
   "first_missing_green_field_after_download": "full_decoder_logits_generation_not_implemented",
@@ -7842,19 +8284,24 @@
   "first_missing_green_field_after_runner": "heldout_qa_jsonl_staging_or_c5_predict_probe_pending",
   "first_unresolved_technical_failure_after_schema_complete_export": "c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land",
   "first_unresolved_technical_failure_after_valid_schema_paths": "c5_full_decoder_runtime_body_missing_until_safetensors_reader_and_decoder_runtime_land",
-  "governing_edge": "WaveB_C5_after_C1_candidate_prediction_record_id_coverage_repair_pending_after_bounded_canonical_payload_retry_failed",
+  "governing_edge": "Apex_Gate_A_Command_Package",
   "governing_objective": {
+    "objective": "Run the apex integrated corpus-to-packet-to-QNN-to-Vulkan-to-theta-only training path with preregistered falsifiers.",
+    "authority_metric": "integrated corpus -> tokenizer/FSM/JL packet -> Gemma QNN/HTP -> exact Adreno/Vulkan consumed tensor SHA -> polar theta-only adapter update -> repeated supervised Q/A loss loop -> metadata-only authority report",
+    "top_gate": "metadata-only authority report for repeated supervised Q/A loss loop over the integrated QNN/HTP -> Adreno/Vulkan -> theta-only update path",
     "nonclaims": [
-      "diagnostics_are_not_100k_or_1M_authority_unless_specific_authority_gate_passes",
-      "synthetic_or_PJP1_derived_HTP_smoke_is_not_Phase3_readiness",
-      "Phase4_consumed_output_proof_is_mechanical_bridge_evidence_not_learning_or_model_quality",
-      "C5_is_post_C4_execution_evaluation_acceptance_not_pre_execution_material_blocker",
-      "integrated_Phase1_4_consumed_output_diagnostic_passed_but_no_100k_1M_authority_or_learning_claim"
-    ],
-    "objective": "deliver accepted C1-C4 curriculum material through Phase 1 -> Phase 2 -> Phase 3 -> Phase 4 on the mobile SoC",
-    "phase3_role": "NPU_HTP_forward_consumer",
-    "phase4_role": "GPU_backward_update_surface",
-    "top_gate": "integrated_execution_requires_material_key_green_and_phase34_key_green_plus_explicit_meta_user_GO"
+      "no apex authority advance",
+      "no phone/provider execution",
+      "no full heterogeneous closure",
+      "no full Gemma HTP/QNN forward",
+      "no OpenCL final pass",
+      "no C1-C4 corpus-scale training",
+      "no C5 pass",
+      "no 100k/1M authority",
+      "no model-quality claim",
+      "no raw payloads in git",
+      "no secrets printed"
+    ]
   },
   "heldout_qa_rows": 53,
   "heldout_qa_sha256": "da41c5362398f24e0e0dd9df9a5cf0594435a455871fa77ab74d9312e6c8e9b2",
@@ -8481,98 +8928,152 @@
       "user_action_required": false
     }
   },
-  "last_concrete_action": "Execution Orchestrator ran the restored-access bounded canonical payload retry from clean Termux worktree 90f40cf1d093886f5645ec7e30872bc3690e9555. Wrapper completed without timeout but failed closed with ValueError:candidate_predictions_missing_record_ids. No heldout scorer or final C5 eval ran.",
+  "last_concrete_action": "Protocol migrated active central ZPP handoff/template surfaces after context-load patch custody freeze at commit 29aec1b87ed9e67d2bdc0846f8b61339a54efe61.",
   "last_driver_actions": [
-    "Loaded central state and polled Execution Orchestrator.",
-    "Consumed Execution fail-closed handoff: producer timeout then Termux command channel blocked by keyguard.",
-    "Updated central state metadata-only; routing Phase3/4 timeout repair prep and Repo Custodian central mirror freeze."
+    "Loaded central state and polled Execution, Phase3/4, and Repo Custodian replacement threads.",
+    "Detected stale heartbeat text: Execution bounded retry already completed and failed closed at missing record IDs.",
+    "Consumed Phase3/4 repair-ready report and updated central metadata-only for Repo Custodian source freeze.",
+    "Consumed Repo Custodian commit d73e0e8e70166c523dbff25011e242a17a16df1d and routed Execution for one frozen-source canonical payload rerun."
   ],
-  "last_update_utc": "2026-07-02T10:44:57Z",
+  "last_objective_reset": {
+    "active_phone_incremental_c5_run_stopped": true,
+    "artifact_path": "runtime/reports/orchestration/OBJECTIVE_RESET_FUSED_MEGAKERNEL_REORIENTATION_20260702T135456Z.md",
+    "artifact_sha256": "2db6973e1f37ada09b1cac61c9b7f5e7e5413ba28d5ef63f28233d7549e8069f",
+    "classification": "OBJECTIVE_LEVEL_DRIFT_EVENT",
+    "execution_standdown_required_until_waveC_go": true,
+    "first_missing_green_field": "waveC_phase34_architecture_route_missing",
+    "reset_gate": "WaveC_Fused_Megakernel_Reorientation",
+    "status": "active",
+    "updated_utc": "2026-07-02T14:00:45Z"
+  },
+  "last_update_utc": "2026-07-03T13:31:29Z",
   "model_safetensors_sha256": "43fb96cec3045b72852c787540300dc5b258634b7a025f7c80355ac0788b9651",
   "model_safetensors_size_bytes": 15992595884,
   "native_probe_elapsed_seconds": 104,
   "native_probe_exit_code": 13,
   "native_probe_report_path": "runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/native_probe_42_layer_orchestration_20260701T213036Z",
-  "next_concrete_action": "Phase3/4 must inspect the native C5 prediction producer/wrapper row contract and make the real producer emit prediction rows for all 53 heldout record IDs, preserving raw JSONLs outside git. Return a source pathset or bounded rerun command; then route through Repo Custodian if source changed, otherwise Execution reruns the canonical payload wrapper.",
+  "next_action": "Pipeline validates Phase Engineering's Gate A repaired pathset. If APK binary/hash remains missing, route the exact missing field back to Phase Engineering; otherwise route the next unresolved apex authority field.",
+  "next_concrete_action": "Pipeline validates Phase Engineering's Gate A repaired pathset. If APK binary/hash remains missing, route the exact missing field back to Phase Engineering; otherwise route the next unresolved apex authority field.",
   "next_handoff": {
     "schema_version": "zpp_next_handoff_v1",
-    "run_id": "c5_after_c1_candidate_prediction_record_id_coverage_repair_20260702T104457Z",
-    "from_lane": "Engineering/Meta watcher 019f1423-816d-7251-b7d9-945a11441c3f",
-    "to_lane": "Phase3/4 Engineer replacement 019f2059-e6a8-73b1-a9b8-8a2c499e838e",
-    "sent": true,
-    "objective": "Repair canonical C5 prediction payload row coverage so candidate predictions include all heldout record IDs.",
-    "authority_metric": "run_c5_prediction_payloads.py status pass, then executed heldout metrics JSON and final scripts/host/run_c5_eval.py pass_fail.status; no C5 pass before final eval pass.",
-    "current_edge": "WaveB_C5_after_C1_candidate_prediction_record_id_coverage_repair_pending_after_bounded_canonical_payload_retry_failed",
-    "current_verdict": "fail",
-    "completed_work": [
-      "Termux command access restored",
-      "bounded canonical payload retry executed from clean 90f40cf Termux worktree",
-      "wrapper completed without timeout but failed closed before scorer"
+    "to": "Pipeline Integrator 019f27dd-4085-7d30-85e2-af95e5302a44",
+    "status": "PENDING_ACTION_GATE_A_REPAIRED_PATHSET_RECEIVING_CHECK",
+    "reasoning_level": "xhigh",
+    "artifacts": [
+      "/Users/Zer0pa/Polymat AI/Polymath-AI/docs/PRD-APEX-HETEROGENEOUS-CELL-END-TO-END-2026-07-03.md sha256=a3606c186109c1597e43a793647cd7b7f3bd63c653d3986c25e1db09bf224a93 repo_commit=cc52769b6f95e1b555f9cb834ca5d323ad34c450",
+      "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/external_handoff/POLYMATH_HETEROGENEOUS_CELL_EXTERNAL_TECHNICAL_PACKET_20260703.md sha256=8e78df8b4660b6162e343fdd9063418082e35e3e97601b8df2d801ce600ed019 repo_commit=581e87cd73176d688c9fff35ea1b69bdd38c61d0",
+      "ZPP context-load diet patch repo_commit=29aec1b87ed9e67d2bdc0846f8b61339a54efe61",
+      "central migration files are dirty metadata-only artifacts; exact hashes returned by Protocol after validation"
     ],
-    "evidence": [
-      {
-        "artifact": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/canonical_payload_retry_20260702T104213Z/metadata/c5_prediction_payloads_C5_after_C1_c1_c4_waveB_rerun_20260630T230411Z_canonical_payload_retry.json",
-        "sha256": "d323cd9b0a0f475ed181ca955ab7e9a953596d9a3735d2f2043492c94aa01fdc",
-        "status": "blocked"
+    "authority_metric": "integrated corpus -> tokenizer/FSM/JL packet -> Gemma QNN/HTP -> exact Adreno/Vulkan consumed tensor SHA -> polar theta-only adapter update -> repeated supervised Q/A loss loop -> metadata-only authority report",
+    "first_missing_green_field": "gate_a_repaired_pathset_receiving_result_missing",
+    "next_action": "Pipeline validates Phase Engineering's Gate A repaired pathset. If APK binary/hash remains missing, route the exact missing field back to Phase Engineering; otherwise route the next unresolved apex authority field.",
+    "prompt_to_send": "XHIGH_REASONING_REQUIRED.\n\nINCOMING NEXT_HANDOFF:\n  to: Pipeline Integrator 019f27dd-4085-7d30-85e2-af95e5302a44\n  status: PENDING_ACTION_GATE_A_REPAIRED_PATHSET_RECEIVING_CHECK\n  artifacts:\n    - /Users/Zer0pa/Polymat AI/Polymath-AI/docs/PRD-APEX-HETEROGENEOUS-CELL-END-TO-END-2026-07-03.md sha256=a3606c186109c1597e43a793647cd7b7f3bd63c653d3986c25e1db09bf224a93 repo_commit=cc52769b6f95e1b555f9cb834ca5d323ad34c450\n    - /Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/external_handoff/POLYMATH_HETEROGENEOUS_CELL_EXTERNAL_TECHNICAL_PACKET_20260703.md sha256=8e78df8b4660b6162e343fdd9063418082e35e3e97601b8df2d801ce600ed019 repo_commit=581e87cd73176d688c9fff35ea1b69bdd38c61d0\n    - ZPP context-load diet patch repo_commit=29aec1b87ed9e67d2bdc0846f8b61339a54efe61\n  authority_metric: integrated corpus -> tokenizer/FSM/JL packet -> Gemma QNN/HTP -> exact Adreno/Vulkan consumed tensor SHA -> polar theta-only adapter update -> repeated supervised Q/A loss loop -> metadata-only authority report\n  first_missing_green_field: gate_a_repaired_pathset_receiving_result_missing\n  next_action: Pipeline validates Phase Engineering's Gate A repaired pathset. If the receiving check confirms the APK binary/hash is still missing, route back to Phase Engineering 019f27dd-3879-79d0-9235-2a068349a706 with the exact missing APK binary/hash field; otherwise route the first unresolved apex authority field.\n  context_load:\n    tier: targeted_reference\n    files_loaded:\n      - incoming handoff capsule\n      - active central state top-level extract\n      - ZPP next-handoff/context-load references\n    extraction_mode: targeted\n    rationale: receiving validation only needs the Gate A pathset identity, required handoff schema, and missing-field contract\n    omitted_heavy_sources:\n      - full Apex PRD\n      - full external packet\n      - full EXECUTIVE_DELIVERY_STATE.json\n      - stale WaveC/C5 route tables\n  research_escalation: none\n  nonclaims:\n    - no apex authority advance\n    - no phone/provider execution\n    - no full heterogeneous closure\n    - no full Gemma HTP/QNN forward\n    - no OpenCL final pass\n    - no C1-C4 corpus-scale training\n    - no C5 pass\n    - no 100k/1M authority\n    - no model-quality claim\n    - no raw payloads in git\n    - no secrets printed\n\nTASK:\nValidate the active Phase Engineering Gate A repaired pathset as a receiving check only. Do not run phone/provider jobs, source secrets, move raw payloads, or revive stale route tables. Return a producer-grade NEXT_HANDOFF; task-only prompts are process drift.\n\nREQUIRED OUTBOUND NEXT_HANDOFF schema:\nNEXT_HANDOFF:\n  to: \"<next lane and thread id>\"\n  status: \"<exact status>\"\n  artifacts:\n    - \"<path plus sha256, or none with reason>\"\n  first_missing_green_field: \"<one exact field>\"\n  next_action: \"<concrete next action>\"\n  prompt_to_send: \"<ready prompt carrying this handoff for next owner>\"\n  context_load:\n    tier: \"capsule_only | targeted_reference | full_prd | full_evidence\"\n    files_loaded:\n      - \"<path or reference name>\"\n    extraction_mode: \"targeted | full\"\n    rationale: \"<why this much context was necessary>\"\n    omitted_heavy_sources:\n      - \"<heavy source intentionally not loaded>\"\n  research_escalation: \"none | active_parallel_signal_lane | required with reason\"\n  nonclaims:\n    - \"<nonclaim>\"\n",
+    "context_load": {
+      "tier": "targeted_reference",
+      "files_loaded": [
+        "/Users/prinivenpillay/.codex/skills/zpp-orchestrate/SKILL.md full short skill instruction",
+        "/Users/prinivenpillay/.codex/skills/zpp-orchestrate/references/context-load.md full short reference",
+        "/Users/prinivenpillay/.codex/skills/zpp-orchestrate/references/next-handoff.md full short reference",
+        "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json targeted top-level/watchdog handoff extracts",
+        "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md full 93-line active summary",
+        "Repo Custodian incoming NEXT_HANDOFF for context-load patch commit 29aec1b87ed9e67d2bdc0846f8b61339a54efe61"
+      ],
+      "extraction_mode": "targeted",
+      "rationale": "central migration only needed active owner/gate/handoff/template fields, the frozen context-load rule, and the Repo custody handoff; the full central JSON was parsed locally for a structured rewrite but not loaded into model context",
+      "omitted_heavy_sources": [
+        "full Apex PRD",
+        "full external packet",
+        "full EXECUTIVE_DELIVERY_STATE.json in model context",
+        "stale WaveC/C5 route tables",
+        "historical run ledgers and raw payload roots"
+      ]
+    },
+    "provider_access_state": "PENDING_ACTION_PROVIDER_NOT_NEEDED_FOR_CURRENT_EDGE",
+    "raw_boundary_state": "metadata_only_no_raw_payloads",
+    "drift_action": "delete_candidate",
+    "research_escalation": "none",
+    "brief_carried_handoff_rule": "prompt_to_send embeds incoming NEXT_HANDOFF and required outbound NEXT_HANDOFF schema; WATCHDOG_RECOVERY_HANDOFF required for malformed-route repair",
+    "outbound_next_handoff_schema": {
+      "to": "<next lane and thread id>",
+      "status": "<exact status>",
+      "artifacts": [
+        "<path plus sha256, or none with reason>"
+      ],
+      "first_missing_green_field": "<one exact field>",
+      "next_action": "<concrete next action>",
+      "prompt_to_send": "<ready prompt carrying this handoff for next owner>",
+      "context_load": {
+        "tier": "capsule_only | targeted_reference | full_prd | full_evidence",
+        "files_loaded": [
+          "<path or reference name>"
+        ],
+        "extraction_mode": "targeted | full",
+        "rationale": "<why this much context was necessary>",
+        "omitted_heavy_sources": [
+          "<heavy source intentionally not loaded>"
+        ]
       },
-      {
-        "artifact": "wrapper_stdout.json",
-        "sha256": "a20145e583cd4c4a5ff9a52fb2d2332387804544193e45d3b80fdd5e3d712cec",
-        "status": "blocked"
-      },
-      {
-        "artifact": "first_missing_green_field",
-        "sha256": null,
-        "status": "ValueError:candidate_predictions_missing_record_ids"
-      }
-    ],
-    "first_missing_green_field": "ValueError:candidate_predictions_missing_record_ids",
-    "next_action": "Phase3/4 inspects and repairs the native prediction producer record-id/dataflow contract so candidate/stable outputs cover every heldout record ID, then returns source pathset or bounded rerun command.",
-    "owner_thread": "019f2059-e6a8-73b1-a9b8-8a2c499e838e",
-    "research_escalation": {
-      "status": "none",
-      "reason": "first occurrence of missing-record-id contract failure after access restore; implementation-directed repair first",
-      "packet_path": null
+      "research_escalation": "none | active_parallel_signal_lane | required with reason",
+      "nonclaims": [
+        "<nonclaim>"
+      ]
     },
     "nonclaims": [
+      "no apex authority advance",
+      "no phone/provider execution",
+      "no full heterogeneous closure",
+      "no full Gemma HTP/QNN forward",
+      "no OpenCL final pass",
+      "no C1-C4 corpus-scale training",
       "no C5 pass",
-      "no heldout scorer execution",
-      "no learning/model-quality claim",
-      "no Phase3/4 readiness claim",
       "no 100k/1M authority",
+      "no model-quality claim",
       "no raw payloads in git",
-      "no secrets printed",
-      "no Comet-backed accepted run"
-    ],
-    "do_not_do": [
-      "do not substitute heldout loss or metadata for prediction payload pass",
-      "do not move raw JSONLs into git",
-      "do not rerun final scorer until payload wrapper passes"
+      "no secrets printed"
     ]
   },
   "nonclaims": [
+    "no apex authority advance",
+    "no phone/provider execution",
+    "no full heterogeneous closure",
+    "no full Gemma HTP/QNN forward",
+    "no OpenCL final pass",
+    "no C1-C4 corpus-scale training",
     "no C5 pass",
-    "no heldout scorer execution after the timeout",
-    "no learning/model-quality claim",
-    "no Phase3/4 readiness",
     "no 100k/1M authority",
+    "no model-quality claim",
     "no raw payloads in git",
-    "no secrets printed",
-    "no Comet-backed accepted run"
+    "no secrets printed"
   ],
   "nonclaims_preserved": [
+    "no apex authority advance",
+    "no phone/provider execution",
+    "no full heterogeneous closure",
+    "no full Gemma HTP/QNN forward",
+    "no OpenCL final pass",
+    "no C1-C4 corpus-scale training",
     "no C5 pass",
-    "no heldout scorer execution after the timeout",
-    "no learning/model-quality claim",
-    "no Phase3/4 readiness",
     "no 100k/1M authority",
+    "no model-quality claim",
     "no raw payloads in git",
-    "no secrets printed",
-    "no Comet-backed accepted run"
+    "no secrets printed"
   ],
-  "owner": "Phase3/4 Engineer replacement 019f2059-e6a8-73b1-a9b8-8a2c499e838e",
-  "owner_thread": "019f2059-e6a8-73b1-a9b8-8a2c499e838e",
+  "owner": "Pipeline Integrator 019f27dd-4085-7d30-85e2-af95e5302a44",
+  "owner_thread": "019f27dd-4085-7d30-85e2-af95e5302a44",
+  "phase34_waveC_route": {
+    "draft_artifact_path": "runtime/reports/orchestration/WAVEC_PHASE34_ARCHITECTURE_DECISION_20260702T135829Z.md",
+    "latest_seen": "hybrid_route_being_drafted; HTP-to-OpenCL consumed tensor slice proposed; full Gemma HTP route not current claim",
+    "received_utc": "2026-07-02T14:02:02Z",
+    "status": "in_progress_drafting_architecture_decision_packet"
+  },
   "phone_exporter_rerun_required_after_commit": "43cf3c4130dc902fc8fd69183bac1056f0596626",
+  "pipeline_integrator_waveC_receiving_checklist": {
+    "first_missing_green_field": "waveC_go_packet_missing",
+    "received_utc": "2026-07-02T14:02:02Z",
+    "status": "waveC_pipeline_receiving_checklist_ready",
+    "summary": "Pipeline requires fixed-shape Phase1/2 packet contract, produced Phase3 tensor, Phase4 consumed-tensor adapter update proof, and eval only after real update path."
+  },
   "prd_watchdog": {
     "active_bottleneck": "forced_vendor_opencl_probe_result_missing",
     "active_edge": "WaveB_C5_after_C1_forced_vendor_opencl_probe_pending_after_corrected_phase34_command",
@@ -9140,8 +9641,8 @@
     "research_escalation": "bounded_sprint_completed_corrected_execution_probe_pending",
     "runner_sha256": "a5a6f9a3b93d167d9cd69eddbe2f3404443ae1c2222e1c6a0782398c9ff09e84",
     "runner_size_bytes": 369536,
-    "status": "bounded_opencl_vendor_loader_probe_command_ready_for_execution_corrected",
-    "status_classification": "PENDING_ACTION_EXECUTION_RUN_FORCED_VENDOR_OPENCL_PROBE",
+    "status": "historical_under_apex_prd",
+    "status_classification": "HISTORICAL_UNDER_APEX_PRD",
     "threads_nudged_this_tick": [
       "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: routed corrected forced vendor OpenCL bounded phone probe command.",
       "Repo Custodian 019f1ac2-0f0f-7721-bf46-ad402dbd9050: routed two-file central mirror freeze for corrected owner transfer.",
@@ -9152,262 +9653,71 @@
     "updated_at": "2026-07-01T17:29:07Z",
     "updated_at_utc": "2026-07-01T17:29:07Z",
     "updated_utc": "2026-07-01T17:29:07Z",
-    "user_action_required": false
+    "user_action_required": false,
+    "historical": true,
+    "active_authority": false,
+    "drift_action": "ignore_historical",
+    "next_action": "Do not route from prd_watchdog; use the top-level active Apex Gate A NEXT_HANDOFF.",
+    "context_load": {
+      "tier": "targeted_reference",
+      "files_loaded": [
+        "/Users/prinivenpillay/.codex/skills/zpp-orchestrate/SKILL.md full short skill instruction",
+        "/Users/prinivenpillay/.codex/skills/zpp-orchestrate/references/context-load.md full short reference",
+        "/Users/prinivenpillay/.codex/skills/zpp-orchestrate/references/next-handoff.md full short reference",
+        "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json targeted top-level/watchdog handoff extracts",
+        "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md full 93-line active summary",
+        "Repo Custodian incoming NEXT_HANDOFF for context-load patch commit 29aec1b87ed9e67d2bdc0846f8b61339a54efe61"
+      ],
+      "extraction_mode": "targeted",
+      "rationale": "central migration only needed active owner/gate/handoff/template fields, the frozen context-load rule, and the Repo custody handoff; the full central JSON was parsed locally for a structured rewrite but not loaded into model context",
+      "omitted_heavy_sources": [
+        "full Apex PRD",
+        "full external packet",
+        "full EXECUTIVE_DELIVERY_STATE.json in model context",
+        "stale WaveC/C5 route tables",
+        "historical run ledgers and raw payload roots"
+      ]
+    },
+    "brief_carried_handoff_rule": {
+      "schema_version": "zpp_brief_carried_handoff_rule_v1",
+      "status": "active",
+      "rule": "Every mobilization brief must contain the incoming NEXT_HANDOFF, or WATCHDOG_RECOVERY_HANDOFF for route repair, plus the outbound NEXT_HANDOFF schema the lane must return.",
+      "required_brief_fields": [
+        "incoming_NEXT_HANDOFF_or_WATCHDOG_RECOVERY_HANDOFF",
+        "outbound_NEXT_HANDOFF_schema",
+        "context_load",
+        "first_missing_green_field",
+        "nonclaims"
+      ],
+      "process_drift": "task-only prompts without handoff fields are invalid route surfaces",
+      "watchdog_recovery_rule": "Watchdog/Meta may wrap a malformed route only when it labels the packet WATCHDOG_RECOVERY_HANDOFF rather than normal producer handoff."
+    }
   },
   "probe_stderr_sha256": "2f5f6fbcac5e2090b783dc59e895ffbd5d7277e308e50304dc85069ce4fc8a3d",
   "probe_stdout_metadata_sha256": "55da33f7499f4fe0b6076d23ae35f205558027198a23dc9942c9e057593b807e",
-  "raw_phone_path_hardening_20260701T094236Z": {
-    "preserved": "artifact identities, hashes, lane status, nonclaims, and outside-git source requirements",
-    "reason": "Prevent stale phone filesystem strings from being treated as C5 runtime evidence or raw payload routes.",
-    "scope": "metadata mirror only",
-    "status": "central_state_phone_filesystem_paths_redacted"
-  },
-  "recursive_improvement_next_step": "Use metadata report and wrapper failure to repair the producer record-id contract. If the same missing-record-id field repeats after a Phase3/4 repair, escalate bounded research on prediction row identity/dataflow semantics.",
-  "required_lane_update_protocol": {
-    "block_name": "CENTRAL_STATE_UPDATE",
-    "meta_action": "on every heartbeat, read active threads, update this file, route the next concrete edge, and notify Execution only when both keys are green",
-    "required_fields": [
-      "lane",
-      "status",
-      "artifact_paths",
-      "sha256_or_identity_fields",
-      "verification_commands",
-      "first_missing_green_field",
-      "next_action",
-      "authorization_needed",
-      "nonclaims"
-    ]
-  },
-  "research_escalation": "none",
-  "runner_sha256": "31015b6844e20d74cd67f69cbb152fa4ccba4200992d3d60cc458d145afda23c",
-  "runner_size_bytes": 554312,
-  "schema_version": "polymath_executive_delivery_state_v1",
-  "secondary_missing_green_field": "c5_full_decoder_final_hidden_stream_missing_for_lm_head_nll_if_phase34_confirms_current_precondition",
-  "status": "canonical_c5_prediction_payload_report_failed_candidate_predictions_missing_record_ids",
-  "status_classification": "PENDING_ACTION_PHASE34_CANDIDATE_PREDICTION_RECORD_ID_COVERAGE_REPAIR_AFTER_BOUNDED_RETRY",
-  "thread_nudges": [
-    "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: routed canonical C5 payload/scorer GO after finite candidate_train_loss 15.202827250350284.",
-    "Repo Custodian replacement 019f2059-ef2c-7762-ba42-963b58f3af90: routed central mirror plus train-loss metadata freeze; raw output identity only, no raw payload staging.",
-    "Phase3/4 replacement 019f2059-e6a8-73b1-a9b8-8a2c499e838e: no duplicate nudge; train-loss source command completed by Execution and lane is parked until a new source/runtime field appears.",
-    {
-      "reason": "canonical scorer producer timeout and Termux command-channel access blocker",
-      "threads": [
-        "019f2059-e6a8-73b1-a9b8-8a2c499e838e",
-        "019f2059-ef2c-7762-ba42-963b58f3af90"
-      ],
-      "timestamp_utc": "2026-07-02T02:18:41Z"
-    },
-    {
-      "timestamp_utc": "2026-07-02T02:28:41Z",
-      "reason": "Phase3/4 returned bounded canonical payload retry command and Custodian froze prior blocker mirror",
-      "threads": [
-        "019f2059-e6a8-73b1-a9b8-8a2c499e838e",
-        "019f2059-ef2c-7762-ba42-963b58f3af90"
-      ]
-    },
-    {
-      "timestamp_utc": "2026-07-02T02:39:11Z",
-      "reason": "Custodian completed retry-ready central mirror; Engineering recorded commit and routed final two-file mirror freeze",
-      "threads": [
-        "019f2059-ef2c-7762-ba42-963b58f3af90"
-      ]
-    },
-    {
-      "timestamp_utc": "2026-07-02T02:49:41Z",
-      "reason": "Custodian completed final retry-ready commit-record central mirror; active edge now waits only on user/operator Termux access restoration",
-      "threads": [
-        "019f2059-ef2c-7762-ba42-963b58f3af90"
-      ]
-    }
-  ],
-  "threads_nudged_this_tick": [
-    "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: polled completed failed retry with NEXT_HANDOFF.",
-    "Phase3/4 Engineer replacement 019f2059-e6a8-73b1-a9b8-8a2c499e838e: sent candidate prediction record-ID coverage repair prompt.",
-    "Repo Custodian replacement 019f2059-ef2c-7762-ba42-963b58f3af90: central two-file freeze route pending."
-  ],
-  "timestamp_utc": "2026-07-02T10:44:57Z",
-  "updated_at": "2026-07-02T10:44:57Z",
-  "updated_at_utc": "2026-07-02T10:44:57Z",
-  "updated_utc": "2026-07-02T10:44:57Z",
-  "user_action_required": false,
-  "canonical_scorer_blocker_central_mirror_custody_20260702T022841Z": {
-    "status": "canonical_scorer_blocker_central_mirror_committed_pushed",
-    "custody_thread": "019f2059-ef2c-7762-ba42-963b58f3af90",
-    "commit": "ce1d16cc3c6ce55040eae2a20ea73fcccececf02",
-    "branch": "origin/gemma4-megakernel-native-training",
-    "frozen_pathset": {
-      "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json": "f8c6135088be9870cf018ea6b55b14c8e70094d209d07a749889885b870078f6",
-      "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md": "ac20f0ff45c97e6f71fe830b097c09b9e27c851164181b1130c4032043f3c9cf"
-    },
-    "verification": [
-      "JSON validity passed",
-      "strict ZPP lint passed",
-      "scoped diff hygiene passed",
-      "raw suffix scans returned 0",
-      "value-shaped secret/token scans returned 0",
-      "staged pathset exactly two central files",
-      "local HEAD matches remote branch"
-    ]
-  },
-  "c5_after_c1_canonical_payload_retry_after_timeout_20260702T022841Z": {
-    "status": "producer_timeout_retry_command_ready_for_execution_pending_termux_access",
-    "phase34_thread": "019f2059-e6a8-73b1-a9b8-8a2c499e838e",
-    "phase34_returned_status": "producer_timeout_retry_command_ready_for_execution",
-    "source_change_needed": false,
-    "wrapper_timeout_seconds": 1800,
-    "native_timeout_seconds": 1500,
-    "producer_timeout_rule": "native_timeout_seconds must be less than wrapper_timeout_seconds so the producer owns native cleanup before the outer wrapper timeout fires",
-    "execution_owner_thread_after_access_restore": "019f138c-fb51-7c53-a41a-ab8eac950d9c",
-    "user_action_required": true,
-    "next_action": "Restore Termux command access, then run exactly one bounded canonical prediction payload retry from the Phase3/4 command.",
-    "stop_condition": "If candidate producer times out at 1500s or wrapper reaches 1800s, stop and return metadata/logs without scorer. If candidate succeeds but stable times out, stop and return metadata/logs. Raw prediction JSONLs remain outside git.",
-    "research_escalation": "none",
-    "nonclaims": [
-      "no C5 pass",
-      "no heldout scorer execution after the timeout",
-      "no learning/model-quality claim",
-      "no Phase3/4 readiness",
-      "no 100k/1M authority",
-      "no raw payloads in git",
-      "no secrets printed",
-      "no Comet-backed accepted run"
-    ]
-  },
-  "producer_timeout_retry_ready_central_mirror_custody_20260702T023911Z": {
-    "status": "producer_timeout_retry_ready_central_mirror_committed_pushed",
-    "custody_thread": "019f2059-ef2c-7762-ba42-963b58f3af90",
-    "commit": "9946fcd0ebc247f75440a855235aeb29eeea8871",
-    "branch": "origin/gemma4-megakernel-native-training",
-    "frozen_pathset": {
-      "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json": "65981f6b30930a9a7b7a0079d7f9f782d291bd0a45984842142b8099ac9c50d9",
-      "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md": "3ad31c037a9a2f7d2217ab29d70f939b111d5113ea561ed846f79ba0f875faf8"
-    },
-    "verification": [
-      "JSON validity passed",
-      "strict ZPP lint passed",
-      "scoped diff hygiene passed",
-      "cached diff hygiene passed",
-      "added-line raw suffix scan 0",
-      "added-line value-shaped secret/token scan 0",
-      "cached raw suffix name scan 0",
-      "staged pathset exactly two files",
-      "local HEAD matches remote branch"
-    ],
-    "first_missing_green_field": "producer_native_timeout_must_be_less_than_wrapper_timeout_and_termux_command_access_blocked",
-    "next_action": "User/operator restores Termux command access, then Execution runs exactly one bounded canonical payload retry with native timeout 1500s and wrapper timeout 1800s.",
-    "nonclaims": [
-      "no C5 pass",
-      "no heldout scorer execution after the timeout",
-      "no learning/model-quality claim",
-      "no Phase3/4 readiness",
-      "no 100k/1M authority",
-      "no raw payloads in git",
-      "no secrets printed",
-      "no Comet-backed accepted run"
-    ],
-    "next_handoff": {
-      "schema_version": "zpp_next_handoff_v1",
-      "run_id": "c5_after_c1_producer_timeout_retry_ready_central_mirror_custody_20260702T023911Z",
-      "from_lane": "repo_custodian_replacement",
-      "to_lane": "engineering_meta_watcher",
-      "sent": true,
-      "objective": "Record retry-ready canonical C5 payload state after producer timeout without claiming C5 pass.",
-      "authority_metric": "Final C5 authority still requires scripts/host/run_c5_eval.py pass_fail.status=pass from executed metrics; this packet is custody metadata only.",
-      "current_edge": "WaveB_C5_after_C1_canonical_payload_bounded_retry_ready_waiting_on_termux_command_access_after_producer_timeout",
-      "current_verdict": "blocked",
-      "completed_work": [
-        "frozen two-file central retry-ready mirror",
-        "verified raw/secret boundaries",
-        "pushed origin/gemma4-megakernel-native-training"
-      ],
-      "evidence": [
-        {
-          "artifact": "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json",
-          "sha256": "65981f6b30930a9a7b7a0079d7f9f782d291bd0a45984842142b8099ac9c50d9",
-          "status": "frozen_in_commit_9946fcd0ebc247f75440a855235aeb29eeea8871"
-        },
-        {
-          "artifact": "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md",
-          "sha256": "3ad31c037a9a2f7d2217ab29d70f939b111d5113ea561ed846f79ba0f875faf8",
-          "status": "frozen_in_commit_9946fcd0ebc247f75440a855235aeb29eeea8871"
-        },
-        {
-          "artifact": "origin/gemma4-megakernel-native-training",
-          "sha256": null,
-          "status": "commit_9946fcd0ebc247f75440a855235aeb29eeea8871"
-        }
-      ],
-      "first_missing_green_field": "producer_native_timeout_must_be_less_than_wrapper_timeout_and_termux_command_access_blocked",
-      "next_action": "User/operator restores Termux command access; then Execution runs one bounded canonical payload retry with native timeout 1500s and wrapper timeout 1800s.",
-      "owner_thread": "019f138c-fb51-7c53-a41a-ab8eac950d9c",
-      "research_escalation": {
-        "status": "none",
-        "reason": "first retry-ready access blocker; no repeated same-field failure after restored access yet",
-        "packet_path": null
-      },
-      "nonclaims": [
-        "no C5 pass",
-        "no heldout scorer execution after the timeout",
-        "no learning/model-quality claim",
-        "no Phase3/4 readiness",
-        "no 100k/1M authority",
-        "no raw payloads in git",
-        "no secrets printed",
-        "no Comet-backed accepted run"
-      ],
-      "do_not_do": [
-        "do not rerun Execution until Termux command access is restored",
-        "do not move raw prediction/checkpoint/train payloads into git",
-        "do not claim pass without final run_c5_eval.py report pass"
-      ]
-    }
-  },
   "producer_timeout_retry_custody_commit_record_central_mirror_custody_20260702T024941Z": {
-    "status": "producer_timeout_retry_custody_commit_record_central_mirror_committed_pushed",
-    "custody_thread": "019f2059-ef2c-7762-ba42-963b58f3af90",
-    "commit": "2cccbe86fab521d1c2fa14987b4ab536cf809254",
     "branch": "origin/gemma4-megakernel-native-training",
+    "commit": "2cccbe86fab521d1c2fa14987b4ab536cf809254",
+    "custody_thread": "019f2059-ef2c-7762-ba42-963b58f3af90",
+    "first_missing_green_field": "producer_native_timeout_must_be_less_than_wrapper_timeout_and_termux_command_access_blocked",
     "frozen_pathset": {
       "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json": "3c7cb3804b1e39002cc4edea105af2f82f29177f0af08fb5fc05a6079f12c98e",
       "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md": "bf714f661fb4dfc821d9e7ba63c21668b06aff2dea8ec2f4c4acf5f0baaf7ccf"
     },
-    "verification": [
-      "JSON validity passed",
-      "strict ZPP lint passed",
-      "scoped diff hygiene passed",
-      "cached diff hygiene passed",
-      "added-line raw suffix scan 0",
-      "added-line value-shaped secret/token scan 0",
-      "cached raw suffix name scan 0",
-      "staged pathset exactly two files",
-      "local HEAD matches remote branch"
-    ],
-    "first_missing_green_field": "producer_native_timeout_must_be_less_than_wrapper_timeout_and_termux_command_access_blocked",
     "next_action": "User/operator restores Termux command access, then Execution runs exactly one bounded canonical payload retry with native timeout 1500s and wrapper timeout 1800s.",
-    "nonclaims": [
-      "no C5 pass",
-      "no heldout scorer execution after the timeout",
-      "no learning/model-quality claim",
-      "no Phase3/4 readiness",
-      "no 100k/1M authority",
-      "no raw payloads in git",
-      "no secrets printed",
-      "no Comet-backed accepted run"
-    ],
     "next_handoff": {
-      "schema_version": "zpp_next_handoff_v1",
-      "run_id": "c5_after_c1_producer_timeout_retry_custody_commit_record_20260702T024941Z",
-      "from_lane": "repo_custodian_replacement",
-      "to_lane": "engineering_meta_watcher",
-      "sent": true,
-      "objective": "Close central custody for retry-ready canonical C5 payload state without claiming authority pass.",
       "authority_metric": "Final C5 authority still requires scripts/host/run_c5_eval.py pass_fail.status=pass from executed metrics; this packet is custody metadata only.",
-      "current_edge": "WaveB_C5_after_C1_canonical_payload_bounded_retry_ready_waiting_on_termux_command_access_after_producer_timeout",
-      "current_verdict": "blocked",
       "completed_work": [
         "frozen commit-record central mirror",
         "verified raw/secret boundaries",
         "pushed origin/gemma4-megakernel-native-training"
+      ],
+      "current_edge": "WaveB_C5_after_C1_canonical_payload_bounded_retry_ready_waiting_on_termux_command_access_after_producer_timeout",
+      "current_verdict": "blocked",
+      "do_not_do": [
+        "do not nudge Execution until Termux command access is restored",
+        "do not move raw payloads into git",
+        "do not claim pass without final run_c5_eval.py report pass"
       ],
       "evidence": [
         {
@@ -9427,13 +9737,8 @@
         }
       ],
       "first_missing_green_field": "producer_native_timeout_must_be_less_than_wrapper_timeout_and_termux_command_access_blocked",
+      "from_lane": "repo_custodian_replacement",
       "next_action": "User/operator restores Termux command access; then Execution runs exactly one bounded canonical payload retry with native timeout 1500s and wrapper timeout 1800s.",
-      "owner_thread": "019f138c-fb51-7c53-a41a-ab8eac950d9c",
-      "research_escalation": {
-        "status": "none",
-        "reason": "access blocker remains first occurrence after retry command; no repeated same-field failure after restored access yet",
-        "packet_path": null
-      },
       "nonclaims": [
         "no C5 pass",
         "no heldout scorer execution after the timeout",
@@ -9444,40 +9749,375 @@
         "no secrets printed",
         "no Comet-backed accepted run"
       ],
+      "objective": "Close central custody for retry-ready canonical C5 payload state without claiming authority pass.",
+      "owner_thread": "019f138c-fb51-7c53-a41a-ab8eac950d9c",
+      "research_escalation": {
+        "packet_path": null,
+        "reason": "access blocker remains first occurrence after retry command; no repeated same-field failure after restored access yet",
+        "status": "none"
+      },
+      "run_id": "c5_after_c1_producer_timeout_retry_custody_commit_record_20260702T024941Z",
+      "schema_version": "zpp_next_handoff_v1",
+      "sent": true,
+      "to_lane": "engineering_meta_watcher"
+    },
+    "nonclaims": [
+      "no C5 pass",
+      "no heldout scorer execution after the timeout",
+      "no learning/model-quality claim",
+      "no Phase3/4 readiness",
+      "no 100k/1M authority",
+      "no raw payloads in git",
+      "no secrets printed",
+      "no Comet-backed accepted run"
+    ],
+    "status": "producer_timeout_retry_custody_commit_record_central_mirror_committed_pushed",
+    "verification": [
+      "JSON validity passed",
+      "strict ZPP lint passed",
+      "scoped diff hygiene passed",
+      "cached diff hygiene passed",
+      "added-line raw suffix scan 0",
+      "added-line value-shaped secret/token scan 0",
+      "cached raw suffix name scan 0",
+      "staged pathset exactly two files",
+      "local HEAD matches remote branch"
+    ]
+  },
+  "producer_timeout_retry_ready_central_mirror_custody_20260702T023911Z": {
+    "branch": "origin/gemma4-megakernel-native-training",
+    "commit": "9946fcd0ebc247f75440a855235aeb29eeea8871",
+    "custody_thread": "019f2059-ef2c-7762-ba42-963b58f3af90",
+    "first_missing_green_field": "producer_native_timeout_must_be_less_than_wrapper_timeout_and_termux_command_access_blocked",
+    "frozen_pathset": {
+      "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json": "65981f6b30930a9a7b7a0079d7f9f782d291bd0a45984842142b8099ac9c50d9",
+      "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md": "3ad31c037a9a2f7d2217ab29d70f939b111d5113ea561ed846f79ba0f875faf8"
+    },
+    "next_action": "User/operator restores Termux command access, then Execution runs exactly one bounded canonical payload retry with native timeout 1500s and wrapper timeout 1800s.",
+    "next_handoff": {
+      "authority_metric": "Final C5 authority still requires scripts/host/run_c5_eval.py pass_fail.status=pass from executed metrics; this packet is custody metadata only.",
+      "completed_work": [
+        "frozen two-file central retry-ready mirror",
+        "verified raw/secret boundaries",
+        "pushed origin/gemma4-megakernel-native-training"
+      ],
+      "current_edge": "WaveB_C5_after_C1_canonical_payload_bounded_retry_ready_waiting_on_termux_command_access_after_producer_timeout",
+      "current_verdict": "blocked",
       "do_not_do": [
-        "do not nudge Execution until Termux command access is restored",
-        "do not move raw payloads into git",
+        "do not rerun Execution until Termux command access is restored",
+        "do not move raw prediction/checkpoint/train payloads into git",
         "do not claim pass without final run_c5_eval.py report pass"
+      ],
+      "evidence": [
+        {
+          "artifact": "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json",
+          "sha256": "65981f6b30930a9a7b7a0079d7f9f782d291bd0a45984842142b8099ac9c50d9",
+          "status": "frozen_in_commit_9946fcd0ebc247f75440a855235aeb29eeea8871"
+        },
+        {
+          "artifact": "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md",
+          "sha256": "3ad31c037a9a2f7d2217ab29d70f939b111d5113ea561ed846f79ba0f875faf8",
+          "status": "frozen_in_commit_9946fcd0ebc247f75440a855235aeb29eeea8871"
+        },
+        {
+          "artifact": "origin/gemma4-megakernel-native-training",
+          "sha256": null,
+          "status": "commit_9946fcd0ebc247f75440a855235aeb29eeea8871"
+        }
+      ],
+      "first_missing_green_field": "producer_native_timeout_must_be_less_than_wrapper_timeout_and_termux_command_access_blocked",
+      "from_lane": "repo_custodian_replacement",
+      "next_action": "User/operator restores Termux command access; then Execution runs one bounded canonical payload retry with native timeout 1500s and wrapper timeout 1800s.",
+      "nonclaims": [
+        "no C5 pass",
+        "no heldout scorer execution after the timeout",
+        "no learning/model-quality claim",
+        "no Phase3/4 readiness",
+        "no 100k/1M authority",
+        "no raw payloads in git",
+        "no secrets printed",
+        "no Comet-backed accepted run"
+      ],
+      "objective": "Record retry-ready canonical C5 payload state after producer timeout without claiming C5 pass.",
+      "owner_thread": "019f138c-fb51-7c53-a41a-ab8eac950d9c",
+      "research_escalation": {
+        "packet_path": null,
+        "reason": "first retry-ready access blocker; no repeated same-field failure after restored access yet",
+        "status": "none"
+      },
+      "run_id": "c5_after_c1_producer_timeout_retry_ready_central_mirror_custody_20260702T023911Z",
+      "schema_version": "zpp_next_handoff_v1",
+      "sent": true,
+      "to_lane": "engineering_meta_watcher"
+    },
+    "nonclaims": [
+      "no C5 pass",
+      "no heldout scorer execution after the timeout",
+      "no learning/model-quality claim",
+      "no Phase3/4 readiness",
+      "no 100k/1M authority",
+      "no raw payloads in git",
+      "no secrets printed",
+      "no Comet-backed accepted run"
+    ],
+    "status": "producer_timeout_retry_ready_central_mirror_committed_pushed",
+    "verification": [
+      "JSON validity passed",
+      "strict ZPP lint passed",
+      "scoped diff hygiene passed",
+      "cached diff hygiene passed",
+      "added-line raw suffix scan 0",
+      "added-line value-shaped secret/token scan 0",
+      "cached raw suffix name scan 0",
+      "staged pathset exactly two files",
+      "local HEAD matches remote branch"
+    ]
+  },
+  "raw_phone_path_hardening_20260701T094236Z": {
+    "preserved": "artifact identities, hashes, lane status, nonclaims, and outside-git source requirements",
+    "reason": "Prevent stale phone filesystem strings from being treated as C5 runtime evidence or raw payload routes.",
+    "scope": "metadata mirror only",
+    "status": "central_state_phone_filesystem_paths_redacted"
+  },
+  "recursive_improvement_next_step": "Freeze the repaired source pathset, then run one bounded payload wrapper retry. If candidate_predictions_missing_record_ids repeats after custody, escalate bounded research on prediction row identity/dataflow semantics.",
+  "repo_custodian_waveC_posture": {
+    "received_utc": "2026-07-02T14:02:02Z",
+    "status": "custody_waiting_for_waveC_architecture_pathset",
+    "summary": "Custody will freeze reset artifacts or selected WaveC architecture/source pathsets only."
+  },
+  "required_lane_update_protocol": {
+    "block_name": "CENTRAL_STATE_UPDATE",
+    "meta_action": "Every route-changing or completion brief carries the incoming handoff, outbound handoff schema, context_load, and nonclaims; update targeted active fields only.",
+    "required_fields": [
+      "lane",
+      "status",
+      "artifact_paths",
+      "sha256_or_identity_fields",
+      "verification_commands",
+      "incoming_NEXT_HANDOFF_or_WATCHDOG_RECOVERY_HANDOFF",
+      "outbound_NEXT_HANDOFF_schema",
+      "authority_metric",
+      "first_missing_green_field",
+      "next_action",
+      "prompt_to_send",
+      "context_load",
+      "provider_access_state",
+      "raw_boundary_state",
+      "drift_action",
+      "authorization_needed",
+      "research_escalation",
+      "nonclaims"
+    ]
+  },
+  "research_escalation": "none",
+  "research_signal_waveC": {
+    "current_followup": "RedMagic/Snapdragon runtime envelope after C5 timeout in progress",
+    "last_completed_packet": "heavy_intervention_recommended; PJP1 as side-channel until bounded bridge to Gemma-native hidden/target tensors is proven; GPU fused cell first, HTP consumed island second",
+    "received_utc": "2026-07-02T14:02:02Z",
+    "status": "active_parallel_signal_lane"
+  },
+  "runner_sha256": "31015b6844e20d74cd67f69cbb152fa4ccba4200992d3d60cc458d145afda23c",
+  "runner_size_bytes": 554312,
+  "schema_version": "polymath_executive_delivery_state_v1",
+  "secondary_missing_green_field": "c5_full_decoder_final_hidden_stream_missing_for_lm_head_nll_if_phase34_confirms_current_precondition",
+  "status": "apex_gate_a_context_load_migration_active",
+  "status_classification": "PENDING_ACTION_GATE_A_REPAIRED_PATHSET_RECEIVING_CHECK",
+  "thread_nudges": [
+    "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: routed canonical C5 payload/scorer GO after finite candidate_train_loss 15.202827250350284.",
+    "Repo Custodian replacement 019f2059-ef2c-7762-ba42-963b58f3af90: routed central mirror plus train-loss metadata freeze; raw output identity only, no raw payload staging.",
+    "Phase3/4 replacement 019f2059-e6a8-73b1-a9b8-8a2c499e838e: no duplicate nudge; train-loss source command completed by Execution and lane is parked until a new source/runtime field appears.",
+    {
+      "reason": "canonical scorer producer timeout and Termux command-channel access blocker",
+      "threads": [
+        "019f2059-e6a8-73b1-a9b8-8a2c499e838e",
+        "019f2059-ef2c-7762-ba42-963b58f3af90"
+      ],
+      "timestamp_utc": "2026-07-02T02:18:41Z"
+    },
+    {
+      "reason": "Phase3/4 returned bounded canonical payload retry command and Custodian froze prior blocker mirror",
+      "threads": [
+        "019f2059-e6a8-73b1-a9b8-8a2c499e838e",
+        "019f2059-ef2c-7762-ba42-963b58f3af90"
+      ],
+      "timestamp_utc": "2026-07-02T02:28:41Z"
+    },
+    {
+      "reason": "Custodian completed retry-ready central mirror; Engineering recorded commit and routed final two-file mirror freeze",
+      "threads": [
+        "019f2059-ef2c-7762-ba42-963b58f3af90"
+      ],
+      "timestamp_utc": "2026-07-02T02:39:11Z"
+    },
+    {
+      "reason": "Custodian completed final retry-ready commit-record central mirror; active edge now waits only on user/operator Termux access restoration",
+      "threads": [
+        "019f2059-ef2c-7762-ba42-963b58f3af90"
+      ],
+      "timestamp_utc": "2026-07-02T02:49:41Z"
+    },
+    {
+      "reason": "Phase3/4 completed candidate prediction record-ID coverage repair; routing exact source/test/report pathset to Repo Custodian.",
+      "threads": [
+        "019f2059-e6a8-73b1-a9b8-8a2c499e838e",
+        "019f2059-ef2c-7762-ba42-963b58f3af90"
+      ],
+      "timestamp_utc": "2026-07-02T11:08:58Z"
+    },
+    {
+      "reason": "Repo Custodian froze record-ID coverage repair at d73e0e8e70166c523dbff25011e242a17a16df1d; Engineering routed Execution for one frozen-source canonical payload rerun.",
+      "threads": [
+        "019f2059-ef2c-7762-ba42-963b58f3af90",
+        "019f138c-fb51-7c53-a41a-ab8eac950d9c"
+      ],
+      "timestamp_utc": "2026-07-02T11:22:57Z"
+    }
+  ],
+  "threads_nudged_this_tick": [
+    "Repo Custodian replacement 019f2059-ef2c-7762-ba42-963b58f3af90: consumed completed commit d73e0e8e70166c523dbff25011e242a17a16df1d.",
+    "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: routed one canonical payload record-ID coverage rerun from frozen repair source.",
+    "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c: polled active in-progress after routing; no duplicate run."
+  ],
+  "timestamp_utc": "2026-07-03T13:31:29Z",
+  "updated_at": "2026-07-03T13:31:29Z",
+  "updated_at_utc": "2026-07-03T13:31:29Z",
+  "updated_utc": "2026-07-03T13:31:29Z",
+  "user_action_required": false,
+  "watchdog_handoff_repair_20260702T": {
+    "deleted_drift": "passive_watchdog_notification_without_next_owner_handoff",
+    "failure": "heartbeat observed route readiness but did not route Pipeline/Custody/Execution handoff in the same tick",
+    "first_missing_green_field": "waveC_pipeline_validation_of_phase34_route_missing",
+    "repair": "central state advanced to Pipeline validation edge; direct Pipeline handoff sent; automation prompt hardened to forbid notify-only behavior when a route/pathset is available",
+    "status": "watchdog_handoff_drift_identified_and_routed",
+    "user_action_required": false
+  },
+  "waveC_custody_freeze_request_20260702T": {
+    "custodian_thread": "019f2059-ef2c-7762-ba42-963b58f3af90",
+    "first_missing_green_field": "custody_freeze_for_waveC_phase34_route_pathset",
+    "requested_artifact": "runtime/reports/orchestration/WAVEC_PHASE34_ARCHITECTURE_DECISION_20260702T135829Z.md",
+    "requested_artifact_sha256": "fb0018a728feba7e9a2d3c417a0d3a8f9e69c7631afe01eadb7aff3e88ce4fbe",
+    "requested_next_handoff": "Execution Orchestrator 019f138c-fb51-7c53-a41a-ab8eac950d9c",
+    "requested_status_on_success": "waveC_phase34_route_frozen_ready_for_execution_go",
+    "status": "routed_to_repo_custodian"
+  },
+  "waveC_phase34_architecture_route_20260702T135829Z": {
+    "accepted_as_engineering_route_candidate": true,
+    "artifact_path": "runtime/reports/orchestration/WAVEC_PHASE34_ARCHITECTURE_DECISION_20260702T135829Z.md",
+    "artifact_sha256": "fb0018a728feba7e9a2d3c417a0d3a8f9e69c7631afe01eadb7aff3e88ce4fbe",
+    "custody_freeze_ready_after_pipeline_green": true,
+    "execution_go_ready": false,
+    "first_missing_green_field": "waveC_pipeline_validation_of_phase34_route_missing",
+    "nonclaims": [
+      "no C5 pass",
+      "no learning/model-quality claim",
+      "no Phase3/4 readiness claim",
+      "no 100k/1M authority",
+      "no raw payloads in git",
+      "no secrets printed",
+      "no Comet-backed accepted run"
+    ],
+    "phase3_tensor_dtype": "float32_le",
+    "phase3_tensor_raw_boundary": "raw tensor remains outside git/on phone; repo receives metadata only",
+    "phase3_tensor_shape": "[1,16,2560]",
+    "phase4_cell": "phase4_opencl_phase3_bridge_rank16_mse_sgd_cell_v0",
+    "pipeline_validation_routed": true,
+    "route": "hybrid_pjp1_fixed_packet_to_qnn_htp_hidden2560_relu_to_opencl_rank16_adapter_update",
+    "status": "waveC_phase34_architecture_route_ready"
+  },
+  "waveC_pipeline_validation_20260702T": {
+    "first_missing_green_field": "custody_freeze_for_waveC_phase34_route_pathset",
+    "next_handoff_to": "Repo Custodian replacement 019f2059-ef2c-7762-ba42-963b58f3af90",
+    "pipeline_thread": "019f138c-35b6-73e1-b26d-3db8c59cf850",
+    "status": "waveC_architecture_route_receiving_validated",
+    "validated_artifact": "runtime/reports/orchestration/WAVEC_PHASE34_ARCHITECTURE_DECISION_20260702T135829Z.md",
+    "validated_artifact_sha256": "fb0018a728feba7e9a2d3c417a0d3a8f9e69c7631afe01eadb7aff3e88ce4fbe",
+    "validation_summary": "fixed-shape Phase1/2 contract explicit enough for bounded C1 execution; Phase3 tensor identity explicit; Phase4 consumes exact tensor and updates adapter; C5 remains sequenced after real update proof; bridge MSE not relabeled as C5/language-model loss; raw boundary preserved; unresolved full-Gemma gap does not block bounded WaveC vertical slice."
+  },
+  "active_prd_path": "/Users/Zer0pa/Polymat AI/Polymath-AI/docs/PRD-APEX-HETEROGENEOUS-CELL-END-TO-END-2026-07-03.md",
+  "active_prd_sha256": "a3606c186109c1597e43a793647cd7b7f3bd63c653d3986c25e1db09bf224a93",
+  "living_prd_path": "/Users/Zer0pa/Polymat AI/Polymath-AI/docs/PRD-APEX-HETEROGENEOUS-CELL-END-TO-END-2026-07-03.md",
+  "living_prd_sha256": "a3606c186109c1597e43a793647cd7b7f3bd63c653d3986c25e1db09bf224a93",
+  "authority_metric": "integrated corpus -> tokenizer/FSM/JL packet -> Gemma QNN/HTP -> exact Adreno/Vulkan consumed tensor SHA -> polar theta-only adapter update -> repeated supervised Q/A loss loop -> metadata-only authority report",
+  "mechanical_boundary_crossed": true,
+  "context_load": {
+    "tier": "targeted_reference",
+    "files_loaded": [
+      "/Users/prinivenpillay/.codex/skills/zpp-orchestrate/SKILL.md full short skill instruction",
+      "/Users/prinivenpillay/.codex/skills/zpp-orchestrate/references/context-load.md full short reference",
+      "/Users/prinivenpillay/.codex/skills/zpp-orchestrate/references/next-handoff.md full short reference",
+      "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.json targeted top-level/watchdog handoff extracts",
+      "runtime/reports/orchestration/EXECUTIVE_DELIVERY_STATE.md full 93-line active summary",
+      "Repo Custodian incoming NEXT_HANDOFF for context-load patch commit 29aec1b87ed9e67d2bdc0846f8b61339a54efe61"
+    ],
+    "extraction_mode": "targeted",
+    "rationale": "central migration only needed active owner/gate/handoff/template fields, the frozen context-load rule, and the Repo custody handoff; the full central JSON was parsed locally for a structured rewrite but not loaded into model context",
+    "omitted_heavy_sources": [
+      "full Apex PRD",
+      "full external packet",
+      "full EXECUTIVE_DELIVERY_STATE.json in model context",
+      "stale WaveC/C5 route tables",
+      "historical run ledgers and raw payload roots"
+    ]
+  },
+  "provider_access_state": "PENDING_ACTION_PROVIDER_NOT_NEEDED_FOR_CURRENT_EDGE",
+  "raw_boundary_state": "metadata_only_no_raw_payloads",
+  "drift_action": "none",
+  "active_handoff_template": {
+    "schema_version": "zpp_active_handoff_template_v1",
+    "status": "active",
+    "brief_carried_handoff_rule": {
+      "schema_version": "zpp_brief_carried_handoff_rule_v1",
+      "status": "active",
+      "rule": "Every mobilization brief must contain the incoming NEXT_HANDOFF, or WATCHDOG_RECOVERY_HANDOFF for route repair, plus the outbound NEXT_HANDOFF schema the lane must return.",
+      "required_brief_fields": [
+        "incoming_NEXT_HANDOFF_or_WATCHDOG_RECOVERY_HANDOFF",
+        "outbound_NEXT_HANDOFF_schema",
+        "context_load",
+        "first_missing_green_field",
+        "nonclaims"
+      ],
+      "process_drift": "task-only prompts without handoff fields are invalid route surfaces",
+      "watchdog_recovery_rule": "Watchdog/Meta may wrap a malformed route only when it labels the packet WATCHDOG_RECOVERY_HANDOFF rather than normal producer handoff."
+    },
+    "inbound_required": "NEXT_HANDOFF or WATCHDOG_RECOVERY_HANDOFF",
+    "outbound_required_schema": {
+      "to": "<next lane and thread id>",
+      "status": "<exact status>",
+      "artifacts": [
+        "<path plus sha256, or none with reason>"
+      ],
+      "first_missing_green_field": "<one exact field>",
+      "next_action": "<concrete next action>",
+      "prompt_to_send": "<ready prompt carrying this handoff for next owner>",
+      "context_load": {
+        "tier": "capsule_only | targeted_reference | full_prd | full_evidence",
+        "files_loaded": [
+          "<path or reference name>"
+        ],
+        "extraction_mode": "targeted | full",
+        "rationale": "<why this much context was necessary>",
+        "omitted_heavy_sources": [
+          "<heavy source intentionally not loaded>"
+        ]
+      },
+      "research_escalation": "none | active_parallel_signal_lane | required with reason",
+      "nonclaims": [
+        "<nonclaim>"
       ]
     }
   },
-  "c5_after_c1_canonical_payload_retry_record_id_failure_20260702T104213Z": {
-    "status": "canonical_c5_prediction_payload_report_failed",
-    "metadata_root": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/canonical_payload_retry_20260702T104213Z",
-    "report_path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_waveB_rerun_20260630T230411Z/c5_preflight/C5_after_C1/canonical_payload_retry_20260702T104213Z/metadata/c5_prediction_payloads_C5_after_C1_c1_c4_waveB_rerun_20260630T230411Z_canonical_payload_retry.json",
-    "report_sha256": "d323cd9b0a0f475ed181ca955ab7e9a953596d9a3735d2f2043492c94aa01fdc",
-    "wrapper_stdout_sha256": "a20145e583cd4c4a5ff9a52fb2d2332387804544193e45d3b80fdd5e3d712cec",
-    "wrapper_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "execution_metadata_sha256": "6828a69043ae42c173ea765e8b04685cc2c66e56acfe3b0941465e76d0e44595",
-    "wrapper_exit_code": 2,
-    "wrapper_status": "blocked",
-    "first_missing_green_field": "ValueError:candidate_predictions_missing_record_ids",
-    "candidate_train_loss": 15.202827250350284,
-    "candidate_train_loss_source": "teacher_forced_answer_token_nll_from_full_decoder_logits",
-    "worktree_commit": "90f40cf1d093886f5645ec7e30872bc3690e9555",
-    "candidate_prediction_jsonl_sha256": "a0137450ae16220a1aecc3dff60e50bceae641dba9b8207c0567f48ae4be4fc3",
-    "candidate_prediction_jsonl_bytes": 429,
-    "candidate_prediction_path_sha256": "a42ed2219c9aa5a7ee71b3967114f16345b69229ed124ef182ffe18b18227215",
-    "stable_prediction_jsonl_sha256": "a75e7804dbe4152d86c194eade3240285f16e254cd20b7cd0b0aff7ded7fff1d",
-    "stable_prediction_jsonl_bytes": 430,
-    "stable_prediction_path_sha256": "6f355ce433f601e99a57dded4ef271ee70f108fc7581adabf6a8a13ce9e97aad",
-    "local_raw_suffix_scan_count": 0,
-    "nonclaims": [
-      "no C5 pass",
-      "no heldout scorer execution",
-      "no raw prediction JSONL in git",
-      "no secrets printed",
-      "no Comet-backed accepted run"
-    ]
+  "brief_carried_handoff_rule": {
+    "schema_version": "zpp_brief_carried_handoff_rule_v1",
+    "status": "active",
+    "rule": "Every mobilization brief must contain the incoming NEXT_HANDOFF, or WATCHDOG_RECOVERY_HANDOFF for route repair, plus the outbound NEXT_HANDOFF schema the lane must return.",
+    "required_brief_fields": [
+      "incoming_NEXT_HANDOFF_or_WATCHDOG_RECOVERY_HANDOFF",
+      "outbound_NEXT_HANDOFF_schema",
+      "context_load",
+      "first_missing_green_field",
+      "nonclaims"
+    ],
+    "process_drift": "task-only prompts without handoff fields are invalid route surfaces",
+    "watchdog_recovery_rule": "Watchdog/Meta may wrap a malformed route only when it labels the packet WATCHDOG_RECOVERY_HANDOFF rather than normal producer handoff."
   }
 }
