@@ -1,0 +1,286 @@
+{
+  "schema": "heterogeneous_closure_cell_full_layer0_vulkan_shape_ledger_repair_execution.v1",
+  "run_id": "heterogeneous_closure_cell_full_layer0_vulkan_shape_ledger_repair_execution_20260703T011946Z",
+  "created_utc": "2026-07-03T01:19:46Z",
+  "execution_completed_utc": "2026-07-03T02:04:00Z",
+  "status": "full_layer0_qnn_to_vulkan_adapter_update_green_pending_pipeline_validation",
+  "package_class": "larger_fixed_shape_gemma4_e4b_layer0_ffn_residual_qnn_to_vulkan_adapter_update_boundary",
+  "named_graph_slice": "gemma4_e4b_ffn_residual_layer0_forward_island_seq16_hidden2560",
+  "previous_failure_consumed": {
+    "report_path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/polar_phase34_consumer_preflight/active_wave/qnn_cpp_ffn_residual_generator/heterogeneous_closure_cell_full_layer0_vulkan_second_repair_execution_20260703T011946Z.json",
+    "report_sha256": "43f692f5e9917e21e3bf0fdaf0d0edd5a41eaa05ab88e8c2d7c7aaf0f0ffa82b",
+    "first_failure": "authority_validation_failure:app_report_qnn_shape_mismatch:expected_[1,16,2560]:actual_[1,2,4]",
+    "ledger_failure_consumed": "stale shared handoff label ffn_micro_island_output.raw"
+  },
+  "first_missing_green_field": "pipeline_receiving_validation_for_larger_fixed_shape_gemma_faithful_qnn_to_vulkan_authority_chain",
+  "classification": {
+    "local_model_library_build": "green",
+    "local_apk_build": "green",
+    "phone_deployment_reached": true,
+    "selected_weight_preflight": "green_by_progression_to_qnn_context",
+    "qnn_platform_validator": "green_by_progression_to_qnn_context",
+    "qnn_context_generation": "green",
+    "qnn_net_run": "green",
+    "qnn_profile": "green",
+    "vulkan_app_handoff": "green",
+    "vulkan_compute": "green",
+    "gpu_consumed_sha_equals_qnn_output_sha": true,
+    "app_shape_metadata": "green",
+    "shared_handoff_ledger_label": "green",
+    "adapter_delta": "green",
+    "finite_scalar_loss": "green",
+    "finite_update_norm": "green",
+    "physics_data_movement_ledger": "present",
+    "script_post_report_blockers": [],
+    "closure_claim": "not_broad_final; pending_pipeline_receiving_validation"
+  },
+  "command_package": {
+    "root": "/private/tmp/heterogeneous_closure_cell_full_layer0_vulkan_package_20260703T011946Z",
+    "report": {
+      "path": "/private/tmp/heterogeneous_closure_cell_full_layer0_vulkan_package_20260703T011946Z/report.json",
+      "sha256": "91e365b6a0368e0d03db40b7d7c4731fbd80fabc2b9fc2aabd88bc833176a150",
+      "json": "valid"
+    },
+    "qnn_source": {
+      "path": "/private/tmp/heterogeneous_closure_cell_full_layer0_vulkan_package_20260703T011946Z/qnn/src/gemma4_e4b_ffn_residual_layer0_contraction_qnn_model.cpp",
+      "sha256": "66664724ee781c3466b344243d13dfa4559b7e36fec126cd8d3fe7365d8e5063"
+    },
+    "qnn_build_script": {
+      "path": "/private/tmp/heterogeneous_closure_cell_full_layer0_vulkan_package_20260703T011946Z/qnn/scripts/build_full_layer0_island.sh",
+      "sha256": "3a30506cfb09efc1363e21b4c0bfadf858d0ca53392cab7662eb46f48d26b4a6"
+    },
+    "host_run_script": {
+      "path": "/private/tmp/heterogeneous_closure_cell_full_layer0_vulkan_package_20260703T011946Z/scripts/run_full_layer0_qnn_to_vulkan_consumer.sh",
+      "sha256": "809a724f380fe601e669ea2f86ea8772953ed71693f1583f16511d34b965dd5a"
+    },
+    "phone_run_script": {
+      "path": "/private/tmp/heterogeneous_closure_cell_full_layer0_vulkan_package_20260703T011946Z/scripts/phone_run_full_layer0_context_net_run.sh",
+      "sha256": "f7b5a7f729e811a7cc3480a4aeb2aa9c9bdf0ac2cfaabdc2e0a97892b368ef5b"
+    },
+    "qnn_model_library": {
+      "path": "/private/tmp/heterogeneous_closure_cell_full_layer0_vulkan_package_20260703T011946Z/qnn/out/libgemma4_e4b_ffn_residual_layer0_contraction.so",
+      "sha256": "b7f07f8b4f6b70285677a811fc3e5b9a68b479907791dd2409d5c9ea0e415f56",
+      "bytes": 5902320,
+      "exports_present": [
+        "QnnModel_composeGraphs",
+        "QnnModel_freeGraphsInfo"
+      ],
+      "needed_libraries": [
+        "libdl.so",
+        "libm.so",
+        "libc.so"
+      ],
+      "libcxx_shared_required": false
+    },
+    "vulkan_native_source": {
+      "path": "/private/tmp/heterogeneous_closure_cell_full_layer0_vulkan_package_20260703T011946Z/vulkan_app/android/app/src/main/cpp/vulkan_visibility_jni.cpp",
+      "sha256": "043227e71980524f1db0058b1dfcf78b6e5b27564afd191be64d1c23430a0954",
+      "bytes": 46837,
+      "literal_guard": {
+        "full_layer0_shape_present": true,
+        "full_layer0_shared_handoff_label_present": true,
+        "stale_micro_island_handoff_label_present": false
+      }
+    },
+    "vulkan_java_source": {
+      "path": "/private/tmp/heterogeneous_closure_cell_full_layer0_vulkan_package_20260703T011946Z/vulkan_app/android/app/src/main/java/ai/zer0pa/polymath/vulkanprobe/ProbeActivity.java",
+      "sha256": "0d06e335695b6a41e9c48f09f9e9fdc3f550f5a7dfb02a107652666176051e43"
+    },
+    "vulkan_apk": {
+      "path": "/private/tmp/heterogeneous_closure_cell_full_layer0_vulkan_package_20260703T011946Z/vulkan_app/out/polymath-vulkan-qnn-consumer-debug.apk",
+      "sha256": "97498e76995a0fe5bfc09af14307b99ffcb69e3da1ee15ef5c71c8f611399857",
+      "bytes": 4463299
+    },
+    "materialized_weight_manifest": {
+      "path": "/private/tmp/heterogeneous_closure_cell_full_layer0_vulkan_package_20260703T011946Z/qnn/metadata/materialized_weight_manifest.json",
+      "sha256": "f31905763b1081e6d104127d5585fa13fc31e6558df9d08d1d98dee75434ec4b"
+    },
+    "artifact_sha_validation_errors": []
+  },
+  "material_authority": {
+    "packet_path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/orchestration/TRAINING_MATERIAL_STEWARD_SELECTED_LAYER0_WEIGHT_MATERIAL_AUTHORITY_PACKET_20260703T011414Z.json",
+    "packet_sha256": "b84f07efc15092156676e65524d7cf86e9cb143b84cbb984cf63e3dbd802e6d9",
+    "materialized_weight_manifest_sha256": "f31905763b1081e6d104127d5585fa13fc31e6558df9d08d1d98dee75434ec4b",
+    "selected_weight_sha256": {
+      "input_layernorm": "6dfe4f5ab9c1a871d9c8013ee17418f245549f161a1758946b2d8d348ac61cb4",
+      "mlp_gate_proj": "2f75a9e18e12c16cac86bf27e09a01f5908eb80e0f09d7da17c0f114e9438c78",
+      "mlp_up_proj": "06a3ee6e2996ee491df0e9e1dd1aad580e3283259c3277b67896e852ff615d75",
+      "mlp_down_proj": "d0dafec1ee55ccbdf3b2d75da45c0c7d0e34b34da6337ad1e6a89b07bc29cf48"
+    },
+    "raw_weight_policy": "Selected raw blobs remain outside git under phone Termux-private root and /private/tmp materialized authority root. This execution report records metadata only."
+  },
+  "execution": {
+    "official_attempt_count": 1,
+    "command": "PHONE_SSH_IDENTITY=/Users/prinivenpillay/.ssh/polymath_host QAIRT_HOST_ROOT=/private/tmp/wavec_runpod_qairt_host_root_20260702T205000Z/qairt_host ADB=adb /private/tmp/heterogeneous_closure_cell_full_layer0_vulkan_package_20260703T011946Z/scripts/run_full_layer0_qnn_to_vulkan_consumer.sh",
+    "rc": 0,
+    "stdout": {
+      "path": "/private/tmp/heterogeneous_closure_cell_full_layer0_vulkan_package_20260703T011946Z/full_layer0_vulkan_consumer_shape_repair_run_stdout.log",
+      "sha256": "552a5c4e611fe463b9fb0febce2eb47c6490268d0c5c7dd09bb3c8ee836d44eb",
+      "bytes": 3435,
+      "blockers": []
+    },
+    "stderr": {
+      "path": "/private/tmp/heterogeneous_closure_cell_full_layer0_vulkan_package_20260703T011946Z/full_layer0_vulkan_consumer_shape_repair_run_stderr.log",
+      "sha256": "3ff560fc5a8e09cf703a269423e303f37ad1ca3f556cdafe7aaa2e1516104cf6",
+      "bytes": 206,
+      "snippet": "/sdcard/Android/data/ai.zer0pa.polymath.vulkanprobe/files/reports/vulkan_full_layer0_consumer_20260703T011946Z/app_vulkan_qnn_consumer_report.json: 1 file pulled"
+    }
+  },
+  "qnn_authority_report": {
+    "local_path": "/private/tmp/heterogeneous_closure_cell_full_layer0_vulkan_package_20260703T011946Z/reports/full_layer0_qnn_authority.json",
+    "sha256": "92a399d90506d028b36ec6357285dbf2c8df06f1a73551e57663329e370d57b9",
+    "bytes": 2336,
+    "json": "valid",
+    "schema": "heterogeneous_closure_cell_full_layer0_qnn_authority.v1",
+    "stage": "full_layer0_ffn_residual_island_probe",
+    "graph": "gemma4_e4b_ffn_residual_layer0_forward_island_seq16_hidden2560",
+    "topology": "real_layer0_weights_rmsnorm_contraction_gate_up_matmul_transpose_weight_gelu_tanh_gated_multiply_down_matmul_transpose_weight_residual_add",
+    "context_path": "/data/data/com.termux/files/home/polymath_gemma4_gate/wavec/full_gemma_qnn_export/probe_ladder/full_layer0_ffn_residual_island_probe/gemma4_e4b_ffn_residual_layer0_contraction.qnn.bin",
+    "context_sha256": "e43fa33ee45ccd4d46c1a63afd68125d24e8fb9c532f7c5c475992b0623aceab",
+    "context_bytes": 157982720,
+    "output_path": "/data/data/com.termux/files/home/polymath_gemma4_gate/wavec/full_gemma_qnn_export/probe_ladder/full_layer0_ffn_residual_island_probe/run/Result_0/hidden_output.raw",
+    "output_sha256": "1b06400c099e8ed577ddcffba1f7dc1c55640531f4adb0f1af4942122da99d12",
+    "output_bytes": 163840,
+    "input_shape": [1, 16, 2560],
+    "output_shape": [1, 16, 2560],
+    "input_dtype": "float32",
+    "output_dtype": "float32",
+    "profile_log_sha256": "ed450b8f47bbc9a81c105e8397ce676e7511abd659b8f2bda15d8b8f0156d727",
+    "profile_csv_sha256": "0e059ab34446663c516988b808b47f915e3f527d075e81ec7a7c3305ee8ea880",
+    "raw_boundary": "phone-local QNN output/profile/context; host pulled JSON metadata only"
+  },
+  "app_vulkan_consumer_report": {
+    "remote_path": "/sdcard/Android/data/ai.zer0pa.polymath.vulkanprobe/files/reports/vulkan_full_layer0_consumer_20260703T011946Z/app_vulkan_qnn_consumer_report.json",
+    "local_path": "/private/tmp/heterogeneous_closure_cell_full_layer0_vulkan_package_20260703T011946Z/reports/app_vulkan_full_layer0_qnn_consumer_report.json",
+    "sha256": "2905b2e82d79c760e9c643531abeeb4902ef0294f4f95b3b0918877e111acb33",
+    "bytes": 9710,
+    "json": "valid",
+    "schema": "heterogeneous_closure_cell_app_vulkan_qnn_consumer.v1",
+    "status": "vulkan_qnn_tensor_consumption_adapter_update_green",
+    "qnn_context_graph": "gemma4_e4b_ffn_residual_layer0_forward_island_seq16_hidden2560",
+    "qnn_context_sha256": "e43fa33ee45ccd4d46c1a63afd68125d24e8fb9c532f7c5c475992b0623aceab",
+    "qnn_output_sha256": "1b06400c099e8ed577ddcffba1f7dc1c55640531f4adb0f1af4942122da99d12",
+    "qnn_output_bytes": 163840,
+    "qnn_output_shape": [1, 16, 2560],
+    "qnn_output_dtype": "float32",
+    "gpu_consumed_tensor_sha256": "1b06400c099e8ed577ddcffba1f7dc1c55640531f4adb0f1af4942122da99d12",
+    "gpu_consumed_equals_qnn_output": true,
+    "loaded_route": "direct_dlopen",
+    "loaded_path_class": "libvulkan.so",
+    "selected_device": {
+      "name": "Adreno (TM) 830",
+      "device_type": "integrated_gpu",
+      "vendor_id": 20803,
+      "device_id": 1141178369,
+      "api_version": "1.3.284",
+      "driver_version_raw": 2150760488,
+      "queue_family_count": 3,
+      "compute_queue_family_index": 0,
+      "memory_heap_count": 2,
+      "memory_type_count": 9
+    },
+    "vulkan_statuses": {
+      "vkCreateInstance_status": "VK_SUCCESS",
+      "vkEnumeratePhysicalDevices_status": "VK_SUCCESS",
+      "vkCreateDevice_compute_queue_status": "VK_SUCCESS",
+      "storage_buffer_create_status": "VK_SUCCESS",
+      "storage_buffer_output_create_status": "VK_SUCCESS",
+      "shader_module_status": "VK_SUCCESS",
+      "compute_pipeline_status": "VK_SUCCESS",
+      "descriptor_set_status": "VK_SUCCESS",
+      "command_buffer_status": "VK_SUCCESS",
+      "queue_submit_status": "VK_SUCCESS",
+      "fence_wait_status": "VK_SUCCESS"
+    },
+    "dispatch_dimensions": [2560, 1, 1],
+    "storage_buffer_input_bytes": 163840,
+    "storage_buffer_output_bytes": 163840,
+    "vulkan_padded_uint32_element_count": 40960,
+    "output_sha256": "414560655cf044567d64ea145200432fba9cd168b8b8695744be875351201f97",
+    "expected_output_sha256": "414560655cf044567d64ea145200432fba9cd168b8b8695744be875351201f97",
+    "output_matches_expected": true,
+    "adapter_pre_sha256": "5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+    "adapter_post_sha256": "adfa722ce933bc01b38e7e7849a0814f198037528a0003f7a1bef303162adeb7",
+    "adapter_delta_observed": true,
+    "adapter_element_count": 256,
+    "adapter_update_source": "vulkan_storage_buffer_readback_from_exact_qnn_tensor",
+    "update_norm_l2": 0.00467643145506083,
+    "update_norm_finite": true,
+    "scalar_loss": 4069.266161706255,
+    "scalar_loss_finite": true,
+    "raw_buffer_bytes_captured": false
+  },
+  "physics_data_movement_ledger": {
+    "termux_qnn_private_path": "/data/data/com.termux/files/home/polymath_gemma4_gate/wavec/full_gemma_qnn_export/probe_ladder/full_layer0_ffn_residual_island_probe/run/Result_0/hidden_output.raw",
+    "app_report_termux_qnn_private_path": "reported_in_qnn_metadata",
+    "phone_local_shared_handoff": "/sdcard/Download/polymath_heterogeneous_closure_cell/qnn/full_layer0_output.raw",
+    "app_specific_handoff": "/sdcard/Android/data/ai.zer0pa.polymath.vulkanprobe/files/qnn/full_layer0_output.raw",
+    "shared_handoff_label_discrepancy": false,
+    "host_pulled_raw_payload": false,
+    "repo_raw_payload": false,
+    "vulkan_dispatch_padding_bytes": 0,
+    "gpu_upload_bytes": 163840,
+    "gpu_readback_bytes": 163840
+  },
+  "authority_chain": {
+    "qnn_context_sha256": "e43fa33ee45ccd4d46c1a63afd68125d24e8fb9c532f7c5c475992b0623aceab",
+    "fresh_qnn_output_sha256": "1b06400c099e8ed577ddcffba1f7dc1c55640531f4adb0f1af4942122da99d12",
+    "fresh_qnn_output_bytes": 163840,
+    "fresh_qnn_output_shape": [1, 16, 2560],
+    "fresh_qnn_output_dtype": "float32",
+    "app_report_qnn_output_shape": [1, 16, 2560],
+    "app_pre_upload_sha256": "1b06400c099e8ed577ddcffba1f7dc1c55640531f4adb0f1af4942122da99d12",
+    "gpu_consumed_tensor_sha256": "1b06400c099e8ed577ddcffba1f7dc1c55640531f4adb0f1af4942122da99d12",
+    "gpu_consumed_equals_qnn_output": true,
+    "adapter_pre_sha256": "5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+    "adapter_post_sha256": "adfa722ce933bc01b38e7e7849a0814f198037528a0003f7a1bef303162adeb7",
+    "adapter_delta_observed": true,
+    "scalar_loss": 4069.266161706255,
+    "scalar_loss_finite": true,
+    "update_norm_l2": 0.00467643145506083,
+    "update_norm_finite": true,
+    "physics_data_movement_ledger_present": true,
+    "authority_chain_green_pending_pipeline_validation": true
+  },
+  "raw_boundary_scan": {
+    "report_directory_raw_payload_like_file_hits": 0,
+    "package_qnn_raw_profile_csv_safetensors_hits_before_run": 0,
+    "package_generated_build_intermediate_bin_hits": 29,
+    "package_generated_build_intermediate_bin_class": "Gradle/CMake/desugar/cache build intermediates after APK build, not QNN raw/context/tensor/profile/weight payloads",
+    "token_shaped_secret_hits": 0,
+    "host_pulled_json_metadata_only": true,
+    "host_pulled_raw_payload": false,
+    "repo_raw_payload": false
+  },
+  "provider_access_state": {
+    "phone_route": "available_and_used",
+    "auth_blocker": false,
+    "provider_blocker": false,
+    "runpod_or_hf_or_comet_or_github_calls": false
+  },
+  "validation": {
+    "package_report_json": "valid",
+    "qnn_authority_json": "valid",
+    "app_vulkan_report_json": "valid",
+    "execution_report_json": "valid",
+    "package_artifact_shas": "matched",
+    "script_post_report_blockers": [],
+    "raw_payload_scan": "zero_repo_hits",
+    "secret_shaped_scan": "zero_hits"
+  },
+  "next_action": {
+    "route_to": "Pipeline Integrator Refresh 019f2470-729d-7fb1-9676-ce996bea8e61",
+    "cc": "MetaOrchestrator #3 active 019f1d69-aa89-74c1-b9c5-004119e4ff1e",
+    "recommendation": "Pipeline should perform receiving validation of the larger fixed-shape Gemma layer0 FFN/residual QNN-to-Vulkan authority chain before any wider closure-state update."
+  },
+  "nonclaims": [
+    "no C5 pass",
+    "no learning/model-quality claim",
+    "no Phase readiness",
+    "no full-Gemma HTP forward claim until proven",
+    "no broad final heterogeneous closure/milestone claim beyond validated frozen primitive/slice authority-chain reports",
+    "no raw payloads in git",
+    "no secrets printed",
+    "no Comet-backed accepted run"
+  ]
+}
