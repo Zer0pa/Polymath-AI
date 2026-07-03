@@ -1,0 +1,122 @@
+{
+  "schema": "zpp_provider_capability_drift_repair_v1",
+  "created_utc": "2026-07-03T20:30:00Z",
+  "status": "process_drift_repaired_unstaged",
+  "root_cause": "The context-load diet and narrowed Gate C watchdog prompts preserved the current handoff edge but dropped the global provider-role invariant that existed in earlier orchestration state. Local/phone QAIRT source scans were then treated as sufficient to route user source custody before the authorized RunPod surface was checked.",
+  "drift_classification": "provider_capability_context_omission",
+  "bad_inference_prevented": "host/phone-local artifact absence does not imply user_action_required when the provider matrix lists an authorized provider surface for that artifact class.",
+  "canonical_provider_matrix": {
+    "path": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/orchestration/SYSTEM_PROVIDER_ACCESS_CAPABILITY_MATRIX_20260702T201330Z.json",
+    "sha256": "d6602e9c872848fc26e0105b0650b748a1185d1a9b3f63cbea5051d8fa6e3101"
+  },
+  "provider_capability_capsule": {
+    "matrix_artifact": "/Users/Zer0pa/Polymat AI/Polymath-AI/runtime/reports/orchestration/SYSTEM_PROVIDER_ACCESS_CAPABILITY_MATRIX_20260702T201330Z.json sha256=d6602e9c872848fc26e0105b0650b748a1185d1a9b3f63cbea5051d8fa6e3101",
+    "providers": {
+      "runpod": {
+        "role": "QAIRT/QNN SDK source/tool host for outside-git export/build metadata",
+        "safe_check": "metadata-only SSH check against the matrix-listed RunPod access surface; do not print secrets or move raw payloads",
+        "owners": [
+          "phase_engineering",
+          "execution_orchestrator",
+          "research_signal"
+        ],
+        "current_classification": "PENDING_ACTION_PROVIDER_AVAILABLE_WHEN_EDGE_REQUIRES"
+      },
+      "phone_adb_termux": {
+        "role": "RedMagic 10 Pro authority execution target for model/training gates",
+        "safe_check": "ADB state plus scoped Termux/SSH metadata checks only inside an authorized recovery or execution route",
+        "owners": [
+          "execution_orchestrator",
+          "phase_engineering"
+        ],
+        "current_classification": "PENDING_ACTION_PROVIDER_AVAILABLE_WHEN_EDGE_REQUIRES"
+      },
+      "hugging_face": {
+        "role": "corpus/model revision source and metadata-only provenance",
+        "safe_check": "hf auth whoami after approved env sourcing; report account/org status only",
+        "owners": [
+          "training_material_steward",
+          "execution_orchestrator",
+          "repo_custodian"
+        ],
+        "current_classification": "PENDING_ACTION_PROVIDER_AVAILABLE_WHEN_EDGE_REQUIRES"
+      },
+      "github": {
+        "role": "Repo Custodian-owned freeze/PR surface",
+        "safe_check": "gh auth status and git remote metadata with token redaction",
+        "owners": [
+          "repo_custodian"
+        ],
+        "current_classification": "PENDING_ACTION_PROVIDER_AVAILABLE_WHEN_EDGE_REQUIRES"
+      },
+      "comet": {
+        "role": "authority-linked numeric metrics/logging, never dashboard-as-evidence",
+        "safe_check": "authorized SDK init or auth check that does not print COMET_API_KEY",
+        "owners": [
+          "execution_orchestrator",
+          "pipeline_integrator",
+          "ui_operator_visibility"
+        ],
+        "current_classification": "PENDING_ACTION_PROVIDER_AVAILABLE_WHEN_EDGE_REQUIRES"
+      }
+    },
+    "false_stop_prevention": [
+      "Do not mark user_action_required merely because host/phone-local scans missed an artifact; check the provider matrix first.",
+      "Do not route source custody to the user until all authorized provider surfaces for that artifact class have been checked or have exact auth failure evidence.",
+      "Do not call provider absence a BLOCKER unless an authorized safe check failed or the required access surface is genuinely missing.",
+      "Keep RunPod and phone roles distinct: RunPod is the QAIRT/QNN SDK source/tool host; the RedMagic phone is the model/training authority execution target.",
+      "Classify Hugging Face, GitHub, and Comet for every relevant edge so dataset/model provenance, custody commits, and authority-linked metrics do not drift out of memory."
+    ],
+    "secret_policy": "Never print, copy, summarize, commit, or include token/key values."
+  },
+  "control_surface_changes": [
+    {
+      "path": "/Users/prinivenpillay/.codex/skills/zpp-orchestrate/references/provider-access.md",
+      "sha256": "424779c5580dabc362a137885c1debf3e7a6d9ac9efa6456532144e9452d2fa9",
+      "change": "Provider capability capsule made mandatory for provider/source/logging/custody-affected routes."
+    },
+    {
+      "path": "/Users/prinivenpillay/.codex/skills/zpp-orchestrate/references/next-handoff.md",
+      "sha256": "61fc1952c7016aa0eee3919002a2044a8385c194ae94cfebaebba0e49c68af07",
+      "change": "NEXT_HANDOFF schema now carries provider_capability_capsule and invalidates premature user_action_required for provider/source-custody gaps."
+    },
+    {
+      "path": "/Users/prinivenpillay/.codex/skills/zpp-orchestrate/references/context-load.md",
+      "sha256": "deab36b62e827158cbc530c0f9a4afa54ad1beeb04f6e64d19262a3e8e2be361",
+      "change": "Context-load rule now requires a targeted provider matrix extract for affected routes."
+    },
+    {
+      "path": "/Users/Zer0pa/Polymat AI/Polymath-AI/docs/PRD-ZER0PA-PIPELINE-PROTOCOL-ZPP-2026-07-01.md",
+      "sha256": "eab1cdcf8cf89c3d1c0d6e77d596066335a493c944493fb0f220cb70b8845630",
+      "change": "Repo-level ZPP PRD now includes provider capability capsule rules and RunPod/phone role separation."
+    },
+    {
+      "path": "/Users/Zer0pa/Polymat AI/Polymath-AI/polymath_ai/zpp/lint.py",
+      "sha256": "8346b25f0b3d3ee89c27b595be9a12778c1f5352604709ee3c8c099de9a40f5d",
+      "change": "Linter now flags provider/source/logging/custody routes that omit provider_capability_capsule."
+    },
+    {
+      "path": "/Users/Zer0pa/Polymat AI/Polymath-AI/tests/test_zpp_lint.py",
+      "sha256": "ead08c1a29a3c53d7d37ce1e61513dcb59b5bc17704921e89f885bd0717fbbfc",
+      "change": "Tests added for QAIRT source-custody/provider route drift."
+    }
+  ],
+  "current_live_edge": {
+    "owner": "Phase Engineering / Gate C QNN Export Authority 019f27dd-3879-79d0-9235-2a068349a706",
+    "gate": "gate_c_layer1_export_package_runpod_qairt_source_root_integration_pending",
+    "user_action_required": false,
+    "runpod_source_root_validated": "/workspace/qairt-2.44/qairt/2.44.0.260225",
+    "execution_state": "asleep_until_pipeline_validates_repaired_package"
+  },
+  "nonclaims": [
+    "no Gate C authority acceptance",
+    "no full Gate C execution",
+    "no layer1 QNN/HTP context authority proof",
+    "no multi-layer QNN/HTP authority evidence",
+    "no layer-cyclic selective backprop evidence",
+    "no heldout before/after evidence",
+    "no model-quality claim",
+    "no raw payloads in git",
+    "no secrets printed"
+  ]
+}

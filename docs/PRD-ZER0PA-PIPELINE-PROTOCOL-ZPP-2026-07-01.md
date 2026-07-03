@@ -160,6 +160,12 @@ This is a protocol requirement, not a token-saving preference. Overloaded
 context increases stale-state capture, completed-marker drift, and local-green
 substitution.
 
+If the route can be affected by phone access, RunPod, Hugging Face, GitHub,
+Comet, source SDK custody, model/corpus retrieval, experiment logging, or
+external execution, the context capsule must include a targeted provider matrix
+extract. This does not justify loading the full matrix or full central state.
+It is the minimum operational map needed to avoid false user blockers.
+
 ### 4.7 Brief-Carried-Handoff Rule
 
 Every lane mobilization brief must contain the incoming `NEXT_HANDOFF` that
@@ -168,9 +174,22 @@ brief must contain `WATCHDOG_RECOVERY_HANDOFF` and mark that it is not a normal
 producer handoff.
 
 The brief must also contain the outbound `NEXT_HANDOFF` schema the lane must
-return, including `context_load`. Task-only prompts without handoff fields are
-process drift because they force the next lane to infer route authority from
-heavy state.
+return, including `context_load` and `handoff_dispatch_status`. Task-only
+prompts without handoff fields are process drift because they force the next
+lane to infer route authority from heavy state.
+
+When provider capability can affect the route, the brief must also carry a
+secret-free `provider_capability_capsule`. Provider capability is not optional
+lane memory. A brief that asks for user source custody, auth repair, logging
+repair, GitHub custody, or environment action before checking the provider
+matrix is process drift unless it records exact failed safe checks for every
+authorized surface.
+
+If thread-send tooling is available, the producing lane must send the handoff
+to the next owner before marking itself complete and set
+`handoff_dispatch_status: SENT_TO_NEXT_OWNER`. If the tool is unavailable, it
+must set `handoff_dispatch_status: TOOL_UNAVAILABLE`; Watchdog then owns
+dispatching the carried prompt on the next tick.
 
 ## 5. Alien Engineering Research Loop
 
@@ -364,7 +383,55 @@ authenticated operation failed.
 Use `BLOCKER` only after a real access, verification, or technical failure is
 observed and evidence is recorded.
 
-### 7.2 Hugging Face
+### 7.2 Provider Capability Capsule
+
+Every route-changing handoff and mobilization brief must carry this capsule
+when provider, phone, source-custody, dataset/model, logging, commit, or
+external execution state can affect the next owner:
+
+```yaml
+provider_capability_capsule:
+  matrix_artifact: "<provider matrix path plus sha256 if known>"
+  providers:
+    runpod:
+      role: "QAIRT/QNN SDK source/tool host for outside-git export/build metadata"
+      safe_check: "<metadata-only SSH check, no secrets>"
+      owners: ["phase_engineering", "execution_orchestrator", "research_signal"]
+      current_classification: "PENDING_ACTION_PROVIDER_AVAILABLE_WHEN_EDGE_REQUIRES"
+    phone_adb_termux:
+      role: "RedMagic 10 Pro authority execution target for model/training gates"
+      safe_check: "<ADB/Termux metadata-only check scoped to authorized recovery>"
+      owners: ["execution_orchestrator", "phase_engineering"]
+      current_classification: "PENDING_ACTION_PROVIDER_AVAILABLE_WHEN_EDGE_REQUIRES"
+    hugging_face:
+      role: "corpus/model revision source and metadata-only provenance"
+      safe_check: "hf auth whoami after approved env sourcing"
+      owners: ["training_material_steward", "execution_orchestrator", "repo_custodian"]
+      current_classification: "PENDING_ACTION_PROVIDER_AVAILABLE_WHEN_EDGE_REQUIRES"
+    github:
+      role: "custody commits/PRs only through Repo Custodian"
+      safe_check: "gh auth status with token redaction"
+      owners: ["repo_custodian"]
+      current_classification: "PENDING_ACTION_PROVIDER_AVAILABLE_WHEN_EDGE_REQUIRES"
+    comet:
+      role: "authority-linked numeric metrics/logging, never dashboard-as-evidence"
+      safe_check: "SDK init/auth check without printing API key"
+      owners: ["execution_orchestrator", "pipeline_integrator", "ui_operator_visibility"]
+      current_classification: "PENDING_ACTION_PROVIDER_AVAILABLE_WHEN_EDGE_REQUIRES"
+  false_stop_prevention:
+    - "Do not mark user_action_required merely because host/phone-local scans missed an artifact; check provider matrix first."
+    - "Do not route source-custody to the user until all authorized provider surfaces for that artifact class have been checked or have exact auth failure evidence."
+    - "Do not call provider absence a BLOCKER unless an authorized safe check failed or the required access surface is genuinely missing."
+  secret_policy: "Never print, copy, summarize, commit, or include token/key values."
+```
+
+RunPod and phone are distinct operational surfaces. RunPod is a QAIRT/QNN SDK
+source/tool host for outside-git export/build metadata. The RedMagic phone is
+the authority execution target for model/training gates. A lane that merges
+these roles, forgets either surface, or asks the user before checking the
+matrix is in process drift.
+
+### 7.3 Hugging Face
 
 Allowed setup description:
 
@@ -379,7 +446,7 @@ Allowed setup description:
   or payload files unless a governing PRD explicitly permits a small metadata
   manifest.
 
-### 7.3 GitHub
+### 7.4 GitHub
 
 Allowed setup description:
 
@@ -557,6 +624,31 @@ NEXT_HANDOFF:
     omitted_heavy_sources:
       - "<heavy source intentionally not loaded>"
   provider_access_state: "PENDING_ACTION_PROVIDER_NOT_NEEDED_FOR_CURRENT_EDGE | PENDING_ACTION_PROVIDER_AVAILABLE_WHEN_EDGE_REQUIRES | PENDING_ACTION_PROVIDER_AUTH_SURFACE_MISSING | BLOCKER_PROVIDER_AUTH_FAILED"
+  provider_capability_capsule:
+    matrix_artifact: "<provider matrix path plus sha256 when provider/source/logging/custody state can affect route>"
+    providers:
+      runpod:
+        role: "QAIRT/QNN SDK source/tool host for outside-git export/build metadata"
+        safe_check: "<metadata-only SSH check, no secrets>"
+        current_classification: "<provider state>"
+      phone_adb_termux:
+        role: "RedMagic 10 Pro authority execution target for model/training gates"
+        safe_check: "<ADB/Termux metadata-only check scoped to authorized recovery>"
+        current_classification: "<provider state>"
+      hugging_face:
+        role: "corpus/model revision source and metadata-only provenance"
+        safe_check: "<metadata-only auth/revision check>"
+        current_classification: "<provider state>"
+      github:
+        role: "Repo Custodian-owned freeze/PR surface"
+        safe_check: "<token-redacted auth/remote check>"
+        current_classification: "<provider state>"
+      comet:
+        role: "authority-linked numeric metrics/logging, never dashboard-as-evidence"
+        safe_check: "<metadata-only SDK/auth check>"
+        current_classification: "<provider state>"
+    false_stop_prevention: string[]
+    secret_policy: "Never print, copy, summarize, commit, or include token/key values."
   raw_boundary_state: "<metadata-only proof or exact blocker>"
   drift_action: "none | ignore_historical | delete_candidate | deletion_done_with_commit"
   research_escalation: "<none | active_parallel_signal_lane | required with reason>"
@@ -621,8 +713,10 @@ failed its job. If `authority_to_recover` is false, `next_owner` and
 ## 11. Handoff Integrity Rules
 
 1. A lane is not complete until it emits `NEXT_HANDOFF`.
-2. Where possible, a lane must send the handoff to the next lane directly.
-3. A completed marker without outbound handoff is process failure.
+2. If thread-send tooling is available, a lane must send the handoff to the
+   next lane directly before marking itself complete.
+3. A completed marker, route-green verdict, or final answer without outbound
+   dispatch is process failure.
 4. A handoff without evidence is not a handoff; it is a message.
 5. A handoff must name the next owner and next action.
 6. A lane waiting for heartbeat when it owns the handoff is defective.
@@ -631,13 +725,28 @@ failed its job. If `authority_to_recover` is false, `next_owner` and
 8. Every user/process return in this lane must include the ZPP handoff fields:
    `to`, `status`, `reasoning_level`, `artifacts`, `authority_metric`,
    `first_missing_green_field`, `next_action`, `prompt_to_send`,
-   `context_load`, `provider_access_state`, `raw_boundary_state`,
-   `drift_action`, `research_escalation`, and `nonclaims`.
+   `handoff_dispatch_status`, `context_load`, `provider_access_state`,
+   `provider_capability_capsule` when provider/source/logging/custody state can
+   affect the route, `raw_boundary_state`, `drift_action`,
+   `research_escalation`, and `nonclaims`.
 9. Handoffs that loaded full heavy context must justify why targeted extracts
    were insufficient.
 10. Every mobilization brief must embed the incoming `NEXT_HANDOFF`, or a
     clearly marked `WATCHDOG_RECOVERY_HANDOFF` for route repair, and the
     outbound `NEXT_HANDOFF` schema the lane must return.
+11. `handoff_dispatch_status` must be `SENT_TO_NEXT_OWNER` when a lane sent the
+    handoff itself, or `TOOL_UNAVAILABLE` when Watchdog must dispatch the
+    carried prompt. `TOOL_UNAVAILABLE` is a control-plane repair condition, not
+    a user blocker.
+12. `user_action_required: true` is invalid for provider/source-custody gaps
+    until the handoff records the relevant provider matrix entry and exact safe
+    check result, or explains why no provider surface owns the artifact class.
+13. RunPod and phone roles must stay distinct: RunPod is the QAIRT/QNN SDK
+    source/tool host for outside-git export/build metadata; the RedMagic phone
+    is the authority execution target for model/training gates.
+14. Hugging Face, GitHub, and Comet must be classified as available, needed,
+    not needed, or exact failed auth for the current edge; lanes may not forget
+    Comet metric logging when an authority gate requires numeric metrics.
 
 ### 11.1 Workstream Routing Matrices
 

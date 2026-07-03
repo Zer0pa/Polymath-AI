@@ -32,6 +32,7 @@ def complete_handoff(**overrides) -> dict:
         "first_missing_green_field": "custody_commit_missing",
         "next_action": "Freeze the pathset.",
         "prompt_to_send": "Custodian: freeze the pathset.",
+        "handoff_dispatch_status": "SENT_TO_NEXT_OWNER",
         "context_load": {
             "tier": "targeted_reference",
             "files_loaded": ["references/next-handoff.md"],
@@ -47,6 +48,43 @@ def complete_handoff(**overrides) -> dict:
     }
     handoff.update(overrides)
     return handoff
+
+
+def provider_capability_capsule() -> dict:
+    return {
+        "matrix_artifact": "runtime/reports/orchestration/SYSTEM_PROVIDER_ACCESS_CAPABILITY_MATRIX_20260702T201330Z.json sha256:" + "a" * 64,
+        "providers": {
+            "runpod": {
+                "role": "QAIRT/QNN SDK source/tool host for outside-git export/build metadata",
+                "safe_check": "metadata-only SSH check",
+                "current_classification": "PENDING_ACTION_PROVIDER_AVAILABLE_WHEN_EDGE_REQUIRES",
+            },
+            "phone_adb_termux": {
+                "role": "RedMagic 10 Pro authority execution target for model/training gates",
+                "safe_check": "ADB/Termux metadata-only check",
+                "current_classification": "PENDING_ACTION_PROVIDER_AVAILABLE_WHEN_EDGE_REQUIRES",
+            },
+            "hugging_face": {
+                "role": "corpus/model revision source and metadata-only provenance",
+                "safe_check": "hf auth whoami after approved env sourcing",
+                "current_classification": "PENDING_ACTION_PROVIDER_AVAILABLE_WHEN_EDGE_REQUIRES",
+            },
+            "github": {
+                "role": "Repo Custodian-owned freeze/PR surface",
+                "safe_check": "gh auth status with token redaction",
+                "current_classification": "PENDING_ACTION_PROVIDER_AVAILABLE_WHEN_EDGE_REQUIRES",
+            },
+            "comet": {
+                "role": "authority-linked numeric metrics/logging",
+                "safe_check": "SDK init/auth check without printing API key",
+                "current_classification": "PENDING_ACTION_PROVIDER_AVAILABLE_WHEN_EDGE_REQUIRES",
+            },
+        },
+        "false_stop_prevention": [
+            "Do not mark user_action_required before checking provider matrix.",
+        ],
+        "secret_policy": "Never print, copy, summarize, commit, or include token/key values.",
+    }
 
 
 def test_valid_minimal_pending_state_has_no_findings() -> None:
@@ -174,6 +212,87 @@ def test_handoff_packet_requires_wavec_fields() -> None:
     findings = lint_orchestration_state(state, strict_handoff=True, include_historical=True)
 
     assert "zpp.handoff.packet_field_missing" in codes(findings)
+
+
+def test_handoff_packet_requires_dispatch_status() -> None:
+    state = base_state()
+    handoff = complete_handoff()
+    del handoff["handoff_dispatch_status"]
+    state["lane"] = {
+        "status": "phase_complete",
+        "NEXT_HANDOFF": handoff,
+    }
+
+    findings = lint_orchestration_state(state, strict_handoff=True, include_historical=True)
+
+    assert "zpp.handoff.packet_field_missing" in codes(findings)
+
+
+def test_handoff_packet_rejects_invalid_dispatch_status() -> None:
+    state = base_state()
+    state["lane"] = {
+        "status": "phase_complete",
+        "NEXT_HANDOFF": complete_handoff(handoff_dispatch_status="DESCRIBED_NOT_SENT"),
+    }
+
+    findings = lint_orchestration_state(state, strict_handoff=True, include_historical=True)
+
+    assert "zpp.handoff.dispatch_status_invalid" in codes(findings)
+
+
+def test_provider_source_custody_route_requires_capability_capsule() -> None:
+    state = base_state()
+    state["lane"] = {
+        "status": "route_green",
+        "next_handoff": complete_handoff(
+            provider_access_state="PENDING_ACTION_PROVIDER_AVAILABLE_WHEN_EDGE_REQUIRES",
+            first_missing_green_field="qairt_wrapper_source_unavailable",
+            next_action="Route QAIRT source custody after RunPod/phone provider checks.",
+            prompt_to_send="Check RunPod QAIRT source root and phone ADB/Termux source contract.",
+        ),
+    }
+
+    findings = lint_orchestration_state(state, strict_handoff=True, include_historical=True)
+
+    assert "zpp.provider_capability_capsule.missing" in codes(findings)
+
+
+def test_provider_source_custody_route_with_capsule_passes_provider_guard() -> None:
+    state = base_state()
+    state["lane"] = {
+        "status": "route_green",
+        "next_handoff": complete_handoff(
+            provider_access_state="PENDING_ACTION_PROVIDER_AVAILABLE_WHEN_EDGE_REQUIRES",
+            provider_capability_capsule=provider_capability_capsule(),
+            first_missing_green_field="qairt_wrapper_source_unavailable",
+            next_action="Route QAIRT source custody after RunPod/phone provider checks.",
+            prompt_to_send="Check RunPod QAIRT source root and phone ADB/Termux source contract.",
+        ),
+    }
+
+    findings = lint_orchestration_state(state, strict_handoff=True, include_historical=True)
+
+    assert "zpp.provider_capability_capsule.missing" not in codes(findings)
+    assert "zpp.provider_capability_capsule.provider_missing" not in codes(findings)
+
+
+def test_provider_capability_capsule_requires_all_major_surfaces() -> None:
+    capsule = provider_capability_capsule()
+    del capsule["providers"]["comet"]
+    state = base_state()
+    state["lane"] = {
+        "status": "route_green",
+        "next_handoff": complete_handoff(
+            provider_access_state="PENDING_ACTION_PROVIDER_AVAILABLE_WHEN_EDGE_REQUIRES",
+            provider_capability_capsule=capsule,
+            next_action="Route QAIRT source custody with RunPod.",
+            prompt_to_send="Check RunPod QAIRT source root.",
+        ),
+    }
+
+    findings = lint_orchestration_state(state, strict_handoff=True, include_historical=True)
+
+    assert "zpp.provider_capability_capsule.provider_missing" in codes(findings)
 
 
 def test_text_handoff_packet_requires_prompt_to_send() -> None:

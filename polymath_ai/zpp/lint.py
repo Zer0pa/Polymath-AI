@@ -70,6 +70,7 @@ REQUIRED_HANDOFF_FIELDS = (
     "first_missing_green_field",
     "next_action",
     "prompt_to_send",
+    "handoff_dispatch_status",
     "context_load",
     "provider_access_state",
     "raw_boundary_state",
@@ -102,6 +103,43 @@ VALID_PROVIDER_ACCESS_STATES = (
     "BLOCKER_PROVIDER_AUTH_FAILED",
 )
 
+PROVIDER_CAPABILITY_REQUIRED_FIELDS = (
+    "matrix_artifact",
+    "providers",
+    "false_stop_prevention",
+    "secret_policy",
+)
+
+PROVIDER_CAPABILITY_REQUIRED_PROVIDERS = (
+    "runpod",
+    "phone_adb_termux",
+    "hugging_face",
+    "github",
+    "comet",
+)
+
+PROVIDER_ROUTE_MARKERS = (
+    "provider",
+    "runpod",
+    "qairt",
+    "qnn sdk",
+    "source custody",
+    "source-custody",
+    "source_root",
+    "source-root",
+    "phone",
+    "adb",
+    "termux",
+    "ssh",
+    "hugging face",
+    "hugging_face",
+    "hf",
+    "github",
+    "comet",
+    "metrics",
+    "logging",
+)
+
 VALID_DRIFT_ACTIONS = (
     "none",
     "ignore_historical",
@@ -119,6 +157,11 @@ VALID_CONTEXT_LOAD_TIERS = (
 VALID_CONTEXT_EXTRACTION_MODES = (
     "targeted",
     "full",
+)
+
+VALID_HANDOFF_DISPATCH_STATUSES = (
+    "SENT_TO_NEXT_OWNER",
+    "TOOL_UNAVAILABLE",
 )
 
 CONTEXT_LOAD_REQUIRED_FIELDS = (
@@ -204,6 +247,7 @@ def lint_orchestration_state(
     findings.extend(_apex_over_island_findings(state, process_nodes, strict_handoff=strict_handoff))
     findings.extend(_stale_apex_route_findings(state, process_nodes))
     findings.extend(_context_load_findings(process_nodes, strict_handoff=strict_handoff))
+    findings.extend(_provider_capability_findings(process_nodes, strict_handoff=strict_handoff))
     return findings
 
 
@@ -410,7 +454,9 @@ def _validate_structured_handoff(
             )
         )
     findings.extend(_provider_access_state_value_findings(packet, path))
+    findings.extend(_provider_capability_value_findings(packet, path, strict_handoff=strict_handoff))
     findings.extend(_drift_action_value_findings(packet, path))
+    findings.extend(_handoff_dispatch_status_value_findings(packet, path))
     findings.extend(_context_load_value_findings(packet, path, strict_handoff=strict_handoff))
     if packet.get("to") and packet.get("sent") is False:
         findings.append(
@@ -436,6 +482,7 @@ def _validate_text_handoff(packet: str, path: str, *, strict_handoff: bool) -> l
         "first_missing_green_field": "first_missing_green_field:",
         "next_action": "next_action:",
         "prompt_to_send": "prompt_to_send:",
+        "handoff_dispatch_status": "handoff_dispatch_status:",
         "context_load": "context_load:",
         "provider_access_state": "provider_access_state:",
         "raw_boundary_state": "raw_boundary_state:",
@@ -508,6 +555,118 @@ def _context_load_findings(
                 "zpp.context_load.missing",
                 f"{path}.context_load",
                 "route-changing work must declare a bounded context_load contract",
+            )
+        )
+    return findings
+
+
+def _provider_capability_findings(
+    nodes: list[tuple[str, dict[str, Any]]],
+    *,
+    strict_handoff: bool,
+) -> list[Finding]:
+    findings: list[Finding] = []
+    for path, node in nodes:
+        if not _provider_capability_required(node):
+            continue
+        if _field_present_on_node_or_handoff(node, "provider_capability_capsule"):
+            findings.extend(_provider_capability_value_findings(node, path, strict_handoff=strict_handoff))
+            continue
+        findings.append(
+            Finding(
+                _handoff_shape_severity(strict_handoff),
+                "zpp.provider_capability_capsule.missing",
+                f"{path}.provider_capability_capsule",
+                "provider/source/logging/custody routes must carry a secret-free provider_capability_capsule before user_action_required or BLOCKER escalation",
+            )
+        )
+    return findings
+
+
+def _provider_capability_required(node: dict[str, Any]) -> bool:
+    provider_state = node.get("provider_access_state")
+    if provider_state == "PENDING_ACTION_PROVIDER_NOT_NEEDED_FOR_CURRENT_EDGE":
+        return False
+    if node.get("user_action_required") is True:
+        return _route_mentions_provider_surface(node)
+    if provider_state in (
+        "PENDING_ACTION_PROVIDER_AVAILABLE_WHEN_EDGE_REQUIRES",
+        "PENDING_ACTION_PROVIDER_AUTH_SURFACE_MISSING",
+        "BLOCKER_PROVIDER_AUTH_FAILED",
+    ):
+        return _route_mentions_provider_surface(node)
+    if _looks_route_changing(node) and _route_mentions_provider_surface(node):
+        return True
+    return False
+
+
+def _route_mentions_provider_surface(node: dict[str, Any]) -> bool:
+    text = _route_text(node).lower()
+    if any(marker in text for marker in PROVIDER_ROUTE_MARKERS):
+        return True
+    for handoff_key in HANDOFF_KEYS:
+        packet = node.get(handoff_key)
+        if isinstance(packet, dict) and _route_mentions_provider_surface(packet):
+            return True
+        if isinstance(packet, str):
+            lowered = packet.lower()
+            if any(marker in lowered for marker in PROVIDER_ROUTE_MARKERS):
+                return True
+    return False
+
+
+def _provider_capability_value_findings(
+    node: dict[str, Any],
+    path: str,
+    *,
+    strict_handoff: bool,
+) -> list[Finding]:
+    capsule = node.get("provider_capability_capsule")
+    if capsule is None:
+        return []
+    if not isinstance(capsule, dict):
+        return [
+            Finding(
+                _handoff_shape_severity(strict_handoff),
+                "zpp.provider_capability_capsule.invalid",
+                f"{path}.provider_capability_capsule",
+                "provider_capability_capsule must be a structured packet",
+            )
+        ]
+
+    findings: list[Finding] = []
+    for field in PROVIDER_CAPABILITY_REQUIRED_FIELDS:
+        if _field_present(capsule.get(field)):
+            continue
+        findings.append(
+            Finding(
+                _handoff_shape_severity(strict_handoff),
+                "zpp.provider_capability_capsule.field_missing",
+                f"{path}.provider_capability_capsule.{field}",
+                f"provider_capability_capsule is missing {field!r}",
+            )
+        )
+
+    providers = capsule.get("providers")
+    if isinstance(providers, dict):
+        for provider in PROVIDER_CAPABILITY_REQUIRED_PROVIDERS:
+            if _field_present(providers.get(provider)):
+                continue
+            findings.append(
+                Finding(
+                    _handoff_shape_severity(strict_handoff),
+                    "zpp.provider_capability_capsule.provider_missing",
+                    f"{path}.provider_capability_capsule.providers.{provider}",
+                    f"provider_capability_capsule must classify {provider!r}",
+                )
+            )
+    elif providers is not None:
+        findings.append(
+            Finding(
+                _handoff_shape_severity(strict_handoff),
+                "zpp.provider_capability_capsule.providers_invalid",
+                f"{path}.provider_capability_capsule.providers",
+                "provider_capability_capsule.providers must be a structured provider map",
             )
         )
     return findings
@@ -804,6 +963,20 @@ def _drift_action_value_findings(node: dict[str, Any], path: str) -> list[Findin
             "zpp.drift_action.invalid",
             f"{path}.drift_action",
             "drift_action must be none, ignore_historical, delete_candidate, or deletion_done_with_commit",
+        )
+    ]
+
+
+def _handoff_dispatch_status_value_findings(node: dict[str, Any], path: str) -> list[Finding]:
+    value = node.get("handoff_dispatch_status")
+    if value is None or value in VALID_HANDOFF_DISPATCH_STATUSES:
+        return []
+    return [
+        Finding(
+            "error",
+            "zpp.handoff.dispatch_status_invalid",
+            f"{path}.handoff_dispatch_status",
+            "handoff_dispatch_status must be SENT_TO_NEXT_OWNER or TOOL_UNAVAILABLE",
         )
     ]
 
