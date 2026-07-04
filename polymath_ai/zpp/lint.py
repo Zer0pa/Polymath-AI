@@ -214,6 +214,35 @@ RECOVERY_EVIDENCE_KEYS = (
     "authority_to_recover",
 )
 
+READINESS_RECURSION_GUARD_FIELDS = (
+    "readiness_only_count",
+    "after_backend_observation_package",
+    "exit_condition",
+    "required_next_output",
+    "forbid_execution_wake_from_readiness",
+    "comet_metrics_route_preserved",
+)
+
+VALID_READINESS_RECURSION_EXITS = (
+    "real_artifact_production",
+    "exact_substantive_blocker",
+    "whole_source_input_contract",
+    "bounded_production_authorization",
+)
+
+WHOLE_SOURCE_INPUT_CONTRACT_FIELDS = (
+    "target_material",
+    "backend_observations",
+    "command_manifests",
+    "theta_pre_post",
+    "rows",
+    "finite_metrics",
+    "measurement_evidence",
+    "authority_report",
+    "producer_by_surface",
+    "stop_conditions",
+)
+
 
 def lint_orchestration_state(
     state: Any,
@@ -248,6 +277,7 @@ def lint_orchestration_state(
     findings.extend(_stale_apex_route_findings(state, process_nodes))
     findings.extend(_context_load_findings(process_nodes, strict_handoff=strict_handoff))
     findings.extend(_provider_capability_findings(process_nodes, strict_handoff=strict_handoff))
+    findings.extend(_readiness_recursion_findings(process_nodes, strict_handoff=strict_handoff))
     return findings
 
 
@@ -670,6 +700,342 @@ def _provider_capability_value_findings(
             )
         )
     return findings
+
+
+def _readiness_recursion_findings(
+    nodes: list[tuple[str, dict[str, Any]]],
+    *,
+    strict_handoff: bool,
+) -> list[Finding]:
+    findings: list[Finding] = []
+    for path, node in nodes:
+        if not _looks_like_gate_c_readiness_only(node):
+            continue
+
+        guard, guard_path = _readiness_recursion_guard(node, path)
+        if guard is None:
+            findings.append(
+                Finding(
+                    _handoff_shape_severity(strict_handoff),
+                    "zpp.readiness_recursion.guard_missing",
+                    f"{path}.readiness_recursion_guard",
+                    "Gate C/backend-observation readiness-only work must declare the recursion count and exit route",
+                )
+            )
+            continue
+        if not isinstance(guard, dict):
+            findings.append(
+                Finding(
+                    _handoff_shape_severity(strict_handoff),
+                    "zpp.readiness_recursion.guard_invalid",
+                    guard_path,
+                    "readiness_recursion_guard must be a structured packet",
+                )
+            )
+            continue
+
+        findings.extend(_readiness_guard_value_findings(node, guard, guard_path, strict_handoff=strict_handoff))
+    return findings
+
+
+def _readiness_guard_value_findings(
+    node: dict[str, Any],
+    guard: dict[str, Any],
+    path: str,
+    *,
+    strict_handoff: bool,
+) -> list[Finding]:
+    findings: list[Finding] = []
+    for field in READINESS_RECURSION_GUARD_FIELDS:
+        if _field_present(guard.get(field)):
+            continue
+        findings.append(
+            Finding(
+                _handoff_shape_severity(strict_handoff),
+                "zpp.readiness_recursion.guard_field_missing",
+                f"{path}.{field}",
+                f"readiness_recursion_guard is missing {field!r}",
+            )
+        )
+
+    exit_condition = guard.get("exit_condition")
+    if exit_condition is not None and exit_condition not in VALID_READINESS_RECURSION_EXITS:
+        findings.append(
+            Finding(
+                "error",
+                "zpp.readiness_recursion.exit_invalid",
+                f"{path}.exit_condition",
+                "readiness_recursion_guard.exit_condition must route to production, exact blocker, whole contract, or bounded authorization",
+            )
+        )
+
+    if guard.get("forbid_execution_wake_from_readiness") is not True:
+        findings.append(
+            Finding(
+                _handoff_shape_severity(strict_handoff),
+                "zpp.readiness_recursion.execution_wake_guard_missing",
+                f"{path}.forbid_execution_wake_from_readiness",
+                "Execution must not be woken from package readiness without real production authorization",
+            )
+        )
+
+    if _mentions_finite_metrics(node) and guard.get("comet_metrics_route_preserved") is not True:
+        findings.append(
+            Finding(
+                _handoff_shape_severity(strict_handoff),
+                "zpp.readiness_recursion.comet_metrics_route_missing",
+                f"{path}.comet_metrics_route_preserved",
+                "Gate C handoff must preserve Comet/metrics routing once finite metrics can become live",
+            )
+        )
+
+    if _wakes_execution_from_readiness(node) and not _has_bounded_production_authorization(node, guard):
+        findings.append(
+            Finding(
+                _handoff_shape_severity(strict_handoff),
+                "zpp.readiness_recursion.execution_wake_from_readiness",
+                path,
+                "Execution wake is invalid from readiness-only package state without bounded production authorization",
+            )
+        )
+
+    count = _readiness_count(guard)
+    if count is not None and count < 1:
+        findings.append(
+            Finding(
+                "error",
+                "zpp.readiness_recursion.count_invalid",
+                f"{path}.readiness_only_count",
+                "readiness_only_count must be a positive integer",
+            )
+        )
+    if count is None or count < 2:
+        return findings
+
+    if exit_condition == "whole_source_input_contract":
+        contract, contract_path = _whole_source_input_contract(node, guard, path)
+        if not isinstance(contract, dict):
+            findings.append(
+                Finding(
+                    _handoff_shape_severity(strict_handoff),
+                    "zpp.readiness_recursion.whole_contract_missing",
+                    f"{path}.whole_source_input_contract",
+                    "second Gate C readiness-only green requires a whole source-input critical-path contract",
+                )
+            )
+            return findings
+        for field in WHOLE_SOURCE_INPUT_CONTRACT_FIELDS:
+            if _field_present(contract.get(field)):
+                continue
+            findings.append(
+                Finding(
+                    _handoff_shape_severity(strict_handoff),
+                    "zpp.readiness_recursion.whole_contract_field_missing",
+                    f"{contract_path}.{field}",
+                    f"whole_source_input_contract is missing {field!r}",
+                )
+            )
+        return findings
+
+    if exit_condition == "bounded_production_authorization" and not _has_bounded_production_authorization(node, guard):
+        findings.append(
+            Finding(
+                _handoff_shape_severity(strict_handoff),
+                "zpp.readiness_recursion.production_authorization_missing",
+                path,
+                "bounded production authorization must be explicit after repeated readiness-only greens",
+            )
+        )
+    elif exit_condition == "real_artifact_production" and not _has_real_artifact_production(node, guard):
+        findings.append(
+            Finding(
+                _handoff_shape_severity(strict_handoff),
+                "zpp.readiness_recursion.real_artifact_missing",
+                path,
+                "real artifact production must be explicit after repeated readiness-only greens",
+            )
+        )
+    elif exit_condition == "exact_substantive_blocker" and not _has_exact_substantive_blocker(node, guard):
+        findings.append(
+            Finding(
+                _handoff_shape_severity(strict_handoff),
+                "zpp.readiness_recursion.exact_blocker_missing",
+                path,
+                "exact substantive blocker evidence must be explicit after repeated readiness-only greens",
+            )
+        )
+    return findings
+
+
+def _looks_like_gate_c_readiness_only(node: dict[str, Any]) -> bool:
+    text = _surface_text(node).lower()
+    gate_c_surface = any(
+        marker in text
+        for marker in (
+            "gate c",
+            "gate_c",
+            "backend observation",
+            "backend_observation",
+            "active run measurement",
+            "active_run_measurement",
+        )
+    )
+    if not gate_c_surface:
+        return False
+
+    readiness = (
+        node.get("package_readiness_only") is True
+        or "readiness-only" in text
+        or "readiness_only" in text
+        or "package_ready" in text
+        or "package ready" in text
+        or "source package" in text
+    )
+    artifacts_absent = (
+        _has_false_field(
+            node,
+            (
+                "backend_observation_source_artifacts_produced",
+                "backend_observations_produced",
+                "command_manifests_produced",
+                "measurement_evidence_produced",
+                "authority_report_emitted",
+                "execution_authorized",
+            ),
+        )
+        or "artifacts_absent" in text
+        or "artifacts absent" in text
+        or "no accepted backend observations" in text
+        or "no authority report" in text
+    )
+    return readiness and artifacts_absent
+
+
+def _readiness_recursion_guard(node: dict[str, Any], path: str) -> tuple[Any, str]:
+    if "readiness_recursion_guard" in node:
+        return node.get("readiness_recursion_guard"), f"{path}.readiness_recursion_guard"
+    for handoff_key in HANDOFF_KEYS:
+        packet = node.get(handoff_key)
+        if isinstance(packet, dict) and "readiness_recursion_guard" in packet:
+            return packet.get("readiness_recursion_guard"), f"{path}.{handoff_key}.readiness_recursion_guard"
+    return None, f"{path}.readiness_recursion_guard"
+
+
+def _readiness_count(guard: dict[str, Any]) -> int | None:
+    value = guard.get("readiness_only_count")
+    if isinstance(value, bool):
+        return None
+    if isinstance(value, int):
+        return value
+    if isinstance(value, str) and value.strip().isdigit():
+        return int(value.strip())
+    return None
+
+
+def _whole_source_input_contract(node: dict[str, Any], guard: dict[str, Any], path: str) -> tuple[Any, str]:
+    if "whole_source_input_contract" in guard:
+        return guard.get("whole_source_input_contract"), f"{path}.whole_source_input_contract"
+    if "whole_source_input_contract" in node:
+        return node.get("whole_source_input_contract"), f"{path}.whole_source_input_contract"
+    for handoff_key in HANDOFF_KEYS:
+        packet = node.get(handoff_key)
+        if isinstance(packet, dict) and "whole_source_input_contract" in packet:
+            return packet.get("whole_source_input_contract"), f"{path}.{handoff_key}.whole_source_input_contract"
+    return None, f"{path}.whole_source_input_contract"
+
+
+def _mentions_finite_metrics(node: dict[str, Any]) -> bool:
+    text = _surface_text(node).lower()
+    return "finite metric" in text or "finite_metrics" in text or "metrics become live" in text or "comet" in text
+
+
+def _wakes_execution_from_readiness(node: dict[str, Any]) -> bool:
+    text = _surface_text(node).lower()
+    if "execution" not in text:
+        return False
+    if "readiness" not in text and "package" not in text:
+        return False
+    return any(marker in text for marker in ("wake", "wakes", "route execution", "execution receives", "dispatch execution"))
+
+
+def _has_bounded_production_authorization(node: dict[str, Any], guard: dict[str, Any]) -> bool:
+    if _field_present(guard.get("bounded_production_authorization")) or _field_present(guard.get("production_authorization")):
+        return True
+    if _field_present(node.get("bounded_production_authorization")) or _field_present(node.get("production_authorization")):
+        return True
+    for handoff_key in HANDOFF_KEYS:
+        packet = node.get(handoff_key)
+        if isinstance(packet, dict) and (
+            _field_present(packet.get("bounded_production_authorization"))
+            or _field_present(packet.get("production_authorization"))
+        ):
+            return True
+    return False
+
+
+def _has_real_artifact_production(node: dict[str, Any], guard: dict[str, Any]) -> bool:
+    if _field_present(guard.get("produced_artifacts")) or _field_present(guard.get("artifact_production")):
+        return True
+    if _field_present(node.get("produced_artifacts")) or _field_present(node.get("artifact_production")):
+        return True
+    if node.get("package_readiness_only") is True:
+        return False
+    return _field_present(node.get("artifact_paths")) or _field_present(node.get("artifacts"))
+
+
+def _has_exact_substantive_blocker(node: dict[str, Any], guard: dict[str, Any]) -> bool:
+    if _field_present(guard.get("exact_substantive_blocker")) or _field_present(guard.get("blocking_evidence")):
+        return True
+    if _has_any_key(node, BLOCKER_EVIDENCE_KEYS) or _field_present(node.get("failed_validation_gates")):
+        return True
+    return False
+
+
+def _has_false_field(node: Any, fields: Iterable[str]) -> bool:
+    if isinstance(node, dict):
+        for key, value in node.items():
+            if key in fields and value is False:
+                return True
+            if isinstance(value, (dict, list)) and _has_false_field(value, fields):
+                return True
+    elif isinstance(node, list):
+        return any(_has_false_field(item, fields) for item in node)
+    return False
+
+
+def _surface_text(node: dict[str, Any]) -> str:
+    parts = [_route_text(node)]
+    for key, value in node.items():
+        if key in ("readiness_recursion_guard", "whole_source_input_contract"):
+            continue
+        if key in HANDOFF_KEYS and isinstance(value, dict):
+            parts.append(_surface_text(value))
+            continue
+        if isinstance(value, str):
+            parts.append(f"{key} {value}")
+        elif isinstance(value, (bool, int, float)):
+            parts.append(f"{key} {value}")
+        elif isinstance(value, list):
+            parts.extend(str(item) for item in value if isinstance(item, (str, bool, int, float)))
+    return " ".join(parts)
+
+
+def _deep_text(value: Any) -> str:
+    parts: list[str] = []
+
+    def collect(item: Any) -> None:
+        if isinstance(item, dict):
+            for key, child in item.items():
+                parts.append(str(key))
+                collect(child)
+        elif isinstance(item, list):
+            for child in item:
+                collect(child)
+        elif isinstance(item, str):
+            parts.append(item)
+
+    collect(value)
+    return " ".join(parts)
 
 
 def _xhigh_reasoning_findings(

@@ -87,6 +87,58 @@ def provider_capability_capsule() -> dict:
     }
 
 
+def gate_c_readiness_node(**overrides) -> dict:
+    node = {
+        "status": "backend_observation_source_package_ready_for_pipeline_validation",
+        "first_missing_green_field": "gate_c_active_run_measurement_backend_observation_source_artifacts_absent",
+        "package_readiness_only": True,
+        "backend_observation_source_artifacts_produced": False,
+        "measurement_evidence_produced": False,
+        "authority_report_emitted": False,
+        "next_action": "Pipeline validates backend-observation source package readiness.",
+        "nonclaims": [
+            "no Gate C authority acceptance",
+            "no backend observation source artifacts produced or accepted",
+            "no finite metrics accepted",
+            "no authority report emitted or accepted",
+        ],
+    }
+    node.update(overrides)
+    return node
+
+
+def readiness_guard(**overrides) -> dict:
+    guard = {
+        "readiness_only_count": 1,
+        "after_backend_observation_package": True,
+        "exit_condition": "real_artifact_production",
+        "required_next_output": "backend observations, command manifests, rows, metrics, measurement evidence, or exact blocker",
+        "forbid_execution_wake_from_readiness": True,
+        "comet_metrics_route_preserved": True,
+    }
+    guard.update(overrides)
+    return guard
+
+
+def whole_source_input_contract() -> dict:
+    return {
+        "target_material": "exact target material producer and hash ledger",
+        "backend_observations": "backend observation artifacts and producer",
+        "command_manifests": "before/after command manifests and owner",
+        "theta_pre_post": "theta pre/post canonical snapshots or exact blocker",
+        "rows": "active-run before/after rows and row-source owner",
+        "finite_metrics": "finite metric producer and Comet route preservation",
+        "measurement_evidence": "measurement evidence artifact producer",
+        "authority_report": "metadata-only authority report producer",
+        "producer_by_surface": {
+            "target_material": "Phase Engineering",
+            "backend_observations": "Phase Engineering",
+            "metrics": "Pipeline/Execution when authorized",
+        },
+        "stop_conditions": ["missing artifact owner", "nonfinite metric", "raw payload boundary violation"],
+    }
+
+
 def test_valid_minimal_pending_state_has_no_findings() -> None:
     assert lint_orchestration_state(base_state()) == []
 
@@ -293,6 +345,56 @@ def test_provider_capability_capsule_requires_all_major_surfaces() -> None:
     findings = lint_orchestration_state(state, strict_handoff=True, include_historical=True)
 
     assert "zpp.provider_capability_capsule.provider_missing" in codes(findings)
+
+
+def test_gate_c_readiness_only_requires_recursion_guard() -> None:
+    state = base_state()
+    state["lane"] = gate_c_readiness_node()
+
+    findings = lint_orchestration_state(state, strict_handoff=True, include_historical=True)
+
+    assert "zpp.readiness_recursion.guard_missing" in codes(findings)
+
+
+def test_second_gate_c_readiness_green_requires_whole_source_input_contract() -> None:
+    state = base_state()
+    state["lane"] = gate_c_readiness_node(
+        readiness_recursion_guard=readiness_guard(
+            readiness_only_count=2,
+            exit_condition="whole_source_input_contract",
+        )
+    )
+
+    findings = lint_orchestration_state(state, strict_handoff=True, include_historical=True)
+
+    assert "zpp.readiness_recursion.whole_contract_missing" in codes(findings)
+
+
+def test_gate_c_readiness_whole_source_input_contract_satisfies_recursion_guard() -> None:
+    state = base_state()
+    state["lane"] = gate_c_readiness_node(
+        readiness_recursion_guard=readiness_guard(
+            readiness_only_count=2,
+            exit_condition="whole_source_input_contract",
+            whole_source_input_contract=whole_source_input_contract(),
+        )
+    )
+
+    findings = lint_orchestration_state(state, strict_handoff=True, include_historical=True)
+
+    assert not any(finding.code.startswith("zpp.readiness_recursion") for finding in findings)
+
+
+def test_execution_wake_from_gate_c_package_readiness_requires_bounded_authorization() -> None:
+    state = base_state()
+    state["lane"] = gate_c_readiness_node(
+        next_action="Wake Execution from package readiness after Pipeline green.",
+        readiness_recursion_guard=readiness_guard(),
+    )
+
+    findings = lint_orchestration_state(state, strict_handoff=True, include_historical=True)
+
+    assert "zpp.readiness_recursion.execution_wake_from_readiness" in codes(findings)
 
 
 def test_text_handoff_packet_requires_prompt_to_send() -> None:

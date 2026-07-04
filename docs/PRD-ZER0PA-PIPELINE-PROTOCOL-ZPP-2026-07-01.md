@@ -191,6 +191,91 @@ to the next owner before marking itself complete and set
 must set `handoff_dispatch_status: TOOL_UNAVAILABLE`; Watchdog then owns
 dispatching the carried prompt on the next tick.
 
+### 4.8 Substantive Proof vs Carrier Churn Rule
+
+Substantive authority evidence and metadata carrier integrity are separate
+gates. When Pipeline accepts the substantive predicates for a proof but rejects
+the manifest, hash, self-entry, or handoff carrier, the next owner gets exactly
+one metadata-only repair attempt. That repair must preserve the accepted proof
+semantics and must not rerun accepted phone/provider/build/QNN work.
+
+A second carrier-only rejection on the same proof is not apex progress. It is a
+protocol/tooling defect in the manifest, handoff, or validator generation
+surface. Watchdog must route Protocol/Process, Repo Custodian, or the owning
+generator to repair the policy, then return to the apex owner. It must not keep
+Pipeline and Execution cycling over checksum churn.
+
+After the carrier validates, the route advances to the next apex authority
+field. Repeating the same bounded proof for confidence is invalid unless
+Pipeline identifies a substantive predicate regression.
+
+### 4.9 Convergence Promotion And Overnight Drive Rule
+
+ZPP must distinguish correct iteration from incrementalism. Correct iteration
+uses the real authority oracle to narrow an unknown. Incrementalism starts when
+the same class of failure repeats and lanes keep patching the next first error
+instead of repairing the missing governing contract.
+
+When two or more same-class blockers appear on the same surface, Watchdog or
+the producing lane must promote the route to a system repair before additional
+execution attempts are authorized. Same-class blockers include compiler
+first-error cycling, package or hash carrier churn, repeated phone material
+visibility misses, repeated provider-role drift, and repeated validator shape
+or contract mismatches.
+
+The promoted repair must name:
+
+- `pattern_detected`;
+- `system_repair_owner`;
+- `blocked_execution_until`;
+- `return_handoff_to_apex`;
+- the evidence that will permit one bounded reattempt.
+
+Allowed promoted repairs include whole-graph or whole-surface audits,
+generator or manifest policy fixes, materialization/access contracts,
+provider-capability capsule repairs, and fail-closed runner/harness contracts.
+
+In overnight drive mode, monitors are not passive reporters. A tick is useful
+only if it verifies a genuine active owner, dispatches a missed handoff,
+retargets stale automation, promotes a repeated pattern into a system repair,
+or records an apex pass/falsifier. Repeated status-only reports while action is
+possible are process drift.
+
+### 4.10 Readiness Recursion Exit Rule
+
+Package readiness is allowed only as a bridge to evidence. It is not an
+authority substitute. After a Gate C backend-observation source-package
+readiness anchor, another readiness-only green without real artifacts is drift
+unless it exits to one of:
+
+- real artifact production;
+- exact substantive blocker with evidence;
+- bounded production authorization with stop conditions;
+- whole source-input critical-path contract.
+
+Every Gate C/backend-observation readiness-only handoff must carry:
+
+```yaml
+readiness_recursion_guard:
+  readiness_only_count: integer
+  after_backend_observation_package: true
+  exit_condition: "real_artifact_production | exact_substantive_blocker | whole_source_input_contract | bounded_production_authorization"
+  required_next_output: string
+  forbid_execution_wake_from_readiness: true
+  comet_metrics_route_preserved: true
+```
+
+When `exit_condition` is `whole_source_input_contract`, the handoff must
+declare one critical-path DAG covering target material, backend observations,
+command manifests, theta pre/post snapshots, rows, finite metrics, measurement
+evidence, authority report, producer-by-surface, and stop conditions.
+
+Execution must not be woken from package readiness alone. Execution wakes only
+from bounded production authorization, real artifact production work, or an
+exact blocker/repair route with stop conditions. Comet/dashboard presence is
+not evidence, but the Comet/numeric-metrics route must be preserved once finite
+metrics become live.
+
 ## 5. Alien Engineering Research Loop
 
 Every ZPP run begins with a research, think, plan, innovate loop before
@@ -615,6 +700,7 @@ NEXT_HANDOFF:
   first_missing_green_field: "<single field>"
   next_action: "<one concrete action>"
   prompt_to_send: "<copy-paste prompt for next lane>"
+  handoff_dispatch_status: "SENT_TO_NEXT_OWNER | TOOL_UNAVAILABLE"
   context_load:
     tier: "capsule_only | targeted_reference | full_prd | full_evidence"
     files_loaded:
@@ -649,6 +735,13 @@ NEXT_HANDOFF:
         current_classification: "<provider state>"
     false_stop_prevention: string[]
     secret_policy: "Never print, copy, summarize, commit, or include token/key values."
+  readiness_recursion_guard:
+    readiness_only_count: integer
+    after_backend_observation_package: true
+    exit_condition: "real_artifact_production | exact_substantive_blocker | whole_source_input_contract | bounded_production_authorization"
+    required_next_output: string
+    forbid_execution_wake_from_readiness: true
+    comet_metrics_route_preserved: true
   raw_boundary_state: "<metadata-only proof or exact blocker>"
   drift_action: "none | ignore_historical | delete_candidate | deletion_done_with_commit"
   research_escalation: "<none | active_parallel_signal_lane | required with reason>"
@@ -747,6 +840,12 @@ failed its job. If `authority_to_recover` is false, `next_owner` and
 14. Hugging Face, GitHub, and Comet must be classified as available, needed,
     not needed, or exact failed auth for the current edge; lanes may not forget
     Comet metric logging when an authority gate requires numeric metrics.
+15. Gate C/backend-observation readiness-only work must carry
+    `readiness_recursion_guard`.
+16. A second readiness-only green after backend-observation package readiness
+    must exit to real artifact production, exact substantive blocker, bounded
+    production authorization, or whole source-input critical-path contract.
+17. Execution may not be woken from package readiness alone.
 
 ### 11.1 Workstream Routing Matrices
 
@@ -805,6 +904,11 @@ The Hounds of Popper lane must check:
 - Did the PRD change after evidence in a way that narrows the objective?
 - Did provider access failure become a vague blocker without evidence?
 - Did UI/status work imply progress not present in artifacts?
+- Did a metadata carrier/hash/manifest repair continue after substantive proof
+  predicates were already accepted?
+- Did Gate C package readiness recurse instead of producing backend
+  observations, command manifests, rows, finite metrics, measurement evidence,
+  or an authority report?
 - Did the system choose familiar enterprise convention over the maximal design?
 
 ## 14. Packaging Decision
