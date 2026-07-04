@@ -185,12 +185,15 @@ repair, GitHub custody, or environment action before checking the provider
 matrix is process drift unless it records exact failed safe checks for every
 authorized surface.
 
-If the route names missing local tooling, dependencies, SDK/runtime pieces, or
+The normal provider payload must stay small: matrix reference, current
+classification, role, and secret policy. Do not paste logs, auth details,
+run ledgers, raw payload paths, or long provider histories into handoffs. If
+the route names missing local tooling, dependencies, SDK/runtime pieces, or
 QNN/QAIRT command availability and an authorized provider surface can host or
-repair that work, the brief must also carry the provider-surface repair
-contract expected from the lane. A local-only tooling miss is not a user
-blocker while RunPod or another classified provider surface can be checked,
-provisioned, or repaired within bounds.
+repair that work, then the brief must carry the conditional provider-surface
+repair contract expected from the lane. A local-only tooling miss is not a
+user blocker while RunPod or another classified provider surface can be
+checked, provisioned, or repaired within bounds.
 
 If thread-send tooling is available, the producing lane must send the handoff
 to the next owner before marking itself complete and set
@@ -517,6 +520,13 @@ provider_capability_capsule:
   secret_policy: "Never print, copy, summarize, commit, or include token/key values."
 ```
 
+This is connectivity hygiene, not a work package. Keep it lean and repeatable:
+each lane needs to know that RunPod, RedMagic ADB/Termux, Hugging Face,
+GitHub, and Comet exist, what role each surface plays, and whether the current
+edge needs or can use them. The capsule should point to the matrix artifact and
+summarize statuses; it must not include secrets, full logs, raw payloads, or
+long historical explanations.
+
 RunPod and phone are distinct operational surfaces. RunPod is a QAIRT/QNN SDK
 source/tool host for outside-git export/build metadata. The RedMagic phone is
 the authority execution target for model/training gates. A lane that merges
@@ -545,7 +555,9 @@ For RunPod QAIRT/QNN runtime surfaces, the expected repair behavior is:
   `qnn-profile-viewer` when those tools are in scope;
 - emit a metadata-only repair report and route the real next input contract.
 
-The repair packet is:
+The repair packet is conditional. Include it only when a provider/runtime
+repair is actually in scope or when a lane is explaining why such repair is
+not possible:
 
 ```yaml
 provider_surface_repair:
@@ -790,7 +802,7 @@ NEXT_HANDOFF:
         current_classification: "<provider state>"
     false_stop_prevention: string[]
     secret_policy: "Never print, copy, summarize, commit, or include token/key values."
-  provider_surface_repair:
+  provider_surface_repair:  # conditional: only for provider/runtime repair routes
     provider: "runpod | phone_adb_termux | hugging_face | github | comet | other"
     surface: "<source/tool/runtime/logging/execution surface>"
     repair_status: "repaired | exact_blocker | not_authorized | not_applicable"
