@@ -185,6 +185,13 @@ repair, GitHub custody, or environment action before checking the provider
 matrix is process drift unless it records exact failed safe checks for every
 authorized surface.
 
+If the route names missing local tooling, dependencies, SDK/runtime pieces, or
+QNN/QAIRT command availability and an authorized provider surface can host or
+repair that work, the brief must also carry the provider-surface repair
+contract expected from the lane. A local-only tooling miss is not a user
+blocker while RunPod or another classified provider surface can be checked,
+provisioned, or repaired within bounds.
+
 If thread-send tooling is available, the producing lane must send the handoff
 to the next owner before marking itself complete and set
 `handoff_dispatch_status: SENT_TO_NEXT_OWNER`. If the tool is unavailable, it
@@ -516,6 +523,54 @@ the authority execution target for model/training gates. A lane that merges
 these roles, forgets either surface, or asks the user before checking the
 matrix is in process drift.
 
+#### Provider Surface Repair Rule
+
+Provider capability is actionable, not just descriptive. When a lane encounters
+missing tooling, dependencies, SDK/runtime pieces, or QNN/QAIRT command
+availability on the local host or phone and the provider matrix classifies
+RunPod or another relevant provider as available for that surface, the lane may
+not mark `BLOCKER`, `user_action_required`, or source-custody stop until it has
+attempted a bounded provider-surface repair or records exact evidence that the
+repair is not authorized or failed.
+
+For RunPod QAIRT/QNN runtime surfaces, the expected repair behavior is:
+
+- verify metadata-only provider access without printing secrets;
+- provision an isolated runtime when needed rather than mutating the repo;
+- install the missing runtime dependencies or record exact installation
+  failure evidence;
+- create a stable launcher for repeated QNN tool invocation;
+- smoke-test relevant QNN tools with rc=0, including `qnn-net-run`,
+  `qnn-context-binary-generator`, `qnn-throughput-net-run`, and
+  `qnn-profile-viewer` when those tools are in scope;
+- emit a metadata-only repair report and route the real next input contract.
+
+The repair packet is:
+
+```yaml
+provider_surface_repair:
+  provider: "runpod | phone_adb_termux | hugging_face | github | comet | other"
+  surface: "<source/tool/runtime/logging/execution surface>"
+  repair_status: "repaired | exact_blocker | not_authorized | not_applicable"
+  attempted_repairs:
+    - "<bounded repair/check attempted>"
+  stable_launcher: "<path, or none with reason>"
+  tool_smoke_results:
+    - tool: "<tool name>"
+      rc: 0
+      evidence: "<metadata-only evidence reference>"
+  next_real_input_contract: "<the real authority-path input contract after repair>"
+  control_plane_debt: "<state/handoff/automation memory updated, or none with reason>"
+  raw_boundary_state: "<metadata-only proof or exact raw-boundary blocker>"
+  secret_policy: "Never print, copy, summarize, commit, or include token/key values."
+```
+
+If `repair_status` is `exact_blocker` or `not_authorized`, the packet must
+include exact failure evidence or authorization-boundary evidence. If
+`repair_status` is `repaired`, the stable launcher and tool smoke results must
+be present. The handoff must then name the new substantive blocker, not keep
+claiming provider runtime absence.
+
 ### 7.3 Hugging Face
 
 Allowed setup description:
@@ -735,6 +790,21 @@ NEXT_HANDOFF:
         current_classification: "<provider state>"
     false_stop_prevention: string[]
     secret_policy: "Never print, copy, summarize, commit, or include token/key values."
+  provider_surface_repair:
+    provider: "runpod | phone_adb_termux | hugging_face | github | comet | other"
+    surface: "<source/tool/runtime/logging/execution surface>"
+    repair_status: "repaired | exact_blocker | not_authorized | not_applicable"
+    attempted_repairs:
+      - "<bounded repair/check attempted>"
+    stable_launcher: "<path, or none with reason>"
+    tool_smoke_results:
+      - tool: "<tool name>"
+        rc: 0
+        evidence: "<metadata-only evidence reference>"
+    next_real_input_contract: "<real input contract after provider repair>"
+    control_plane_debt: "<state/handoff/automation memory updated, or none with reason>"
+    raw_boundary_state: "<metadata-only proof or exact raw-boundary blocker>"
+    secret_policy: "Never print, copy, summarize, commit, or include token/key values."
   readiness_recursion_guard:
     readiness_only_count: integer
     after_backend_observation_package: true
@@ -837,15 +907,18 @@ failed its job. If `authority_to_recover` is false, `next_owner` and
 13. RunPod and phone roles must stay distinct: RunPod is the QAIRT/QNN SDK
     source/tool host for outside-git export/build metadata; the RedMagic phone
     is the authority execution target for model/training gates.
-14. Hugging Face, GitHub, and Comet must be classified as available, needed,
+14. Local tooling/dependency/SDK/runtime absence must attempt bounded
+    provider-surface repair before `BLOCKER` or `user_action_required` when an
+    authorized provider surface can host or repair the work.
+15. Hugging Face, GitHub, and Comet must be classified as available, needed,
     not needed, or exact failed auth for the current edge; lanes may not forget
     Comet metric logging when an authority gate requires numeric metrics.
-15. Gate C/backend-observation readiness-only work must carry
+16. Gate C/backend-observation readiness-only work must carry
     `readiness_recursion_guard`.
-16. A second readiness-only green after backend-observation package readiness
+17. A second readiness-only green after backend-observation package readiness
     must exit to real artifact production, exact substantive blocker, bounded
     production authorization, or whole source-input critical-path contract.
-17. Execution may not be woken from package readiness alone.
+18. Execution may not be woken from package readiness alone.
 
 ### 11.1 Workstream Routing Matrices
 
@@ -903,6 +976,8 @@ The Hounds of Popper lane must check:
 - Is the same missing field repeating without narrowing?
 - Did the PRD change after evidence in a way that narrows the objective?
 - Did provider access failure become a vague blocker without evidence?
+- Did local tooling/dependency absence become a blocker even though a classified
+  provider surface could repair or host the runtime?
 - Did UI/status work imply progress not present in artifacts?
 - Did a metadata carrier/hash/manifest repair continue after substantive proof
   predicates were already accepted?

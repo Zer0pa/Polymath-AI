@@ -87,6 +87,35 @@ def provider_capability_capsule() -> dict:
     }
 
 
+def provider_surface_repair(**overrides) -> dict:
+    repair = {
+        "provider": "runpod",
+        "surface": "Gate C QAIRT/QNN tool runtime",
+        "repair_status": "repaired",
+        "attempted_repairs": [
+            "verified metadata-only RunPod SSH access",
+            "provisioned isolated Ubuntu 22.04 runtime",
+            "installed missing QAIRT/QNN runtime dependencies",
+        ],
+        "stable_launcher": "/workspace/gatec_qairt_runtime/run_qnn_tool_ubuntu22.sh",
+        "tool_smoke_results": [
+            {"tool": "qnn-net-run", "rc": 0, "evidence": "metadata-only smoke rc=0"},
+            {"tool": "qnn-context-binary-generator", "rc": 0, "evidence": "metadata-only smoke rc=0"},
+            {"tool": "qnn-throughput-net-run", "rc": 0, "evidence": "metadata-only smoke rc=0"},
+            {"tool": "qnn-profile-viewer", "rc": 0, "evidence": "metadata-only smoke rc=0"},
+        ],
+        "next_real_input_contract": (
+            "accepted target material, before/after QNN context/backend selection, "
+            "per-record QNN input/output mapping, and answer-token loss/logprob extraction"
+        ),
+        "control_plane_debt": "recorded local-only blocker as repaired provider-surface drift",
+        "raw_boundary_state": "metadata_only_no_raw_payloads",
+        "secret_policy": "Never print, copy, summarize, commit, or include token/key values.",
+    }
+    repair.update(overrides)
+    return repair
+
+
 def gate_c_readiness_node(**overrides) -> dict:
     node = {
         "status": "backend_observation_source_package_ready_for_pipeline_validation",
@@ -345,6 +374,78 @@ def test_provider_capability_capsule_requires_all_major_surfaces() -> None:
     findings = lint_orchestration_state(state, strict_handoff=True, include_historical=True)
 
     assert "zpp.provider_capability_capsule.provider_missing" in codes(findings)
+
+
+def test_local_qnn_runtime_blocker_requires_provider_surface_repair_attempt() -> None:
+    state = base_state()
+    state["lane"] = {
+        "status": "BLOCKER_RUNPOD_QNN_TOOL_RUNTIME_UNAVAILABLE",
+        "first_missing_green_field": "gate_c_runpod_qnn_tool_runtime_unavailable",
+        "provider_access_state": "PENDING_ACTION_PROVIDER_AVAILABLE_WHEN_EDGE_REQUIRES",
+        "provider_capability_capsule": provider_capability_capsule(),
+        "user_action_required": True,
+        "blocking_evidence": "host-local qnn-net-run tooling missing; RunPod provider remains classified available",
+        "next_action": "Do not ask user for local tooling until RunPod runtime repair is attempted.",
+    }
+
+    findings = lint_orchestration_state(state, strict_handoff=True, include_historical=True)
+
+    assert "zpp.provider_surface_repair.attempt_missing" in codes(findings)
+
+
+def test_runpod_qnn_runtime_repair_packet_satisfies_provider_surface_guard() -> None:
+    state = base_state()
+    state["lane"] = {
+        "status": "PENDING_ACTION_RUNPOD_QNN_TOOL_RUNTIME_UNAVAILABLE_REPAIRED",
+        "first_missing_green_field": "gate_c_runtime_task_input_contract_missing",
+        "provider_access_state": "PENDING_ACTION_PROVIDER_AVAILABLE_WHEN_EDGE_REQUIRES",
+        "provider_capability_capsule": provider_capability_capsule(),
+        "next_action": "Route the real runtime task input contract instead of local QNN runtime availability.",
+        "provider_surface_repair": provider_surface_repair(),
+    }
+
+    findings = lint_orchestration_state(state, strict_handoff=True, include_historical=True)
+
+    assert not any(finding.code.startswith("zpp.provider_surface_repair") for finding in findings)
+
+
+def test_repaired_provider_runtime_requires_launcher_and_smoke_results() -> None:
+    state = base_state()
+    state["lane"] = {
+        "status": "PENDING_ACTION_RUNPOD_QNN_TOOL_RUNTIME_UNAVAILABLE_REPAIRED",
+        "first_missing_green_field": "gate_c_runtime_task_input_contract_missing",
+        "provider_access_state": "PENDING_ACTION_PROVIDER_AVAILABLE_WHEN_EDGE_REQUIRES",
+        "provider_capability_capsule": provider_capability_capsule(),
+        "provider_surface_repair": provider_surface_repair(
+            stable_launcher="none: not created",
+            tool_smoke_results=[],
+        ),
+    }
+
+    findings = lint_orchestration_state(state, strict_handoff=True, include_historical=True)
+
+    assert "zpp.provider_surface_repair.launcher_missing" in codes(findings)
+    assert "zpp.provider_surface_repair.field_missing" in codes(findings)
+
+
+def test_provider_runtime_exact_blocker_requires_repair_evidence() -> None:
+    state = base_state()
+    state["lane"] = {
+        "status": "BLOCKER_RUNPOD_QNN_TOOL_RUNTIME_REPAIR_FAILED",
+        "first_missing_green_field": "gate_c_runpod_qnn_tool_runtime_unavailable",
+        "provider_access_state": "PENDING_ACTION_PROVIDER_AVAILABLE_WHEN_EDGE_REQUIRES",
+        "provider_capability_capsule": provider_capability_capsule(),
+        "blocking_evidence": "RunPod QNN runtime repair attempt failed.",
+        "provider_surface_repair": provider_surface_repair(
+            repair_status="exact_blocker",
+            stable_launcher="none: repair failed",
+            tool_smoke_results=[{"tool": "qnn-net-run", "rc": 127, "evidence": "command not found"}],
+        ),
+    }
+
+    findings = lint_orchestration_state(state, strict_handoff=True, include_historical=True)
+
+    assert "zpp.provider_surface_repair.blocker_evidence_missing" in codes(findings)
 
 
 def test_gate_c_readiness_only_requires_recursion_guard() -> None:

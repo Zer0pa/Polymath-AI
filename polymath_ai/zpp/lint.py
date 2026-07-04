@@ -140,6 +140,93 @@ PROVIDER_ROUTE_MARKERS = (
     "logging",
 )
 
+PROVIDER_RUNTIME_SURFACE_MARKERS = (
+    "runpod qnn",
+    "runpod_qnn",
+    "qairt runtime",
+    "qairt_runtime",
+    "qairt tool",
+    "qairt_tool",
+    "qnn runtime",
+    "qnn_runtime",
+    "qnn tool",
+    "qnn_tool",
+    "qnn tools",
+    "qnn_tools",
+    "tool runtime",
+    "tool_runtime",
+    "runtime pieces",
+    "runtime_pieces",
+    "qnn-net-run",
+    "qnn-context-binary-generator",
+    "qnn-throughput-net-run",
+    "qnn-profile-viewer",
+)
+
+PROVIDER_RUNTIME_BLOCKER_MARKERS = (
+    "local-only",
+    "local only",
+    "host-local",
+    "host local",
+    "phone-local",
+    "phone local",
+    "dependency missing",
+    "missing dependency",
+    "dependencies missing",
+    "missing dependencies",
+    "tooling missing",
+    "missing tooling",
+    "tooling unavailable",
+    "runtime unavailable",
+    "runtime missing",
+    "missing runtime",
+    "not installed",
+    "could not find tooling",
+    "cannot find tooling",
+    "qnn_tool_runtime_unavailable",
+    "qnn_tool_runtime_missing",
+    "qairt_runtime_unavailable",
+    "qairt_runtime_missing",
+)
+
+PROVIDER_SURFACE_REPAIR_REQUIRED_FIELDS = (
+    "provider",
+    "surface",
+    "repair_status",
+    "attempted_repairs",
+    "stable_launcher",
+    "tool_smoke_results",
+    "next_real_input_contract",
+    "control_plane_debt",
+    "raw_boundary_state",
+    "secret_policy",
+)
+
+VALID_PROVIDER_SURFACE_REPAIR_PROVIDERS = (
+    "runpod",
+    "phone_adb_termux",
+    "hugging_face",
+    "github",
+    "comet",
+    "other",
+)
+
+VALID_PROVIDER_SURFACE_REPAIR_STATUSES = (
+    "repaired",
+    "exact_blocker",
+    "not_authorized",
+    "not_applicable",
+)
+
+PROVIDER_SURFACE_REPAIR_BLOCKER_EVIDENCE_KEYS = (
+    "failure_evidence",
+    "repair_blocker",
+    "blocked_by",
+    "safe_check_result",
+    "access_failure",
+    "technical_failure",
+)
+
 VALID_DRIFT_ACTIONS = (
     "none",
     "ignore_historical",
@@ -277,6 +364,7 @@ def lint_orchestration_state(
     findings.extend(_stale_apex_route_findings(state, process_nodes))
     findings.extend(_context_load_findings(process_nodes, strict_handoff=strict_handoff))
     findings.extend(_provider_capability_findings(process_nodes, strict_handoff=strict_handoff))
+    findings.extend(_provider_surface_repair_findings(process_nodes, strict_handoff=strict_handoff))
     findings.extend(_readiness_recursion_findings(process_nodes, strict_handoff=strict_handoff))
     return findings
 
@@ -485,6 +573,14 @@ def _validate_structured_handoff(
         )
     findings.extend(_provider_access_state_value_findings(packet, path))
     findings.extend(_provider_capability_value_findings(packet, path, strict_handoff=strict_handoff))
+    if "provider_surface_repair" in packet:
+        findings.extend(
+            _provider_surface_repair_value_findings(
+                packet.get("provider_surface_repair"),
+                f"{path}.provider_surface_repair",
+                strict_handoff=strict_handoff,
+            )
+        )
     findings.extend(_drift_action_value_findings(packet, path))
     findings.extend(_handoff_dispatch_status_value_findings(packet, path))
     findings.extend(_context_load_value_findings(packet, path, strict_handoff=strict_handoff))
@@ -700,6 +796,259 @@ def _provider_capability_value_findings(
             )
         )
     return findings
+
+
+def _provider_surface_repair_findings(
+    nodes: list[tuple[str, dict[str, Any]]],
+    *,
+    strict_handoff: bool,
+) -> list[Finding]:
+    findings: list[Finding] = []
+    for path, node in nodes:
+        repair, repair_path = _provider_surface_repair_packet(node, path)
+        if _provider_surface_repair_required(node) and repair is None:
+            findings.append(
+                Finding(
+                    _handoff_shape_severity(strict_handoff),
+                    "zpp.provider_surface_repair.attempt_missing",
+                    f"{path}.provider_surface_repair",
+                    "local QNN/QAIRT tooling or dependency failure must attempt bounded provider-surface repair before BLOCKER or user_action_required escalation",
+                )
+            )
+            continue
+        if repair is None:
+            continue
+        if not isinstance(repair, dict):
+            findings.append(
+                Finding(
+                    _handoff_shape_severity(strict_handoff),
+                    "zpp.provider_surface_repair.invalid",
+                    repair_path,
+                    "provider_surface_repair must be a structured packet",
+                )
+            )
+            continue
+        findings.extend(_provider_surface_repair_value_findings(repair, repair_path, strict_handoff=strict_handoff))
+    return findings
+
+
+def _provider_surface_repair_required(node: dict[str, Any]) -> bool:
+    if _looks_like_provider_surface_repair_packet(node):
+        return False
+    text = _surface_text(node).lower()
+    if not any(marker in text for marker in PROVIDER_RUNTIME_SURFACE_MARKERS):
+        return False
+    if "runpod" not in text and not _provider_available_in_capsule(node, "runpod"):
+        return False
+    if any(marker in text for marker in PROVIDER_RUNTIME_BLOCKER_MARKERS):
+        return True
+    status_text = _status_text(node).upper()
+    if "BLOCKER" in status_text or node.get("user_action_required") is True:
+        return True
+    return False
+
+
+def _looks_like_provider_surface_repair_packet(node: dict[str, Any]) -> bool:
+    return all(key in node for key in ("provider", "surface", "repair_status", "attempted_repairs"))
+
+
+def _provider_surface_repair_packet(node: dict[str, Any], path: str) -> tuple[Any, str] | tuple[None, str]:
+    if "provider_surface_repair" in node:
+        return node.get("provider_surface_repair"), f"{path}.provider_surface_repair"
+    for handoff_key in HANDOFF_KEYS:
+        packet = node.get(handoff_key)
+        if isinstance(packet, dict) and "provider_surface_repair" in packet:
+            return packet.get("provider_surface_repair"), f"{path}.{handoff_key}.provider_surface_repair"
+    return None, f"{path}.provider_surface_repair"
+
+
+def _provider_available_in_capsule(node: dict[str, Any], provider: str) -> bool:
+    candidates = [node]
+    for handoff_key in HANDOFF_KEYS:
+        packet = node.get(handoff_key)
+        if isinstance(packet, dict):
+            candidates.append(packet)
+
+    for candidate in candidates:
+        capsule = candidate.get("provider_capability_capsule")
+        if not isinstance(capsule, dict):
+            continue
+        providers = capsule.get("providers")
+        if not isinstance(providers, dict):
+            continue
+        provider_packet = providers.get(provider)
+        if not isinstance(provider_packet, dict):
+            continue
+        classification = provider_packet.get("current_classification")
+        if classification == "PENDING_ACTION_PROVIDER_AVAILABLE_WHEN_EDGE_REQUIRES":
+            return True
+    return False
+
+
+def _provider_surface_repair_value_findings(
+    repair: Any,
+    path: str,
+    *,
+    strict_handoff: bool,
+) -> list[Finding]:
+    if repair is None:
+        return []
+    if not isinstance(repair, dict):
+        return [
+            Finding(
+                _handoff_shape_severity(strict_handoff),
+                "zpp.provider_surface_repair.invalid",
+                path,
+                "provider_surface_repair must be a structured packet",
+            )
+        ]
+
+    findings: list[Finding] = []
+    for field in PROVIDER_SURFACE_REPAIR_REQUIRED_FIELDS:
+        if _field_present(repair.get(field)):
+            continue
+        findings.append(
+            Finding(
+                _handoff_shape_severity(strict_handoff),
+                "zpp.provider_surface_repair.field_missing",
+                f"{path}.{field}",
+                f"provider_surface_repair is missing {field!r}",
+            )
+        )
+
+    provider = repair.get("provider")
+    if provider is not None and provider not in VALID_PROVIDER_SURFACE_REPAIR_PROVIDERS:
+        findings.append(
+            Finding(
+                "error",
+                "zpp.provider_surface_repair.provider_invalid",
+                f"{path}.provider",
+                "provider_surface_repair.provider must name a known provider surface or other",
+            )
+        )
+
+    repair_status = repair.get("repair_status")
+    if repair_status is not None and repair_status not in VALID_PROVIDER_SURFACE_REPAIR_STATUSES:
+        findings.append(
+            Finding(
+                "error",
+                "zpp.provider_surface_repair.status_invalid",
+                f"{path}.repair_status",
+                "provider_surface_repair.repair_status must be repaired, exact_blocker, not_authorized, or not_applicable",
+            )
+        )
+
+    findings.extend(_tool_smoke_result_findings(repair, path, strict_handoff=strict_handoff))
+
+    if repair_status == "repaired" and _stable_launcher_is_none(repair.get("stable_launcher")):
+        findings.append(
+            Finding(
+                _handoff_shape_severity(strict_handoff),
+                "zpp.provider_surface_repair.launcher_missing",
+                f"{path}.stable_launcher",
+                "repaired provider runtime must record a stable launcher path",
+            )
+        )
+
+    if repair_status in ("exact_blocker", "not_authorized") and not _has_any_key(
+        repair,
+        PROVIDER_SURFACE_REPAIR_BLOCKER_EVIDENCE_KEYS,
+    ):
+        findings.append(
+            Finding(
+                _handoff_shape_severity(strict_handoff),
+                "zpp.provider_surface_repair.blocker_evidence_missing",
+                path,
+                "provider runtime repair blocker must include exact failure evidence or authorization boundary",
+            )
+        )
+
+    if repair_status == "not_applicable" and not _field_present(repair.get("not_applicable_reason")):
+        findings.append(
+            Finding(
+                _handoff_shape_severity(strict_handoff),
+                "zpp.provider_surface_repair.not_applicable_reason_missing",
+                f"{path}.not_applicable_reason",
+                "provider_surface_repair with not_applicable status must explain why provider repair is irrelevant",
+            )
+        )
+    return findings
+
+
+def _tool_smoke_result_findings(
+    repair: dict[str, Any],
+    path: str,
+    *,
+    strict_handoff: bool,
+) -> list[Finding]:
+    results = repair.get("tool_smoke_results")
+    if results is None:
+        return []
+    if not isinstance(results, list):
+        return [
+            Finding(
+                _handoff_shape_severity(strict_handoff),
+                "zpp.provider_surface_repair.smoke_results_invalid",
+                f"{path}.tool_smoke_results",
+                "tool_smoke_results must be a list of tool/rc/evidence entries",
+            )
+        ]
+
+    findings: list[Finding] = []
+    for idx, result in enumerate(results):
+        result_path = f"{path}.tool_smoke_results[{idx}]"
+        if not isinstance(result, dict):
+            findings.append(
+                Finding(
+                    _handoff_shape_severity(strict_handoff),
+                    "zpp.provider_surface_repair.smoke_result_invalid",
+                    result_path,
+                    "tool_smoke_results entries must be structured packets",
+                )
+            )
+            continue
+        for field in ("tool", "rc", "evidence"):
+            if field == "rc" and _rc_value(result.get(field)) is not None:
+                continue
+            if _field_present(result.get(field)):
+                continue
+            findings.append(
+                Finding(
+                    _handoff_shape_severity(strict_handoff),
+                    "zpp.provider_surface_repair.smoke_result_field_missing",
+                    f"{result_path}.{field}",
+                    f"tool_smoke_results entry is missing {field!r}",
+                )
+            )
+        if repair.get("repair_status") == "repaired" and _rc_value(result.get("rc")) != 0:
+            findings.append(
+                Finding(
+                    _handoff_shape_severity(strict_handoff),
+                    "zpp.provider_surface_repair.smoke_rc_nonzero",
+                    f"{result_path}.rc",
+                    "repaired provider runtime must smoke-test required tools with rc=0",
+                )
+            )
+    return findings
+
+
+def _stable_launcher_is_none(value: Any) -> bool:
+    if not isinstance(value, str):
+        return True
+    lowered = value.strip().lower()
+    return not lowered or lowered.startswith("none")
+
+
+def _rc_value(value: Any) -> int | None:
+    if isinstance(value, bool):
+        return None
+    if isinstance(value, int):
+        return value
+    if isinstance(value, str):
+        stripped = value.strip()
+        if stripped.lstrip("-").isdigit():
+            return int(stripped)
+    return None
 
 
 def _readiness_recursion_findings(
