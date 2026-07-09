@@ -43,7 +43,10 @@ def pull_metadata(args: argparse.Namespace) -> dict[str, Any]:
     metadata_dir = host_scratch / "pulled_metadata"
     captures_dir = host_scratch / "activation_captures"
     metadata_dir.mkdir(parents=True, exist_ok=True)
-    captures_dir.mkdir(parents=True, exist_ok=True)
+    if args.pull_raw_captures and not args.allow_mac_raw_captures:
+        blockers.append("mac_raw_capture_pull_disabled_post_offload")
+    if args.pull_raw_captures and args.allow_mac_raw_captures:
+        captures_dir.mkdir(parents=True, exist_ok=True)
 
     listing = ssh(args, phone_listing_command(args.phone_root))
     if listing.returncode != 0:
@@ -76,7 +79,7 @@ def pull_metadata(args: argparse.Namespace) -> dict[str, Any]:
         if row.get("comet_result_present") is True:
             scp_one(args, str(row["comet_result_path"]), local_comet)
         capture_pulled = False
-        if args.pull_raw_captures and row.get("capture_present") is True:
+        if args.pull_raw_captures and args.allow_mac_raw_captures and row.get("capture_present") is True:
             scp_one(args, str(row["capture_path"]), local_capture)
             capture_pulled = local_capture.is_file()
         rc = row.get("rc")
@@ -261,6 +264,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--expected-chunk-count", type=int, default=16)
     parser.add_argument("--require-complete", action="store_true")
     parser.add_argument("--pull-raw-captures", action="store_true")
+    parser.add_argument(
+        "--allow-mac-raw-captures",
+        action="store_true",
+        help="Break-glass only: permit raw .f32 capture pulls to Mac scratch.",
+    )
     parser.add_argument("--ssh-target", default="u0_a536@127.0.0.1")
     parser.add_argument("--ssh-port", type=int, default=18022)
     parser.add_argument("--ssh-identity", type=Path, default=Path("~/.ssh/polymath_host"))
