@@ -173,7 +173,11 @@ sha256: 35cbdf7444268a2132c10dbee889cb9970e83f4fa726153d06572eec0bc9cc5c
 
 docs/PRD-PHASE34-TASK-ALIGNED-PROJECTION-PHONE-NATIVE-GEMMA4-E4B-POLAR-TRAINING-2026-07-08.md
 sha256: b2bffc2b5c819749c42e0d05774f6b8f8f5a9e93f73e18b2b37c3b4e2ae5159b
+
+docs/APEX-GATE-E-SCIENCE-REPORT-SEQUENCE-2026-07-06/HANDOVER_PHASE34B_PHONE_NATIVE_MAC_LIGHT_OPERATIONS_2026-07-09.md
+sha256: 6d8b32c9c913f65938c22574912b29d82fa69409de4539fc1219be6b8dc23324
 ```
 
 Their role is to define the broader diagnostic and repair programs after Gate E
-falsification. They are not themselves science reports.
+falsification or to preserve operational custody for the next agent. They are
+not themselves science reports.
