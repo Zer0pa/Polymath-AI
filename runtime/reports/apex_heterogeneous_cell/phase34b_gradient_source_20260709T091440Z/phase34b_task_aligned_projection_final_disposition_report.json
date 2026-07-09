@@ -1,0 +1,97 @@
+{
+  "asvd_calibration_manifest": {
+    "record_count": 128,
+    "report_sha256": "fe66f30505127c61c1ec7fc16297c995437984ba06a702af7d839f8bb7d17233",
+    "status": "pass"
+  },
+  "authority_gate_e": {
+        "after_nll_per_token": 14.555113501137114,
+        "before_nll_per_token": 14.538868526231177,
+        "nll_delta_per_token": 0.01624497490593768,
+        "promotion_allowed": false,
+        "record_count": 27,
+    "report_path": "runtime/reports/apex_heterogeneous_cell/gate_e_phone_native_jl_c2_full27_20260708_timeout12h/gate_e_token_nll_perplexity_report.json",
+    "report_sha256": "70739a1c78b5d1cea5a98d1826f8a1b4c658929c7b534612e346ee0309e432f0",
+    "status": "falsified",
+        "token_count": 27
+  },
+  "blockers": [
+    "h1_asvd_effective_rank_below_min",
+    "h2_gradient_source_absent",
+    "no_projection_candidate_passed_stage0_or_d3"
+  ],
+  "created_utc": "2026-07-09T15:51:41Z",
+  "first_missing_green_field": "h1_asvd_effective_rank_below_min",
+  "gates_not_run": [
+    "h5_controls",
+    "d1_micro_correlation",
+    "d2_small_correlation",
+    "d3_full_correlation",
+    "gate_d2a",
+    "gate_e_full27"
+  ],
+  "h1_asvd": {
+    "blockers": [
+      "activation_effective_rank_below_min"
+    ],
+    "calibration_record_count": 128,
+    "calibration_row_count": 990,
+    "chunk_count_complete": 16,
+    "final_stats": {
+      "centered_rank_estimate": 344,
+      "chunk_index": 15,
+      "cumulative_rows": 990,
+      "effective_rank": 35.14290814917967,
+      "singular_value_1": 1031.6451863022082,
+      "singular_value_256": 41.173152119682314,
+      "singular_value_last": 3.4042300330801224e-14,
+      "top256_energy_ratio": 0.9774863300846467
+    },
+    "first_missing_green_field": "activation_effective_rank_below_min",
+    "matrix_built": false,
+    "rank_comet_status": "logged",
+    "rank_comet_url": "https://www.comet.com/zer0pa-imc/mobile-polymath-ai-training/997fed03f8f4485f97935fd3b063c63a",
+    "rank_report_sha256": "480cff756656a3f17771d275ad66d995a40e31e9f3584c74eeaebbf12a182ae6",
+    "raw_storage": "Termux phone storage only",
+    "reason_matrix_not_built": "effective rank below PRD minimum",
+    "status": "blocked_fail_closed"
+  },
+  "h2_gradient_svd": {
+    "blockers": [
+      "gradient_matrix_file_absent",
+      "gradient_row_count_below_256_without_predeclared_adaptive_rank"
+    ],
+    "comet_status": "logged",
+    "comet_url": "https://www.comet.com/zer0pa-imc/mobile-polymath-ai-training/82778d954bea4b3ab1687e5ee757d2e3",
+    "first_missing_green_field": "gradient_matrix_file_absent",
+    "matrix_built": false,
+    "report_sha256": "1d61cf6876efe3a2547f4ad4189df935a76f12bc7e56e18c2df9cd3f83949a4a",
+    "status": "blocked_fail_closed"
+  },
+  "h3_h4": {
+    "reason": "prior PRD candidate set exhausted; H3/H4 were not relitigated",
+    "retested": false
+  },
+  "nonclaims": [
+    "final disposition is not a Gate E pass",
+    "no projection matrix was built from H1 because Stage 0 remained blocked",
+    "no D1/D2/D3/H5/D2A/Gate E execution is authorized by this result",
+    "raw captures remain on phone storage and are not embedded"
+  ],
+  "raw_boundary": {
+    "logits_embedded": false,
+    "metadata_only_report": true,
+    "raw_rows_embedded": false,
+    "raw_tensors_embedded": false,
+    "secrets_embedded": false,
+    "theta_binaries_embedded": false,
+    "tokens_embedded": false
+  },
+  "run_id": "20260709T091440Z",
+  "schema_version": "phase34b_task_aligned_projection_final_disposition_v1",
+  "stage0_provider_readiness": {
+    "report_sha256": "365856c84f53f8d930924829573f7cb02acf74505053ecf4d82fee2b5f80812c",
+    "status": "pass"
+  },
+  "status": "blocked_fail_closed"
+}
