@@ -26,6 +26,7 @@ from polymath_ai.polar.task_aligned_projection import (
 
 MANIFEST_SCHEMA_VERSION = "phase34b_asvd_calibration_manifest_v1"
 RANK_TREND_SCHEMA_VERSION = "phase34b_activation_rank_trend_v1"
+CONCAT_SCHEMA_VERSION = "phase34b_asvd_activation_concat_v1"
 PASS_STATUS = "pass"
 
 
@@ -321,6 +322,186 @@ def build_activation_rank_trend_report(
     return report
 
 
+def build_activation_capture_concat_report(
+    *,
+    pull_report: Mapping[str, Any],
+    output_capture_f32: str | Path,
+    repo_root: str | Path | None = None,
+    expected_chunk_count: int | None = None,
+    expected_output_sha256: str = "",
+) -> dict[str, Any]:
+    """Concatenate completed Phase34B activation chunks outside git.
+
+    The returned report deliberately records only metadata and hashes. The raw
+    `.f32` activation chunks and concatenated output remain in scratch storage.
+    """
+
+    blockers: list[str] = []
+    output_path = Path(output_capture_f32)
+    row_bytes = HIDDEN_DIM * FLOAT32_BYTES
+    expected_count = int(expected_chunk_count or pull_report.get("expected_chunk_count") or 0)
+    if expected_count <= 0:
+        blockers.append("expected_chunk_count_missing")
+    if repo_root is not None and repo_contains(output_path, repo_root):
+        blockers.append("output_capture_inside_repo")
+
+    chunk_reports_raw = pull_report.get("chunk_reports")
+    if not isinstance(chunk_reports_raw, list):
+        chunk_reports_raw = []
+        blockers.append("chunk_reports_missing")
+
+    completed_reports = [
+        chunk
+        for chunk in chunk_reports_raw
+        if isinstance(chunk, Mapping) and chunk.get("rc") == 0
+    ]
+    failed_reports = [
+        chunk
+        for chunk in chunk_reports_raw
+        if isinstance(chunk, Mapping) and chunk.get("rc") not in (None, 0)
+    ]
+    if failed_reports:
+        blockers.append("one_or_more_chunks_failed")
+    if expected_count and len(completed_reports) != expected_count:
+        blockers.append("capture_chain_incomplete")
+    if expected_count and len(chunk_reports_raw) < expected_count:
+        blockers.append("capture_chunk_count_observed_below_expected")
+
+    rank_input_path = Path(str(pull_report.get("rank_trend_input_path") or ""))
+    rank_chunks: list[Mapping[str, Any]] = []
+    if not rank_input_path.is_file():
+        blockers.append("rank_trend_input_absent")
+    else:
+        try:
+            payload = json.loads(rank_input_path.read_text(encoding="utf-8"))
+        except json.JSONDecodeError:
+            payload = {}
+            blockers.append("rank_trend_input_json_invalid")
+        if isinstance(payload, Mapping) and isinstance(payload.get("chunks"), list):
+            rank_chunks = [chunk for chunk in payload["chunks"] if isinstance(chunk, Mapping)]
+        else:
+            blockers.append("rank_trend_input_chunks_missing")
+
+    rank_path_by_label: dict[str, Path] = {}
+    for chunk in rank_chunks:
+        path = Path(str(chunk.get("activation_capture_f32") or ""))
+        label = _label_from_capture_path(path)
+        if label:
+            rank_path_by_label[label] = path
+
+    chunk_reports: list[dict[str, Any]] = []
+    concat_plan: list[tuple[str, Path, int, str]] = []
+    for index, chunk in enumerate(sorted(completed_reports, key=lambda item: str(item.get("label") or ""))):
+        label = str(chunk.get("label") or "")
+        chunk_blockers: list[str] = []
+        capture_path = rank_path_by_label.get(label)
+        expected_sha = str(chunk.get("capture_sha256") or "")
+        expected_bytes = int(chunk.get("capture_bytes") or 0)
+        record_count = int(chunk.get("record_count") or 0)
+        actual_sha = ""
+        actual_bytes = 0
+        row_count = 0
+        if not label:
+            chunk_blockers.append("chunk_label_missing")
+        if chunk.get("capture_pulled_to_host_scratch") is not True:
+            chunk_blockers.append("capture_not_pulled_to_host_scratch")
+        if not is_sha256(expected_sha):
+            chunk_blockers.append("capture_sha256_missing_or_invalid")
+        if expected_bytes <= 0:
+            chunk_blockers.append("capture_bytes_missing")
+        if expected_bytes and expected_bytes % row_bytes:
+            chunk_blockers.append("capture_byte_count_not_row_aligned")
+        if capture_path is None:
+            chunk_blockers.append("capture_path_missing_from_rank_trend_input")
+        elif not capture_path.is_file():
+            chunk_blockers.append("capture_file_absent")
+        else:
+            actual_bytes = capture_path.stat().st_size
+            row_count = actual_bytes // row_bytes
+            actual_sha = sha256_file(capture_path)
+            if repo_root is not None and repo_contains(capture_path, repo_root):
+                chunk_blockers.append("raw_activation_chunk_inside_repo")
+            if actual_bytes != expected_bytes:
+                chunk_blockers.append("capture_byte_count_mismatch")
+            if actual_bytes % row_bytes:
+                chunk_blockers.append("capture_byte_count_not_row_aligned")
+            if expected_sha and actual_sha != expected_sha:
+                chunk_blockers.append("capture_sha256_mismatch")
+        if not chunk_blockers and capture_path is not None:
+            concat_plan.append((label, capture_path, actual_bytes, actual_sha))
+        chunk_reports.append(
+            {
+                "chunk_index": index,
+                "label": label,
+                "record_count": record_count,
+                "row_count": row_count,
+                "bytes": actual_bytes or expected_bytes,
+                "capture_sha256": actual_sha or expected_sha,
+                "capture_path_sha256": sha256_text(str(capture_path)) if capture_path is not None else "",
+                "blockers": chunk_blockers,
+            }
+        )
+        blockers.extend(chunk_blockers)
+
+    output_bytes = 0
+    output_sha = ""
+    output_row_count = 0
+    calibration_record_count = sum(int(chunk.get("record_count") or 0) for chunk in chunk_reports)
+    if not blockers:
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        with output_path.open("wb") as out_handle:
+            for _, capture_path, _, _ in concat_plan:
+                with capture_path.open("rb") as in_handle:
+                    for block in iter(lambda: in_handle.read(1024 * 1024), b""):
+                        out_handle.write(block)
+        output_bytes = output_path.stat().st_size
+        output_sha = sha256_file(output_path)
+        output_row_count = output_bytes // row_bytes
+        if output_bytes != sum(item[2] for item in concat_plan):
+            blockers.append("output_capture_byte_count_mismatch")
+        if output_bytes % row_bytes:
+            blockers.append("output_capture_byte_count_not_row_aligned")
+        if expected_output_sha256 and output_sha != expected_output_sha256:
+            blockers.append("output_capture_sha256_mismatch")
+
+    report = {
+        "schema_version": CONCAT_SCHEMA_VERSION,
+        "status": PASS_STATUS if not blockers else BLOCKED_STATUS,
+        "first_missing_green_field": "none" if not blockers else blockers[0],
+        "blockers": _dedupe(blockers),
+        "created_utc": utc_stamp(),
+        "run_id": pull_report.get("run_id"),
+        "expected_chunk_count": expected_count,
+        "chunk_count_observed": int(pull_report.get("chunk_count_observed") or len(chunk_reports_raw)),
+        "chunk_count_complete": len(completed_reports),
+        "chunk_count_concatenated": len(concat_plan) if not blockers else 0,
+        "calibration_record_count": calibration_record_count,
+        "output_capture_bytes": output_bytes,
+        "output_capture_sha256": output_sha,
+        "output_capture_path_sha256": sha256_text(str(output_path)),
+        "output_row_count": output_row_count,
+        "hidden_dim": HIDDEN_DIM,
+        "dtype": "float32",
+        "row_bytes": row_bytes,
+        "rank_trend_input_sha256": sha256_file(rank_input_path) if rank_input_path.is_file() else "",
+        "rank_trend_input_path_sha256": sha256_text(str(rank_input_path)) if str(rank_input_path) else "",
+        "chunk_reports": chunk_reports,
+        "raw_boundary": default_raw_boundary(),
+        "nonclaims": [
+            "activation concat is a custody/materialization step, not a rank pass",
+            "activation concat is not correlation evidence",
+            "activation concat is not Gate E evidence",
+            "raw activation rows remain outside git and are not embedded",
+        ],
+    }
+    secret_blockers = report_secret_blockers(report)
+    if secret_blockers:
+        report["status"] = BLOCKED_STATUS
+        report["first_missing_green_field"] = secret_blockers[0]
+        report["blockers"] = _dedupe([*report["blockers"], *secret_blockers])
+    return report
+
+
 def _rank_stats(matrix: Any) -> dict[str, Any]:
     import numpy as np  # type: ignore[import-not-found]
 
@@ -340,6 +521,13 @@ def _rank_stats(matrix: Any) -> dict[str, Any]:
         "singular_value_256": float(singular_values[PROJECTION_DIM - 1]) if len(singular_values) >= PROJECTION_DIM else None,
         "singular_value_last": float(singular_values[-1]),
     }
+
+
+def _label_from_capture_path(path: Path) -> str:
+    name = path.name
+    if name.startswith("layer24_") and name.endswith("_capture.f32"):
+        return name.removeprefix("layer24_").removesuffix("_capture.f32")
+    return ""
 
 
 def _metadata_records_from_qa_jsonl(path: Path) -> tuple[list[dict[str, Any]], list[str], list[str]]:
