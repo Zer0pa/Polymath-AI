@@ -1,11 +1,130 @@
 {
   "blockers": [
-    "phone_rank_trend_exception"
+    "activation_capture_rank_below_projection_dim",
+    "activation_effective_rank_below_min"
   ],
-  "created_utc": "2026-07-09T11:39:17Z",
-  "exception_sha256": "c555ca3c2dac1a470e6aff5bf26774946e6bd408032545c17a1a2ba1edf3acbf",
-  "exception_type": "ModuleNotFoundError",
-  "first_missing_green_field": "phone_rank_trend_exception",
+  "calibration_record_count": 40,
+  "calibration_row_count": 311,
+  "chunk_count": 5,
+  "chunk_reports": [
+    {
+      "blockers": [],
+      "bytes": 614400,
+      "capture_path_sha256": "c252d8ae5c6478c31f0bd2c6dae48dfad0d57e774883b740da71518f3ebe1acf",
+      "capture_sha256": "728e8da4edc89783b10545119ec3bc8161d7f7e9cb39ff80a1db24a741d160ea",
+      "chunk_index": 0,
+      "record_count": 8,
+      "row_count": 60
+    },
+    {
+      "blockers": [],
+      "bytes": 624640,
+      "capture_path_sha256": "95a2d4e2a5923910c78cba4dcd4e289c0c54e224d8aaf0702d612bdb4d6f3f5d",
+      "capture_sha256": "5349c5339b7b580cae3fda507feda40ef3a3a4fb1947047020dccbbbd7e0476f",
+      "chunk_index": 1,
+      "record_count": 8,
+      "row_count": 61
+    },
+    {
+      "blockers": [],
+      "bytes": 655360,
+      "capture_path_sha256": "72a926ac61ed7d76f99ed59e37b70053e809cf23c40fe81982b40b70672db784",
+      "capture_sha256": "99ef21df736564837cb07cb29985b3528ee5fdf7a9d0f67c270f5e4b8ef8093f",
+      "chunk_index": 2,
+      "record_count": 8,
+      "row_count": 64
+    },
+    {
+      "blockers": [],
+      "bytes": 686080,
+      "capture_path_sha256": "c2da4ac2a42a6622aa8dc63453356b2b479b0b885f83b39fc2cde1644711acda",
+      "capture_sha256": "81b14f9617344e662bf996c4670c2f8fd7d96a1ea6a988fec4c37dbb277aad56",
+      "chunk_index": 3,
+      "record_count": 8,
+      "row_count": 67
+    },
+    {
+      "blockers": [],
+      "bytes": 604160,
+      "capture_path_sha256": "275e780738ebeda53bf86a2e58066f8ae2912df16ede8380451689c405af15ee",
+      "capture_sha256": "a8012728f2feca50311280824988db1f56a882a3f4fb535d55eb7995f6aa1b7e",
+      "chunk_index": 4,
+      "record_count": 8,
+      "row_count": 59
+    }
+  ],
+  "created_utc": "2026-07-09T11:42:07Z",
+  "final_stats": {
+    "centered_rank_estimate": 115,
+    "chunk_index": 4,
+    "cumulative_rows": 311,
+    "effective_rank": 25.486012264542676,
+    "singular_value_1": 577.0628064348309,
+    "singular_value_256": 5.6698960108157095e-14,
+    "singular_value_last": 2.3740715722319294e-14,
+    "top256_energy_ratio": 1.0
+  },
+  "first_missing_green_field": "activation_capture_rank_below_projection_dim",
+  "nonclaims": [
+    "rank trend report is a Stage 0 surface gate",
+    "rank trend pass is not correlation or Gate E evidence",
+    "raw activation rows remain on Termux storage"
+  ],
+  "phone_repo_import_error_sha256": "c555ca3c2dac1a470e6aff5bf26774946e6bd408032545c17a1a2ba1edf3acbf",
+  "rank_backend": "phone_self_contained_numpy",
+  "rank_threshold": 256,
+  "rank_trend": [
+    {
+      "centered_rank_estimate": 24,
+      "chunk_index": 0,
+      "cumulative_rows": 60,
+      "effective_rank": 13.517268647279415,
+      "singular_value_1": 256.1916158548538,
+      "singular_value_256": null,
+      "singular_value_last": 1.962705131607043e-14,
+      "top256_energy_ratio": 1.0
+    },
+    {
+      "centered_rank_estimate": 45,
+      "chunk_index": 1,
+      "cumulative_rows": 121,
+      "effective_rank": 17.297756021607935,
+      "singular_value_1": 364.0057564005755,
+      "singular_value_256": null,
+      "singular_value_last": 2.202751225407847e-14,
+      "top256_energy_ratio": 1.0
+    },
+    {
+      "centered_rank_estimate": 69,
+      "chunk_index": 2,
+      "cumulative_rows": 185,
+      "effective_rank": 21.230614249160634,
+      "singular_value_1": 445.74673794708775,
+      "singular_value_256": null,
+      "singular_value_last": 1.948503491086653e-14,
+      "top256_energy_ratio": 1.0
+    },
+    {
+      "centered_rank_estimate": 96,
+      "chunk_index": 3,
+      "cumulative_rows": 252,
+      "effective_rank": 24.65326303973363,
+      "singular_value_1": 516.4552268714785,
+      "singular_value_256": null,
+      "singular_value_last": 2.400664905310252e-14,
+      "top256_energy_ratio": 1.0
+    },
+    {
+      "centered_rank_estimate": 115,
+      "chunk_index": 4,
+      "cumulative_rows": 311,
+      "effective_rank": 25.486012264542676,
+      "singular_value_1": 577.0628064348309,
+      "singular_value_256": 5.6698960108157095e-14,
+      "singular_value_last": 2.3740715722319294e-14,
+      "top256_energy_ratio": 1.0
+    }
+  ],
   "raw_boundary": {
     "logits_embedded": false,
     "metadata_only_report": true,
