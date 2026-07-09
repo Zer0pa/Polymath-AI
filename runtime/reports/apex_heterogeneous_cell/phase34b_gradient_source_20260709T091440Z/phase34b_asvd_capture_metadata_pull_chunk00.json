@@ -1,0 +1,64 @@
+{
+  "blockers": [],
+  "chunk_count_complete": 1,
+  "chunk_count_observed": 2,
+  "chunk_reports": [
+    {
+      "capture_bytes": 614400,
+      "capture_host_path_sha256": "9870a566279ef9b63d191bf94d086a572397614fde23f8a9fdb40a2e3a50db2f",
+      "capture_present_on_phone": true,
+      "capture_pulled_to_host_scratch": true,
+      "capture_sha256": "728e8da4edc89783b10545119ec3bc8161d7f7e9cb39ff80a1db24a741d160ea",
+      "comet_result_pulled": true,
+      "comet_result_sha256": "75aa520a3d10706cefe1acda2f38a02610f63cbef9094cad4438b43fb96d9120",
+      "label": "chunk00",
+      "native_report_pulled": true,
+      "native_report_sha256": "ec829e2c559dddf137fc4fa859f23d490d6a4a32aa6529defe82ba2da3f3b8d7",
+      "progress_bytes": 52896,
+      "raw_rows_embedded": false,
+      "rc": 0,
+      "record_count": 8
+    },
+    {
+      "capture_bytes": 0,
+      "capture_host_path_sha256": "",
+      "capture_present_on_phone": false,
+      "capture_pulled_to_host_scratch": false,
+      "capture_sha256": "",
+      "comet_result_pulled": false,
+      "comet_result_sha256": "",
+      "label": "chunk01",
+      "native_report_pulled": true,
+      "native_report_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "progress_bytes": 4956,
+      "raw_rows_embedded": false,
+      "rc": null,
+      "record_count": 8
+    }
+  ],
+  "created_utc": "2026-07-09T09:58:21Z",
+  "expected_chunk_count": 16,
+  "first_missing_green_field": "none",
+  "nonclaims": [
+    "metadata pull is not a rank pass",
+    "raw captures, if pulled, are outside git scratch and are not embedded",
+    "no Gate E pass unless authority report says pass"
+  ],
+  "phone_root": "/data/data/com.termux/files/home/polymath_phase34b_20260709T091440Z/asvd_activation_capture",
+  "phone_root_path_sha256": "529ade8de0063584178f417aafa9dc27eb53e6a4bbb8fcfa6d3225fd4935853f",
+  "rank_trend_input_path": "/Users/Zer0pa/Polymat AI/runtime/tmp/phase34b_gradient_source_20260709T091440Z/asvd_activation_capture_pull/pulled_metadata/phase34b_rank_trend_input.json",
+  "rank_trend_input_sha256": "7bea45338937465a36c34b38ea8f93eedf4fcbf186621adae62d52946379593d",
+  "raw_boundary": {
+    "logits_embedded": false,
+    "metadata_only_report": true,
+    "raw_rows_embedded": false,
+    "raw_tensors_embedded": false,
+    "secrets_embedded": false,
+    "theta_binaries_embedded": false,
+    "tokens_embedded": false
+  },
+  "raw_captures_pulled_to_host_scratch": true,
+  "run_id": "20260709T091440Z",
+  "schema_version": "phase34b_asvd_capture_metadata_pull_v1",
+  "status": "pass"
+}
