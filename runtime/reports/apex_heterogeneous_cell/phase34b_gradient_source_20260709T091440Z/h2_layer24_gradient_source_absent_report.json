@@ -1,0 +1,44 @@
+{
+  "blockers": [
+    "gradient_matrix_file_absent",
+    "gradient_row_count_below_256_without_predeclared_adaptive_rank"
+  ],
+  "calibration_corpus_identity_sha256": "82819ef368ad0f6818af7948279775a98225b4711bbc082eb0192d6574589758",
+  "capture_site": "post_ple_gate_hidden_pre_native_polar",
+  "created_utc": "2026-07-09T09:56:01Z",
+  "first_missing_green_field": "gradient_matrix_file_absent",
+  "gradient_matrix": {
+    "bytes": 0,
+    "dtype": "float32",
+    "path_string_sha256": "2cdbbe41defb1d790cb0481bed6bb37428e2a75c80b9c75afa0f8d8655e81913",
+    "raw_rows_embedded": false,
+    "raw_rows_in_repo": false,
+    "row_count": 0,
+    "sha256": "",
+    "width": 2560
+  },
+  "heldout_overlap_count": 0,
+  "layer_idx": 24,
+  "model_identity_sha256": "52fcb53666bb4b06d0118cb825b983afc54624a630f667bbfa5af278640e28f8",
+  "nonclaims": [
+    "gradient source is a design asset until phone-native fidelity and correlation gates pass",
+    "no base model update was authorized by this report",
+    "raw gradient rows remain outside git"
+  ],
+  "quality": {},
+  "raw_boundary": {
+    "logits_embedded": false,
+    "metadata_only_report": true,
+    "raw_rows_embedded": false,
+    "raw_tensors_embedded": false,
+    "secrets_embedded": false,
+    "theta_binaries_embedded": false,
+    "tokens_embedded": false
+  },
+  "run_id": "20260709T091440Z",
+  "schema_version": "phase34b_layer24_gradient_surface_v1",
+  "semantic": "representative dL_NLL/dh_layer24 gradient row matrix",
+  "source_method": "offline_autograd_gradient_calibration_not_yet_built",
+  "status": "blocked_fail_closed",
+  "tokenizer_identity_sha256": "11515175c9e7806426273e251fc1a8f73b774a393b51cb97a2cd1d87bb5262cc"
+}
