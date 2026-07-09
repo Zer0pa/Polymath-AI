@@ -1,0 +1,48 @@
+{
+  "blockers": [],
+  "chunk_count_complete": 0,
+  "chunk_count_observed": 1,
+  "chunk_reports": [
+    {
+      "capture_bytes": 0,
+      "capture_host_path_sha256": "",
+      "capture_present_on_phone": false,
+      "capture_pulled_to_host_scratch": false,
+      "capture_sha256": "",
+      "comet_result_pulled": false,
+      "comet_result_sha256": "",
+      "label": "chunk00",
+      "native_report_pulled": true,
+      "native_report_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "progress_bytes": 38016,
+      "raw_rows_embedded": false,
+      "rc": null,
+      "record_count": 8
+    }
+  ],
+  "created_utc": "2026-07-09T09:48:55Z",
+  "expected_chunk_count": 16,
+  "first_missing_green_field": "none",
+  "nonclaims": [
+    "metadata pull is not a rank pass",
+    "raw captures, if pulled, are outside git scratch and are not embedded",
+    "no Gate E pass unless authority report says pass"
+  ],
+  "phone_root": "/data/data/com.termux/files/home/polymath_phase34b_20260709T091440Z/asvd_activation_capture",
+  "phone_root_path_sha256": "529ade8de0063584178f417aafa9dc27eb53e6a4bbb8fcfa6d3225fd4935853f",
+  "rank_trend_input_path": "/Users/Zer0pa/Polymat AI/runtime/tmp/phase34b_gradient_source_20260709T091440Z/asvd_activation_capture_pull/pulled_metadata/phase34b_rank_trend_input.json",
+  "rank_trend_input_sha256": "aeac5cff96242dcd1e31e7e4fd65d23705cec2c0687559b85dd835334c82baf3",
+  "raw_boundary": {
+    "logits_embedded": false,
+    "metadata_only_report": true,
+    "raw_rows_embedded": false,
+    "raw_tensors_embedded": false,
+    "secrets_embedded": false,
+    "theta_binaries_embedded": false,
+    "tokens_embedded": false
+  },
+  "raw_captures_pulled_to_host_scratch": false,
+  "run_id": "20260709T091440Z",
+  "schema_version": "phase34b_asvd_capture_metadata_pull_v1",
+  "status": "pass"
+}
