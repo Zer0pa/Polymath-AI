@@ -1,0 +1,81 @@
+{
+  "blockers": [
+    "activation_capture_rank_below_projection_dim",
+    "activation_effective_rank_below_min"
+  ],
+  "calibration_record_count": 16,
+  "calibration_row_count": 121,
+  "chunk_count": 2,
+  "chunk_reports": [
+    {
+      "blockers": [],
+      "bytes": 614400,
+      "capture_path_sha256": "9870a566279ef9b63d191bf94d086a572397614fde23f8a9fdb40a2e3a50db2f",
+      "capture_sha256": "728e8da4edc89783b10545119ec3bc8161d7f7e9cb39ff80a1db24a741d160ea",
+      "chunk_index": 0,
+      "record_count": 8,
+      "row_count": 60
+    },
+    {
+      "blockers": [],
+      "bytes": 624640,
+      "capture_path_sha256": "fc2e1b68817b306b6b50fe680926af3a8730c879dfcb7ae609a971dbec8aa3f8",
+      "capture_sha256": "5349c5339b7b580cae3fda507feda40ef3a3a4fb1947047020dccbbbd7e0476f",
+      "chunk_index": 1,
+      "record_count": 8,
+      "row_count": 61
+    }
+  ],
+  "created_utc": "2026-07-09T10:24:36Z",
+  "final_stats": {
+    "centered_rank_estimate": 45,
+    "chunk_index": 1,
+    "cumulative_rows": 121,
+    "effective_rank": 17.297756021607903,
+    "singular_value_1": 364.00575640057633,
+    "singular_value_256": null,
+    "singular_value_last": 1.2075032062006077e-14,
+    "top256_energy_ratio": 1.0
+  },
+  "first_missing_green_field": "activation_capture_rank_below_projection_dim",
+  "nonclaims": [
+    "rank trend report is a Stage 0 surface gate",
+    "rank trend pass is not correlation or Gate E evidence",
+    "raw activation rows remain outside git"
+  ],
+  "rank_threshold": 256,
+  "rank_trend": [
+    {
+      "centered_rank_estimate": 24,
+      "chunk_index": 0,
+      "cumulative_rows": 60,
+      "effective_rank": 13.51726864727941,
+      "singular_value_1": 256.19161585485415,
+      "singular_value_256": null,
+      "singular_value_last": 2.518231698116554e-14,
+      "top256_energy_ratio": 1.0
+    },
+    {
+      "centered_rank_estimate": 45,
+      "chunk_index": 1,
+      "cumulative_rows": 121,
+      "effective_rank": 17.297756021607903,
+      "singular_value_1": 364.00575640057633,
+      "singular_value_256": null,
+      "singular_value_last": 1.2075032062006077e-14,
+      "top256_energy_ratio": 1.0
+    }
+  ],
+  "raw_boundary": {
+    "logits_embedded": false,
+    "metadata_only_report": true,
+    "raw_rows_embedded": false,
+    "raw_tensors_embedded": false,
+    "secrets_embedded": false,
+    "theta_binaries_embedded": false,
+    "tokens_embedded": false
+  },
+  "run_id": "20260709T091440Z",
+  "schema_version": "phase34b_activation_rank_trend_v1",
+  "status": "blocked_fail_closed"
+}
