@@ -1,0 +1,25 @@
+{
+  "phone_adb_termux": {
+    "status": "pass",
+    "adb_device_visible": true,
+    "adb_serial": "FY25013101C8",
+    "ssh_metadata_check_pass": true,
+    "termux_user": "u0_a536",
+    "env_names_observed": [
+      "COMET_API_KEY",
+      "COMET_PROJECT_NAME",
+      "COMET_WORKSPACE",
+      "GH_TOKEN",
+      "HF_TOKEN"
+    ],
+    "secret_values_observed": false
+  },
+  "comet": {
+    "status": "pass",
+    "host_venv_comet_import_pass": true,
+    "phone_env_name_present": true,
+    "workspace_required": "zer0pa-imc",
+    "project_required": "mobile-polymath-ai-training",
+    "secret_values_observed": false
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "blockers": [],
+  "comet_target": {
+    "project_name": "mobile-polymath-ai-training",
+    "project_required": "mobile-polymath-ai-training",
+    "workspace": "zer0pa-imc",
+    "workspace_required": "zer0pa-imc"
+  },
+  "created_utc": "2026-07-09T09:16:01Z",
+  "env_presence": {
+    "COMET_API_KEY": true,
+    "COMET_PROJECT_NAME": true,
+    "COMET_WORKSPACE": true,
+    "GH_TOKEN": true,
+    "GITHUB_TOKEN": false,
+    "HF_TOKEN": true,
+    "HUGGINGFACE_HUB_TOKEN": false
+  },
+  "first_missing_green_field": "none",
+  "nonclaims": [
+    "provider readiness does not execute phone work",
+    "provider readiness does not authorize candidate reruns",
+    "Comet dashboard presence is not authority evidence"
+  ],
+  "provider_capability_capsule": {
+    "comet": "metadata-only numeric logging",
+    "github": "custody commits/PRs only when authorized",
+    "hugging_face": "corpus/model provenance when needed",
+    "phone_adb_termux": "authority execution target",
+    "runpod": "optional offline gradient/tool host"
+  },
+  "raw_boundary": {
+    "metadata_only_report": true,
+    "raw_rows_embedded": false,
+    "raw_tensors_embedded": false,
+    "secrets_embedded": false,
+    "theta_binaries_embedded": false
+  },
+  "run_id": "20260709T091440Z",
+  "safe_checks": {
+    "comet": {
+      "host_venv_comet_import_pass": true,
+      "phone_env_name_present": true,
+      "project_required": "mobile-polymath-ai-training",
+      "secret_values_observed": false,
+      "status": "pass",
+      "workspace_required": "zer0pa-imc"
+    },
+    "phone_adb_termux": {
+      "adb_device_visible": true,
+      "adb_serial": "FY25013101C8",
+      "env_names_observed": [
+        "COMET_API_KEY",
+        "COMET_PROJECT_NAME",
+        "COMET_WORKSPACE",
+        "GH_TOKEN",
+        "HF_TOKEN"
+      ],
+      "secret_values_observed": false,
+      "ssh_metadata_check_pass": true,
+      "status": "pass",
+      "termux_user": "u0_a536"
+    }
+  },
+  "schema_version": "phase34b_provider_readiness_v1",
+  "status": "pass"
+}
