@@ -1,0 +1,201 @@
+{
+  "schema_version": "apex_c1_c4_corpus_readiness_evidence_receipt_v1",
+  "receipt_role": "aggregate_evidence_annex_not_canonical_claim_objects",
+  "canonical_claim_objects_present": false,
+  "observed_at_utc": "2026-07-10T22:30:29Z",
+  "target_model": "Gemma_4_E4B_only",
+  "source": {
+    "repository": "Zer0pa/polymat-gemmalit-c1-c4-commercial-corpus",
+    "visibility": "private",
+    "immutable_revision": "504dd91c5a7c8365882d690d52f3de20697c4f7b",
+    "used_storage_bytes_observed": 878288476,
+    "repository_objects_observed": 146,
+    "repository_inventory_digest": null,
+    "repository_inventory_digest_state": "not_persisted_rerun_required"
+  },
+  "execution_custody": {
+    "audit_compute": "Mac_read_only_revision_pinned_temporary_download",
+    "temporary_directories_removed": [
+      "/tmp/polymath_corpus_audit_504dd91",
+      "/tmp/gemma4_e4b_tokenizer_a4c2d58",
+      "/tmp/gemma4_e4b_tokenizer_qat_tf_9a78a5a",
+      "/tmp/gemma4_e4b_tokenizer_qat_ct_d35137f"
+    ],
+    "raw_rows_persisted_by_this_audit_on_Mac": false,
+    "aggregate_metadata_persisted": true,
+    "corpus_packages_offload_notice": {
+      "path": "corpus_packages/OFFLOADED_TO_PHONE_20260709.md",
+      "sha256": "058ebf3bff67691abcf1fe203fcb091cca23fc56477125907eaa0223a038ef17"
+    },
+    "corpus_state_offload_notice": {
+      "path": "corpus_state/OFFLOADED_TO_PHONE_20260709.md",
+      "sha256": "242ab95b662b057bf3823129a5a3ee53f2d8cf05a8c26c8d4b8363cee0b27350"
+    },
+    "phone_offload_root": "/data/data/com.termux/files/home/polymath_mac_offload/20260709T_disk_emergency/Polymat_AI/",
+    "phone_contents_live_revalidated_by_this_audit": false
+  },
+  "input_evidence": {
+    "material_lock": {
+      "path_from_workspace_root": "Polymath-AI/runtime/reports/orchestration/material_revision_lock.json",
+      "sha256": "078a9a208fb6fae06db64b5306cd4069912af867062a6689ecc0340de2be2edc"
+    },
+    "material_verification": {
+      "path_from_workspace_root": "Polymath-AI/runtime/reports/integrated_c1_c4_execution/c1_c4_integrated_20260630T164809Z/material_verification.json",
+      "sha256": "871a9c4b2b7d05148ef12be55172a70e1bc1185bb114db07ce64013dad1396bb"
+    },
+    "C1_judge_report": {
+      "path_from_workspace_root": "runtime/reports/corpus_pipeline/c1_c2_frontier_scale_20260629T100304Z/phase_C1_judge_report.json",
+      "sha256": "0787c7e6b711b327f8e03d713f163324206cfa3c95ebcbcb17465972875f451c"
+    },
+    "C2_judge_report": {
+      "path_from_workspace_root": "runtime/reports/corpus_pipeline/c1_c2_frontier_scale_20260629T100304Z/phase_C2_judge_report.json",
+      "sha256": "9040c8645259587fadd169339f867c984648fb44b5dcab4ef681053f2301f421"
+    },
+    "C4_structural_science_rows": {
+      "path_from_workspace_root": "runtime/reports/corpus_pipeline/c4_hf_science_replacement_20260630T_scaled_v2/phase_C4_hf_science_replacement_raw.jsonl",
+      "sha256": "6166770d104b8c955b07eadbe41b48f3d9aaa55aacc689718b40045a7deb359b"
+    },
+    "curriculum_pack_manifest": {
+      "path_from_workspace_root": "runtime/reports/corpus_pipeline/c1_c4_curriculum_pack_20260630T_hf_c4_v2/c1_c4_curriculum_pack_manifest.json",
+      "sha256": "c172cb015e268348a3e17d08aa5b499cef8eeff860ca532aaaec547fcb4ff03c"
+    },
+    "builder_source_hashes": {
+      "corpus_pipeline/records.py": "f71ce587a18c92fdf86d4a7256d5539f751e1ef0bf802763c464c1ebf84167d6",
+      "corpus_pipeline/packager.py": "2bd28289d91da16a03b67461d2a3ece320f2b30af4544d24164fe5764efaa460",
+      "corpus_pipeline/runtime_smoke.py": "98bed7ed04e260030d9e3e1456d84060104360419d2c0303cfd3f6175d0d0b12",
+      "corpus_pipeline/tests.py": "927f0b393fe0d089deb5eb3d88876abef77a349e3ba29827fd0590d04d520326"
+    },
+    "builder_test_receipt": {
+      "path_from_workspace_root": "Polymath-AI/docs/APEX-C1-C4-CORPUS-BUILDER-TEST-RECEIPT-2026-07-10.json",
+      "sha256": "1baecb6060206d7d09c583377ab3bb33b0769a3790fb0bd3ccd0f571ecf519c7"
+    }
+  },
+  "observations": [
+    {
+      "observation_id": "CORPUS-LOCAL-504DD91C-PHYSICAL-001",
+      "evidence_class": "local_verification",
+      "state": "passed_scope",
+      "scope": {
+        "revision": "504dd91c5a7c8365882d690d52f3de20697c4f7b",
+        "manifest_count": 5,
+        "split_shard_count": 15,
+        "total_rows": 77023,
+        "checks": ["sha256", "bytes", "line_count", "json_parse", "required_fields", "phase_split_labels", "record_id_uniqueness", "full_split_union", "split_record_id_disjointness"]
+      },
+      "results": {
+        "C1": {"total": 5180, "train": 4931, "validation": 196, "test": 53, "full_qa_sha256": "a752cafde223b0203be9478c3f28cf672d2ba0962394377f61a926da771c8088", "manifest_sha256": "7349512beadd2da2f678c3229425fc291576912f274450f3186f8c695fe8e305"},
+        "C2": {"total": 3198, "train": 3042, "validation": 129, "test": 27, "full_qa_sha256": "676d985fff59d4a60c36d3e5142ac679a45db6082003fe98fa440b8cdbc517a3", "manifest_sha256": "3ed5a4d0190911744716f7e294a59271b54b319c0d80bab67f9cca3a1dbdeaee"},
+        "B23": {"source_label": "C2.5", "total": 20, "train": 19, "validation": 1, "test": 0, "full_qa_sha256": "ec5a85f111ba42bf778fffd98212f3f92ec871e9eb0a757196393cef99d2ba83", "manifest_sha256": "b1b7ed6f03cc2da281959c87dfa6ffb84cddfb23805e76c3682fc916a6284316"},
+        "C3": {"total": 56138, "train": 53379, "validation": 2211, "test": 548, "full_qa_sha256": "c6c3e98ebd1c583fc92588160922aad758af6a0d56c75ca7fb6cd8c7d0d1a87a", "manifest_sha256": "f95b1569f01b8c541d0cbe1c359d81dcbe8d1b036d9ddc6838780cdf1ae215be"},
+        "C4": {"total": 12487, "train": 11883, "validation": 492, "test": 112, "full_qa_sha256": "0bfe358075383a74dbd0b6cf763e2ea5d5407ce3e3a894cccea4b67f41dcdcc6", "manifest_sha256": "451b879c2ab4df71db2b11da7868fb0a71664a09b35b8f7d73aec56dea5bf490"}
+      },
+      "effects": {"closes_only": ["physical_integrity_at_revision"], "promotion_allowed": false},
+      "nonclaims": ["semantic_quality", "split_independence", "learning_rights", "target_E4B_packet_authority"],
+      "custody": {"raw_location_class": "temporary_Mac_read_then_deleted", "egress_result": "aggregate_metadata_only"}
+    },
+    {
+      "observation_id": "CORPUS-LOCAL-504DD91C-OVERLAP-002",
+      "evidence_class": "local_verification",
+      "state": "falsified_scope",
+      "scope": {"unit": "source_instance_and_semantic_exposure", "C3_rows": 56138, "C4_rows": 12487},
+      "results": {
+        "C4_rows_sharing_C3_source_instance": 12387,
+        "C4_share_percent": 99.199,
+        "exact_C3_C4_question_answer_pairs": 3421,
+        "within_C3_split_crossing_source_instances": 49,
+        "within_C4_split_crossing_source_instances": 33,
+        "C4_test_source_membership": {"train_only": 99, "validation_only": 11, "both": 1, "source_unmatched": 1},
+        "C4_test_semantically_exposed_total": 112,
+        "source_unmatched_semantic_near_match": {
+          "C4_record_id": "glt:glt_master_v1:C4:16fe99db1b60f8e7215f243871ede6be",
+          "C3_record_id": "glt:glt_master_v1:C3:cccc403a9a334e3ed54f7ea74714202e",
+          "relation": "near_equivalent_question_answer_concept_not_exact_text"
+        }
+      },
+      "effects": {"closes_only": ["current_split_independence_falsified"], "promotion_allowed": false},
+      "nonclaims": ["admitted_future_semantic_cluster_detector", "repaired_global_split"],
+      "custody": {"raw_location_class": "temporary_Mac_read_then_deleted", "egress_result": "aggregate_metadata_and_two_debug_record_ids"}
+    },
+    {
+      "observation_id": "CORPUS-LOCAL-C1-C2-SEMANTIC-003",
+      "evidence_class": "local_verification",
+      "state": "falsified_scope",
+      "scope": {"C1_explicit_judge_rows": 500, "C2_explicit_judge_rows": 333},
+      "results": {
+        "C1": {"promote": 127, "repair": 294, "reject": 79, "aggregate_summary_internal_mismatch": true},
+        "C2": {"promote": 116, "repair": 196, "reject": 21},
+        "rejected_or_repair_rows_remained_in_QA": true
+      },
+      "effects": {"closes_only": ["blanket_C1_C2_semantic_admission_falsified"], "promotion_allowed": false},
+      "nonclaims": ["full_corpus_semantic_judgment", "legal_conclusion"],
+      "custody": {"raw_location_class": "workspace_historical_reports", "egress_result": "none"}
+    },
+    {
+      "observation_id": "CORPUS-LOCAL-E4B-PACKET-GEOMETRY-004",
+      "evidence_class": "local_verification",
+      "state": "passed_scope",
+      "scope": {"rows": 77023, "packetization": "user_question_assistant_answer_plus_turn_termination", "authority_freeze": false},
+      "observed_artifacts": {
+        "high_precision_E4B_it_revision": "a4c2d58be94dda072b918d9db64ee85c8ed34e3f",
+        "QAT_transformers_revision": "9a78a5adac7bca7a9e421634e4b58f41ca7cbca3",
+        "QAT_CT_revision": "d35137f462eb09dbe5acb5924018356d8e057134",
+        "tokenizer_json_sha256": "cc8d3a0ce36466ccc1278bf987df5f71db1719b9ca6b4118264f45cb627bfe0f",
+        "chat_template_sha256": "2f1b4d75d067bae3fe44e676721c7f077d243bc007156cb9c2f8b5836613d082"
+      },
+      "results": {
+        "nonempty_scored_spans": 77023,
+        "prompt_prefix_identity_passes": 77023,
+        "complete_real_rows_le_16": 0,
+        "candidate_64_token_rung": {
+          "exact_coverage_persisted": false,
+          "C1_coverage_lower_bound_percent_from_p99_60": 99.0,
+          "C2_coverage_lower_bound_percent_from_p50_57": 50.0,
+          "required_next_evidence": "exact_32_and_64_coverage_in_CUR-0P"
+        },
+        "lengths": {
+          "C1": {"p50": 52, "p99": 60, "max": 66, "le_128_percent": 100.0},
+          "C2": {"p50": 57, "p99": 66, "max": 77, "le_128_percent": 100.0},
+          "B23": {"p50": 80, "p99": 103, "max": 103, "le_128_percent": 100.0},
+          "C3": {"p50": 510, "p95": 1107, "p99": 1341, "quantile_convention": "nearest_rank_ceiling", "max": 2193, "le_128_percent": 20.583, "le_512_percent": 50.390, "le_1024_percent": 92.930, "le_2048_percent": 99.995, "le_4096_percent": 100.0},
+          "C4": {"p50": 109, "p95": 239, "p99": 424, "quantile_convention": "nearest_rank_ceiling", "max": 1420, "le_128_percent": 77.993, "le_256_percent": 95.932, "le_512_percent": 99.487, "le_2048_percent": 100.0}
+        },
+        "masked_target_tokens": {"C1": 205597, "C2": 131809, "B23": 1214, "C3": 22613947, "C4": 728822, "total": 23681389, "C3_share_percent": 95.4925}
+      },
+      "effects": {"closes_only": ["observed_packet_geometry_for_planning"], "promotion_allowed": false},
+      "nonclaims": ["L0_frozen_tokenizer", "CUR-0_packet_root", "QNN_context_exists_at_any_reported_bucket"],
+      "custody": {"raw_location_class": "temporary_Mac_read_then_deleted", "egress_result": "aggregate_metadata_only"}
+    },
+    {
+      "observation_id": "CORPUS-LOCAL-C4-NUMERIC-005",
+      "evidence_class": "local_verification",
+      "state": "falsified_scope",
+      "scope": {"artifact": "C4_structural_science_rows"},
+      "results": {"source_rows": 13652, "promoted_rows": 12487, "numeric_recomputation_rows": 0, "numeric_recomputation_required_false_rows": 13652, "unit_status": "not_programmatically_recomputed", "structural_pass_is_numeric_authority": false},
+      "effects": {"closes_only": ["current_C4_numeric_correctness_authority_falsified"], "promotion_allowed": false},
+      "nonclaims": ["C4_answers_are_incorrect", "future_numeric_recomputation"],
+      "custody": {"raw_location_class": "workspace_historical_reports", "egress_result": "none"}
+    },
+    {
+      "observation_id": "CORPUS-LOCAL-BUILDER-TESTS-006",
+      "evidence_class": "local_verification",
+      "state": "passed_scope",
+      "scope": {"command": ".venv/bin/python -m pytest -q corpus_pipeline/tests.py", "interpreter": ".venv/bin/python", "python_version": "3.11.14", "pytest_version": "9.1.1", "test_file_sha256": "927f0b393fe0d089deb5eb3d88876abef77a349e3ba29827fd0590d04d520326"},
+      "results": {"passed": 30, "failed": 0, "duration_seconds": 4.90, "stdout_receipt_separately_persisted": true, "stdout_receipt_sha256": "1baecb6060206d7d09c583377ab3bb33b0769a3790fb0bd3ccd0f571ecf519c7"},
+      "effects": {"closes_only": ["existing_focused_builder_tests"], "promotion_allowed": false},
+      "nonclaims": ["global_connected_split_correctness", "provider_rights", "semantic_quality", "E4B_packet_authority"],
+      "custody": {"raw_location_class": "none", "egress_result": "none"}
+    }
+  ],
+  "unsupported_or_deferred_measurements": {
+    "missing_visual_context_candidate_counts": {
+      "state": "not_admitted",
+      "reason": "prior_pattern_detector_rule_and_row_id_manifest_not_preserved",
+      "required_next_evidence": "content_addressed_detector_code_rule_and_row_manifest"
+    },
+    "provider_and_legal_admission": {
+      "state": "blocked_fail_closed",
+      "reason": "requires_terms_snapshot_permission_or_legal_determination",
+      "legal_opinion_claimed": false
+    }
+  }
+}

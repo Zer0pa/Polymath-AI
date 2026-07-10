@@ -1,0 +1,25 @@
+{
+  "schema_version": "apex_c1_c4_corpus_builder_test_receipt_v1",
+  "observed_at_utc": "2026-07-10T23:07:30Z",
+  "working_directory": "/Users/Zer0pa/Polymat AI",
+  "command": ".venv/bin/python -m pytest -q corpus_pipeline/tests.py",
+  "interpreter": ".venv/bin/python",
+  "python_version": "3.11.14",
+  "pytest_version": "9.1.1",
+  "test_file": "corpus_pipeline/tests.py",
+  "test_file_sha256": "927f0b393fe0d089deb5eb3d88876abef77a349e3ba29827fd0590d04d520326",
+  "exit_code": 0,
+  "result": {
+    "passed": 30,
+    "failed": 0,
+    "duration_seconds_reported_by_pytest": 4.90
+  },
+  "stdout": "..............................                                           [100%]\nRunning teardown with pytest sessionfinish...\n\n30 passed in 4.90s\n",
+  "scope": "existing_focused_builder_tests_only",
+  "nonclaims": [
+    "global_connected_split_correctness",
+    "provider_rights",
+    "semantic_quality",
+    "E4B_packet_authority"
+  ]
+}
