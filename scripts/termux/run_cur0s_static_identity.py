@@ -50,6 +50,7 @@ BOUND_SOURCE_FILES = (
     "polymath_ai/corpus/cur0s_static.py",
     "scripts/termux/run_cur0s_static_identity.py",
 )
+THERMAL_UNAVAILABLE_SENTINELS_MILLIDEGREES_C = frozenset({-273_000})
 ROOT = Path(os.path.abspath(__file__)).parents[2]
 
 
@@ -506,6 +507,7 @@ class CampaignLease:
     max_private_output_bytes: int
     min_free_storage_bytes: int
     max_temperature_millidegrees_c: int
+    thermal_unavailable_sentinels_millidegrees_c: tuple[int, ...]
     thermal_sample_every_records: int
 
 
@@ -617,6 +619,9 @@ class ResourceEnvelope:
             "max_temperature_millidegrees_c": (
                 self.lease.max_temperature_millidegrees_c
             ),
+            "thermal_unavailable_sentinels_millidegrees_c": list(
+                self.lease.thermal_unavailable_sentinels_millidegrees_c
+            ),
             "maximum_observed_temperature_millidegrees_c": (
                 self._maximum_temperature_millidegrees_c
             ),
@@ -686,6 +691,8 @@ def read_thermal_value(fd: int) -> int | None:
     if re.fullmatch(r"-?[0-9]+", text) is None:
         raise OperationalStop("thermal_sensor_value_malformed", "thermal_sample")
     value = int(text)
+    if value in THERMAL_UNAVAILABLE_SENTINELS_MILLIDEGREES_C:
+        return None
     if not -100_000 <= value <= 250_000:
         raise OperationalStop("thermal_sensor_value_out_of_range", "thermal_sample")
     return value
@@ -1304,6 +1311,7 @@ def validate_campaign_lease(
         "max_private_output_bytes",
         "min_free_storage_bytes",
         "max_temperature_millidegrees_c",
+        "thermal_unavailable_sentinels_millidegrees_c",
         "thermal_sample_every_records",
     }
     if set(lease) != expected_lease_keys:
@@ -1327,6 +1335,13 @@ def validate_campaign_lease(
         value = lease[field]
         if type(value) is not int or value != expected:
             raise Cur0sExactError(f"campaign_lease_{field}_mismatch")
+    sentinels = lease["thermal_unavailable_sentinels_millidegrees_c"]
+    if (
+        type(sentinels) is not list
+        or sentinels != [-273_000]
+        or any(type(value) is not int for value in sentinels)
+    ):
+        raise Cur0sExactError("campaign_lease_thermal_sentinel_mismatch")
     issued_at = parse_utc_second(lease["issued_at_utc"], "campaign_lease_issued_at")
     expires_at = parse_utc_second(
         lease["expires_at_utc"], "campaign_lease_expires_at"
@@ -1351,6 +1366,7 @@ def validate_campaign_lease(
         max_temperature_millidegrees_c=lease[
             "max_temperature_millidegrees_c"
         ],
+        thermal_unavailable_sentinels_millidegrees_c=tuple(sentinels),
         thermal_sample_every_records=lease["thermal_sample_every_records"],
     )
 

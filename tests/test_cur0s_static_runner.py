@@ -185,6 +185,7 @@ def test_builder_lease_round_trips_runner_strict_validation(runner, builder) -> 
     assert lease.action_id == RUN_ID
     assert lease.expires_at - lease.issued_at == timedelta(hours=4)
     assert lease.max_private_output_bytes == 256 * 1024 * 1024
+    assert lease.thermal_unavailable_sentinels_millidegrees_c == (-273_000,)
 
 
 @pytest.mark.parametrize(
@@ -195,6 +196,12 @@ def test_builder_lease_round_trips_runner_strict_validation(runner, builder) -> 
         (lambda lease: lease.__setitem__("max_wall_seconds", True), "max_wall"),
         (lambda lease: lease.__setitem__("action_id", "wrong"), "action"),
         (lambda lease: lease.__setitem__("issued_at_utc", "not-a-time"), "issued_at"),
+        (
+            lambda lease: lease.__setitem__(
+                "thermal_unavailable_sentinels_millidegrees_c", [-273_000, True]
+            ),
+            "thermal_sentinel",
+        ),
     ],
 )
 def test_campaign_lease_rejects_malformed_authority(
@@ -268,6 +275,13 @@ def test_volatile_thermal_value_read_is_skipped_but_malformed_values_stop(
 
     monkeypatch.setattr(runner.os, "read", lambda _fd, _size: b"84999\n")
     assert runner.read_thermal_value(123) == 84_999
+
+    monkeypatch.setattr(runner.os, "read", lambda _fd, _size: b"-273000\n")
+    assert runner.read_thermal_value(123) is None
+
+    monkeypatch.setattr(runner.os, "read", lambda _fd, _size: b"-273001\n")
+    with pytest.raises(runner.OperationalStop, match="out_of_range"):
+        runner.read_thermal_value(123)
 
     monkeypatch.setattr(runner.os, "read", lambda _fd, _size: b"malformed\n")
     with pytest.raises(runner.OperationalStop, match="malformed"):
@@ -741,6 +755,7 @@ def make_lease(runner, now: datetime, **overrides):
         "max_private_output_bytes": 256 * 1024 * 1024,
         "min_free_storage_bytes": 10_737_418_240,
         "max_temperature_millidegrees_c": 85_000,
+        "thermal_unavailable_sentinels_millidegrees_c": (-273_000,),
         "thermal_sample_every_records": 1024,
     }
     values.update(overrides)

@@ -203,6 +203,7 @@ def build_campaign_lease(run_id: str, issued_at: datetime) -> dict[str, Any]:
         "max_private_output_bytes": 268435456,
         "min_free_storage_bytes": 10737418240,
         "max_temperature_millidegrees_c": 85000,
+        "thermal_unavailable_sentinels_millidegrees_c": [-273000],
         "thermal_sample_every_records": 1024,
     }
 
