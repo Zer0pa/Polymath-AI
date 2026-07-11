@@ -693,3 +693,30 @@ def test_edge_a_quality_tolerance_cannot_be_relaxed_past_authority_ceiling() -> 
     )
 
     assert "edge_A_protocol:nll_tolerance_too_loose" in result["manifest"]["blockers"]
+
+
+def test_l0_allows_no_provisional_candidate_without_claiming_execution() -> None:
+    client = FakeHubClient()
+    stacks = reference_stacks()
+    transformers_stack = stacks["qat_mobile_transformers"]
+    transformers_stack["identity_state"] = "frozen_unexecuted"
+    transformers_stack["smoke_receipt"] = None
+    transformers_stack["smoke_receipt_sha256"] = None
+
+    result = E4bL0Builder(client).build(
+        DEFAULT_ARTIFACTS,
+        provisional_build_source=None,
+        reference_stacks=stacks,
+        converter_lineage=converter_lineage(),
+        edge_a_protocol=edge_a_protocol(),
+        weight_verification_receipts=weight_receipts(client),
+    )
+
+    assert result["manifest"]["state"] == "passed_scope"
+    assert (
+        result["manifest"]["mobile_qat_selection"][
+            "provisional_build_source_candidate_id"
+        ]
+        is None
+    )
+    assert result["manifest"]["effects"]["execution_authorized"] is False

@@ -1240,8 +1240,6 @@ class E4bL0Builder:
                     )
                 if not isinstance(smoke_receipt, Mapping):
                     blockers.append(f"{role}:reference_stack:provisional_smoke_missing")
-        if provisional is None:
-            blockers.append("reference_stacks:no_provisional_build_source_selected")
         return blockers
 
     @staticmethod

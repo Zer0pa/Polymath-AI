@@ -67,7 +67,7 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--output-dir", required=True)
     parser.add_argument(
         "--provisional-build-source",
-        choices=("qat_mobile_transformers", "qat_mobile_compressed_tensors"),
+        choices=("none", "qat_mobile_transformers", "qat_mobile_compressed_tensors"),
         required=True,
     )
     parser.add_argument("--reference-stacks", required=True)
@@ -131,9 +131,14 @@ def execute(args: argparse.Namespace) -> int:
         inputs[name] = value
         input_records[name] = file_record(path, payload)
 
+    provisional_build_source = (
+        None
+        if args.provisional_build_source == "none"
+        else args.provisional_build_source
+    )
     payload = build_default_l0_manifest(
         HuggingFaceHubClient(token=None),
-        provisional_build_source=args.provisional_build_source,
+        provisional_build_source=provisional_build_source,
         reference_stacks=inputs["reference_stacks"],
         converter_lineage=inputs["converter_lineage"],
         edge_a_protocol=inputs["edge_a_protocol"],
