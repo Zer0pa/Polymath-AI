@@ -1,0 +1,127 @@
+{
+  "schema_version": "gemma4_e4b_frontier_event_v1",
+  "event_id": "SFL-20260711T101133Z-S16-V2-AUTHORITY-SEMANTICS",
+  "recorded_at_utc": "2026-07-11T10:11:33Z",
+  "parent_frontier_root_sha256": "1f1f575f57f8fe1b81e9859e650fe716cec280b5f1ce51ba487147db15d231af",
+  "parent_frontier_root_kind": "frontier_event",
+  "active_sovereign_gate": "F5_terminal_head_corrected_S16_oracle_then_provider_then_phone_projection_fidelity",
+  "hypothesis_and_architecture_lane": "SM8750_V79_S16_with_BF16_authority_scale_semantics_and_2^-10_output",
+  "state": "selected",
+  "governing_observation": {
+    "status": "falsified_scope",
+    "evidence_sha256": "eacfad723ac8b757efcb5124887402981db076ea622e5d66998411bc20a40eaa",
+    "candidate_id": "w2_s16_activation_bw2_weight_s16_output_v1",
+    "qnn_execution_count": 3,
+    "every_case_passed": false,
+    "exact_candidate_killed": true,
+    "HTP_S16_family_exhausted": false
+  },
+  "authority_semantics_defect": {
+    "authority_behavior": "Transformers QuantizedLinear dequantizes packed INT2 weights at the input dtype, so the BF16 authority RN-even rounds each F32 per-row weight scale to BF16 before multiplication.",
+    "current_exporter_behavior": "The v1 QNN exporter copied original F32 per-row scales directly into BW_AXIS_SCALE_OFFSET metadata.",
+    "transformers_source_sha256": "9bf6d109dfc3540a46953f5b183af766edcf6a044529c12d7751db47ee71cc17",
+    "reference_runner_sha256": "f88116c7b69b5d69591e1ee4d4eb4f9f924f47db0d497dc30c34619cb876b354",
+    "exporter_v1_sha256": "ed40d66ca908b341e7180803b0e44fa24a322fed0cc3237eafa092562677dd42",
+    "packed_INT2_lane_mapping_and_axis": "correct_and_unchanged",
+    "inference": "The near identity between v1 phone JSD and the BF16-to-FP16 framework JSD is a quantitative fingerprint of row-scale dtype mismatch."
+  },
+  "quantitative_discriminator": {
+    "cases": [
+      {
+        "case_id": "structured_dynamic",
+        "v1_phone_softmax_js_divergence": 0.00006267397698099594,
+        "bf16_to_fp16_softmax_js_divergence": 0.00006354404571442755,
+        "ratio_phone_to_framework": 0.986303,
+        "failure_multiple_over_combined_limit": 31.33698849049797,
+        "authority_max_abs_logit": 15.0625
+      },
+      {
+        "case_id": "balanced_splitmix64",
+        "v1_phone_softmax_js_divergence": 0.00015048981907474015,
+        "bf16_to_fp16_softmax_js_divergence": 0.00015130273291812332,
+        "ratio_phone_to_framework": 0.994627,
+        "failure_multiple_over_combined_limit": 75.24490953737008,
+        "authority_max_abs_logit": 19.625
+      },
+      {
+        "case_id": "low_amplitude_splitmix64",
+        "v1_phone_relative_l2": 0.023017140650245554,
+        "v1_phone_cosine": 0.9997351446868147,
+        "failure_multiple_relative_l2": 3.068952086699407,
+        "authority_max_abs_logit": 1.296875
+      }
+    ],
+    "v1_output_scale": 0.00390625,
+    "selected_v2_output_scale": 0.0009765625,
+    "output_grid_refinement_factor": 4,
+    "v2_s16_representable_range": [
+      -32,
+      31.9990234375
+    ],
+    "frozen_authority_max_abs_across_cases": 19.625,
+    "frozen_authority_values_outside_v2_range": 0,
+    "output_scale_selection_used_v2_candidate_output": false,
+    "output_scale_selection_basis": "fixed_logit_softcap_30_plus_frozen_authority_zero_saturation_and_measured_constant_absolute_S16_floor"
+  },
+  "selected_experiment_and_runner_up": {
+    "selected": "One final standard-HTP S16 re-admission: BF16-RNE-round every row scale, store the rounded value exactly as F32 QNN metadata, use output scale 2^-10, and preserve the packed INT2 tensor, input scale, transpose, axis, cases, references, and every authority threshold.",
+    "pre_provider_falsifier": "Run a full-width exact INT32-dot quantized oracle across all three cases; do not build a context unless every unchanged metric passes.",
+    "runner_up": "Adreno OpenCL direct-packed INT2 kernel using qcom BF16 product with FP32 accumulation and explicit BF16 output rounding; Vulkan scalar-FP32 emulation is the immediate fallback.",
+    "selection_reason": "This is a distinct authority-semantics repair with a measured error-budget target and retains the standard V79 HTP path. It is the final S16 attempt, not a parameter sweep."
+  },
+  "immutable_candidate_contract": {
+    "candidate_id": "w2_s16_activation_bw2_weight_bf16_rne_scale_s16_output_2m10_v2",
+    "packed_weight_sha256": "4733d4ef634f781c7b4094e0df6c432b53e3390e161d546951ea6806de9e0d07",
+    "original_scale_sha256": "870e405117e2b9b91a86a4210dc66de2d46af52c9274ea46c3193dd69b437eb6",
+    "scale_transform": "float32_to_bfloat16_RNE_then_exact_float32_storage",
+    "input_dtype": "QNN_DATATYPE_SFIXED_POINT_16",
+    "input_scale": 0.001953125,
+    "weight_dtype": "QNN_DATATYPE_SFIXED_POINT_8_BW2_axis0",
+    "output_dtype": "QNN_DATATYPE_SFIXED_POINT_16",
+    "output_scale": 0.0009765625,
+    "thresholds_sha256": "36d4689f6c59f8ce8d9d99c6dc4085d7e63089a6448c20517fd0fcc74964ad05",
+    "numeric_ranking_threshold_subset_sha256": "30704ef1cb88042a1451f46b5c516b815cbb440a7227b9013893ee7b42cdd914",
+    "thresholds_changed": false,
+    "v2_candidate_output_observed": false
+  },
+  "kill_pivot_scale_rule": {
+    "oracle_failure": "Kill standard HTP S16 without provider or phone execution and pivot directly to the selected Adreno OpenCL lane.",
+    "provider_or_phone_failure": "Kill standard HTP S16; no third S16 variant, threshold relaxation, or scale sweep is admissible.",
+    "every_case_and_metric_passes": "Admit only the corrected bounded terminal-head diagnostic; full L2 and promotion remain blocked until the clean provider and complete decoder gates pass."
+  },
+  "branch_transitions": [
+    {
+      "branch": "F5_W2_V79_S16_v1",
+      "from": "phone_native_full_width_measurement_complete",
+      "to": "killed_falsified_scope"
+    },
+    {
+      "branch": "F5_W2_V79_S16_v2_authority_semantics",
+      "from": "proposed",
+      "to": "selected_frozen_unobserved"
+    }
+  ],
+  "evidence_refs": [
+    {
+      "locator": "runtime/reports/apex_frontier/frontier_event_20260711T095730Z.json",
+      "sha256": "1f1f575f57f8fe1b81e9859e650fe716cec280b5f1ce51ba487147db15d231af"
+    },
+    {
+      "locator": "runtime/reports/apex_frontier/20260711T100325Z_l2_int16_phone_attempt_v5/phone_attempt_report.json",
+      "sha256": "eacfad723ac8b757efcb5124887402981db076ea622e5d66998411bc20a40eaa"
+    },
+    {
+      "locator": "runtime/reports/apex_frontier/20260711T015600Z_l2_projection_reference_attempt2/reference_gate.json",
+      "sha256": "965697efe3e3f9e65ac9aa726e0247fd83c1fdaa942bc1c0bc8954aabe784acd"
+    }
+  ],
+  "source_revision_at_selection": "8cb3f73f55bdadf22d68bece05919ef34226ab8e",
+  "provider_context_generated": false,
+  "phone_execution_started": false,
+  "v2_candidate_output_observed": false,
+  "promotion_allowed": false,
+  "nonclaims": [
+    "No corrected INT32-dot oracle, provider context, phone output, L1, L2, learning, or authority-quality pass is claimed.",
+    "The v1 phone result remains falsified_scope and is not revived by selecting v2."
+  ]
+}
