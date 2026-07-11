@@ -1,5 +1,5 @@
-schema_version: apex_current_reality_gemma4_e4b_qnn_cell_v6
-evidence_cutoff_utc: '2026-07-11T15:21:39Z'
+schema_version: apex_current_reality_gemma4_e4b_qnn_cell_v5
+evidence_cutoff_utc: '2026-07-11T10:11:33Z'
 governing_policy_as_of: '2026-07-11'
 state_kind: last_verified_not_live_revalidated
 path_bases:
@@ -804,8 +804,7 @@ science:
   - no_trained_candidate_separates_from_matched_random_interventions
   - bounded_terminal_head_FP16_candidate_falsified_scope
   - bounded_terminal_head_S16_v1_candidate_falsified_scope
-  - standard_HTP_S16_terminal_head_family_exhausted
-  - Adreno_OpenCL_BF16_terminal_head_candidate_unmeasured
+  - final_authority_semantics_correct_S16_v2_unmeasured
   - full_decoder_forward_child_not_built_or_admitted
   - L2_Edge_A_and_full_Edge_B_not_admitted
 native_material_fabric:
@@ -850,13 +849,13 @@ frontier_execution_policy:
     lease_id: current_user_sovereign_frontier_campaign_20260711
     state: active_as_of_cutoff
     stored_capsule_is_lease: false
-  active_candidate: adreno_opencl_direct_packed_w2_scalar_bf16_product_fp32_tree_bf16_rne_v1
-  frontier_root_sha256: a3ab8f26d5c794e2235a65a93cfc5b4eea7a40d479d9d83be34fabf2ee4a9647
-  last_disposition: S16_v2_killed_Adreno_OpenCL_BF16_selected
+  active_candidate: w2_s16_activation_bw2_weight_bf16_rne_scale_s16_output_2m10_v2
+  frontier_root_sha256: bb045f0761405b521705609d473fa1cb7b504634197256b2b684c061e1fc4d78
+  last_disposition: rebuild_once_then_hard_pivot
   loop: Sovereign_Frontier_Loop
   mandatory_disposition: kill_pivot_scale_rebuild_or_scoped_promotion
   no_information_cycle_is_progress: false
-  previous_frontier_root_sha256: bb045f0761405b521705609d473fa1cb7b504634197256b2b684c061e1fc4d78
+  previous_frontier_root_sha256: 1f1f575f57f8fe1b81e9859e650fe716cec280b5f1ce51ba487147db15d231af
   selection: hard_eligibility_then_lexicographic_maximal_discriminator
   sovereign_terminal: PRD_section_0_5
   state: active_campaign_last_verified_at_cutoff_non_authoritative
@@ -976,33 +975,14 @@ measured_claims:
     promotion_allowed: false
     state: invalidated
   F5_W2_S16_V2:
-    candidate_output_observed: true
-    case_count: 3
-    claim_class: phone_native_full_width_exact_int32_dot_pre_provider_falsifier
+    candidate_output_observed: false
+    claim_class: selected_unmeasured_candidate
     claim_id: F5-W2-S16-V2-AUTHORITY-SEMANTICS
-    every_case_passed: false
-    evidence:
-      falsification_report_sha256: 44ba89a8ff760d89d05e5ddd2146b2e584f99496ca25fe81091361372bcc5e59
-      oracle_gate_sha256: aa063f64473de95fdd3208995a51dd314f0e4947c78adc1826a2358ea65693b1
-      preregistration_custody_receipt_sha256: ea7bc77123a445206c65b3a435e521d036162791d72a73a999a7b225fda176e3
-      preregistration_sha256: 4d598d29882946304e7e1307b62a45a8b8fc321cc6a7ad55ee87acfb22936720
-    failed_authority_metrics:
-      balanced_splitmix64:
-      - softmax_js_divergence
-      low_amplitude_splitmix64: []
-      structured_dynamic:
-      - softmax_js_divergence
-    phone_execution_count: 1
+    phone_execution_count: 0
     promotion_allowed: false
-    provider_build_count: 0
     provider_context_generated: false
-    qnn_execution_count: 0
-    raw_outputs_phone_local: true
     selector_sha256: bb045f0761405b521705609d473fa1cb7b504634197256b2b684c061e1fc4d78
-    standard_htp_s16_family_exhausted: true
-    state: killed_falsified_scope
-    third_s16_variant_allowed: false
-    thresholds_changed: false
+    state: proposed
   L0_E4B_ARTIFACT_PROTOCOL:
     claim_class: artifact_objective_and_protocol_identity
     claim_id: L0-E4B-ARTIFACT-PROTOCOL-85D6BA44
@@ -1278,22 +1258,6 @@ measured_claims:
       steady_state_median_ns: 11618334
       steady_state_p95_ns: 14017968
       unaccounted_timeline_intervals: unknown
-  F5_W2_ADRENO_OPENCL_BF16:
-    candidate_id: adreno_opencl_direct_packed_w2_scalar_bf16_product_fp32_tree_bf16_rne_v1
-    candidate_output_observed: false
-    claim_class: selected_unmeasured_candidate
-    claim_id: F5-W2-ADRENO-OPENCL-BF16-AUTHORITY
-    contract_probe:
-      model_or_tensor_access_count: 0
-      report_sha256: 6b0605334c085a4fe7f404ff0723ffe295283796e1048dfdbfdda1bf5a2fe3a2
-      state: passed_scope
-    phone_contract_probe_count: 1
-    phone_model_execution_count: 0
-    preregistration_present: false
-    promotion_allowed: false
-    selector_sha256: a3ab8f26d5c794e2235a65a93cfc5b4eea7a40d479d9d83be34fabf2ee4a9647
-    source_committed: false
-    state: selected_frozen_unobserved
 separate_installed_state:
   updateable_tensor_surface:
     claim_id: CAP-QNN-UPDATEABLE-CONTEXT-SCOPE-UNRESOLVED
@@ -1365,7 +1329,7 @@ current_design_decision:
   PJP1_JL_fixed128_is_governing_packet: false
   Vulkan_is_mandatory_for_tiny_coefficients: false
   activation_rank_is_Lane_A_dimension_authority: false
-  active_route: Adreno_OpenCL_direct_packed_INT2_BF16_product_FP32_tree_BF16_RNE_preregister_then_one_phone_authority_attempt
+  active_route: final_authority_semantics_correct_S16_v2_exact_oracle_then_one_provider_phone_attempt
   canonical_route:
   - validate_ACCESS-0_and_current_campaign_lease_without_storing_secrets
   - freeze_L0_E4B_source_candidates_selection_protocol_and_executable_QAT_oracle
@@ -1395,35 +1359,32 @@ current_design_decision:
   - FP16_terminal_head_falsified_scope
   - S16_v1_provider_context_available_with_cleanup_anomaly
   - S16_v1_phone_measurement_falsified_scope
-  - S16_v2_exact_INT32_oracle_falsified_scope
-  - standard_HTP_S16_terminal_head_family_exhausted
-  - Adreno_OpenCL_no_model_contract_probe_passed_scope
   mandatory_fallback: Adreno_OpenCL_direct_packed_INT2_BF16_product_FP32_accumulation
   phase1_phase2_native_engines_are_incumbents_not_authority: true
   theoretical_80GBps_is_target_or_current_bound: false
   waves_are_progress_authority: false
 next_action:
   current_scoped_user_direction_state: active
-  design_predecessor: frontier_selector_a3ab8f26d5c794e2_and_capsule_v6_reconciliation
-  executable_action: freeze_source_bound_Adreno_OpenCL_BF16_preregistration_then_build_and_run_one_phone_authority_attempt
+  design_predecessor: frontier_selector_bb045f0761405b52_and_capsule_v5_reconciliation
+  executable_action: build_and_run_preregistered_S16_v2_exact_INT32_dot_oracle_then_kill_or_build_once
   external_execution_requires_current_scoped_user_direction: false
 last_verified_campaign_state:
-  active_sovereign_gate: F5_terminal_head_Adreno_OpenCL_direct_BF16_authority_fidelity
+  active_sovereign_gate: F5_terminal_head_corrected_S16_oracle_then_provider_then_phone_projection_fidelity
   campaign_id: gemma4_e4b_phone_native_20260711
   campaign_status: active_as_of_cutoff_non_authoritative
   catch_up_reconciliation:
     events_remained_bounded_diagnostic_until_this_reconciliation: true
     per_event_capsule_CAS_retroactively_claimed: false
-  evidence_commit: 17bcc4176caeb3222be6bce5c79445fb3240a95c
-  first_missing_green_field: Adreno_OpenCL_candidate_source_bound_preregistration
-  frontier_root_sha256: a3ab8f26d5c794e2235a65a93cfc5b4eea7a40d479d9d83be34fabf2ee4a9647
-  last_disposition: S16_v2_killed_Adreno_OpenCL_BF16_selected
-  parent_capsule_sha256: 66072e0dee357c9d7c178c3fa3628a6230fa5992659325b80e7eefa6e4dbdd2b
+  evidence_commit: 26736df4c9bf65060b1e99dc900bd056a2612198
+  first_missing_green_field: corrected_S16_v2_exact_oracle_every_case_every_metric
+  frontier_root_sha256: bb045f0761405b521705609d473fa1cb7b504634197256b2b684c061e1fc4d78
+  last_disposition: rebuild_once_then_hard_pivot
+  parent_capsule_sha256: 7f85799e260658cd400b837a784035438c7601e3057d963e4cf9b98f14841266
   pause_or_terminal_reason: null
   rollback_base:
-    archive_locator: docs/APEX-CURRENT-REALITY-CAPSULE-GEMMA4-E4B-QNN-CELL-2026-07-10.yaml.archive/66072e0dee357c9d7c178c3fa3628a6230fa5992659325b80e7eefa6e4dbdd2b.yaml
-    capsule_sha256: 66072e0dee357c9d7c178c3fa3628a6230fa5992659325b80e7eefa6e4dbdd2b
-  source_commit: b40e98d194865ead97cfad3778f0a212e8295e25
+    archive_locator: docs/APEX-CURRENT-REALITY-CAPSULE-GEMMA4-E4B-QNN-CELL-2026-07-10.yaml.archive/7f85799e260658cd400b837a784035438c7601e3057d963e4cf9b98f14841266.yaml
+    capsule_sha256: 7f85799e260658cd400b837a784035438c7601e3057d963e4cf9b98f14841266
+  source_commit: b544be000ef3fbe57455031e3e4882bf8a104160
   terminal_status: not_reached
 success_terminal:
   CUR_0_state: blocked_fail_closed

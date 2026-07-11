@@ -254,7 +254,7 @@ def test_governing_v5_snapshot_is_exact_and_strict_parseable() -> None:
     )
 
 
-def test_governing_v6_spec_is_canonical_and_blocked_on_source_commit() -> None:
+def test_governing_v6_spec_is_canonical_bound_and_derivable() -> None:
     raw = CANONICAL_V6_SPEC.read_bytes()
     spec = capsule_cas.strict_json_loads(raw)
     assert capsule_cas.canonical_json(spec) + b"\n" == raw
@@ -262,19 +262,19 @@ def test_governing_v6_spec_is_canonical_and_blocked_on_source_commit() -> None:
     assert CANONICAL_V6_SPEC.with_suffix(".json.sha256").read_bytes() == (
         f"{digest}  transition_spec.json\n".encode("ascii")
     )
-    with pytest.raises(capsule_cas.CapsuleTransitionError) as raised:
-        capsule_cas.validate_v6_spec(spec, ROOT)
-    assert raised.value.code == "v6_source_commit_placeholder_unresolved"
-
-    source_bound = copy.deepcopy(spec)
-    source_bound["bindings"]["source_commit"]["commit_sha"] = "f" * 40
-    campaign_operation = _campaign_operation(source_bound)
-    campaign_operation["value"]["source_commit"] = "f" * 40
-    validated = capsule_cas.validate_v6_spec(source_bound, ROOT)
+    validated = capsule_cas.validate_v6_spec(spec, ROOT)
     parent = capsule_cas.strict_yaml_loads(CANONICAL_V5.read_bytes())
 
     child = capsule_cas.derive_v6_child_capsule(parent, validated)
 
+    assert validated["bindings"]["source_commit"]["commit_sha"] == (
+        "b40e98d194865ead97cfad3778f0a212e8295e25"
+    )
+    assert validated["bindings"]["source_commit"]["scope"] == [
+        "capsule_v6_CAS_module",
+        "capsule_v6_CAS_CLI",
+        "capsule_v6_CAS_tests",
+    ]
     assert validated["bindings"]["evidence_commit"]["commit_sha"] == (
         "17bcc4176caeb3222be6bce5c79445fb3240a95c"
     )
@@ -429,6 +429,14 @@ def test_v6_rejects_wrong_parent_and_original_api_rejects_v6_spec(
     with pytest.raises(capsule_cas.CapsuleTransitionError) as raised:
         capsule_cas.validate_spec(spec, repository)
     assert raised.value.code == "spec_schema_version_mismatch"
+
+    placeholder_spec = copy.deepcopy(spec)
+    placeholder_spec["bindings"]["source_commit"]["commit_sha"] = "0" * 40
+    _campaign_operation(placeholder_spec)["value"]["source_commit"] = "0" * 40
+    with pytest.raises(capsule_cas.CapsuleTransitionError) as raised:
+        capsule_cas.validate_v6_spec(placeholder_spec, repository)
+    assert raised.value.code == "v6_source_commit_placeholder_unresolved"
+
     assert capsule_cas.sha256_bytes(canonical.read_bytes()) == (
         capsule_cas.EXPECTED_V5_SHA256
     )
