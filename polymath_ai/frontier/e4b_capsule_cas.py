@@ -1,14 +1,15 @@
-"""Fail-closed v4 -> v5 current-reality capsule compare-and-swap.
+"""Fail-closed current-reality capsule compare-and-swap migrations.
 
 The capsule is a last-verified pointer, not an authorization document.  This
-module deliberately implements one migration only.  A later capsule schema
-must get a new, reviewed migration instead of inheriting a permissive updater.
+module admits only explicit, reviewed migration profiles.  A later capsule
+schema must get a new profile instead of inheriting a permissive updater.
 """
 
 from __future__ import annotations
 
 from collections.abc import Callable, Mapping, Sequence
 import copy
+from dataclasses import dataclass
 import errno
 import fcntl
 import hashlib
@@ -26,11 +27,49 @@ import yaml
 EXPECTED_V4_SHA256 = (
     "7f85799e260658cd400b837a784035438c7601e3057d963e4cf9b98f14841266"
 )
+EXPECTED_V5_SHA256 = (
+    "66072e0dee357c9d7c178c3fa3628a6230fa5992659325b80e7eefa6e4dbdd2b"
+)
 V4_SCHEMA = "apex_current_reality_gemma4_e4b_qnn_cell_v4"
 V5_SCHEMA = "apex_current_reality_gemma4_e4b_qnn_cell_v5"
+V6_SCHEMA = "apex_current_reality_gemma4_e4b_qnn_cell_v6"
 SPEC_SCHEMA = "apex_current_reality_capsule_transition_spec_v1"
 RECEIPT_SCHEMA = "apex_current_reality_capsule_transition_receipt_v1"
 COMPLETION_SCHEMA = "apex_current_reality_capsule_transition_completion_v1"
+V6_SPEC_SCHEMA = "apex_current_reality_capsule_transition_spec_v2"
+V6_RECEIPT_SCHEMA = "apex_current_reality_capsule_transition_receipt_v2"
+V6_COMPLETION_SCHEMA = "apex_current_reality_capsule_transition_completion_v2"
+
+
+@dataclass(frozen=True)
+class _MigrationProfile:
+    expected_parent_sha256: str
+    parent_schema: str
+    child_schema: str
+    spec_schema: str
+    receipt_schema: str
+    completion_schema: str
+    child_schema_error: str
+
+
+_V4_TO_V5 = _MigrationProfile(
+    expected_parent_sha256=EXPECTED_V4_SHA256,
+    parent_schema=V4_SCHEMA,
+    child_schema=V5_SCHEMA,
+    spec_schema=SPEC_SCHEMA,
+    receipt_schema=RECEIPT_SCHEMA,
+    completion_schema=COMPLETION_SCHEMA,
+    child_schema_error="child_schema_version_not_v5",
+)
+_V5_TO_V6 = _MigrationProfile(
+    expected_parent_sha256=EXPECTED_V5_SHA256,
+    parent_schema=V5_SCHEMA,
+    child_schema=V6_SCHEMA,
+    spec_schema=V6_SPEC_SCHEMA,
+    receipt_schema=V6_RECEIPT_SCHEMA,
+    completion_schema=V6_COMPLETION_SCHEMA,
+    child_schema_error="child_schema_version_not_v6",
+)
 
 MAX_CAPSULE_BYTES = 16 * 1024 * 1024
 MAX_SPEC_BYTES = 4 * 1024 * 1024
@@ -796,15 +835,16 @@ def validate_bindings(
     return copy.deepcopy(value)
 
 
-def validate_spec(
+def _validate_spec_for_profile(
     value: dict[str, Any],
     repository_root: Path,
+    profile: _MigrationProfile,
 ) -> dict[str, Any]:
     _require_exact_keys(value, _TOP_LEVEL_SPEC_KEYS, set(), "spec")
-    if value["schema_version"] != SPEC_SCHEMA:
+    if value["schema_version"] != profile.spec_schema:
         raise CapsuleTransitionError("spec_schema_version_mismatch")
     _require_identifier(value["transaction_id"], "transaction_id")
-    if value["expected_parent_sha256"] != EXPECTED_V4_SHA256:
+    if value["expected_parent_sha256"] != profile.expected_parent_sha256:
         raise CapsuleTransitionError("expected_parent_sha256_mismatch")
     cutoff = value["evidence_cutoff_utc"]
     if not isinstance(cutoff, str) or UTC_RE.fullmatch(cutoff) is None:
@@ -815,8 +855,62 @@ def validate_spec(
     _require_exact_keys(mutation, {"operations"}, set(), "mutation")
     _validate_operations(mutation["operations"])
     validate_bindings(value["bindings"], repository_root)
+    if profile is _V5_TO_V6:
+        _validate_v6_operation_cross_bindings(value)
+        if value["bindings"]["source_commit"]["commit_sha"] == "0" * 40:
+            raise CapsuleTransitionError("v6_source_commit_placeholder_unresolved")
     _reject_secret_material(value)
     return copy.deepcopy(value)
+
+
+def _validate_v6_operation_cross_bindings(spec: Mapping[str, Any]) -> None:
+    operations = spec["mutation"]["operations"]
+    campaign_operations = [
+        operation
+        for operation in operations
+        if operation["path"] == ["last_verified_campaign_state"]
+    ]
+    if len(campaign_operations) != 1:
+        raise CapsuleTransitionError(
+            "v6_campaign_state_replacement_count_invalid"
+        )
+    operation = campaign_operations[0]
+    if operation["op"] != "replace":
+        raise CapsuleTransitionError("v6_campaign_state_operation_not_replace")
+    campaign_state = operation["value"]
+    if not isinstance(campaign_state, dict):
+        raise CapsuleTransitionError("v6_campaign_state_value_not_mapping")
+
+    bindings = spec["bindings"]
+    expected = {
+        "source_commit": bindings["source_commit"]["commit_sha"],
+        "evidence_commit": bindings["evidence_commit"]["commit_sha"],
+        "frontier_root_sha256": bindings["frontier"]["sha256"],
+        "parent_capsule_sha256": spec["expected_parent_sha256"],
+    }
+    for field, expected_value in expected.items():
+        if campaign_state.get(field) != expected_value:
+            raise CapsuleTransitionError(
+                f"v6_campaign_state_{field}_binding_mismatch"
+            )
+
+
+def validate_spec(
+    value: dict[str, Any],
+    repository_root: Path,
+) -> dict[str, Any]:
+    """Validate the original reviewed v4 -> v5 transition specification."""
+
+    return _validate_spec_for_profile(value, repository_root, _V4_TO_V5)
+
+
+def validate_v6_spec(
+    value: dict[str, Any],
+    repository_root: Path,
+) -> dict[str, Any]:
+    """Validate the reviewed v5 -> v6 transition specification."""
+
+    return _validate_spec_for_profile(value, repository_root, _V5_TO_V6)
 
 
 def _validate_operations(value: Any) -> list[dict[str, Any]]:
@@ -893,11 +987,12 @@ def _assert_no_mapping_key_deletions(
         _assert_no_mapping_key_deletions(value, child[key], (*path, key))
 
 
-def derive_child_capsule(
+def _derive_child_capsule_for_profile(
     parent: dict[str, Any],
     spec: dict[str, Any],
+    profile: _MigrationProfile,
 ) -> dict[str, Any]:
-    if parent.get("schema_version") != V4_SCHEMA:
+    if parent.get("schema_version") != profile.parent_schema:
         raise CapsuleTransitionError("parent_schema_version_mismatch")
     child = copy.deepcopy(parent)
     operations = sorted(
@@ -918,12 +1013,35 @@ def derive_child_capsule(
         container[key] = copy.deepcopy(operation["value"])
 
     _assert_no_mapping_key_deletions(parent, child)
-    if child.get("schema_version") != V5_SCHEMA:
-        raise CapsuleTransitionError("child_schema_version_not_v5")
+    if child.get("schema_version") != profile.child_schema:
+        raise CapsuleTransitionError(profile.child_schema_error)
     if child.get("evidence_cutoff_utc") != spec["evidence_cutoff_utc"]:
         raise CapsuleTransitionError("child_evidence_cutoff_mismatch")
+    parent_cutoff = parent.get("evidence_cutoff_utc")
+    if not isinstance(parent_cutoff, str) or UTC_RE.fullmatch(parent_cutoff) is None:
+        raise CapsuleTransitionError("parent_evidence_cutoff_invalid")
+    if spec["evidence_cutoff_utc"] <= parent_cutoff:
+        raise CapsuleTransitionError("child_evidence_cutoff_not_advanced")
     _validate_capsule_invariants(parent, child)
     return child
+
+
+def derive_child_capsule(
+    parent: dict[str, Any],
+    spec: dict[str, Any],
+) -> dict[str, Any]:
+    """Derive the original reviewed v4 -> v5 capsule child."""
+
+    return _derive_child_capsule_for_profile(parent, spec, _V4_TO_V5)
+
+
+def derive_v6_child_capsule(
+    parent: dict[str, Any],
+    spec: dict[str, Any],
+) -> dict[str, Any]:
+    """Derive the reviewed v5 -> v6 capsule child."""
+
+    return _derive_child_capsule_for_profile(parent, spec, _V5_TO_V6)
 
 
 def _nested(value: Mapping[str, Any], *path: str) -> Any:
@@ -969,6 +1087,7 @@ def _relative_locator(path: Path, base: Path) -> str:
 
 def _build_receipt(
     *,
+    profile: _MigrationProfile,
     spec: dict[str, Any],
     spec_sha256: str,
     spec_bytes: int,
@@ -983,24 +1102,24 @@ def _build_receipt(
 ) -> dict[str, Any]:
     base = canonical_path.parent
     return {
-        "schema_version": RECEIPT_SCHEMA,
+        "schema_version": profile.receipt_schema,
         "transaction_id": spec["transaction_id"],
         "evidence_cutoff_utc": spec["evidence_cutoff_utc"],
         "transition_spec": {
             "sha256": spec_sha256,
             "bytes": spec_bytes,
-            "schema_version": SPEC_SCHEMA,
+            "schema_version": profile.spec_schema,
         },
         "capsule": {
             "canonical_locator": canonical_path.name,
             "parent": {
-                "schema_version": V4_SCHEMA,
-                "sha256": EXPECTED_V4_SHA256,
+                "schema_version": profile.parent_schema,
+                "sha256": profile.expected_parent_sha256,
                 "bytes": len(parent_bytes),
                 "archive_locator": _relative_locator(archive_path, base),
             },
             "child": {
-                "schema_version": V5_SCHEMA,
+                "schema_version": profile.child_schema,
                 "sha256": sha256_bytes(child_bytes),
                 "bytes": len(child_bytes),
                 "snapshot_locator": _relative_locator(child_snapshot_path, base),
@@ -1028,6 +1147,7 @@ def _build_receipt(
 
 def _completion_payload(
     *,
+    profile: _MigrationProfile,
     spec: dict[str, Any],
     spec_sha256: str,
     receipt_sha256: str,
@@ -1035,12 +1155,12 @@ def _completion_payload(
     child_sha256: str,
 ) -> bytes:
     value = {
-        "schema_version": COMPLETION_SCHEMA,
+        "schema_version": profile.completion_schema,
         "status": "complete",
         "transaction_id": spec["transaction_id"],
         "evidence_cutoff_utc": spec["evidence_cutoff_utc"],
         "transition_spec_sha256": spec_sha256,
-        "parent_capsule_sha256": EXPECTED_V4_SHA256,
+        "parent_capsule_sha256": profile.expected_parent_sha256,
         "child_capsule_sha256": child_sha256,
         "receipt_sha256": receipt_sha256,
         "receipt_bytes": receipt_bytes,
@@ -1077,14 +1197,15 @@ def _fault(
         fault_injector(phase)
 
 
-def advance_capsule(
+def _advance_capsule_for_profile(
     *,
+    profile: _MigrationProfile,
     canonical_path: Path,
     transition_spec_path: Path,
     repository_root: Path,
     fault_injector: Callable[[str], None] | None = None,
 ) -> dict[str, Any]:
-    """Perform or idempotently recover the single authorized v4 -> v5 CAS."""
+    """Perform or recover one exact migration profile."""
 
     canonical_path = canonical_path.absolute()
     transition_spec_path = transition_spec_path.absolute()
@@ -1097,14 +1218,16 @@ def advance_capsule(
         max_bytes=MAX_SPEC_BYTES,
         context="transition_spec",
     )
-    spec = validate_spec(strict_json_loads(initial_spec_bytes), repository_root)
+    spec = _validate_spec_for_profile(
+        strict_json_loads(initial_spec_bytes), repository_root, profile
+    )
     spec_sha256 = sha256_bytes(initial_spec_bytes)
 
     lock_path = canonical_path.with_name(f"{canonical_path.name}.lock")
     archive_root = canonical_path.with_name(f"{canonical_path.name}.archive")
     transaction_root = canonical_path.with_name(f".{canonical_path.name}.transactions")
     transaction_dir = transaction_root / spec_sha256
-    archive_path = archive_root / f"{EXPECTED_V4_SHA256}.yaml"
+    archive_path = archive_root / f"{profile.expected_parent_sha256}.yaml"
     child_snapshot_path = transaction_dir / "child_capsule.yaml"
     receipt_path = transaction_dir / "transition_receipt.json"
     completion_path = transaction_dir / "COMPLETE.json"
@@ -1122,7 +1245,9 @@ def advance_capsule(
             raise CapsuleTransitionError("transition_spec_changed_before_lock")
         # Reverify every local binding under the stable capsule lock.  The
         # receipt must never inherit a pre-lock observation of mutable bytes.
-        spec = validate_spec(strict_json_loads(locked_spec_bytes), repository_root)
+        spec = _validate_spec_for_profile(
+            strict_json_loads(locked_spec_bytes), repository_root, profile
+        )
 
         current_bytes = read_regular_file(
             canonical_path,
@@ -1131,7 +1256,7 @@ def advance_capsule(
         )
         current_sha256 = sha256_bytes(current_bytes)
 
-        if current_sha256 == EXPECTED_V4_SHA256:
+        if current_sha256 == profile.expected_parent_sha256:
             parent_bytes = current_bytes
         else:
             if not archive_path.exists():
@@ -1141,15 +1266,15 @@ def advance_capsule(
                 max_bytes=MAX_CAPSULE_BYTES,
                 context="parent_archive_recovery",
             )
-            if sha256_bytes(parent_bytes) != EXPECTED_V4_SHA256:
+            if sha256_bytes(parent_bytes) != profile.expected_parent_sha256:
                 raise CapsuleTransitionError("parent_archive_sha256_mismatch")
 
         parent = strict_yaml_loads(parent_bytes)
-        child = derive_child_capsule(parent, spec)
+        child = _derive_child_capsule_for_profile(parent, spec, profile)
         child_bytes = deterministic_yaml(child)
         child_sha256 = sha256_bytes(child_bytes)
 
-        if current_sha256 not in {EXPECTED_V4_SHA256, child_sha256}:
+        if current_sha256 not in {profile.expected_parent_sha256, child_sha256}:
             raise CapsuleTransitionError("canonical_compare_and_swap_conflict")
 
         _ensure_directory(archive_root, "archive_root")
@@ -1164,6 +1289,7 @@ def advance_capsule(
         )
 
         receipt = _build_receipt(
+            profile=profile,
             spec=spec,
             spec_sha256=spec_sha256,
             spec_bytes=len(initial_spec_bytes),
@@ -1180,7 +1306,7 @@ def advance_capsule(
         write_exclusive_or_verify(receipt_path, receipt_bytes, "transition_receipt")
         _fault(fault_injector, "after_receipt")
 
-        if current_sha256 == EXPECTED_V4_SHA256:
+        if current_sha256 == profile.expected_parent_sha256:
             _atomic_replace_canonical(canonical_path, temporary_path, child_bytes)
         else:
             if current_bytes != child_bytes:
@@ -1198,6 +1324,7 @@ def advance_capsule(
 
         receipt_sha256 = sha256_bytes(receipt_bytes)
         completion_bytes = _completion_payload(
+            profile=profile,
             spec=spec,
             spec_sha256=spec_sha256,
             receipt_sha256=receipt_sha256,
@@ -1213,7 +1340,7 @@ def advance_capsule(
             ),
             "transaction_id": spec["transaction_id"],
             "transition_spec_sha256": spec_sha256,
-            "parent_capsule_sha256": EXPECTED_V4_SHA256,
+            "parent_capsule_sha256": profile.expected_parent_sha256,
             "child_capsule_sha256": child_sha256,
             "receipt_sha256": receipt_sha256,
             "completion_sha256": sha256_bytes(completion_bytes),
@@ -1223,22 +1350,66 @@ def advance_capsule(
         }
 
 
+def advance_capsule(
+    *,
+    canonical_path: Path,
+    transition_spec_path: Path,
+    repository_root: Path,
+    fault_injector: Callable[[str], None] | None = None,
+) -> dict[str, Any]:
+    """Perform or idempotently recover the reviewed v4 -> v5 CAS."""
+
+    return _advance_capsule_for_profile(
+        profile=_V4_TO_V5,
+        canonical_path=canonical_path,
+        transition_spec_path=transition_spec_path,
+        repository_root=repository_root,
+        fault_injector=fault_injector,
+    )
+
+
+def advance_capsule_v5_to_v6(
+    *,
+    canonical_path: Path,
+    transition_spec_path: Path,
+    repository_root: Path,
+    fault_injector: Callable[[str], None] | None = None,
+) -> dict[str, Any]:
+    """Perform or idempotently recover the reviewed v5 -> v6 CAS."""
+
+    return _advance_capsule_for_profile(
+        profile=_V5_TO_V6,
+        canonical_path=canonical_path,
+        transition_spec_path=transition_spec_path,
+        repository_root=repository_root,
+        fault_injector=fault_injector,
+    )
+
+
 __all__ = [
     "COMPLETION_SCHEMA",
     "EXPECTED_V4_SHA256",
+    "EXPECTED_V5_SHA256",
     "RECEIPT_SCHEMA",
     "SPEC_SCHEMA",
     "V4_SCHEMA",
     "V5_SCHEMA",
+    "V6_COMPLETION_SCHEMA",
+    "V6_RECEIPT_SCHEMA",
+    "V6_SCHEMA",
+    "V6_SPEC_SCHEMA",
     "CapsuleTransitionError",
     "advance_capsule",
+    "advance_capsule_v5_to_v6",
     "canonical_json",
     "derive_child_capsule",
+    "derive_v6_child_capsule",
     "deterministic_yaml",
     "sha256_bytes",
     "strict_json_loads",
     "strict_yaml_loads",
     "validate_spec",
+    "validate_v6_spec",
     "value_sha256",
     "verify_regular_file_identity",
 ]
