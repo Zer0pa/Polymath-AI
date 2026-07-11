@@ -33,7 +33,9 @@ FRONTIER_SELECTOR = (
     ROOT / "runtime/reports/apex_frontier/frontier_event_20260711T101133Z.json"
 )
 PARENT_CAPSULE = (
-    ROOT / "docs/APEX-CURRENT-REALITY-CAPSULE-GEMMA4-E4B-QNN-CELL-2026-07-10.yaml"
+    ROOT
+    / "docs/APEX-CURRENT-REALITY-CAPSULE-GEMMA4-E4B-QNN-CELL-2026-07-10.yaml.archive"
+    / "66072e0dee357c9d7c178c3fa3628a6230fa5992659325b80e7eefa6e4dbdd2b.yaml"
 )
 ACCESS_RECEIPT = (
     ROOT / "runtime/reports/apex_frontier/access_refresh_20260711T020533Z.json"
