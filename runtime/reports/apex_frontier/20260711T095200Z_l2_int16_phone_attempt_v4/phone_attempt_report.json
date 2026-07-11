@@ -1,0 +1,344 @@
+{
+  "schema_version": "gemma4_e4b_l2_int16_phone_attempt_report_v1",
+  "run_id": "20260711T094800Z_l2_int16_phone",
+  "recorded_at_utc": "2026-07-11T09:52:00Z",
+  "status": "blocked_fail_closed",
+  "claim_class": "phone_native_candidate_launch_blocked_before_qnn_execution",
+  "scope": "bounded_phone_native_s16_terminal_head_projection_diagnostic",
+  "candidate_id": "w2_s16_activation_bw2_weight_s16_output_v1",
+  "active_sovereign_gate": "F5_terminal_head_provider_acceptance_then_frozen_projection_fidelity",
+  "first_missing_green_field": "QNN_HTP_device_creation_for_the_candidate_execution_contract_then_phone_native_full_width_s16_output",
+  "bindings": {
+    "parent_capsule": {
+      "relative_path": "docs/APEX-CURRENT-REALITY-CAPSULE-GEMMA4-E4B-QNN-CELL-2026-07-10.yaml",
+      "bytes": 49583,
+      "sha256": "7f85799e260658cd400b837a784035438c7601e3057d963e4cf9b98f14841266"
+    },
+    "frontier_selector": {
+      "relative_path": "runtime/reports/apex_frontier/frontier_event_20260711T020730Z.json",
+      "bytes": 4677,
+      "sha256": "416aba3b8faa320edee27bc58a946fe67079462a7f2d3554bc6957ac28e64cfd"
+    },
+    "provider_context_report": {
+      "relative_path": "runtime/reports/apex_frontier/20260711T092900Z_l2_int16_provider_context/provider_context_report.json",
+      "bytes": 8067,
+      "sha256": "9ab264ce6a26c476240f33e8ec4450b1c58ab0ca70fe7f5de150888124787afa"
+    },
+    "context_gate": {
+      "relative_path": "runtime/reports/apex_frontier/20260711T091000Z_l2_int16_context_gate/context_gate.json",
+      "bytes": 1649,
+      "sha256": "c19ded15499184112ce80e3a0d124498bb6012be7ccf28eaeae98c05118d8b3b"
+    },
+    "int16_preregistration": {
+      "relative_path": "runtime/reports/apex_frontier/20260711T020600Z_l2_int16_head_prereg_v2/preregistration.json",
+      "bytes": 2998,
+      "sha256": "51f1e9977258d8d61c7eb1ff76964b293a15d38eb852da1b5692cb58aaeea284"
+    },
+    "int16_threshold_policy": {
+      "relative_path": "runtime/reports/apex_frontier/20260711T020600Z_l2_int16_head_prereg_v2/threshold_policy.json",
+      "bytes": 2907,
+      "sha256": "36d4689f6c59f8ce8d9d99c6dc4085d7e63089a6448c20517fd0fcc74964ad05"
+    },
+    "phone_execution_preregistration_v4": {
+      "relative_path": "runtime/reports/apex_frontier/20260711T094800Z_l2_int16_phone_prereg_v4/phone_execution_preregistration.json",
+      "bytes": 8631,
+      "sha256": "ef3aaccba82c5bc3c16b389a3827e4fe7b62e9fb0703a43548afe18dfba2b68f",
+      "phone_copy_sha256": "ef3aaccba82c5bc3c16b389a3827e4fe7b62e9fb0703a43548afe18dfba2b68f"
+    },
+    "provider_package_source_revision": "e80e5f762121168b43a6b3c05f2a3d381fddeffd",
+    "phone_runner_source_revision": "085b7983b1cad611b8fafce287f15c8bd059228e",
+    "evidence_parent_revision": "030384bcc7e9c7130e4150c45fbf62ce644136db"
+  },
+  "phone": {
+    "serial": "FY25013101C8",
+    "model": "NX789J",
+    "soc": "SM8750",
+    "dsp_arch": 79,
+    "android_build": "20251031.123842",
+    "adb_state_at_evidence_seal": "device"
+  },
+  "phone_run_root": "/data/data/com.termux/files/home/polymath_gemma4_e4b_frontier/20260711T094800Z_l2_int16_phone",
+  "phone_receipt": {
+    "phone_relative_path": "receipts/phone_execution_receipt.json",
+    "bytes": 17205,
+    "sha256": "18cd67be22706a57390fe600c9bec7306059c7b65f5473c95c583d8fadeed7e7",
+    "receipt_status": "blocked_fail_closed",
+    "receipt_qnn_execution_count": 0,
+    "receipt_full_L2_passed": false,
+    "receipt_promotion_allowed": false,
+    "receipt_raw_outputs_egressed_from_phone": false
+  },
+  "staging_verification": {
+    "context_artifact": {
+      "phone_relative_path": "context/gemma4_e4b_f5_lowbit_probes_v79.bin",
+      "bytes": 678330368,
+      "sha256": "2d54c6c4e4028b88ce43a5255914e9941a827e32963b36e4198e2150a0f5d530",
+      "matches_provider_report": true,
+      "matches_preregistration": true
+    },
+    "execution_code": [
+      {
+        "relative_path": "scripts/termux/run_e4b_l2_int16_phone_gate.py",
+        "bytes": 19871,
+        "sha256": "0ef9f96e2a614f2206e7701e6b65f469c21ca8a015431e071020cfcbe3d58fa9",
+        "phone_matches_repository_and_preregistration": true
+      },
+      {
+        "relative_path": "polymath_ai/frontier/e4b_f5_probe.py",
+        "bytes": 20420,
+        "sha256": "6dcf1f0d192f44778e2964963533fdd770ee8420576cb2fce24fcdb566e3d480",
+        "phone_matches_repository_and_preregistration": true
+      },
+      {
+        "relative_path": "polymath_ai/frontier/e4b_f5_qnn_exporter.py",
+        "bytes": 50145,
+        "sha256": "ed40d66ca908b341e7180803b0e44fa24a322fed0cc3237eafa092562677dd42",
+        "phone_matches_repository_and_preregistration": true
+      },
+      {
+        "relative_path": "polymath_ai/frontier/e4b_l2_projection_gate.py",
+        "bytes": 19982,
+        "sha256": "f845f5fce915a2d80155799e4cb1ee152032a5881ed66db0298bd5d8a19a4c9b",
+        "phone_matches_repository_and_preregistration": true
+      }
+    ],
+    "cases": [
+      {
+        "case_id": "structured_dynamic",
+        "input_bytes": 5120,
+        "input_sha256": "360e7c9f22a0dbb0c135b3a1b696d206e66d02b57b6320eb3e8210d1e880e236",
+        "reference_bytes": 524288,
+        "reference_sha256": "30e624bdbad91be77ef6f3d18d46eef2cec6dc5b7a23e7fb4438bf74ae54a30a",
+        "phone_matches_preregistration": true
+      },
+      {
+        "case_id": "balanced_splitmix64",
+        "input_bytes": 5120,
+        "input_sha256": "8ac246d9328dca16ae2c182906bdb11b8080f0dc71161d28838291eb27f1bf90",
+        "reference_bytes": 524288,
+        "reference_sha256": "4d61ad4b4c98089646a6c11e825fb7486090c94fba376d6de1c0a5127c20e26a",
+        "phone_matches_preregistration": true
+      },
+      {
+        "case_id": "low_amplitude_splitmix64",
+        "input_bytes": 5120,
+        "input_sha256": "05b0526761aa7a5c83156a6bcdf3954a784b23d8b97ffc864e3acc963a3b490a",
+        "reference_bytes": 524288,
+        "reference_sha256": "9769af1ba2b21d3d7803f9bb139c17eb96c0ae0a893ef763b87060d3c68bebd2",
+        "phone_matches_preregistration": true
+      }
+    ],
+    "qairt_2_44_phone_files": [
+      {
+        "role": "qnn_net_run",
+        "bytes": 4462720,
+        "sha256": "bd98535e89e5ea36b2c08891013e008d48738c2ffcf87c30352a8accec2fe20e",
+        "phone_matches_preregistration": true
+      },
+      {
+        "role": "htp_backend",
+        "bytes": 2778176,
+        "sha256": "090e993822564851eab1405aff171643b21e644e3f696c95c96f2732aaed813a",
+        "phone_matches_preregistration": true
+      },
+      {
+        "role": "v79_stub",
+        "bytes": 679168,
+        "sha256": "005bd3de462851ce3dde55260d7d8560d6d07dbc309f554780b1f6412e6d9df1",
+        "phone_matches_preregistration": true
+      },
+      {
+        "role": "qnn_system",
+        "bytes": 2983560,
+        "sha256": "7e69258e1278cc9b2bb62dbc6e2a52c227a100d6505a13fd6324a87993d0bba8",
+        "phone_matches_preregistration": true
+      },
+      {
+        "role": "v79_skel",
+        "bytes": 10975268,
+        "sha256": "41f83395ed4b1bcfc43417a1b82f3f137c825747711c9ab4c9d50034ed198f98",
+        "phone_matches_preregistration": true
+      }
+    ],
+    "all_governing_hashes_match": true
+  },
+  "governed_attempt": {
+    "attempted_case_count": 1,
+    "remaining_case_count_not_started": 2,
+    "case_id": "structured_dynamic",
+    "return_code": 11,
+    "qnn_net_run_failure_stage": "device_creation",
+    "timed_out": false,
+    "elapsed_ns": 27917864,
+    "qnn_execution_count": 0,
+    "context_load_observed": false,
+    "candidate_output_observed": false,
+    "numeric_metrics_computed": false,
+    "ranking_metrics_computed": false,
+    "stdout": {
+      "phone_relative_path": "logs/structured_dynamic.stdout.log",
+      "bytes": 300,
+      "sha256": "a72bd4c8a240bb42690b5d67e0af061a516a565198e26d3a031055b67b3fa166",
+      "observations": [
+        "qnn-net-run identified build v2.44.0.260225143659",
+        "the frozen structured_dynamic S16 input was parsed"
+      ]
+    },
+    "stderr": {
+      "phone_relative_path": "logs/structured_dynamic.stderr.log",
+      "bytes": 25,
+      "sha256": "432c9551ef3d70cfaf857886c36e907c184a0b28de893962968c7eba906f9c21",
+      "diagnostic": "Device Creation failure"
+    },
+    "profiling_artifact": {
+      "phone_relative_path": "outputs/structured_dynamic/qnn-profiling-data_0.log",
+      "bytes": 180,
+      "sha256": "e2aac1a69b7c0ec3d88ec75f4596f6795fb663c8bf70a0a70bf5d92a30672c1f"
+    },
+    "output_directory_file_count": 1,
+    "candidate_raw_output_file_count": 0,
+    "thermal_guard_sensor": "pmih010x_lite_tz",
+    "thermal_guard_stop_millidegrees_c": 90000,
+    "thermal_before_millidegrees_c": 67194,
+    "thermal_after_millidegrees_c": 67228,
+    "thermal_guard_triggered": false
+  },
+  "controls": {
+    "platform_validator": {
+      "surface": "same_phone_same_QAIRT_2_44_HTP_stack",
+      "observed_return_code": 0,
+      "return_code_embedded_in_bound_logs": false,
+      "binary": {
+        "bytes": 881864,
+        "sha256": "9a2af9cd25a0c447969481f2926fef7031d76e054fe52cb25f252aa64153192e"
+      },
+      "calculator_stub": {
+        "bytes": 250712,
+        "sha256": "98fc84063f17dda1fede0149c81fae987a4a8feb31965d6961f886993336153d"
+      },
+      "stdout": {
+        "phone_relative_path": "diagnostics/platform_validator/stdout.log",
+        "bytes": 2063,
+        "sha256": "67e822352201140ef72b6013ad4caa66d9f89e7c0aaa46d448517de534dd1c8a"
+      },
+      "stderr": {
+        "phone_relative_path": "diagnostics/platform_validator/stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "result_csv": {
+        "phone_relative_path": "diagnostics/platform_validator/Result.csv",
+        "bytes": 206,
+        "sha256": "fd00f94b7d5c698825fa313358c8b12eded17d5927f0ea2a9efc29bef4d542b2"
+      },
+      "observations": {
+        "backend_hardware": "Supported",
+        "backend_libraries": "Found",
+        "core_version": "Hexagon Architecture V79",
+        "calculator_unit_test": "Passed",
+        "overall_result": "Passed",
+        "fastrpc_library_version": "Not Found"
+      },
+      "interpretation": "The phone-wide DSP and FastRPC path was available; the candidate failure cannot be classified as a global absence of HTP support."
+    },
+    "known_small_htp_context": {
+      "surface": "same_phone_same_qnn_net_run_and_backend",
+      "observed_return_code": 17,
+      "return_code_embedded_in_bound_logs": false,
+      "context": {
+        "phone_locator": "/data/data/com.termux/files/home/polymath_gemma4_gate/wavec/full_gemma_qnn_export/probe_ladder/quantized_tiny_matmul_static_weight_matmul_u8_probe/gemma4_probe_quantized_tiny_matmul_matmul_u8.qnn.bin",
+        "bytes": 45056,
+        "sha256": "8f33c5618dbd6a2eb81d55bb3756ba16ef077561d1a0e93e5732961a19fec1d8"
+      },
+      "available_input_fixture": {
+        "bytes": 24,
+        "sha256": "259a2e23297810b6704586ca682a0f0497faa0a2260e08a6a30aa79b78fd621b"
+      },
+      "stdout": {
+        "phone_relative_path": "diagnostics/known_context_control/stdout.log",
+        "bytes": 421,
+        "sha256": "4975dd22dce79161113073844414328e9246222c80f6c360f58d42f9fdcb3617",
+        "observed_stages": [
+          "Creating context from binary file",
+          "Executing Graphs"
+        ]
+      },
+      "stderr": {
+        "phone_relative_path": "diagnostics/known_context_control/stderr.log",
+        "bytes": 287,
+        "sha256": "5b661559f1c2497fc4ecec85c7c3349b8e6c4c9776e441d04095e07b96f13e85",
+        "failure_stage": "input_population_after_context_creation",
+        "failure_reason": "The control named qmat_input.f32.bin relatively and was launched from a directory that did not contain it."
+      },
+      "interpretation": "The same qnn-net-run and backend created a device, restored a known HTP context, and reached graph dispatch. The control does not claim successful graph execution because its input path was invalid."
+    },
+    "candidate_context_binary_utility": {
+      "surface": "same_phone_QAIRT_2_44_context_parser",
+      "observed_return_code": 0,
+      "return_code_embedded_in_bound_logs": false,
+      "utility": {
+        "bytes": 833680,
+        "sha256": "a2b96364ee44008ca244848ff91cab644bd94b63767e950ecaf22f69471e2ffb"
+      },
+      "context_info": {
+        "phone_relative_path": "diagnostics/context_utility_compare/candidate_info.json",
+        "bytes": 10307,
+        "sha256": "607b3be585fd693e5c40339e6b0e9608de411cc886eca823973eac1dd8fbde87",
+        "build_id": "v2.44.0.260225143659",
+        "backend_id": 6,
+        "soc_model": 69,
+        "graph_count": 2,
+        "graph_names": [
+          "gemma4_e4b_f5_w4_q_proj",
+          "gemma4_e4b_f5_w2_lm_head"
+        ],
+        "context_blob_size_bytes": 678326272,
+        "lm_head_const_size_bytes": 675295232,
+        "updateable_tensor_count": 0
+      },
+      "interpretation": "The candidate binary is structurally readable on the phone and exposes the expected two graphs; parser acceptance does not establish HTP device or context creation."
+    }
+  },
+  "adjudication": {
+    "governing_attempt_validly_preregistered": true,
+    "all_governing_phone_bytes_hash_verified": true,
+    "phone_native_qnn_execution_observed": false,
+    "candidate_output_observed": false,
+    "frozen_numeric_thresholds_applied": false,
+    "mechanism_falsified": false,
+    "full_L2_passed": false,
+    "promotion_allowed": false,
+    "failure_classification": "candidate_execution_path_device_creation_blocker_before_scientific_measurement",
+    "scientific_result": "unmeasured",
+    "rationale": [
+      "qnn-net-run stopped at device creation before context restoration or graph execution and produced no candidate tensor.",
+      "The same phone passed the V79 DSP platform validator and the same runtime restored a known small HTP context through graph dispatch.",
+      "The candidate context is structurally accepted by the phone context-binary utility, but that utility does not exercise HTP device creation.",
+      "A tool or context-load blocker cannot falsify the S16 numerical mechanism or relax any authority threshold."
+    ],
+    "branch_transition": {
+      "from": "context_artifact_available_cleanup_anomaly_phone_unvalidated",
+      "to": "phone_launch_blocked_at_candidate_device_creation_zero_execution"
+    },
+    "next_decisive_experiment": "Preregister and run a phone-native minimal direct QNN API loader against both the candidate and known-good contexts, recording separate QnnDevice_create and QnnContext_createFromBinary error codes with the same hash-bound QAIRT 2.44 files; preserve every frozen numerical threshold and execute no numerical promotion until candidate context creation is green."
+  },
+  "evidentiary_gaps": [
+    "qnn-net-run emitted only the generic Device Creation failure diagnostic; no backend-specific QnnDevice_create error code or FastRPC diagnostic was captured.",
+    "The control return codes were observed contemporaneously but are not embedded inside the bound stdout, stderr, or Result.csv files.",
+    "The known-context control proves device and context creation through graph dispatch, not successful graph execution, because its relative input path was intentionally left unresolved in that diagnostic invocation.",
+    "No candidate raw tensor exists to measure; absence of numerical evidence is the governing blocker, not a numerical failure.",
+    "The provider context-generator cleanup anomaly remains unresolved and independently prevents promotion."
+  ],
+  "custody": {
+    "raw_candidate_output_created": false,
+    "raw_candidate_output_egressed_from_phone": false,
+    "raw_reference_payload_copied_into_repository_by_this_report": false,
+    "phone_private_state_egressed": false,
+    "repository_receives_hash_bound_sanitized_metadata_only": true,
+    "secrets_printed": false
+  },
+  "nonclaims": [
+    "No S16 numerical fidelity result, clean provider-generator exit, full L1, full L2, learning, or authority-quality pass is claimed.",
+    "The platform and known-context controls localize the blocker but do not waive candidate context creation or any frozen numerical gate."
+  ]
+}
