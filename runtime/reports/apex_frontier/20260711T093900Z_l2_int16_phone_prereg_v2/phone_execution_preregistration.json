@@ -1,0 +1,202 @@
+{
+  "schema_version": "gemma4_e4b_l2_int16_phone_execution_preregistration_v1",
+  "state": "frozen_unobserved",
+  "created_at_utc": "2026-07-11T09:39:00Z",
+  "candidate_id": "w2_s16_activation_bw2_weight_s16_output_v1",
+  "active_sovereign_gate": "F5_terminal_head_provider_acceptance_then_frozen_projection_fidelity",
+  "source_revision": "e80e5f762121168b43a6b3c05f2a3d381fddeffd",
+  "runner_source_revision": "4d8a62016d6208a4a252e776eac4683ae0971e47",
+  "supersedes_preregistration_sha256": "5a303e5b5f939fe17c3ea6f8c63676315c9b15d8a3730a8b2afb3b875bae3fc6",
+  "supersession_reason": "The first unexecuted phone preregistration bound the runner but omitted the imported metric-source bundle; no phone run root or candidate output existed when it was superseded.",
+  "parent_capsule_sha256": "7f85799e260658cd400b837a784035438c7601e3057d963e4cf9b98f14841266",
+  "frontier_selector_sha256": "416aba3b8faa320edee27bc58a946fe67079462a7f2d3554bc6957ac28e64cfd",
+  "provider_context_report_sha256": "9ab264ce6a26c476240f33e8ec4450b1c58ab0ca70fe7f5de150888124787afa",
+  "context_gate_sha256": "c19ded15499184112ce80e3a0d124498bb6012be7ccf28eaeae98c05118d8b3b",
+  "int16_preregistration_sha256": "51f1e9977258d8d61c7eb1ff76964b293a15d38eb852da1b5692cb58aaeea284",
+  "int16_threshold_policy_sha256": "36d4689f6c59f8ce8d9d99c6dc4085d7e63089a6448c20517fd0fcc74964ad05",
+  "execution_code": {
+    "bundle_source_revision": "4d8a62016d6208a4a252e776eac4683ae0971e47",
+    "files": [
+      {
+        "relative_path": "scripts/termux/run_e4b_l2_int16_phone_gate.py",
+        "bytes": 19011,
+        "sha256": "4ea5fd846d31a2ed241ab4aa17df6c37810dc7ba3b7c1d13f075dd69b3d80a66"
+      },
+      {
+        "relative_path": "polymath_ai/__init__.py",
+        "bytes": 777,
+        "sha256": "5ef55c8aa5b34afe42ff800ab22c5576e2e369cb67477339d05cccf49d2dc745"
+      },
+      {
+        "relative_path": "polymath_ai/frontier/__init__.py",
+        "bytes": 367,
+        "sha256": "75479c1e606b8b82d57f1355522f191de81cb6559aa40e34fac34bd3bea0f866"
+      },
+      {
+        "relative_path": "polymath_ai/frontier/e4b_f5_probe.py",
+        "bytes": 20420,
+        "sha256": "6dcf1f0d192f44778e2964963533fdd770ee8420576cb2fce24fcdb566e3d480"
+      },
+      {
+        "relative_path": "polymath_ai/frontier/e4b_f5_qnn_exporter.py",
+        "bytes": 50145,
+        "sha256": "ed40d66ca908b341e7180803b0e44fa24a322fed0cc3237eafa092562677dd42"
+      },
+      {
+        "relative_path": "polymath_ai/frontier/e4b_l2_projection_gate.py",
+        "bytes": 19982,
+        "sha256": "f845f5fce915a2d80155799e4cb1ee152032a5881ed66db0298bd5d8a19a4c9b"
+      }
+    ]
+  },
+  "phone": {
+    "serial": "FY25013101C8",
+    "model": "NX789J",
+    "soc": "SM8750",
+    "dsp_arch": 79,
+    "android_build": "20251031.123842"
+  },
+  "phone_run_root": "/data/data/com.termux/files/home/polymath_gemma4_e4b_frontier/20260711T093900Z_l2_int16_phone",
+  "context_artifact": {
+    "relative_path": "context/gemma4_e4b_f5_lowbit_probes_v79.bin",
+    "bytes": 678330368,
+    "sha256": "2d54c6c4e4028b88ce43a5255914e9941a827e32963b36e4198e2150a0f5d530",
+    "provider_source_locator": "runpod://uh57jg7iguwqth/dev/shm/polymath_qnn_build_plane/20260711T091500Z_l2_int16_provider_context/context_direct_chroot_attempt3/gemma4_e4b_f5_lowbit_probes_v79_direct.bin",
+    "provider_context_info_sha256": "ffe6b53154b965ebabac4e9975badbd58a21394ba48efcfdba188f98aa5706e7",
+    "generator_clean_exit": false,
+    "independent_byte_identical_serializations": 2,
+    "independent_context_utility_passed": true,
+    "eligible_use": "bounded_phone_load_and_numerical_diagnostic_only"
+  },
+  "phone_toolchain": {
+    "root": "/data/data/com.termux/files/home/polymath_gemma4_gate/wavec/full_gemma_qnn_export/qairt_exec",
+    "version": "2.44.0.260225143659",
+    "files": [
+      {
+        "role": "qnn_net_run",
+        "relative_path": "bin/aarch64-android/qnn-net-run",
+        "bytes": 4462720,
+        "sha256": "bd98535e89e5ea36b2c08891013e008d48738c2ffcf87c30352a8accec2fe20e"
+      },
+      {
+        "role": "htp_backend",
+        "relative_path": "lib/aarch64-android/libQnnHtp.so",
+        "bytes": 2778176,
+        "sha256": "090e993822564851eab1405aff171643b21e644e3f696c95c96f2732aaed813a"
+      },
+      {
+        "role": "v79_stub",
+        "relative_path": "lib/aarch64-android/libQnnHtpV79Stub.so",
+        "bytes": 679168,
+        "sha256": "005bd3de462851ce3dde55260d7d8560d6d07dbc309f554780b1f6412e6d9df1"
+      },
+      {
+        "role": "qnn_system",
+        "relative_path": "lib/aarch64-android/libQnnSystem.so",
+        "bytes": 2983560,
+        "sha256": "7e69258e1278cc9b2bb62dbc6e2a52c227a100d6505a13fd6324a87993d0bba8"
+      },
+      {
+        "role": "v79_skel",
+        "relative_path": "lib/hexagon-v79/unsigned/libQnnHtpV79Skel.so",
+        "bytes": 10975268,
+        "sha256": "41f83395ed4b1bcfc43417a1b82f3f137c825747711c9ab4c9d50034ed198f98"
+      }
+    ]
+  },
+  "cases": [
+    {
+      "case_id": "structured_dynamic",
+      "input_relative_path": "inputs/gemma4_e4b_f5_w2_lm_head.structured_dynamic.s16.raw",
+      "input_bytes": 5120,
+      "input_sha256": "360e7c9f22a0dbb0c135b3a1b696d206e66d02b57b6320eb3e8210d1e880e236",
+      "reference_relative_path": "references/structured_dynamic.w2_qat_authority.bf16.raw",
+      "reference_bytes": 524288,
+      "reference_sha256": "30e624bdbad91be77ef6f3d18d46eef2cec6dc5b7a23e7fb4438bf74ae54a30a",
+      "output_bytes": 524288,
+      "candidate_output_present": false
+    },
+    {
+      "case_id": "balanced_splitmix64",
+      "input_relative_path": "inputs/gemma4_e4b_f5_w2_lm_head.balanced_splitmix64.s16.raw",
+      "input_bytes": 5120,
+      "input_sha256": "8ac246d9328dca16ae2c182906bdb11b8080f0dc71161d28838291eb27f1bf90",
+      "reference_relative_path": "references/balanced_splitmix64.w2_qat_authority.bf16.raw",
+      "reference_bytes": 524288,
+      "reference_sha256": "4d61ad4b4c98089646a6c11e825fb7486090c94fba376d6de1c0a5127c20e26a",
+      "output_bytes": 524288,
+      "candidate_output_present": false
+    },
+    {
+      "case_id": "low_amplitude_splitmix64",
+      "input_relative_path": "inputs/gemma4_e4b_f5_w2_lm_head.low_amplitude_splitmix64.s16.raw",
+      "input_bytes": 5120,
+      "input_sha256": "05b0526761aa7a5c83156a6bcdf3954a784b23d8b97ffc864e3acc963a3b490a",
+      "reference_relative_path": "references/low_amplitude_splitmix64.w2_qat_authority.bf16.raw",
+      "reference_bytes": 524288,
+      "reference_sha256": "9769af1ba2b21d3d7803f9bb139c17eb96c0ae0a893ef763b87060d3c68bebd2",
+      "output_bytes": 524288,
+      "candidate_output_present": false
+    }
+  ],
+  "input_quantization": {
+    "dtype": "QNN_DATATYPE_SFIXED_POINT_16",
+    "scale": 0.001953125,
+    "offset": 0,
+    "fixture_roundtrip_max_abs": 0.0
+  },
+  "output_quantization": {
+    "dtype": "QNN_DATATYPE_SFIXED_POINT_16",
+    "scale": 0.00390625,
+    "offset": 0,
+    "selection_used_candidate_output": false
+  },
+  "numeric_and_ranking_thresholds": {
+    "max_abs": 0.1875,
+    "rms": 0.03,
+    "relative_l2": 0.0075,
+    "cosine_min": 0.99998,
+    "softmax_js_divergence_max": 0.000002,
+    "top_k_set_overlap_min": 0.9375,
+    "top_1_equal": true
+  },
+  "command_contract": {
+    "graph_order": [
+      "gemma4_e4b_f5_w4_q_proj",
+      "gemma4_e4b_f5_w2_lm_head"
+    ],
+    "input_list_argument": "__,<single_case_lm_head_input_list>",
+    "skip_q_proj": true,
+    "native_input_files": true,
+    "native_output_files": true,
+    "num_inferences_per_case": 1,
+    "keep_num_outputs": 1,
+    "profiling_level": "basic",
+    "performance_profile": "default",
+    "timeout_seconds_per_case": 600,
+    "cases_run_sequentially": true,
+    "every_metric_and_every_case_must_pass": true
+  },
+  "thermal_guard": {
+    "sensor_type": "pmih010x_lite_tz",
+    "observed_at_freeze_millidegrees_c": 68913,
+    "stop_at_or_above_millidegrees_c": 90000,
+    "performance_ranking_attempted": false
+  },
+  "transfer_contract": {
+    "context": "stream_provider_to_phone_partial_then_sha256_then_atomic_rename",
+    "inputs": "copy_repo_frozen_s16_files_then_sha256",
+    "references": "stream_provider_authority_bf16_files_then_sha256",
+    "execution_code": "copy_exact_hash-bound_bundle_then_sha256_every_file",
+    "raw_candidate_output_egress_from_phone": false
+  },
+  "candidate_output_observed": false,
+  "phone_execution_count": 0,
+  "promotion_allowed": false,
+  "full_L2_passed": false,
+  "failure_rule": "kill_or_rebuild_the_s16_candidate_without_relaxing_any_threshold_if_any_case_or_metric_fails",
+  "nonclaims": [
+    "No phone context load, QNN output, L1, L2, learning, or authority-quality pass is claimed.",
+    "The provider-generator cleanup anomaly remains disclosed and prevents promotion beyond this bounded diagnostic."
+  ]
+}
