@@ -1,0 +1,154 @@
+{
+  "schema_version": "gemma4_e4b_access0_platform_receipt_v1",
+  "state": "passed_scope_with_typed_live_blockers",
+  "observed_at_utc": "2026-07-11T00:42:57Z",
+  "campaign": {
+    "objective": "Gemma_4_E4B_phone_native_learning_on_RED_MAGIC_10_Pro_Plus",
+    "action_lease": "active_user_campaign_2026-07-11",
+    "sovereign_terminal": "PRD_section_0_5",
+    "model_immutable": true,
+    "authority_quality_dominates_performance": true,
+    "public_release_authorized": false,
+    "new_paid_capacity_authorized": false
+  },
+  "frozen_inputs": {
+    "prd_sha256": "725d0ad6ac77fdcfc06a2635c7552cc414e0ed48f30fbd0f7f7ec38720493a3c",
+    "living_concept_sha256": "b2f617766b660237ddfd329c6b7fa2370f9a2641983e71915b4cd71c6d31bacc",
+    "corpus_audit_sha256": "c3a5d5eacf424f6e50ae0a170873d1c80e566581e22031a8f64bc899f8eec0fa",
+    "parent_capsule_sha256": "7f85799e260658cd400b837a784035438c7601e3057d963e4cf9b98f14841266",
+    "hash_match_to_parent_capsule": true
+  },
+  "source_plane": {
+    "branch": "frontier/gemma4-phone-native-20260710T235022Z",
+    "source_revision": "858aadc9af92744dd2272b748c12bd44e22750f1",
+    "remote_revision": "858aadc9af92744dd2272b748c12bd44e22750f1",
+    "isolated_worktree": true,
+    "primary_dirty_worktree_preserved": true,
+    "force_push_used": false
+  },
+  "phone": {
+    "state": "adb_passed_scope_termux_ssh_blocked",
+    "serial_sha256": "383e1fef6040334134430241a105f7d900f6d924e485fdc858441e734d3ae0f4",
+    "product": "REDMAGIC_NX789J",
+    "soc": "SM8750",
+    "android_sdk": 35,
+    "kernel": "6.6.56",
+    "ram_total_bytes_approx": 23660000000,
+    "ram_available_bytes_approx": 15990000000,
+    "swap_total_bytes_approx": 12000000000,
+    "data_available_bytes_approx": 453270000000,
+    "thermal_status": 0,
+    "qairt_build": "v2.44.0.260225143659",
+    "qnn_runtime_root": "/data/local/tmp/qairt-2.44",
+    "direct_huggingface_range_probe": "passed_scope",
+    "direct_phone_local_qat_transformers_acquisition": "active_partial_not_admitted",
+    "termux_ssh": {
+      "state": "blocked_fail_closed",
+      "adb_forward_present": true,
+      "sshd_listener_present": true,
+      "failure": "banner_timeout_with_stalled_accept_backlog",
+      "termux_private_corpus_accessed": false,
+      "termux_or_zeroclaw_force_stopped": false
+    }
+  },
+  "runpod": {
+    "state": "core_foundry_passed_scope_weight_workspace_quota_blocked",
+    "pod_id_sha256": "2720e18eeff6d549d367c3a2770999054281c287ccb6afc5cd15eb35e177ea4e",
+    "cpu_limit": 4,
+    "memory_limit_bytes": 16000000000,
+    "gpu_present": false,
+    "qairt_root": "/workspace/qairt-2.44/qairt/2.44.0.260225",
+    "execution_runtime": "ubuntu_22_04_direct_chroot",
+    "core_foundry_smoke": {
+      "state": "passed_scope",
+      "receipt_sha256": "304af9a7e834c3461bbeeba8559f15ff14254a603663530c139400fa01484cc7",
+      "context_sha256": "9060753282c8b0bf232b7db8abc1637b6d9f857560c2d151ae8cd3f197e6aa03",
+      "soc_model": 69,
+      "dsp_arch": 79,
+      "backend_id": 6,
+      "vtcm_megabytes": 2
+    },
+    "workspace_acquisition": {
+      "state": "blocked_fail_closed",
+      "blocker_receipt_sha256": "6d14577e58c76e6afb687bce82abe8d1325e27d9b362b0ca325c5fda1e3aa854",
+      "first_missing_green_field": "provider_storage_large_file_and_quota_envelope",
+      "false_cluster_free_space_signal_rejected": true,
+      "finalized_weight_count_at_blocker": 0
+    },
+    "root_overlay_qat_transformers": {
+      "state": "passed_scope_provider_local_full_file_hash",
+      "bytes": 3525094516,
+      "sha256": "391946da2e0bec22288e9fe50a4d31d2401c9570ba3baaf0ba43d644dadeb1d4",
+      "reference_stack_execution": "pending"
+    }
+  },
+  "hugging_face": {
+    "state": "passed_scope",
+    "identity": "Architect-Prime",
+    "organization": "Zer0pa",
+    "credential_egress": false,
+    "private_corpus_revision_readback": "504dd91c5a7c8365882d690d52f3de20697c4f7b",
+    "model_revisions": {
+      "architecture_oracle": "7aa32e6889efd6300124851b164f8b364314c3d8",
+      "high_precision_task_oracle": "a4c2d58be94dda072b918d9db64ee85c8ed34e3f",
+      "qat_mobile_transformers": "9a78a5adac7bca7a9e421634e4b58f41ca7cbca3",
+      "qat_mobile_compressed_tensors": "d35137f462eb09dbe5acb5924018356d8e057134"
+    }
+  },
+  "github": {
+    "state": "passed_scope",
+    "repository": "Zer0pa/Polymath-AI",
+    "admin_push_authenticated": true,
+    "scoped_branch_pushed": true
+  },
+  "comet": {
+    "state": "passed_scope",
+    "workspace": "zer0pa-imc",
+    "project": "mobile-polymath-ai-training",
+    "experiment_key": "4a61178d077b4ff99e070009de0d1b25",
+    "logged_surface": "hash_bound_metadata_and_aggregate_counts_only",
+    "asset_count": 0,
+    "raw_payloads_logged": false,
+    "secrets_logged": false
+  },
+  "orchestration_host": {
+    "state": "passed_scope",
+    "python": "3.11.14",
+    "free_storage_bytes_approx": 36000000000,
+    "model_weight_bytes_staged": 0,
+    "raw_corpus_bytes_staged": 0
+  },
+  "sovereign_selection": {
+    "earliest_parallel_roots": [
+      "L0_exact_E4B_artifact_objective_reference_lock",
+      "CUR_0S_connected_source_split_quality_rights"
+    ],
+    "maximal_frontier_A_experiment": "F5_seq16_token_to_exact_nll_sum_and_scored_token_count_monolith",
+    "decomposition_only_from_observed_failure": true,
+    "legacy_phase1_phase2_re_admission_required": "EXP_M0"
+  },
+  "blockers": [
+    "phone_termux_ssh_accept_path_stalled",
+    "runpod_workspace_effective_quota_cannot_hold_high_precision_oracle",
+    "L0_requires_remaining_phone_local_weight_receipts_and_executable_QAT_reference_smoke",
+    "CUR_0S_requires_phone_private_full_corpus_tournament_rights_quality_and_semantic_Arm_C"
+  ],
+  "effects": {
+    "closes_only": [
+      "ACCESS_0_platform_identity_and_capability_inventory",
+      "RunPod_QAIRT_core_foundry_executable_capability",
+      "QAT_Transformers_provider_local_full_file_identity"
+    ],
+    "capsule_advanced": false,
+    "L0_admitted": false,
+    "phone_authority_admitted": false,
+    "learning_authorized": false
+  },
+  "nonclaims": [
+    "No L0 pass is claimed.",
+    "No CUR-0S or CUR-0 pass is claimed.",
+    "No E4B QNN graph, phone parity, learning, or quality claim is made.",
+    "No provider cluster free-space value is treated as an effective quota.",
+    "No raw corpus, model tensor, checkpoint, credential, or signed URL entered Git or Comet."
+  ]
+}
