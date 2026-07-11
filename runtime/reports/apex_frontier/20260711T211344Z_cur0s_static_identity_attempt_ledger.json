@@ -1,0 +1,62 @@
+{
+  "schema_version": "cur0s_static_identity_attempt_ledger_v1",
+  "attempt_ledger_root_sha256": "sha256:9d1fd786b0ed930c5a7997b99b9d2942477a19bfc631eb3aff60fbeae0f52365",
+  "parent_capsule_sha256": "sha256:37555d7938a32cd22053d2741cb972e399030a2b6e559a19df8677406155136a",
+  "parent_frontier_root_sha256": "sha256:d118000d8fd457962f2332f2597bb25f6c6e33ee61010f5cd1459ab9768235fc",
+  "attempts": [
+    {
+      "run_id": "20260711T210019Z_cur0s_static_identity_v1",
+      "source_commit": "20d75ab545d951be2835ccc95dd6c19ad193c9f4",
+      "preregistration_sha256": "sha256:4bb0ab5e64c7c5dfc1c2aef5b3d3292d327ea1a770f235dedbd60c12f11509b0",
+      "outcome": "preimport_platform_contract_rejected_before_preregistration",
+      "execution_claim_created": false,
+      "candidate_output_created": false,
+      "receipt_created": false,
+      "complete_created": false,
+      "source_rows_observed": false
+    },
+    {
+      "run_id": "20260711T210523Z_cur0s_static_identity_v1",
+      "source_commit": "c15c1de8fab0131f17474dd9d6d654f087eb513c",
+      "preregistration_sha256": "sha256:71718c40401b803b6e2e20f49aef249b3b2a149ee6f4ab6fb944ac640d1f58bb",
+      "outcome": "unexpected_thermal_sysfs_read_time_disappearance",
+      "execution_claim_created": true,
+      "candidate_output_created": true,
+      "candidate_output_file_count": 0,
+      "receipt_created": false,
+      "complete_created": false,
+      "source_rows_observed": false
+    },
+    {
+      "run_id": "20260711T210854Z_cur0s_static_identity_v1",
+      "source_commit": "18e81b018440ba8e1cea0e2f298c69bce51f32c4",
+      "preregistration_sha256": "sha256:c8c0c411e023129a6c61294592410a665756e3cc941383fb707d0b7ad296150f",
+      "outcome": "typed_thermal_out_of_range_stop_before_source_snapshot",
+      "execution_claim_created": true,
+      "receipt_sha256": "sha256:db20b86aadf7623fef5326b86b7bca851f27b8ef0dccec71c015fddb92480dbd",
+      "complete_sha256": "sha256:9cde314ea2f5e610cbf378063622e1168c73bb40c75e29eaab71840ce4870a81",
+      "state": "blocked_fail_closed",
+      "source_rows_observed": false
+    },
+    {
+      "run_id": "20260711T211344Z_cur0s_static_identity_v1",
+      "source_commit": "b10ecdd36acd877c62cefba394e44e093fb0abd5",
+      "preregistration_sha256": "sha256:4c9156e8db2147899a7a7d2cc9f0161e6d32fefa9da8de486a1c1a029ab98c1e",
+      "outcome": "exact_identity_and_physical_custody_passed_scope",
+      "execution_claim_created": true,
+      "receipt_sha256": "sha256:839b20dc4c2ec1d426005a0e54f1d28f675589053887b5a142aeeb053410cc15",
+      "complete_sha256": "sha256:65235bd90421c4b31cf5cf7d0d6d33336f00aa0c125e41b8ebcc825b8bd30031",
+      "receipt_root_sha256": "sha256:33f6de080a98d921392a970d9751a21d31ca443e1d54c7179244c1cd504f7605",
+      "private_overlay_root_sha256": "sha256:9502f57f55e57fc5008ebbeec749bccaa0639ebefee8b8b212ee7ff53817ed05",
+      "state": "blocked_fail_closed",
+      "scoped_pass": "exact_identity_and_current_physical_custody_only",
+      "first_missing_green_field": "successor_commercial_source_root",
+      "cur0s_static_pass_claimed": false,
+      "cur0s_pass_claimed": false,
+      "target_data_learning_claimed": false
+    }
+  ],
+  "mandatory_next_disposition": "build_and_admit_integrated_successor_commercial_static_root",
+  "raw_payload_egressed": false,
+  "row_membership_overlay_egressed": false
+}
