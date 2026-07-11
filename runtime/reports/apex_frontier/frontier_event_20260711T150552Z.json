@@ -1,0 +1,214 @@
+{
+  "schema_version": "gemma4_e4b_frontier_event_v1",
+  "event_id": "SFL-20260711T150552Z-ADRENO-OPENCL-BF16-AUTHORITY",
+  "recorded_at_utc": "2026-07-11T15:05:52Z",
+  "amended_at_utc": "2026-07-11T15:21:39Z",
+  "parent_frontier_root_sha256": "bb045f0761405b521705609d473fa1cb7b504634197256b2b684c061e1fc4d78",
+  "parent_frontier_root_kind": "frontier_event",
+  "parent_capsule_sha256": "66072e0dee357c9d7c178c3fa3628a6230fa5992659325b80e7eefa6e4dbdd2b",
+  "active_sovereign_gate": "F5_terminal_head_Adreno_OpenCL_direct_BF16_authority_fidelity",
+  "hypothesis_and_architecture_lane": "SM8750_Adreno830_OpenCL3_direct_packed_INT2_scalar_BF16_product_FP32_tree_BF16_RNE",
+  "state": "selected",
+  "governing_observation": {
+    "candidate_id": "w2_s16_activation_bw2_weight_bf16_rne_scale_s16_output_2m10_v2",
+    "status": "falsified_scope",
+    "oracle_gate_sha256": "aa063f64473de95fdd3208995a51dd314f0e4947c78adc1826a2358ea65693b1",
+    "falsification_report_sha256": "44ba89a8ff760d89d05e5ddd2146b2e584f99496ca25fe81091361372bcc5e59",
+    "phone_native_exact_oracle_execution_count": 1,
+    "qnn_execution_count": 0,
+    "provider_build_count": 0,
+    "every_case_passed": false,
+    "standard_htp_s16_family_exhausted": true,
+    "third_s16_variant_allowed": false
+  },
+  "quantitative_discriminator": {
+    "cases": [
+      {
+        "case_id": "structured_dynamic",
+        "passed": false,
+        "only_failed_metric": "softmax_js_divergence",
+        "softmax_js_divergence": 0.000030611271540321745,
+        "failure_multiple": 15.305635770160872,
+        "cosine": 0.9999986208669742,
+        "relative_l2": 0.0016608063568781279,
+        "s16_saturation_count": 0
+      },
+      {
+        "case_id": "balanced_splitmix64",
+        "passed": false,
+        "only_failed_metric": "softmax_js_divergence",
+        "softmax_js_divergence": 0.000057701056240172006,
+        "failure_multiple": 28.850528120086004,
+        "cosine": 0.9999986153540692,
+        "relative_l2": 0.0016641222959643434,
+        "s16_saturation_count": 0
+      },
+      {
+        "case_id": "low_amplitude_splitmix64",
+        "passed": true,
+        "softmax_js_divergence": 0.00000003276120855326995,
+        "cosine": 0.999998151005349,
+        "relative_l2": 0.0019230149326731883,
+        "s16_saturation_count": 0
+      }
+    ],
+    "inference": "Corrected BF16 row scales and a finer S16 grid remove the low-amplitude floor but fail softmax topology on structured and balanced cases; explicit BF16 output semantics are the decisive missing boundary."
+  },
+  "live_opencl_contract": {
+    "report_sha256": "6b0605334c085a4fe7f404ff0723ffe295283796e1048dfdbfdda1bf5a2fe3a2",
+    "gpu": "QUALCOMM_Adreno_830",
+    "driver": "OpenCL_3_0_QUALCOMM_build_0800_40_Compiler_E031_47_18_30",
+    "opencl_icd_sha256": "cd35cf1ecbfb2053e45566421aa605f819b69ceb5264706ed4feb15bed0942f9",
+    "adreno_opencl_driver_sha256": "7571bd91b0bb8cad06ce50873865c4161778aa0bf3d2af159a9098a5aa7497ac",
+    "adreno_opencl_compiler_sha256": "8102c13cd4dedbd26c0aeed63393d44c492879feffb09e2b4026d28f24dbd9fd",
+    "extension_set_sha256": "7b06922c188a0d08bf6cc0be3c651740890e74b216b16032ab4aa35671ef827b",
+    "required_extensions": [
+      "cl_qcom_bfloat16_product",
+      "cl_khr_subgroups"
+    ],
+    "required_build_option": "-cl-std=CL3.0",
+    "fast_math_allowed": false,
+    "exact_intrinsic_signature": "float_qcom_mad32_bf16_ushort_ushort_float",
+    "packed_uint_intrinsic_arguments_forbidden": true,
+    "explicit_output_bfloat16_rne_required": true,
+    "selected_local_workgroup_size": 64,
+    "selected_subgroup_size": 64,
+    "maximum_single_allocation_bytes": 1073741824,
+    "global_memory_bytes": 12115345408,
+    "address_bits": 64,
+    "endian_little": true
+  },
+  "selected_experiment_and_runner_up": {
+    "selected": "Phone-native Adreno OpenCL direct-packed INT2 LM head with arbitrary BF16 input, scalar qcom BF16 product, deterministic FP32 local-memory tree, and explicit BF16 RN-even output.",
+    "selection_reason": "It directly repairs the authority boundary falsified by both S16 attempts, generalizes to arbitrary decoder BF16 activations, preserves packed W2 residency, and uses a live-compiled native Adreno arithmetic path.",
+    "rejected_reward_hack": "Exact INT32 factorization using the frozen 2^-9 input lattice is admissible only as a fixture diagnostic; it is forbidden as the runtime candidate because arbitrary decoder BF16 activations are not confined to that lattice.",
+    "runner_up": "Vulkan direct-packed INT2 with manual BF16 expansion, deterministic FP32 accumulation, explicit BF16 RN-even output, and four weight buffers below the observed hidden allocation boundary."
+  },
+  "immutable_candidate_contract": {
+    "candidate_id": "adreno_opencl_direct_packed_w2_scalar_bf16_product_fp32_tree_bf16_rne_v1",
+    "model_sha256": "391946da2e0bec22288e9fe50a4d31d2401c9570ba3baaf0ba43d644dadeb1d4",
+    "packed_weight_sha256": "4733d4ef634f781c7b4094e0df6c432b53e3390e161d546951ea6806de9e0d07",
+    "packed_weight_bytes": 167772160,
+    "original_scale_sha256": "870e405117e2b9b91a86a4210dc66de2d46af52c9274ea46c3193dd69b437eb6",
+    "original_scale_bytes": 1048576,
+    "scale_transform": "float32_to_bfloat16_RNE_then_signed_INT2_product_to_bfloat16_RNE",
+    "input_dtype": "bfloat16_bits_in_ushort",
+    "input_shape": [
+      1,
+      1,
+      2560
+    ],
+    "weight_storage": "direct_U2_four_lanes_per_byte_no_dense_expansion",
+    "signed_lane_mapping": [
+      -2,
+      -1,
+      0,
+      1
+    ],
+    "output_dtype": "bfloat16_bits_in_ushort",
+    "output_shape": [
+      1,
+      1,
+      262144
+    ],
+    "product_intrinsic": "qcom_mad32_bf16_scalar_ushort_ushort_float",
+    "accumulator_dtype": "float32",
+    "workgroup_size": 64,
+    "rows_per_workgroup": 8,
+    "workgroup_count": 32768,
+    "packed_byte_lane_mapping": "lane_l_consumes_byte_l_plus_64t_for_t_0_through_9",
+    "lane_accumulators": 4,
+    "lane_accumulator_combine": "(a0_plus_a1)_plus_(a2_plus_a3)",
+    "workgroup_reduction": "fixed_local_memory_strides_32_16_8_4_2_1",
+    "subgroup_reduce_builtin_used": false,
+    "output_rounding": "bit_exact_bfloat16_round_to_nearest_even",
+    "weight_residency": "one_upload_one_context_all_cases_and_replays",
+    "full_case_replays": 2,
+    "byte_identical_replay_required": true,
+    "dense_weight_expansion_allowed": false,
+    "numeric_ranking_threshold_subset_sha256": "30704ef1cb88042a1451f46b5c516b815cbb440a7227b9013893ee7b42cdd914",
+    "thresholds_changed": false,
+    "candidate_output_observed": false
+  },
+  "off_lattice_sentinel_contract": {
+    "purpose": "prove arbitrary BF16 input handling and forbid hidden S16-lattice specialization",
+    "input_shape": [
+      1,
+      1,
+      2560
+    ],
+    "construction": "all_zero_BF16_except_one_preregistered_feature_equal_to_2^-10_BF16",
+    "nonzero_feature_index": 0,
+    "nonzero_value_bfloat16_bits": "0x3a80",
+    "value_is_multiple_of_2^-9": false,
+    "input_bytes": 5120,
+    "input_sha256": "8caaaaa8532593127a04ee96fca610df3fc17b44d51e72e5117f5451a94857d6",
+    "reference_rule": "single_product_exact_BF16_semantics_without_reduction_order_ambiguity",
+    "reference_output_bytes": 524288,
+    "pass_rule": "full_width_524288_byte_reference_candidate_equality_and_byte_identical_replays",
+    "candidate_output_observed": false
+  },
+  "frozen_authority_gate": {
+    "case_ids": [
+      "structured_dynamic",
+      "balanced_splitmix64",
+      "low_amplitude_splitmix64"
+    ],
+    "authority_output_sha256": [
+      "30e624bdbad91be77ef6f3d18d46eef2cec6dc5b7a23e7fb4438bf74ae54a30a",
+      "4d61ad4b4c98089646a6c11e825fb7486090c94fba376d6de1c0a5127c20e26a",
+      "9769af1ba2b21d3d7803f9bb139c17eb96c0ae0a893ef763b87060d3c68bebd2"
+    ],
+    "max_abs": 0.1875,
+    "rms": 0.03,
+    "relative_l2": 0.0075,
+    "cosine_min": 0.99998,
+    "softmax_js_divergence_max": 0.000002,
+    "top_k_set_overlap_min": 0.9375,
+    "top_1_equal": true,
+    "every_metric_every_case_must_pass": true,
+    "replay_outputs_must_be_byte_identical": true
+  },
+  "kill_pivot_scale_rule": {
+    "compile_or_access_failure": "blocked_fail_closed_not_numerical_falsification; repair only the bound loader_or_compile defect without changing arithmetic",
+    "intrinsic_conformance_or_replay_failure": "kill exact OpenCL candidate and pivot to Vulkan runner_up",
+    "any_authority_metric_failure": "kill exact OpenCL candidate without threshold relaxation and pivot to Vulkan runner_up",
+    "every_case_metric_sentinel_and_replay_pass": "admit only the corrected bounded terminal-head diagnostic; full L2 and promotion remain blocked until complete decoder gates pass",
+    "performance": "recorded_secondary_not_an_authority_gate"
+  },
+  "branch_transitions": [
+    {
+      "branch": "F5_W2_V79_S16_v2_authority_semantics",
+      "from": "selected_frozen_unobserved",
+      "to": "killed_falsified_scope"
+    },
+    {
+      "branch": "F5_W2_Adreno_OpenCL_BF16_authority",
+      "from": "proposed",
+      "to": "selected_frozen_unobserved"
+    }
+  ],
+  "evidence_refs": [
+    {
+      "locator": "runtime/reports/apex_frontier/20260711T144510Z_l2_int16_v2_exact_oracle_attempt/oracle_gate.json",
+      "sha256": "aa063f64473de95fdd3208995a51dd314f0e4947c78adc1826a2358ea65693b1"
+    },
+    {
+      "locator": "runtime/reports/apex_frontier/20260711T144510Z_l2_int16_v2_exact_oracle_attempt/oracle_falsification_report.json",
+      "sha256": "44ba89a8ff760d89d05e5ddd2146b2e584f99496ca25fe81091361372bcc5e59"
+    },
+    {
+      "locator": "runtime/reports/apex_frontier/20260711T145203Z_adreno_opencl_contract/opencl_contract_report.json",
+      "sha256": "6b0605334c085a4fe7f404ff0723ffe295283796e1048dfdbfdda1bf5a2fe3a2"
+    }
+  ],
+  "source_revision_at_selection": "486ea3b3368a84469eae02e162aa0042dc392f00",
+  "candidate_source_committed": false,
+  "phone_execution_started": false,
+  "candidate_output_observed": false,
+  "promotion_allowed": false,
+  "nonclaims": [
+    "No OpenCL candidate source, preregistration, kernel build, model output, L1, L2, learning, or authority-quality pass is claimed.",
+    "The S16 family remains killed and cannot be revived by the OpenCL selection."
+  ]
+}

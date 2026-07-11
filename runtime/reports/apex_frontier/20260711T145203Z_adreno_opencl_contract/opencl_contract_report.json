@@ -1,0 +1,165 @@
+{
+  "schema_version": "gemma4_e4b_adreno_opencl_contract_report_v1",
+  "observed_at_utc": "2026-07-11T14:52:03Z",
+  "observation_completed_at_utc": "2026-07-11T15:17:02.506478939Z",
+  "recorded_at_utc": "2026-07-11T15:20:07Z",
+  "status": "passed_scope",
+  "claim_class": "phone_native_opencl_compiler_intrinsic_and_workgroup_contract",
+  "scope": "no_model_no_tensor_opencl_contract_probe",
+  "device_identity": {
+    "phone_model": "NX789J",
+    "soc": "SM8750",
+    "gpu": "QUALCOMM Adreno(TM) 830",
+    "android_version": 15,
+    "android_build_fingerprint_sha256": "fce358a6cdd6535afbecf6f72088412abaccf9b9902c05800ee8852512f9882f",
+    "platform_name": "QUALCOMM Snapdragon(TM)",
+    "platform_vendor": "QUALCOMM",
+    "platform_version": "OpenCL 3.0 QUALCOMM build: 0800.40",
+    "device_vendor": "QUALCOMM",
+    "device_version": "OpenCL 3.0 Adreno(TM) 830",
+    "opencl_c_version": "OpenCL C 3.0 Adreno(TM) 830",
+    "driver_version": "OpenCL 3.0 QUALCOMM build: 0800.40 Compiler E031.47.18.30"
+  },
+  "loader_contract": {
+    "route": "android_sphal",
+    "library_class": "vendor_lib64_OpenCL",
+    "opencl_icd": {
+      "bytes": 87504,
+      "sha256": "cd35cf1ecbfb2053e45566421aa605f819b69ceb5264706ed4feb15bed0942f9"
+    },
+    "adreno_opencl_driver": {
+      "bytes": 200392,
+      "sha256": "7571bd91b0bb8cad06ce50873865c4161778aa0bf3d2af159a9098a5aa7497ac"
+    },
+    "adreno_opencl_compiler": {
+      "bytes": 32978208,
+      "sha256": "8102c13cd4dedbd26c0aeed63393d44c492879feffb09e2b4026d28f24dbd9fd"
+    },
+    "adreno_utils": {
+      "bytes": 134224,
+      "sha256": "9616f5dddff3ac30e060950bc4a0f8a20763b4cf51b27bcd752df20d5523b28a"
+    }
+  },
+  "extension_contract": {
+    "extension_set_bytes": 1584,
+    "extension_set_sha256": "7b06922c188a0d08bf6cc0be3c651740890e74b216b16032ab4aa35671ef827b",
+    "required_extensions_present": [
+      "cl_qcom_bfloat16_product",
+      "cl_khr_subgroups"
+    ],
+    "cl_qcom_reqd_sub_group_size_present": false,
+    "clGetKernelSubGroupInfo_present": true
+  },
+  "bfloat16_product_contract": {
+    "required_pragma": "#pragma OPENCL EXTENSION cl_qcom_bfloat16_product : enable",
+    "required_build_option": "-cl-std=CL3.0",
+    "fast_math_allowed": false,
+    "exact_return_type": "float",
+    "exact_argument_types": [
+      "ushort_bfloat16_bits",
+      "ushort_bfloat16_bits",
+      "float_accumulator"
+    ],
+    "exact_signature": "float_qcom_mad32_bf16_ushort_ushort_float",
+    "packed_two_lane_uint_semantics": false,
+    "uint_arguments_forbidden": true,
+    "uint_failure_mode": "implicit_narrowing_discards_upper_16_bits",
+    "ushort2_arguments_supported": false,
+    "float2_accumulator_supported": false,
+    "native_bfloat16_opencl_type_supported": false
+  },
+  "compile_matrix": {
+    "cl3_with_pragma_exact_scalar_signature": "passed",
+    "cl2_with_pragma_uint_arguments_implicitly_narrowed": "passed_not_selected_and_forbidden",
+    "default_standard_with_pragma": "failed",
+    "cl1_2_with_pragma": "failed",
+    "cl3_without_pragma": "failed",
+    "ushort2_argument_1": "failed_expected_unsigned_short",
+    "ushort2_argument_2": "failed_expected_unsigned_short",
+    "float2_accumulator": "failed_expected_float",
+    "static_return_type_assertion": "passed"
+  },
+  "arithmetic_conformance": {
+    "one_times_two_plus_three_f32_bits": "0x40a00000",
+    "negative_one_times_two_plus_half_f32_bits": "0xbfc00000",
+    "one_point_five_times_two_point_five_plus_quarter_f32_bits": "0x40800000",
+    "bf16_3f81_times_bf16_3f81_f32_bits": "0x3f820200",
+    "product_semantics": "full_FP32_exact_product_not_BF16_rounded_product",
+    "explicit_final_bfloat16_rounding_required": true,
+    "bfloat16_rne_tie_3f808000": "0x3f80",
+    "bfloat16_rne_tie_3f818000": "0x3f82"
+  },
+  "workgroup_contract": {
+    "compute_units": 12,
+    "device_max_workgroup_size": 1024,
+    "device_max_workitem_sizes": [
+      1024,
+      1024,
+      1024
+    ],
+    "local_memory_bytes": 32768,
+    "maximum_subgroups_per_workgroup": 16,
+    "subgroup_independent_forward_progress": true,
+    "kernel_preferred_workgroup_multiple": 8,
+    "selected_local_workgroup_size": 64,
+    "selected_subgroup_size": 64,
+    "selected_subgroup_count": 1,
+    "required_workgroup_attribute": "reqd_work_group_size_64_1_1",
+    "subgroup_reduce_builtin_allowed": false,
+    "required_reduction": "explicit_fixed_local_memory_binary_tree"
+  },
+  "memory_and_abi_contract": {
+    "maximum_single_allocation_bytes": 1073741824,
+    "global_memory_bytes": 12115345408,
+    "address_bits": 64,
+    "endian_little": true,
+    "direct_packed_weight_allocation_bytes": 167772160,
+    "direct_packed_weight_single_allocation_admitted": true
+  },
+  "evidence_hashes": {
+    "typed_matrix_source_sha256": "ca6456b2ad3a0ac1e92f401270b5f1dcaf9149404991bb86f4b869f2180f14bb",
+    "typed_matrix_log_sha256": "418f9009751f8fa8f7873ca74b01f48e770c0efa033fafb88dc3021ec53599fa",
+    "default_standard_matrix_source_sha256": "aa03638981ff6b53c41c7ecfc7c3e4b125e6802960693753ea3de70f7c11c63a",
+    "default_standard_matrix_log_sha256": "11f1184fccf8ed946233bd682928ef885a9416db657f465564a6f09280736a56",
+    "second_vector_source_sha256": "565fc8125f1a5f39daf796c824f855b528c4940a7be56f08b1c3911046bf4161",
+    "second_vector_log_sha256": "c11c3110de59d6f471316e9dd2887d9d8f3d70c07b3b81caa3d012793d953046",
+    "third_vector_source_sha256": "f2200a629bb8a387c9d059e313e5305bd5bbd21221bd95f286c0d3fe4f2d258f",
+    "third_vector_log_sha256": "e08558a7732b04e324bdcdac93e36defa9341027b1752c93d624221ae799bb56",
+    "exact_abi_source_sha256": "9ceb86235f632eaa7806249bfd9f775cb26946771ce2bb74754ef89fff0e6011",
+    "exact_abi_log_sha256": "33a20d75fda8953e58420f314f710d4a911463a06e131f6bfeaa83c3ae965b31",
+    "return_type_source_sha256": "97dcfe21b270e9c7f01863435592d91210e579a21d96657d83252dc925ae6dff",
+    "return_type_log_sha256": "3b8e2b73f013ec67dbb8b512f517a2219a357e394e9b8de3b6e347112cf7ef72",
+    "arithmetic_source_sha256": "543eff55cf236804b312e623f369a63235f68d84729c2c4a580c3c9fc32fedda",
+    "arithmetic_binary_sha256": "1638165334c5173cbf83a499dfac3a667b606805d4268923196928db0769bcd9",
+    "arithmetic_log_sha256": "8446517be454d2ff7a416f2e983f6fcd795a974249763538f7c64a1c175731d2",
+    "limits_source_sha256": "b40b57dad3dd0092c13165519fd9d73465bbcf35d7da0fa75b0f417e83d7dd90",
+    "limits_binary_sha256": "ce0f0b63cfcf4deab638fb99dc9d0d0b6fe4bb14af49a22e805d626506a30684",
+    "limits_log_sha256": "3cd2312e6e68aa2196d367626955908c25c9ec4b11089e6485561623e694e614"
+  },
+  "selected_implementation_constraints": {
+    "input_storage": "BF16_bits_in_ushort",
+    "weight_storage": "direct_packed_U2_no_dense_expansion",
+    "weight_value_construction": "BF16_RNE_of_signed_INT2_times_BF16_RNE_row_scale",
+    "product": "scalar_qcom_mad32_bf16",
+    "accumulation": "deterministic_FP32_without_fast_math",
+    "output": "explicit_integer_bit_BF16_RNE",
+    "replay": "two_byte_identical_runs_per_case_in_one_residency_session"
+  },
+  "custody": {
+    "phone_local_evidence_locator": "phone://termux/polymath_opencl_contract/20260711T145203Z",
+    "phone_local_limits_evidence_locator": "phone://termux/polymath_opencl_contract/20260711T151643Z_limits",
+    "raw_logs_phone_local": true,
+    "model_or_tensor_access_count": 0,
+    "raw_phone_payload_egress": false,
+    "sanitized_metadata_only": true,
+    "secrets_recorded": false
+  },
+  "promotion_allowed": false,
+  "nonclaims": [
+    "no_Gemma_kernel_execution",
+    "no_model_tensor_access",
+    "no_candidate_output",
+    "no_numerical_authority_pass",
+    "no_performance_result"
+  ]
+}
