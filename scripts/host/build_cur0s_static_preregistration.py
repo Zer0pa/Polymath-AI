@@ -104,6 +104,7 @@ def main() -> int:
             "device": "NX789J",
             "soc": "SM8750",
             "architecture": "aarch64",
+            "python_platform_system": "Android",
             "private_home": "/data/data/com.termux/files/home",
             "build_fingerprint_sha256": "sha256:fce358a6cdd6535afbecf6f72088412abaccf9b9902c05800ee8852512f9882f",
         },

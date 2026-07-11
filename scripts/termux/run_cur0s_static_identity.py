@@ -78,7 +78,7 @@ static_gate_matrix: Any = None
 def preimport_phone_guard() -> None:
     """Reject the wrong runtime before executing any repository module."""
 
-    if platform.system() != "Linux" or platform.machine() != "aarch64":
+    if platform.system() != "Android" or platform.machine() != "aarch64":
         raise RuntimeError("runner_requires_android_aarch64")
     expected_home = "/data/data/com.termux/files/home"
     if os.environ.get("HOME") != expected_home or str(Path.home()) != expected_home:
@@ -1372,7 +1372,7 @@ def validate_governing_inputs(prereg: dict[str, Any]) -> None:
 
 def guard_phone_environment() -> dict[str, Any]:
     preimport_phone_guard()
-    if platform.system() != "Linux" or platform.machine() != "aarch64":
+    if platform.system() != "Android" or platform.machine() != "aarch64":
         raise Cur0sExactError("runner_requires_android_aarch64")
     if Path.home() != PHONE_HOME or os.environ.get("HOME") != str(PHONE_HOME):
         raise Cur0sExactError("runner_requires_exact_termux_private_home")
@@ -1381,6 +1381,7 @@ def guard_phone_environment() -> dict[str, Any]:
         "device": getprop("ro.product.device"),
         "soc": getprop("ro.soc.model"),
         "architecture": platform.machine(),
+        "python_platform_system": platform.system(),
         "private_home": str(Path.home()),
         "build_fingerprint_sha256": "sha256:"
         + hashlib.sha256(getprop_raw("ro.build.fingerprint")).hexdigest(),
@@ -1400,7 +1401,14 @@ def validate_phone_runtime(
     expected = prereg.get("target_device")
     if not isinstance(expected, dict):
         raise Cur0sExactError("target_device_missing")
-    for key in ("model", "device", "soc", "architecture", "private_home"):
+    for key in (
+        "model",
+        "device",
+        "soc",
+        "architecture",
+        "python_platform_system",
+        "private_home",
+    ):
         if actual[key] != expected.get(key):
             raise Cur0sExactError(f"target_device_{key}_mismatch")
     if expected.get("build_fingerprint_sha256") != EXPECTED_BUILD_FINGERPRINT_SHA256:
@@ -1417,6 +1425,7 @@ def validate_phone_runtime(
         "device": actual["device"],
         "soc": actual["soc"],
         "architecture": actual["architecture"],
+        "python_platform_system": actual["python_platform_system"],
         "private_home_sha256": "sha256:"
         + hashlib.sha256(actual["private_home"].encode()).hexdigest(),
         "build_fingerprint_sha256": actual["build_fingerprint_sha256"],

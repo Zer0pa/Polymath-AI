@@ -162,6 +162,19 @@ def test_stat_identity_includes_ownership_and_link_count(runner, tmp_path) -> No
     assert identity[5] == os.geteuid()
 
 
+def test_preimport_guard_binds_android_python_platform(
+    runner, monkeypatch
+) -> None:
+    monkeypatch.setattr(runner.platform, "machine", lambda: "aarch64")
+    monkeypatch.setattr(runner.platform, "system", lambda: "Linux")
+    with pytest.raises(RuntimeError, match="android_aarch64"):
+        runner.preimport_phone_guard()
+
+    monkeypatch.setattr(runner.platform, "system", lambda: "Android")
+    with pytest.raises(RuntimeError, match="termux_private_home"):
+        runner.preimport_phone_guard()
+
+
 def test_builder_lease_round_trips_runner_strict_validation(runner, builder) -> None:
     issued = datetime(2026, 7, 11, 20, 0, tzinfo=timezone.utc)
     lease_dict = builder.build_campaign_lease(RUN_ID, issued)
