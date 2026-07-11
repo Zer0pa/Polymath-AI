@@ -1,0 +1,172 @@
+{
+  "schema_version": "gemma4_e4b_l2_int16_provider_context_report_v1",
+  "run_id": "20260711T091500Z_l2_int16_provider_context",
+  "recorded_at_utc": "2026-07-11T09:29:00Z",
+  "status": "available_unmeasured",
+  "claim_class": "provider_context_artifact_with_cleanup_anomaly",
+  "active_sovereign_gate": "F5_terminal_head_provider_acceptance_then_frozen_projection_fidelity",
+  "first_missing_green_field": "phone_native_context_load_and_full_width_s16_output",
+  "bindings": {
+    "parent_capsule_sha256": "7f85799e260658cd400b837a784035438c7601e3057d963e4cf9b98f14841266",
+    "frontier_selector_sha256": "416aba3b8faa320edee27bc58a946fe67079462a7f2d3554bc6957ac28e64cfd",
+    "source_revision": "e80e5f762121168b43a6b3c05f2a3d381fddeffd",
+    "source_package_module_sha256": "e19d7235ad1a6034ec568f70b4fe4ea9e32481c1d7503578cb11bec700f3bbe6",
+    "context_gate_sha256": "c19ded15499184112ce80e3a0d124498bb6012be7ccf28eaeae98c05118d8b3b",
+    "int16_preregistration_sha256": "51f1e9977258d8d61c7eb1ff76964b293a15d38eb852da1b5692cb58aaeea284",
+    "int16_threshold_policy_sha256": "36d4689f6c59f8ce8d9d99c6dc4085d7e63089a6448c20517fd0fcc74964ad05",
+    "fp16_falsification_gate_sha256": "965697efe3e3f9e65ac9aa726e0247fd83c1fdaa942bc1c0bc8954aabe784acd"
+  },
+  "provider_artifact": {
+    "repository": "google/gemma-4-E4B-it-qat-mobile-transformers",
+    "revision": "9a78a5adac7bca7a9e421634e4b58f41ca7cbca3",
+    "bytes": 3525094516,
+    "sha256": "391946da2e0bec22288e9fe50a4d31d2401c9570ba3baaf0ba43d644dadeb1d4",
+    "full_identity_read_by_package_generator": true,
+    "phone_private_state_ingested": false
+  },
+  "runpod_resource_slice": {
+    "pod_id": "uh57jg7iguwqth",
+    "gpu_used": false,
+    "workspace_requested_root": "/workspace/polymath_qnn_build_plane/20260711T091300Z_l2_int16_provider_context",
+    "workspace_result": "blocked_fail_closed_disk_quota_exceeded_during_kilobyte_scale_source_extraction",
+    "workspace_nominal_free_bytes_at_failure": 460786711855104,
+    "effective_workspace_quota_consistent_with_nominal_free_space": false,
+    "pivot_execution_root": "/dev/shm/polymath_qnn_build_plane/20260711T091500Z_l2_int16_provider_context",
+    "executable_artifact_root": "/tmp/polymath_qnn_build_plane/20260711T091500Z_l2_int16_provider_context",
+    "toolchain_rootfs": "/workspace/polymath_qnn_build_plane/20260711T000105Z_qairt244_repair_smoke/rootfs",
+    "toolchain_rootfs_prior_verification_status": "passed_scope",
+    "proot_installed_for_compatibility": "5.1.0-1.3",
+    "additional_paid_capacity_provisioned": false
+  },
+  "build": {
+    "base_package_manifest": {
+      "bytes": 10062,
+      "sha256": "00597af50924c11d39efcb957711e5929910539f2e7ab9c56f9ac114ff800482"
+    },
+    "variant_package_manifest": {
+      "bytes": 10992,
+      "sha256": "384576ed04aeeb64b65243561392e6281b0f3615dd18c9360a1313f59ead583b"
+    },
+    "generated_cpp": {
+      "bytes": 13621,
+      "sha256": "4757e20cc723a1b5a69683ff5f080b8c15805bff0f26c28305d81c4bf1530f8a"
+    },
+    "model_library": {
+      "bytes": 171508672,
+      "sha256": "f19d7cb2f65a19a9c92af2b41ff58ca073d1128a7d6cbb3e59fb9fd3540e3a93",
+      "required_exports_present": [
+        "QnnModel_composeGraphs",
+        "QnnModel_freeGraphsInfo"
+      ]
+    },
+    "build_receipt": {
+      "bytes": 575,
+      "sha256": "4233c87df20350bfb4da77861403a5a50aa360f8a29d498edaa3bc67b98ade23",
+      "status": "source_compile_passed_backend_unvalidated"
+    }
+  },
+  "qairt_tools": {
+    "version": "2.44.0.260225143659",
+    "context_binary_generator_sha256": "3fe90a0646963f95dcef773614c7fbcb192a86e7cbfae522ee9682252733323a",
+    "context_binary_utility_sha256": "59e203b4b6f61fa9b2251581c6ba9fbd0a22f0e97b2a052559f1f71ddcc6dbd7",
+    "libQnnHtp_sha256": "45c53684cbba2026cd90b76b1c4779063d68ed5e6d35d2ac0b0ce8f506137687"
+  },
+  "context_generation_attempts": [
+    {
+      "attempt": 1,
+      "surface": "proot_Ubuntu22_QAIRT244",
+      "generator_return_code": 139,
+      "terminal_signal": "SIGSEGV",
+      "last_completed_provider_stage": "Completion",
+      "context_bytes": 678330368,
+      "context_sha256": "2d54c6c4e4028b88ce43a5255914e9941a827e32963b36e4198e2150a0f5d530",
+      "raw_log_locator": "runpod://uh57jg7iguwqth/tmp/polymath_qnn_build_plane/20260711T091500Z_l2_int16_provider_context/variant_package/context/context_generator.log",
+      "raw_log_bytes": 70015,
+      "raw_log_sha256": "2e61203e3c73f8d3a92509a9215c651dfc9493ac4a73f21db93556a6e9ad13ee"
+    },
+    {
+      "attempt": 2,
+      "surface": "direct_chroot_Ubuntu22_QAIRT244_without_proot",
+      "generator_return_code": 134,
+      "terminal_signal": "SIGABRT",
+      "terminal_diagnostic": "double free or corruption (out)",
+      "last_completed_provider_stage": "Completion",
+      "context_bytes": 678330368,
+      "context_sha256": "2d54c6c4e4028b88ce43a5255914e9941a827e32963b36e4198e2150a0f5d530",
+      "raw_log_locator": "runpod://uh57jg7iguwqth/dev/shm/polymath_qnn_build_plane/20260711T091500Z_l2_int16_provider_context/raw_logs/context_generation_attempt3_direct_chroot.log",
+      "raw_log_bytes": 70797,
+      "raw_log_sha256": "d7c970f9d709ea092665b26c652813b1fa416e50ec63b8715dac5705c953b027"
+    }
+  ],
+  "determinism": {
+    "independent_wrapper_surfaces": 2,
+    "context_byte_counts_equal": true,
+    "context_sha256_equal": true,
+    "entire_context_files_byte_equal": true,
+    "cleanup_failure_reproduced_without_proot": true
+  },
+  "context_artifact": {
+    "provider_locator": "runpod://uh57jg7iguwqth/dev/shm/polymath_qnn_build_plane/20260711T091500Z_l2_int16_provider_context/context_direct_chroot_attempt3/gemma4_e4b_f5_lowbit_probes_v79_direct.bin",
+    "bytes": 678330368,
+    "sha256": "2d54c6c4e4028b88ce43a5255914e9941a827e32963b36e4198e2150a0f5d530",
+    "generator_clean_exit": false,
+    "eligible_use": "bounded_phone_load_and_numerical_diagnostic_only",
+    "promotion_allowed": false
+  },
+  "context_utility": {
+    "return_code": 0,
+    "context_info_bytes": 10327,
+    "context_info_sha256": "ffe6b53154b965ebabac4e9975badbd58a21394ba48efcfdba188f98aa5706e7",
+    "build_id": "v2.44.0.260225143659",
+    "backend_id": 6,
+    "soc_model": 69,
+    "dsp_arch": 79,
+    "graph_count": 2,
+    "graph_names": [
+      "gemma4_e4b_f5_w4_q_proj",
+      "gemma4_e4b_f5_w2_lm_head"
+    ],
+    "lm_head_input": {
+      "name": "lm_head_input_s16",
+      "dtype": "QNN_DATATYPE_SFIXED_POINT_16",
+      "shape": [1, 1, 2560],
+      "scale": 0.001953125,
+      "offset": 0
+    },
+    "lm_head_output": {
+      "name": "lm_head_output_s16_pre_softcap",
+      "dtype": "QNN_DATATYPE_SFIXED_POINT_16",
+      "shape": [1, 1, 262144],
+      "scale": 0.00390625,
+      "offset": 0
+    },
+    "lm_head_const_size_bytes": 675295232,
+    "updateable_tensor_count": 0
+  },
+  "adjudication": {
+    "provider_context_artifact_available": true,
+    "provider_generator_clean_exit_passed": false,
+    "provider_context_gate_passed_scope": false,
+    "platform_datatype_contract_observed": true,
+    "phone_execution_observed": false,
+    "qnn_output_observed": false,
+    "full_L2_passed": false,
+    "branch_transition": {
+      "from": "selected_frozen_unobserved",
+      "to": "context_artifact_available_cleanup_anomaly_phone_unvalidated"
+    },
+    "failure_classification": "tool_cleanup_anomaly_after_byte_stable_context_serialization_not_a_scientific_falsifier",
+    "next_decisive_experiment": "hash-verify the context on NX789J, load it through QAIRT 2.44 qnn-net-run, execute all three frozen S16 cases with native I/O, and adjudicate unchanged thresholds"
+  },
+  "custody": {
+    "model_weight_egress_from_provider": false,
+    "phone_private_state_ingested_by_provider": false,
+    "raw_logs_provider_local": true,
+    "repository_receives_hash_bound_metadata_only": true,
+    "secrets_printed": false
+  },
+  "nonclaims": [
+    "No clean provider-generator exit, phone execution, QNN output, L1, L2, learning, or authority-quality pass is claimed.",
+    "Context utility acceptance and byte-stable serialization do not waive the frozen phone and numerical gates."
+  ]
+}
