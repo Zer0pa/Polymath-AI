@@ -85,3 +85,28 @@ def test_relative_path_rejects_escape(tmp_path: Path):
         pass
     else:
         raise AssertionError("path escape was accepted")
+
+
+def test_execution_code_bundle_requires_every_hash(monkeypatch, tmp_path: Path):
+    source = tmp_path / "module.py"
+    source.write_text("value = 1\n", encoding="utf-8")
+    monkeypatch.setattr(phone_gate, "ROOT", tmp_path)
+    prereg = {
+        "execution_code": {
+            "files": [
+                {
+                    "relative_path": "module.py",
+                    "bytes": source.stat().st_size,
+                    "sha256": phone_gate.sha256_path(source),
+                }
+            ]
+        }
+    }
+    phone_gate.validate_execution_code(prereg)
+    source.write_text("value = 2\n", encoding="utf-8")
+    try:
+        phone_gate.validate_execution_code(prereg)
+    except phone_gate.PhoneGateError:
+        pass
+    else:
+        raise AssertionError("execution-code drift was accepted")

@@ -178,6 +178,19 @@ def validate_toolchain(qairt_root: Path, prereg: dict[str, Any]) -> Path:
     return qnn_net_run
 
 
+def validate_execution_code(prereg: dict[str, Any]) -> None:
+    records = prereg.get("execution_code", {}).get("files")
+    if not isinstance(records, list) or not records:
+        raise PhoneGateError("execution-code contract is empty")
+    for record in records:
+        path = resolve_relative(ROOT, record.get("relative_path"))
+        validate_file(
+            path,
+            expected_bytes=int(record["bytes"]),
+            expected_sha256=str(record["sha256"]),
+        )
+
+
 def validate_cases(run_root: Path, prereg: dict[str, Any]) -> list[CaseContract]:
     records = prereg.get("cases")
     if not isinstance(records, list) or len(records) != 3:
@@ -384,6 +397,7 @@ def execute(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
     prereg = load_preregistration(args.execution_preregistration, args.expected_preregistration_sha256)
     if run_root.as_posix() != prereg.get("phone_run_root"):
         raise PhoneGateError("phone run root differs from preregistration")
+    validate_execution_code(prereg)
     context_record = prereg["context_artifact"]
     context_path = resolve_relative(run_root, context_record["relative_path"])
     validate_file(
