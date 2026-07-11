@@ -1,0 +1,120 @@
+{
+  "schema_version": "gemma4_e4b_l2_int16_v2_preregistration_custody_receipt_v1",
+  "recorded_at_utc": "2026-07-11T14:41:00Z",
+  "status": "passed_scope",
+  "scope": "phone_native_full_preregistration_and_four_file_metadata_egress",
+  "candidate_id": "w2_s16_activation_bw2_weight_bf16_rne_scale_s16_output_2m10_v2",
+  "source_revision": "a7b585dfa5704115296c0f05a742ef5e2b8dcc5e",
+  "source_bundle": {
+    "bytes": 10111564,
+    "sha256": "5e1aa6275f89775f58bc1401fdfcef217694212d0a0e9e14589a153ad9ac920a",
+    "phone_head_exact": true,
+    "phone_source_closure_clean": true
+  },
+  "bindings": {
+    "parent_capsule_sha256": "66072e0dee357c9d7c178c3fa3628a6230fa5992659325b80e7eefa6e4dbdd2b",
+    "frontier_selector_sha256": "bb045f0761405b521705609d473fa1cb7b504634197256b2b684c061e1fc4d78",
+    "access_receipt_sha256": "7b2b6d506b3ab82a17008edc4c79dd51512f6f9598e3db37cd1bb6f5ee4331ca",
+    "phone_runtime_root_sha256": "602be7e248470fe3d02092531179780908737c9ba38ab1c2227db87ba6a7bf3d",
+    "preregistration_sha256": "4d598d29882946304e7e1307b62a45a8b8fc321cc6a7ad55ee87acfb22936720",
+    "threshold_policy_sha256": "4ca023ddc9ad081f91dde0ad2cd539c7a2037a8bad5fc9fc02121236a92e1d5a",
+    "full_phone_tree_root_sha256": "5305b639e58f5a3cdba15705cfbb7a4fad6e9cf5ca7f677c0000832c2597613b"
+  },
+  "full_phone_tree": {
+    "file_count": 9,
+    "files": [
+      {
+        "bytes": 5120,
+        "relative_path": "inputs/gemma4_e4b_f5_w2_lm_head.balanced_splitmix64.s16.raw",
+        "sha256": "8ac246d9328dca16ae2c182906bdb11b8080f0dc71161d28838291eb27f1bf90"
+      },
+      {
+        "bytes": 5120,
+        "relative_path": "inputs/gemma4_e4b_f5_w2_lm_head.low_amplitude_splitmix64.s16.raw",
+        "sha256": "05b0526761aa7a5c83156a6bcdf3954a784b23d8b97ffc864e3acc963a3b490a"
+      },
+      {
+        "bytes": 5120,
+        "relative_path": "inputs/gemma4_e4b_f5_w2_lm_head.structured_dynamic.s16.raw",
+        "sha256": "360e7c9f22a0dbb0c135b3a1b696d206e66d02b57b6320eb3e8210d1e880e236"
+      },
+      {
+        "bytes": 9271,
+        "relative_path": "preregistration.json",
+        "sha256": "4d598d29882946304e7e1307b62a45a8b8fc321cc6a7ad55ee87acfb22936720"
+      },
+      {
+        "bytes": 87,
+        "relative_path": "preregistration.json.sha256",
+        "sha256": "2f70939ddc7b560afc610749c5c5607b5447524b63f3a0dfa82eff1b7d9949f4"
+      },
+      {
+        "bytes": 1048576,
+        "relative_path": "tensors/w2_lm_head_weight_scale.bf16_rne.f32.bin",
+        "sha256": "489f4400faaf5f20984bc798d2e1ca581aaf7237e1f37cb6ce505df747e01633"
+      },
+      {
+        "bytes": 1048576,
+        "relative_path": "tensors/w2_lm_head_weight_scale.original.f32.bin",
+        "sha256": "870e405117e2b9b91a86a4210dc66de2d46af52c9274ea46c3193dd69b437eb6"
+      },
+      {
+        "bytes": 2958,
+        "relative_path": "threshold_policy.json",
+        "sha256": "4ca023ddc9ad081f91dde0ad2cd539c7a2037a8bad5fc9fc02121236a92e1d5a"
+      },
+      {
+        "bytes": 88,
+        "relative_path": "threshold_policy.json.sha256",
+        "sha256": "9d41761ae36fd989f30604686d18fa1c415c32e5edd352770f1a7ebc032a4bb2"
+      }
+    ]
+  },
+  "metadata_egress": {
+    "file_count": 4,
+    "relative_root": "runtime/reports/apex_frontier/20260711T144100Z_l2_int16_v2_preregistration",
+    "files": [
+      {
+        "bytes": 9271,
+        "relative_path": "preregistration.json",
+        "sha256": "4d598d29882946304e7e1307b62a45a8b8fc321cc6a7ad55ee87acfb22936720"
+      },
+      {
+        "bytes": 87,
+        "relative_path": "preregistration.json.sha256",
+        "sha256": "2f70939ddc7b560afc610749c5c5607b5447524b63f3a0dfa82eff1b7d9949f4"
+      },
+      {
+        "bytes": 2958,
+        "relative_path": "threshold_policy.json",
+        "sha256": "4ca023ddc9ad081f91dde0ad2cd539c7a2037a8bad5fc9fc02121236a92e1d5a"
+      },
+      {
+        "bytes": 88,
+        "relative_path": "threshold_policy.json.sha256",
+        "sha256": "9d41761ae36fd989f30604686d18fa1c415c32e5edd352770f1a7ebc032a4bb2"
+      }
+    ],
+    "absolute_paths_egressed": false,
+    "raw_phone_serial_egressed": false,
+    "raw_tensor_or_input_egress_count": 0
+  },
+  "execution_state": {
+    "state": "frozen_unobserved",
+    "candidate_output_count": 0,
+    "phone_exact_oracle_execution_count": 0,
+    "phone_independent_verification_count": 0,
+    "qnn_execution_count": 0,
+    "provider_build_allowed": false,
+    "promotion_allowed": false
+  },
+  "custody": {
+    "full_preregistration_plane": "phone_private",
+    "mac_custody": "four_hash_bound_metadata_files_only",
+    "runpod_custody": "none",
+    "phone_private_raw_upload_to_runpod": false,
+    "model_weight_bytes_on_mac": 0,
+    "secrets_recorded": false
+  },
+  "required_next_gate": "phone_native_full_width_exact_INT32_dot_every_case_every_unchanged_metric"
+}
