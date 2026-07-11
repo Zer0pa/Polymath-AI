@@ -30,6 +30,9 @@ EXPECTED_V4_SHA256 = (
 EXPECTED_V5_SHA256 = (
     "66072e0dee357c9d7c178c3fa3628a6230fa5992659325b80e7eefa6e4dbdd2b"
 )
+EXPECTED_V6_ADRENO_PASS_PARENT_SHA256 = (
+    "838eeb8b847c9b00e6600a3c9b5621086281f8eadeee843044da1902bf2dec2a"
+)
 V4_SCHEMA = "apex_current_reality_gemma4_e4b_qnn_cell_v4"
 V5_SCHEMA = "apex_current_reality_gemma4_e4b_qnn_cell_v5"
 V6_SCHEMA = "apex_current_reality_gemma4_e4b_qnn_cell_v6"
@@ -50,6 +53,7 @@ class _MigrationProfile:
     receipt_schema: str
     completion_schema: str
     child_schema_error: str
+    require_v6_campaign_cross_bindings: bool
 
 
 _V4_TO_V5 = _MigrationProfile(
@@ -60,6 +64,7 @@ _V4_TO_V5 = _MigrationProfile(
     receipt_schema=RECEIPT_SCHEMA,
     completion_schema=COMPLETION_SCHEMA,
     child_schema_error="child_schema_version_not_v5",
+    require_v6_campaign_cross_bindings=False,
 )
 _V5_TO_V6 = _MigrationProfile(
     expected_parent_sha256=EXPECTED_V5_SHA256,
@@ -69,6 +74,17 @@ _V5_TO_V6 = _MigrationProfile(
     receipt_schema=V6_RECEIPT_SCHEMA,
     completion_schema=V6_COMPLETION_SCHEMA,
     child_schema_error="child_schema_version_not_v6",
+    require_v6_campaign_cross_bindings=True,
+)
+_V6_ADRENO_PASS = _MigrationProfile(
+    expected_parent_sha256=EXPECTED_V6_ADRENO_PASS_PARENT_SHA256,
+    parent_schema=V6_SCHEMA,
+    child_schema=V6_SCHEMA,
+    spec_schema=V6_SPEC_SCHEMA,
+    receipt_schema=V6_RECEIPT_SCHEMA,
+    completion_schema=V6_COMPLETION_SCHEMA,
+    child_schema_error="child_schema_version_not_v6",
+    require_v6_campaign_cross_bindings=True,
 )
 
 MAX_CAPSULE_BYTES = 16 * 1024 * 1024
@@ -855,10 +871,9 @@ def _validate_spec_for_profile(
     _require_exact_keys(mutation, {"operations"}, set(), "mutation")
     _validate_operations(mutation["operations"])
     validate_bindings(value["bindings"], repository_root)
-    if profile is _V5_TO_V6:
+    if profile.require_v6_campaign_cross_bindings:
         _validate_v6_operation_cross_bindings(value)
-        if value["bindings"]["source_commit"]["commit_sha"] == "0" * 40:
-            raise CapsuleTransitionError("v6_source_commit_placeholder_unresolved")
+        _reject_v6_commit_placeholders(value)
     _reject_secret_material(value)
     return copy.deepcopy(value)
 
@@ -895,6 +910,14 @@ def _validate_v6_operation_cross_bindings(spec: Mapping[str, Any]) -> None:
             )
 
 
+def _reject_v6_commit_placeholders(spec: Mapping[str, Any]) -> None:
+    bindings = spec["bindings"]
+    for field in ("source_commit", "evidence_commit"):
+        commit_sha = bindings[field]["commit_sha"]
+        if set(commit_sha) == {"0"}:
+            raise CapsuleTransitionError(f"v6_{field}_placeholder_unresolved")
+
+
 def validate_spec(
     value: dict[str, Any],
     repository_root: Path,
@@ -911,6 +934,15 @@ def validate_v6_spec(
     """Validate the reviewed v5 -> v6 transition specification."""
 
     return _validate_spec_for_profile(value, repository_root, _V5_TO_V6)
+
+
+def validate_v6_adreno_pass_spec(
+    value: dict[str, Any],
+    repository_root: Path,
+) -> dict[str, Any]:
+    """Validate the exact reviewed v6 Adreno-pass transition specification."""
+
+    return _validate_spec_for_profile(value, repository_root, _V6_ADRENO_PASS)
 
 
 def _validate_operations(value: Any) -> list[dict[str, Any]]:
@@ -1042,6 +1074,15 @@ def derive_v6_child_capsule(
     """Derive the reviewed v5 -> v6 capsule child."""
 
     return _derive_child_capsule_for_profile(parent, spec, _V5_TO_V6)
+
+
+def derive_v6_adreno_pass_child_capsule(
+    parent: dict[str, Any],
+    spec: dict[str, Any],
+) -> dict[str, Any]:
+    """Derive the exact reviewed v6 child after the bounded Adreno pass."""
+
+    return _derive_child_capsule_for_profile(parent, spec, _V6_ADRENO_PASS)
 
 
 def _nested(value: Mapping[str, Any], *path: str) -> Any:
@@ -1386,10 +1427,29 @@ def advance_capsule_v5_to_v6(
     )
 
 
+def advance_capsule_v6_adreno_pass(
+    *,
+    canonical_path: Path,
+    transition_spec_path: Path,
+    repository_root: Path,
+    fault_injector: Callable[[str], None] | None = None,
+) -> dict[str, Any]:
+    """Perform or recover the one exact v6 Adreno-pass capsule CAS."""
+
+    return _advance_capsule_for_profile(
+        profile=_V6_ADRENO_PASS,
+        canonical_path=canonical_path,
+        transition_spec_path=transition_spec_path,
+        repository_root=repository_root,
+        fault_injector=fault_injector,
+    )
+
+
 __all__ = [
     "COMPLETION_SCHEMA",
     "EXPECTED_V4_SHA256",
     "EXPECTED_V5_SHA256",
+    "EXPECTED_V6_ADRENO_PASS_PARENT_SHA256",
     "RECEIPT_SCHEMA",
     "SPEC_SCHEMA",
     "V4_SCHEMA",
@@ -1401,14 +1461,17 @@ __all__ = [
     "CapsuleTransitionError",
     "advance_capsule",
     "advance_capsule_v5_to_v6",
+    "advance_capsule_v6_adreno_pass",
     "canonical_json",
     "derive_child_capsule",
+    "derive_v6_adreno_pass_child_capsule",
     "derive_v6_child_capsule",
     "deterministic_yaml",
     "sha256_bytes",
     "strict_json_loads",
     "strict_yaml_loads",
     "validate_spec",
+    "validate_v6_adreno_pass_spec",
     "validate_v6_spec",
     "value_sha256",
     "verify_regular_file_identity",

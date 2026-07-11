@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import copy
 from pathlib import Path
+import subprocess
+import sys
 from typing import Any
 
 import pytest
@@ -26,7 +28,18 @@ CANONICAL_V6_SPEC = (
     / "20260711T152007Z_v5_to_v6"
     / "transition_spec.json"
 )
+CANONICAL_V6_ADRENO_PASS_PARENT = (
+    ROOT
+    / "docs"
+    / ".APEX-CURRENT-REALITY-CAPSULE-GEMMA4-E4B-QNN-CELL-2026-07-10.yaml.transactions"
+    / "708f7d1eb5f5bdf81b470c2b21701465de1d0a0e59467772a3f93d5635d969f6"
+    / "child_capsule.yaml"
+)
+V6_ADRENO_PASS_CLI = (
+    ROOT / "scripts" / "host" / "advance_e4b_current_reality_capsule_v6_adreno_pass.py"
+)
 NEW_CUTOFF = "2026-07-11T15:21:39Z"
+ADRENO_PASS_CUTOFF = "2026-07-11T18:56:00Z"
 
 
 class InjectedCrash(RuntimeError):
@@ -504,3 +517,438 @@ def test_v6_campaign_state_operation_must_be_replace(tmp_path: Path) -> None:
         capsule_cas.validate_v6_spec(spec, repository)
 
     assert raised.value.code == "v6_campaign_state_operation_not_replace"
+
+
+def _adreno_pass_bindings(repository: Path) -> dict[str, Any]:
+    frontier = _local_artifact(
+        repository,
+        "runtime/adreno_pass_frontier.json",
+        role="adreno_pass_frontier_event",
+    )
+    preregistration = _local_artifact(
+        repository,
+        "runtime/adreno_phone_preregistration.json",
+        role="adreno_phone_preregistration",
+    )
+    selector = _local_artifact(
+        repository,
+        "runtime/adreno_maximal_selector.json",
+        role="adreno_maximal_selector",
+    )
+    lease = _local_artifact(
+        repository,
+        "runtime/adreno_execution_lease.json",
+        role="adreno_execution_lease",
+    )
+    input_contract = _local_artifact(
+        repository,
+        "runtime/adreno_opencl_contract.json",
+        role="adreno_opencl_contract",
+    )
+    sanitized = _local_artifact(
+        repository,
+        "runtime/adreno_phone_receipt.json",
+        role="adreno_phone_sanitized_receipt",
+    )
+    return {
+        "frontier": frontier,
+        "preregistrations": [preregistration],
+        "maximal_selector": selector,
+        "lease": {
+            "lease_id": "adreno_pass_campaign_2026-07-11",
+            "artifact": lease,
+            "resource_slice": {
+                "phone": "FY25013101C8",
+                "candidate_execution_count": 1,
+                "public_release": False,
+            },
+            "expires_at_utc": None,
+        },
+        "inputs": [input_contract],
+        "raw_reports": [
+            _remote_artifact("phone_private_adreno_outputs", "adreno-pass")
+        ],
+        "sanitized_reports": [sanitized],
+        "transitions": [
+            {
+                "subject_id": "F5_W2_ADRENO_OPENCL_BF16",
+                "subject_kind": "candidate",
+                "from": "selected_frozen_unobserved",
+                "to": "passed_scope",
+                "evidence_sha256": sanitized["sha256"],
+                "reason": "three_authority_cases_and_off_lattice_sentinel_exact",
+            }
+        ],
+        "rollback": {
+            "disposition": "archive_v6_parent_and_preserve_bounded_pass",
+            "rollback_base": None,
+            "invalidated_sha256": [],
+            "preserved_sha256": [
+                preregistration["sha256"],
+                sanitized["sha256"],
+                frontier["sha256"],
+            ],
+        },
+        "source_commit": {
+            "repository": "Zer0pa/Polymath-AI",
+            "commit_sha": "a" * 40,
+            "scope": ["adreno_phone_gate_source"],
+        },
+        "evidence_commit": {
+            "repository": "Zer0pa/Polymath-AI",
+            "commit_sha": "b" * 40,
+            "scope": ["adreno_bounded_pass_evidence"],
+        },
+    }
+
+
+def _adreno_pass_operations(
+    parent: dict[str, Any],
+    bindings: dict[str, Any],
+) -> list[dict[str, Any]]:
+    campaign_state = copy.deepcopy(parent["last_verified_campaign_state"])
+    campaign_state.update(
+        {
+            "active_sovereign_gate": "F5_terminal_head_successor_selection",
+            "first_missing_green_field": "next_decisive_F5_successor_selection",
+            "last_disposition": "Adreno_OpenCL_BF16_passed_bounded_scope",
+            "source_commit": bindings["source_commit"]["commit_sha"],
+            "evidence_commit": bindings["evidence_commit"]["commit_sha"],
+            "frontier_root_sha256": bindings["frontier"]["sha256"],
+            "parent_capsule_sha256": (
+                capsule_cas.EXPECTED_V6_ADRENO_PASS_PARENT_SHA256
+            ),
+        }
+    )
+    measured_claim = copy.deepcopy(
+        parent["measured_claims"]["F5_W2_ADRENO_OPENCL_BF16"]
+    )
+    measured_claim.update(
+        {
+            "state": "passed_scope",
+            "claim_class": "bounded_terminal_head_measured",
+            "candidate_output_observed": True,
+            "phone_model_execution_count": 1,
+            "preregistration_present": True,
+            "source_committed": True,
+        }
+    )
+    return [
+        {
+            "op": "replace",
+            "path": ["evidence_cutoff_utc"],
+            "expected_old_sha256": capsule_cas.value_sha256(
+                parent["evidence_cutoff_utc"]
+            ),
+            "value": ADRENO_PASS_CUTOFF,
+        },
+        {
+            "op": "replace",
+            "path": ["last_verified_campaign_state"],
+            "expected_old_sha256": capsule_cas.value_sha256(
+                parent["last_verified_campaign_state"]
+            ),
+            "value": campaign_state,
+        },
+        {
+            "op": "replace",
+            "path": ["measured_claims", "F5_W2_ADRENO_OPENCL_BF16"],
+            "expected_old_sha256": capsule_cas.value_sha256(
+                parent["measured_claims"]["F5_W2_ADRENO_OPENCL_BF16"]
+            ),
+            "value": measured_claim,
+        },
+    ]
+
+
+def _setup_adreno_pass(
+    tmp_path: Path,
+) -> tuple[Path, Path, Path, dict[str, Any]]:
+    repository = tmp_path / "adreno_repository"
+    repository.mkdir()
+    canonical = repository / "capsule.yaml"
+    canonical.write_bytes(CANONICAL_V6_ADRENO_PASS_PARENT.read_bytes())
+    parent = capsule_cas.strict_yaml_loads(canonical.read_bytes())
+    bindings = _adreno_pass_bindings(repository)
+    spec = {
+        "schema_version": capsule_cas.V6_SPEC_SCHEMA,
+        "transaction_id": "capsule-v6-adreno-pass-20260711T185600Z",
+        "expected_parent_sha256": (capsule_cas.EXPECTED_V6_ADRENO_PASS_PARENT_SHA256),
+        "evidence_cutoff_utc": ADRENO_PASS_CUTOFF,
+        "mutation": {
+            "operations": _adreno_pass_operations(parent, bindings),
+        },
+        "bindings": bindings,
+    }
+    spec_path = repository / "adreno_pass_transition_spec.json"
+    _write_json(spec_path, spec)
+    return repository, canonical, spec_path, spec
+
+
+def _execute_adreno_pass(
+    repository: Path,
+    canonical: Path,
+    spec_path: Path,
+    *,
+    fault_injector: Any = None,
+) -> dict[str, Any]:
+    return capsule_cas.advance_capsule_v6_adreno_pass(
+        canonical_path=canonical,
+        transition_spec_path=spec_path,
+        repository_root=repository,
+        fault_injector=fault_injector,
+    )
+
+
+def _adreno_campaign_operation(spec: dict[str, Any]) -> dict[str, Any]:
+    return next(
+        operation
+        for operation in spec["mutation"]["operations"]
+        if operation["path"] == ["last_verified_campaign_state"]
+    )
+
+
+def test_v6_adreno_pass_parent_pin_and_schema_are_exact() -> None:
+    payload = CANONICAL_V6_ADRENO_PASS_PARENT.read_bytes()
+
+    assert capsule_cas.sha256_bytes(payload) == (
+        capsule_cas.EXPECTED_V6_ADRENO_PASS_PARENT_SHA256
+    )
+    assert capsule_cas.strict_yaml_loads(payload)["schema_version"] == (
+        capsule_cas.V6_SCHEMA
+    )
+
+
+def test_v6_adreno_pass_derivation_is_deterministic(tmp_path: Path) -> None:
+    repository, canonical, _spec_path, spec = _setup_adreno_pass(tmp_path)
+    parent = capsule_cas.strict_yaml_loads(canonical.read_bytes())
+    validated = capsule_cas.validate_v6_adreno_pass_spec(spec, repository)
+
+    first = capsule_cas.derive_v6_adreno_pass_child_capsule(parent, validated)
+    second = capsule_cas.derive_v6_adreno_pass_child_capsule(parent, validated)
+
+    assert capsule_cas.deterministic_yaml(first) == capsule_cas.deterministic_yaml(
+        second
+    )
+    assert first["schema_version"] == capsule_cas.V6_SCHEMA
+    assert first["evidence_cutoff_utc"] == ADRENO_PASS_CUTOFF
+    assert first["success_terminal"]["section_0_5_satisfied"] is False
+
+
+def test_v6_adreno_pass_archives_and_seals_v2_transaction(
+    tmp_path: Path,
+) -> None:
+    repository, canonical, spec_path, spec = _setup_adreno_pass(tmp_path)
+    parent_bytes = canonical.read_bytes()
+
+    result = _execute_adreno_pass(repository, canonical, spec_path)
+
+    assert result["status"] == "complete"
+    assert result["parent_capsule_sha256"] == (
+        capsule_cas.EXPECTED_V6_ADRENO_PASS_PARENT_SHA256
+    )
+    assert Path(result["archive_path"]).read_bytes() == parent_bytes
+    assert Path(result["archive_path"]).name == (
+        f"{capsule_cas.EXPECTED_V6_ADRENO_PASS_PARENT_SHA256}.yaml"
+    )
+    receipt = capsule_cas.strict_json_loads(Path(result["receipt_path"]).read_bytes())
+    assert receipt["schema_version"] == capsule_cas.V6_RECEIPT_SCHEMA
+    assert receipt["transition_spec"]["schema_version"] == (capsule_cas.V6_SPEC_SCHEMA)
+    assert receipt["capsule"]["parent"]["schema_version"] == (capsule_cas.V6_SCHEMA)
+    assert receipt["capsule"]["child"]["schema_version"] == (capsule_cas.V6_SCHEMA)
+    assert receipt["bindings"] == spec["bindings"]
+    completion = capsule_cas.strict_json_loads(
+        Path(result["completion_path"]).read_bytes()
+    )
+    assert completion["schema_version"] == capsule_cas.V6_COMPLETION_SCHEMA
+    assert completion["parent_capsule_sha256"] == (
+        capsule_cas.EXPECTED_V6_ADRENO_PASS_PARENT_SHA256
+    )
+    assert completion["receipt_sha256"] == result["receipt_sha256"]
+
+
+def test_v6_adreno_pass_completed_transaction_is_idempotent(
+    tmp_path: Path,
+) -> None:
+    repository, canonical, spec_path, _spec = _setup_adreno_pass(tmp_path)
+    first = _execute_adreno_pass(repository, canonical, spec_path)
+    child_before = canonical.read_bytes()
+    receipt_before = Path(first["receipt_path"]).read_bytes()
+    completion_before = Path(first["completion_path"]).read_bytes()
+
+    second = _execute_adreno_pass(repository, canonical, spec_path)
+
+    assert second["status"] == "already_complete"
+    assert second["child_capsule_sha256"] == first["child_capsule_sha256"]
+    assert canonical.read_bytes() == child_before
+    assert Path(first["receipt_path"]).read_bytes() == receipt_before
+    assert Path(first["completion_path"]).read_bytes() == completion_before
+
+
+@pytest.mark.parametrize(
+    "phase",
+    ["after_archive", "after_receipt", "after_replace", "after_completion"],
+)
+def test_v6_adreno_pass_fault_recovery_is_exact(
+    tmp_path: Path,
+    phase: str,
+) -> None:
+    repository, canonical, spec_path, _spec = _setup_adreno_pass(tmp_path)
+    with pytest.raises(InjectedCrash):
+        _execute_adreno_pass(
+            repository,
+            canonical,
+            spec_path,
+            fault_injector=_crash_at(phase),
+        )
+
+    observed_schema = capsule_cas.strict_yaml_loads(canonical.read_bytes())[
+        "schema_version"
+    ]
+    assert observed_schema == capsule_cas.V6_SCHEMA
+    if phase in {"after_archive", "after_receipt"}:
+        assert capsule_cas.sha256_bytes(canonical.read_bytes()) == (
+            capsule_cas.EXPECTED_V6_ADRENO_PASS_PARENT_SHA256
+        )
+
+    result = _execute_adreno_pass(repository, canonical, spec_path)
+
+    expected_status = (
+        "complete"
+        if phase in {"after_archive", "after_receipt"}
+        else "already_complete"
+    )
+    assert result["status"] == expected_status
+    assert Path(result["completion_path"]).is_file()
+
+
+def test_v6_adreno_pass_foreign_child_conflict_never_overwrites(
+    tmp_path: Path,
+) -> None:
+    repository, canonical, spec_path, _spec = _setup_adreno_pass(tmp_path)
+    with pytest.raises(InjectedCrash):
+        _execute_adreno_pass(
+            repository,
+            canonical,
+            spec_path,
+            fault_injector=_crash_at("after_archive"),
+        )
+    foreign = b"schema_version: foreign-v6-child\n"
+    canonical.write_bytes(foreign)
+
+    with pytest.raises(capsule_cas.CapsuleTransitionError) as raised:
+        _execute_adreno_pass(repository, canonical, spec_path)
+
+    assert raised.value.code == "canonical_compare_and_swap_conflict"
+    assert canonical.read_bytes() == foreign
+
+
+def test_v6_adreno_pass_rejects_wrong_profile_entrypoints(
+    tmp_path: Path,
+) -> None:
+    repository, canonical, spec_path, spec = _setup_adreno_pass(tmp_path)
+    with pytest.raises(capsule_cas.CapsuleTransitionError) as raised:
+        capsule_cas.validate_v6_spec(spec, repository)
+    assert raised.value.code == "expected_parent_sha256_mismatch"
+
+    with pytest.raises(capsule_cas.CapsuleTransitionError) as raised:
+        capsule_cas.advance_capsule_v5_to_v6(
+            canonical_path=canonical,
+            transition_spec_path=spec_path,
+            repository_root=repository,
+        )
+    assert raised.value.code == "expected_parent_sha256_mismatch"
+    assert capsule_cas.sha256_bytes(canonical.read_bytes()) == (
+        capsule_cas.EXPECTED_V6_ADRENO_PASS_PARENT_SHA256
+    )
+
+    old_profile_root = tmp_path / "old_profile"
+    old_profile_root.mkdir()
+    old_repository, _old_canonical, _old_spec_path, old_spec = _setup(old_profile_root)
+    with pytest.raises(capsule_cas.CapsuleTransitionError) as raised:
+        capsule_cas.validate_v6_adreno_pass_spec(old_spec, old_repository)
+    assert raised.value.code == "expected_parent_sha256_mismatch"
+
+
+@pytest.mark.parametrize("field", ["source_commit", "evidence_commit"])
+@pytest.mark.parametrize("width", [40, 64])
+def test_v6_adreno_pass_rejects_zero_commit_placeholders(
+    tmp_path: Path,
+    field: str,
+    width: int,
+) -> None:
+    repository, _canonical, _spec_path, spec = _setup_adreno_pass(tmp_path)
+    spec["bindings"][field]["commit_sha"] = "0" * width
+    _adreno_campaign_operation(spec)["value"][field] = "0" * width
+
+    with pytest.raises(capsule_cas.CapsuleTransitionError) as raised:
+        capsule_cas.validate_v6_adreno_pass_spec(spec, repository)
+
+    assert raised.value.code == f"v6_{field}_placeholder_unresolved"
+
+
+def test_v5_to_v6_profile_also_rejects_zero_evidence_placeholder(
+    tmp_path: Path,
+) -> None:
+    repository, _canonical, _spec_path, spec = _setup(tmp_path)
+    spec["bindings"]["evidence_commit"]["commit_sha"] = "0" * 40
+    _campaign_operation(spec)["value"]["evidence_commit"] = "0" * 40
+
+    with pytest.raises(capsule_cas.CapsuleTransitionError) as raised:
+        capsule_cas.validate_v6_spec(spec, repository)
+
+    assert raised.value.code == "v6_evidence_commit_placeholder_unresolved"
+
+
+@pytest.mark.parametrize(
+    ("field", "foreign_value", "error_code"),
+    [
+        (
+            "source_commit",
+            "c" * 40,
+            "v6_campaign_state_source_commit_binding_mismatch",
+        ),
+        (
+            "evidence_commit",
+            "c" * 40,
+            "v6_campaign_state_evidence_commit_binding_mismatch",
+        ),
+        (
+            "frontier_root_sha256",
+            "c" * 64,
+            "v6_campaign_state_frontier_root_sha256_binding_mismatch",
+        ),
+        (
+            "parent_capsule_sha256",
+            "c" * 64,
+            "v6_campaign_state_parent_capsule_sha256_binding_mismatch",
+        ),
+    ],
+)
+def test_v6_adreno_pass_campaign_state_cross_bindings_are_exact(
+    tmp_path: Path,
+    field: str,
+    foreign_value: str,
+    error_code: str,
+) -> None:
+    repository, _canonical, _spec_path, spec = _setup_adreno_pass(tmp_path)
+    _adreno_campaign_operation(spec)["value"][field] = foreign_value
+
+    with pytest.raises(capsule_cas.CapsuleTransitionError) as raised:
+        capsule_cas.validate_v6_adreno_pass_spec(spec, repository)
+
+    assert raised.value.code == error_code
+
+
+def test_v6_adreno_pass_cli_is_dedicated_and_exact() -> None:
+    process = subprocess.run(
+        [sys.executable, str(V6_ADRENO_PASS_CLI), "--help"],
+        check=False,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+    )
+
+    assert process.returncode == 0
+    assert "bounded Adreno pass" in " ".join(process.stdout.split())
+    assert "--transition-spec" in process.stdout
