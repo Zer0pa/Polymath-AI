@@ -25,7 +25,7 @@ from polymath_ai.frontier.safetensors_identity import (
 )
 
 
-L0_SCHEMA_VERSION = "gemma4_e4b_l0_parent_manifest_v2"
+L0_SCHEMA_VERSION = "gemma4_e4b_l0_parent_manifest_v3"
 FULL_REVISION = re.compile(r"^[0-9a-f]{40}$")
 GIT_OID = re.compile(r"^[0-9a-f]{40}$")
 SHA256 = re.compile(r"^[0-9a-f]{64}$")
@@ -166,14 +166,33 @@ EXPECTED_REPOSITORY_FILES = {
 
 REQUIRED_CONVERTER_LINEAGE = {
     "exporter_revision",
+    "exporter_source",
     "converter_and_QAIRT_build",
     "QNN_API_version",
     "target_socModel",
     "target_dspArch",
-    "qairt_core_foundry_receipt_sha256",
-    "qairt_tool_hashes",
+    "qairt_core_foundry_receipt",
+    "qnn_api_source_identity",
+    "qnn_common_header",
+    "base_l0_input_bundle_manifest",
+    "qairt_tool_verification_receipt",
+    "qairt_tools",
     "execution_runtime",
 }
+REQUIRED_QAT_ROLE_CONTRACT_FIELDS = {
+    "repository",
+    "revision",
+    "config_and_weight_shards_sha256",
+    "quantization_and_encoding_manifest_sha256",
+    "LM_head_tying_and_quantization_identity",
+    "LM_head_tying_and_quantization_identity_sha256",
+    "tokenizer_and_template_equality_or_mapping",
+    "tokenizer_and_template_equality_or_mapping_sha256",
+    "executable_reference_stack_and_revision",
+    "executable_reference_stack_sha256",
+    "reference_dtype_and_runtime_policy",
+}
+REQUIRED_LOCATOR_DIGEST_FIELDS = {"locator", "sha256"}
 REQUIRED_EDGE_A_PROTOCOL = {
     "template",
     "teacher_forced_objective",
@@ -428,50 +447,94 @@ class E4bL0Builder:
         blockers.extend(
             self._validate_weight_receipts(inspected, weight_verification_receipts)
         )
+        architecture_role = self._architecture_role(inspected["architecture_oracle"])
+        task_oracle_role = self._task_oracle_role(
+            inspected["high_precision_task_oracle"],
+            edge_a_protocol,
+            reference_stacks.get("high_precision_task_oracle", {}),
+            weight_verification_receipts.get("high_precision_task_oracle", {}),
+        )
+        qat_candidates = {
+            role: self._qat_role(
+                inspected[role],
+                reference_stacks.get(role, {}),
+                weight_verification_receipts.get(role, {}),
+            )
+            for role in ("qat_mobile_transformers", "qat_mobile_compressed_tensors")
+        }
+        frozen_candidate_set = {
+            role: {
+                "repository": candidate["repository"],
+                "revision": candidate["revision"],
+                "config_and_weight_shards_sha256": candidate[
+                    "config_and_weight_shards_sha256"
+                ],
+                "quantization_and_encoding_manifest_sha256": candidate[
+                    "quantization_and_encoding_manifest_sha256"
+                ],
+                "LM_head_tying_and_quantization_identity_sha256": candidate[
+                    "LM_head_tying_and_quantization_identity_sha256"
+                ],
+                "tokenizer_and_template_equality_or_mapping_sha256": candidate[
+                    "tokenizer_and_template_equality_or_mapping_sha256"
+                ],
+                "executable_reference_stack_sha256": candidate[
+                    "executable_reference_stack_sha256"
+                ],
+                "full_file_weight_verification_receipt_sha256": candidate[
+                    "full_file_weight_verification_receipt_sha256"
+                ],
+            }
+            for role, candidate in qat_candidates.items()
+        }
+        selection_protocol = self._selection_protocol(
+            qat_candidates,
+            provisional_build_source,
+        )
+        selection = {
+            "frozen_candidate_set": frozen_candidate_set,
+            "frozen_candidate_set_sha256": canonical_sha256(frozen_candidate_set),
+            "selection_protocol": selection_protocol,
+            "selection_protocol_sha256": canonical_sha256(selection_protocol),
+            "provisional_build_source_candidate_id": provisional_build_source,
+            "provisional_selection_adjudication": selection_protocol[
+                "provisional_selection_adjudication"
+            ],
+            "provisional_selection_adjudication_sha256": canonical_sha256(
+                selection_protocol["provisional_selection_adjudication"]
+            ),
+            "numerical_admission_deferred_to": "L2_Edge_A_and_Edge_B",
+        }
+        blockers.extend(
+            self._validate_emitted_contract(
+                architecture_role,
+                task_oracle_role,
+                qat_candidates,
+                selection,
+                converter_lineage,
+            )
+        )
         blockers = sorted(set(blockers))
-        selection_protocol = self._selection_protocol(inspected, reference_stacks)
+        eligible_successors = ["CUR-0P_after_CUR-0S"]
+        if provisional_build_source is None:
+            eligible_successors.append(
+                "provisional_QAT_build_source_after_executable_reference"
+            )
+        else:
+            eligible_successors.extend(
+                [
+                    "F5_full_fixed_target_build_candidate",
+                    "L1_after_forward_child_candidate",
+                    "L2_after_L1_phone_context",
+                ]
+            )
         manifest = {
             "schema_version": L0_SCHEMA_VERSION,
             "state": "passed_scope" if not blockers else "blocked_fail_closed",
-            "architecture_oracle": self._architecture_role(
-                inspected["architecture_oracle"]
-            ),
-            "high_precision_task_oracle": self._task_oracle_role(
-                inspected["high_precision_task_oracle"],
-                edge_a_protocol,
-                reference_stacks.get("high_precision_task_oracle", {}),
-                weight_verification_receipts.get("high_precision_task_oracle", {}),
-            ),
-            "mobile_qat_candidates": {
-                role: self._qat_role(
-                    inspected[role],
-                    reference_stacks.get(role, {}),
-                    weight_verification_receipts.get(role, {}),
-                )
-                for role in ("qat_mobile_transformers", "qat_mobile_compressed_tensors")
-            },
-            "mobile_qat_selection": {
-                "frozen_candidate_set_sha256": canonical_sha256(
-                    [
-                        {
-                            "candidate_id": role,
-                            "repository": inspected[role]["repository"],
-                            "revision": inspected[role]["revision"],
-                            "config_and_weight_shards_sha256": inspected[role][
-                                "config_and_weight_shards_sha256"
-                            ],
-                        }
-                        for role in (
-                            "qat_mobile_transformers",
-                            "qat_mobile_compressed_tensors",
-                        )
-                    ]
-                ),
-                "selection_protocol": selection_protocol,
-                "selection_protocol_sha256": canonical_sha256(selection_protocol),
-                "provisional_build_source_candidate_id": provisional_build_source,
-                "numerical_admission_deferred_to": "L2_Edge_A_and_Edge_B",
-            },
+            "architecture_oracle": architecture_role,
+            "high_precision_task_oracle": task_oracle_role,
+            "mobile_qat_candidates": qat_candidates,
+            "mobile_qat_selection": selection,
             "converter_lineage": dict(converter_lineage),
             "declared_phone_authority_schemas": {
                 name: {
@@ -493,6 +556,7 @@ class E4bL0Builder:
                 "closes_only": ["L0_artifact_objective_and_protocol_identity"]
                 if not blockers
                 else [],
+                "eligible_successors": eligible_successors if not blockers else [],
                 "promotion_allowed": False,
                 "execution_authorized": False,
             },
@@ -996,11 +1060,38 @@ class E4bL0Builder:
             blockers.append("converter_lineage:wrong_dspArch")
         if converter.get("execution_runtime") != "ubuntu_22_04_direct_chroot":
             blockers.append("converter_lineage:wrong_execution_runtime")
-        if not SHA256.fullmatch(
-            str(converter.get("qairt_core_foundry_receipt_sha256", ""))
+        exporter_source = converter.get("exporter_source")
+        if (
+            not isinstance(exporter_source, Mapping)
+            or set(exporter_source)
+            != {"repository_locator", "revision", "source_files"}
         ):
-            blockers.append("converter_lineage:bad_core_foundry_receipt")
-        tool_hashes = converter.get("qairt_tool_hashes")
+            blockers.append("converter_lineage:bad_exporter_source")
+        else:
+            if exporter_source.get("repository_locator") != (
+                "github://Zer0pa/Polymath-AI"
+            ):
+                blockers.append("converter_lineage:wrong_exporter_repository")
+            if exporter_source.get("revision") != converter.get("exporter_revision"):
+                blockers.append("converter_lineage:exporter_revision_mismatch")
+            source_files = exporter_source.get("source_files")
+            if not isinstance(source_files, Mapping) or not source_files:
+                blockers.append("converter_lineage:exporter_source_files_missing")
+            elif any(
+                not E4bL0Builder._valid_relative_digest(path, digest)
+                for path, digest in source_files.items()
+            ):
+                blockers.append("converter_lineage:bad_exporter_source_file")
+        for field in (
+            "qairt_core_foundry_receipt",
+            "qnn_api_source_identity",
+            "qnn_common_header",
+            "base_l0_input_bundle_manifest",
+            "qairt_tool_verification_receipt",
+        ):
+            if not E4bL0Builder._valid_local_locator_digest(converter.get(field)):
+                blockers.append(f"converter_lineage:{field}_invalid")
+        tools = converter.get("qairt_tools")
         required_tools = {
             "qnn_context_binary_generator",
             "qnn_context_binary_utility",
@@ -1008,11 +1099,35 @@ class E4bL0Builder:
             "libQnnHtp",
             "libQnnSystem",
         }
-        if not isinstance(tool_hashes, Mapping) or set(tool_hashes) != required_tools:
-            blockers.append("converter_lineage:wrong_tool_hash_set")
-        elif any(not SHA256.fullmatch(str(value)) for value in tool_hashes.values()):
-            blockers.append("converter_lineage:bad_tool_hash")
+        if not isinstance(tools, Mapping) or set(tools) != required_tools:
+            blockers.append("converter_lineage:wrong_tool_set")
+        elif any(
+            not isinstance(record, Mapping)
+            or set(record) != REQUIRED_LOCATOR_DIGEST_FIELDS
+            or not str(record.get("locator", "")).startswith("runpod://")
+            or not SHA256.fullmatch(str(record.get("sha256", "")))
+            for record in tools.values()
+        ):
+            blockers.append("converter_lineage:bad_tool_identity")
         return blockers
+
+    @staticmethod
+    def _valid_relative_digest(path: Any, digest: Any) -> bool:
+        if not isinstance(path, str) or not path or path.startswith("/"):
+            return False
+        if ".." in path.split("/") or "\\" in path or "?" in path or "#" in path:
+            return False
+        return bool(SHA256.fullmatch(str(digest)))
+
+    @staticmethod
+    def _valid_local_locator_digest(record: Any) -> bool:
+        return (
+            isinstance(record, Mapping)
+            and set(record) == REQUIRED_LOCATOR_DIGEST_FIELDS
+            and E4bL0Builder._valid_relative_digest(
+                record.get("locator"), record.get("sha256")
+            )
+        )
 
     @staticmethod
     def _validate_edge_a_protocol(protocol: Mapping[str, Any]) -> list[str]:
@@ -1622,9 +1737,46 @@ class E4bL0Builder:
 
     @staticmethod
     def _selection_protocol(
-        inspected: Mapping[str, Mapping[str, Any]],
-        reference_stacks: Mapping[str, Mapping[str, Any]],
+        candidates: Mapping[str, Mapping[str, Any]],
+        provisional_build_source: str | None,
     ) -> dict[str, Any]:
+        candidate_dispositions: dict[str, dict[str, Any]] = {}
+        for role, candidate in candidates.items():
+            stack = candidate["executable_reference_stack_and_revision"]
+            smoke = stack.get("smoke_receipt")
+            selected = role == provisional_build_source
+            candidate_dispositions[role] = {
+                "selected_for_provisional_build": selected,
+                "eligibility_state": (
+                    "eligible_executable_reference"
+                    if stack.get("identity_state") == "passed_scope"
+                    else "eligible_unmeasured_reference"
+                ),
+                "reference_stack_state": stack.get("identity_state"),
+                "reference_smoke_state": (
+                    smoke.get("state") if isinstance(smoke, Mapping) else None
+                ),
+                "reference_smoke_sha256": stack.get("smoke_receipt_sha256"),
+                "numerical_preference_claimed": False,
+                "candidate_defeated": False,
+            }
+        adjudication = {
+            "state": (
+                "selected_for_build_only"
+                if provisional_build_source is not None
+                else "no_provisional_source_selected"
+            ),
+            "selected_candidate_id": provisional_build_source,
+            "selection_basis": (
+                "sole_currently_executed_reference_at_first_lexicographic_discriminator"
+                if provisional_build_source is not None
+                else "none"
+            ),
+            "later_lexicographic_discriminators_evaluated": False,
+            "candidate_tournament_completed": False,
+            "numerical_preference_or_admission_claimed": False,
+            "candidates": candidate_dispositions,
+        }
         return {
             "hard_eligibility": [
                 "immutable official E4B-it mobile-QAT revision",
@@ -1643,21 +1795,119 @@ class E4bL0Builder:
             ],
             "candidate_static_evidence": {
                 role: {
-                    "quantization_and_encoding_manifest_sha256": inspected[role][
+                    "quantization_and_encoding_manifest_sha256": candidate[
                         "quantization_and_encoding_manifest_sha256"
                     ],
-                    "framework_stack_sha256": canonical_sha256(
-                        reference_stacks.get(role, {})
-                    ),
-                    "tie_word_embeddings": inspected[role]["architecture"][
-                        "tie_word_embeddings"
+                    "LM_head_tying_and_quantization_identity_sha256": candidate[
+                        "LM_head_tying_and_quantization_identity_sha256"
+                    ],
+                    "tokenizer_and_template_equality_or_mapping_sha256": candidate[
+                        "tokenizer_and_template_equality_or_mapping_sha256"
+                    ],
+                    "executable_reference_stack_sha256": candidate[
+                        "executable_reference_stack_sha256"
+                    ],
+                    "full_file_weight_verification_receipt_sha256": candidate[
+                        "full_file_weight_verification_receipt_sha256"
                     ],
                 }
-                for role in ("qat_mobile_transformers", "qat_mobile_compressed_tensors")
+                for role, candidate in candidates.items()
             },
+            "provisional_selection_adjudication": adjudication,
             "converter_success_is_numerical_admission": False,
             "numerical_admission_gate": "L2",
         }
+
+    @staticmethod
+    def _validate_emitted_contract(
+        architecture_oracle: Mapping[str, Any],
+        task_oracle: Mapping[str, Any],
+        candidates: Mapping[str, Mapping[str, Any]],
+        selection: Mapping[str, Any],
+        converter_lineage: Mapping[str, Any],
+    ) -> list[str]:
+        blockers: list[str] = []
+        required_architecture = {"repository", "revision", "config_sha256"}
+        required_task = {
+            "repository",
+            "revision",
+            "config_and_weight_shards_sha256",
+            "tokenizer_files_sha256",
+            "chat_template_sha256",
+            "termination_token_contract",
+            "LM_head_tying_state",
+            "edge_A_decode_template_stop_length_seed_and_evaluator_protocol_sha256",
+        }
+        if not required_architecture.issubset(architecture_oracle):
+            blockers.append("l0_contract:architecture_oracle_required_field_missing")
+        if not required_task.issubset(task_oracle):
+            blockers.append("l0_contract:task_oracle_required_field_missing")
+        if set(candidates) != {
+            "qat_mobile_transformers",
+            "qat_mobile_compressed_tensors",
+        }:
+            blockers.append("l0_contract:mobile_qat_candidate_set_wrong")
+        for role, candidate in candidates.items():
+            if not REQUIRED_QAT_ROLE_CONTRACT_FIELDS.issubset(candidate):
+                blockers.append(f"l0_contract:{role}:required_field_missing")
+                continue
+            digest_pairs = (
+                (
+                    "LM_head_tying_and_quantization_identity",
+                    "LM_head_tying_and_quantization_identity_sha256",
+                ),
+                (
+                    "tokenizer_and_template_equality_or_mapping",
+                    "tokenizer_and_template_equality_or_mapping_sha256",
+                ),
+                (
+                    "executable_reference_stack_and_revision",
+                    "executable_reference_stack_sha256",
+                ),
+            )
+            for value_field, digest_field in digest_pairs:
+                if candidate[digest_field] != canonical_sha256(candidate[value_field]):
+                    blockers.append(f"l0_contract:{role}:{digest_field}_mismatch")
+        frozen_candidates = selection.get("frozen_candidate_set")
+        if not isinstance(frozen_candidates, Mapping) or selection.get(
+            "frozen_candidate_set_sha256"
+        ) != canonical_sha256(frozen_candidates):
+            blockers.append("l0_contract:frozen_candidate_set_digest_mismatch")
+        selection_protocol = selection.get("selection_protocol")
+        if not isinstance(selection_protocol, Mapping) or selection.get(
+            "selection_protocol_sha256"
+        ) != canonical_sha256(selection_protocol):
+            blockers.append("l0_contract:selection_protocol_digest_mismatch")
+        adjudication = selection.get("provisional_selection_adjudication")
+        if not isinstance(adjudication, Mapping) or selection.get(
+            "provisional_selection_adjudication_sha256"
+        ) != canonical_sha256(adjudication):
+            blockers.append("l0_contract:selection_adjudication_digest_mismatch")
+        elif not isinstance(selection_protocol, Mapping) or selection_protocol.get(
+            "provisional_selection_adjudication"
+        ) != adjudication:
+            blockers.append("l0_contract:selection_adjudication_protocol_mismatch")
+        elif adjudication.get("selected_candidate_id") != selection.get(
+            "provisional_build_source_candidate_id"
+        ):
+            blockers.append("l0_contract:selection_adjudication_candidate_mismatch")
+        elif adjudication.get("numerical_preference_or_admission_claimed") is not False:
+            blockers.append("l0_contract:selection_adjudication_overclaims_numerics")
+        else:
+            dispositions = adjudication.get("candidates")
+            if not isinstance(dispositions, Mapping) or set(dispositions) != set(
+                candidates
+            ):
+                blockers.append("l0_contract:selection_disposition_set_mismatch")
+            elif any(
+                not isinstance(disposition, Mapping)
+                or disposition.get("candidate_defeated") is not False
+                for disposition in dispositions.values()
+            ):
+                blockers.append("l0_contract:selection_marks_candidate_defeated")
+        if set(converter_lineage) != REQUIRED_CONVERTER_LINEAGE:
+            blockers.append("l0_contract:converter_lineage_required_field_missing")
+        return blockers
 
     @staticmethod
     def _architecture_role(artifact: Mapping[str, Any]) -> dict[str, Any]:
@@ -1732,6 +1982,23 @@ class E4bL0Builder:
         weight_receipt: Mapping[str, Any],
     ) -> dict[str, Any]:
         tokenizer = artifact["tokenizer"]
+        lm_head_identity = {
+            "tie_word_embeddings": artifact["architecture"]["tie_word_embeddings"],
+            "lm_head_is_separate": artifact["architecture"]["tie_word_embeddings"]
+            is False,
+            "critical_tensor_contracts_sha256": artifact["safetensors"][
+                "critical_tensor_contracts_sha256"
+            ],
+        }
+        tokenizer_mapping = {
+            "tokenizer_json_sha256": tokenizer["tokenizer_json_sha256"],
+            "tokenizer_config_sha256": tokenizer["tokenizer_config_sha256"],
+            "tokenizer_config_semantic_sha256": tokenizer[
+                "tokenizer_config_semantic_sha256"
+            ],
+            "chat_template_sha256": tokenizer["chat_template_sha256"],
+            "mapping": "byte_equal_tokenizer_and_template_semantic_equal_tokenizer_config",
+        }
         return {
             "repository": artifact["repository"],
             "revision": artifact["revision"],
@@ -1745,23 +2012,14 @@ class E4bL0Builder:
                 "quantization_and_encoding_manifest_sha256"
             ],
             "quantization_identity": artifact["quantization_identity"],
-            "LM_head_tying_and_quantization_identity": {
-                "tie_word_embeddings": artifact["architecture"]["tie_word_embeddings"],
-                "lm_head_is_separate": artifact["architecture"]["tie_word_embeddings"]
-                is False,
-                "critical_tensor_contracts_sha256": artifact["safetensors"][
-                    "critical_tensor_contracts_sha256"
-                ],
-            },
-            "tokenizer_and_template_equality_or_mapping": {
-                "tokenizer_json_sha256": tokenizer["tokenizer_json_sha256"],
-                "tokenizer_config_sha256": tokenizer["tokenizer_config_sha256"],
-                "tokenizer_config_semantic_sha256": tokenizer[
-                    "tokenizer_config_semantic_sha256"
-                ],
-                "chat_template_sha256": tokenizer["chat_template_sha256"],
-                "mapping": "byte_equal_tokenizer_and_template_semantic_equal_tokenizer_config",
-            },
+            "LM_head_tying_and_quantization_identity": lm_head_identity,
+            "LM_head_tying_and_quantization_identity_sha256": canonical_sha256(
+                lm_head_identity
+            ),
+            "tokenizer_and_template_equality_or_mapping": tokenizer_mapping,
+            "tokenizer_and_template_equality_or_mapping_sha256": canonical_sha256(
+                tokenizer_mapping
+            ),
             "executable_reference_stack_and_revision": dict(reference_stack),
             "executable_reference_stack_sha256": canonical_sha256(reference_stack),
             "full_file_weight_verification_receipt": dict(weight_receipt),

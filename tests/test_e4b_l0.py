@@ -318,17 +318,58 @@ def reference_stacks() -> dict[str, dict[str, Any]]:
 def converter_lineage() -> dict[str, Any]:
     return {
         "exporter_revision": "f" * 40,
+        "exporter_source": {
+            "repository_locator": "github://Zer0pa/Polymath-AI",
+            "revision": "f" * 40,
+            "source_files": {
+                "polymath_ai/frontier/e4b_f5_qnn_exporter.py": "0" * 64
+            },
+        },
         "converter_and_QAIRT_build": "v2.44.0.260225143659",
         "QNN_API_version": "2.33.0",
         "target_socModel": 69,
         "target_dspArch": 79,
-        "qairt_core_foundry_receipt_sha256": "1" * 64,
-        "qairt_tool_hashes": {
-            "qnn_context_binary_generator": "2" * 64,
-            "qnn_context_binary_utility": "3" * 64,
-            "qnn_net_run": "4" * 64,
-            "libQnnHtp": "5" * 64,
-            "libQnnSystem": "6" * 64,
+        "qairt_core_foundry_receipt": {
+            "locator": "runtime/reports/core.json",
+            "sha256": "1" * 64,
+        },
+        "qnn_api_source_identity": {
+            "locator": "runtime/reports/qnn-api.json",
+            "sha256": "7" * 64,
+        },
+        "qnn_common_header": {
+            "locator": "runtime/reports/QnnCommon.h",
+            "sha256": "8" * 64,
+        },
+        "base_l0_input_bundle_manifest": {
+            "locator": "runtime/reports/l0-inputs.json",
+            "sha256": "a" * 64,
+        },
+        "qairt_tool_verification_receipt": {
+            "locator": "runtime/reports/qairt-tools.json",
+            "sha256": "9" * 64,
+        },
+        "qairt_tools": {
+            "qnn_context_binary_generator": {
+                "locator": "runpod://fixture/qnn-context-binary-generator",
+                "sha256": "2" * 64,
+            },
+            "qnn_context_binary_utility": {
+                "locator": "runpod://fixture/qnn-context-binary-utility",
+                "sha256": "3" * 64,
+            },
+            "qnn_net_run": {
+                "locator": "runpod://fixture/qnn-net-run",
+                "sha256": "4" * 64,
+            },
+            "libQnnHtp": {
+                "locator": "runpod://fixture/libQnnHtp.so",
+                "sha256": "5" * 64,
+            },
+            "libQnnSystem": {
+                "locator": "runpod://fixture/libQnnSystem.so",
+                "sha256": "6" * 64,
+            },
         },
         "execution_runtime": "ubuntu_22_04_direct_chroot",
     }
@@ -431,7 +472,7 @@ def test_builds_passed_content_addressed_l0_without_weight_download() -> None:
     payload = build(client)
 
     manifest = payload["manifest"]
-    assert manifest["schema_version"] == "gemma4_e4b_l0_parent_manifest_v2"
+    assert manifest["schema_version"] == "gemma4_e4b_l0_parent_manifest_v3"
     assert manifest["state"] == "passed_scope"
     assert manifest["blockers"] == []
     assert payload["manifest_sha256"] == canonical_sha256(manifest)
@@ -446,6 +487,50 @@ def test_builds_passed_content_addressed_l0_without_weight_download() -> None:
         ]["lm_head_is_separate"]
         is True
     )
+    for role in ("qat_mobile_transformers", "qat_mobile_compressed_tensors"):
+        candidate = manifest["mobile_qat_candidates"][role]
+        assert {
+            "repository",
+            "revision",
+            "config_and_weight_shards_sha256",
+            "quantization_and_encoding_manifest_sha256",
+            "LM_head_tying_and_quantization_identity",
+            "LM_head_tying_and_quantization_identity_sha256",
+            "tokenizer_and_template_equality_or_mapping",
+            "tokenizer_and_template_equality_or_mapping_sha256",
+            "executable_reference_stack_and_revision",
+            "reference_dtype_and_runtime_policy",
+        }.issubset(candidate)
+        assert candidate["LM_head_tying_and_quantization_identity_sha256"] == (
+            canonical_sha256(candidate["LM_head_tying_and_quantization_identity"])
+        )
+        assert candidate["tokenizer_and_template_equality_or_mapping_sha256"] == (
+            canonical_sha256(candidate["tokenizer_and_template_equality_or_mapping"])
+        )
+    selection = manifest["mobile_qat_selection"]
+    assert selection["frozen_candidate_set_sha256"] == canonical_sha256(
+        selection["frozen_candidate_set"]
+    )
+    adjudication = selection["provisional_selection_adjudication"]
+    assert selection["provisional_selection_adjudication_sha256"] == (
+        canonical_sha256(adjudication)
+    )
+    assert adjudication["selected_candidate_id"] == "qat_mobile_transformers"
+    assert adjudication["candidate_tournament_completed"] is False
+    assert adjudication["numerical_preference_or_admission_claimed"] is False
+    assert (
+        adjudication["candidates"]["qat_mobile_compressed_tensors"][
+            "eligibility_state"
+        ]
+        == "eligible_unmeasured_reference"
+    )
+    assert (
+        adjudication["candidates"]["qat_mobile_compressed_tensors"][
+            "candidate_defeated"
+        ]
+        is False
+    )
+    assert manifest["effects"]["eligible_successors"]
     assert client.full_weight_reads == 0
 
 
@@ -463,6 +548,27 @@ def test_tokenizer_drift_blocks_candidate() -> None:
     assert (
         "qat_mobile_transformers:tokenizer_json_differs_from_task_oracle"
         in payload["manifest"]["blockers"]
+    )
+
+
+def test_emitted_contract_validator_rejects_missing_required_candidate_digest() -> None:
+    client = FakeHubClient()
+    manifest = build(client)["manifest"]
+    candidates = json.loads(json.dumps(manifest["mobile_qat_candidates"]))
+    del candidates["qat_mobile_transformers"][
+        "tokenizer_and_template_equality_or_mapping_sha256"
+    ]
+
+    blockers = E4bL0Builder._validate_emitted_contract(
+        manifest["architecture_oracle"],
+        manifest["high_precision_task_oracle"],
+        candidates,
+        manifest["mobile_qat_selection"],
+        manifest["converter_lineage"],
+    )
+
+    assert (
+        "l0_contract:qat_mobile_transformers:required_field_missing" in blockers
     )
 
 
@@ -739,3 +845,10 @@ def test_l0_allows_no_provisional_candidate_without_claiming_execution() -> None
         is None
     )
     assert result["manifest"]["effects"]["execution_authorized"] is False
+    assert "F5_full_fixed_target_build_candidate" not in result["manifest"][
+        "effects"
+    ]["eligible_successors"]
+    assert (
+        "provisional_QAT_build_source_after_executable_reference"
+        in result["manifest"]["effects"]["eligible_successors"]
+    )

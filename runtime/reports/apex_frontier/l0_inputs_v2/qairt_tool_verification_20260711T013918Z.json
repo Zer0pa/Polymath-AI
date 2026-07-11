@@ -1,0 +1,41 @@
+{
+  "schema_version": "e4b_qairt_tool_verification_v1",
+  "state": "passed_scope",
+  "run_id": "20260711T013918Z_qairt_tool_reverification",
+  "observed_at_utc": "2026-07-11T01:39:18Z",
+  "provider_locator": "runpod://uh57jg7iguwqth",
+  "qairt_build": "v2.44.0.260225143659",
+  "qairt_root": "/workspace/qairt-2.44/qairt/2.44.0.260225",
+  "verification_method": "provider_local_streaming_sha256sum",
+  "tools": {
+    "qnn_context_binary_generator": {
+      "locator": "runpod://uh57jg7iguwqth/workspace/qairt-2.44/qairt/2.44.0.260225/bin/x86_64-linux-clang/qnn-context-binary-generator",
+      "sha256": "3fe90a0646963f95dcef773614c7fbcb192a86e7cbfae522ee9682252733323a"
+    },
+    "qnn_context_binary_utility": {
+      "locator": "runpod://uh57jg7iguwqth/workspace/qairt-2.44/qairt/2.44.0.260225/bin/x86_64-linux-clang/qnn-context-binary-utility",
+      "sha256": "59e203b4b6f61fa9b2251581c6ba9fbd0a22f0e97b2a052559f1f71ddcc6dbd7"
+    },
+    "qnn_net_run": {
+      "locator": "runpod://uh57jg7iguwqth/workspace/qairt-2.44/qairt/2.44.0.260225/bin/x86_64-linux-clang/qnn-net-run",
+      "sha256": "868f9cb6faa80b528be355e1fd58b042c2156b98fd12e3d72debc5b0841c6364"
+    },
+    "libQnnHtp": {
+      "locator": "runpod://uh57jg7iguwqth/workspace/qairt-2.44/qairt/2.44.0.260225/lib/x86_64-linux-clang/libQnnHtp.so",
+      "sha256": "45c53684cbba2026cd90b76b1c4779063d68ed5e6d35d2ac0b0ce8f506137687"
+    },
+    "libQnnSystem": {
+      "locator": "runpod://uh57jg7iguwqth/workspace/qairt-2.44/qairt/2.44.0.260225/lib/x86_64-linux-clang/libQnnSystem.so",
+      "sha256": "c902950a4c471a28ae79d132920554bc5749dcf0dd4f72c41d7f40ab3d94a0e1"
+    }
+  },
+  "custody": {
+    "raw_location_class": "provider_local",
+    "egress_result": "hash_and_locator_metadata_only",
+    "phone_private_state_ingested": false,
+    "secrets_recorded": false
+  },
+  "nonclaims": [
+    "No model conversion, context generation, phone execution, numerical parity, or learning claim is made."
+  ]
+}
