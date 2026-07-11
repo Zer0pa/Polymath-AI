@@ -1,0 +1,26 @@
+{
+  "schema_version": "gemma4_e4b_l0_attempt_supersession_v1",
+  "state": "superseded_fail_closed",
+  "attempt": {
+    "manifest_locator": "runtime/reports/apex_frontier/l0_artifact_lock_20260711T012547Z/e4b_l0_parent_779ee60254e7775ef681a565292e0981628a527a60654afee8dd4bbeb32e4ea4.json",
+    "manifest_sha256": "779ee60254e7775ef681a565292e0981628a527a60654afee8dd4bbeb32e4ea4",
+    "receipt_locator": "runtime/reports/apex_frontier/l0_artifact_lock_20260711T012547Z/l0_execution_receipt_78e7ab0546a6f14927174842d6fe83646b46abb3316a9a09b72e11834b694e3e.json",
+    "receipt_sha256": "78e7ab0546a6f14927174842d6fe83646b46abb3316a9a09b72e11834b694e3e"
+  },
+  "falsification": {
+    "class": "custody_provenance_label_mismatch",
+    "detail": "The embedded selected QAT-T receipt was correctly phone_local_authority, but aggregate manifest and execution-receipt field names still described all observations as provider-local.",
+    "raw_evidence_invalidated": false,
+    "governing_L0_invalidated": true
+  },
+  "successor": {
+    "manifest_locator": "runtime/reports/apex_frontier/l0_artifact_lock_20260711T012759Z/e4b_l0_parent_15a78efe7daef33baa7932dd1afabeb694f18a91b312575a0745609ac98361a6.json",
+    "manifest_sha256": "15a78efe7daef33baa7932dd1afabeb694f18a91b312575a0745609ac98361a6",
+    "receipt_locator": "runtime/reports/apex_frontier/l0_artifact_lock_20260711T012759Z/l0_execution_receipt_594c5c7cf0d9de13a14aeff6f0c116513a633d9edd24118c7a0aac235464a663.json",
+    "receipt_sha256": "594c5c7cf0d9de13a14aeff6f0c116513a633d9edd24118c7a0aac235464a663",
+    "state": "passed_scope"
+  },
+  "capsule_advanced_by_attempt": false,
+  "capsule_advanced_by_successor_transaction": false,
+  "promotion_allowed": false
+}

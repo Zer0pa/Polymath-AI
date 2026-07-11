@@ -1,0 +1,103 @@
+{
+  "schema_version": "gemma4_e4b_frontier_event_v1",
+  "event_id": "SFL-20260711T020237Z-L0-SELECT-W2-FP16-KILL",
+  "recorded_at_utc": "2026-07-11T02:02:37Z",
+  "parent_frontier_root_sha256": "707ed2b30679f3d7c526f04d00e39b2b04d7e573a50f7b23cb81b576dd1807f9",
+  "parent_frontier_root_kind": "ACCESS-0_sovereign_selection_seed",
+  "active_sovereign_gate": "L0_selected_then_F5_L1_L2_terminal_head_rebuild_in_parallel_with_CUR-0S",
+  "hypothesis_and_architecture_lane": "full_E4B_fixed_candidate_with_BF16_preserving_or_explicitly_admitted_heterogeneous_terminal_head",
+  "target_claim_ids": [
+    "L0-E4B-85d6ba44a1ebbe8b",
+    "L2-PROJECTION-W2-FP16-965697efe3e3f9e6"
+  ],
+  "disconfirming_evidence_and_falsifiers": [
+    {
+      "claim_id": "L2-PROJECTION-W2-FP16-965697efe3e3f9e6",
+      "state": "falsified_scope",
+      "detail": "All three full 262144-logit W2 BF16-QAT to same-weight FP16-surrogate cases failed the frozen pre-observation distribution or top-k policy despite exact input casting and stable top-1.",
+      "gate_locator": "runtime/reports/apex_frontier/20260711T015600Z_l2_projection_reference_attempt2/reference_gate.json",
+      "gate_sha256": "965697efe3e3f9e65ac9aa726e0247fd83c1fdaa942bc1c0bc8954aabe784acd",
+      "receipt_locator": "runtime/reports/apex_frontier/20260711T015600Z_l2_projection_reference_attempt2/reference_receipt.json",
+      "receipt_sha256": "61acb2f73c4b971eb9349a684abeb365db0af1251dd2147b7cff73a3a7182dbb"
+    },
+    {
+      "claim_id": "CUR-0S-IMPLEMENTATION-SUBSTRATE",
+      "state": "viable_not_admitted",
+      "detail": "The prior CUR-0S implementation was rejected for master-shape mismatch, resettable exposure genesis, self-authorizing Arm-C, and nontransactional publication; the repair remains non-governing until externally precommitted roots and a real phone run pass."
+    }
+  ],
+  "state": "selected",
+  "first_missing_green_field": "BF16_preserving_or_other_frozen_policy_admissible_full_W2_terminal_head",
+  "branch_transitions": [
+    {
+      "branch": "L0_artifact_identity",
+      "from": "two_invalidated_passed_looking_attempts",
+      "to": "selected_governing_passed_scope_pending_capsule_CAS",
+      "evidence_sha256": "14870688e72f2f6fe3a8e49896ecaee2997c651c5a84e2035aeb91df9515fef5"
+    },
+    {
+      "branch": "F5_W2_documented_FP16_terminal_head",
+      "from": "viable_unmeasured",
+      "to": "falsified_scope_killed",
+      "evidence_sha256": "965697efe3e3f9e65ac9aa726e0247fd83c1fdaa942bc1c0bc8954aabe784acd"
+    },
+    {
+      "branch": "CUR-0S_authority_substrate",
+      "from": "rejected_unsound",
+      "to": "repair_under_test_not_admitted",
+      "evidence_sha256": null
+    }
+  ],
+  "serious_alternatives_and_eligible_maximal_experiments": [
+    {
+      "rank": 1,
+      "lane": "standard_QAIRT_BF16_or_artifact_native_quantized_terminal_head",
+      "experiment": "Determine the largest public-interface W2 graph that preserves the selected QAT BF16 computation semantics, then run the unchanged full-width frozen gate before context generation."
+    },
+    {
+      "rank": 2,
+      "lane": "Adreno_Vulkan_terminal_head",
+      "experiment": "Build an explicitly heterogeneous full-width BF16_or_FP32 terminal head with exact synchronization and compare against the same frozen QAT authority outputs."
+    },
+    {
+      "rank": 3,
+      "lane": "custom_HTP_terminal_operator",
+      "experiment": "Use only if standard public QAIRT operators and legal datatype paths are exhaustively falsified; preserve W2 packed-weight and BF16 semantics without CPU fallback."
+    }
+  ],
+  "selected_experiment_and_runner_up": {
+    "selected": "standard_QAIRT_BF16_or_artifact_native_quantized_terminal_head",
+    "runner_up": "Adreno_Vulkan_terminal_head",
+    "selection_reason": "The first lane retains HTP locality and the full fixed-candidate objective; the runner-up is the strongest public heterogeneous route if HTP datatype semantics are unavailable. Threshold relaxation and CPU fallback are ineligible."
+  },
+  "evidence_refs": [
+    {
+      "locator": "runtime/reports/apex_frontier/access0_platform_receipt_20260711T004257Z.json",
+      "sha256": "707ed2b30679f3d7c526f04d00e39b2b04d7e573a50f7b23cb81b576dd1807f9"
+    },
+    {
+      "locator": "runtime/reports/apex_frontier/l0_adjudication_20260711T020134Z.json",
+      "sha256": "14870688e72f2f6fe3a8e49896ecaee2997c651c5a84e2035aeb91df9515fef5"
+    },
+    {
+      "locator": "runtime/reports/apex_frontier/f5_direct_qnn_probe_20260711T011520Z.json",
+      "sha256": "2f7c3f07de03e62e88c29c924ab9a86adffba8ee78d9b406b91eea645b677e46"
+    },
+    {
+      "locator": "runtime/reports/apex_frontier/20260711T015600Z_l2_projection_reference_attempt2/reference_gate.json",
+      "sha256": "965697efe3e3f9e65ac9aa726e0247fd83c1fdaa942bc1c0bc8954aabe784acd"
+    }
+  ],
+  "rollback": {
+    "source_revision_before_event": "c4f543bbcc98b1c6e8df09ab37d14305d69d8c2b",
+    "capsule_sha256_before_event": "7f85799e260658cd400b837a784035438c7601e3057d963e4cf9b98f14841266",
+    "FP16_W2_context_generated": false,
+    "phone_state_mutated_by_FP16_W2": false,
+    "rollback_action_required": false
+  },
+  "promotion_allowed": false,
+  "nonclaims": [
+    "The W4 projection has framework reference outputs but remains phone-unobserved.",
+    "No F5 forward child, L1, L2, CUR-0S, CUR-0P, learning, or authority-quality pass is claimed."
+  ]
+}

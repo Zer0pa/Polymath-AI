@@ -1,0 +1,143 @@
+{
+  "schema_version": "gemma4_e4b_l0_adjudication_chain_v2",
+  "recorded_at_utc": "2026-07-11T02:01:34Z",
+  "state": "selected_governing_candidate_pending_capsule_transition",
+  "parent_capsule": {
+    "locator": "docs/APEX-CURRENT-REALITY-CAPSULE-GEMMA4-E4B-QNN-CELL-2026-07-10.yaml",
+    "sha256": "7f85799e260658cd400b837a784035438c7601e3057d963e4cf9b98f14841266",
+    "git_blob_oid": "ac4a34e376bc15a91d66d29ec2e0210bb2741d06",
+    "source_revision": "4f9d6f10e0b6d87358bebd028cfe470b953d7586"
+  },
+  "adjudicating_source": {
+    "l0_source_revision": "4f9d6f10e0b6d87358bebd028cfe470b953d7586",
+    "evidence_branch_head_at_recording": "c4f543bbcc98b1c6e8df09ab37d14305d69d8c2b",
+    "repository_locator": "github://Zer0pa/Polymath-AI",
+    "branch": "frontier/gemma4-phone-native-20260710T235022Z"
+  },
+  "preliminary_supersession_record": {
+    "locator": "runtime/reports/apex_frontier/l0_attempt_20260711T012547Z_supersession.json",
+    "sha256": "fce672756893976f957278c2e2e848b8bb37046f63d3693eb74e95d310b397fc",
+    "disposition": "superseded_by_this_complete_adjudication_chain"
+  },
+  "attempts": [
+    {
+      "attempt_id": "L0-E4B-779ee60254e7775e",
+      "manifest": {
+        "locator": "runtime/reports/apex_frontier/l0_artifact_lock_20260711T012547Z/e4b_l0_parent_779ee60254e7775ef681a565292e0981628a527a60654afee8dd4bbeb32e4ea4.json",
+        "sha256": "779ee60254e7775ef681a565292e0981628a527a60654afee8dd4bbeb32e4ea4"
+      },
+      "receipt": {
+        "locator": "runtime/reports/apex_frontier/l0_artifact_lock_20260711T012547Z/l0_execution_receipt_78e7ab0546a6f14927174842d6fe83646b46abb3316a9a09b72e11834b694e3e.json",
+        "sha256": "78e7ab0546a6f14927174842d6fe83646b46abb3316a9a09b72e11834b694e3e"
+      },
+      "disposition": "invalidated_then_superseded",
+      "falsifiers": [
+        "aggregate_custody_fields_misclassified_phone_local_QAT_observation_as_provider_local"
+      ],
+      "completion_marker_present": false,
+      "capsule_advanced": false,
+      "descendant_authority_roots": [],
+      "promotion_allowed": false
+    },
+    {
+      "attempt_id": "L0-E4B-15a78efe7daef33b",
+      "manifest": {
+        "locator": "runtime/reports/apex_frontier/l0_artifact_lock_20260711T012759Z/e4b_l0_parent_15a78efe7daef33baa7932dd1afabeb694f18a91b312575a0745609ac98361a6.json",
+        "sha256": "15a78efe7daef33baa7932dd1afabeb694f18a91b312575a0745609ac98361a6"
+      },
+      "receipt": {
+        "locator": "runtime/reports/apex_frontier/l0_artifact_lock_20260711T012759Z/l0_execution_receipt_594c5c7cf0d9de13a14aeff6f0c116513a633d9edd24118c7a0aac235464a663.json",
+        "sha256": "594c5c7cf0d9de13a14aeff6f0c116513a633d9edd24118c7a0aac235464a663"
+      },
+      "disposition": "invalidated_then_superseded",
+      "falsifiers": [
+        "PRD_4_5_required_tokenizer_and_template_mapping_digest_absent_for_both_QAT_candidates",
+        "receipt_claim_effects_omitted_eligible_successors",
+        "provisional_QAT_selection_not_explicitly_adjudicated",
+        "QNN_QAIRT_and_exporter_provenance_not_recoverably_locator_bound",
+        "governing_receipt_persisted_ephemeral_absolute_worktree_locators",
+        "post_publish_readback_had_no_exclusive_fsynced_completion_marker",
+        "emitted_manifest_contract_had_no_structural_fail_closed_validator"
+      ],
+      "completion_marker_present": false,
+      "capsule_advanced": false,
+      "descendant_authority_roots": [],
+      "promotion_allowed": false
+    },
+    {
+      "attempt_id": "L0-E4B-85d6ba44a1ebbe8b",
+      "manifest": {
+        "locator": "runtime/reports/apex_frontier/l0_artifact_lock_20260711T015245Z/e4b_l0_parent_85d6ba44a1ebbe8b0492526a30b904984101c34c6c5a5ecbc3c88c3f3a8fa3b5.json",
+        "sha256": "85d6ba44a1ebbe8b0492526a30b904984101c34c6c5a5ecbc3c88c3f3a8fa3b5"
+      },
+      "receipt": {
+        "locator": "runtime/reports/apex_frontier/l0_artifact_lock_20260711T015245Z/l0_execution_receipt_8f0e3192b11a677e7081ad64a54fed83aeb5a1d38cedd7fae41b4db695cc755c.json",
+        "sha256": "8f0e3192b11a677e7081ad64a54fed83aeb5a1d38cedd7fae41b4db695cc755c"
+      },
+      "completion_marker": {
+        "locator": "runtime/reports/apex_frontier/l0_artifact_lock_20260711T015245Z/L0_TRANSACTION_COMPLETE.json",
+        "sha256": "280c113d81c8239e4ca839a4b49b0c9d6ac57d3a4cd6027c6c24b1cb46ed1748"
+      },
+      "disposition": "selected_governing_L0_passed_scope",
+      "completion_marker_verifier": true,
+      "capsule_advanced": false,
+      "descendant_authority_roots": [],
+      "promotion_allowed": false
+    }
+  ],
+  "independent_audit": {
+    "verdict": "admissible_as_governing_L0_passed_scope",
+    "sealed_file_count": 3,
+    "revision_bound_source_input_and_parent_records": 12,
+    "base_input_files_verified": 58,
+    "hugging_face_revisions_live_revalidated": 4,
+    "hugging_face_repository_tree_entries_revalidated": 38,
+    "execution_affecting_provider_files_rehashed": 30,
+    "composite_and_nested_digest_formulas_recomputed": 24,
+    "qairt_tools_live_rehashed": 5,
+    "focused_tests_passed": 38,
+    "hard_defect_count": 0
+  },
+  "claim_transitions": [
+    {
+      "claim_id": "L0-E4B-779ee60254e7775e",
+      "from": "passed_looking_non_governing_attempt",
+      "to": "invalidated_then_superseded"
+    },
+    {
+      "claim_id": "L0-E4B-15a78efe7daef33b",
+      "from": "passed_looking_non_governing_attempt",
+      "to": "invalidated_then_superseded"
+    },
+    {
+      "claim_id": "L0-E4B-85d6ba44a1ebbe8b",
+      "from": "completed_marker_verified_candidate",
+      "to": "selected_governing_L0_passed_scope_pending_capsule_transition"
+    }
+  ],
+  "rollback_and_invalidation": {
+    "rollback_base_capsule_sha256": "7f85799e260658cd400b837a784035438c7601e3057d963e4cf9b98f14841266",
+    "prior_attempt_bytes_deleted": false,
+    "prior_attempt_descendants_invalidated": true,
+    "governing_capsule_unchanged_by_this_record": true
+  },
+  "effects": {
+    "closes_only": [
+      "L0_artifact_objective_and_protocol_identity"
+    ],
+    "eligible_successors": [
+      "CUR-0P_after_CUR-0S",
+      "F5_full_fixed_target_build_candidate",
+      "L1_after_forward_child_candidate",
+      "L2_after_L1_phone_context"
+    ],
+    "execution_authorized": false,
+    "promotion_allowed": false,
+    "capsule_transition_required": true
+  },
+  "nonclaims": [
+    "No numerical admission, QNN context, phone execution, learning, or promotion is established.",
+    "QAT-T is selected only as the provisional build source; QAT-CT remains eligible, unmeasured, and undefeated.",
+    "This adjudication does not itself perform the PRD Section 12.10 capsule compare-and-swap."
+  ]
+}
