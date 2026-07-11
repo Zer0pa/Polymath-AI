@@ -291,7 +291,7 @@ def build_execution_receipt(
             "effects": manifest["effects"],
             "nonclaims": manifest["nonclaims"],
             "custody": {
-                "raw_location_class": "provider_local_or_none",
+                "raw_location_class": "provider_or_phone_local_or_none",
                 "egress_result": "metadata_only",
             },
         },

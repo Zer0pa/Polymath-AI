@@ -499,7 +499,9 @@ class E4bL0Builder:
             "custody": {
                 "orchestration_host_model_weight_bytes": 0,
                 "expected_weight_digests_source": "immutable_provider_metadata",
-                "observed_weight_digests_source": "provider_local_full_file_receipts",
+                "observed_weight_digests_source": (
+                    "provider_or_phone_local_full_file_receipts"
+                ),
                 "egress_result": "metadata_only",
             },
             "nonclaims": [
@@ -1705,8 +1707,8 @@ class E4bL0Builder:
             "LM_head_tying_state": artifact["architecture"]["tie_word_embeddings"],
             "executable_reference_stack_and_revision": dict(reference_stack),
             "executable_reference_stack_sha256": canonical_sha256(reference_stack),
-            "provider_local_weight_verification_receipt": dict(weight_receipt),
-            "provider_local_weight_verification_receipt_sha256": canonical_sha256(
+            "full_file_weight_verification_receipt": dict(weight_receipt),
+            "full_file_weight_verification_receipt_sha256": canonical_sha256(
                 weight_receipt
             ),
             "edge_A_decode_template_stop_length_seed_and_evaluator_protocol": dict(
@@ -1762,8 +1764,8 @@ class E4bL0Builder:
             },
             "executable_reference_stack_and_revision": dict(reference_stack),
             "executable_reference_stack_sha256": canonical_sha256(reference_stack),
-            "provider_local_weight_verification_receipt": dict(weight_receipt),
-            "provider_local_weight_verification_receipt_sha256": canonical_sha256(
+            "full_file_weight_verification_receipt": dict(weight_receipt),
+            "full_file_weight_verification_receipt_sha256": canonical_sha256(
                 weight_receipt
             ),
             "reference_dtype_and_runtime_policy": {
