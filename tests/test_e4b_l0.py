@@ -319,7 +319,7 @@ def converter_lineage() -> dict[str, Any]:
     return {
         "exporter_revision": "f" * 40,
         "converter_and_QAIRT_build": "v2.44.0.260225143659",
-        "QNN_API_version": "2.34.0",
+        "QNN_API_version": "2.33.0",
         "target_socModel": 69,
         "target_dspArch": 79,
         "qairt_core_foundry_receipt_sha256": "1" * 64,
@@ -511,6 +511,24 @@ def test_empty_external_contracts_block_instead_of_passing() -> None:
     assert result["manifest"]["state"] == "blocked_fail_closed"
     assert "converter_lineage:wrong_field_set" in result["manifest"]["blockers"]
     assert "reference_stacks:wrong_role_set" in result["manifest"]["blockers"]
+
+
+def test_converter_lineage_rejects_non_sdk_qnn_api_version() -> None:
+    client = FakeHubClient()
+    converter = converter_lineage()
+    converter["QNN_API_version"] = "2.34.0"
+
+    result = E4bL0Builder(client).build(
+        DEFAULT_ARTIFACTS,
+        provisional_build_source="qat_mobile_transformers",
+        reference_stacks=reference_stacks(),
+        converter_lineage=converter,
+        edge_a_protocol=edge_a_protocol(),
+        weight_verification_receipts=weight_receipts(client),
+    )
+
+    assert result["manifest"]["state"] == "blocked_fail_closed"
+    assert "converter_lineage:wrong_QNN_API_version" in result["manifest"]["blockers"]
 
 
 def test_rejects_foreign_repository_even_with_full_revision() -> None:

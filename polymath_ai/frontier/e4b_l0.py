@@ -32,6 +32,7 @@ SHA256 = re.compile(r"^[0-9a-f]{64}$")
 MAX_SAFETENSORS_HEADER_BYTES = 16 * 1024 * 1024
 EXPECTED_MODEL_CARD_LICENSE = "apache-2.0"
 EXPECTED_MODEL_CARD_LICENSE_LINK = "https://ai.google.dev/gemma/docs/gemma_4_license"
+EXPECTED_QNN_API_VERSION = "2.33.0"
 
 
 @dataclass(frozen=True)
@@ -985,7 +986,7 @@ class E4bL0Builder:
             blockers.append("converter_lineage:exporter_revision_not_full_sha")
         if converter.get("converter_and_QAIRT_build") != "v2.44.0.260225143659":
             blockers.append("converter_lineage:wrong_QAIRT_build")
-        if converter.get("QNN_API_version") != "2.34.0":
+        if converter.get("QNN_API_version") != EXPECTED_QNN_API_VERSION:
             blockers.append("converter_lineage:wrong_QNN_API_version")
         if converter.get("target_socModel") != 69:
             blockers.append("converter_lineage:wrong_socModel")
