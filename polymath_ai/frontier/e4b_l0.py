@@ -250,6 +250,12 @@ REQUIRED_REFERENCE_SMOKE_FIELDS = {
     "executed_at_utc",
     "raw_location_class",
     "framework_imports_passed",
+    "tokenizer_load_passed",
+    "tokenizer_template_bytes_match_task_oracle",
+    "assistant_termination_token_id",
+    "assistant_termination_emitted_once",
+    "target_shift_and_full_answer_mask_fixture_passed",
+    "chat_template_render_sha256",
     "artifact_load_passed",
     "missing_keys",
     "unexpected_keys",
@@ -1399,6 +1405,11 @@ class E4bL0Builder:
             "revision": artifact["revision"],
             "raw_location_class": "provider_local",
             "framework_imports_passed": True,
+            "tokenizer_load_passed": True,
+            "tokenizer_template_bytes_match_task_oracle": True,
+            "assistant_termination_token_id": 106,
+            "assistant_termination_emitted_once": True,
+            "target_shift_and_full_answer_mask_fixture_passed": True,
             "artifact_load_passed": True,
             "artifact_native_quantized_modules_preserved": role.startswith("qat_"),
             "deterministic_forward_replay_passed": True,
@@ -1410,6 +1421,8 @@ class E4bL0Builder:
                 blockers.append(f"{prefix}:smoke_{field}_mismatch")
         if receipt.get("missing_keys") != [] or receipt.get("unexpected_keys") != []:
             blockers.append(f"{prefix}:smoke_state_dict_not_exact")
+        if not SHA256.fullmatch(str(receipt.get("chat_template_render_sha256", ""))):
+            blockers.append(f"{prefix}:smoke_chat_template_render_sha256_invalid")
         if not re.fullmatch(
             r"[A-Za-z0-9][A-Za-z0-9._-]{0,127}", str(receipt.get("run_id", ""))
         ):
