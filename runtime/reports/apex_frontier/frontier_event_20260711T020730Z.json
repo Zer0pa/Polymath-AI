@@ -1,0 +1,99 @@
+{
+  "schema_version": "gemma4_e4b_frontier_event_v1",
+  "event_id": "SFL-20260711T020730Z-W2-S16-SELECT",
+  "recorded_at_utc": "2026-07-11T02:07:30Z",
+  "parent_frontier_root_sha256": "7058b03edac46adb3cae5e168b944b81413791b21c6a0870b1a2fbdb55e5e087",
+  "parent_frontier_root_kind": "frontier_event",
+  "active_sovereign_gate": "F5_terminal_head_provider_acceptance_then_frozen_projection_fidelity",
+  "hypothesis_and_architecture_lane": "SM8750_V79_S16_activation_x_BW2_S8_weight_to_S16_terminal_head",
+  "target_claim_ids": [
+    "L2-W2-S16-51f1e9977258d8d6"
+  ],
+  "disconfirming_evidence_and_falsifiers": [
+    {
+      "claim_id": "L2-PROJECTION-W2-FP16-965697efe3e3f9e6",
+      "state": "falsified_scope",
+      "detail": "The documented FP16 terminal-head path failed all three frozen full-width authority cases and is ineligible for context or phone execution.",
+      "evidence_sha256": "965697efe3e3f9e65ac9aa726e0247fd83c1fdaa942bc1c0bc8954aabe784acd"
+    },
+    {
+      "claim_id": "L2-W2-BF16-HTP-V79",
+      "state": "falsified_by_platform_contract",
+      "detail": "QAIRT 2.44 documents HTP BF16 runtime only for Windows V81 and newer; Android V79 cannot inherit that path."
+    }
+  ],
+  "state": "selected",
+  "first_missing_green_field": "provider_context_acceptance_and_full_width_S16_candidate_output",
+  "serious_alternatives_and_eligible_maximal_experiments": [
+    {
+      "rank": 1,
+      "lane": "V79_S16_BW2_S16_terminal_head",
+      "experiment": "Generate the exact full-width provider context, dequantize S16 logits by the frozen 2^-8 scale, and adjudicate every case against the unchanged combined QAT authority limits."
+    },
+    {
+      "rank": 2,
+      "lane": "Adreno_Vulkan_BF16_or_FP32_terminal_head",
+      "experiment": "Build the full-width heterogeneous terminal head with explicit synchronization and the same authority outputs if the public HTP S16 route fails."
+    },
+    {
+      "rank": 3,
+      "lane": "custom_HTP_terminal_operator",
+      "experiment": "Consider only after standard public datatype paths are exhausted; no CPU fallback or threshold relaxation."
+    }
+  ],
+  "selected_experiment_and_runner_up": {
+    "selected": "V79_S16_BW2_S16_terminal_head",
+    "runner_up": "Adreno_Vulkan_BF16_or_FP32_terminal_head",
+    "selection_reason": "The selected path is documented for V79, retains the original packed BW2 weights and HTP locality, exactly represents all frozen inputs at scale 2^-9, and preserves every numeric/ranking authority threshold."
+  },
+  "preregistration": {
+    "locator": "runtime/reports/apex_frontier/20260711T020600Z_l2_int16_head_prereg_v2/preregistration.json",
+    "sha256": "51f1e9977258d8d61c7eb1ff76964b293a15d38eb852da1b5692cb58aaeea284",
+    "state": "frozen_unobserved",
+    "candidate_output_files_present": false,
+    "source_revision": "3c93a0ec1cae33214ab417c3b1032f37cd8fffd1"
+  },
+  "threshold_policy": {
+    "locator": "runtime/reports/apex_frontier/20260711T020600Z_l2_int16_head_prereg_v2/threshold_policy.json",
+    "sha256": "36d4689f6c59f8ce8d9d99c6dc4085d7e63089a6448c20517fd0fcc74964ad05",
+    "numeric_ranking_threshold_subset_sha256": "30704ef1cb88042a1451f46b5c516b815cbb440a7227b9013893ee7b42cdd914",
+    "threshold_values_changed_from_parent": false
+  },
+  "branch_transitions": [
+    {
+      "branch": "F5_W2_documented_FP16_terminal_head",
+      "from": "falsified_scope",
+      "to": "killed_no_context_no_phone_run"
+    },
+    {
+      "branch": "F5_W2_V79_S16_terminal_head",
+      "from": "proposed",
+      "to": "selected_frozen_unobserved"
+    }
+  ],
+  "evidence_refs": [
+    {
+      "locator": "runtime/reports/apex_frontier/frontier_event_20260711T020237Z.json",
+      "sha256": "7058b03edac46adb3cae5e168b944b81413791b21c6a0870b1a2fbdb55e5e087"
+    },
+    {
+      "locator": "runtime/reports/apex_frontier/20260711T015600Z_l2_projection_reference_attempt2/reference_gate.json",
+      "sha256": "965697efe3e3f9e65ac9aa726e0247fd83c1fdaa942bc1c0bc8954aabe784acd"
+    },
+    {
+      "locator": "runtime/reports/apex_frontier/20260711T020600Z_l2_int16_head_prereg_v2/preregistration.json",
+      "sha256": "51f1e9977258d8d61c7eb1ff76964b293a15d38eb852da1b5692cb58aaeea284"
+    }
+  ],
+  "rollback": {
+    "source_revision_before_event": "6f29fa2dcd41c5f285c199cc3a14209064c2582f",
+    "source_revision_with_frozen_candidate": "3c93a0ec1cae33214ab417c3b1032f37cd8fffd1",
+    "provider_context_generated": false,
+    "phone_state_mutated": false,
+    "rollback_action_required": false
+  },
+  "promotion_allowed": false,
+  "nonclaims": [
+    "No provider context acceptance, QNN output, phone execution, L1, L2, learning, or authority-quality pass is claimed."
+  ]
+}
