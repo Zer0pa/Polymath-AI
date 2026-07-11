@@ -1,0 +1,84 @@
+{
+  "schema_version": "gemma4_e4b_l2_int16_v2_prereg_blocker_report_v1",
+  "observed_at_utc": "2026-07-11T14:35:00Z",
+  "recorded_at_utc": "2026-07-11T14:37:12Z",
+  "status": "blocked_fail_closed",
+  "claim_class": "phone_native_preregistration_publication_portability_blocker",
+  "candidate_id": "w2_s16_activation_bw2_weight_bf16_rne_scale_s16_output_2m10_v2",
+  "phone_run_id": "20260711T143500Z_l2_s16_v2",
+  "source_revision": "40b6e6c7953d7400546975b83bad9d338e7cd61c",
+  "source_bundle": {
+    "bytes": 10122143,
+    "sha256": "316cc3ec13a0c69536d9bb8032521ff907f6d775e4f7a919ed230e073cc516e5",
+    "phone_head_exact": true,
+    "phone_source_closure_clean": true
+  },
+  "governing_bindings": {
+    "parent_capsule_sha256": "66072e0dee357c9d7c178c3fa3628a6230fa5992659325b80e7eefa6e4dbdd2b",
+    "frontier_selector_sha256": "bb045f0761405b521705609d473fa1cb7b504634197256b2b684c061e1fc4d78",
+    "access_receipt_sha256": "7b2b6d506b3ab82a17008edc4c79dd51512f6f9598e3db37cd1bb6f5ee4331ca",
+    "implementation_module_sha256": "cf6ddc41ce9c046871e39ebdd66b742c62b9be3b9bc2bdfec48ffaefd63f7dd9",
+    "exporter_module_sha256": "ed40d66ca908b341e7180803b0e44fa24a322fed0cc3237eafa092562677dd42"
+  },
+  "phone_runtime": {
+    "platform": "android",
+    "python_version": "3.13.13",
+    "numpy_version": "2.4.4",
+    "raw_location_class": "phone_private",
+    "raw_payload_egress": false
+  },
+  "attempt": {
+    "requested_publication": "preregistration",
+    "published_destination_present": false,
+    "temporary_transaction_preserved_phone_local": true,
+    "temporary_transaction_name_sha256": "d0ead738cf179880ab24b12b0bf2078a9296d3bbf052ffbee4acf512ce355f26",
+    "temporary_file_count": 9,
+    "temporary_preregistration_sha256": "38732e7329254f5aed159fead4ec2e409c0c2cef1f9cdb6a95bea7441e982c9f",
+    "transformed_scale_sha256": "489f4400faaf5f20984bc798d2e1ca581aaf7237e1f37cb6ce505df747e01633",
+    "candidate_output_count": 0,
+    "phone_exact_oracle_execution_count": 0,
+    "phone_independent_verification_count": 0,
+    "qnn_execution_count": 0,
+    "provider_build_count": 0
+  },
+  "blocker": {
+    "class": "phone_native_atomic_publication_portability",
+    "exception_class": "ProbeContractError",
+    "message_code": "no_proven_noreplace_directory_publication_primitive_on_android",
+    "mechanism_falsified": false,
+    "authority_semantics_falsified": false
+  },
+  "repair_evidence": {
+    "android_libc_renameat2_symbol_present": true,
+    "rename_noreplace_first_publish_return_code": 0,
+    "rename_noreplace_collision_return_code": -1,
+    "rename_noreplace_collision_errno": 17,
+    "collision_is_eexist": true,
+    "collision_preserved_source_and_destination": true,
+    "selected_repair": "admit_android_libc_renameat2_with_RENAME_NOREPLACE_flag_1",
+    "candidate_or_threshold_change": false
+  },
+  "disposition": {
+    "state_transition": "selected_frozen_unobserved_to_blocked_prereg_publication_then_repair_once",
+    "retry_requires_new_source_revision": true,
+    "reuse_failed_temporary_transaction": false,
+    "run_oracle_before_fresh_published_preregistration": false,
+    "promotion_allowed": false
+  },
+  "custody": {
+    "model_weight_bytes_on_mac": 0,
+    "phone_private_tensor_bytes_uploaded_to_runpod": 0,
+    "raw_outputs_egressed": false,
+    "secrets_recorded": false,
+    "sanitized_metadata_only": true
+  },
+  "nonclaims": [
+    "no_published_v2_preregistration",
+    "no_v2_candidate_output",
+    "no_exact_dot_oracle_result",
+    "no_provider_context",
+    "no_phone_qnn_execution",
+    "no_L1_or_L2_pass",
+    "no_learning_or_authority_quality_pass"
+  ]
+}

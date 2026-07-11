@@ -1,10 +1,14 @@
 from __future__ import annotations
 
+import ctypes
+import errno
 import json
+import os
 import re
 
 import pytest
 
+from polymath_ai.frontier import e4b_f5_qnn_exporter
 from polymath_ai.frontier.e4b_f5_probe import ProbeContractError
 from polymath_ai.frontier.e4b_f5_qnn_exporter import (
     BACKEND_CONFIG,
@@ -149,6 +153,41 @@ def test_no_replace_publication_refuses_attacker_empty_directory(tmp_path):
     destination.mkdir()
     with pytest.raises(ProbeContractError, match="destination already exists"):
         publish_directory_noreplace(source, destination)
+    assert source.is_dir()
+    assert destination.is_dir()
+
+
+def test_android_no_replace_publication_uses_renameat2_and_maps_eexist(
+    monkeypatch, tmp_path
+):
+    calls = []
+
+    class FakeRenameAt2:
+        argtypes = None
+        restype = None
+
+        def __call__(self, *args):
+            calls.append(args)
+            ctypes.set_errno(errno.EEXIST)
+            return -1
+
+    class FakeLibc:
+        renameat2 = FakeRenameAt2()
+
+    monkeypatch.setattr(e4b_f5_qnn_exporter.sys, "platform", "android")
+    monkeypatch.setattr(
+        e4b_f5_qnn_exporter.ctypes, "CDLL", lambda *_args, **_kwargs: FakeLibc()
+    )
+
+    source = tmp_path / "source"
+    destination = tmp_path / "destination"
+    source.mkdir()
+    destination.mkdir()
+
+    with pytest.raises(ProbeContractError, match="destination already exists"):
+        publish_directory_noreplace(source, destination)
+
+    assert calls == [(-100, os.fsencode(source), -100, os.fsencode(destination), 1)]
     assert source.is_dir()
     assert destination.is_dir()
 

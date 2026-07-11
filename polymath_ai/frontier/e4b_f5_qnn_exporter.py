@@ -158,7 +158,7 @@ def publish_directory_noreplace(source: Path, destination: Path) -> None:
     libc = ctypes.CDLL(None, use_errno=True)
     source_bytes = os.fsencode(source)
     destination_bytes = os.fsencode(destination)
-    if sys.platform.startswith("linux"):
+    if sys.platform.startswith("linux") or sys.platform == "android":
         renameat2 = getattr(libc, "renameat2", None)
         if renameat2 is None:
             raise ProbeContractError("renameat2 is unavailable; refusing non-atomic publication")
