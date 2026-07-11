@@ -257,6 +257,27 @@ def test_resource_envelope_temperature_threshold_is_exact(runner, tmp_path) -> N
         os.close(directory_fd)
 
 
+def test_volatile_thermal_value_read_is_skipped_but_malformed_values_stop(
+    runner, monkeypatch
+) -> None:
+    def vanished(_fd: int, _size: int) -> bytes:
+        raise FileNotFoundError("volatile_sysfs_zone")
+
+    monkeypatch.setattr(runner.os, "read", vanished)
+    assert runner.read_thermal_value(123) is None
+
+    monkeypatch.setattr(runner.os, "read", lambda _fd, _size: b"84999\n")
+    assert runner.read_thermal_value(123) == 84_999
+
+    monkeypatch.setattr(runner.os, "read", lambda _fd, _size: b"malformed\n")
+    with pytest.raises(runner.OperationalStop, match="malformed"):
+        runner.read_thermal_value(123)
+
+    monkeypatch.setattr(runner.os, "read", lambda _fd, _size: b"1" * 65)
+    with pytest.raises(runner.OperationalStop, match="oversize"):
+        runner.read_thermal_value(123)
+
+
 def test_resource_envelope_storage_floor_and_sensor_availability(runner, tmp_path) -> None:
     now = datetime(2026, 7, 11, 20, 0, tzinfo=timezone.utc)
     directory_fd = os.open(tmp_path, os.O_RDONLY | os.O_DIRECTORY)

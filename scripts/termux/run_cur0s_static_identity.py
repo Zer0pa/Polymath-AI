@@ -662,22 +662,33 @@ def read_thermal_zones() -> list[int]:
         except OSError:
             continue
         try:
-            payload = os.read(fd, 64)
-            if os.read(fd, 1):
-                raise OperationalStop("thermal_sensor_value_oversize", "thermal_sample")
+            value = read_thermal_value(fd)
         finally:
             os.close(fd)
-        try:
-            text = payload.decode("ascii").strip()
-        except UnicodeDecodeError:
-            raise OperationalStop("thermal_sensor_value_malformed", "thermal_sample") from None
-        if re.fullmatch(r"-?[0-9]+", text) is None:
-            raise OperationalStop("thermal_sensor_value_malformed", "thermal_sample")
-        value = int(text)
-        if not -100_000 <= value <= 250_000:
-            raise OperationalStop("thermal_sensor_value_out_of_range", "thermal_sample")
-        temperatures.append(value)
+        if value is not None:
+            temperatures.append(value)
     return temperatures
+
+
+def read_thermal_value(fd: int) -> int | None:
+    """Read one volatile sysfs temperature, or skip it if it vanishes."""
+
+    try:
+        payload = os.read(fd, 65)
+    except OSError:
+        return None
+    if len(payload) > 64:
+        raise OperationalStop("thermal_sensor_value_oversize", "thermal_sample")
+    try:
+        text = payload.decode("ascii").strip()
+    except UnicodeDecodeError:
+        raise OperationalStop("thermal_sensor_value_malformed", "thermal_sample") from None
+    if re.fullmatch(r"-?[0-9]+", text) is None:
+        raise OperationalStop("thermal_sensor_value_malformed", "thermal_sample")
+    value = int(text)
+    if not -100_000 <= value <= 250_000:
+        raise OperationalStop("thermal_sensor_value_out_of_range", "thermal_sample")
+    return value
 
 
 def sanitize_checkpoint(value: str) -> str:
