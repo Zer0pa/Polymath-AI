@@ -1,0 +1,1145 @@
+schema_version: apex_current_reality_gemma4_e4b_qnn_cell_v4
+evidence_cutoff_utc: "2026-07-10T23:12:00Z"
+governing_policy_as_of: "2026-07-11"
+state_kind: last_verified_not_live_revalidated
+path_bases:
+  generated_from_and_FIR_path: workspace_root
+  runtime_report_paths: Polymath-AI_repository_root
+
+generated_from:
+  canonical_prd:
+    role: governing_design
+    path: Polymath-AI/docs/PRD-GEMMA4-E4B-PHONE-NATIVE-QNN-LEARNING-CELL-2026-07-10.md
+    sha256: 725d0ad6ac77fdcfc06a2635c7552cc414e0ed48f30fbd0f7f7ec38720493a3c
+  living_concept:
+    role: governing_concept_v0_6
+    path: Polymath AI - Mobile-Native Gemma 4 E4B Heterogeneous Learning - Living Engineering Concept.md
+    sha256: b2f617766b660237ddfd329c6b7fa2370f9a2641983e71915b4cd71c6d31bacc
+  corpus_readiness_audit:
+    role: governing_supporting_audit_v2_0
+    path: Polymath-AI/docs/APEX-C1-C4-CORPUS-READINESS-AND-INTEGRATION-AUDIT-2026-07-10.md
+    sha256: c3a5d5eacf424f6e50ae0a170873d1c80e566581e22031a8f64bc899f8eec0fa
+  corpus_readiness_evidence_receipt:
+    role: typed_aggregate_local_verification_receipt_v1
+    path: Polymath-AI/docs/APEX-C1-C4-CORPUS-READINESS-EVIDENCE-RECEIPT-2026-07-10.json
+    sha256: 7dbcfbc5e2dae3b93e117d1753cceb7220c8cd4909faa7726872efc21e021f39
+  corpus_builder_test_receipt:
+    role: bounded_local_test_receipt_v1
+    path: Polymath-AI/docs/APEX-C1-C4-CORPUS-BUILDER-TEST-RECEIPT-2026-07-10.json
+    sha256: 1baecb6060206d7d09c583377ab3bb33b0769a3790fb0bd3ccd0f571ecf519c7
+  frontier_innovation_register:
+    role: design_hypothesis_and_bounded_evidence_register
+    path: Polymath-AI/docs/APEX-HARDWARE-NATIVE-QNN-GEMMA4-SOC-ENGINEERING-IDEAS-AND-IMPLEMENTATION-OPTIONS-2026-07-10.md
+    sha256: e980997026ff578eca4f008e35570544f2f0b2776493222eddddebf4772aa206
+  historical_phase34_prd:
+    role: historical_evidence_only
+    path: Polymath-AI/docs/PRD-PHASE34-TASK-ALIGNED-PROJECTION-PHONE-NATIVE-GEMMA4-E4B-POLAR-TRAINING-2026-07-08.md
+    sha256: f30a27a0fa9bcb80cfdd26c882bb66edd9fb88660b52d7241965b46705cbb1ee
+  handover_snapshot:
+    role: historical_intake_snapshot
+    path: Polymath-AI/docs/HANDOVER-CURRENT-APEX-HETEROGENEOUS-CELL-QNN-C5F0-2026-07-10.md
+    sha256: b36b19b37a79496aeddd4024c486332e5a700c9d8d13b92b7261d9b963852ffd
+  phase1_phase4_science_engineering_update:
+    role: historical_native_engine_and_falsification_evidence
+    path: Polymath-AI/docs/GEMMA-4-TRAINING-PIPELINE-SCIENCE-ENGINEERING-UPDATE-2026-07-06.md
+    sha256: cf6b1189c0b380145b525773fc72d2b6eac65b79eb2af3ce40cf491a023997fe
+  runbook_override:
+    role: procedure_only
+    path: Polymath-AI/docs/runbooks/RUNPOD-QUALCOMM-GEMMA4-MEGAKERNEL-SETUP.md
+    sha256: b8018b2970e147839891ed377e1b180a2f45762244b3ca802b838e33cd2c105b
+
+document_semantics:
+  records_execution_authority: false
+  grants_execution_authority: false
+  grants_promotion_authority: false
+  current_user_direction_required_for_external_mutation: true
+  bounded_campaign_lease_supported_by_design: true
+  stored_document_or_capsule_is_a_lease: false
+  sovereign_frontier_loop_is_policy_not_live_execution: true
+  stale_after:
+    - any_new_measured_event
+    - any_governing_input_hash_change
+    - any_objective_policy_or_claim_schema_change
+  executable_command_present: false
+
+claim_state_vocabulary:
+  allowed:
+    - proposed
+    - available_unmeasured
+    - staged_unexecuted
+    - running
+    - passed_scope
+    - falsified_scope
+    - blocked_fail_closed
+    - invalidated
+    - superseded
+  bare_pass_forbidden: true
+
+governing_objective:
+  model_target: Gemma_4_E4B_only
+  target_downshift_allowed: false
+  systems_metric_can_compensate_science_failure: false
+  exact_NLL_gate:
+    within_stage_aggregation: per_candidate_token_weighted
+    cross_stage_aggregation: frozen_stage_vector_weights_and_constraints
+    global_all_target_token_pool: forbidden
+    B23_stage_weight: 0
+    B23_authority_role: diagnostic_canary
+    confidence_cluster: split_group_id
+    candidate_outputs:
+      - nll_sum
+      - scored_token_count
+    candidate_aggregates_may_mix: false
+    after_minus_before_materiality_floor: unresolved_must_be_predeclared
+    paired_upper_confidence_bound_below_negative_floor_required: true
+  quality_authority_requires:
+    - CUR-0_curriculum_readiness
+    - exact_phone_native_decoder_NLL_gate
+    - adapted_autoregressive_generation_fidelity
+    - held_out_target_behavior_lower_confidence_bound
+    - retention_no_regression_bound
+    - no_update_and_matched_random_separation
+  project_success_additionally_requires:
+    - repeated_seed_and_session_evidence
+    - rollback_and_reproduction
+    - raw_and_secret_custody_passed_scope
+    - measured_energy_memory_thermal_and_time_characterization
+  ranking_only_after_quality:
+    compensation_for_quality_failure: forbidden
+    measures:
+      - energy
+      - thermal_steady_time
+      - memory
+      - latency
+
+artifact_lineage:
+  architecture_oracle:
+    artifact: google/gemma-4-E4B
+    frozen_revision: 7aa32e6889efd6300124851b164f8b364314c3d8
+    role: architecture_semantics_only
+    numerical_authority_for_IT_QAT: false
+  high_precision_task_oracle:
+    artifact: google/gemma-4-E4B-it
+    frozen_revision: unresolved
+    role:
+      - tokenizer_and_chat_template
+      - target_position_semantics
+      - Edge_A_high_precision_logits_and_NLL_quality_reference
+      - Edge_A_behavioral_quality_reference
+    phone_learning_authority: false
+  mobile_qat_source_and_framework_oracle:
+    candidates:
+      - google/gemma-4-E4B-it-qat-mobile-transformers
+      - google/gemma-4-E4B-it-qat-mobile-ct
+    selected_artifact: unresolved
+    frozen_revision: unresolved
+    quantization_identity: unresolved
+    LM_head_tying_and_quantization_identity: unresolved
+    executable_reference_stack: unresolved
+    tokenizer_template_equality_or_mapping: unresolved
+    becomes_adaptation_reference_only_after_both_parity_edges: true
+  parity_edges:
+    high_precision_to_QAT:
+      state: proposed
+      purpose: quantify_model_and_quantization_quality_drift
+    QAT_to_QNN:
+      state: proposed
+      purpose: tight_conversion_fidelity
+  phone_authority_artifact:
+    state: proposed
+    parent_L0_manifest_sha256: unresolved
+    common_root_manifest_sha256: unresolved
+    root_state: uninstantiated
+    required_root_bindings:
+      - parent_L0_manifest_sha256
+      - forward_child_sha256
+      - generation_child_sha256
+      - coefficient_ABI
+      - exact_loss_ABI
+      - tokenizer_template_and_decode_protocol
+      - selected_QAT_framework_reference
+      - device_runtime_identity
+    forward_child:
+      state: proposed
+      graph_or_static_family_identity: unresolved
+      exact_QNN_context_family_sha256: unresolved
+      operator_partition_and_no_fallback_report: unresolved
+    generation_child:
+      state: proposed
+      bound_forward_child_sha256: unresolved
+      prefill_decode_or_recompute_context_family_sha256: unresolved
+      KV_position_mask_shared_KV_and_coefficient_lifecycle: unresolved
+      coefficient_ABI_sha256: unresolved
+      tokenizer_template_stop_and_decode_protocol_sha256: unresolved
+      selected_QAT_framework_reference_sha256: unresolved
+      finalized_only_by_L5G: true
+
+corpus_curriculum:
+  target_sequence:
+    - corpus_stage_C1
+    - corpus_stage_C2
+    - corpus_bridge_B23
+    - corpus_stage_C3
+    - corpus_stage_C4
+  sovereign_target_semantics:
+    corpus_stage_C1: lexical_self_expansion_with_admitted_semantic_closure
+    corpus_stage_C2: new_vocabulary_defined_only_by_admitted_known_vocabulary
+    corpus_bridge_B23: familiar_language_to_science_bridge_zero_weight_canary
+    corpus_stage_C3: science_dictionary_resolving_through_prior_closure
+    corpus_stage_C4: prerequisite_ordered_science_syllabus_with_MegaScience_comparability
+    evaluation_C5: globally_heldout_evaluation_only
+  current_artifact_target_identity:
+    corpus_stage_C1: useful_source_pool_closure_unproved
+    corpus_stage_C2: useful_source_pool_known_vocabulary_certificates_absent
+    corpus_bridge_B23: congruent_twenty_row_sentinel
+    corpus_stage_C3: science_reasoning_QA_not_target_dictionary
+    corpus_stage_C4: paired_refinement_not_target_syllabus
+    verdict: target_semantic_root_absent
+  evaluation_C5:
+    training_material: false
+    replay_allowed: false
+    early_stopping_allowed: false
+    current_root: null
+  source_artifact:
+    repository: Zer0pa/polymat-gemmalit-c1-c4-commercial-corpus
+    visibility: private
+    immutable_revision: 504dd91c5a7c8365882d690d52f3de20697c4f7b
+    approximate_HF_used_storage_bytes: 878288476
+    repository_objects_observed: 146
+    immutable_role: physically_valid_evidence_only
+    Mac_persistent_raw_staging: false
+    audit_execution_locality: temporary_Mac_read_only_then_deleted
+    phone_offload_live_revalidated_by_this_audit: false
+    offload_notice_path_base: workspace_root
+    offload_notices:
+      corpus_packages:
+        path: corpus_packages/OFFLOADED_TO_PHONE_20260709.md
+        sha256: 058ebf3bff67691abcf1fe203fcb091cca23fc56477125907eaa0223a038ef17
+      corpus_state:
+        path: corpus_state/OFFLOADED_TO_PHONE_20260709.md
+        sha256: 242ab95b662b057bf3823129a5a3ee53f2d8cf05a8c26c8d4b8363cee0b27350
+  evidence_receipt:
+    path: Polymath-AI/docs/APEX-C1-C4-CORPUS-READINESS-EVIDENCE-RECEIPT-2026-07-10.json
+    sha256: 7dbcfbc5e2dae3b93e117d1753cceb7220c8cd4909faa7726872efc21e021f39
+    role: aggregate_evidence_annex_not_canonical_claim_objects
+  physical_stage_inventory:
+    corpus_stage_C1:
+      rows: {train: 4931, validation: 196, test: 53, total: 5180}
+      full_QA_sha256: a752cafde223b0203be9478c3f28cf672d2ba0962394377f61a926da771c8088
+      build_manifest_sha256: 7349512beadd2da2f678c3229425fc291576912f274450f3186f8c695fe8e305
+    corpus_stage_C2:
+      rows: {train: 3042, validation: 129, test: 27, total: 3198}
+      full_QA_sha256: 676d985fff59d4a60c36d3e5142ac679a45db6082003fe98fa440b8cdbc517a3
+      build_manifest_sha256: 3ed5a4d0190911744716f7e294a59271b54b319c0d80bab67f9cca3a1dbdeaee
+    corpus_bridge_B23:
+      source_label: C2.5
+      stage_weight: 0
+      authority_role: diagnostic_canary
+      standalone_retention_or_generalization_authority: false
+      rows: {train: 19, validation: 1, test: 0, total: 20}
+      full_QA_sha256: ec5a85f111ba42bf778fffd98212f3f92ec871e9eb0a757196393cef99d2ba83
+      build_manifest_sha256: b1b7ed6f03cc2da281959c87dfa6ffb84cddfb23805e76c3682fc916a6284316
+    corpus_stage_C3:
+      role: current_science_reasoning_source_pool_not_target_science_dictionary
+      rows: {train: 53379, validation: 2211, test: 548, total: 56138}
+      source_rows:
+        zd21_SciInstruct: 42173
+        allenai_QASC: 8960
+        OpenStax: 5005
+      full_QA_sha256: c6c3e98ebd1c583fc92588160922aad758af6a0d56c75ca7fb6cd8c7d0d1a87a
+      build_manifest_sha256: f95b1569f01b8c541d0cbe1c359d81dcbe8d1b036d9ddc6838780cdf1ae215be
+    corpus_stage_C4:
+      rows: {train: 11883, validation: 492, test: 112, total: 12487}
+      role: paired_evidence_structured_refinement_view_of_C3_sources_not_target_science_syllabus
+      full_QA_sha256: 0bfe358075383a74dbd0b6cf763e2ea5d5407ce3e3a894cccea4b67f41dcdcc6
+      build_manifest_sha256: 451b879c2ab4df71db2b11da7868fb0a71664a09b35b8f7d73aec56dea5bf490
+  physical_integrity_claim:
+    claim_id: CORPUS-C1-C4-504DD91C-PHYSICAL-INTEGRITY
+    claim_class: local_verification
+    state: passed_scope
+    scope:
+      curriculum_root_sha256: source_revision_plus_five_manifest_hashes
+      corpus_stage_and_material_view: all_five_QA_stage_surfaces
+      source_instance_semantic_cluster_and_split_group_ids: source_instance_only_for_physical_scope
+      split_and_fixture_class: current_splits_audit_only_no_fixture_promotion
+      stage_manifest_count: 5
+      QA_split_shard_count: 15
+      total_row_count: 77023
+      checks:
+        - sha256
+        - bytes
+        - line_count
+        - JSON_parse
+        - required_fields
+        - phase_split_labels
+        - record_ID_uniqueness
+        - full_split_union
+        - split_record_ID_disjointness
+    evidence:
+      report_path_or_content_addressed_locator: Polymath-AI/docs/APEX-C1-C4-CORPUS-READINESS-EVIDENCE-RECEIPT-2026-07-10.json#CORPUS-LOCAL-504DD91C-PHYSICAL-001
+      report_sha256: 7dbcfbc5e2dae3b93e117d1753cceb7220c8cd4909faa7726872efc21e021f39
+      predecessor_claim_ids: []
+      observed_at_utc: "2026-07-10T22:30:29Z"
+      freshness: immutable_revision_bounded_observation
+    blocker: {class: null, first_missing_green_field: null}
+    effects:
+      closes_only: [physical_integrity_at_revision]
+      eligible_successors: [CUR-PROBE, CUR-0S]
+      promotion_allowed: false
+      execution_authorized: false
+    nonclaims:
+      - semantic_quality
+      - connected_split_independence
+      - learning_rights
+      - target_E4B_packet_authority
+    custody:
+      raw_location_class: provider_plus_temporary_audit_host_deleted
+      egress_result: aggregate_metadata_only
+  curriculum_relationship:
+    state: blocked_fail_closed
+    admitted_label: implicit_progression_hypothesis
+    explicit_graph_root: unresolved
+    seed_and_base_vocabulary_policy: unresolved
+    lexeme_concept_dependency_DAG: unresolved
+    closure_and_no_forward_reference_certificates: unresolved
+    C3_dictionary_root: unresolved
+    C4_syllabus_root: unresolved
+    MegaScience_comparability_vector: unresolved
+    nonclaim: measured_fractal_dependency_graph
+  connected_split_independence_claim:
+    claim_id: CORPUS-C1-C4-504DD91C-SPLIT-INDEPENDENCE
+    claim_class: local_verification
+    state: falsified_scope
+    scope:
+      curriculum_root_sha256: source_revision_plus_five_manifest_hashes
+      corpus_stage_and_material_view: C3_and_C4_QA
+      source_instance_semantic_cluster_and_split_group_ids: audit_source_instances_plus_bounded_semantic_near_match
+      split_and_fixture_class: current_splits_permanently_non_authoritative_audit_only
+      device_runtime_identity: not_executed
+      control_objective_evaluator_identity: not_learning
+    evidence:
+      report_path_or_content_addressed_locator: Polymath-AI/docs/APEX-C1-C4-CORPUS-READINESS-EVIDENCE-RECEIPT-2026-07-10.json#CORPUS-LOCAL-504DD91C-OVERLAP-002
+      report_sha256: 7dbcfbc5e2dae3b93e117d1753cceb7220c8cd4909faa7726872efc21e021f39
+      predecessor_claim_ids: [CORPUS-C1-C4-504DD91C-PHYSICAL-INTEGRITY]
+      observed_at_utc: "2026-07-10T22:30:29Z"
+      freshness: immutable_revision_bounded_observation
+    results:
+      C4_rows_sharing_C3_source_instance: 12387
+      C4_total_rows: 12487
+      C4_share_percent: 99.199
+      exact_C3_C4_question_answer_pairs: 3421
+      C4_test_source_membership:
+        train_only: 99
+        validation_only: 11
+        both: 1
+        source_unmatched: 1
+      C4_test_semantically_exposed_total: 112
+      unmatched_relation: near_equivalent_C3_train_concept_not_exact_text
+      within_C3_split_crossing_source_instances: 49
+      within_C4_split_crossing_source_instances: 33
+      current_C5_independent_authority: false
+    blocker:
+      class: data_contamination
+      first_missing_green_field: connected_split_overlay_with_zero_cross_split_components
+    effects:
+      closes_only: [current_split_independence_falsified]
+      eligible_successors: [CUR-0S_connected_resplit]
+      promotion_allowed: false
+      execution_authorized: false
+    nonclaims:
+      - admitted_future_semantic_cluster_detector
+      - repaired_global_split
+    custody:
+      raw_location_class: provider_plus_temporary_audit_host_deleted
+      egress_result: aggregate_metadata_and_two_debug_record_IDs
+  semantic_quality_claim:
+    claim_id: CORPUS-C1-C2-504DD91C-SEMANTIC-ADMISSION
+    claim_class: local_verification
+    state: falsified_scope
+    scope:
+      curriculum_root_sha256: source_revision_plus_judge_report_hashes
+      corpus_stage_and_material_view: C1_C2_generated_enrichment
+      source_instance_semantic_cluster_and_split_group_ids: sampled_row_level
+      split_and_fixture_class: current_QA_audit_only
+      device_runtime_identity: not_executed
+      control_objective_evaluator_identity: semantic_judge_reports
+    evidence:
+      report_path_or_content_addressed_locator: Polymath-AI/docs/APEX-C1-C4-CORPUS-READINESS-EVIDENCE-RECEIPT-2026-07-10.json#CORPUS-LOCAL-C1-C2-SEMANTIC-003
+      report_sha256: 7dbcfbc5e2dae3b93e117d1753cceb7220c8cd4909faa7726872efc21e021f39
+      predecessor_claim_ids: [CORPUS-C1-C4-504DD91C-PHYSICAL-INTEGRITY]
+      observed_at_utc: "2026-07-10T22:30:29Z"
+      freshness: immutable_revision_bounded_observation
+    results:
+      C1: {count: 500, promote: 127, repair: 294, reject: 79, aggregate_summary_internal_mismatch: true}
+      C2: {count: 333, promote: 116, repair: 196, reject: 21}
+      rejected_or_repair_rows_remained_in_QA: true
+    blocker:
+      class: semantic_quality
+      first_missing_green_field: repaired_rejudged_or_rebuilt_C1_C2_overlay
+    effects:
+      closes_only: [blanket_C1_C2_semantic_admission_falsified]
+      eligible_successors: [CUR-0S_quality_repair_or_rebuild]
+      promotion_allowed: false
+      execution_authorized: false
+    nonclaims: [full_corpus_semantic_judgment, legal_conclusion]
+    custody:
+      raw_location_class: provider_plus_temporary_audit_host_deleted
+      egress_result: aggregate_metadata_only
+  rights_and_provenance:
+    state: blocked_fail_closed
+    C1_C2_provider_output_training_rights: unresolved
+    QASC: strongest_provisional_CC_BY_source
+    SciInstruct_upstream_provenance: unresolved
+    OpenStax_book_edition_snapshot_license_lineage: unresolved
+    legal_opinion_claimed: false
+  content_admission:
+    missing_visual_context_detector:
+      state: blocked_fail_closed
+      candidate_counts_admitted: false
+      reason: prior_detector_rule_and_row_ID_manifest_not_preserved
+    C4_numeric_correctness_claim:
+      claim_id: CORPUS-C4-504DD91C-NUMERIC-AUTHORITY
+      claim_class: local_verification
+      state: falsified_scope
+      scope:
+        curriculum_root_sha256: final_scaled_v2_raw_sha256
+        corpus_stage_and_material_view: C4_source_13652_promoted_12487
+        source_instance_semantic_cluster_and_split_group_ids: aggregate_only
+        split_and_fixture_class: current_QA_audit_only
+        device_runtime_identity: not_executed
+        control_objective_evaluator_identity: structural_source_solution_verifier
+      evidence:
+        report_path_or_content_addressed_locator: Polymath-AI/docs/APEX-C1-C4-CORPUS-READINESS-EVIDENCE-RECEIPT-2026-07-10.json#CORPUS-LOCAL-C4-NUMERIC-005
+        report_sha256: 7dbcfbc5e2dae3b93e117d1753cceb7220c8cd4909faa7726872efc21e021f39
+        predecessor_claim_ids: [CORPUS-C1-C4-504DD91C-PHYSICAL-INTEGRITY]
+        observed_at_utc: "2026-07-10T22:30:29Z"
+        freshness: immutable_revision_bounded_observation
+      results:
+        source_rows: 13652
+        promoted_rows: 12487
+        numeric_recomputation_rows: 0
+        quantitative_status: not_programmatically_recomputed
+      blocker:
+        class: numerical_semantic_quality
+        first_missing_green_field: content_addressed_numeric_and_unit_recomputation
+      effects:
+        closes_only: [current_C4_numeric_correctness_authority_falsified]
+        eligible_successors: [CUR-0S_numeric_recompute_or_quarantine]
+        promotion_allowed: false
+        execution_authorized: false
+      nonclaims: [C4_answers_are_incorrect, future_numeric_recomputation]
+      custody:
+        raw_location_class: workspace_historical_report
+        egress_result: none
+  observed_E4B_packetization_claim:
+    claim_id: CORPUS-E4B-OBSERVED-PACKET-GEOMETRY
+    claim_class: local_verification
+    state: passed_scope
+    scope:
+      model_artifact_sha256: not_bound_non_authority_observation
+      graph_context_sha256: not_applicable
+      curriculum_root_sha256: source_revision_plus_observed_tokenizer_template_hashes
+      corpus_stage_and_material_view: all_77023_flat_QA_rows
+      source_instance_semantic_cluster_and_split_group_ids: aggregate_only
+      split_and_fixture_class: current_splits_audit_only_no_authority_fixture
+      device_runtime_identity: not_executed
+      control_objective_evaluator_identity: answer_mask_packet_geometry_only
+    evidence:
+      report_path_or_content_addressed_locator: Polymath-AI/docs/APEX-C1-C4-CORPUS-READINESS-EVIDENCE-RECEIPT-2026-07-10.json#CORPUS-LOCAL-E4B-PACKET-GEOMETRY-004
+      report_sha256: 7dbcfbc5e2dae3b93e117d1753cceb7220c8cd4909faa7726872efc21e021f39
+      predecessor_claim_ids: [CORPUS-C1-C4-504DD91C-PHYSICAL-INTEGRITY]
+      observed_at_utc: "2026-07-10T22:30:29Z"
+      freshness: observed_revisions_not_L0_frozen
+    observed_artifacts:
+      high_precision_E4B_it_revision: a4c2d58be94dda072b918d9db64ee85c8ed34e3f
+      QAT_transformers_revision: 9a78a5adac7bca7a9e421634e4b58f41ca7cbca3
+      QAT_CT_revision: d35137f462eb09dbe5acb5924018356d8e057134
+      tokenizer_json_sha256: cc8d3a0ce36466ccc1278bf987df5f71db1719b9ca6b4118264f45cb627bfe0f
+      chat_template_sha256: 2f1b4d75d067bae3fe44e676721c7f077d243bc007156cb9c2f8b5836613d082
+    results:
+      scored_span: assistant_answer_plus_turn_termination
+      nonempty_scored_span_count: 77023
+      prompt_prefix_identity_passes: 77023
+      sequence_16_complete_real_rows: 0
+      candidate_64_token_rung:
+        exact_coverage_persisted: false
+        C1_coverage_lower_bound_percent: 99.0
+        C2_coverage_lower_bound_percent: 50.0
+        required_next_evidence: exact_32_and_64_coverage_in_CUR-0P
+      masked_target_tokens:
+        C1: 205597
+        C2: 131809
+        B23: 1214
+        C3: 22613947
+        C4: 728822
+        total: 23681389
+        C3_share_percent: 95.4925
+      stage_lengths:
+        corpus_stage_C1: {p50: 52, p99: 60, max: 66, coverage_le_128_percent: 100.0}
+        corpus_stage_C2: {p50: 57, p99: 66, max: 77, coverage_le_128_percent: 100.0}
+        corpus_bridge_B23: {p50: 80, p99: 103, max: 103, coverage_le_128_percent: 100.0}
+        corpus_stage_C3:
+          p50: 510
+          p95: 1107
+          p99: 1341
+          quantile_convention: nearest_rank_ceiling
+          max: 2193
+          coverage_percent: {le_128: 20.583, le_512: 50.390, le_1024: 92.930, le_2048: 99.995, le_4096: 100.0}
+        corpus_stage_C4:
+          p50: 109
+          p95: 239
+          p99: 424
+          quantile_convention: nearest_rank_ceiling
+          max: 1420
+          coverage_percent: {le_128: 77.993, le_256: 95.932, le_512: 99.487, le_2048: 100.0}
+    blocker: {class: null, first_missing_green_field: null}
+    effects:
+      closes_only: [observed_current_drifted_artifact_packet_geometry_for_capacity_planning]
+      eligible_successors: [CUR-PROBE, CUR-0P]
+      promotion_allowed: false
+      execution_authorized: false
+    nonclaims:
+      - L0_frozen_tokenizer
+      - CUR-0_packet_root
+      - QNN_context_exists_at_any_reported_bucket
+      - successor_C3_dictionary_packet_geometry
+      - successor_C4_syllabus_packet_geometry
+    custody:
+      raw_location_class: provider_plus_temporary_audit_host_deleted
+      egress_result: aggregate_metadata_only
+  fixture_policy:
+    vocabulary:
+      - synthetic_mechanical
+      - real_probe_non_authority
+      - real_target_diagnostic
+      - real_authority
+    synthetic_mechanical:
+      claim_ceiling: mechanism_only
+      sequence_16: required
+    real_probe_non_authority:
+      predecessor: CUR-PROBE
+      claim_ceiling: bounded_mechanism_semantic_fidelity_and_science_diagnostic
+      current_manifest: null
+    real_target_diagnostic:
+      predecessor: composite_CUR-0
+      claim_ceiling: semantic_fidelity_and_science_diagnostic_not_heldout_authority
+      required_where_natural_packet_fits: true
+      current_manifest: null
+    real_authority:
+      predecessor: composite_CUR-0_plus_candidate_protocol_freeze
+      current_root: null
+      optimizer_graph_material_design_and_early_stop_access: forbidden
+      blinded_evaluator_after_freeze: allowed
+  exposure_ledger:
+    state: proposed
+    taint_keys: [source_instance_id, semantic_cluster_id]
+    merge_propagation: any_successor_split_group_containing_exposed_member_is_train_only
+    component_hash_change_clears_exposure: false
+  objective_contract:
+    within_stage_aggregation: token_weighted_nll_sum_divided_by_scored_token_count
+    cross_stage_global_target_token_pool: forbidden
+    cross_stage_rule: frozen_stage_vector_weights_and_explicit_prior_stage_constraints
+    authority_stage_weights:
+      nonnegative: true
+      normalized_sum: 1.0
+      silent_zero_weight_authority_stage: forbidden
+      B23_weight: 0
+    stage_vector_and_constraints_dominate_scalar_score: true
+    train_replay_source: admitted_train_groups_only
+    validation_sentinels_feed_updates: false
+    hidden_C5_replay_or_early_stop: forbidden
+    proposed_signal_diagnostic: per_stage_exact_NLL_coefficient_fingerprint_and_conflict_matrix
+  semantic_clustering_contract:
+    edge_predicate: frozen_high_precision_joint_question_and_material
+    answer_only_edges: forbidden
+    required_reports: [component_size_distribution, maximum_component, giant_component_share]
+    chaining_or_percolation_thresholds: unresolved_must_be_predeclared
+    chaining_collapse: hard_failure
+  material_ABI_vnext:
+    state: proposed
+    layers:
+      - MaterialView_semantics_dependency_closure_and_lineage
+      - E4BSequencePacket_exact_input_target_mask_and_natural_bucket
+      - BatchPlan_ordered_packets_and_independent_pack_or_continuation_contract
+      - EpochTicket_phone_candidate_stage_objective_and_update_frontier
+    logical_digest_independent_of_shard_offset_alignment: true
+    transport_truncation: forbidden
+    rowwise_candidate_loss_attribution_required_for_batching: true
+    independent_batch_precedes_sequence_packing: true
+    naive_cross_example_concatenation: forbidden
+    PQA1_PJP1_JL_fixed128_role: legacy_import_and_diagnostic_only
+    historical_phase12_full_C1_records: 50994
+    current_immutable_C1_rows: 5180
+    identity_transfer_between_them: false
+  C4_lineage_policy:
+    commercial_C4_COM:
+      state: proposed_unbuilt
+      product_promotion_eligible_after_CUR0: true
+      MegaScience_content_allowed: false
+    research_C4_RX:
+      state: optional_uninstantiated
+      product_promotion_eligible: false
+      lineage_merge_with_C4_COM: forbidden
+      reference_candidates:
+        MegaScience_TextbookReasoning:
+          revision: ca7ecbec76d01bff2e99f3dc17735b02f87d4e96
+          observed_rows: 651840
+          repository_card_license: cc_by_nc_sa_4_0
+        MegaScience_MegaScience:
+          revision: 8df5586005374acba25aecc4f5469ce30fec605c
+          observed_rows: 1253230
+          repository_card_license: cc_by_nc_sa_4_0
+    commercial_discovery_candidates:
+      nvidia_OpenScienceReasoning_2:
+        revision: 174b02c9cdf231f220765b2a1d5ece4550921894
+        repository_card_license: cc_by_4_0
+        viewer_observation_partial: true
+        admitted: false
+        reason: synthetic_reasoning_not_target_dictionary_or_syllabus_and_row_rights_quality_unreviewed
+  curriculum_gates:
+    CUR-PROBE:
+      state: proposed
+      purpose: bounded_real_train_only_non_authority_diagnostic
+      requires:
+        - immutable_source_row_and_packet_hashes
+        - diagnostic_use_rights_and_row_quality
+        - connected_train_split_assignment_against_full_current_source
+        - immutable_diagnostic_E4B_tokenizer_template_revision
+        - permanent_exposure_ledger_receipt
+      authority_transfer: none
+    CUR-0S:
+      state: blocked_fail_closed
+      parallel_to: L0
+      closes: target_semantic_dependency_syllabus_source_connected_split_quality_rights_quarantine_and_exposure_root
+      blockers:
+        - C1_lexical_self_expansion_closure_root_absent
+        - C2_known_vocabulary_certificates_absent
+        - current_C3_not_target_science_dictionary
+        - current_C4_not_target_science_syllabus
+        - C4_COM_source_tournament_and_MegaScience_comparability_absent
+        - connected_split_overlay_absent
+        - semantic_anti_percolation_gate_absent
+        - C1_C2_semantic_admission_failed
+        - C1_C2_provider_output_training_rights_unresolved
+        - SciInstruct_and_OpenStax_lineage_incomplete
+        - missing_context_detector_and_numeric_quarantine_incomplete
+    CUR-0P:
+      state: blocked_fail_closed
+      depends_on: [CUR-0S, L0_frozen_tokenizer_template_termination]
+      closes: four_layer_E4B_material_sequence_batch_epoch_ABI_buckets_fixture_and_authority_roots
+      blockers:
+        - L0_packet_protocol_not_frozen
+        - CorpusMaterialCompiler_not_built
+        - successor_stage_geometry_not_recomputed
+        - cross_bucket_and_batch_rowwise_attribution_not_proven
+        - E4B_packet_and_fixture_roots_absent
+        - optimizer_inaccessible_real_authority_root_absent
+    CUR-0:
+      state: blocked_fail_closed
+      depends_on: [CUR-0S, CUR-0P]
+      required_before: [target_data_learning, heldout_claim, science_authority]
+      current_504dd91c_role: physically_valid_evidence_only
+
+science:
+  historical_gate_e:
+    claim_id: SCI-HIST-GATE-E-JL-C2-FULL27
+    claim_class: science_authority
+    state: falsified_scope
+    observed_at_utc: "2026-07-08"
+    freshness: immutable_historical_event
+    evidence:
+      authority_report_path: runtime/reports/apex_heterogeneous_cell/gate_e_phone_native_jl_c2_full27_20260708_timeout12h/gate_e_token_nll_perplexity_report.json
+      authority_report_sha256: 70739a1c78b5d1cea5a98d1826f8a1b4c658929c7b534612e346ee0309e432f0
+      corroborating_pointer: historical_phase34_prd_section_4
+    scope:
+      model_family: Gemma_4_E4B
+      candidate: historical_JL_C2
+      evaluator: historical_full27
+      record_count: 27
+      scored_token_count: 27
+    metric:
+      name: decoder_token_nll_per_token
+      sign: after_minus_before
+      before: 14.538868526231177
+      after: 14.555113501137114
+      delta: 0.01624497490593768
+    effects:
+      closes_only:
+        - historical_JL_C2_candidate_falsified
+      promotion_allowed: false
+      execution_authorized: false
+    nonclaims:
+      - future_E4B_IT_QAT_baseline
+      - future_full_answer_authority_protocol
+  legacy_phase34_blockers:
+    - id: layer24_plus_two_alternatives_not_fully_measured
+      affects: optional_activation_basis_lane
+      blocks_direct_coefficient_lane: false
+    - id: phase34c_gradient_rank_probe_instrument_absent
+      affects: optional_gradient_and_exact_backward_lanes
+      blocks_direct_coefficient_lane: false
+    - id: no_rank_matched_projection_candidate
+      affects: legacy_projection_lane
+      blocks_direct_coefficient_lane: false
+  primary_lane_blockers:
+    - CUR-0_curriculum_readiness_not_passed
+    - C1_C2_semantic_closure_and_known_vocabulary_certificates_absent
+    - target_C3_science_dictionary_and_C4_science_syllabus_roots_absent
+    - C4_COM_MegaScience_comparability_not_instantiated
+    - current_C3_C4_connected_split_invalid_for_authority
+    - current_C1_C2_quality_and_provider_rights_not_admitted
+    - exact_E4B_material_packets_and_real_authority_root_absent
+    - exact_E4B_IT_and_mobile_QAT_source_lineage_not_frozen
+    - executable_QAT_framework_reference_not_frozen
+    - high_precision_to_QAT_drift_not_admitted
+    - complete_fixed_shape_QNN_token_to_loss_route_not_built_or_admitted
+    - QAT_to_QNN_conversion_parity_not_admitted
+    - exact_compact_per_candidate_nll_sum_and_token_count_not_proven
+    - causal_normalized_PLE_coefficient_ABI_not_proven
+    - dynamic_or_updateable_coefficient_mutation_seam_not_proven
+    - adapted_generation_F6_L5G_route_not_built_or_admitted
+    - direct_NLL_coefficient_signal_not_measured
+    - no_trained_candidate_separates_from_matched_random_interventions
+
+native_material_fabric:
+  policy_state: adopted_design_not_executed
+  phase1_Zig_engine:
+    role: measured_incumbent_requiring_exact_E4B_and_successor_corpus_readmission
+    historical_peak_token_ID_throughput_class: approximately_60M_per_s_on_bounded_lanes
+    nonclaim: successor_E4B_material_ABI_pass
+  phase2_CPP_SIMD_engine:
+    role: measured_incumbent_requiring_new_packet_ABI_and_source_binary_reconciliation
+    historical_native_over_Python_packetizer_ratio: approximately_32_3x
+    nonclaim: end_to_end_E4B_QNN_or_exact_NLL_advantage
+  legacy_PJP1_full_C1:
+    source_records: 50994
+    fixed_slots: 6527232
+    source_tokens: 2130785
+    slot_utilization_fraction: 0.326445421275052
+    bytes: 461805760
+    bytes_per_source_token: 216.73034116534518
+    direct_accepted_QNN_consumption_proven: false
+  EXP_M0_native_material_readmission:
+    state: proposed
+    exact_tokenizer_template_termination_target_shift_parity: required
+    logical_and_physical_ABI_parity: required
+    source_build_binary_identity: required
+    thermal_steady_successor_workload_tournament: required
+
+physical_roof_policy:
+  theoretical_total_SoC_RAM_bandwidth_bytes_per_s: approximately_80000000000
+  source: current_user_context
+  role: theoretical_shared_memory_ceiling_only
+  performance_target: false
+  current_bandwidth_bound_claim: false
+  required_for_bound_claim:
+    - exact_access_pattern_sustainable_bandwidth_measurement
+    - useful_minimum_and_accounted_byte_ledger
+    - byte_compute_or_frequency_intervention
+    - profiler_and_thermal_evidence
+  engineering_aspiration: remove_avoidable_bottlenecks_until_measured_physical_roof_remains
+
+frontier_execution_policy:
+  state: adopted_design_not_live_campaign
+  loop: Sovereign_Frontier_Loop
+  sovereign_terminal: PRD_section_0_5
+  active_campaign_lease: null
+  stored_capsule_grants_authority: false
+  selection: hard_eligibility_then_lexicographic_maximal_discriminator
+  mandatory_disposition: kill_pivot_scale_rebuild_or_scoped_promotion
+  no_information_cycle_is_progress: false
+  waves_commits_tests_demos_as_success: false
+  transaction:
+    - parent_capsule_and_frontier
+    - preregistration_and_source_state
+    - access_and_lease
+    - immutable_execution_inputs
+    - adjudicated_report
+    - evidence_commit
+    - capsule_compare_and_swap
+  terminals:
+    - SUCCESS
+    - PAUSED_SAFETY_OR_RESOURCE
+    - BLOCKED_EXTERNAL_AUTHORITY
+    - FRONTIER_EXHAUSTED
+
+measured_claims:
+  Q0B:
+    claim_id: MECH-Q0B-SYNTHETIC-V79-FOUNDRY
+    claim_class: mechanism_execution
+    state: passed_scope
+    observed_at_utc: "2026-07-10T15:28:04Z"
+    freshness: immutable_event
+    predecessor_claim_ids: []
+    evidence:
+      report_path: runtime/reports/apex_heterogeneous_cell/qnn_build_plane_q0b_repair_20260710T152622Z/q0b_v79_context_repair_report.json
+      report_sha256: bff402d4f59cb5dcb2bbdda5f150227d0c872a4f49bd7766bfedf8767556e376
+      disposition_path: runtime/reports/apex_heterogeneous_cell/qnn_build_plane_q0b_repair_20260710T152622Z/q0b_repair_final_disposition_report.json
+      disposition_sha256: c70c8308dce05eeace73d381084b09c6ad91ecca6e3486f02465c86f975176fc
+    scope:
+      mechanism: synthetic_standard_op_CPU_only_QAIRT_foundry
+      graph: gemma_hidden2560_relu
+      tensor: "[1,16,2560] float32"
+      model_weights_present: false
+      QAIRT_build: v2.44.0.260225143659
+      socModel: 69
+      dspArch: 79
+      context_sha256: 9060753282c8b0bf232b7db8abc1637b6d9f857560c2d151ae8cd3f197e6aa03
+      context_bytes: 49152
+      context_numUpdateableTensors: 0
+    device_runtime_identity:
+      completeness: partial
+      execution_domain: provider_CPU_only
+      host_machine_identity: not_bound_in_Q0B_receipt
+      host_OS_kernel_container_identity: not_bound_in_Q0B_receipt
+      QAIRT_build: v2.44.0.260225143659
+      target_socModel: 69
+      target_dspArch: 79
+      identity_binding: evidence_report_sha256
+      transfer_effect: no_cross_event_environment_identity_transfer
+    effects:
+      closes_only:
+        - synthetic_V79_standard_op_foundry
+      promotion_allowed: false
+      execution_authorized: false
+    custody:
+      raw_location_class: provider_local
+      Mac_egress: metadata_only
+    nonclaims:
+      - phone_execution
+      - Gemma_weights_or_layer
+      - full_E4B
+      - updateable_E4B_graph
+      - learning
+
+  Q0C:
+    claim_id: MECH-Q0C-SYNTHETIC-RELU-PHONE-HTP
+    claim_class: mechanism_execution
+    state: passed_scope
+    observed_at_utc: "2026-07-10T15:57:56Z"
+    freshness: immutable_event
+    predecessor_claim_ids:
+      - MECH-Q0B-SYNTHETIC-V79-FOUNDRY
+    evidence:
+      report_path: runtime/reports/apex_heterogeneous_cell/q0c_phone_htp_relu_20260710T155744Z/q0c_phone_htp_relu_readiness_report.json
+      report_sha256: 4de9661a64970d2d8823264cdfb84192ff5df29a96c45edcdad88c66a888ccbd
+      disposition_path: runtime/reports/apex_heterogeneous_cell/q0c_phone_htp_relu_20260710T155744Z/q0c_final_disposition_report.json
+      disposition_sha256: 9cf4b6ae18d8fd8e29f4d357b78a6c9733a30201383d6d0ede720d4d3cded27d
+    scope:
+      mechanism: synthetic_ReLU_phone_HTP_restore_execute
+      exact_case_count: 2
+      exact_reference_match_count: 2
+      positive_HTP_evidence_count: 2
+      CPU_fallback_observed: false
+      context_sha256: 9060753282c8b0bf232b7db8abc1637b6d9f857560c2d151ae8cd3f197e6aa03
+    device_runtime_identity:
+      completeness: partial
+      phone_model: NX789J
+      android_release: "15"
+      android_build_fingerprint: not_bound_in_Q0C_receipt
+      kernel: not_bound_in_Q0C_receipt
+      soc_model: SM8750
+      QAIRT_build: v2.44.0.260225143659
+      target_socModel: 69
+      target_dspArch: 79
+      core_provider_version: not_bound_in_Q0C_receipt
+      system_provider_version: not_bound_in_Q0C_receipt
+      HTP_firmware_identity: not_bound_in_Q0C_receipt
+      identity_binding: evidence_report_sha256
+      transfer_effect: no_cross_event_device_runtime_identity_transfer
+    effects:
+      closes_only:
+        - synthetic_phone_HTP_build_deploy_substrate
+      promotion_allowed: false
+      execution_authorized: false
+    custody:
+      raw_location_class: phone_and_provider_local
+      Mac_egress: metadata_only
+    nonclaims:
+      - Gemma_layer_or_decoder
+      - persistent_direct_API
+      - gradient_or_training
+      - Gate_D_or_Gate_E
+
+  Q1:
+    claim_id: MECH-Q1-ZERO-PERSISTENT-LAYER-SHAPED-HTP
+    claim_class: mechanism_execution
+    state: passed_scope
+    observed_at_utc: "2026-07-10T17:19:37Z"
+    freshness: immutable_event
+    predecessor_claim_ids:
+      - MECH-Q0C-SYNTHETIC-RELU-PHONE-HTP
+    evidence:
+      report_path: runtime/reports/apex_heterogeneous_cell/q1_persistent_native_20260710T171743Z/q1_phone_native_layer1_parity_report.json
+      report_sha256: cf314abbf81c5ac37e92dfd472f6be9cf0ece82681029c3a6d460c5a8fea79ed
+      disposition_path: runtime/reports/apex_heterogeneous_cell/q1_persistent_native_20260710T171743Z/q1_final_disposition_report.json
+      disposition_sha256: 0949b59c50af05b88900bfc7baff80d38785616b35e97391fd4f6810fdeeec85
+    scope:
+      mechanism: zero_input_and_zero_control_layer_shaped_direct_persistent_HTP_writeback
+      graph_name: gemma4_e4b_ffn_residual_layer1_forward_island_seq16_hidden2560
+      shape: [1, 16, 2560]
+      dtype: FLOAT_32
+      context_bytes: 157982720
+      context_sha256: 68f1e87f8654d75205ab44bac261f7a71b4119259573b0956ad87e19bcf9158a
+      direct_graph_execute_count: 16
+      output_control_bit_exact_count: 16
+      poison_overwrite_count: 16
+      current_call_HTP_profile_count: 16
+      CPU_fallback_count: 0
+    device_runtime_identity:
+      completeness: partial
+      phone_model: not_bound_in_Q1_receipt
+      android_release_and_build: not_bound_in_Q1_receipt
+      kernel: not_bound_in_Q1_receipt
+      target_socModel: 69
+      target_dspArch: not_bound_in_Q1_receipt
+      QAIRT_build: v2.44.0.260225143659
+      core_provider_version: 2.33.0
+      system_provider_version: 1.8.0
+      HTP_firmware_identity: not_bound_in_Q1_receipt
+      context_and_asset_identity_match_before_after: true
+      identity_binding: evidence_report_sha256
+      transfer_effect: no_cross_event_device_runtime_identity_transfer
+    direct_runner_lifecycle:
+      direct_process_count: 1
+      context_create_free: [1, 1]
+      graph_retrieve_count: 1
+      graph_execute_count: 16
+      profile_create_free: [1, 1]
+      balanced_teardown: true
+    effects:
+      closes_only:
+        - layer_shaped_zero_case_persistent_direct_QNN_plumbing_and_writeback
+      promotion_allowed: false
+      execution_authorized: false
+    custody:
+      raw_location_class: phone
+      Mac_egress: metadata_only
+    nonclaims:
+      - weight_or_operator_sensitive_numerical_correctness
+      - exact_E4B_IT_mobile_QAT_artifact
+      - full_E4B_decoder
+      - nonzero_control_discrimination
+      - gradient_or_backward
+      - learning_or_Gate_E
+
+  Q1N:
+    claim_id: MECH-Q1N-NONZERO-PERSISTENT-LAYER-SHAPED-HTP
+    claim_class: mechanism_execution
+    state: passed_scope
+    observed_at_utc: "2026-07-10T19:10:56Z"
+    freshness: immutable_event
+    predecessor_claim_ids:
+      - MECH-Q1-ZERO-PERSISTENT-LAYER-SHAPED-HTP
+    evidence:
+      report_path: runtime/reports/apex_heterogeneous_cell/q1n_nonzero_20260710T190640Z/q1n_phone_native_nonzero_parity_report.json
+      report_sha256: 803d8a952ee9b4db970772626e82ea64ad5b94ae26fb17f3979cda6ae0ff003f
+      disposition_path: runtime/reports/apex_heterogeneous_cell/q1n_nonzero_20260710T190640Z/q1n_final_disposition_report.json
+      disposition_sha256: e701ce1a06b561021f2d6fffb67e0e0a40d6da68338ce048b3e08a2928d69830
+    scope:
+      mechanism: nonzero_discriminatory_one_layer_shaped_direct_persistent_HTP_parity
+      graph_name: gemma4_e4b_ffn_residual_layer1_forward_island_seq16_hidden2560
+      shape: [1, 16, 2560]
+      dtype: FLOAT_32
+      context_bytes: 157982720
+      context_sha256: 68f1e87f8654d75205ab44bac261f7a71b4119259573b0956ad87e19bcf9158a
+      updateable_tensor_count: not_bound_by_Q1N_receipts
+    device_runtime_identity:
+      completeness: partial
+      phone_model: not_bound_in_Q1N_receipt
+      android_release_and_build: not_bound_in_Q1N_receipt
+      kernel: not_bound_in_Q1N_receipt
+      target_socModel: 69
+      target_dspArch: not_bound_in_Q1N_receipt
+      QAIRT_build: v2.44.0.260225143659
+      core_provider_version: 2.33.0
+      system_provider_version: 1.8.0
+      HTP_firmware_identity: not_bound_in_Q1N_receipt
+      context_and_asset_identity_match_before_after: true
+      identity_binding: evidence_report_sha256
+      transfer_effect: no_cross_event_device_runtime_identity_transfer
+    direct_runner_lifecycle:
+      domain: direct_runner_only
+      direct_process_count: 1
+      backend_create_free: [1, 1]
+      device_create_free: [1, 1]
+      context_create_free: [1, 1]
+      graph_retrieve_count: 1
+      graph_execute_count: 32
+      profile_create_free: [1, 1]
+      balanced_teardown: true
+    discrimination:
+      nonzero_distinct_input_count: 2
+      nonzero_distinct_control_count: 2
+      A_parity_and_wrong_control_rejection: [16, 16]
+      B_parity_and_wrong_control_rejection: [16, 16]
+      AB_transition_count: 31
+      poison_overwrite_count: 32
+      current_call_HTP_profile_count: 32
+      CPU_fallback_count: 0
+    timing:
+      initialization_ns: 1031607916
+      steady_state_count: 31
+      steady_state_median_ns: 11618334
+      steady_state_p95_ns: 14017968
+      interpretation: layer_shaped_island_diagnostic_only
+      unaccounted_timeline_intervals: unknown
+    memory_mode:
+      caller_owned_RAW_buffers: proven
+      registered_QNN_memory: unmeasured
+      QNN_Vulkan_shared_allocation: unmeasured
+    effects:
+      closes_only:
+        - E4B_width_layer_shaped_persistent_sync_RAW_HTP_mechanism
+      promotion_allowed: false
+      execution_authorized: false
+    custody:
+      raw_location_class: phone
+      Mac_egress: metadata_only
+    nonclaims:
+      - exact_E4B_IT_mobile_QAT_artifact
+      - full_E4B_decoder
+      - PLE_control
+      - exact_masked_NLL
+      - updateable_theta
+      - async_execution
+      - persistent_Vulkan
+      - heterogeneous_learning
+      - gradient_or_backward
+      - energy_advantage
+
+  C5F0_attempt_12:
+    claim_id: CUST-C5F0-ATTEMPT12-STAGED-PREFLIGHT
+    claim_class: custody_readiness
+    state: staged_unexecuted
+    observed_at_utc: "2026-07-10T19:27:04Z"
+    freshness: immutable_readiness_event
+    predecessor_claim_ids:
+      - MECH-Q1N-NONZERO-PERSISTENT-LAYER-SHAPED-HTP
+    evidence:
+      readiness_report_path: runtime/reports/apex_heterogeneous_cell/c5f0_live_preflight_readiness_20260710T192335Z/c5f0_attempt12_readiness_report.json
+      readiness_report_sha256: 1e51122a1fed4fab0e89a9b0136e132fa146e59fd38bf9429489379182859dad
+    scope:
+      mechanism: synthetic_linker_process_and_payload_maps_preflight_only
+      source_identity_match: true
+      output_absent: true
+      execution_launched: false
+      next_unmeasured_field: explicit_system_linker_plus_payload_maps_identity_not_revalidated
+      command_sha256: 63c9e3e3731f8fcb2dba4b00f446357bd47beaf052425b3cba5ea910570e2c85
+    reported_local_verification:
+      focused_test_pass_count: 56
+      focused_test_skip_count: 1
+    effects:
+      closes_only:
+        - source_and_staging_readiness
+      eligible_successor_if_separately_selected: exact_synthetic_preflight
+      universal_predecessor: false
+      promotion_allowed: false
+      execution_authorized: false
+    custody:
+      raw_location_class: phone
+      Mac_egress: metadata_only
+    nonclaims:
+      - preflight_executed
+      - Gemma_executed
+      - QNN_executed
+      - architecture_fidelity
+      - science_or_learning
+
+separate_installed_state:
+  updateable_tensor_surface:
+    claim_id: CAP-QNN-UPDATEABLE-CONTEXT-SCOPE-UNRESOLVED
+    claim_class: installed_capability
+    state: available_unmeasured
+    observed_at_utc: "2026-07-10"
+    freshness: FIR_bounded_snapshot
+    evidence:
+      FIR_path: Polymath-AI/docs/APEX-HARDWARE-NATIVE-QNN-GEMMA4-SOC-ENGINEERING-IDEAS-AND-IMPLEMENTATION-OPTIONS-2026-07-10.md
+      FIR_sha256: e980997026ff578eca4f008e35570544f2f0b2776493222eddddebf4772aa206
+    scope:
+      inspected_context_reported_zero_updateable_tensors: true
+      bound_to_Q0B_synthetic_context: true
+      bound_by_Q1N_receipts_to_layer_shaped_context: false
+    effects:
+      closes_only:
+        - no_existing_context_is_admitted_as_updateable
+      promotion_allowed: false
+      execution_authorized: false
+    nonclaims:
+      - Q1N_context_zero_updateables
+      - S2_impossible
+      - updateable_E4B_graph_supported
+
+platform_roles:
+  phone:
+    device: REDMAGIC_NX789J_SM8750_Android15
+    role:
+      - primary_practical_compute
+      - raw_learning_state
+      - QNN_HTP_runtime
+      - optional_Adreno_runtime
+      - phone_native_scoring
+  Mac:
+    role:
+      - source_control
+      - metadata_ledger
+      - orchestration
+    raw_model_corpus_tensor_logit_gradient_theta_or_context_storage: false
+    large_artifact_persistent_storage: false
+  RunPod:
+    role: CPU_only_QAIRT_QNN_compiler_foundry
+    current_Q0_envelope_applies_to_full_model: false
+    GPU_required_for_current_foundry_role: false
+    phone_private_raw_upload_allowed: false
+    official_model_acquisition_requires_new_declared_foundry_envelope: true
+  GitHub:
+    role: source_custody_and_review
+    scientific_authority: false
+  HuggingFace_private:
+    role:
+      - revision_pinned_source_corpus_and_model_custody
+      - optional_explicitly_leased_large_immutable_artifact_custody
+    mutable_main_is_authority: false
+    C4_COM_and_C4_RX_separate_roots: true
+    phone_runtime_raw_state_upload_default: false
+  Comet:
+    role: eventual_metadata_visibility
+    scientific_authority: false
+    promotion_prerequisite: false
+
+current_design_decision:
+  canonical_route:
+    - validate_ACCESS-0_and_current_campaign_lease_without_storing_secrets
+    - freeze_L0_E4B_source_candidates_selection_protocol_and_executable_QAT_oracle
+    - preserve_504dd91c_physical_source_rebuild_C1_C2_closure_C3_dictionary_C4_syllabus_and_build_CUR-0S
+    - run_EXP-M0_native_material_boundary_readmission_after_L0_and_target_shaped_view
+    - join_L0_and_CUR-0S_at_four_layer_CUR-0P
+    - build_F5_forward_child_and_F6_generation_child_candidates
+    - admit_L1_forward_child_and_provisional_phone_authority_root
+    - admit_L2_Edge_A_high_precision_to_QAT_quality_drift
+    - admit_L2_Edge_B_QAT_to_QNN_conversion_fidelity
+    - admit_L3_persistent_cell
+    - return_L4_per_candidate_nll_sum_and_scored_token_count
+    - expose_L5_one_to_eight_causal_normalized_coefficients
+    - pass_L5G_generation_child_numeric_KV_and_atomic_coefficient_fidelity_then_finalize_root
+    - pass_composite_CUR-0_before_target_data_learning_or_authority
+    - run_SYS-7P_token_native_packet_storage_to_exact_NLL_tournament
+    - measure_L6_direct_NLL_signal_controls_then_stage_conflict_matrix
+    - run_L7_development_heldout_and_freeze_candidate_comparators_protocol
+    - run_L8_first_blinded_hidden_C5_and_real_authority
+    - optimize_SYS_atlas_async_Vulkan_or_shared_memory_only_from_measured_bottlenecks
+  C5F0_attempt12_is_next_by_inheritance: false
+  activation_rank_is_Lane_A_dimension_authority: false
+  hidden_gradient_is_Lane_A_predecessor: false
+  Vulkan_is_mandatory_for_tiny_coefficients: false
+  current_C3_is_target_dictionary: false
+  current_C4_is_target_syllabus: false
+  PJP1_JL_fixed128_is_governing_packet: false
+  phase1_phase2_native_engines_are_incumbents_not_authority: true
+  theoretical_80GBps_is_target_or_current_bound: false
+  waves_are_progress_authority: false
+
+next_action:
+  executable_action: none_inherited_from_documents
+  design_predecessor: ACCESS-0_then_freeze_L0_in_parallel_with_corrected_CUR-0S_then_EXP-M0_and_CUR-0P_join_under_Sovereign_Frontier_Loop
+  external_execution_requires_current_scoped_user_direction: true
