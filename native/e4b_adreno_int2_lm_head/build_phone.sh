@@ -9,7 +9,7 @@ usage() {
 }
 
 [[ $# -eq 1 ]] || usage
-[[ "$(uname -m)" == "aarch64" ]] || {
+[[ "$(/system/bin/uname -m)" == "aarch64" ]] || {
   printf 'refusing non-aarch64 authority build\n' >&2
   exit 65
 }

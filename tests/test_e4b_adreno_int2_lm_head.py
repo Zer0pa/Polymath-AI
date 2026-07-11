@@ -746,6 +746,9 @@ def test_host_and_phone_use_standalone_source_bound_import_route() -> None:
     assert stat.S_IMODE(build_script.stat().st_mode) == 0o755
     assert os.access(build_script, os.X_OK)
     assert str(build_script.relative_to(ROOT)) in adreno.SOURCE_EXECUTABLES
+    build_source = build_script.read_text(encoding="utf-8")
+    assert '$(/system/bin/uname -m)' in build_source
+    assert '$(uname -m)' not in build_source
 
 
 def test_sentinel_output_validation_rejects_undersized_payload(tmp_path: Path) -> None:
