@@ -1,0 +1,43 @@
+{
+  "template": "exact_repository_chat_template",
+  "teacher_forced_objective": "full_answer_plus_turn_termination_masked_NLL",
+  "decode": {
+    "do_sample": false,
+    "max_new_tokens": 64,
+    "seed": 0,
+    "stop_token": "<turn|>"
+  },
+  "length_buckets": [
+    16,
+    64,
+    128
+  ],
+  "evaluator": "token_weighted_nll_plus_deterministic_generation_behavior",
+  "target_shift": "causal_next_token",
+  "full_answer_mask": true,
+  "reference_qat_tolerance_policy": {
+    "policy_state": "predeclared_before_target_observation",
+    "teacher_forced_logits": {
+      "metric": "paired_centered_full_vocab_logit_nrmse_and_top1",
+      "centered_nrmse_max": 0.05,
+      "top1_agreement_min": 0.95,
+      "scored_positions_only": true
+    },
+    "teacher_forced_nll": {
+      "metric": "paired_token_weighted_delta_nll",
+      "paired_upper_95pct_nats_per_scored_token_max": 0.02,
+      "exact_mask_denominator": true
+    },
+    "deterministic_decode": {
+      "metric": "paired_greedy_token_sequence",
+      "sequence_exact_match_rate_min": 0.9,
+      "normalized_edit_distance_mean_max": 0.02,
+      "stop_and_max_length_exact": true
+    },
+    "behavioral_suite": {
+      "metric": "frozen_paired_behavior_score_delta",
+      "paired_lower_95pct_score_delta_min": -0.01,
+      "evaluator_revision": "2ccd0a87b6d892a3f4e0fee3e48125f4b2862615"
+    }
+  }
+}
