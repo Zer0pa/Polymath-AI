@@ -2,14 +2,19 @@
 
 #include <fcntl.h>
 #include <sys/stat.h>
+#if defined(__ANDROID__)
+#include <sys/sysmacros.h>
+#endif
 #include <unistd.h>
 
 #include <array>
 #include <cstddef>
 #include <cstdint>
+#include <cstdlib>
 #include <cstring>
 #include <fstream>
 #include <iostream>
+#include <iterator>
 #include <sstream>
 #include <stdexcept>
 #include <string>
@@ -30,6 +35,122 @@ constexpr std::size_t kGlobalSize =
     (kOutputFeatures / kRowsPerWorkgroup) * kLocalSize;
 constexpr const char* kBuildOptions = "-cl-std=CL3.0";
 constexpr cl_uint kClKernelWorkGroupSize = 0x11B0U;
+
+#ifndef POLYMATH_SOURCE_CLOSURE_SHA256
+#error "POLYMATH_SOURCE_CLOSURE_SHA256 must bind the executable source closure"
+#endif
+constexpr const char* kSourceClosureSha256 = POLYMATH_SOURCE_CLOSURE_SHA256;
+
+void require_runtime_loader_isolation() {
+  if (std::getenv("LD_PRELOAD") != nullptr || std::getenv("LD_LIBRARY_PATH") != nullptr) {
+    throw std::runtime_error("runtime loader environment is not isolated");
+  }
+  std::ifstream maps("/proc/self/maps");
+  if (!maps) {
+    throw std::runtime_error("cannot inspect runtime mappings");
+  }
+  const std::string mappings((std::istreambuf_iterator<char>(maps)),
+                             std::istreambuf_iterator<char>());
+  if (mappings.find("libtermux-exec.so") != std::string::npos) {
+    throw std::runtime_error("Termux exec interposer is mapped in candidate runtime");
+  }
+}
+
+constexpr std::array<const char*, 12> kRequiredRuntimeMappings = {
+    "/vendor/lib64/libOpenCL.so",
+    "/vendor/lib64/libOpenCL_adreno.so",
+    "/vendor/lib64/libadreno_compiler_cl.so",
+    "/vendor/lib64/libadreno_utils.so",
+    "/system/lib64/libvndksupport.so",
+    "/apex/com.android.runtime/lib64/bionic/libdl_android.so",
+    "/system/lib64/liblog.so",
+    "/system/lib64/libc++.so",
+    "/apex/com.android.runtime/lib64/bionic/libc.so",
+    "/apex/com.android.runtime/lib64/bionic/libdl.so",
+    "/apex/com.android.runtime/lib64/bionic/libm.so",
+    "/data/data/com.termux/files/usr/lib/libc++_shared.so",
+};
+
+bool has_exact_runtime_mapping(const std::string& expected_path) {
+  struct stat expected_metadata {};
+  if (stat(expected_path.c_str(), &expected_metadata) != 0 ||
+      !S_ISREG(expected_metadata.st_mode) || expected_metadata.st_nlink != 1) {
+    throw std::runtime_error("required runtime file identity is unsafe: " +
+                             expected_path);
+  }
+  std::ifstream maps("/proc/self/maps");
+  if (!maps) {
+    throw std::runtime_error("cannot inspect runtime library mappings");
+  }
+  std::string line;
+  bool observed = false;
+  while (std::getline(maps, line)) {
+    std::istringstream fields(line);
+    std::string address_range;
+    std::string permissions;
+    std::string offset;
+    std::string device;
+    std::string inode;
+    if (!(fields >> address_range >> permissions >> offset >> device >> inode)) {
+      continue;
+    }
+    std::string mapped_path;
+    std::getline(fields, mapped_path);
+    const std::size_t first = mapped_path.find_first_not_of(' ');
+    if (first == std::string::npos || mapped_path.substr(first) != expected_path) {
+      continue;
+    }
+#if defined(__ANDROID__)
+    const std::size_t separator = device.find(':');
+    if (separator == std::string::npos) {
+      throw std::runtime_error("required runtime mapping device is invalid: " +
+                               expected_path);
+    }
+    const std::string major_component = device.substr(0U, separator);
+    const std::string minor_component = device.substr(separator + 1U);
+    std::size_t major_consumed = 0U;
+    std::size_t minor_consumed = 0U;
+    const unsigned long observed_major =
+        std::stoul(major_component, &major_consumed, 16);
+    const unsigned long observed_minor =
+        std::stoul(minor_component, &minor_consumed, 16);
+    if (major_consumed != major_component.size() ||
+        minor_consumed != minor_component.size() ||
+        observed_major != static_cast<unsigned long>(major(expected_metadata.st_dev)) ||
+        observed_minor != static_cast<unsigned long>(minor(expected_metadata.st_dev)) ||
+        inode != std::to_string(static_cast<std::uint64_t>(expected_metadata.st_ino))) {
+      throw std::runtime_error("required runtime mapping inode drifted: " +
+                               expected_path);
+    }
+#else
+    (void)device;
+    (void)inode;
+#endif
+    observed = true;
+  }
+  return observed;
+}
+
+void require_runtime_library_mappings() {
+  for (const char* path : kRequiredRuntimeMappings) {
+    if (!has_exact_runtime_mapping(path)) {
+      throw std::runtime_error(std::string("required runtime mapping absent: ") + path);
+    }
+  }
+}
+
+bool is_lower_sha256(const std::string& value) {
+  if (value.size() != 64U) {
+    return false;
+  }
+  for (const char character : value) {
+    if (!((character >= '0' && character <= '9') ||
+          (character >= 'a' && character <= 'f'))) {
+      return false;
+    }
+  }
+  return true;
+}
 
 constexpr const char* kKernelSource = R"CLC(
 #pragma OPENCL EXTENSION cl_qcom_bfloat16_product : enable
@@ -147,6 +268,7 @@ struct Arguments {
   std::string packed_weight_path;
   std::string scale_bf16_path;
   std::string summary_path;
+  std::string custody_challenge;
   std::vector<CasePaths> cases;
   bool probe_contract = false;
 };
@@ -170,6 +292,8 @@ Arguments parse_arguments(int argc, char** argv) {
     if (option == "--probe-contract") {
       result.probe_contract = true;
       result.summary_path = require_value();
+    } else if (option == "--custody-challenge") {
+      result.custody_challenge = require_value();
     } else if (option == "--packed-weight") {
       result.packed_weight_path = require_value();
     } else if (option == "--scale-bf16") {
@@ -188,13 +312,17 @@ Arguments parse_arguments(int argc, char** argv) {
     }
   }
   if (result.probe_contract) {
-    if (result.summary_path.empty() || !result.packed_weight_path.empty() ||
-        !result.scale_bf16_path.empty() || !result.cases.empty()) {
-      throw std::runtime_error("probe-contract accepts only its exclusive output path");
+    if (result.summary_path.empty() ||
+        !is_lower_sha256(result.custody_challenge) ||
+        !result.packed_weight_path.empty() || !result.scale_bf16_path.empty() ||
+        !result.cases.empty()) {
+      throw std::runtime_error(
+          "probe-contract requires only its output path and custody challenge");
     }
     return result;
   }
-  if (result.packed_weight_path.empty() || result.scale_bf16_path.empty() ||
+  if (!result.custody_challenge.empty() || result.packed_weight_path.empty() ||
+      result.scale_bf16_path.empty() ||
       result.summary_path.empty() || result.cases.size() != 4U) {
     throw std::runtime_error("model, scale, summary, and exactly four cases are required");
   }
@@ -305,11 +433,33 @@ std::string program_build_log(const OpenClApi& api, cl_program program,
 }
 
 std::string build_probe_contract_json(const OpenClIdentity& identity,
-                                      std::size_t kernel_maximum) {
+                                      std::size_t kernel_maximum,
+                                      const std::string& custody_challenge) {
   std::ostringstream output;
   output << "{\"schema_version\":\"gemma4_e4b_adreno_opencl_execution_contract_v1\"";
   output << ",\"state\":\"passed_scope\",\"candidate_output_observed\":false";
-  output << ",\"model_or_tensor_access_count\":0";
+  output << ",\"candidate_output_observation_scope\":\"this_custody_run_only\"";
+  output << ",\"model_or_tensor_path_supplied\":false";
+  output << ",\"model_or_tensor_access_count_measured\":false";
+  output << ",\"model_or_tensor_access_observation\":";
+  output << "\"not_observed_no_paths_supplied\"";
+  output << ",\"model_or_tensor_access_observation_basis\":";
+  output << "\"exclusive_probe_argv_and_source_bound_control_flow_no_syscall_trace\"";
+  output << ",\"source_closure_sha256\":" << json_string(kSourceClosureSha256);
+  output << ",\"custody_challenge\":" << json_string(custody_challenge);
+  output << ",\"runtime_isolation\":{";
+  output << "\"ld_preload_absent\":true,\"ld_library_path_absent\":true";
+  output << ",\"termux_exec_mapping_absent\":true}";
+  output << ",\"runtime_mappings_observed\":[";
+  for (std::size_t index = 0; index < kRequiredRuntimeMappings.size(); ++index) {
+    if (index != 0U) {
+      output << ',';
+    }
+    output << json_string(kRequiredRuntimeMappings[index]);
+  }
+  output << ']';
+  output << ",\"runtime_mapping_identity\":";
+  output << "\"exact_path_device_inode_against_prevalidated_regular_file\"";
   output << ",\"loader\":{";
   output << "\"loaded_path\":" << json_string(identity.loaded_path);
   output << ",\"route\":" << json_string(identity.load_route) << '}';
@@ -332,7 +482,7 @@ std::string build_probe_contract_json(const OpenClIdentity& identity,
   output << ",\"max_mem_alloc_bytes\":" << identity.max_mem_alloc_bytes << '}';
   output << ",\"compiler_probe\":{";
   output << "\"build_options\":\"-cl-std=CL3.0\",\"build_succeeded\":true";
-  output << ",\"production_kernel_compiled\":true,\"local_size_64_succeeded\":true";
+  output << ",\"production_kernel_compiled\":true,\"local_size_64_admitted\":true";
   output << ",\"bf16_product_succeeded\":true,\"bf16_intrinsic_signature\":";
   output << "\"float_qcom_mad32_bf16_ushort_ushort_float\"";
   output << ",\"intrinsic_and_rne_runtime_conformance\":true";
@@ -346,7 +496,8 @@ std::string build_probe_contract_json(const OpenClIdentity& identity,
   return output.str();
 }
 
-int probe_contract(const std::string& output_path) {
+int probe_contract(const std::string& output_path,
+                   const std::string& custody_challenge) {
   DynamicOpenClLibrary library;
   OpenClApi api(library.handle());
   BoundOpenClDevice bound = select_and_validate_device(api, library, false);
@@ -483,7 +634,9 @@ int probe_contract(const std::string& output_path) {
     if (observed != kExpected) {
       throw std::runtime_error("BF16 intrinsic or RNE arithmetic conformance drift");
     }
-    const std::string contract = build_probe_contract_json(bound.identity, kernel_maximum);
+    require_runtime_library_mappings();
+    const std::string contract =
+        build_probe_contract_json(bound.identity, kernel_maximum, custody_challenge);
     write_exclusive(output_path, contract.data(), contract.size());
     release();
     return 0;
@@ -578,6 +731,7 @@ class OpenClLmHead {
       throw std::runtime_error("clBuildProgram failed: " +
                                program_build_log(api_, program_, bound_.device));
     }
+    require_runtime_library_mappings();
     kernel_ = api_.create_kernel(program_, "e4b_direct_packed_int2_lm_head", &error);
     require_cl(error, "clCreateKernel");
     std::size_t maximum = 0U;
@@ -650,6 +804,7 @@ std::string build_summary(const OpenClIdentity& identity,
   output << "{\"schema_version\":\"gemma4_e4b_adreno_int2_native_summary_v1\"";
   output << ",\"status\":\"completed_scope\"";
   output << ",\"candidate_id\":\"adreno_opencl_direct_packed_w2_scalar_bf16_product_fp32_tree_bf16_rne_v1\"";
+  output << ",\"source_closure_sha256\":" << json_string(kSourceClosureSha256);
   output << ",\"build_options\":" << json_string(kBuildOptions);
   output << ",\"runtime\":{";
   output << "\"loaded_path\":" << json_string(identity.loaded_path);
@@ -725,10 +880,12 @@ int run(const Arguments& arguments) {
 
 int main(int argc, char** argv) {
   try {
+    polymath::e4b_adreno::require_runtime_loader_isolation();
     const polymath::e4b_adreno::Arguments arguments =
         polymath::e4b_adreno::parse_arguments(argc, argv);
     if (arguments.probe_contract) {
-      return polymath::e4b_adreno::probe_contract(arguments.summary_path);
+      return polymath::e4b_adreno::probe_contract(arguments.summary_path,
+                                                  arguments.custody_challenge);
     }
     return polymath::e4b_adreno::run(arguments);
   } catch (const std::exception& error) {

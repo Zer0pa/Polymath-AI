@@ -8,6 +8,7 @@ import importlib.util
 from pathlib import Path
 import sys
 
+sys.dont_write_bytecode = True
 ROOT = Path(__file__).resolve().parents[2]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
@@ -29,6 +30,8 @@ def main() -> int:
     parser.add_argument("--s16-falsification", type=Path, required=True)
     parser.add_argument("--opencl-evidence-report", type=Path, required=True)
     parser.add_argument("--opencl-contract", type=Path, required=True)
+    parser.add_argument("--source-neutral-preflight-report", type=Path, required=True)
+    parser.add_argument("--adb-custody-receipt", type=Path, required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--created-at-utc", required=True)
     args = parser.parse_args()
@@ -38,6 +41,8 @@ def main() -> int:
         s16_falsification_path=args.s16_falsification,
         opencl_evidence_report_path=args.opencl_evidence_report,
         opencl_contract_path=args.opencl_contract,
+        source_neutral_preflight_report_path=args.source_neutral_preflight_report,
+        adb_custody_receipt_path=args.adb_custody_receipt,
         output_dir=args.output_dir,
         created_at_utc=args.created_at_utc,
     )

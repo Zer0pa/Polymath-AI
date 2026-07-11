@@ -7,7 +7,6 @@ import json
 import os
 from pathlib import Path
 import shutil
-import stat
 import struct
 import subprocess
 import sys
@@ -40,7 +39,7 @@ OPENCL_EXTENSION_DUMP_PATH = ROOT / (
 )
 
 
-def opencl_contract() -> dict[str, object]:
+def opencl_contract(source_closure_sha256: str = "f" * 64) -> dict[str, object]:
     extensions = json.loads(OPENCL_EXTENSION_DUMP_PATH.read_text(encoding="utf-8"))[
         "device"
     ]["extensions"]
@@ -48,7 +47,24 @@ def opencl_contract() -> dict[str, object]:
         "schema_version": adreno.OPENCL_CONTRACT_SCHEMA,
         "state": "passed_scope",
         "candidate_output_observed": False,
-        "model_or_tensor_access_count": 0,
+        "candidate_output_observation_scope": "this_custody_run_only",
+        "model_or_tensor_path_supplied": False,
+        "model_or_tensor_access_count_measured": False,
+        "model_or_tensor_access_observation": "not_observed_no_paths_supplied",
+        "model_or_tensor_access_observation_basis": (
+            "exclusive_probe_argv_and_source_bound_control_flow_no_syscall_trace"
+        ),
+        "source_closure_sha256": source_closure_sha256,
+        "custody_challenge": "e" * 64,
+        "runtime_isolation": {
+            "ld_preload_absent": True,
+            "ld_library_path_absent": True,
+            "termux_exec_mapping_absent": True,
+        },
+        "runtime_mappings_observed": list(adreno.REQUIRED_RUNTIME_MAPPINGS),
+        "runtime_mapping_identity": (
+            "exact_path_device_inode_against_prevalidated_regular_file"
+        ),
         "loader": {
             "loaded_path": "/vendor/lib64/libOpenCL.so",
             "route": "android_sphal",
@@ -78,7 +94,7 @@ def opencl_contract() -> dict[str, object]:
             "build_options": "-cl-std=CL3.0",
             "build_succeeded": True,
             "production_kernel_compiled": True,
-            "local_size_64_succeeded": True,
+            "local_size_64_admitted": True,
             "bf16_product_succeeded": True,
             "bf16_intrinsic_signature": ("float_qcom_mad32_bf16_ushort_ushort_float"),
             "intrinsic_and_rne_runtime_conformance": True,
@@ -102,6 +118,485 @@ def opencl_contract() -> dict[str, object]:
             "0x00003f82",
         ],
     }
+
+
+def source_neutral_preflight_report(
+    repository: Path, opencl_path: Path
+) -> dict[str, object]:
+    revision, closure = adreno.source_closure(repository)
+    source_closure_sha256 = hashlib.sha256(adreno.canonical_json(closure)).hexdigest()
+    raw_contract = opencl_path.read_bytes()
+    normalized = adreno.normalize_opencl_contract(
+        json.loads(raw_contract.decode("utf-8"))
+    )
+    binary_sha256 = "d" * 64
+    native_snapshot = [
+        {
+            "relative_path": relative,
+            "snapshot_name": Path(relative).name,
+            "bytes": next(
+                record["bytes"]
+                for record in closure
+                if record["relative_path"] == relative
+            ),
+            "sha256": next(
+                record["sha256"]
+                for record in closure
+                if record["relative_path"] == relative
+            ),
+        }
+        for relative in adreno.NATIVE_BUILD_SOURCE_FILES
+    ]
+    build_record = {
+        "binary_bytes": 123_456,
+        "binary_sha256": binary_sha256,
+        "toolchain_version_sha256": adreno.TERMUX_CLANGXX_VERSION_STDOUT_SHA256,
+        "toolchain_resolved_sha256": adreno.TERMUX_CLANGXX_RESOLVED_SHA256,
+        "linker_version_sha256": adreno.TERMUX_LLD_VERSION_STDOUT_SHA256,
+        "linker_resolved_sha256": adreno.TERMUX_LLD_RESOLVED_SHA256,
+        "cxx_runtime_sha256": adreno.TERMUX_LIBCXX_SHA256,
+        "compiler_arguments": list(adreno.NATIVE_BUILD_ARGUMENTS),
+        "source_closure_sha256": source_closure_sha256,
+        "native_source_snapshot_sha256": hashlib.sha256(
+            adreno.canonical_json(native_snapshot)
+        ).hexdigest(),
+        "termux_exec_interposer_sha256": adreno.TERMUX_EXEC_INTERPOSER_SHA256,
+        "termux_exec_transport": (
+            "private_unlinked_exact_snapshot_read_only_fd_via_proc_self_fd"
+        ),
+        "binary_publication": "renameat2_RENAME_NOREPLACE_same_directory",
+        "build_elapsed_ns": 1,
+        "stdout_sha256": hashlib.sha256(b"").hexdigest(),
+        "stderr_sha256": hashlib.sha256(b"").hexdigest(),
+    }
+    return {
+        "schema_version": adreno.SOURCE_NEUTRAL_PREFLIGHT_SCHEMA,
+        "state": "passed_scope",
+        "candidate_output_observed": False,
+        "candidate_output_observation_scope": "this_custody_run_only",
+        "model_or_tensor_path_supplied": False,
+        "model_or_tensor_access_count_measured": False,
+        "model_or_tensor_access_observation": "not_observed_no_paths_supplied",
+        "model_or_tensor_access_observation_basis": (
+            "exclusive_probe_argv_and_source_bound_control_flow_no_syscall_trace"
+        ),
+        "source_revision": revision,
+        "custody_challenge": normalized["custody_challenge"],
+        "source_closure": closure,
+        "source_closure_sha256": source_closure_sha256,
+        "source_checkout_clean_before_and_after": True,
+        "build": {
+            "first": build_record,
+            "second": dict(build_record),
+            "byte_identical_rebuild": True,
+        },
+        "probe": {
+            "return_code": 0,
+            "elapsed_ns": 1,
+            "stdout_sha256": hashlib.sha256(b"").hexdigest(),
+            "stderr_sha256": hashlib.sha256(b"").hexdigest(),
+            "launched_binary_bytes": 123_456,
+            "launched_binary_sha256": binary_sha256,
+            "process_receipt": {
+                "pid": 123,
+                "pidfd_opened": True,
+                "pidfd_inode": 456,
+                "pidfd_poll_ready": True,
+                "timeout_seconds": 600,
+                "waitid_pid": 123,
+                "waitid_code": os.CLD_EXITED,
+                "waitid_status": 0,
+                "popen_return_code": 0,
+            },
+            "contract_bytes": len(raw_contract),
+            "contract_sha256": hashlib.sha256(raw_contract).hexdigest(),
+            "contract_canonical_sha256": hashlib.sha256(
+                adreno.canonical_json(normalized)
+            ).hexdigest(),
+            "runtime_isolation": normalized["runtime_isolation"],
+            "runtime_mapping_identity": normalized["runtime_mapping_identity"],
+            "binary_snapshot_unlinked_before_launch": True,
+            "launcher": adreno.ANDROID_LINKER64_PATH,
+            "child_environment_keys": [
+                "HOME",
+                "LANG",
+                "LC_ALL",
+                "PATH",
+                "TMPDIR",
+                "TZ",
+            ],
+            "loader_injection_environment_absent": True,
+        },
+        "platform_identity": {
+            "android_build_fingerprint_stdout_sha256": (
+                adreno.ANDROID_BUILD_FINGERPRINT_STDOUT_SHA256
+            ),
+            "vendor_runtime_files": [dict(item) for item in adreno.VENDOR_RUNTIME_FILES],
+            "android_linker64_sha256": adreno.ANDROID_LINKER64_RESOLVED_SHA256,
+            "compiler_sha256": adreno.TERMUX_CLANGXX_RESOLVED_SHA256,
+            "linker_sha256": adreno.TERMUX_LLD_RESOLVED_SHA256,
+            "cxx_runtime_sha256": adreno.TERMUX_LIBCXX_SHA256,
+            "termux_exec_source_sha256": adreno.TERMUX_EXEC_INTERPOSER_SHA256,
+            "python_runtime_files": [
+                dict(item) for item in adreno.TERMUX_PYTHON_RUNTIME_FILES
+            ],
+            "python_stdlib_tree": {
+                "absolute_path": adreno.TERMUX_PYTHON_STDLIB_DIR,
+                **adreno.TERMUX_PYTHON_STDLIB_TREE_IDENTITY,
+            },
+            "compiler_runtime_libraries": [
+                dict(item) for item in adreno.TERMUX_COMPILER_RUNTIME_FILES
+            ],
+            "compiler_resource_tree": {
+                "absolute_path": adreno.TERMUX_CLANG_RESOURCE_DIR,
+                **adreno.TERMUX_CLANG_RESOURCE_TREE_IDENTITY,
+            },
+            "include_tree": {
+                "absolute_path": adreno.TERMUX_INCLUDE_DIR,
+                **adreno.TERMUX_INCLUDE_TREE_IDENTITY,
+            },
+            "link_input_files": [dict(item) for item in adreno.TERMUX_LINK_INPUT_FILES],
+            "phone_system_runtime_files": [
+                dict(item) for item in adreno.PHONE_SYSTEM_RUNTIME_FILES
+            ],
+        },
+        "custody": {
+            "source_neutral_build_directory": True,
+            "fresh_host_challenge_bound": True,
+            "authorized_adb_forwarded_ssh_custody_receipt_required_for_admission": True,
+            "model_tensor_input_reference_or_candidate_payload_path_supplied": False,
+            "sanitized_hash_bound_metadata_egress_allowed": True,
+        },
+        "nonclaims": [
+            "no_candidate_logits_observed",
+            "no_authority_metric_result",
+            "no_model_or_tensor_execution",
+            "no_performance_claim",
+            "no_kernel_level_filesystem_access_trace",
+            "no_hardware_attestation",
+            "no_resistance_to_malicious_same_uid_or_fully_compromised_phone",
+        ],
+    }
+
+
+def write_preflight_transaction(
+    directory: Path, report: dict[str, object]
+) -> Path:
+    directory.mkdir(exist_ok=True)
+    report_path = directory / "preflight_report.json"
+    write_json(report_path, report)
+    report_sha256 = hashlib.sha256(report_path.read_bytes()).hexdigest()
+    (directory / "preflight_report.json.sha256").write_text(
+        f"{report_sha256}  preflight_report.json\n", encoding="ascii"
+    )
+    build = report["build"]
+    probe = report["probe"]
+    assert isinstance(build, dict)
+    assert isinstance(probe, dict)
+    first = build["first"]
+    assert isinstance(first, dict)
+    completion = {
+        "schema_version": adreno.SOURCE_NEUTRAL_PREFLIGHT_COMPLETION_SCHEMA,
+        "state": "complete",
+        "report_sha256": report_sha256,
+        "source_revision": report["source_revision"],
+        "binary_sha256": first["binary_sha256"],
+        "contract_sha256": probe["contract_sha256"],
+        "custody_challenge": report.get("custody_challenge"),
+    }
+    write_json(directory / "PREFLIGHT_COMPLETE.json", completion)
+    return report_path
+
+
+def write_adb_custody_transaction(
+    directory: Path, *, source_revision: str
+) -> Path:
+    challenge = json.loads(
+        (directory / "preflight_report.json").read_text(encoding="utf-8")
+    )["custody_challenge"]
+    run_id = "20260711T153000000000Z"
+    repository_root = "/data/data/com.termux/files/home/polymath-clean"
+    build_parent = "/data/data/com.termux/files/home/polymath-preflight"
+    build_directory = (
+        f"{build_parent}/{run_id}_adreno_preflight_adb_forwarded_ssh_"
+        f"{challenge[:16]}"
+    )
+    remote = {
+        "repository_root": repository_root,
+        "preflight_script": (
+            f"{repository_root}/scripts/termux/run_e4b_adreno_int2_preflight.py"
+        ),
+        "build_parent": build_parent,
+        "build_directory": build_directory,
+        "probe_contract": f"{build_directory}/opencl_contract.json",
+        "preflight_report": f"{build_directory}/preflight_report.json",
+        "blocker": f"{build_directory}/PREFLIGHT_BLOCKER.json",
+    }
+    remote_argv = [
+        "/data/data/com.termux/files/usr/bin/env",
+        "-i",
+        "HOME=/data/data/com.termux/files/home",
+        "PATH=/data/data/com.termux/files/usr/bin:/system/bin:/system/xbin",
+        "TMPDIR=/data/data/com.termux/files/usr/tmp",
+        "LANG=C",
+        "LC_ALL=C",
+        "TZ=UTC",
+        "LD_PRELOAD=/data/data/com.termux/files/usr/lib/libtermux-exec.so",
+        "TERMUX_EXEC__PROC_SELF_EXE=/data/data/com.termux/files/usr/bin/python3",
+        "/data/data/com.termux/files/usr/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        remote["preflight_script"],
+        "--build-dir",
+        build_directory,
+        "--probe-contract-output",
+        remote["probe_contract"],
+        "--report",
+        remote["preflight_report"],
+        "--custody-challenge",
+        challenge,
+    ]
+    ssh_overrides = list(adreno.AUTHORIZED_TERMUX_SSH_REQUIRED_OVERRIDES)
+    ssh_configuration_argv = [
+        "ssh",
+        "-G",
+        *ssh_overrides,
+        adreno.AUTHORIZED_TERMUX_SSH_ALIAS,
+    ]
+    ssh_command_prefix = [
+        "ssh",
+        *ssh_overrides,
+        adreno.AUTHORIZED_TERMUX_SSH_ALIAS,
+        "--",
+    ]
+    artifact_names = [
+        "preflight_report.json",
+        "preflight_report.json.sha256",
+        "PREFLIGHT_COMPLETE.json",
+        "opencl_contract.json",
+    ]
+    artifact_remote_paths = {
+        "preflight_report.json": remote["preflight_report"],
+        "preflight_report.json.sha256": f"{remote['preflight_report']}.sha256",
+        "PREFLIGHT_COMPLETE.json": f"{build_directory}/PREFLIGHT_COMPLETE.json",
+        "opencl_contract.json": remote["probe_contract"],
+    }
+    artifacts = {}
+    for index, name in enumerate(artifact_names, start=1):
+        payload = (directory / name).read_bytes()
+        artifacts[name] = {
+            "remote_absolute_path": artifact_remote_paths[name],
+            "local_filename": name,
+            "bytes": len(payload),
+            "sha256": hashlib.sha256(payload).hexdigest(),
+            "retrieved_at_utc": f"2026-07-11T15:30:00.00000{index}Z",
+        }
+    boot_id = "12345678-1234-4abc-8def-123456789abc"
+    receipt = {
+        "schema_version": adreno.ADB_PREFLIGHT_CUSTODY_SCHEMA,
+        "state": "complete",
+        "serial": adreno.AUTHORIZED_ADB_SERIAL,
+        "custody_challenge": challenge,
+        "custody_challenge_generation": {
+            "method": "python_secrets.token_hex",
+            "entropy_bytes": 32,
+            "lowercase_hex": True,
+            "used_once_for_this_transaction": True,
+        },
+        "utc_run_id": run_id,
+        "source_revision": source_revision,
+        "device_identity": {
+            "expected_serial": adreno.AUTHORIZED_ADB_SERIAL,
+            "get_state": "device",
+            "get_state_stdout_sha256": hashlib.sha256(b"device\n").hexdigest(),
+            "get_serialno": adreno.AUTHORIZED_ADB_SERIAL,
+            "get_serialno_stdout_sha256": hashlib.sha256(
+                f"{adreno.AUTHORIZED_ADB_SERIAL}\n".encode("ascii")
+            ).hexdigest(),
+            "selection": "every_command_uses_explicit_adb_-s_serial",
+            "environment_serial_selectors_removed": ["ANDROID_SERIAL", "ADB_SERIAL"],
+        },
+        "transport_continuity": {
+            "adb_forward": {
+                "verification_argv": [
+                    "adb",
+                    "-s",
+                    adreno.AUTHORIZED_ADB_SERIAL,
+                    "forward",
+                    "--list",
+                ],
+                "expected_mapping_line": (
+                    f"{adreno.AUTHORIZED_ADB_SERIAL} "
+                    f"{adreno.AUTHORIZED_ADB_FORWARD_LOCAL} "
+                    f"{adreno.AUTHORIZED_ADB_FORWARD_REMOTE}"
+                ),
+                "local_spec": adreno.AUTHORIZED_ADB_FORWARD_LOCAL,
+                "remote_spec": adreno.AUTHORIZED_ADB_FORWARD_REMOTE,
+                "before_stdout_bytes": 38,
+                "before_stdout_sha256": "a" * 64,
+                "after_stdout_bytes": 38,
+                "after_stdout_sha256": "a" * 64,
+                "stdout_byte_identical": True,
+                "mapping_present_exactly_once_before_and_after": True,
+                "before_observed_at_utc": "2026-07-11T15:30:00.000002Z",
+                "after_observed_at_utc": "2026-07-11T15:30:00.000009Z",
+                "forward_created_or_modified_by_wrapper": False,
+            },
+            "ssh": {
+                "executable": "ssh",
+                "alias": adreno.AUTHORIZED_TERMUX_SSH_ALIAS,
+                "configuration_argv": ssh_configuration_argv,
+                "required_cli_overrides": ssh_overrides,
+                "command_prefix": ssh_command_prefix,
+                "resolved_host": adreno.AUTHORIZED_TERMUX_SSH_HOST,
+                "resolved_port": adreno.AUTHORIZED_TERMUX_SSH_PORT,
+                "resolved_user": adreno.AUTHORIZED_TERMUX_SSH_USER,
+                "resolved_identity_file": (
+                    adreno.AUTHORIZED_TERMUX_SSH_IDENTITY_FILE
+                ),
+                "client_public_key_fingerprint": (
+                    adreno.AUTHORIZED_TERMUX_SSH_CLIENT_KEY_FINGERPRINT
+                ),
+                "resolved_user_known_hosts_file": (
+                    adreno.AUTHORIZED_TERMUX_SSH_KNOWN_HOSTS_FILE
+                ),
+                "server_host_key_fingerprint": (
+                    adreno.AUTHORIZED_TERMUX_SSH_SERVER_KEY_FINGERPRINT
+                ),
+                "effective_configuration": {
+                    "batch_mode": True,
+                    "password_authentication": False,
+                    "kbd_interactive_authentication": False,
+                    "number_of_password_prompts": 0,
+                    "request_tty": False,
+                    "strict_host_key_checking": True,
+                    "identities_only": True,
+                },
+                "before_config_stdout_bytes": 1_024,
+                "before_config_stdout_sha256": "b" * 64,
+                "after_config_stdout_bytes": 1_024,
+                "after_config_stdout_sha256": "b" * 64,
+                "config_stdout_byte_identical": True,
+                "before_observed_at_utc": "2026-07-11T15:30:00.000002Z",
+                "after_observed_at_utc": "2026-07-11T15:30:00.000009Z",
+            },
+            "remote_identity": {
+                "uid_argv": [*ssh_command_prefix, "/system/bin/id", "-u"],
+                "gid_argv": [*ssh_command_prefix, "/system/bin/id", "-g"],
+                "expected_uid": adreno.AUTHORIZED_TERMUX_UID,
+                "expected_gid": adreno.AUTHORIZED_TERMUX_GID,
+                "uid_before": adreno.AUTHORIZED_TERMUX_UID,
+                "uid_after": adreno.AUTHORIZED_TERMUX_UID,
+                "gid_before": adreno.AUTHORIZED_TERMUX_GID,
+                "gid_after": adreno.AUTHORIZED_TERMUX_GID,
+                "continuous": True,
+                "before_observed_at_utc": "2026-07-11T15:30:00.000002Z",
+                "after_observed_at_utc": "2026-07-11T15:30:00.000009Z",
+            },
+        },
+        "boot_id_continuity": {
+            "source_absolute_path": "/proc/sys/kernel/random/boot_id",
+            "adb_before": boot_id,
+            "ssh_before": boot_id,
+            "ssh_after": boot_id,
+            "adb_after": boot_id,
+            "all_four_equal": True,
+            "adb_before_observed_at_utc": "2026-07-11T15:30:00.000002Z",
+            "ssh_before_observed_at_utc": "2026-07-11T15:30:00.000002Z",
+            "ssh_after_observed_at_utc": "2026-07-11T15:30:00.000009Z",
+            "adb_after_observed_at_utc": "2026-07-11T15:30:00.000009Z",
+        },
+        "remote_paths": remote,
+        "invocation_contract": {
+            "ssh_argv": [*ssh_command_prefix, *remote_argv],
+            "remote_argv": remote_argv,
+            "host_shell_used": False,
+            "stdin_transport": "DEVNULL",
+            "timeout_seconds": 1_800,
+            "return_code": 0,
+            "stdout_bytes": 0,
+            "stdout_sha256": hashlib.sha256(b"").hexdigest(),
+            "stderr_bytes": 0,
+            "stderr_sha256": hashlib.sha256(b"").hexdigest(),
+        },
+        "retrieval_contract": {
+            "method": (
+                "verified_explicit_ADB_forward_plus_forwarded_SSH_"
+                "/system/bin/cat_exact_path"
+            ),
+            "ssh_command_prefix": ssh_command_prefix,
+            "allowlisted_artifact_names": artifact_names,
+            "every_retrieval_used_exact_absolute_path": True,
+            "blocker_path_absent": True,
+            "remote_top_level_inventory": [
+                "PREFLIGHT_COMPLETE.json",
+                "build_a",
+                "build_b",
+                "opencl_contract.json",
+                "preflight_report.json",
+                "preflight_report.json.sha256",
+                "probe.stderr.log",
+                "probe.stdout.log",
+            ],
+            "raw_model_tensor_or_candidate_path_requested": False,
+            "scp_used": False,
+            "direct_adb_shell_used": False,
+        },
+        "artifacts": artifacts,
+        "artifact_set_sha256": hashlib.sha256(
+            adreno.canonical_json(artifacts)
+        ).hexdigest(),
+        "timestamps": {
+            "wrapper_started_at_utc": "2026-07-11T15:30:00.000001Z",
+            "device_identity_verified_at_utc": "2026-07-11T15:30:00.000002Z",
+            "transport_before_verified_at_utc": "2026-07-11T15:30:00.000003Z",
+            "preflight_started_at_utc": "2026-07-11T15:30:00.000004Z",
+            "preflight_completed_at_utc": "2026-07-11T15:30:00.000005Z",
+            "retrieval_started_at_utc": "2026-07-11T15:30:00.000006Z",
+            "retrieval_completed_at_utc": "2026-07-11T15:30:00.000007Z",
+            "inventory_observed_at_utc": "2026-07-11T15:30:00.000008Z",
+            "transport_after_verified_at_utc": "2026-07-11T15:30:00.000009Z",
+            "receipt_sealed_at_utc": "2026-07-11T15:30:00.000010Z",
+        },
+        "custody": {
+            "source_neutral_artifacts_only": True,
+            "retrieval_allowlist_fixed_in_source": True,
+            "local_directory_atomic_noreplace_publication": True,
+            "raw_model_tensor_or_candidate_data_retrieved": False,
+            "termux_execution_via_forwarded_ssh_only": True,
+            "direct_adb_shell_used": False,
+            "adb_forward_created_or_modified": False,
+            "scp_used": False,
+        },
+        "nonclaims": [
+            "no_hardware_attestation",
+            "no_resistance_to_malicious_same-UID_compromise",
+            "no_kernel_level_ADB_or_SSH_transport_attestation",
+            "no_raw_model_tensor_or_candidate_payload_custody_claim",
+        ],
+    }
+    receipt_path = directory / "adb_custody_receipt.json"
+    receipt_path.write_bytes(adreno.canonical_json(receipt))
+    receipt_sha256 = hashlib.sha256(receipt_path.read_bytes()).hexdigest()
+    (directory / "adb_custody_receipt.json.sha256").write_text(
+        f"{receipt_sha256}  adb_custody_receipt.json\n", encoding="ascii"
+    )
+    write_json(
+        directory / "ADB_CUSTODY_COMPLETE.json",
+        {
+            "schema_version": adreno.ADB_PREFLIGHT_CUSTODY_COMPLETION_SCHEMA,
+            "state": "complete",
+            "receipt_sha256": receipt_sha256,
+            "artifact_set_sha256": receipt["artifact_set_sha256"],
+            "serial": adreno.AUTHORIZED_ADB_SERIAL,
+            "custody_challenge": challenge,
+            "boot_id": boot_id,
+            "remote_build_directory": build_directory,
+            "source_revision": source_revision,
+        },
+    )
+    return receipt_path
 
 
 def s16_falsification() -> dict[str, object]:
@@ -463,6 +958,8 @@ def test_preregistration_rejects_jointly_mutated_ancestor_reports(
                 s16_falsification_path=paths["s16"],
                 opencl_evidence_report_path=paths["opencl"],
                 opencl_contract_path=opencl_path,
+                source_neutral_preflight_report_path=tmp_path / "unused.json",
+                adb_custody_receipt_path=tmp_path / "unused_custody.json",
                 output_dir=tmp_path / f"rejected_{target}",
                 created_at_utc="2026-07-11T15:30:00Z",
             )
@@ -474,14 +971,32 @@ def test_preregistration_binds_selector_falsifier_source_and_unobserved_state(
 ) -> None:
     selector_path = FROZEN_SELECTOR_PATH
     falsification_path = FROZEN_S16_FALSIFICATION_PATH
-    opencl_path = tmp_path / "opencl.json"
+    preflight_dir = tmp_path / "preflight"
+    preflight_dir.mkdir()
+    opencl_path = preflight_dir / "opencl_contract.json"
     evidence_path = FROZEN_OPENCL_EVIDENCE_PATH
-    write_json(opencl_path, opencl_contract())
     repository = tmp_path / "repository"
     repository.mkdir()
     (repository / "bound.py").write_text("BOUND = True\n", encoding="utf-8")
     initialize_git_repository(repository)
     monkeypatch.setattr(adreno, "SOURCE_CLOSURE", ("bound.py",))
+    monkeypatch.setattr(adreno, "NATIVE_BUILD_SOURCE_FILES", ("bound.py",))
+    _, closure = adreno.source_closure(repository)
+    closure_sha256 = hashlib.sha256(adreno.canonical_json(closure)).hexdigest()
+    write_json(opencl_path, opencl_contract(closure_sha256))
+    preflight_path = write_preflight_transaction(
+        preflight_dir,
+        source_neutral_preflight_report(repository, opencl_path),
+    )
+    source_revision = subprocess.run(
+        ["git", "-C", str(repository), "rev-parse", "HEAD"],
+        check=True,
+        stdout=subprocess.PIPE,
+        text=True,
+    ).stdout.strip()
+    adb_custody_path = write_adb_custody_transaction(
+        preflight_dir, source_revision=source_revision
+    )
     output = tmp_path / "prereg"
     prereg = adreno.build_preregistration(
         repository_root=repository,
@@ -489,6 +1004,8 @@ def test_preregistration_binds_selector_falsifier_source_and_unobserved_state(
         s16_falsification_path=falsification_path,
         opencl_evidence_report_path=evidence_path,
         opencl_contract_path=opencl_path,
+        source_neutral_preflight_report_path=preflight_path,
+        adb_custody_receipt_path=adb_custody_path,
         output_dir=output,
         created_at_utc="2026-07-11T15:30:00Z",
     )
@@ -522,6 +1039,18 @@ def test_preregistration_binds_selector_falsifier_source_and_unobserved_state(
         lambda value: value["toolchain_contract"].update(
             arbitrary_CXX_override_allowed=True
         ),
+        lambda value: value["toolchain_contract"][
+            "termux_exec_interposer"
+        ].update(arbitrary_LD_PRELOAD_override_allowed=True),
+        lambda value: value["toolchain_contract"]["candidate_launcher"].update(
+            candidate_runtime_ld_preload_allowed=True
+        ),
+        lambda value: value["toolchain_contract"].update(
+            linker_resolved_sha256="0" * 64
+        ),
+        lambda value: value["native_binary_contract"].update(
+            preflight_sha256="0" * 63
+        ),
     )
     for mutation in preregistration_mutations:
         drifted = copy.deepcopy(prereg)
@@ -551,8 +1080,95 @@ def test_preregistration_binds_selector_falsifier_source_and_unobserved_state(
             s16_falsification_path=falsification_path,
             opencl_evidence_report_path=evidence_path,
             opencl_contract_path=opencl_path,
+            source_neutral_preflight_report_path=preflight_path,
+            adb_custody_receipt_path=adb_custody_path,
             output_dir=output,
             created_at_utc="2026-07-11T15:30:01Z",
+        )
+
+
+def test_toolchain_contract_has_independent_exact_security_shape() -> None:
+    toolchain = adreno.toolchain_contract()
+    assert set(toolchain) == {
+        "compiler_path_class",
+        "compiler_symlink_absolute_path",
+        "compiler_symlink_target",
+        "compiler_resolved_absolute_path",
+        "compiler_resolved_bytes",
+        "compiler_resolved_sha256",
+        "compiler_version_stdout_sha256",
+        "arbitrary_CXX_override_allowed",
+        "linker_symlink_absolute_path",
+        "linker_symlink_target",
+        "linker_resolved_absolute_path",
+        "linker_resolved_bytes",
+        "linker_resolved_sha256",
+        "linker_version_stdout_sha256",
+        "compiler_arguments",
+        "native_build_source_files",
+        "cxx_runtime",
+        "compiler_runtime_libraries",
+        "compiler_resource_tree",
+        "include_tree",
+        "link_input_files",
+        "control_plane_python",
+        "termux_exec_interposer",
+        "candidate_launcher",
+        "phone_system_runtime_files",
+        "runtime_mapping_identity",
+        "binary_publication",
+    }
+    assert toolchain["compiler_arguments"][0] == "--driver-mode=g++"
+    assert set(toolchain["termux_exec_interposer"]) == {
+        "source_absolute_path",
+        "source_bytes",
+        "source_sha256",
+        "source_mode_octal",
+        "source_uid",
+        "source_gid",
+        "compiler_ld_preload_transport",
+        "ld_preload_exact_single_entry",
+        "arbitrary_LD_PRELOAD_override_allowed",
+    }
+    assert toolchain["candidate_launcher"] == {
+        "absolute_path": "/system/bin/linker64",
+        "symlink_target": "/apex/com.android.runtime/bin/linker64",
+        "resolved_absolute_path": "/apex/com.android.runtime/bin/linker64",
+        "resolved_bytes": 2_160_952,
+        "resolved_sha256": (
+            "6aa1b8bcf1da7e8b48f67f78eebaa2d9356c76ad3c9809bd5576b579907d7f9e"
+        ),
+        "absolute_candidate_path_required": True,
+        "candidate_runtime_ld_preload_allowed": False,
+        "termux_wrapper_allowed": False,
+    }
+
+
+@pytest.mark.parametrize("variant", ["missing_completion", "bad_sidecar", "blocker"])
+def test_preflight_transaction_rejects_incomplete_or_conflicting_state(
+    tmp_path: Path, variant: str
+) -> None:
+    report = {
+        "source_revision": "a" * 40,
+        "build": {"first": {"binary_sha256": "b" * 64}},
+        "probe": {"contract_sha256": "c" * 64},
+    }
+    report_path = write_preflight_transaction(tmp_path / "transaction", report)
+    if variant == "missing_completion":
+        (report_path.parent / "PREFLIGHT_COMPLETE.json").unlink()
+    elif variant == "bad_sidecar":
+        (report_path.parent / "preflight_report.json.sha256").write_text(
+            f"{'0' * 64}  preflight_report.json\n", encoding="ascii"
+        )
+    else:
+        (report_path.parent / "PREFLIGHT_BLOCKER.json").write_text(
+            "{}\n", encoding="utf-8"
+        )
+    raw = report_path.read_bytes()
+    decoded = json.loads(raw.decode("utf-8"))
+    with pytest.raises(adreno.AdrenoGateError, match="preflight"):
+        adreno._validate_source_neutral_preflight_transaction(
+            report_path, raw, decoded
         )
 
 
@@ -696,6 +1312,138 @@ def test_minimal_phone_environment_drops_hostile_inherited_variables(
     )
 
 
+def test_compiler_environment_uses_only_retained_verified_interposer(
+    monkeypatch, tmp_path: Path
+) -> None:
+    phone_gate = load_phone_gate()
+    payload = b"exact-termux-exec-interposer"
+    source = tmp_path / "libtermux-exec.so"
+    source.write_bytes(payload)
+    source.chmod(0o700)
+    metadata = source.stat()
+    monkeypatch.setattr(
+        phone_gate.contract, "TERMUX_EXEC_INTERPOSER_PATH", str(source)
+    )
+    monkeypatch.setattr(
+        phone_gate.contract, "TERMUX_EXEC_INTERPOSER_BYTES", len(payload)
+    )
+    monkeypatch.setattr(
+        phone_gate.contract,
+        "TERMUX_EXEC_INTERPOSER_SHA256",
+        hashlib.sha256(payload).hexdigest(),
+    )
+    monkeypatch.setattr(
+        phone_gate.contract,
+        "TERMUX_EXEC_INTERPOSER_UID",
+        metadata.st_uid,
+    )
+    monkeypatch.setattr(
+        phone_gate.contract,
+        "TERMUX_EXEC_INTERPOSER_GID",
+        metadata.st_gid,
+    )
+    monkeypatch.setenv("LD_PRELOAD", "/hostile/inherited.so")
+    descriptor = phone_gate.open_termux_exec_snapshot(temporary_directory=tmp_path)
+    try:
+        environment = phone_gate.compiler_phone_environment(
+            temporary_directory=tmp_path,
+            interposer_descriptor=descriptor,
+        )
+        assert environment["LD_PRELOAD"] == f"/proc/self/fd/{descriptor}"
+        assert "/hostile/inherited.so" not in environment.values()
+        assert "LD_LIBRARY_PATH" not in environment
+        assert "TERMUX_EXEC_OPTOUT" not in environment
+        assert "TERMUX_EXEC_DEBUG" not in environment
+        assert "TERMUX_EXEC__PROC_SELF_EXE" not in environment
+    finally:
+        os.close(descriptor)
+
+
+def test_verified_interposer_rejects_hardlink_topology(
+    monkeypatch, tmp_path: Path
+) -> None:
+    phone_gate = load_phone_gate()
+    payload = b"exact-termux-exec-interposer"
+    source = tmp_path / "libtermux-exec.so"
+    source.write_bytes(payload)
+    source.chmod(0o700)
+    os.link(source, tmp_path / "second-link.so")
+    metadata = source.stat()
+    monkeypatch.setattr(
+        phone_gate.contract, "TERMUX_EXEC_INTERPOSER_PATH", str(source)
+    )
+    monkeypatch.setattr(
+        phone_gate.contract, "TERMUX_EXEC_INTERPOSER_BYTES", len(payload)
+    )
+    monkeypatch.setattr(
+        phone_gate.contract,
+        "TERMUX_EXEC_INTERPOSER_SHA256",
+        hashlib.sha256(payload).hexdigest(),
+    )
+    monkeypatch.setattr(
+        phone_gate.contract,
+        "TERMUX_EXEC_INTERPOSER_UID",
+        metadata.st_uid,
+    )
+    monkeypatch.setattr(
+        phone_gate.contract,
+        "TERMUX_EXEC_INTERPOSER_GID",
+        metadata.st_gid,
+    )
+    with pytest.raises(phone_gate.PhoneExecutionError, match="metadata drifted"):
+        phone_gate.open_verified_termux_exec_source()
+
+
+def test_unlinked_snapshot_has_no_path_and_exact_read_only_identity(
+    tmp_path: Path,
+) -> None:
+    phone_gate = load_phone_gate()
+    payload = b"immutable-snapshot"
+    digest = hashlib.sha256(payload).hexdigest()
+    descriptor = phone_gate.open_unlinked_snapshot(
+        payload=payload,
+        expected_sha256=digest,
+        temporary_directory=tmp_path,
+        prefix="test-snapshot",
+    )
+    try:
+        metadata = os.fstat(descriptor)
+        assert metadata.st_nlink == 0
+        assert metadata.st_size == len(payload)
+        assert metadata.st_mode & 0o777 == 0o400
+        assert phone_gate._sha256_descriptor(descriptor) == digest
+        assert not list(tmp_path.glob(".test-snapshot-*"))
+    finally:
+        os.close(descriptor)
+
+
+def test_parent_mapping_parser_rejects_mixed_path_inode_or_device(
+    monkeypatch, tmp_path: Path
+) -> None:
+    phone_gate = load_phone_gate()
+    source = tmp_path / "libtermux-exec.so"
+    source.write_bytes(b"shim")
+    metadata = source.stat()
+    monkeypatch.setattr(
+        phone_gate.contract, "TERMUX_EXEC_INTERPOSER_PATH", str(source)
+    )
+    device = f"{os.major(metadata.st_dev):x}:{os.minor(metadata.st_dev):x}"
+    valid = f"1000-2000 r--p 00000000 {device} {metadata.st_ino} {source}\n"
+    phone_gate.validate_termux_exec_mapping_payload(valid, metadata=metadata)
+    invalid_records = (
+        valid
+        + f"2000-3000 r--p 00000000 {device} {metadata.st_ino} /tmp/libtermux-exec.so\n",
+        f"1000-2000 r--p 00000000 {device} {metadata.st_ino + 1} {source}\n",
+        f"1000-2000 r--p 00000000 00:00 {metadata.st_ino} {source}\n",
+        "",
+    )
+    for payload in invalid_records:
+        with pytest.raises(phone_gate.PhoneExecutionError, match="mapping is not exact"):
+            phone_gate.validate_termux_exec_mapping_payload(
+                payload, metadata=metadata
+            )
+
+
 def test_native_command_never_receives_authority_reference_paths(
     tmp_path: Path,
 ) -> None:
@@ -720,35 +1468,50 @@ def test_native_command_never_receives_authority_reference_paths(
     assert str(authority) not in command
     assert command.count("--case") == 1
     assert "--packed-weight" in command
+    assert command[:2] == [adreno.ANDROID_LINKER64_PATH, str(tmp_path / "native/binary")]
     assert "--scale-bf16" in command
+    with pytest.raises(phone_gate.PhoneExecutionError, match="must be absolute"):
+        phone_gate.native_command(
+            binary_path=Path("relative-binary"),
+            packed_weight_path=tmp_path / "packed.bin",
+            scale_path=tmp_path / "scale.bin",
+            native_summary_path=tmp_path / "summary.json",
+            all_cases=[],
+        )
 
 
 def test_host_and_phone_use_standalone_source_bound_import_route() -> None:
     host = (ROOT / "scripts/host/build_e4b_adreno_int2_prereg.py").read_text(
         encoding="utf-8"
     )
+    preflight = (
+        ROOT / "scripts/termux/run_e4b_adreno_int2_preflight.py"
+    ).read_text(encoding="utf-8")
     phone = (ROOT / "scripts/termux/run_e4b_adreno_int2_phone_gate.py").read_text(
         encoding="utf-8"
     )
-    for source in (host, phone):
+    for source in (host, preflight, phone):
         assert "spec_from_file_location" in source
         assert "from polymath_ai.frontier import" not in source
     assert set(adreno.SOURCE_CLOSURE) == {
         "polymath_ai/frontier/e4b_adreno_int2_lm_head.py",
         "scripts/host/build_e4b_adreno_int2_prereg.py",
+        "scripts/host/run_e4b_adreno_int2_preflight_via_adb.py",
+        "scripts/termux/run_e4b_adreno_int2_preflight.py",
         "scripts/termux/run_e4b_adreno_int2_phone_gate.py",
         "native/e4b_adreno_int2_lm_head/opencl_dynamic_runtime.h",
         "native/e4b_adreno_int2_lm_head/opencl_dynamic_runtime.cpp",
         "native/e4b_adreno_int2_lm_head/e4b_adreno_int2_lm_head.cpp",
-        "native/e4b_adreno_int2_lm_head/build_phone.sh",
     }
-    build_script = ROOT / "native/e4b_adreno_int2_lm_head/build_phone.sh"
-    assert stat.S_IMODE(build_script.stat().st_mode) == 0o755
-    assert os.access(build_script, os.X_OK)
-    assert str(build_script.relative_to(ROOT)) in adreno.SOURCE_EXECUTABLES
-    build_source = build_script.read_text(encoding="utf-8")
-    assert '$(/system/bin/uname -m)' in build_source
-    assert '$(uname -m)' not in build_source
+    assert not adreno.SOURCE_EXECUTABLES
+    assert "build_phone.sh" not in phone
+    assert "*contract.NATIVE_BUILD_ARGUMENTS" in phone
+    assert adreno.NATIVE_BUILD_ARGUMENTS[0] == "--driver-mode=g++"
+    assert "contract._rename_noreplace(staging_path, binary_path)" in phone
+    assert "pass_fds=(interposer_descriptor,)" in phone
+    assert "--probe-contract" in preflight
+    assert "loader_injection_environment_absent" in preflight
+    assert "model_or_tensor_access_count" in preflight
 
 
 def test_sentinel_output_validation_rejects_undersized_payload(tmp_path: Path) -> None:
@@ -814,6 +1577,7 @@ def test_native_return_code_and_replay_claims_must_match_observed_outputs(
     summary = {
         "schema_version": "gemma4_e4b_adreno_int2_native_summary_v1",
         "candidate_id": adreno.CANDIDATE_ID,
+        "source_closure_sha256": "e" * 64,
         "build_options": "-cl-std=CL3.0",
         "lifecycle": {
             "process_count": 1,
@@ -838,7 +1602,10 @@ def test_native_return_code_and_replay_claims_must_match_observed_outputs(
     }
     summary_path = tmp_path / "summary.json"
     write_json(summary_path, summary)
-    preregistration = {"cases": [{"case_id": case_id} for case_id in case_ids[:-1]]}
+    preregistration = {
+        "cases": [{"case_id": case_id} for case_id in case_ids[:-1]],
+        "source_binding": {"closure_sha256": "e" * 64},
+    }
     with pytest.raises(phone_gate.PhoneExecutionError, match="return code"):
         phone_gate.validate_native_summary(summary_path, preregistration, 0)
     validated = phone_gate.validate_native_summary(summary_path, preregistration, 2)
@@ -953,7 +1720,10 @@ def test_native_source_uses_typed_scalar_intrinsic_and_fixed_tree() -> None:
 def test_native_probe_is_source_neutral_and_executes_arithmetic_conformance() -> None:
     source = NATIVE_SOURCE.read_text(encoding="utf-8")
     assert 'option == "--probe-contract"' in source
-    assert 'model_or_tensor_access_count\\":0' in source
+    assert 'model_or_tensor_access_count_measured\\":false' in source
+    assert 'model_or_tensor_access_observation\\":' in source
+    assert "not_observed_no_paths_supplied" in source
+    assert 'option == "--custody-challenge"' in source
     assert "e4b_intrinsic_contract_probe" in source
     assert "0x3F820200U" in source
     assert "production kernel rejected local size 64" in source
@@ -966,6 +1736,14 @@ def test_native_probe_is_source_neutral_and_executes_arithmetic_conformance() ->
     assert "kInputBytes" in source
     assert "kOutputBytes" in source
     assert source.count("api.release_program(program);") == 1
+    assert 'std::getenv("LD_PRELOAD")' in source
+    assert 'std::getenv("LD_LIBRARY_PATH")' in source
+    assert 'mappings.find("libtermux-exec.so")' in source
+    assert "has_exact_runtime_mapping" in source
+    assert "expected_metadata.st_ino" in source
+    assert "std::stoul(major_component" in source
+    assert "std::stoul(minor_component" in source
+    assert '"termux_exec_mapping_absent\\":true' in source
 
 
 def test_native_runtime_uses_android_sphal_and_exact_identity_binding() -> None:
@@ -990,6 +1768,7 @@ def test_native_sources_are_host_syntax_clean() -> None:
             "-Wshadow",
             "-Wconversion",
             "-Wsign-conversion",
+            '-DPOLYMATH_SOURCE_CLOSURE_SHA256="ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"',
             "-fsyntax-only",
             str(NATIVE_RUNTIME),
             str(NATIVE_SOURCE),

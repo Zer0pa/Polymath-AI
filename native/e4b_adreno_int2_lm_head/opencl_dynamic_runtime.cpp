@@ -31,7 +31,9 @@ constexpr cl_device_info kClDeviceVersion = 0x102FU;
 constexpr cl_device_info kClDeviceExtensions = 0x1030U;
 constexpr cl_device_info kClDeviceOpenClCVersion = 0x103DU;
 
+#if !defined(__ANDROID__)
 int close_regular(void* handle) { return dlclose(handle); }
+#endif
 
 template <typename Function>
 Function resolve_required(void* library, const char* name) {

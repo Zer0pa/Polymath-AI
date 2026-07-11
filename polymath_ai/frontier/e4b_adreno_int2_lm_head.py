@@ -27,6 +27,54 @@ from typing import Any
 PREREGISTRATION_SCHEMA = "gemma4_e4b_adreno_int2_lm_head_preregistration_v1"
 OPENCL_CONTRACT_SCHEMA = "gemma4_e4b_adreno_opencl_execution_contract_v1"
 PHONE_RECEIPT_SCHEMA = "gemma4_e4b_adreno_int2_lm_head_phone_receipt_v1"
+SOURCE_NEUTRAL_PREFLIGHT_SCHEMA = "gemma4_e4b_adreno_source_neutral_preflight_v1"
+SOURCE_NEUTRAL_PREFLIGHT_COMPLETION_SCHEMA = (
+    "gemma4_e4b_adreno_preflight_completion_v1"
+)
+ADB_PREFLIGHT_CUSTODY_SCHEMA = (
+    "gemma4_e4b_adreno_adb_forwarded_ssh_custody_receipt_v2"
+)
+ADB_PREFLIGHT_CUSTODY_COMPLETION_SCHEMA = (
+    "gemma4_e4b_adreno_adb_forwarded_ssh_custody_completion_v2"
+)
+AUTHORIZED_ADB_SERIAL = "FY25013101C8"
+AUTHORIZED_ADB_FORWARD_LOCAL = "tcp:18022"
+AUTHORIZED_ADB_FORWARD_REMOTE = "tcp:8022"
+AUTHORIZED_TERMUX_SSH_ALIAS = "redmagic-termux-polymath"
+AUTHORIZED_TERMUX_SSH_HOST = "127.0.0.1"
+AUTHORIZED_TERMUX_SSH_PORT = 18_022
+AUTHORIZED_TERMUX_SSH_USER = "u0_a536"
+AUTHORIZED_TERMUX_SSH_IDENTITY_FILE = (
+    "/Users/prinivenpillay/.ssh/polymath_host"
+)
+AUTHORIZED_TERMUX_SSH_KNOWN_HOSTS_FILE = (
+    "/Users/prinivenpillay/.ssh/known_hosts"
+)
+AUTHORIZED_TERMUX_SSH_SERVER_KEY_FINGERPRINT = (
+    "SHA256:RK4COBqnfndb+gOOFkaCMNOHDV0AxQkhx94X1yW+tgs"
+)
+AUTHORIZED_TERMUX_SSH_CLIENT_KEY_FINGERPRINT = (
+    "SHA256:gKxDEgEScPrY8O3omM8WWAG3Hwo2cCyq13demaGw3bY"
+)
+AUTHORIZED_TERMUX_SSH_REQUIRED_OVERRIDES = (
+    "-T",
+    "-o",
+    "BatchMode=yes",
+    "-o",
+    "PasswordAuthentication=no",
+    "-o",
+    "KbdInteractiveAuthentication=no",
+    "-o",
+    "NumberOfPasswordPrompts=0",
+    "-o",
+    "RequestTTY=no",
+    "-o",
+    "StrictHostKeyChecking=yes",
+    "-o",
+    "IdentitiesOnly=yes",
+)
+AUTHORIZED_TERMUX_UID = 10_536
+AUTHORIZED_TERMUX_GID = 10_536
 CANDIDATE_ID = (
     "adreno_opencl_direct_packed_w2_scalar_bf16_product_fp32_tree_bf16_rne_v1"
 )
@@ -107,13 +155,381 @@ VENDOR_RUNTIME_FILES = (
         "sha256": "9616f5dddff3ac30e060950bc4a0f8a20763b4cf51b27bcd752df20d5523b28a",
     },
 )
+REQUIRED_RUNTIME_MAPPINGS = (
+    "/vendor/lib64/libOpenCL.so",
+    "/vendor/lib64/libOpenCL_adreno.so",
+    "/vendor/lib64/libadreno_compiler_cl.so",
+    "/vendor/lib64/libadreno_utils.so",
+    "/system/lib64/libvndksupport.so",
+    "/apex/com.android.runtime/lib64/bionic/libdl_android.so",
+    "/system/lib64/liblog.so",
+    "/system/lib64/libc++.so",
+    "/apex/com.android.runtime/lib64/bionic/libc.so",
+    "/apex/com.android.runtime/lib64/bionic/libdl.so",
+    "/apex/com.android.runtime/lib64/bionic/libm.so",
+    "/data/data/com.termux/files/usr/lib/libc++_shared.so",
+)
 TERMUX_CLANGXX_PATH = "/data/data/com.termux/files/usr/bin/clang++"
+TERMUX_CLANGXX_LINK_TARGET = "clang-21"
+TERMUX_CLANGXX_RESOLVED_PATH = "/data/data/com.termux/files/usr/bin/clang-21"
 TERMUX_CLANGXX_RESOLVED_BYTES = 120_848
 TERMUX_CLANGXX_RESOLVED_SHA256 = (
     "34da8e3a9b71793eb70c25670e1fe2bce4d37f1e2837ba8dc0c516c2ca0ffc83"
 )
 TERMUX_CLANGXX_VERSION_STDOUT_SHA256 = (
     "ba8cc9283b3d1015d7534124eee8908cc5e9b42955e66d10f27a86009c8e76c1"
+)
+TERMUX_LLD_PATH = "/data/data/com.termux/files/usr/bin/ld.lld"
+TERMUX_LLD_LINK_TARGET = "lld"
+TERMUX_LLD_RESOLVED_PATH = "/data/data/com.termux/files/usr/bin/lld"
+TERMUX_LLD_RESOLVED_BYTES = 5_615_720
+TERMUX_LLD_RESOLVED_SHA256 = (
+    "5214b9511221a87e02c4a9603f470dd83804a54f4cf62475f168d47d707d964d"
+)
+TERMUX_LLD_VERSION_STDOUT_SHA256 = (
+    "418d72df86baf70c88b9a96a9118e3cdc66be0537a58f66a6879df0479f9a78f"
+)
+TERMUX_CLANG_CPP_PATH = "/data/data/com.termux/files/usr/lib/libclang-cpp.so"
+TERMUX_CLANG_CPP_BYTES = 59_130_224
+TERMUX_CLANG_CPP_SHA256 = (
+    "279758cd28398a44d0f036474ccd4839e1ba0c44bcbfc44cdb05a28527b0227d"
+)
+TERMUX_LLVM_PATH = "/data/data/com.termux/files/usr/lib/libLLVM.so"
+TERMUX_LLVM_BYTES = 129_366_048
+TERMUX_LLVM_SHA256 = (
+    "d8157ef272769f24142408f819e9eb27139e9c3b0fecbd468fe5416e77c402ce"
+)
+TERMUX_COMPILER_RUNTIME_FILES = (
+    {
+        "entry_absolute_path": TERMUX_CLANG_CPP_PATH,
+        "symlink_target": None,
+        "resolved_absolute_path": TERMUX_CLANG_CPP_PATH,
+        "bytes": TERMUX_CLANG_CPP_BYTES,
+        "sha256": TERMUX_CLANG_CPP_SHA256,
+    },
+    {
+        "entry_absolute_path": TERMUX_LLVM_PATH,
+        "symlink_target": None,
+        "resolved_absolute_path": TERMUX_LLVM_PATH,
+        "bytes": TERMUX_LLVM_BYTES,
+        "sha256": TERMUX_LLVM_SHA256,
+    },
+    {
+        "entry_absolute_path": "/data/data/com.termux/files/usr/lib/libffi.so",
+        "symlink_target": None,
+        "resolved_absolute_path": "/data/data/com.termux/files/usr/lib/libffi.so",
+        "bytes": 86_144,
+        "sha256": "11cfbf6e8a9d18ebc7dd4f5a1acb08404b1dea9503e5ca13066d1b0fa01435e1",
+    },
+    {
+        "entry_absolute_path": "/data/data/com.termux/files/usr/lib/libz.so.1",
+        "symlink_target": "libz.so.1.3.2",
+        "resolved_absolute_path": "/data/data/com.termux/files/usr/lib/libz.so.1.3.2",
+        "bytes": 72_232,
+        "sha256": "6d1a271adb9864fd66d696c746eac7a43faaa158b1370d32774ef73f1fe799ef",
+    },
+    {
+        "entry_absolute_path": "/data/data/com.termux/files/usr/lib/libzstd.so.1",
+        "symlink_target": "libzstd.so.1.5.7",
+        "resolved_absolute_path": "/data/data/com.termux/files/usr/lib/libzstd.so.1.5.7",
+        "bytes": 820_840,
+        "sha256": "5baa1d62cdd945afb01ae0a8d4ee8cdd3bcb8ec4d21e90b30ef017655a86bebf",
+    },
+    {
+        "entry_absolute_path": "/data/data/com.termux/files/usr/lib/libxml2.so.16",
+        "symlink_target": "libxml2.so.16.1.3",
+        "resolved_absolute_path": "/data/data/com.termux/files/usr/lib/libxml2.so.16.1.3",
+        "bytes": 1_048_952,
+        "sha256": "541f9a23a573322ffd6f31f2f28af0c4f614bfb547441006c15ddc0192f35366",
+    },
+    {
+        "entry_absolute_path": "/data/data/com.termux/files/usr/lib/libicuuc.so.78",
+        "symlink_target": "libicuuc.so.78.3",
+        "resolved_absolute_path": "/data/data/com.termux/files/usr/lib/libicuuc.so.78.3",
+        "bytes": 1_867_696,
+        "sha256": "104dc1ed87acd79b200cac3998bbfcdcc02cc01d139f5c58a8c8d363b4f6d49d",
+    },
+    {
+        "entry_absolute_path": "/data/data/com.termux/files/usr/lib/libiconv.so",
+        "symlink_target": None,
+        "resolved_absolute_path": "/data/data/com.termux/files/usr/lib/libiconv.so",
+        "bytes": 1_082_512,
+        "sha256": "763c461c53d47e4f10b585b33ed6589949ce7765aa560f4b2aedfc7e4885cae2",
+    },
+    {
+        "entry_absolute_path": "/data/data/com.termux/files/usr/lib/libicudata.so.78",
+        "symlink_target": "libicudata.so.78.3",
+        "resolved_absolute_path": "/data/data/com.termux/files/usr/lib/libicudata.so.78.3",
+        "bytes": 33_108_952,
+        "sha256": "82b40055d3f2eada13b5816069c5bc2d82a4fa5b919fad4f69b1e83f5382ec7a",
+    },
+)
+TERMUX_LIBCXX_PATH = "/data/data/com.termux/files/usr/lib/libc++_shared.so"
+TERMUX_LIBCXX_BYTES = 1_374_336
+TERMUX_LIBCXX_SHA256 = (
+    "e09c2f45cf4cf8ae574f94b6c2650d99ead0d332d5396f6613f062a2d2d73540"
+)
+TERMUX_PYTHON_PATH = "/data/data/com.termux/files/usr/bin/python3"
+TERMUX_PYTHON_LINK_TARGET = "python3.13"
+TERMUX_PYTHON_RESOLVED_PATH = "/data/data/com.termux/files/usr/bin/python3.13"
+TERMUX_PYTHON_RESOLVED_BYTES = 4_728
+TERMUX_PYTHON_RESOLVED_SHA256 = (
+    "1d3987c39c03b764d629a8c8c6fdc5979d8f8e28beb7193f312fc39d63b70404"
+)
+TERMUX_PYTHON_VERSION = "3.13.13"
+TERMUX_PYTHON_RUNTIME_FILES = (
+    {
+        "entry_absolute_path": (
+            "/data/data/com.termux/files/usr/lib/libpython3.13.so"
+        ),
+        "symlink_target": None,
+        "resolved_absolute_path": (
+            "/data/data/com.termux/files/usr/lib/libpython3.13.so"
+        ),
+        "bytes": 5_153_728,
+        "sha256": "7ca4f4f00ae2e1afde50bb3ce01926ec6edb582719c7731a416235833d4d2319",
+    },
+    {
+        "entry_absolute_path": (
+            "/data/data/com.termux/files/usr/lib/libandroid-posix-semaphore.so"
+        ),
+        "symlink_target": None,
+        "resolved_absolute_path": (
+            "/data/data/com.termux/files/usr/lib/libandroid-posix-semaphore.so"
+        ),
+        "bytes": 7_136,
+        "sha256": "adc7a3aa24f7e3baadc6149dea370bceeb11f058f19e22d8ca46e19f19e9e803",
+    },
+    {
+        "entry_absolute_path": (
+            "/data/data/com.termux/files/usr/lib/libbz2.so.1.0"
+        ),
+        "symlink_target": "libbz2.so.1.0.8",
+        "resolved_absolute_path": (
+            "/data/data/com.termux/files/usr/lib/libbz2.so.1.0.8"
+        ),
+        "bytes": 50_328,
+        "sha256": "5129a738fec8c6733954fa6a98f1fad9538e818f38db89d5391f12e5657746dc",
+    },
+    {
+        "entry_absolute_path": (
+            "/data/data/com.termux/files/usr/lib/libcrypto.so.3"
+        ),
+        "symlink_target": None,
+        "resolved_absolute_path": (
+            "/data/data/com.termux/files/usr/lib/libcrypto.so.3"
+        ),
+        "bytes": 4_611_704,
+        "sha256": "28534a11feb019f149032374c88d1c52f87baa241bc9ee7ab0bb1f3d24d21118",
+    },
+    {
+        "entry_absolute_path": (
+            "/data/data/com.termux/files/usr/lib/liblzma.so.5"
+        ),
+        "symlink_target": "liblzma.so.5.8.3",
+        "resolved_absolute_path": (
+            "/data/data/com.termux/files/usr/lib/liblzma.so.5.8.3"
+        ),
+        "bytes": 157_112,
+        "sha256": "f8ab7f7548a57222c1115274bd6ff10d08917ba0701c1b3892be5a12a8d506cf",
+    },
+    {
+        "entry_absolute_path": "/data/data/com.termux/files/usr/lib/libffi.so",
+        "symlink_target": None,
+        "resolved_absolute_path": (
+            "/data/data/com.termux/files/usr/lib/libffi.so"
+        ),
+        "bytes": 86_144,
+        "sha256": "11cfbf6e8a9d18ebc7dd4f5a1acb08404b1dea9503e5ca13066d1b0fa01435e1",
+    },
+    {
+        "entry_absolute_path": "/data/data/com.termux/files/usr/lib/libz.so.1",
+        "symlink_target": "libz.so.1.3.2",
+        "resolved_absolute_path": (
+            "/data/data/com.termux/files/usr/lib/libz.so.1.3.2"
+        ),
+        "bytes": 72_232,
+        "sha256": "6d1a271adb9864fd66d696c746eac7a43faaa158b1370d32774ef73f1fe799ef",
+    },
+)
+TERMUX_PYTHON_STDLIB_DIR = "/data/data/com.termux/files/usr/lib/python3.13"
+TERMUX_PYTHON_STDLIB_TREE_IDENTITY = {
+    "entry_count": 12_080,
+    "regular_bytes": 232_330_107,
+    "root_sha256": "3de0e05e7f6098c4624bae415f01303b99e0675b85e819a5738a518a4d9e7c6d",
+}
+TERMUX_CLANG_RESOURCE_DIR = "/data/data/com.termux/files/usr/lib/clang/21"
+TERMUX_CLANG_RESOURCE_TREE_IDENTITY = {
+    "entry_count": 330,
+    "regular_bytes": 49_574_163,
+    "root_sha256": "ffdceb85df6a46d5b43d1cabea2e36b984e2d30143fc639ed01bee9cacdff854",
+}
+TERMUX_INCLUDE_DIR = "/data/data/com.termux/files/usr/include"
+TERMUX_INCLUDE_TREE_IDENTITY = {
+    "entry_count": 10_906,
+    "regular_bytes": 134_436_489,
+    "root_sha256": "e951f4e4eeebfb1ae61af0b05337bb12ce800a398a62476b21ffeb10f6fd4c1d",
+}
+TERMUX_LINK_INPUT_FILES = (
+    {
+        "role": "crt_begin",
+        "entry_absolute_path": (
+            "/data/data/com.termux/files/usr/lib/crtbegin_dynamic.o"
+        ),
+        "symlink_target": None,
+        "resolved_absolute_path": (
+            "/data/data/com.termux/files/usr/lib/crtbegin_dynamic.o"
+        ),
+        "bytes": 3_896,
+        "sha256": "612cf67a324667367e78f99c4f42116d9f0ae94dd1bed72303c0b989d87facac",
+    },
+    {
+        "role": "crt_end",
+        "entry_absolute_path": (
+            "/data/data/com.termux/files/usr/lib/crtend_android.o"
+        ),
+        "symlink_target": None,
+        "resolved_absolute_path": (
+            "/data/data/com.termux/files/usr/lib/crtend_android.o"
+        ),
+        "bytes": 832,
+        "sha256": "4a73856c6b87bfaa7b6fc5963796f21941f85f9bb3de36f688f70b5c5ceca44b",
+    },
+    {
+        "role": "unwind_archive",
+        "entry_absolute_path": "/data/data/com.termux/files/usr/lib/libunwind.a",
+        "symlink_target": None,
+        "resolved_absolute_path": (
+            "/data/data/com.termux/files/usr/lib/libunwind.a"
+        ),
+        "bytes": 92_452,
+        "sha256": "c52c8462134a1610e93d873e9d992f4804027d0c73115b2ea4c21b0aed5cbe65",
+    },
+    {
+        "role": "clang_rt_builtins",
+        "entry_absolute_path": (
+            "/data/data/com.termux/files/usr/lib/clang/21/lib/linux/"
+            "libclang_rt.builtins-aarch64-android.a"
+        ),
+        "symlink_target": None,
+        "resolved_absolute_path": (
+            "/data/data/com.termux/files/usr/lib/clang/21/lib/linux/"
+            "libclang_rt.builtins-aarch64-android.a"
+        ),
+        "bytes": 409_982,
+        "sha256": "9aeed0613b933c2c79a7c366371b5910681b740b78093d33237fd31c67345cb2",
+    },
+    {
+        "role": "bionic_libdl",
+        "entry_absolute_path": "/system/lib64/libdl.so",
+        "symlink_target": "/apex/com.android.runtime/lib64/bionic/libdl.so",
+        "resolved_absolute_path": (
+            "/apex/com.android.runtime/lib64/bionic/libdl.so"
+        ),
+        "bytes": 50_760,
+        "sha256": "7abc47c96a4f49d52647e7f1d2045d3eb9ba4d9766c1d7f225e6aa229fa9f479",
+    },
+    {
+        "role": "bionic_libm",
+        "entry_absolute_path": "/system/lib64/libm.so",
+        "symlink_target": "/apex/com.android.runtime/lib64/bionic/libm.so",
+        "resolved_absolute_path": (
+            "/apex/com.android.runtime/lib64/bionic/libm.so"
+        ),
+        "bytes": 249_192,
+        "sha256": "2a99c9ac7a12461663ec31b8d4ee3404ee99a1dca53f7c30b248bcccb155eefc",
+    },
+    {
+        "role": "bionic_libc",
+        "entry_absolute_path": "/system/lib64/libc.so",
+        "symlink_target": "/apex/com.android.runtime/lib64/bionic/libc.so",
+        "resolved_absolute_path": (
+            "/apex/com.android.runtime/lib64/bionic/libc.so"
+        ),
+        "bytes": 1_143_072,
+        "sha256": "b4d95dc39a379dbe5049ce033f019b01a2f10dcf507562e83c72eef901d6ebcf",
+    },
+)
+PHONE_SYSTEM_RUNTIME_FILES = (
+    {
+        "role": "vndk_support",
+        "entry_absolute_path": "/system/lib64/libvndksupport.so",
+        "symlink_target": None,
+        "resolved_absolute_path": "/system/lib64/libvndksupport.so",
+        "bytes": 51_352,
+        "sha256": "3ce8b48aa76739ad3a8668dc8fc0ce462151a984b4a6bd881aa473f4f09fc179",
+    },
+    {
+        "role": "vndk_dl_android",
+        "entry_absolute_path": "/system/lib64/libdl_android.so",
+        "symlink_target": (
+            "/apex/com.android.runtime/lib64/bionic/libdl_android.so"
+        ),
+        "resolved_absolute_path": (
+            "/apex/com.android.runtime/lib64/bionic/libdl_android.so"
+        ),
+        "bytes": 34_664,
+        "sha256": "10370703f28cb1aebc12f30cec1e6e3940e65975495e01c69642f29195b31adc",
+    },
+    {
+        "role": "android_log",
+        "entry_absolute_path": "/system/lib64/liblog.so",
+        "symlink_target": None,
+        "resolved_absolute_path": "/system/lib64/liblog.so",
+        "bytes": 101_848,
+        "sha256": "b9d6a5f515686068e0a66d3d56c248701745f59273b20051a62bec4d44bedd9e",
+    },
+    {
+        "role": "android_libcxx",
+        "entry_absolute_path": "/system/lib64/libc++.so",
+        "symlink_target": None,
+        "resolved_absolute_path": "/system/lib64/libc++.so",
+        "bytes": 1_083_168,
+        "sha256": "794eb8fafd7be35da3725e9ec0b15189c6f4f2544f5b78afd8a647dde5b69195",
+    },
+    {
+        "role": "android_netd_client_control_plane_transitive",
+        "entry_absolute_path": "/system/lib64/libnetd_client.so",
+        "symlink_target": None,
+        "resolved_absolute_path": "/system/lib64/libnetd_client.so",
+        "bytes": 52_368,
+        "sha256": "d4aedc713a2d6f06214faa6c27ea333909a685a717d12b5a750d134ec4733c89",
+    },
+)
+TERMUX_EXEC_INTERPOSER_PATH = (
+    "/data/data/com.termux/files/usr/lib/libtermux-exec.so"
+)
+TERMUX_EXEC_INTERPOSER_BYTES = 13_808
+TERMUX_EXEC_INTERPOSER_SHA256 = (
+    "45ad0183d4fdb399ce5df0823b1d67b53a01bbb2596c7e4db79b7c255214c9c8"
+)
+TERMUX_EXEC_INTERPOSER_MODE = 0o700
+TERMUX_EXEC_INTERPOSER_UID = 10_536
+TERMUX_EXEC_INTERPOSER_GID = 10_536
+ANDROID_LINKER64_PATH = "/system/bin/linker64"
+ANDROID_LINKER64_LINK_TARGET = "/apex/com.android.runtime/bin/linker64"
+ANDROID_LINKER64_RESOLVED_PATH = "/apex/com.android.runtime/bin/linker64"
+ANDROID_LINKER64_RESOLVED_BYTES = 2_160_952
+ANDROID_LINKER64_RESOLVED_SHA256 = (
+    "6aa1b8bcf1da7e8b48f67f78eebaa2d9356c76ad3c9809bd5576b579907d7f9e"
+)
+NATIVE_BUILD_ARGUMENTS = (
+    "--driver-mode=g++",
+    "--no-default-config",
+    "--target=aarch64-linux-android35",
+    f"-resource-dir={TERMUX_CLANG_RESOURCE_DIR}",
+    f"--ld-path={TERMUX_LLD_PATH}",
+    "-std=c++20",
+    "-O3",
+    "-DNDEBUG",
+    "-fvisibility=hidden",
+    "-Wall",
+    "-Wextra",
+    "-Wpedantic",
+    "-Wshadow",
+    "-Wconversion",
+    "-Wsign-conversion",
+    "-Werror",
 )
 
 REQUIRED_DEVICE_EXTENSIONS = (
@@ -197,20 +613,109 @@ FROZEN_CASES: tuple[dict[str, Any], ...] = (
     },
 )
 
-SOURCE_CLOSURE = (
-    "polymath_ai/frontier/e4b_adreno_int2_lm_head.py",
-    "scripts/host/build_e4b_adreno_int2_prereg.py",
-    "scripts/termux/run_e4b_adreno_int2_phone_gate.py",
+NATIVE_BUILD_SOURCE_FILES = (
     "native/e4b_adreno_int2_lm_head/opencl_dynamic_runtime.h",
     "native/e4b_adreno_int2_lm_head/opencl_dynamic_runtime.cpp",
     "native/e4b_adreno_int2_lm_head/e4b_adreno_int2_lm_head.cpp",
-    "native/e4b_adreno_int2_lm_head/build_phone.sh",
 )
-SOURCE_EXECUTABLES = frozenset({"native/e4b_adreno_int2_lm_head/build_phone.sh"})
+SOURCE_CLOSURE = (
+    "polymath_ai/frontier/e4b_adreno_int2_lm_head.py",
+    "scripts/host/build_e4b_adreno_int2_prereg.py",
+    "scripts/host/run_e4b_adreno_int2_preflight_via_adb.py",
+    "scripts/termux/run_e4b_adreno_int2_preflight.py",
+    "scripts/termux/run_e4b_adreno_int2_phone_gate.py",
+    *NATIVE_BUILD_SOURCE_FILES,
+)
+SOURCE_EXECUTABLES: frozenset[str] = frozenset()
 
 
 class AdrenoGateError(RuntimeError):
     """Raised when the OpenCL candidate cannot preserve its frozen contract."""
+
+
+def toolchain_contract() -> dict[str, Any]:
+    """Return the exact phone compiler and exec-transport contract."""
+    return {
+        "compiler_path_class": "termux_prefix_bin_clangxx_exact_resolved_target",
+        "compiler_symlink_absolute_path": TERMUX_CLANGXX_PATH,
+        "compiler_symlink_target": TERMUX_CLANGXX_LINK_TARGET,
+        "compiler_resolved_absolute_path": TERMUX_CLANGXX_RESOLVED_PATH,
+        "compiler_resolved_bytes": TERMUX_CLANGXX_RESOLVED_BYTES,
+        "compiler_resolved_sha256": TERMUX_CLANGXX_RESOLVED_SHA256,
+        "compiler_version_stdout_sha256": TERMUX_CLANGXX_VERSION_STDOUT_SHA256,
+        "arbitrary_CXX_override_allowed": False,
+        "linker_symlink_absolute_path": TERMUX_LLD_PATH,
+        "linker_symlink_target": TERMUX_LLD_LINK_TARGET,
+        "linker_resolved_absolute_path": TERMUX_LLD_RESOLVED_PATH,
+        "linker_resolved_bytes": TERMUX_LLD_RESOLVED_BYTES,
+        "linker_resolved_sha256": TERMUX_LLD_RESOLVED_SHA256,
+        "linker_version_stdout_sha256": TERMUX_LLD_VERSION_STDOUT_SHA256,
+        "compiler_arguments": list(NATIVE_BUILD_ARGUMENTS),
+        "native_build_source_files": list(NATIVE_BUILD_SOURCE_FILES),
+        "cxx_runtime": {
+            "absolute_path": TERMUX_LIBCXX_PATH,
+            "bytes": TERMUX_LIBCXX_BYTES,
+            "sha256": TERMUX_LIBCXX_SHA256,
+            "soname": "libc++_shared.so",
+        },
+        "compiler_runtime_libraries": [
+            dict(item) for item in TERMUX_COMPILER_RUNTIME_FILES
+        ],
+        "compiler_resource_tree": {
+            "absolute_path": TERMUX_CLANG_RESOURCE_DIR,
+            **TERMUX_CLANG_RESOURCE_TREE_IDENTITY,
+        },
+        "include_tree": {
+            "absolute_path": TERMUX_INCLUDE_DIR,
+            **TERMUX_INCLUDE_TREE_IDENTITY,
+        },
+        "link_input_files": [dict(item) for item in TERMUX_LINK_INPUT_FILES],
+        "control_plane_python": {
+            "entry_absolute_path": TERMUX_PYTHON_PATH,
+            "symlink_target": TERMUX_PYTHON_LINK_TARGET,
+            "resolved_absolute_path": TERMUX_PYTHON_RESOLVED_PATH,
+            "resolved_bytes": TERMUX_PYTHON_RESOLVED_BYTES,
+            "resolved_sha256": TERMUX_PYTHON_RESOLVED_SHA256,
+            "version": TERMUX_PYTHON_VERSION,
+            "required_flags": ["-I", "-S", "-B"],
+            "exact_parent_environment": True,
+            "runtime_files": [dict(item) for item in TERMUX_PYTHON_RUNTIME_FILES],
+            "stdlib_tree": {
+                "absolute_path": TERMUX_PYTHON_STDLIB_DIR,
+                **TERMUX_PYTHON_STDLIB_TREE_IDENTITY,
+            },
+        },
+        "termux_exec_interposer": {
+            "source_absolute_path": TERMUX_EXEC_INTERPOSER_PATH,
+            "source_bytes": TERMUX_EXEC_INTERPOSER_BYTES,
+            "source_sha256": TERMUX_EXEC_INTERPOSER_SHA256,
+            "source_mode_octal": "0700",
+            "source_uid": TERMUX_EXEC_INTERPOSER_UID,
+            "source_gid": TERMUX_EXEC_INTERPOSER_GID,
+            "compiler_ld_preload_transport": (
+                "private_unlinked_exact_snapshot_read_only_fd_via_proc_self_fd"
+            ),
+            "ld_preload_exact_single_entry": True,
+            "arbitrary_LD_PRELOAD_override_allowed": False,
+        },
+        "candidate_launcher": {
+            "absolute_path": ANDROID_LINKER64_PATH,
+            "symlink_target": ANDROID_LINKER64_LINK_TARGET,
+            "resolved_absolute_path": ANDROID_LINKER64_RESOLVED_PATH,
+            "resolved_bytes": ANDROID_LINKER64_RESOLVED_BYTES,
+            "resolved_sha256": ANDROID_LINKER64_RESOLVED_SHA256,
+            "absolute_candidate_path_required": True,
+            "candidate_runtime_ld_preload_allowed": False,
+            "termux_wrapper_allowed": False,
+        },
+        "phone_system_runtime_files": [
+            dict(item) for item in PHONE_SYSTEM_RUNTIME_FILES
+        ],
+        "runtime_mapping_identity": (
+            "exact_path_device_inode_against_prevalidated_regular_file"
+        ),
+        "binary_publication": "renameat2_RENAME_NOREPLACE_same_directory",
+    }
 
 
 def canonical_json(value: object) -> bytes:
@@ -225,6 +730,60 @@ def canonical_json(value: object) -> bytes:
 
 def sha256_bytes(payload: bytes) -> str:
     return hashlib.sha256(payload).hexdigest()
+
+
+def is_sha256(value: object) -> bool:
+    return (
+        isinstance(value, str)
+        and len(value) == 64
+        and all(character in "0123456789abcdef" for character in value)
+    )
+
+
+def directory_tree_identity(root: Path) -> dict[str, Any]:
+    metadata = root.lstat()
+    if not stat.S_ISDIR(metadata.st_mode) or root.is_symlink():
+        raise AdrenoGateError(f"toolchain tree root is unsafe: {root}")
+    records: list[dict[str, Any]] = []
+    regular_bytes = 0
+    paths = sorted(root.rglob("*"), key=lambda path: path.relative_to(root).as_posix())
+    for path in paths:
+        relative = path.relative_to(root).as_posix()
+        entry = path.lstat()
+        mode = f"{stat.S_IMODE(entry.st_mode):04o}"
+        if stat.S_ISDIR(entry.st_mode):
+            records.append(
+                {"relative_path": relative, "type": "directory", "mode": mode}
+            )
+            continue
+        if stat.S_ISLNK(entry.st_mode):
+            records.append(
+                {
+                    "relative_path": relative,
+                    "type": "symlink",
+                    "mode": mode,
+                    "target": os.readlink(path),
+                }
+            )
+            continue
+        if not stat.S_ISREG(entry.st_mode) or entry.st_nlink != 1:
+            raise AdrenoGateError(f"toolchain tree entry is unsafe: {path}")
+        payload = read_regular(path)
+        regular_bytes += len(payload)
+        records.append(
+            {
+                "relative_path": relative,
+                "type": "regular",
+                "mode": mode,
+                "bytes": len(payload),
+                "sha256": sha256_bytes(payload),
+            }
+        )
+    return {
+        "entry_count": len(records),
+        "regular_bytes": regular_bytes,
+        "root_sha256": sha256_bytes(canonical_json(records)),
+    }
 
 
 def _open_regular(path: Path) -> int:
@@ -579,8 +1138,48 @@ def normalize_opencl_contract(payload: Mapping[str, Any]) -> dict[str, Any]:
         raise AdrenoGateError("OpenCL contract is not passed_scope")
     if payload.get("candidate_output_observed") is not False:
         raise AdrenoGateError("OpenCL contract contains candidate observations")
-    if payload.get("model_or_tensor_access_count") != 0:
-        raise AdrenoGateError("OpenCL contract probe accessed model or tensor state")
+    if (
+        payload.get("candidate_output_observation_scope")
+        != "this_custody_run_only"
+    ):
+        raise AdrenoGateError("OpenCL candidate observation scope drifted")
+    if payload.get("model_or_tensor_path_supplied") is not False:
+        raise AdrenoGateError("OpenCL probe received model or tensor paths")
+    if payload.get("model_or_tensor_access_count_measured") is not False:
+        raise AdrenoGateError("OpenCL probe overclaimed an access trace")
+    if (
+        payload.get("model_or_tensor_access_observation")
+        != "not_observed_no_paths_supplied"
+    ):
+        raise AdrenoGateError("OpenCL probe access observation drifted")
+    expected_access_observation_basis = (
+        "exclusive_probe_argv_and_source_bound_control_flow_no_syscall_trace"
+    )
+    if (
+        payload.get("model_or_tensor_access_observation_basis")
+        != expected_access_observation_basis
+    ):
+        raise AdrenoGateError("OpenCL probe access observation basis drifted")
+    source_closure_sha256 = payload.get("source_closure_sha256")
+    if not is_sha256(source_closure_sha256):
+        raise AdrenoGateError("OpenCL contract source closure witness is invalid")
+    custody_challenge = payload.get("custody_challenge")
+    if not is_sha256(custody_challenge):
+        raise AdrenoGateError("OpenCL custody challenge is invalid")
+    expected_runtime_isolation = {
+        "ld_preload_absent": True,
+        "ld_library_path_absent": True,
+        "termux_exec_mapping_absent": True,
+    }
+    if payload.get("runtime_isolation") != expected_runtime_isolation:
+        raise AdrenoGateError("OpenCL probe runtime loader isolation drifted")
+    if payload.get("runtime_mappings_observed") != list(REQUIRED_RUNTIME_MAPPINGS):
+        raise AdrenoGateError("OpenCL probe runtime mappings drifted")
+    expected_runtime_mapping_identity = (
+        "exact_path_device_inode_against_prevalidated_regular_file"
+    )
+    if payload.get("runtime_mapping_identity") != expected_runtime_mapping_identity:
+        raise AdrenoGateError("OpenCL runtime mapping identity method drifted")
     loader = payload.get("loader")
     identity = payload.get("identity")
     limits = payload.get("limits")
@@ -634,7 +1233,7 @@ def normalize_opencl_contract(payload: Mapping[str, Any]) -> dict[str, Any]:
     production_max_group = limits.get("production_kernel_max_work_group_size")
     local_mem = limits.get("local_mem_bytes")
     max_alloc = limits.get("max_mem_alloc_bytes")
-    if max_group != 1_024:
+    if isinstance(max_group, bool) or not isinstance(max_group, int) or max_group != 1_024:
         raise AdrenoGateError("OpenCL maximum workgroup size drifted")
     if (
         not isinstance(production_max_group, int)
@@ -643,9 +1242,17 @@ def normalize_opencl_contract(payload: Mapping[str, Any]) -> dict[str, Any]:
         or production_max_group > max_group
     ):
         raise AdrenoGateError("production kernel did not admit local size 64")
-    if local_mem != 32_768:
+    if (
+        isinstance(local_mem, bool)
+        or not isinstance(local_mem, int)
+        or local_mem != 32_768
+    ):
         raise AdrenoGateError("OpenCL local memory size drifted")
-    if max_alloc != 1_073_741_824:
+    if (
+        isinstance(max_alloc, bool)
+        or not isinstance(max_alloc, int)
+        or max_alloc != 1_073_741_824
+    ):
         raise AdrenoGateError("OpenCL maximum allocation size drifted")
     if identity.get("endian_little") is not True or identity.get("address_bits") != 64:
         raise AdrenoGateError(
@@ -661,7 +1268,7 @@ def normalize_opencl_contract(payload: Mapping[str, Any]) -> dict[str, Any]:
         "build_options": "-cl-std=CL3.0",
         "build_succeeded": True,
         "production_kernel_compiled": True,
-        "local_size_64_succeeded": True,
+        "local_size_64_admitted": True,
         "bf16_product_succeeded": True,
         "bf16_intrinsic_signature": ("float_qcom_mad32_bf16_ushort_ushort_float"),
         "intrinsic_and_rne_runtime_conformance": True,
@@ -696,7 +1303,18 @@ def normalize_opencl_contract(payload: Mapping[str, Any]) -> dict[str, Any]:
         "schema_version": OPENCL_CONTRACT_SCHEMA,
         "state": "passed_scope",
         "candidate_output_observed": False,
-        "model_or_tensor_access_count": 0,
+        "candidate_output_observation_scope": "this_custody_run_only",
+        "model_or_tensor_path_supplied": False,
+        "model_or_tensor_access_count_measured": False,
+        "model_or_tensor_access_observation": "not_observed_no_paths_supplied",
+        "model_or_tensor_access_observation_basis": (
+            expected_access_observation_basis
+        ),
+        "source_closure_sha256": source_closure_sha256,
+        "custody_challenge": custody_challenge,
+        "runtime_isolation": expected_runtime_isolation,
+        "runtime_mappings_observed": list(REQUIRED_RUNTIME_MAPPINGS),
+        "runtime_mapping_identity": expected_runtime_mapping_identity,
         "loader": {"loaded_path": loaded_path, "route": route},
         "identity": {
             **{field: identity[field] for field in required_strings},
@@ -1090,6 +1708,928 @@ def _case_contracts() -> list[dict[str, Any]]:
     return records
 
 
+def _validate_preflight_build_record(record: object) -> tuple[int, str, str, str]:
+    expected_keys = {
+        "binary_bytes",
+        "binary_sha256",
+        "toolchain_version_sha256",
+        "toolchain_resolved_sha256",
+        "linker_version_sha256",
+        "linker_resolved_sha256",
+        "cxx_runtime_sha256",
+        "compiler_arguments",
+        "source_closure_sha256",
+        "native_source_snapshot_sha256",
+        "termux_exec_interposer_sha256",
+        "termux_exec_transport",
+        "binary_publication",
+        "build_elapsed_ns",
+        "stdout_sha256",
+        "stderr_sha256",
+    }
+    if not isinstance(record, dict) or set(record) != expected_keys:
+        raise AdrenoGateError("source-neutral build record shape drifted")
+    binary_bytes = record.get("binary_bytes")
+    binary_sha256 = record.get("binary_sha256")
+    expected_values = {
+        "toolchain_version_sha256": TERMUX_CLANGXX_VERSION_STDOUT_SHA256,
+        "toolchain_resolved_sha256": TERMUX_CLANGXX_RESOLVED_SHA256,
+        "linker_version_sha256": TERMUX_LLD_VERSION_STDOUT_SHA256,
+        "linker_resolved_sha256": TERMUX_LLD_RESOLVED_SHA256,
+        "cxx_runtime_sha256": TERMUX_LIBCXX_SHA256,
+        "compiler_arguments": list(NATIVE_BUILD_ARGUMENTS),
+        "termux_exec_interposer_sha256": TERMUX_EXEC_INTERPOSER_SHA256,
+        "termux_exec_transport": (
+            "private_unlinked_exact_snapshot_read_only_fd_via_proc_self_fd"
+        ),
+        "binary_publication": "renameat2_RENAME_NOREPLACE_same_directory",
+    }
+    if any(record.get(key) != value for key, value in expected_values.items()):
+        raise AdrenoGateError("source-neutral build identity drifted")
+    if (
+        isinstance(binary_bytes, bool)
+        or not isinstance(binary_bytes, int)
+        or binary_bytes <= 0
+        or not is_sha256(binary_sha256)
+        or isinstance(record.get("build_elapsed_ns"), bool)
+        or not isinstance(record.get("build_elapsed_ns"), int)
+        or record["build_elapsed_ns"] < 0
+        or not is_sha256(record.get("stdout_sha256"))
+        or not is_sha256(record.get("stderr_sha256"))
+        or not is_sha256(record.get("source_closure_sha256"))
+        or not is_sha256(record.get("native_source_snapshot_sha256"))
+        or record.get("stdout_sha256") != sha256_bytes(b"")
+        or record.get("stderr_sha256") != sha256_bytes(b"")
+    ):
+        raise AdrenoGateError("source-neutral build observation is invalid")
+    assert isinstance(binary_sha256, str)
+    return (
+        binary_bytes,
+        binary_sha256,
+        str(record["source_closure_sha256"]),
+        str(record["native_source_snapshot_sha256"]),
+    )
+
+
+def _validate_source_neutral_preflight(
+    payload: object,
+    *,
+    source_revision: str,
+    closure: list[dict[str, Any]],
+    opencl_raw: bytes,
+    opencl: Mapping[str, Any],
+) -> tuple[int, str]:
+    expected_keys = {
+        "schema_version",
+        "state",
+        "candidate_output_observed",
+        "candidate_output_observation_scope",
+        "model_or_tensor_path_supplied",
+        "model_or_tensor_access_count_measured",
+        "model_or_tensor_access_observation",
+        "model_or_tensor_access_observation_basis",
+        "source_revision",
+        "custody_challenge",
+        "source_closure",
+        "source_closure_sha256",
+        "source_checkout_clean_before_and_after",
+        "build",
+        "probe",
+        "platform_identity",
+        "custody",
+        "nonclaims",
+    }
+    if not isinstance(payload, dict) or set(payload) != expected_keys:
+        raise AdrenoGateError("source-neutral preflight report shape drifted")
+    expected_source_closure_sha256 = sha256_bytes(canonical_json(closure))
+    if (
+        payload.get("schema_version") != SOURCE_NEUTRAL_PREFLIGHT_SCHEMA
+        or payload.get("state") != "passed_scope"
+        or payload.get("candidate_output_observed") is not False
+        or payload.get("candidate_output_observation_scope")
+        != "this_custody_run_only"
+        or payload.get("model_or_tensor_path_supplied") is not False
+        or payload.get("model_or_tensor_access_count_measured") is not False
+        or payload.get("model_or_tensor_access_observation")
+        != "not_observed_no_paths_supplied"
+        or payload.get("model_or_tensor_access_observation_basis")
+        != "exclusive_probe_argv_and_source_bound_control_flow_no_syscall_trace"
+        or payload.get("source_revision") != source_revision
+        or not is_sha256(payload.get("custody_challenge"))
+        or payload.get("source_closure") != closure
+        or payload.get("source_closure_sha256") != expected_source_closure_sha256
+        or payload.get("source_checkout_clean_before_and_after") is not True
+    ):
+        raise AdrenoGateError("source-neutral preflight source binding drifted")
+    build = payload.get("build")
+    if (
+        not isinstance(build, dict)
+        or set(build) != {"first", "second", "byte_identical_rebuild"}
+        or build.get("byte_identical_rebuild") is not True
+    ):
+        raise AdrenoGateError("source-neutral preflight rebuild proof drifted")
+    first_identity = _validate_preflight_build_record(build.get("first"))
+    second_identity = _validate_preflight_build_record(build.get("second"))
+    if first_identity != second_identity:
+        raise AdrenoGateError("source-neutral preflight binaries differ")
+    if first_identity[2] != expected_source_closure_sha256:
+        raise AdrenoGateError("source-neutral binary source witness drifted")
+    closure_by_path = {record["relative_path"]: record for record in closure}
+    expected_snapshot = [
+        {
+            "relative_path": relative,
+            "snapshot_name": Path(relative).name,
+            "bytes": closure_by_path[relative]["bytes"],
+            "sha256": closure_by_path[relative]["sha256"],
+        }
+        for relative in NATIVE_BUILD_SOURCE_FILES
+    ]
+    if first_identity[3] != sha256_bytes(canonical_json(expected_snapshot)):
+        raise AdrenoGateError("source-neutral native source snapshot drifted")
+    probe = payload.get("probe")
+    expected_probe_keys = {
+        "return_code",
+        "elapsed_ns",
+        "stdout_sha256",
+        "stderr_sha256",
+        "launched_binary_bytes",
+        "launched_binary_sha256",
+        "process_receipt",
+        "contract_bytes",
+        "contract_sha256",
+        "contract_canonical_sha256",
+        "runtime_isolation",
+        "runtime_mapping_identity",
+        "binary_snapshot_unlinked_before_launch",
+        "launcher",
+        "child_environment_keys",
+        "loader_injection_environment_absent",
+    }
+    empty_sha256 = sha256_bytes(b"")
+    process_receipt = probe.get("process_receipt") if isinstance(probe, dict) else None
+    valid_process_receipt = (
+        isinstance(process_receipt, dict)
+        and set(process_receipt)
+        == {
+            "pid",
+            "pidfd_opened",
+            "pidfd_inode",
+            "pidfd_poll_ready",
+            "timeout_seconds",
+            "waitid_pid",
+            "waitid_code",
+            "waitid_status",
+            "popen_return_code",
+        }
+        and isinstance(process_receipt.get("pid"), int)
+        and not isinstance(process_receipt.get("pid"), bool)
+        and process_receipt["pid"] > 0
+        and process_receipt.get("pidfd_opened") is True
+        and isinstance(process_receipt.get("pidfd_inode"), int)
+        and not isinstance(process_receipt.get("pidfd_inode"), bool)
+        and process_receipt["pidfd_inode"] > 0
+        and process_receipt.get("pidfd_poll_ready") is True
+        and process_receipt.get("timeout_seconds") == 600
+        and process_receipt.get("waitid_pid") == process_receipt.get("pid")
+        and process_receipt.get("waitid_code") == os.CLD_EXITED
+        and process_receipt.get("waitid_status") == 0
+        and process_receipt.get("popen_return_code") == 0
+    )
+    if (
+        not isinstance(probe, dict)
+        or set(probe) != expected_probe_keys
+        or isinstance(probe.get("return_code"), bool)
+        or not isinstance(probe.get("return_code"), int)
+        or probe.get("return_code") != 0
+        or isinstance(probe.get("elapsed_ns"), bool)
+        or not isinstance(probe.get("elapsed_ns"), int)
+        or probe["elapsed_ns"] < 0
+        or probe.get("stdout_sha256") != empty_sha256
+        or probe.get("stderr_sha256") != empty_sha256
+        or probe.get("launched_binary_bytes") != first_identity[0]
+        or probe.get("launched_binary_sha256") != first_identity[1]
+        or not valid_process_receipt
+        or probe.get("contract_bytes") != len(opencl_raw)
+        or probe.get("contract_sha256") != sha256_bytes(opencl_raw)
+        or probe.get("contract_canonical_sha256")
+        != sha256_bytes(canonical_json(opencl))
+        or opencl.get("source_closure_sha256") != expected_source_closure_sha256
+        or opencl.get("custody_challenge") != payload.get("custody_challenge")
+        or probe.get("runtime_isolation") != opencl.get("runtime_isolation")
+        or probe.get("runtime_mapping_identity")
+        != "exact_path_device_inode_against_prevalidated_regular_file"
+        or probe.get("runtime_mapping_identity")
+        != opencl.get("runtime_mapping_identity")
+        or probe.get("binary_snapshot_unlinked_before_launch") is not True
+        or probe.get("launcher") != ANDROID_LINKER64_PATH
+        or probe.get("child_environment_keys")
+        != ["HOME", "LANG", "LC_ALL", "PATH", "TMPDIR", "TZ"]
+        or probe.get("loader_injection_environment_absent") is not True
+    ):
+        raise AdrenoGateError("source-neutral OpenCL probe binding drifted")
+    expected_platform = {
+        "android_build_fingerprint_stdout_sha256": (
+            ANDROID_BUILD_FINGERPRINT_STDOUT_SHA256
+        ),
+        "vendor_runtime_files": [dict(item) for item in VENDOR_RUNTIME_FILES],
+        "android_linker64_sha256": ANDROID_LINKER64_RESOLVED_SHA256,
+        "compiler_sha256": TERMUX_CLANGXX_RESOLVED_SHA256,
+        "linker_sha256": TERMUX_LLD_RESOLVED_SHA256,
+        "cxx_runtime_sha256": TERMUX_LIBCXX_SHA256,
+        "termux_exec_source_sha256": TERMUX_EXEC_INTERPOSER_SHA256,
+        "python_runtime_files": [dict(item) for item in TERMUX_PYTHON_RUNTIME_FILES],
+        "python_stdlib_tree": {
+            "absolute_path": TERMUX_PYTHON_STDLIB_DIR,
+            **TERMUX_PYTHON_STDLIB_TREE_IDENTITY,
+        },
+        "compiler_runtime_libraries": [
+            dict(item) for item in TERMUX_COMPILER_RUNTIME_FILES
+        ],
+        "compiler_resource_tree": {
+            "absolute_path": TERMUX_CLANG_RESOURCE_DIR,
+            **TERMUX_CLANG_RESOURCE_TREE_IDENTITY,
+        },
+        "include_tree": {
+            "absolute_path": TERMUX_INCLUDE_DIR,
+            **TERMUX_INCLUDE_TREE_IDENTITY,
+        },
+        "link_input_files": [dict(item) for item in TERMUX_LINK_INPUT_FILES],
+        "phone_system_runtime_files": [
+            dict(item) for item in PHONE_SYSTEM_RUNTIME_FILES
+        ],
+    }
+    expected_custody = {
+        "source_neutral_build_directory": True,
+        "fresh_host_challenge_bound": True,
+        "authorized_adb_forwarded_ssh_custody_receipt_required_for_admission": True,
+        "model_tensor_input_reference_or_candidate_payload_path_supplied": False,
+        "sanitized_hash_bound_metadata_egress_allowed": True,
+    }
+    expected_nonclaims = [
+        "no_candidate_logits_observed",
+        "no_authority_metric_result",
+        "no_model_or_tensor_execution",
+        "no_performance_claim",
+        "no_kernel_level_filesystem_access_trace",
+        "no_hardware_attestation",
+        "no_resistance_to_malicious_same_uid_or_fully_compromised_phone",
+    ]
+    if (
+        payload.get("platform_identity") != expected_platform
+        or payload.get("custody") != expected_custody
+        or payload.get("nonclaims") != expected_nonclaims
+    ):
+        raise AdrenoGateError("source-neutral preflight custody or platform drifted")
+    return first_identity[0], first_identity[1]
+
+
+def _validate_source_neutral_preflight_transaction(
+    report_path: Path, report_raw: bytes, report: Mapping[str, Any]
+) -> str:
+    parent = report_path.parent
+    completion_path = parent / "PREFLIGHT_COMPLETE.json"
+    report_metadata = report_path.lstat()
+    completion_metadata = completion_path.lstat() if completion_path.exists() else None
+    if (
+        report_path.name != "preflight_report.json"
+        or not stat.S_ISREG(report_metadata.st_mode)
+        or report_metadata.st_nlink != 1
+        or not parent.is_dir()
+        or parent.is_symlink()
+        or completion_metadata is None
+        or not stat.S_ISREG(completion_metadata.st_mode)
+        or completion_metadata.st_nlink != 1
+        or completion_path.is_symlink()
+        or (parent / "PREFLIGHT_BLOCKER.json").exists()
+        or (parent / "PREFLIGHT_BLOCKER.json").is_symlink()
+    ):
+        raise AdrenoGateError("source-neutral preflight transaction is unsafe")
+    report_sha256 = sha256_bytes(report_raw)
+    expected_sidecar = f"{report_sha256}  preflight_report.json\n".encode("ascii")
+    sidecar_path = parent / "preflight_report.json.sha256"
+    validate_regular(
+        sidecar_path,
+        expected_bytes=len(expected_sidecar),
+        expected_sha256=sha256_bytes(expected_sidecar),
+    )
+    if read_regular(sidecar_path) != expected_sidecar:
+        raise AdrenoGateError("source-neutral preflight sidecar drifted")
+    completion_raw = read_regular(completion_path)
+    completion = strict_json_decode(completion_raw, source=str(completion_path))
+    build = report.get("build")
+    probe = report.get("probe")
+    expected_completion = {
+        "schema_version": SOURCE_NEUTRAL_PREFLIGHT_COMPLETION_SCHEMA,
+        "state": "complete",
+        "report_sha256": report_sha256,
+        "source_revision": report.get("source_revision"),
+        "binary_sha256": (
+            build.get("first", {}).get("binary_sha256")
+            if isinstance(build, dict)
+            else None
+        ),
+        "contract_sha256": (
+            probe.get("contract_sha256") if isinstance(probe, dict) else None
+        ),
+        "custody_challenge": report.get("custody_challenge"),
+    }
+    if completion != expected_completion:
+        raise AdrenoGateError("source-neutral preflight completion drifted")
+    return sha256_bytes(completion_raw)
+
+
+def _is_microsecond_utc(value: object) -> bool:
+    return (
+        isinstance(value, str)
+        and len(value) == 27
+        and value[4] == "-"
+        and value[7] == "-"
+        and value[10] == "T"
+        and value[13] == ":"
+        and value[16] == ":"
+        and value[19] == "."
+        and value.endswith("Z")
+        and all(character.isdigit() for character in value if character not in "-T:.Z")
+    )
+
+
+def _is_lower_uuid(value: object) -> bool:
+    if not isinstance(value, str) or len(value) != 36:
+        return False
+    if any(value[index] != "-" for index in (8, 13, 18, 23)):
+        return False
+    return all(
+        character in "0123456789abcdef"
+        for index, character in enumerate(value)
+        if index not in {8, 13, 18, 23}
+    )
+
+
+def _validate_adb_custody_receipt_transaction(
+    receipt_path: Path,
+    *,
+    preflight_report_path: Path,
+    preflight_report_raw: bytes,
+    preflight_report: Mapping[str, Any],
+    opencl_contract_path: Path,
+    opencl_contract_raw: bytes,
+    preflight_completion_sha256: str,
+    source_revision: str,
+) -> dict[str, Any]:
+    parent = receipt_path.parent
+    expected_local_paths = {
+        "preflight_report.json": preflight_report_path,
+        "preflight_report.json.sha256": (
+            preflight_report_path.with_suffix(".json.sha256")
+        ),
+        "PREFLIGHT_COMPLETE.json": parent / "PREFLIGHT_COMPLETE.json",
+        "opencl_contract.json": opencl_contract_path,
+    }
+    completion_path = parent / "ADB_CUSTODY_COMPLETE.json"
+    sidecar_path = parent / "adb_custody_receipt.json.sha256"
+    if (
+        receipt_path.name != "adb_custody_receipt.json"
+        or preflight_report_path.parent != parent
+        or preflight_report_path.name != "preflight_report.json"
+        or opencl_contract_path.parent != parent
+        or opencl_contract_path.name != "opencl_contract.json"
+        or not parent.is_dir()
+        or parent.is_symlink()
+    ):
+        raise AdrenoGateError("ADB custody transaction paths are not canonical")
+    for path in [receipt_path, completion_path, sidecar_path, *expected_local_paths.values()]:
+        metadata = path.lstat()
+        if (
+            not stat.S_ISREG(metadata.st_mode)
+            or metadata.st_nlink != 1
+            or path.is_symlink()
+        ):
+            raise AdrenoGateError("ADB custody transaction file is unsafe")
+    receipt_raw = read_regular(receipt_path)
+    receipt_sha256 = sha256_bytes(receipt_raw)
+    expected_sidecar = (
+        f"{receipt_sha256}  adb_custody_receipt.json\n".encode("ascii")
+    )
+    validate_regular(
+        sidecar_path,
+        expected_bytes=len(expected_sidecar),
+        expected_sha256=sha256_bytes(expected_sidecar),
+    )
+    if read_regular(sidecar_path) != expected_sidecar:
+        raise AdrenoGateError("ADB custody receipt sidecar drifted")
+    receipt = strict_json_decode(receipt_raw, source=str(receipt_path))
+    expected_receipt_keys = {
+        "schema_version",
+        "state",
+        "serial",
+        "custody_challenge",
+        "custody_challenge_generation",
+        "utc_run_id",
+        "source_revision",
+        "device_identity",
+        "transport_continuity",
+        "boot_id_continuity",
+        "remote_paths",
+        "invocation_contract",
+        "retrieval_contract",
+        "artifacts",
+        "artifact_set_sha256",
+        "timestamps",
+        "custody",
+        "nonclaims",
+    }
+    challenge = preflight_report.get("custody_challenge")
+    run_id = receipt.get("utc_run_id")
+    if (
+        set(receipt) != expected_receipt_keys
+        or receipt.get("schema_version") != ADB_PREFLIGHT_CUSTODY_SCHEMA
+        or receipt.get("state") != "complete"
+        or receipt.get("serial") != AUTHORIZED_ADB_SERIAL
+        or receipt.get("custody_challenge") != challenge
+        or not is_sha256(challenge)
+        or receipt.get("source_revision") != source_revision
+        or not isinstance(run_id, str)
+        or len(run_id) != 22
+        or run_id[8] != "T"
+        or run_id[-1] != "Z"
+        or not (run_id[:8] + run_id[9:-1]).isdigit()
+        or receipt.get("custody_challenge_generation")
+        != {
+            "method": "python_secrets.token_hex",
+            "entropy_bytes": 32,
+            "lowercase_hex": True,
+            "used_once_for_this_transaction": True,
+        }
+    ):
+        raise AdrenoGateError("ADB custody receipt root binding drifted")
+    device = receipt.get("device_identity")
+    expected_device = {
+        "expected_serial": AUTHORIZED_ADB_SERIAL,
+        "get_state": "device",
+        "get_state_stdout_sha256": sha256_bytes(b"device\n"),
+        "get_serialno": AUTHORIZED_ADB_SERIAL,
+        "get_serialno_stdout_sha256": sha256_bytes(
+            f"{AUTHORIZED_ADB_SERIAL}\n".encode("ascii")
+        ),
+        "selection": "every_command_uses_explicit_adb_-s_serial",
+        "environment_serial_selectors_removed": ["ANDROID_SERIAL", "ADB_SERIAL"],
+    }
+    if device != expected_device:
+        raise AdrenoGateError("authorized ADB device identity drifted")
+    ssh_overrides = list(AUTHORIZED_TERMUX_SSH_REQUIRED_OVERRIDES)
+    ssh_configuration_argv = [
+        "ssh",
+        "-G",
+        *ssh_overrides,
+        AUTHORIZED_TERMUX_SSH_ALIAS,
+    ]
+    ssh_command_prefix = [
+        "ssh",
+        *ssh_overrides,
+        AUTHORIZED_TERMUX_SSH_ALIAS,
+        "--",
+    ]
+    transport = receipt.get("transport_continuity")
+    if not isinstance(transport, dict) or set(transport) != {
+        "adb_forward",
+        "ssh",
+        "remote_identity",
+    }:
+        raise AdrenoGateError("ADB-forwarded SSH transport shape drifted")
+    forward = transport.get("adb_forward")
+    expected_mapping_line = (
+        f"{AUTHORIZED_ADB_SERIAL} {AUTHORIZED_ADB_FORWARD_LOCAL} "
+        f"{AUTHORIZED_ADB_FORWARD_REMOTE}"
+    )
+    valid_forward = (
+        isinstance(forward, dict)
+        and set(forward)
+        == {
+            "verification_argv",
+            "expected_mapping_line",
+            "local_spec",
+            "remote_spec",
+            "before_stdout_bytes",
+            "before_stdout_sha256",
+            "after_stdout_bytes",
+            "after_stdout_sha256",
+            "stdout_byte_identical",
+            "mapping_present_exactly_once_before_and_after",
+            "before_observed_at_utc",
+            "after_observed_at_utc",
+            "forward_created_or_modified_by_wrapper",
+        }
+        and forward.get("verification_argv")
+        == ["adb", "-s", AUTHORIZED_ADB_SERIAL, "forward", "--list"]
+        and forward.get("expected_mapping_line") == expected_mapping_line
+        and forward.get("local_spec") == AUTHORIZED_ADB_FORWARD_LOCAL
+        and forward.get("remote_spec") == AUTHORIZED_ADB_FORWARD_REMOTE
+        and isinstance(forward.get("before_stdout_bytes"), int)
+        and not isinstance(forward.get("before_stdout_bytes"), bool)
+        and forward["before_stdout_bytes"] >= len(expected_mapping_line) + 1
+        and forward.get("after_stdout_bytes") == forward["before_stdout_bytes"]
+        and is_sha256(forward.get("before_stdout_sha256"))
+        and forward.get("after_stdout_sha256")
+        == forward.get("before_stdout_sha256")
+        and forward.get("stdout_byte_identical") is True
+        and forward.get("mapping_present_exactly_once_before_and_after") is True
+        and _is_microsecond_utc(forward.get("before_observed_at_utc"))
+        and _is_microsecond_utc(forward.get("after_observed_at_utc"))
+        and forward.get("forward_created_or_modified_by_wrapper") is False
+    )
+    if not valid_forward:
+        raise AdrenoGateError("authorized ADB forward continuity drifted")
+    ssh = transport.get("ssh")
+    expected_effective_ssh = {
+        "batch_mode": True,
+        "password_authentication": False,
+        "kbd_interactive_authentication": False,
+        "number_of_password_prompts": 0,
+        "request_tty": False,
+        "strict_host_key_checking": True,
+        "identities_only": True,
+    }
+    valid_ssh = (
+        isinstance(ssh, dict)
+        and set(ssh)
+        == {
+            "executable",
+            "alias",
+            "configuration_argv",
+            "required_cli_overrides",
+            "command_prefix",
+            "resolved_host",
+            "resolved_port",
+            "resolved_user",
+            "resolved_identity_file",
+            "client_public_key_fingerprint",
+            "resolved_user_known_hosts_file",
+            "server_host_key_fingerprint",
+            "effective_configuration",
+            "before_config_stdout_bytes",
+            "before_config_stdout_sha256",
+            "after_config_stdout_bytes",
+            "after_config_stdout_sha256",
+            "config_stdout_byte_identical",
+            "before_observed_at_utc",
+            "after_observed_at_utc",
+        }
+        and ssh.get("executable") == "ssh"
+        and ssh.get("alias") == AUTHORIZED_TERMUX_SSH_ALIAS
+        and ssh.get("configuration_argv") == ssh_configuration_argv
+        and ssh.get("required_cli_overrides") == ssh_overrides
+        and ssh.get("command_prefix") == ssh_command_prefix
+        and ssh.get("resolved_host") == AUTHORIZED_TERMUX_SSH_HOST
+        and ssh.get("resolved_port") == AUTHORIZED_TERMUX_SSH_PORT
+        and ssh.get("resolved_user") == AUTHORIZED_TERMUX_SSH_USER
+        and ssh.get("resolved_identity_file")
+        == AUTHORIZED_TERMUX_SSH_IDENTITY_FILE
+        and ssh.get("client_public_key_fingerprint")
+        == AUTHORIZED_TERMUX_SSH_CLIENT_KEY_FINGERPRINT
+        and ssh.get("resolved_user_known_hosts_file")
+        == AUTHORIZED_TERMUX_SSH_KNOWN_HOSTS_FILE
+        and ssh.get("server_host_key_fingerprint")
+        == AUTHORIZED_TERMUX_SSH_SERVER_KEY_FINGERPRINT
+        and ssh.get("effective_configuration") == expected_effective_ssh
+        and isinstance(ssh.get("before_config_stdout_bytes"), int)
+        and not isinstance(ssh.get("before_config_stdout_bytes"), bool)
+        and ssh["before_config_stdout_bytes"] > 0
+        and ssh.get("after_config_stdout_bytes")
+        == ssh["before_config_stdout_bytes"]
+        and is_sha256(ssh.get("before_config_stdout_sha256"))
+        and ssh.get("after_config_stdout_sha256")
+        == ssh.get("before_config_stdout_sha256")
+        and ssh.get("config_stdout_byte_identical") is True
+        and _is_microsecond_utc(ssh.get("before_observed_at_utc"))
+        and _is_microsecond_utc(ssh.get("after_observed_at_utc"))
+    )
+    if not valid_ssh:
+        raise AdrenoGateError("forwarded SSH identity or configuration drifted")
+    remote_identity = transport.get("remote_identity")
+    valid_remote_identity = (
+        isinstance(remote_identity, dict)
+        and set(remote_identity)
+        == {
+            "uid_argv",
+            "gid_argv",
+            "expected_uid",
+            "expected_gid",
+            "uid_before",
+            "uid_after",
+            "gid_before",
+            "gid_after",
+            "continuous",
+            "before_observed_at_utc",
+            "after_observed_at_utc",
+        }
+        and remote_identity.get("uid_argv")
+        == [*ssh_command_prefix, "/system/bin/id", "-u"]
+        and remote_identity.get("gid_argv")
+        == [*ssh_command_prefix, "/system/bin/id", "-g"]
+        and remote_identity.get("expected_uid") == AUTHORIZED_TERMUX_UID
+        and remote_identity.get("expected_gid") == AUTHORIZED_TERMUX_GID
+        and remote_identity.get("uid_before") == AUTHORIZED_TERMUX_UID
+        and remote_identity.get("uid_after") == AUTHORIZED_TERMUX_UID
+        and remote_identity.get("gid_before") == AUTHORIZED_TERMUX_GID
+        and remote_identity.get("gid_after") == AUTHORIZED_TERMUX_GID
+        and remote_identity.get("continuous") is True
+        and _is_microsecond_utc(remote_identity.get("before_observed_at_utc"))
+        and _is_microsecond_utc(remote_identity.get("after_observed_at_utc"))
+    )
+    if not valid_remote_identity:
+        raise AdrenoGateError("forwarded SSH Termux UID/GID continuity drifted")
+    boot = receipt.get("boot_id_continuity")
+    if (
+        not isinstance(boot, dict)
+        or set(boot)
+        != {
+            "source_absolute_path",
+            "adb_before",
+            "ssh_before",
+            "ssh_after",
+            "adb_after",
+            "all_four_equal",
+            "adb_before_observed_at_utc",
+            "ssh_before_observed_at_utc",
+            "ssh_after_observed_at_utc",
+            "adb_after_observed_at_utc",
+        }
+        or boot.get("source_absolute_path") != "/proc/sys/kernel/random/boot_id"
+        or not _is_lower_uuid(boot.get("adb_before"))
+        or len(
+            {
+                boot.get("adb_before"),
+                boot.get("ssh_before"),
+                boot.get("ssh_after"),
+                boot.get("adb_after"),
+            }
+        )
+        != 1
+        or boot.get("all_four_equal") is not True
+        or not all(
+            _is_microsecond_utc(boot.get(name))
+            for name in (
+                "adb_before_observed_at_utc",
+                "ssh_before_observed_at_utc",
+                "ssh_after_observed_at_utc",
+                "adb_after_observed_at_utc",
+            )
+        )
+    ):
+        raise AdrenoGateError("ADB/forwarded-SSH boot continuity drifted")
+    remote = receipt.get("remote_paths")
+    if not isinstance(remote, dict) or set(remote) != {
+        "repository_root",
+        "preflight_script",
+        "build_parent",
+        "build_directory",
+        "probe_contract",
+        "preflight_report",
+        "blocker",
+    }:
+        raise AdrenoGateError("ADB remote path receipt shape drifted")
+    remote_values = list(remote.values())
+    if any(
+        not isinstance(value, str)
+        or not value.startswith("/data/data/com.termux/files/home/")
+        or ".." in Path(value).parts
+        for value in remote_values
+    ):
+        raise AdrenoGateError("ADB remote path escaped the phone custody root")
+    repository_root = str(remote["repository_root"])
+    build_parent = str(remote["build_parent"])
+    build_directory = str(remote["build_directory"])
+    if (
+        remote["preflight_script"]
+        != f"{repository_root}/scripts/termux/run_e4b_adreno_int2_preflight.py"
+        or Path(build_directory).parent.as_posix() != build_parent
+        or remote["probe_contract"] != f"{build_directory}/opencl_contract.json"
+        or remote["preflight_report"] != f"{build_directory}/preflight_report.json"
+        or remote["blocker"] != f"{build_directory}/PREFLIGHT_BLOCKER.json"
+        or run_id not in Path(build_directory).name
+        or "_adreno_preflight_adb_forwarded_ssh_"
+        not in Path(build_directory).name
+        or str(challenge)[:16] not in Path(build_directory).name
+    ):
+        raise AdrenoGateError("ADB remote path lineage drifted")
+    invocation = receipt.get("invocation_contract")
+    expected_remote_argv = [
+        "/data/data/com.termux/files/usr/bin/env",
+        "-i",
+        "HOME=/data/data/com.termux/files/home",
+        "PATH=/data/data/com.termux/files/usr/bin:/system/bin:/system/xbin",
+        "TMPDIR=/data/data/com.termux/files/usr/tmp",
+        "LANG=C",
+        "LC_ALL=C",
+        "TZ=UTC",
+        "LD_PRELOAD=/data/data/com.termux/files/usr/lib/libtermux-exec.so",
+        "TERMUX_EXEC__PROC_SELF_EXE=/data/data/com.termux/files/usr/bin/python3",
+        "/data/data/com.termux/files/usr/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        str(remote["preflight_script"]),
+        "--build-dir",
+        build_directory,
+        "--probe-contract-output",
+        str(remote["probe_contract"]),
+        "--report",
+        str(remote["preflight_report"]),
+        "--custody-challenge",
+        str(challenge),
+    ]
+    valid_invocation = (
+        isinstance(invocation, dict)
+        and set(invocation)
+        == {
+            "ssh_argv",
+            "remote_argv",
+            "host_shell_used",
+            "stdin_transport",
+            "timeout_seconds",
+            "return_code",
+            "stdout_bytes",
+            "stdout_sha256",
+            "stderr_bytes",
+            "stderr_sha256",
+        }
+        and invocation.get("remote_argv") == expected_remote_argv
+        and invocation.get("ssh_argv")
+        == [*ssh_command_prefix, *expected_remote_argv]
+        and invocation.get("host_shell_used") is False
+        and invocation.get("stdin_transport") == "DEVNULL"
+        and invocation.get("timeout_seconds") == 1_800
+        and invocation.get("return_code") == 0
+        and invocation.get("stdout_bytes") == 0
+        and invocation.get("stdout_sha256") == sha256_bytes(b"")
+        and invocation.get("stderr_bytes") == 0
+        and invocation.get("stderr_sha256") == sha256_bytes(b"")
+    )
+    if not valid_invocation:
+        raise AdrenoGateError("ADB preflight invocation contract drifted")
+    retrieval = receipt.get("retrieval_contract")
+    artifact_names = [
+        "preflight_report.json",
+        "preflight_report.json.sha256",
+        "PREFLIGHT_COMPLETE.json",
+        "opencl_contract.json",
+    ]
+    expected_inventory = [
+        "PREFLIGHT_COMPLETE.json",
+        "build_a",
+        "build_b",
+        "opencl_contract.json",
+        "preflight_report.json",
+        "preflight_report.json.sha256",
+        "probe.stderr.log",
+        "probe.stdout.log",
+    ]
+    valid_retrieval = (
+        isinstance(retrieval, dict)
+        and set(retrieval)
+        == {
+            "method",
+            "ssh_command_prefix",
+            "allowlisted_artifact_names",
+            "every_retrieval_used_exact_absolute_path",
+            "blocker_path_absent",
+            "remote_top_level_inventory",
+            "raw_model_tensor_or_candidate_path_requested",
+            "scp_used",
+            "direct_adb_shell_used",
+        }
+        and retrieval.get("method")
+        == (
+            "verified_explicit_ADB_forward_plus_forwarded_SSH_"
+            "/system/bin/cat_exact_path"
+        )
+        and retrieval.get("ssh_command_prefix") == ssh_command_prefix
+        and retrieval.get("allowlisted_artifact_names") == artifact_names
+        and retrieval.get("every_retrieval_used_exact_absolute_path") is True
+        and retrieval.get("blocker_path_absent") is True
+        and retrieval.get("remote_top_level_inventory") == expected_inventory
+        and retrieval.get("raw_model_tensor_or_candidate_path_requested") is False
+        and retrieval.get("scp_used") is False
+        and retrieval.get("direct_adb_shell_used") is False
+    )
+    if not valid_retrieval:
+        raise AdrenoGateError("ADB preflight retrieval contract drifted")
+    artifacts = receipt.get("artifacts")
+    if not isinstance(artifacts, dict) or set(artifacts) != set(artifact_names):
+        raise AdrenoGateError("ADB custody artifact inventory drifted")
+    artifact_remote_paths = {
+        "preflight_report.json": str(remote["preflight_report"]),
+        "preflight_report.json.sha256": f"{remote['preflight_report']}.sha256",
+        "PREFLIGHT_COMPLETE.json": f"{build_directory}/PREFLIGHT_COMPLETE.json",
+        "opencl_contract.json": str(remote["probe_contract"]),
+    }
+    for name, local_path in expected_local_paths.items():
+        payload = read_regular(local_path)
+        record = artifacts.get(name)
+        if (
+            not isinstance(record, dict)
+            or set(record)
+            != {
+                "remote_absolute_path",
+                "local_filename",
+                "bytes",
+                "sha256",
+                "retrieved_at_utc",
+            }
+            or record.get("remote_absolute_path") != artifact_remote_paths[name]
+            or record.get("local_filename") != name
+            or record.get("bytes") != len(payload)
+            or record.get("sha256") != sha256_bytes(payload)
+            or not _is_microsecond_utc(record.get("retrieved_at_utc"))
+        ):
+            raise AdrenoGateError("ADB custody artifact binding drifted")
+    if receipt.get("artifact_set_sha256") != sha256_bytes(canonical_json(artifacts)):
+        raise AdrenoGateError("ADB custody artifact-set digest drifted")
+    if artifacts["preflight_report.json"]["sha256"] != sha256_bytes(
+        preflight_report_raw
+    ) or artifacts["opencl_contract.json"]["sha256"] != sha256_bytes(
+        opencl_contract_raw
+    ):
+        raise AdrenoGateError("ADB custody principal artifact digest drifted")
+    if (
+        artifacts["PREFLIGHT_COMPLETE.json"]["sha256"]
+        != preflight_completion_sha256
+    ):
+        raise AdrenoGateError("ADB custody preflight completion digest drifted")
+    timestamps = receipt.get("timestamps")
+    timestamp_names = [
+        "wrapper_started_at_utc",
+        "device_identity_verified_at_utc",
+        "transport_before_verified_at_utc",
+        "preflight_started_at_utc",
+        "preflight_completed_at_utc",
+        "retrieval_started_at_utc",
+        "retrieval_completed_at_utc",
+        "inventory_observed_at_utc",
+        "transport_after_verified_at_utc",
+        "receipt_sealed_at_utc",
+    ]
+    if (
+        not isinstance(timestamps, dict)
+        or set(timestamps) != set(timestamp_names)
+        or not all(_is_microsecond_utc(timestamps[name]) for name in timestamp_names)
+        or [timestamps[name] for name in timestamp_names]
+        != sorted(timestamps[name] for name in timestamp_names)
+    ):
+        raise AdrenoGateError("ADB custody timestamp sequence drifted")
+    expected_custody = {
+        "source_neutral_artifacts_only": True,
+        "retrieval_allowlist_fixed_in_source": True,
+        "local_directory_atomic_noreplace_publication": True,
+        "raw_model_tensor_or_candidate_data_retrieved": False,
+        "termux_execution_via_forwarded_ssh_only": True,
+        "direct_adb_shell_used": False,
+        "adb_forward_created_or_modified": False,
+        "scp_used": False,
+    }
+    expected_nonclaims = [
+        "no_hardware_attestation",
+        "no_resistance_to_malicious_same-UID_compromise",
+        "no_kernel_level_ADB_or_SSH_transport_attestation",
+        "no_raw_model_tensor_or_candidate_payload_custody_claim",
+    ]
+    if receipt.get("custody") != expected_custody or receipt.get(
+        "nonclaims"
+    ) != expected_nonclaims:
+        raise AdrenoGateError("ADB custody claim boundary drifted")
+    completion_raw = read_regular(completion_path)
+    completion = strict_json_decode(completion_raw, source=str(completion_path))
+    expected_completion = {
+        "schema_version": ADB_PREFLIGHT_CUSTODY_COMPLETION_SCHEMA,
+        "state": "complete",
+        "receipt_sha256": receipt_sha256,
+        "artifact_set_sha256": receipt["artifact_set_sha256"],
+        "serial": AUTHORIZED_ADB_SERIAL,
+        "custody_challenge": challenge,
+        "boot_id": boot["adb_before"],
+        "remote_build_directory": build_directory,
+        "source_revision": source_revision,
+    }
+    if completion != expected_completion:
+        raise AdrenoGateError("ADB custody completion marker drifted")
+    if sha256_bytes(completion_raw) == preflight_completion_sha256:
+        raise AdrenoGateError("ADB and preflight completion artifacts were conflated")
+    return {
+        "schema_version": ADB_PREFLIGHT_CUSTODY_SCHEMA,
+        "receipt_sha256": receipt_sha256,
+        "completion_sha256": sha256_bytes(completion_raw),
+        "artifact_set_sha256": receipt["artifact_set_sha256"],
+        "serial": AUTHORIZED_ADB_SERIAL,
+        "transport": "explicit_ADB_forward_plus_forwarded_SSH",
+        "custody_challenge": challenge,
+        "boot_id": boot["adb_before"],
+        "remote_build_directory": build_directory,
+        "source_revision": source_revision,
+        "hardware_attestation": False,
+        "direct_adb_shell_used": False,
+    }
+
+
 def build_preregistration(
     *,
     repository_root: Path,
@@ -1097,6 +2637,8 @@ def build_preregistration(
     s16_falsification_path: Path,
     opencl_evidence_report_path: Path,
     opencl_contract_path: Path,
+    source_neutral_preflight_report_path: Path,
+    adb_custody_receipt_path: Path,
     output_dir: Path,
     created_at_utc: str,
 ) -> dict[str, Any]:
@@ -1149,12 +2691,42 @@ def build_preregistration(
     }
     thresholds = frozen_thresholds()
     source_revision, closure = source_closure(repository_root)
+    preflight_raw = read_regular(source_neutral_preflight_report_path)
+    preflight = strict_json_decode(
+        preflight_raw, source=str(source_neutral_preflight_report_path)
+    )
+    preflight_completion_sha256 = _validate_source_neutral_preflight_transaction(
+        source_neutral_preflight_report_path, preflight_raw, preflight
+    )
+    native_binary_bytes, native_binary_sha256 = _validate_source_neutral_preflight(
+        preflight,
+        source_revision=source_revision,
+        closure=closure,
+        opencl_raw=opencl_raw,
+        opencl=opencl,
+    )
+    adb_custody = _validate_adb_custody_receipt_transaction(
+        adb_custody_receipt_path,
+        preflight_report_path=source_neutral_preflight_report_path,
+        preflight_report_raw=preflight_raw,
+        preflight_report=preflight,
+        opencl_contract_path=opencl_contract_path,
+        opencl_contract_raw=opencl_raw,
+        preflight_completion_sha256=preflight_completion_sha256,
+        source_revision=source_revision,
+    )
+    source_closure_sha256 = sha256_bytes(canonical_json(closure))
+    if opencl.get("source_closure_sha256") != source_closure_sha256:
+        raise AdrenoGateError("OpenCL binary source closure witness drifted")
     preregistration = {
         "schema_version": PREREGISTRATION_SCHEMA,
         "state": "frozen_unobserved",
         "created_at_utc": created_at_utc,
         "candidate_id": CANDIDATE_ID,
         "candidate_output_observed": False,
+        "candidate_output_observation_scope": (
+            "this_preregistration_lineage_and_ADB_forwarded_SSH_custody_run_only"
+        ),
         "phone_execution_count": 0,
         "frontier_selector_sha256": sha256_bytes(selector_raw),
         "parent_frontier_root_sha256": selector["parent_frontier_root_sha256"],
@@ -1237,13 +2809,18 @@ def build_preregistration(
         "opencl_contract_source_sha256": opencl_source_sha256,
         "opencl_contract_canonical_sha256": opencl_canonical_sha256,
         "opencl_evidence": opencl_evidence,
-        "toolchain_contract": {
-            "compiler_path_class": "termux_prefix_bin_clangxx",
-            "compiler_resolved_bytes": TERMUX_CLANGXX_RESOLVED_BYTES,
-            "compiler_resolved_sha256": TERMUX_CLANGXX_RESOLVED_SHA256,
-            "compiler_version_stdout_sha256": TERMUX_CLANGXX_VERSION_STDOUT_SHA256,
-            "arbitrary_CXX_override_allowed": False,
+        "toolchain_contract": toolchain_contract(),
+        "native_binary_contract": {
+            "preflight_bytes": native_binary_bytes,
+            "preflight_sha256": native_binary_sha256,
+            "preflight_report_schema": SOURCE_NEUTRAL_PREFLIGHT_SCHEMA,
+            "preflight_report_sha256": sha256_bytes(preflight_raw),
+            "preflight_completion_sha256": preflight_completion_sha256,
+            "source_neutral_preflight": True,
+            "candidate_rebuild_must_be_byte_identical": True,
+            "candidate_output_observed": False,
         },
+        "adb_preflight_custody": adb_custody,
         "required_device_extensions": list(REQUIRED_DEVICE_EXTENSIONS),
         "cases": _case_contracts(),
         "off_s16_lattice_sentinel": {
@@ -1274,6 +2851,7 @@ def build_preregistration(
             "head_equals_revision": True,
             "every_closure_file_matches_head_blob": True,
             "every_closure_file_matches_head_mode": True,
+            "closure_sha256": source_closure_sha256,
         },
         "source_closure": closure,
         "phone_execution_envelope": {
@@ -1297,7 +2875,10 @@ def build_preregistration(
             "sanitized_hash_bound_metadata_only": True,
         },
         "nonclaims": [
-            "no_OpenCL_candidate_output_observed",
+            "no_OpenCL_candidate_output_observed_in_this_preregistration_lineage_and_ADB_forwarded_SSH_custody_run",
+            "no_global_historical_candidate_observation_claim",
+            "no_hardware_attestation",
+            "no_resistance_to_malicious_same_UID_or_fully_compromised_phone",
             "no_full_L1_or_L2_pass",
             "no_learning_or_authority_quality_pass",
             "no_performance_claim_before_authority_fidelity",
@@ -1369,6 +2950,11 @@ def validate_preregistration(payload: Mapping[str, Any]) -> None:
         raise AdrenoGateError("candidate identity mismatch")
     if payload.get("candidate_output_observed") is not False:
         raise AdrenoGateError("preregistration contains candidate observations")
+    if (
+        payload.get("candidate_output_observation_scope")
+        != "this_preregistration_lineage_and_ADB_forwarded_SSH_custody_run_only"
+    ):
+        raise AdrenoGateError("preregistration candidate observation scope drifted")
     if payload.get("phone_execution_count") != 0:
         raise AdrenoGateError("preregistration phone execution count is not zero")
     expected_ancestry = {
@@ -1516,15 +3102,72 @@ def validate_preregistration(payload: Mapping[str, Any]) -> None:
     if payload.get("residency_and_replay") != expected_residency:
         raise AdrenoGateError("residency and replay contract drifted")
     toolchain = payload.get("toolchain_contract")
-    expected_toolchain = {
-        "compiler_path_class": "termux_prefix_bin_clangxx",
-        "compiler_resolved_bytes": TERMUX_CLANGXX_RESOLVED_BYTES,
-        "compiler_resolved_sha256": TERMUX_CLANGXX_RESOLVED_SHA256,
-        "compiler_version_stdout_sha256": TERMUX_CLANGXX_VERSION_STDOUT_SHA256,
-        "arbitrary_CXX_override_allowed": False,
-    }
+    expected_toolchain = toolchain_contract()
     if toolchain != expected_toolchain:
         raise AdrenoGateError("toolchain contract drifted")
+    native_binary = payload.get("native_binary_contract")
+    if (
+        not isinstance(native_binary, dict)
+        or set(native_binary)
+        != {
+            "preflight_bytes",
+            "preflight_sha256",
+            "preflight_report_schema",
+            "preflight_report_sha256",
+            "preflight_completion_sha256",
+            "source_neutral_preflight",
+            "candidate_rebuild_must_be_byte_identical",
+            "candidate_output_observed",
+        }
+        or isinstance(native_binary.get("preflight_bytes"), bool)
+        or not isinstance(native_binary.get("preflight_bytes"), int)
+        or native_binary["preflight_bytes"] <= 0
+        or not is_sha256(native_binary.get("preflight_sha256"))
+        or native_binary.get("preflight_report_schema")
+        != SOURCE_NEUTRAL_PREFLIGHT_SCHEMA
+        or not is_sha256(native_binary.get("preflight_report_sha256"))
+        or not is_sha256(native_binary.get("preflight_completion_sha256"))
+        or native_binary.get("source_neutral_preflight") is not True
+        or native_binary.get("candidate_rebuild_must_be_byte_identical") is not True
+        or native_binary.get("candidate_output_observed") is not False
+    ):
+        raise AdrenoGateError("native binary contract drifted")
+    adb_custody = payload.get("adb_preflight_custody")
+    if (
+        not isinstance(adb_custody, dict)
+        or set(adb_custody)
+        != {
+            "schema_version",
+            "receipt_sha256",
+            "completion_sha256",
+            "artifact_set_sha256",
+            "serial",
+            "transport",
+            "custody_challenge",
+            "boot_id",
+            "remote_build_directory",
+            "source_revision",
+            "hardware_attestation",
+            "direct_adb_shell_used",
+        }
+        or adb_custody.get("schema_version") != ADB_PREFLIGHT_CUSTODY_SCHEMA
+        or not is_sha256(adb_custody.get("receipt_sha256"))
+        or not is_sha256(adb_custody.get("completion_sha256"))
+        or not is_sha256(adb_custody.get("artifact_set_sha256"))
+        or adb_custody.get("serial") != AUTHORIZED_ADB_SERIAL
+        or adb_custody.get("transport")
+        != "explicit_ADB_forward_plus_forwarded_SSH"
+        or adb_custody.get("custody_challenge")
+        != normalized_opencl.get("custody_challenge")
+        or not _is_lower_uuid(adb_custody.get("boot_id"))
+        or not isinstance(adb_custody.get("remote_build_directory"), str)
+        or not str(adb_custody["remote_build_directory"]).startswith(
+            "/data/data/com.termux/files/home/"
+        )
+        or adb_custody.get("hardware_attestation") is not False
+        or adb_custody.get("direct_adb_shell_used") is not False
+    ):
+        raise AdrenoGateError("ADB preflight custody binding drifted")
     evidence = payload.get("opencl_evidence")
     if not isinstance(evidence, dict):
         raise AdrenoGateError("OpenCL evidence binding is absent")
@@ -1554,10 +3197,14 @@ def validate_preregistration(payload: Mapping[str, Any]) -> None:
         or any(character not in "0123456789abcdef" for character in revision)
     ):
         raise AdrenoGateError("source revision binding is invalid")
+    if adb_custody.get("source_revision") != revision:
+        raise AdrenoGateError("ADB custody source revision drifted")
     if (
         binding.get("head_equals_revision") is not True
         or binding.get("every_closure_file_matches_head_blob") is not True
         or binding.get("every_closure_file_matches_head_mode") is not True
+        or binding.get("closure_sha256")
+        != sha256_bytes(canonical_json(payload.get("source_closure")))
     ):
         raise AdrenoGateError("source cleanliness binding drifted")
     expected_envelope = {
@@ -1597,6 +3244,17 @@ def validate_preregistration(payload: Mapping[str, Any]) -> None:
         raise AdrenoGateError("mandatory predecessor binding drifted")
     if payload.get("required_device_extensions") != list(REQUIRED_DEVICE_EXTENSIONS):
         raise AdrenoGateError("required device extensions drifted")
+    expected_nonclaims = [
+        "no_OpenCL_candidate_output_observed_in_this_preregistration_lineage_and_ADB_forwarded_SSH_custody_run",
+        "no_global_historical_candidate_observation_claim",
+        "no_hardware_attestation",
+        "no_resistance_to_malicious_same_UID_or_fully_compromised_phone",
+        "no_full_L1_or_L2_pass",
+        "no_learning_or_authority_quality_pass",
+        "no_performance_claim_before_authority_fidelity",
+    ]
+    if payload.get("nonclaims") != expected_nonclaims:
+        raise AdrenoGateError("preregistration nonclaim boundary drifted")
 
 
 def runtime_environment(opencl_contract: Mapping[str, Any]) -> dict[str, str]:

@@ -4,11 +4,14 @@
 from __future__ import annotations
 
 import argparse
+import ctypes
+import errno
 import hashlib
 import importlib.util
 import os
 from pathlib import Path
 import shutil
+import select
 import stat
 import subprocess
 import sys
@@ -16,6 +19,7 @@ import tempfile
 import time
 from typing import Any
 
+sys.dont_write_bytecode = True
 ROOT = Path(__file__).resolve().parents[2]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
@@ -35,6 +39,20 @@ class PhoneExecutionError(contract.AdrenoGateError):
     """Raised when the phone execution cannot preserve the frozen experiment."""
 
 
+def open_pidfd(process_id: int) -> int:
+    library = ctypes.CDLL(None, use_errno=True)
+    function = getattr(library, "pidfd_open", None)
+    if function is None:
+        raise PhoneExecutionError("pidfd_open is unavailable")
+    function.argtypes = [ctypes.c_int, ctypes.c_uint]
+    function.restype = ctypes.c_int
+    descriptor = function(process_id, 0)
+    if descriptor < 0:
+        error = ctypes.get_errno()
+        raise OSError(error or errno.ENOSYS, os.strerror(error or errno.ENOSYS))
+    return descriptor
+
+
 def minimal_phone_environment(*, temporary_directory: Path) -> dict[str, str]:
     return {
         "HOME": "/data/data/com.termux/files/home",
@@ -46,12 +64,346 @@ def minimal_phone_environment(*, temporary_directory: Path) -> dict[str, str]:
     }
 
 
+def _sha256_descriptor(descriptor: int) -> str:
+    digest = hashlib.sha256()
+    offset = 0
+    while chunk := os.pread(descriptor, 1024 * 1024, offset):
+        digest.update(chunk)
+        offset += len(chunk)
+    return digest.hexdigest()
+
+
+def _read_descriptor(descriptor: int) -> bytes:
+    chunks = []
+    offset = 0
+    while chunk := os.pread(descriptor, 1024 * 1024, offset):
+        chunks.append(chunk)
+        offset += len(chunk)
+    return b"".join(chunks)
+
+
+def _validate_termux_exec_metadata(metadata: os.stat_result) -> None:
+    expected = {
+        "regular": True,
+        "links": 1,
+        "bytes": contract.TERMUX_EXEC_INTERPOSER_BYTES,
+        "mode": contract.TERMUX_EXEC_INTERPOSER_MODE,
+        "uid": contract.TERMUX_EXEC_INTERPOSER_UID,
+        "gid": contract.TERMUX_EXEC_INTERPOSER_GID,
+    }
+    observed = {
+        "regular": stat.S_ISREG(metadata.st_mode),
+        "links": metadata.st_nlink,
+        "bytes": metadata.st_size,
+        "mode": stat.S_IMODE(metadata.st_mode),
+        "uid": metadata.st_uid,
+        "gid": metadata.st_gid,
+    }
+    if observed != expected:
+        raise PhoneExecutionError("Termux exec interposer metadata drifted")
+
+
+def open_verified_termux_exec_source() -> int:
+    path = Path(contract.TERMUX_EXEC_INTERPOSER_PATH)
+    flags = os.O_RDONLY | getattr(os, "O_CLOEXEC", 0) | getattr(os, "O_NOFOLLOW", 0)
+    descriptor = os.open(path, flags)
+    try:
+        descriptor_metadata = os.fstat(descriptor)
+        path_metadata = path.lstat()
+        _validate_termux_exec_metadata(descriptor_metadata)
+        _validate_termux_exec_metadata(path_metadata)
+        if (descriptor_metadata.st_dev, descriptor_metadata.st_ino) != (
+            path_metadata.st_dev,
+            path_metadata.st_ino,
+        ):
+            raise PhoneExecutionError("Termux exec interposer path changed during open")
+        if _sha256_descriptor(descriptor) != contract.TERMUX_EXEC_INTERPOSER_SHA256:
+            raise PhoneExecutionError("Termux exec interposer digest drifted")
+        return descriptor
+    except Exception:
+        os.close(descriptor)
+        raise
+
+
+def open_unlinked_snapshot(
+    *,
+    payload: bytes,
+    expected_sha256: str,
+    temporary_directory: Path,
+    prefix: str,
+) -> int:
+    directory_metadata = temporary_directory.lstat()
+    if (
+        not temporary_directory.is_absolute()
+        or not stat.S_ISDIR(directory_metadata.st_mode)
+        or temporary_directory.is_symlink()
+        or stat.S_IMODE(directory_metadata.st_mode) != 0o700
+        or directory_metadata.st_uid != os.geteuid()
+        or directory_metadata.st_gid != os.getegid()
+    ):
+        raise PhoneExecutionError("snapshot directory is unsafe")
+    write_descriptor, name = tempfile.mkstemp(
+        prefix=f".{prefix}-", dir=temporary_directory
+    )
+    path = Path(name)
+    read_descriptor: int | None = None
+    try:
+        os.fchmod(write_descriptor, 0o400)
+        view = memoryview(payload)
+        while view:
+            written = os.write(write_descriptor, view)
+            if written <= 0:
+                raise OSError("short snapshot write")
+            view = view[written:]
+        os.fsync(write_descriptor)
+        os.close(write_descriptor)
+        write_descriptor = -1
+        read_descriptor = os.open(
+            path,
+            os.O_RDONLY
+            | getattr(os, "O_CLOEXEC", 0)
+            | getattr(os, "O_NOFOLLOW", 0),
+        )
+        metadata = os.fstat(read_descriptor)
+        if (
+            not stat.S_ISREG(metadata.st_mode)
+            or metadata.st_nlink != 1
+            or stat.S_IMODE(metadata.st_mode) != 0o400
+            or metadata.st_uid != os.geteuid()
+            or metadata.st_gid != os.getegid()
+            or metadata.st_size != len(payload)
+            or _sha256_descriptor(read_descriptor) != expected_sha256
+        ):
+            raise PhoneExecutionError("private snapshot identity drifted")
+        path.unlink()
+        contract._fsync_directory(temporary_directory)
+        if os.fstat(read_descriptor).st_nlink != 0:
+            raise PhoneExecutionError("private snapshot remained path-addressable")
+        return read_descriptor
+    except Exception:
+        if read_descriptor is not None:
+            os.close(read_descriptor)
+        if write_descriptor >= 0:
+            os.close(write_descriptor)
+        if path.exists() and not path.is_symlink():
+            path.unlink()
+        raise
+
+
+def open_termux_exec_snapshot(*, temporary_directory: Path) -> int:
+    source_descriptor = open_verified_termux_exec_source()
+    try:
+        payload = _read_descriptor(source_descriptor)
+    finally:
+        os.close(source_descriptor)
+    descriptor = open_unlinked_snapshot(
+        payload=payload,
+        expected_sha256=contract.TERMUX_EXEC_INTERPOSER_SHA256,
+        temporary_directory=temporary_directory,
+        prefix="e4b-termux-exec",
+    )
+    validate_termux_exec_snapshot(descriptor)
+    return descriptor
+
+
+def validate_termux_exec_snapshot(descriptor: int) -> None:
+    metadata = os.fstat(descriptor)
+    if (
+        not stat.S_ISREG(metadata.st_mode)
+        or metadata.st_nlink != 0
+        or metadata.st_size != contract.TERMUX_EXEC_INTERPOSER_BYTES
+        or stat.S_IMODE(metadata.st_mode) != 0o400
+        or metadata.st_uid != os.geteuid()
+        or metadata.st_gid != os.getegid()
+        or _sha256_descriptor(descriptor) != contract.TERMUX_EXEC_INTERPOSER_SHA256
+    ):
+        raise PhoneExecutionError("unlinked Termux exec snapshot drifted")
+
+
+def compiler_phone_environment(
+    *, temporary_directory: Path, interposer_descriptor: int
+) -> dict[str, str]:
+    validate_termux_exec_snapshot(interposer_descriptor)
+    preload = f"/proc/self/fd/{interposer_descriptor}"
+    if not preload.removeprefix("/proc/self/fd/").isdigit():
+        raise PhoneExecutionError("invalid retained interposer descriptor path")
+    environment = minimal_phone_environment(temporary_directory=temporary_directory)
+    environment["LD_PRELOAD"] = preload
+    return environment
+
+
+def validate_termux_exec_mapping_payload(
+    payload: str, *, metadata: os.stat_result
+) -> None:
+    expected_path = contract.TERMUX_EXEC_INTERPOSER_PATH
+    expected_device = f"{os.major(metadata.st_dev):x}:{os.minor(metadata.st_dev):x}"
+    records = []
+    for line in payload.splitlines():
+        fields = line.split(maxsplit=5)
+        if len(fields) == 6 and "libtermux-exec.so" in fields[5]:
+            records.append(fields)
+    if not records or any(
+        record[3] != expected_device
+        or int(record[4]) != metadata.st_ino
+        or record[5] != expected_path
+        for record in records
+    ):
+        raise PhoneExecutionError("phone runner interposer mapping is not exact")
+
+
+def validate_parent_termux_exec_binding() -> None:
+    expected_path = contract.TERMUX_EXEC_INTERPOSER_PATH
+    expected_environment = {
+        "HOME": "/data/data/com.termux/files/home",
+        "PATH": "/data/data/com.termux/files/usr/bin:/system/bin:/system/xbin",
+        "TMPDIR": "/data/data/com.termux/files/usr/tmp",
+        "LANG": "C",
+        "LC_ALL": "C",
+        "TZ": "UTC",
+        "LD_PRELOAD": expected_path,
+        "TERMUX_EXEC__PROC_SELF_EXE": contract.TERMUX_PYTHON_PATH,
+    }
+    if dict(os.environ) != expected_environment:
+        raise PhoneExecutionError("phone runner parent environment is not exact")
+    required_flags = {
+        "isolated": 1,
+        "no_site": 1,
+        "dont_write_bytecode": 1,
+        "ignore_environment": 1,
+        "safe_path": True,
+        "no_user_site": 1,
+    }
+    if any(getattr(sys.flags, name) != value for name, value in required_flags.items()):
+        raise PhoneExecutionError("phone runner Python isolation flags drifted")
+    python = Path(contract.TERMUX_PYTHON_PATH)
+    if (
+        not python.is_symlink()
+        or os.readlink(python) != contract.TERMUX_PYTHON_LINK_TARGET
+        or python.resolve(strict=True) != Path(contract.TERMUX_PYTHON_RESOLVED_PATH)
+        or ".".join(str(value) for value in sys.version_info[:3])
+        != contract.TERMUX_PYTHON_VERSION
+    ):
+        raise PhoneExecutionError("phone runner Python identity drifted")
+    contract.validate_regular(
+        Path(contract.TERMUX_PYTHON_RESOLVED_PATH),
+        expected_bytes=contract.TERMUX_PYTHON_RESOLVED_BYTES,
+        expected_sha256=contract.TERMUX_PYTHON_RESOLVED_SHA256,
+    )
+    for record in contract.TERMUX_PYTHON_RUNTIME_FILES:
+        validate_bound_file_record(record, label="Python runtime")
+    observed_stdlib = contract.directory_tree_identity(
+        Path(contract.TERMUX_PYTHON_STDLIB_DIR)
+    )
+    if observed_stdlib != contract.TERMUX_PYTHON_STDLIB_TREE_IDENTITY:
+        raise PhoneExecutionError("Termux Python stdlib tree identity drifted")
+    descriptor = open_verified_termux_exec_source()
+    try:
+        metadata = os.fstat(descriptor)
+    finally:
+        os.close(descriptor)
+    validate_termux_exec_mapping_payload(
+        Path("/proc/self/maps").read_text(encoding="utf-8"), metadata=metadata
+    )
+
+
+def validate_bound_file_record(record: dict[str, Any], *, label: str) -> None:
+    entry = Path(record["entry_absolute_path"])
+    resolved = Path(record["resolved_absolute_path"])
+    symlink_target = record["symlink_target"]
+    if symlink_target is None:
+        if entry.is_symlink() or entry != resolved:
+            raise PhoneExecutionError(f"{label} topology drifted")
+    elif (
+        not entry.is_symlink()
+        or os.readlink(entry) != symlink_target
+        or entry.resolve(strict=True) != resolved
+    ):
+        raise PhoneExecutionError(f"{label} symlink topology drifted")
+    contract.validate_regular(
+        resolved,
+        expected_bytes=int(record["bytes"]),
+        expected_sha256=str(record["sha256"]),
+    )
+
+
+def validate_termux_toolchain_files() -> None:
+    compiler = Path(contract.TERMUX_CLANGXX_PATH)
+    if (
+        not compiler.is_symlink()
+        or os.readlink(compiler) != contract.TERMUX_CLANGXX_LINK_TARGET
+        or compiler.resolve(strict=True) != Path(contract.TERMUX_CLANGXX_RESOLVED_PATH)
+    ):
+        raise PhoneExecutionError("Termux clang++ link topology drifted")
+    contract.validate_regular(
+        Path(contract.TERMUX_CLANGXX_RESOLVED_PATH),
+        expected_bytes=contract.TERMUX_CLANGXX_RESOLVED_BYTES,
+        expected_sha256=contract.TERMUX_CLANGXX_RESOLVED_SHA256,
+    )
+    linker = Path(contract.TERMUX_LLD_PATH)
+    if (
+        not linker.is_symlink()
+        or os.readlink(linker) != contract.TERMUX_LLD_LINK_TARGET
+        or linker.resolve(strict=True) != Path(contract.TERMUX_LLD_RESOLVED_PATH)
+    ):
+        raise PhoneExecutionError("Termux LLD link topology drifted")
+    contract.validate_regular(
+        Path(contract.TERMUX_LLD_RESOLVED_PATH),
+        expected_bytes=contract.TERMUX_LLD_RESOLVED_BYTES,
+        expected_sha256=contract.TERMUX_LLD_RESOLVED_SHA256,
+    )
+    contract.validate_regular(
+        Path(contract.TERMUX_LIBCXX_PATH),
+        expected_bytes=contract.TERMUX_LIBCXX_BYTES,
+        expected_sha256=contract.TERMUX_LIBCXX_SHA256,
+    )
+    for record in contract.TERMUX_COMPILER_RUNTIME_FILES:
+        validate_bound_file_record(record, label="compiler runtime")
+    observed_trees = {
+        "resource": contract.directory_tree_identity(
+            Path(contract.TERMUX_CLANG_RESOURCE_DIR)
+        ),
+        "include": contract.directory_tree_identity(Path(contract.TERMUX_INCLUDE_DIR)),
+    }
+    expected_trees = {
+        "resource": contract.TERMUX_CLANG_RESOURCE_TREE_IDENTITY,
+        "include": contract.TERMUX_INCLUDE_TREE_IDENTITY,
+    }
+    if observed_trees != expected_trees:
+        raise PhoneExecutionError("Termux compiler tree identity drifted")
+    for record in contract.TERMUX_LINK_INPUT_FILES:
+        validate_bound_file_record(record, label="native link input")
+    for record in contract.PHONE_SYSTEM_RUNTIME_FILES:
+        validate_bound_file_record(record, label="phone system runtime")
+
+
+def validate_android_linker64() -> None:
+    linker = Path(contract.ANDROID_LINKER64_PATH)
+    if (
+        not linker.is_symlink()
+        or os.readlink(linker) != contract.ANDROID_LINKER64_LINK_TARGET
+        or linker.resolve(strict=True) != Path(contract.ANDROID_LINKER64_RESOLVED_PATH)
+    ):
+        raise PhoneExecutionError("Android linker64 topology drifted")
+    contract.validate_regular(
+        Path(contract.ANDROID_LINKER64_RESOLVED_PATH),
+        expected_bytes=contract.ANDROID_LINKER64_RESOLVED_BYTES,
+        expected_sha256=contract.ANDROID_LINKER64_RESOLVED_SHA256,
+    )
+
+
 def create_private_directory(path: Path) -> None:
     if path.exists() or path.is_symlink():
         raise PhoneExecutionError(f"refusing to reuse private directory: {path}")
     path.mkdir(mode=0o700, parents=False)
+    os.chmod(path, 0o700)
     metadata = path.lstat()
-    if not stat.S_ISDIR(metadata.st_mode) or metadata.st_nlink < 2:
+    if (
+        not stat.S_ISDIR(metadata.st_mode)
+        or metadata.st_nlink < 2
+        or stat.S_IMODE(metadata.st_mode) != 0o700
+        or metadata.st_uid != os.geteuid()
+        or metadata.st_gid != os.getegid()
+    ):
         raise PhoneExecutionError(f"private directory creation failed: {path}")
 
 
@@ -137,7 +489,9 @@ def validate_resource_floor(run_root: Path, envelope: dict[str, Any]) -> dict[st
     }
 
 
-def validate_phone_runtime_identity(preregistration: dict[str, Any]) -> dict[str, Any]:
+def validate_phone_runtime_identity(
+    preregistration: dict[str, Any], *, temporary_directory: Path
+) -> dict[str, Any]:
     evidence = preregistration.get("opencl_evidence")
     if not isinstance(evidence, dict):
         raise PhoneExecutionError("OpenCL evidence binding is absent")
@@ -159,6 +513,7 @@ def validate_phone_runtime_identity(preregistration: dict[str, Any]) -> dict[str
         check=True,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
+        env=minimal_phone_environment(temporary_directory=temporary_directory),
     ).stdout
     if not fingerprint.endswith(b"\n") or fingerprint.count(b"\n") != 1:
         raise PhoneExecutionError("Android build fingerprint stdout shape drifted")
@@ -166,25 +521,45 @@ def validate_phone_runtime_identity(preregistration: dict[str, Any]) -> dict[str
         contract.ANDROID_BUILD_FINGERPRINT_STDOUT_SHA256
     ):
         raise PhoneExecutionError("Android build fingerprint drifted")
-    compiler = Path(contract.TERMUX_CLANGXX_PATH)
-    if not compiler.is_symlink():
-        raise PhoneExecutionError("Termux clang++ link topology drifted")
-    resolved_compiler = compiler.resolve(strict=True)
-    contract.validate_regular(
-        resolved_compiler,
-        expected_bytes=contract.TERMUX_CLANGXX_RESOLVED_BYTES,
-        expected_sha256=contract.TERMUX_CLANGXX_RESOLVED_SHA256,
+    validate_termux_toolchain_files()
+    validate_android_linker64()
+    interposer_descriptor = open_termux_exec_snapshot(
+        temporary_directory=temporary_directory
     )
-    version = subprocess.run(
-        [str(compiler), "--version"],
-        check=True,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.STDOUT,
-    ).stdout
+    try:
+        compiler_environment = compiler_phone_environment(
+            temporary_directory=temporary_directory,
+            interposer_descriptor=interposer_descriptor,
+        )
+        version = subprocess.run(
+            [contract.TERMUX_CLANGXX_RESOLVED_PATH, "--version"],
+            check=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            env=compiler_environment,
+            pass_fds=(interposer_descriptor,),
+            timeout=60,
+        ).stdout
+        linker_version = subprocess.run(
+            [contract.TERMUX_LLD_PATH, "--version"],
+            check=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            env=compiler_environment,
+            pass_fds=(interposer_descriptor,),
+            timeout=60,
+        ).stdout
+        validate_termux_exec_snapshot(interposer_descriptor)
+    finally:
+        os.close(interposer_descriptor)
     if hashlib.sha256(version).hexdigest() != (
         contract.TERMUX_CLANGXX_VERSION_STDOUT_SHA256
     ):
         raise PhoneExecutionError("Termux clang++ version drifted")
+    if hashlib.sha256(linker_version).hexdigest() != (
+        contract.TERMUX_LLD_VERSION_STDOUT_SHA256
+    ):
+        raise PhoneExecutionError("Termux LLD version drifted")
     return {
         "android_build_fingerprint_stdout_sha256": (
             contract.ANDROID_BUILD_FINGERPRINT_STDOUT_SHA256
@@ -198,50 +573,271 @@ def validate_phone_runtime_identity(preregistration: dict[str, Any]) -> dict[str
         "compiler_version_stdout_sha256": (
             contract.TERMUX_CLANGXX_VERSION_STDOUT_SHA256
         ),
+        "linker_resolved_bytes": contract.TERMUX_LLD_RESOLVED_BYTES,
+        "linker_resolved_sha256": contract.TERMUX_LLD_RESOLVED_SHA256,
+        "linker_version_stdout_sha256": contract.TERMUX_LLD_VERSION_STDOUT_SHA256,
+        "cxx_runtime_bytes": contract.TERMUX_LIBCXX_BYTES,
+        "cxx_runtime_sha256": contract.TERMUX_LIBCXX_SHA256,
+        "termux_exec_interposer": {
+            "source_bytes": contract.TERMUX_EXEC_INTERPOSER_BYTES,
+            "source_sha256": contract.TERMUX_EXEC_INTERPOSER_SHA256,
+            "source_mode_octal": "0700",
+            "source_uid": contract.TERMUX_EXEC_INTERPOSER_UID,
+            "source_gid": contract.TERMUX_EXEC_INTERPOSER_GID,
+            "parent_mapping_exact": True,
+        },
+        "candidate_launcher": {
+            "resolved_bytes": contract.ANDROID_LINKER64_RESOLVED_BYTES,
+            "resolved_sha256": contract.ANDROID_LINKER64_RESOLVED_SHA256,
+            "runtime_ld_preload_present": False,
+        },
     }
 
 
-def build_phone_binary(binary_path: Path, log_dir: Path) -> dict[str, Any]:
-    build_script = ROOT / "native/e4b_adreno_int2_lm_head/build_phone.sh"
-    environment = minimal_phone_environment(temporary_directory=log_dir)
-    toolchain = subprocess.run(
-        [contract.TERMUX_CLANGXX_PATH, "--version"],
-        check=True,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.STDOUT,
-        env=environment,
-    ).stdout
-    started = time.monotonic_ns()
-    process = subprocess.run(
-        [str(build_script), str(binary_path)],
-        check=False,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-        env=environment,
+def stage_native_source_snapshot(
+    log_dir: Path, source_closure: list[dict[str, Any]]
+) -> tuple[Path, list[dict[str, Any]]]:
+    expected_records = {
+        record.get("relative_path"): record
+        for record in source_closure
+        if isinstance(record, dict)
+    }
+    snapshot_dir = log_dir / "source_snapshot"
+    create_private_directory(snapshot_dir)
+    records = []
+    for relative in contract.NATIVE_BUILD_SOURCE_FILES:
+        expected = expected_records.get(relative)
+        if not isinstance(expected, dict) or expected.get("git_mode") != "100644":
+            raise PhoneExecutionError("native source closure record is absent")
+        payload = read_frozen_payload(
+            ROOT / relative,
+            expected_bytes=int(expected["bytes"]),
+            expected_sha256=str(expected["sha256"]),
+            label=f"native source {relative}",
+        )
+        destination = snapshot_dir / Path(relative).name
+        contract.write_exclusive(destination, payload, mode=0o400)
+        records.append(
+            {
+                "relative_path": relative,
+                "snapshot_name": destination.name,
+                "bytes": len(payload),
+                "sha256": contract.sha256_bytes(payload),
+            }
+        )
+    validate_native_source_snapshot(snapshot_dir, records)
+    return snapshot_dir, records
+
+
+def validate_native_source_snapshot(
+    snapshot_dir: Path, records: list[dict[str, Any]]
+) -> None:
+    expected_names = {record["snapshot_name"] for record in records}
+    if {path.name for path in snapshot_dir.iterdir()} != expected_names:
+        raise PhoneExecutionError("native source snapshot inventory drifted")
+    for record in records:
+        path = snapshot_dir / record["snapshot_name"]
+        contract.validate_regular(
+            path,
+            expected_bytes=int(record["bytes"]),
+            expected_sha256=str(record["sha256"]),
+        )
+        if stat.S_IMODE(path.lstat().st_mode) != 0o400:
+            raise PhoneExecutionError("native source snapshot mode drifted")
+
+
+def build_phone_binary(
+    binary_path: Path, log_dir: Path, *, source_closure: list[dict[str, Any]]
+) -> dict[str, Any]:
+    source_closure_sha256 = contract.sha256_bytes(
+        contract.canonical_json(source_closure)
     )
-    elapsed = time.monotonic_ns() - started
-    contract.write_exclusive(log_dir / "build.stdout.log", process.stdout)
-    contract.write_exclusive(log_dir / "build.stderr.log", process.stderr)
-    if process.returncode != 0:
-        raise PhoneExecutionError("native build failed")
-    metadata = binary_path.lstat()
+    if not contract.is_sha256(source_closure_sha256):
+        raise PhoneExecutionError("native build source closure digest is invalid")
     if (
-        not stat.S_ISREG(metadata.st_mode)
-        or metadata.st_nlink != 1
-        or not os.access(binary_path, os.X_OK)
+        not binary_path.is_absolute()
+        or not log_dir.is_absolute()
+        or binary_path.parent != log_dir
+        or binary_path.exists()
+        or binary_path.is_symlink()
     ):
-        raise PhoneExecutionError("native binary publication failed")
-    return {
-        "binary_bytes": metadata.st_size,
-        "binary_sha256": contract.sha256_path(binary_path),
-        "toolchain_version_sha256": hashlib.sha256(toolchain).hexdigest(),
-        "toolchain_resolved_sha256": contract.sha256_path(
-            Path(contract.TERMUX_CLANGXX_PATH).resolve(strict=True)
-        ),
-        "build_elapsed_ns": elapsed,
-        "stdout_sha256": hashlib.sha256(process.stdout).hexdigest(),
-        "stderr_sha256": hashlib.sha256(process.stderr).hexdigest(),
-    }
+        raise PhoneExecutionError("native binary destination is unsafe")
+    interposer_descriptor = open_termux_exec_snapshot(temporary_directory=log_dir)
+    staging_path: Path | None = None
+    published = False
+    try:
+        source_directory, source_snapshot = stage_native_source_snapshot(
+            log_dir, source_closure
+        )
+        source_snapshot_sha256 = contract.sha256_bytes(
+            contract.canonical_json(source_snapshot)
+        )
+        validate_termux_toolchain_files()
+        staging_descriptor, staging_name = tempfile.mkstemp(
+            prefix=".e4b_adreno_int2.build-", dir=log_dir
+        )
+        staging_path = Path(staging_name)
+        try:
+            os.fchmod(staging_descriptor, 0o600)
+        finally:
+            os.close(staging_descriptor)
+        environment = compiler_phone_environment(
+            temporary_directory=log_dir,
+            interposer_descriptor=interposer_descriptor,
+        )
+        toolchain = subprocess.run(
+            [contract.TERMUX_CLANGXX_RESOLVED_PATH, "--version"],
+            check=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            env=environment,
+            pass_fds=(interposer_descriptor,),
+            timeout=60,
+        ).stdout
+        linker_version = subprocess.run(
+            [contract.TERMUX_LLD_PATH, "--version"],
+            check=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            env=environment,
+            pass_fds=(interposer_descriptor,),
+            timeout=60,
+        ).stdout
+        if hashlib.sha256(toolchain).hexdigest() != (
+            contract.TERMUX_CLANGXX_VERSION_STDOUT_SHA256
+        ):
+            raise PhoneExecutionError("Termux clang++ version drifted before build")
+        if hashlib.sha256(linker_version).hexdigest() != (
+            contract.TERMUX_LLD_VERSION_STDOUT_SHA256
+        ):
+            raise PhoneExecutionError("Termux LLD version drifted before build")
+        build_command = [
+            contract.TERMUX_CLANGXX_RESOLVED_PATH,
+            *contract.NATIVE_BUILD_ARGUMENTS,
+            f'-DPOLYMATH_SOURCE_CLOSURE_SHA256="{source_closure_sha256}"',
+            str(source_directory / "opencl_dynamic_runtime.cpp"),
+            str(source_directory / "e4b_adreno_int2_lm_head.cpp"),
+            "-ldl",
+            "-o",
+            str(staging_path),
+        ]
+        started = time.monotonic_ns()
+        try:
+            process = subprocess.run(
+                build_command,
+                check=False,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                env=environment,
+                pass_fds=(interposer_descriptor,),
+                cwd=ROOT,
+                timeout=600,
+            )
+        except subprocess.TimeoutExpired as error:
+            contract.write_exclusive(
+                log_dir / "build.stdout.log", error.stdout or b""
+            )
+            contract.write_exclusive(
+                log_dir / "build.stderr.log", error.stderr or b""
+            )
+            raise PhoneExecutionError("native build timed out") from error
+        elapsed = time.monotonic_ns() - started
+        contract.write_exclusive(log_dir / "build.stdout.log", process.stdout)
+        contract.write_exclusive(log_dir / "build.stderr.log", process.stderr)
+        if process.returncode != 0:
+            raise PhoneExecutionError("native build failed")
+        validate_termux_exec_snapshot(interposer_descriptor)
+        validate_native_source_snapshot(source_directory, source_snapshot)
+        for record in source_snapshot:
+            read_frozen_payload(
+                ROOT / record["relative_path"],
+                expected_bytes=int(record["bytes"]),
+                expected_sha256=str(record["sha256"]),
+                label=f"native source {record['relative_path']}",
+            )
+        source_recheck = open_verified_termux_exec_source()
+        os.close(source_recheck)
+        validate_termux_toolchain_files()
+        metadata = staging_path.lstat()
+        if not stat.S_ISREG(metadata.st_mode) or metadata.st_nlink != 1:
+            raise PhoneExecutionError("native staging binary is unsafe")
+        publication_descriptor = os.open(
+            staging_path,
+            os.O_RDONLY
+            | getattr(os, "O_CLOEXEC", 0)
+            | getattr(os, "O_NOFOLLOW", 0),
+        )
+        try:
+            retained_metadata = os.fstat(publication_descriptor)
+            if (retained_metadata.st_dev, retained_metadata.st_ino) != (
+                metadata.st_dev,
+                metadata.st_ino,
+            ):
+                raise PhoneExecutionError("native staging binary changed before retain")
+            os.fchmod(publication_descriptor, 0o700)
+            retained_metadata = os.fstat(publication_descriptor)
+            if stat.S_IMODE(retained_metadata.st_mode) != 0o700:
+                raise PhoneExecutionError("native staging binary mode publication failed")
+            binary_sha256 = _sha256_descriptor(publication_descriptor)
+            os.fsync(publication_descriptor)
+            contract._rename_noreplace(staging_path, binary_path)
+            published = True
+            contract._fsync_directory(log_dir)
+            destination_metadata = binary_path.lstat()
+            if (destination_metadata.st_dev, destination_metadata.st_ino) != (
+                retained_metadata.st_dev,
+                retained_metadata.st_ino,
+            ):
+                raise PhoneExecutionError("native binary publication changed inode")
+            validate_regular_descriptor = _sha256_descriptor(publication_descriptor)
+            if validate_regular_descriptor != binary_sha256:
+                raise PhoneExecutionError("published native binary changed after retain")
+        finally:
+            os.close(publication_descriptor)
+        contract.validate_regular(
+            binary_path,
+            expected_bytes=retained_metadata.st_size,
+            expected_sha256=binary_sha256,
+        )
+        if not os.access(binary_path, os.X_OK):
+            raise PhoneExecutionError("native binary publication lost execute mode")
+        return {
+            "binary_bytes": retained_metadata.st_size,
+            "binary_sha256": binary_sha256,
+            "toolchain_version_sha256": hashlib.sha256(toolchain).hexdigest(),
+            "toolchain_resolved_sha256": contract.sha256_path(
+                Path(contract.TERMUX_CLANGXX_RESOLVED_PATH)
+            ),
+            "linker_version_sha256": hashlib.sha256(linker_version).hexdigest(),
+            "linker_resolved_sha256": contract.sha256_path(
+                Path(contract.TERMUX_LLD_RESOLVED_PATH)
+            ),
+            "cxx_runtime_sha256": contract.sha256_path(
+                Path(contract.TERMUX_LIBCXX_PATH)
+            ),
+            "compiler_arguments": list(contract.NATIVE_BUILD_ARGUMENTS),
+            "source_closure_sha256": source_closure_sha256,
+            "native_source_snapshot_sha256": source_snapshot_sha256,
+            "termux_exec_interposer_sha256": (
+                contract.TERMUX_EXEC_INTERPOSER_SHA256
+            ),
+            "termux_exec_transport": (
+                "private_unlinked_exact_snapshot_read_only_fd_via_proc_self_fd"
+            ),
+            "binary_publication": "renameat2_RENAME_NOREPLACE_same_directory",
+            "build_elapsed_ns": elapsed,
+            "stdout_sha256": hashlib.sha256(process.stdout).hexdigest(),
+            "stderr_sha256": hashlib.sha256(process.stderr).hexdigest(),
+        }
+    finally:
+        os.close(interposer_descriptor)
+        if (
+            not published
+            and staging_path is not None
+            and staging_path.exists()
+            and not staging_path.is_symlink()
+        ):
+            staging_path.unlink()
 
 
 def prepare_phone_tensors(
@@ -359,7 +955,10 @@ def native_command(
     native_summary_path: Path,
     all_cases: list[dict[str, Any]],
 ) -> list[str]:
+    if not binary_path.is_absolute():
+        raise PhoneExecutionError("native candidate path must be absolute")
     command = [
+        contract.ANDROID_LINKER64_PATH,
         str(binary_path),
         "--packed-weight",
         str(packed_weight_path),
@@ -389,6 +988,7 @@ def run_monitored(
     stderr_path: Path,
     envelope: dict[str, Any],
     progress: dict[str, Any],
+    pass_fds: tuple[int, ...] = (),
 ) -> dict[str, Any]:
     temperatures = []
     started = time.monotonic_ns()
@@ -396,29 +996,58 @@ def run_monitored(
     with stdout_path.open("xb") as stdout, stderr_path.open("xb") as stderr:
         progress["native_launch_state"] = "launch_attempted"
         process = subprocess.Popen(
-            command, env=environment, stdout=stdout, stderr=stderr
+            command,
+            env=environment,
+            stdout=stdout,
+            stderr=stderr,
+            pass_fds=pass_fds,
         )
+        try:
+            pidfd = open_pidfd(process.pid)
+        except Exception:
+            process.terminate()
+            process.wait(timeout=10)
+            raise
+        pidfd_metadata = os.fstat(pidfd)
+        poller = select.poll()
+        poller.register(pidfd, select.POLLIN)
         progress["native_launch_state"] = "process_started"
         progress["candidate_execution_count"] = 1
         stopped = False
-        while process.poll() is None:
-            try:
-                temperatures.append(enforce_thermal_guard(thermal_snapshot(), envelope))
-            except PhoneExecutionError:
-                stopped = True
-                process.terminate()
-                break
-            if time.monotonic_ns() - started > maximum_ns:
-                stopped = True
-                process.terminate()
-                break
-            time.sleep(0.25)
-        if stopped:
-            try:
-                process.wait(timeout=5.0)
-            except subprocess.TimeoutExpired:
+        wait_observation = None
+        try:
+            while not poller.poll(0):
+                try:
+                    temperatures.append(
+                        enforce_thermal_guard(thermal_snapshot(), envelope)
+                    )
+                except PhoneExecutionError:
+                    stopped = True
+                    process.terminate()
+                    break
+                if time.monotonic_ns() - started > maximum_ns:
+                    stopped = True
+                    process.terminate()
+                    break
+                time.sleep(0.25)
+            if stopped and not poller.poll(5_000):
                 process.kill()
-        return_code = process.wait()
+                if not poller.poll(5_000):
+                    raise PhoneExecutionError("native process did not terminate")
+            wait_observation = os.waitid(
+                os.P_PIDFD, pidfd, os.WEXITED | os.WNOWAIT
+            )
+            return_code = process.wait()
+        finally:
+            os.close(pidfd)
+            if process.returncode is None:
+                try:
+                    process.wait(timeout=10)
+                except subprocess.TimeoutExpired:
+                    process.kill()
+                    process.wait()
+        if wait_observation is None:
+            raise PhoneExecutionError("native pidfd completion observation is absent")
         progress["native_launch_state"] = "process_returned"
         progress["native_return_code"] = return_code
     elapsed = time.monotonic_ns() - started
@@ -431,6 +1060,16 @@ def run_monitored(
         "temperature_snapshot_count": len(temperatures),
         "stdout_sha256": contract.sha256_path(stdout_path),
         "stderr_sha256": contract.sha256_path(stderr_path),
+        "process_receipt": {
+            "pid": process.pid,
+            "pidfd_opened": True,
+            "pidfd_inode": pidfd_metadata.st_ino,
+            "pidfd_poll_ready": True,
+            "waitid_pid": wait_observation.si_pid,
+            "waitid_code": wait_observation.si_code,
+            "waitid_status": wait_observation.si_status,
+            "popen_return_code": return_code,
+        },
     }
 
 
@@ -444,6 +1083,10 @@ def validate_native_summary(
         raise PhoneExecutionError("native summary schema mismatch")
     if summary.get("candidate_id") != contract.CANDIDATE_ID:
         raise PhoneExecutionError("native summary candidate mismatch")
+    if summary.get("source_closure_sha256") != preregistration["source_binding"].get(
+        "closure_sha256"
+    ):
+        raise PhoneExecutionError("native summary source closure witness drifted")
     if summary.get("build_options") != "-cl-std=CL3.0":
         raise PhoneExecutionError("native OpenCL build options drifted")
     lifecycle = summary.get("lifecycle")
@@ -670,6 +1313,7 @@ def load_complete_receipt(directory: Path) -> dict[str, Any]:
 
 
 def execute(args: argparse.Namespace, progress: dict[str, Any]) -> int:
+    validate_parent_termux_exec_binding()
     preregistration = load_bound_preregistration(
         args.preregistration, args.prereg_sha256
     )
@@ -679,7 +1323,6 @@ def execute(args: argparse.Namespace, progress: dict[str, Any]) -> int:
         raise PhoneExecutionError("run root must be a real directory")
     envelope = preregistration["phone_execution_envelope"]
     resource_before = validate_resource_floor(run_root, envelope)
-    runtime_identity = validate_phone_runtime_identity(preregistration)
 
     private_inputs = run_root / "private_inputs"
     private_outputs = run_root / "private_outputs"
@@ -694,9 +1337,20 @@ def execute(args: argparse.Namespace, progress: dict[str, Any]) -> int:
         native_dir,
     ):
         create_private_directory(path)
+    runtime_identity = validate_phone_runtime_identity(
+        preregistration, temporary_directory=native_dir
+    )
 
     binary_path = native_dir / "e4b_adreno_int2_lm_head"
-    build = build_phone_binary(binary_path, native_dir)
+    build = build_phone_binary(
+        binary_path, native_dir, source_closure=preregistration["source_closure"]
+    )
+    binary_contract = preregistration["native_binary_contract"]
+    if (
+        build["binary_bytes"] != binary_contract["preflight_bytes"]
+        or build["binary_sha256"] != binary_contract["preflight_sha256"]
+    ):
+        raise PhoneExecutionError("candidate binary drifted from source-neutral preflight")
     (
         staged_packed_path,
         scale_path,
@@ -723,23 +1377,47 @@ def execute(args: argparse.Namespace, progress: dict[str, Any]) -> int:
     ]
     native_summary_path = native_dir / "native_summary.json"
     progress["native_summary_path"] = native_summary_path
-    command = native_command(
-        binary_path=binary_path,
-        packed_weight_path=staged_packed_path,
-        scale_path=scale_path,
-        native_summary_path=native_summary_path,
-        all_cases=all_cases,
-    )
     environment = minimal_phone_environment(temporary_directory=native_dir)
     environment.update(contract.runtime_environment(preregistration["opencl_contract"]))
-    execution = run_monitored(
-        command=command,
-        environment=environment,
-        stdout_path=native_dir / "native.stdout.log",
-        stderr_path=native_dir / "native.stderr.log",
-        envelope=envelope,
-        progress=progress,
+    if {"LD_PRELOAD", "LD_LIBRARY_PATH"}.intersection(environment):
+        raise PhoneExecutionError("candidate launcher environment contains loader injection")
+    binary_payload = read_frozen_payload(
+        binary_path,
+        expected_bytes=binary_contract["preflight_bytes"],
+        expected_sha256=binary_contract["preflight_sha256"],
+        label="candidate native binary",
     )
+    binary_descriptor = open_unlinked_snapshot(
+        payload=binary_payload,
+        expected_sha256=binary_contract["preflight_sha256"],
+        temporary_directory=native_dir,
+        prefix="e4b-candidate-binary",
+    )
+    try:
+        command = native_command(
+            binary_path=Path(f"/proc/self/fd/{binary_descriptor}"),
+            packed_weight_path=staged_packed_path,
+            scale_path=scale_path,
+            native_summary_path=native_summary_path,
+            all_cases=all_cases,
+        )
+        execution = run_monitored(
+            command=command,
+            environment=environment,
+            stdout_path=native_dir / "native.stdout.log",
+            stderr_path=native_dir / "native.stderr.log",
+            envelope=envelope,
+            progress=progress,
+            pass_fds=(binary_descriptor,),
+        )
+        if (
+            os.fstat(binary_descriptor).st_nlink != 0
+            or _sha256_descriptor(binary_descriptor)
+            != binary_contract["preflight_sha256"]
+        ):
+            raise PhoneExecutionError("retained candidate binary snapshot drifted")
+    finally:
+        os.close(binary_descriptor)
     if execution["thermal_or_timeout_stop"]:
         raise PhoneExecutionError("native execution stopped by resource guard")
     if execution["return_code"] not in {0, 2}:
@@ -772,6 +1450,9 @@ def execute(args: argparse.Namespace, progress: dict[str, Any]) -> int:
         expected_bytes=contract.SCALE_BF16_BYTES,
         expected_sha256=tensor_identity["compact_bf16_scale_sha256"],
     )
+    interposer_recheck = open_verified_termux_exec_source()
+    os.close(interposer_recheck)
+    validate_termux_toolchain_files()
     resource_after = validate_resource_floor(run_root, envelope)
     status = "passed_scope" if every_passed else "falsified_scope"
     receipt = {
