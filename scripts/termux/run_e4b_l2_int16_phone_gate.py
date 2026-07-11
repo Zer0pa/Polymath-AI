@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 from dataclasses import dataclass
 import hashlib
+import importlib.util
 import json
 import os
 from pathlib import Path
@@ -14,19 +15,36 @@ import struct
 import subprocess
 import sys
 import time
+import types
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[2]
-if str(ROOT) not in sys.path:
-    sys.path.insert(0, str(ROOT))
+FRONTIER_ROOT = ROOT / "polymath_ai/frontier"
+BUNDLE_PACKAGE = "_e4b_phone_gate_bundle"
 
-from polymath_ai.frontier.e4b_l2_projection_gate import (  # noqa: E402
-    adjudicate_metrics,
-    bf16_payload_to_floats,
-    canonical_json,
-    softmax_js_divergence,
-    vector_metrics,
-)
+
+def _load_bundle_module(name: str) -> types.ModuleType:
+    qualified = f"{BUNDLE_PACKAGE}.{name}"
+    spec = importlib.util.spec_from_file_location(qualified, FRONTIER_ROOT / f"{name}.py")
+    if spec is None or spec.loader is None:
+        raise RuntimeError(f"cannot load execution module: {name}")
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[qualified] = module
+    spec.loader.exec_module(module)
+    return module
+
+
+_bundle = types.ModuleType(BUNDLE_PACKAGE)
+_bundle.__path__ = [str(FRONTIER_ROOT)]
+sys.modules[BUNDLE_PACKAGE] = _bundle
+_load_bundle_module("e4b_f5_probe")
+_load_bundle_module("e4b_f5_qnn_exporter")
+_projection_gate = _load_bundle_module("e4b_l2_projection_gate")
+adjudicate_metrics = _projection_gate.adjudicate_metrics
+bf16_payload_to_floats = _projection_gate.bf16_payload_to_floats
+canonical_json = _projection_gate.canonical_json
+softmax_js_divergence = _projection_gate.softmax_js_divergence
+vector_metrics = _projection_gate.vector_metrics
 
 
 PREREG_SCHEMA = "gemma4_e4b_l2_int16_phone_execution_preregistration_v1"
