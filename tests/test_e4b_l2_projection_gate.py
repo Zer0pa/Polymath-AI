@@ -137,3 +137,9 @@ def test_phone_verifier_source_uses_same_frozen_w2_limits():
     ]
     for fragment in required:
         assert fragment in source
+
+
+def test_reference_runner_hashes_scalar_tensors_without_zero_dimensional_view():
+    source = Path("scripts/host/run_e4b_l2_projection_reference.py").read_text(encoding="utf-8")
+    assert source.count(".contiguous().reshape(-1).view(torch.uint8).numpy()") == 2
+    assert ".contiguous().view(torch.uint8).numpy()" not in source

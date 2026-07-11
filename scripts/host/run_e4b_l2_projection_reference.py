@@ -57,7 +57,7 @@ def _tensor_sha256(tensor: Any) -> str:
 
     if not isinstance(tensor, torch.Tensor):
         raise TypeError("expected torch tensor")
-    contiguous = tensor.detach().cpu().contiguous().view(torch.uint8).numpy()
+    contiguous = tensor.detach().cpu().contiguous().reshape(-1).view(torch.uint8).numpy()
     return hashlib.sha256(memoryview(contiguous)).hexdigest()
 
 
@@ -66,7 +66,7 @@ def _tensor_bytes(tensor: Any) -> bytes:
 
     if not isinstance(tensor, torch.Tensor):
         raise TypeError("expected torch tensor")
-    contiguous = tensor.detach().cpu().contiguous().view(torch.uint8).numpy()
+    contiguous = tensor.detach().cpu().contiguous().reshape(-1).view(torch.uint8).numpy()
     return memoryview(contiguous).tobytes()
 
 
