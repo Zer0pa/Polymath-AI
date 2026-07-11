@@ -1,0 +1,418 @@
+{
+  "schema_version": "gemma4_e4b_l2_int16_phone_attempt_report_v2",
+  "run_id": "20260711T095920Z_l2_int16_phone",
+  "recorded_at_utc": "2026-07-11T10:03:25Z",
+  "status": "falsified_scope",
+  "claim_class": "phone_native_s16_terminal_head_candidate_numerically_falsified_under_frozen_gate",
+  "scope": "bounded_phone_native_s16_terminal_head_projection_diagnostic",
+  "candidate_id": "w2_s16_activation_bw2_weight_s16_output_v1",
+  "active_sovereign_gate": "F5_terminal_head_phone_native_frozen_projection_fidelity",
+  "first_missing_green_field": "every_frozen_numeric_and_ranking_metric_passes_for_every_preregistered_case",
+  "bindings": {
+    "parent_capsule": {
+      "relative_path": "docs/APEX-CURRENT-REALITY-CAPSULE-GEMMA4-E4B-QNN-CELL-2026-07-10.yaml",
+      "bytes": 49583,
+      "sha256": "7f85799e260658cd400b837a784035438c7601e3057d963e4cf9b98f14841266"
+    },
+    "frontier_selector": {
+      "relative_path": "runtime/reports/apex_frontier/frontier_event_20260711T095730Z.json",
+      "bytes": 5572,
+      "sha256": "1f1f575f57f8fe1b81e9859e650fe716cec280b5f1ce51ba487147db15d231af"
+    },
+    "provider_context_report": {
+      "relative_path": "runtime/reports/apex_frontier/20260711T092900Z_l2_int16_provider_context/provider_context_report.json",
+      "bytes": 8067,
+      "sha256": "9ab264ce6a26c476240f33e8ec4450b1c58ab0ca70fe7f5de150888124787afa"
+    },
+    "context_gate": {
+      "relative_path": "runtime/reports/apex_frontier/20260711T091000Z_l2_int16_context_gate/context_gate.json",
+      "bytes": 1649,
+      "sha256": "c19ded15499184112ce80e3a0d124498bb6012be7ccf28eaeae98c05118d8b3b"
+    },
+    "int16_preregistration": {
+      "relative_path": "runtime/reports/apex_frontier/20260711T020600Z_l2_int16_head_prereg_v2/preregistration.json",
+      "bytes": 2998,
+      "sha256": "51f1e9977258d8d61c7eb1ff76964b293a15d38eb852da1b5692cb58aaeea284"
+    },
+    "int16_threshold_policy": {
+      "relative_path": "runtime/reports/apex_frontier/20260711T020600Z_l2_int16_head_prereg_v2/threshold_policy.json",
+      "bytes": 2907,
+      "sha256": "36d4689f6c59f8ce8d9d99c6dc4085d7e63089a6448c20517fd0fcc74964ad05"
+    },
+    "prior_blocked_phone_attempt": {
+      "relative_path": "runtime/reports/apex_frontier/20260711T095200Z_l2_int16_phone_attempt_v4/phone_attempt_report.json",
+      "bytes": 16099,
+      "sha256": "a6234bfefcde00d3f02f45376358e6e289cf7cd8c1226b80e2617c52b69a6770"
+    },
+    "phone_execution_preregistration_v5": {
+      "relative_path": "runtime/reports/apex_frontier/20260711T095920Z_l2_int16_phone_prereg_v5/phone_execution_preregistration.json",
+      "bytes": 9651,
+      "sha256": "88955bd398cb63bf48dbb4288a22f61f05890cec5fe44910e2b7a22761e41dba",
+      "phone_relative_path": "control/phone_execution_preregistration.json",
+      "phone_copy_sha256": "88955bd398cb63bf48dbb4288a22f61f05890cec5fe44910e2b7a22761e41dba"
+    },
+    "provider_package_source_revision": "e80e5f762121168b43a6b3c05f2a3d381fddeffd",
+    "phone_runner_source_revision": "3eae3084f5896a8277d8fcd6454d874f6710ba67",
+    "preregistration_evidence_revision": "97cda5f84bcfdd59d00b56f64796b6bbe879954d"
+  },
+  "phone": {
+    "serial": "FY25013101C8",
+    "model": "NX789J",
+    "soc": "SM8750",
+    "dsp_arch": 79,
+    "android_build": "20251031.123842",
+    "adb_state_at_evidence_seal": "device"
+  },
+  "phone_run_root": "/data/data/com.termux/files/home/polymath_gemma4_e4b_frontier/20260711T095920Z_l2_int16_phone",
+  "phone_receipt": {
+    "phone_relative_path": "receipts/phone_execution_receipt.json",
+    "bytes": 37357,
+    "sha256": "bba5cc9466d172048282073c81a7bfe204a34b7430ca2ac08385dc75eb8db5ae",
+    "schema_version": "gemma4_e4b_l2_int16_phone_execution_receipt_v1",
+    "receipt_status": "falsified_scope",
+    "receipt_qnn_execution_count": 3,
+    "receipt_every_case_passed": false,
+    "receipt_full_L2_passed": false,
+    "receipt_promotion_allowed": false,
+    "receipt_raw_outputs_egressed_from_phone": false
+  },
+  "staging_verification": {
+    "context_artifact": {
+      "phone_relative_path": "context/gemma4_e4b_f5_lowbit_probes_v79.bin",
+      "bytes": 678330368,
+      "sha256": "2d54c6c4e4028b88ce43a5255914e9941a827e32963b36e4198e2150a0f5d530",
+      "phone_hash_reverified_at_evidence_seal": true,
+      "matches_provider_report": true,
+      "matches_preregistration": true,
+      "generator_clean_exit": false,
+      "eligible_use": "bounded_phone_load_and_numerical_diagnostic_only"
+    },
+    "execution_code": [
+      {
+        "relative_path": "scripts/termux/run_e4b_l2_int16_phone_gate.py",
+        "bytes": 21963,
+        "sha256": "30ea7ba575c93602726e540559766d9b5e9af612890a5543100e43076a727816",
+        "phone_matches_repository_and_preregistration": true
+      },
+      {
+        "relative_path": "polymath_ai/frontier/e4b_f5_probe.py",
+        "bytes": 20420,
+        "sha256": "6dcf1f0d192f44778e2964963533fdd770ee8420576cb2fce24fcdb566e3d480",
+        "phone_matches_repository_and_preregistration": true
+      },
+      {
+        "relative_path": "polymath_ai/frontier/e4b_f5_qnn_exporter.py",
+        "bytes": 50145,
+        "sha256": "ed40d66ca908b341e7180803b0e44fa24a322fed0cc3237eafa092562677dd42",
+        "phone_matches_repository_and_preregistration": true
+      },
+      {
+        "relative_path": "polymath_ai/frontier/e4b_l2_projection_gate.py",
+        "bytes": 19982,
+        "sha256": "f845f5fce915a2d80155799e4cb1ee152032a5881ed66db0298bd5d8a19a4c9b",
+        "phone_matches_repository_and_preregistration": true
+      }
+    ],
+    "qairt_2_44_phone_files": [
+      {
+        "role": "qnn_net_run",
+        "bytes": 4462720,
+        "sha256": "bd98535e89e5ea36b2c08891013e008d48738c2ffcf87c30352a8accec2fe20e",
+        "phone_matches_preregistration": true
+      },
+      {
+        "role": "htp_backend",
+        "bytes": 2778176,
+        "sha256": "090e993822564851eab1405aff171643b21e644e3f696c95c96f2732aaed813a",
+        "phone_matches_preregistration": true
+      },
+      {
+        "role": "v79_stub",
+        "bytes": 679168,
+        "sha256": "005bd3de462851ce3dde55260d7d8560d6d07dbc309f554780b1f6412e6d9df1",
+        "phone_matches_preregistration": true
+      },
+      {
+        "role": "qnn_system",
+        "bytes": 2983560,
+        "sha256": "7e69258e1278cc9b2bb62dbc6e2a52c227a100d6505a13fd6324a87993d0bba8",
+        "phone_matches_preregistration": true
+      },
+      {
+        "role": "v79_skel",
+        "bytes": 10975268,
+        "sha256": "41f83395ed4b1bcfc43417a1b82f3f137c825747711c9ab4c9d50034ed198f98",
+        "phone_matches_preregistration": true
+      }
+    ],
+    "runtime_resolution_topology": {
+      "qairt_native_library_precedes_system_dirs": true,
+      "system_ld_library_dirs": [
+        "/vendor/lib64",
+        "/system/lib64"
+      ],
+      "fastrpc_libraries": [
+        {
+          "role": "adsprpc",
+          "absolute_path": "/vendor/lib64/libadsprpc.so",
+          "bytes": 530728,
+          "sha256": "5c888a5eea14d580ab66ff00ca205d74a1596c207822fd06e04b4c1f09a55c09"
+        },
+        {
+          "role": "cdsprpc",
+          "absolute_path": "/vendor/lib64/libcdsprpc.so",
+          "bytes": 530752,
+          "sha256": "501d2478fee5913171c00e63c67701fdfd6cedd4911641084b8f16b3030f6cbd"
+        }
+      ],
+      "phone_hashes_reverified_at_evidence_seal": true,
+      "only_execution_affecting_change_from_v4": true
+    },
+    "cases": [
+      {
+        "case_id": "structured_dynamic",
+        "input_bytes": 5120,
+        "input_sha256": "360e7c9f22a0dbb0c135b3a1b696d206e66d02b57b6320eb3e8210d1e880e236",
+        "reference_bytes": 524288,
+        "reference_sha256": "30e624bdbad91be77ef6f3d18d46eef2cec6dc5b7a23e7fb4438bf74ae54a30a",
+        "phone_matches_preregistration": true
+      },
+      {
+        "case_id": "balanced_splitmix64",
+        "input_bytes": 5120,
+        "input_sha256": "8ac246d9328dca16ae2c182906bdb11b8080f0dc71161d28838291eb27f1bf90",
+        "reference_bytes": 524288,
+        "reference_sha256": "4d61ad4b4c98089646a6c11e825fb7486090c94fba376d6de1c0a5127c20e26a",
+        "phone_matches_preregistration": true
+      },
+      {
+        "case_id": "low_amplitude_splitmix64",
+        "input_bytes": 5120,
+        "input_sha256": "05b0526761aa7a5c83156a6bcdf3954a784b23d8b97ffc864e3acc963a3b490a",
+        "reference_bytes": 524288,
+        "reference_sha256": "9769af1ba2b21d3d7803f9bb139c17eb96c0ae0a893ef763b87060d3c68bebd2",
+        "phone_matches_preregistration": true
+      }
+    ],
+    "all_governing_hashes_match": true
+  },
+  "frozen_contract": {
+    "graph_order": [
+      "gemma4_e4b_f5_w4_q_proj",
+      "gemma4_e4b_f5_w2_lm_head"
+    ],
+    "q_proj_skipped": true,
+    "lm_head_input": {
+      "dtype": "QNN_DATATYPE_SFIXED_POINT_16",
+      "shape": [1, 1, 2560],
+      "scale": 0.001953125,
+      "offset": 0
+    },
+    "lm_head_output": {
+      "dtype": "QNN_DATATYPE_SFIXED_POINT_16",
+      "shape": [1, 1, 262144],
+      "scale": 0.00390625,
+      "offset": 0,
+      "bytes_per_case": 524288
+    },
+    "native_input_files": true,
+    "native_output_files": true,
+    "num_inferences_per_case": 1,
+    "cases_run_sequentially": true,
+    "every_metric_and_every_case_must_pass": true,
+    "numeric_and_ranking_thresholds": {
+      "max_abs": 0.1875,
+      "rms": 0.03,
+      "relative_l2": 0.0075,
+      "cosine_min": 0.99998,
+      "softmax_js_divergence_max": 0.000002,
+      "top_k_set_overlap_min": 0.9375,
+      "top_1_equal": true
+    },
+    "thresholds_relaxed_after_observation": false
+  },
+  "governed_executions": [
+    {
+      "case_id": "structured_dynamic",
+      "return_code": 0,
+      "timed_out": false,
+      "elapsed_ns": 682107292,
+      "qnn_execution_observed": true,
+      "context_restoration_observed": true,
+      "output": {
+        "phone_relative_path": "outputs/structured_dynamic/gemma4_e4b_f5_w2_lm_head/Result_0/lm_head_output_s16_pre_softcap_native.raw",
+        "bytes": 524288,
+        "sha256": "a7bd26ba4199e6c33d7dc14c6baa9eee07beaa35deb23da0e09f9a7f867cb736",
+        "remains_phone_local": true
+      },
+      "stdout": {
+        "phone_relative_path": "logs/structured_dynamic.stdout.log",
+        "bytes": 516,
+        "sha256": "e8ecc9e091226ac888d93866541f2f15201fd040a3de582cbf9cb6eed145e84c"
+      },
+      "stderr": {
+        "phone_relative_path": "logs/structured_dynamic.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "thermal_guard_sensor": "pmih010x_lite_tz",
+      "thermal_before_millidegrees_c": 66284,
+      "thermal_after_millidegrees_c": 66216,
+      "metrics": {
+        "count": 262144,
+        "max_abs": 0.06640625,
+        "rms": 0.009332670230018936,
+        "relative_l2": 0.0030862351711955288,
+        "cosine": 0.9999952574472973,
+        "softmax_js_divergence": 0.00006267397698099594,
+        "top_k": 32,
+        "top_k_set_overlap": 1.0,
+        "top_1_equal": true
+      },
+      "failures": [
+        "softmax_js_divergence_above_2e-06"
+      ],
+      "passed": false
+    },
+    {
+      "case_id": "balanced_splitmix64",
+      "return_code": 0,
+      "timed_out": false,
+      "elapsed_ns": 669922656,
+      "qnn_execution_observed": true,
+      "context_restoration_observed": true,
+      "output": {
+        "phone_relative_path": "outputs/balanced_splitmix64/gemma4_e4b_f5_w2_lm_head/Result_0/lm_head_output_s16_pre_softcap_native.raw",
+        "bytes": 524288,
+        "sha256": "cf42e4f4011fdae27890acdecfd3104da73a6a254cd46dea2cfded7cbe09e5f5",
+        "remains_phone_local": true
+      },
+      "stdout": {
+        "phone_relative_path": "logs/balanced_splitmix64.stdout.log",
+        "bytes": 517,
+        "sha256": "738de3a5991b1cf0782e744314cb0c786cd515e67dfb61dd9812d8a408121055"
+      },
+      "stderr": {
+        "phone_relative_path": "logs/balanced_splitmix64.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "thermal_guard_sensor": "pmih010x_lite_tz",
+      "thermal_before_millidegrees_c": 66149,
+      "thermal_after_millidegrees_c": 66115,
+      "metrics": {
+        "count": 262144,
+        "max_abs": 0.08203125,
+        "rms": 0.011707789673999932,
+        "relative_l2": 0.0028036280319817027,
+        "cosine": 0.9999960838202706,
+        "softmax_js_divergence": 0.00015048981907474015,
+        "top_k": 32,
+        "top_k_set_overlap": 0.96875,
+        "top_1_equal": true
+      },
+      "failures": [
+        "softmax_js_divergence_above_2e-06"
+      ],
+      "passed": false
+    },
+    {
+      "case_id": "low_amplitude_splitmix64",
+      "return_code": 0,
+      "timed_out": false,
+      "elapsed_ns": 668875572,
+      "qnn_execution_observed": true,
+      "context_restoration_observed": true,
+      "output": {
+        "phone_relative_path": "outputs/low_amplitude_splitmix64/gemma4_e4b_f5_w2_lm_head/Result_0/lm_head_output_s16_pre_softcap_native.raw",
+        "bytes": 524288,
+        "sha256": "26e8eba6a5f60cccd410a520bc16b82e7cdd9b45252f30a62a2a69bcb7b43744",
+        "remains_phone_local": true
+      },
+      "stdout": {
+        "phone_relative_path": "logs/low_amplitude_splitmix64.stdout.log",
+        "bytes": 522,
+        "sha256": "b3a9e068dc4d22e0e0eafee446bc91ed6e168670dcbd3c56fed36cc544aa4216"
+      },
+      "stderr": {
+        "phone_relative_path": "logs/low_amplitude_splitmix64.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "thermal_guard_sensor": "pmih010x_lite_tz",
+      "thermal_before_millidegrees_c": 66284,
+      "thermal_after_millidegrees_c": 66183,
+      "metrics": {
+        "count": 262144,
+        "max_abs": 0.015625,
+        "rms": 0.005921744785413702,
+        "relative_l2": 0.023017140650245554,
+        "cosine": 0.9997351446868147,
+        "softmax_js_divergence": 0.0000012722843738491228,
+        "top_k": 32,
+        "top_k_set_overlap": 0.9375,
+        "top_1_equal": true
+      },
+      "failures": [
+        "relative_l2_above_0.0075",
+        "cosine_below_0.99998"
+      ],
+      "passed": false
+    }
+  ],
+  "thermal": {
+    "guard_sensor": "pmih010x_lite_tz",
+    "stop_at_or_above_millidegrees_c": 90000,
+    "receipt_global_before_millidegrees_c": 66385,
+    "receipt_global_after_millidegrees_c": 65812,
+    "maximum_governing_sensor_observation_millidegrees_c": 66385,
+    "guard_triggered": false,
+    "performance_ranking_attempted": false
+  },
+  "adjudication": {
+    "governing_attempt_validly_preregistered": true,
+    "all_governing_phone_bytes_hash_verified": true,
+    "runtime_resolution_repair_was_the_only_execution_affecting_change_from_v4": true,
+    "phone_native_context_load_observed": true,
+    "phone_native_qnn_execution_count": 3,
+    "full_width_candidate_outputs_observed": 3,
+    "frozen_numeric_and_ranking_thresholds_applied": true,
+    "all_preregistered_cases_executed": true,
+    "every_case_passed": false,
+    "mechanism_falsified": true,
+    "falsified_scope": "exact_w2_s16_activation_bw2_weight_s16_output_v1_terminal_head_candidate_under_the_frozen_three_case_gate",
+    "scientific_result": "falsified_scope",
+    "full_L2_passed": false,
+    "promotion_allowed": false,
+    "failure_classification": "authority_metric_regression_under_valid_phone_native_measurement",
+    "rationale": [
+      "All three preregistered cases completed phone-native QNN execution with return code 0 and produced the expected 524288-byte full-width S16 output.",
+      "The structured_dynamic and balanced_splitmix64 cases violated the unchanged softmax Jensen-Shannon divergence limit.",
+      "The low_amplitude_splitmix64 case violated both the unchanged relative-L2 limit and unchanged cosine minimum.",
+      "Every case failed at least one sovereign metric, so secondary passes cannot admit or promote the candidate.",
+      "The provider-generator cleanup anomaly remains disclosed, but the measured numerical failures independently falsify this exact candidate scope."
+    ],
+    "branch_transition": {
+      "from": "phone_launch_blocked_at_candidate_device_creation_zero_execution",
+      "to": "phone_native_full_width_measurement_complete_s16_candidate_falsified_scope"
+    },
+    "required_transition": "kill_or_rebuild_this_exact_s16_candidate_without_relaxing_any_threshold_then_select_the_next_admissible_maximal_experiment"
+  },
+  "custody": {
+    "raw_candidate_output_created": true,
+    "raw_candidate_output_count": 3,
+    "raw_candidate_output_total_bytes": 1572864,
+    "raw_candidate_output_egressed_from_phone": false,
+    "raw_candidate_output_copied_into_repository": false,
+    "raw_reference_payload_copied_into_repository_by_this_report": false,
+    "phone_private_state_egressed": false,
+    "repository_receives_hash_bound_sanitized_metadata_only": true,
+    "phone_receipt_copied_into_repository": false,
+    "secrets_printed": false
+  },
+  "nonclaims": [
+    "No clean provider-generator exit, full L1, full L2, learning, or authority-quality pass is claimed.",
+    "This report falsifies only the exact frozen S16 terminal-head candidate and does not generalize to every possible S16 architecture.",
+    "QNN return code 0 and strong secondary metrics do not waive any failed sovereign threshold."
+  ]
+}
