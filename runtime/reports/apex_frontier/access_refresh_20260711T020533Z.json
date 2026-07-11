@@ -1,0 +1,88 @@
+{
+  "schema_version": "gemma4_e4b_access_resource_refresh_v1",
+  "observed_at_utc": "2026-07-11T02:05:33Z",
+  "state": "passed_scope_with_typed_transient_constraints",
+  "campaign": {
+    "campaign_id": "gemma4_e4b_phone_native_20260711",
+    "action_lease": "active_user_campaign_2026-07-11",
+    "objective": "Gemma_4_E4B_phone_native_learning_on_RED_MAGIC_10_Pro_Plus",
+    "public_release_authorized": false,
+    "new_paid_capacity_authorized": false,
+    "destructive_phone_or_provider_cleanup_authorized": false
+  },
+  "phone": {
+    "state": "adb_and_wake_scoped_termux_ssh_passed_scope",
+    "serial_sha256": "383e1fef6040334134430241a105f7d900f6d924e485fdc858441e734d3ae0f4",
+    "product": "REDMAGIC_NX789J",
+    "soc": "SM8750",
+    "android_build_incremental": "20251031.123842",
+    "kernel": "6.6.56-android15-8-g38447e018c92-ab12829524-4k",
+    "ram_total_kib": 23662784,
+    "ram_available_kib": 16856396,
+    "swap_total_kib": 12582908,
+    "data_available_kib": 471870444,
+    "battery_level_percent": 80,
+    "battery_temperature_tenths_celsius": 180,
+    "termux_uid": 10536,
+    "termux_ssh": {
+      "state": "passed_scope_after_safe_activity_wake",
+      "sshd_pid": 16819,
+      "fresh_connection_without_activity_wake_reliability": "transient_banner_stall_observed",
+      "force_stop_or_reboot_used": false,
+      "raw_phone_private_payload_egress": false
+    }
+  },
+  "runpod": {
+    "state": "passed_scope_with_known_effective_workspace_quota_mismatch",
+    "pod_id_sha256": "2720e18eeff6d549d367c3a2770999054281c287ccb6afc5cd15eb35e177ea4e",
+    "cpu_limit": 4,
+    "memory_limit_bytes": 16000000000,
+    "gpu_present": false,
+    "qairt_root": "/workspace/qairt-2.44/qairt/2.44.0.260225",
+    "qairt_present": true,
+    "root_overlay_available_bytes": 1271136256,
+    "workspace_nominal_available_bytes": 462254471970816,
+    "workspace_nominal_free_is_effective_large_file_quota": false,
+    "phone_private_raw_upload_allowed": false
+  },
+  "source_and_visibility": {
+    "github": {
+      "state": "passed_scope",
+      "branch": "frontier/gemma4-phone-native-20260710T235022Z",
+      "head": "631556006300fec2a1839a12b99392a0bcf32a77",
+      "upstream_ahead": 0,
+      "upstream_behind": 0
+    },
+    "hugging_face": {
+      "state": "passed_scope_from_ACCESS-0_and_live_L0_v3_audit",
+      "identity": "Architect-Prime",
+      "credential_egress": false,
+      "pinned_model_revisions_revalidated": 4
+    },
+    "comet": {
+      "state": "last_verified_by_ACCESS-0_not_refreshed_in_this_event",
+      "workspace": "zer0pa-imc",
+      "project": "mobile-polymath-ai-training",
+      "raw_payloads_allowed": false
+    }
+  },
+  "exact_resource_slice": {
+    "phone": "one_authorized_NX789J_SM8750_device_serial_hash_383e1fef",
+    "runpod": "existing_4_vCPU_16GB_no_GPU_QAIRT_2_44_pod_only",
+    "concurrency": "four_agent_slots_including_primary",
+    "additional_paid_capacity": 0,
+    "publications": 0
+  },
+  "transient_constraints": [
+    "Termux fresh SSH connections may require a non-destructive activity wake immediately before connect.",
+    "RunPod /workspace nominal free space is not accepted as the effective large-file quota; use measured quota-safe paths.",
+    "Comet authentication was not refreshed by this event and remains non-authoritative visibility only."
+  ],
+  "custody": {
+    "raw_phone_private_payload_egress": false,
+    "model_weight_bytes_on_orchestration_host": 0,
+    "secrets_recorded": false,
+    "egress_result": "nonsecret_platform_metadata_only"
+  },
+  "promotion_allowed": false
+}
