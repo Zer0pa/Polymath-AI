@@ -25,7 +25,7 @@ from polymath_ai.frontier.safetensors_identity import (
 )
 
 
-L0_SCHEMA_VERSION = "gemma4_e4b_l0_parent_manifest_v1"
+L0_SCHEMA_VERSION = "gemma4_e4b_l0_parent_manifest_v2"
 FULL_REVISION = re.compile(r"^[0-9a-f]{40}$")
 GIT_OID = re.compile(r"^[0-9a-f]{40}$")
 SHA256 = re.compile(r"^[0-9a-f]{64}$")

@@ -431,6 +431,7 @@ def test_builds_passed_content_addressed_l0_without_weight_download() -> None:
     payload = build(client)
 
     manifest = payload["manifest"]
+    assert manifest["schema_version"] == "gemma4_e4b_l0_parent_manifest_v2"
     assert manifest["state"] == "passed_scope"
     assert manifest["blockers"] == []
     assert payload["manifest_sha256"] == canonical_sha256(manifest)
