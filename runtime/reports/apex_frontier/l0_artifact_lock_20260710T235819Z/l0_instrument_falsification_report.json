@@ -1,0 +1,59 @@
+{
+  "schema_version": "gemma4_e4b_l0_instrument_falsification_v1",
+  "claim": {
+    "claim_id": "L0-INSTRUMENT-6C9D5DA-ADVERSARIAL-FALSIFICATION",
+    "class": "local_verification",
+    "state": "falsified_scope",
+    "scope": {
+      "source_revision": "6c9d5dae31865af6bf02b9a3e010f372b5929b96",
+      "instrument": "polymath_ai.frontier.e4b_l0 plus build_gemma4_e4b_l0_manifest.py",
+      "live_diagnostic_manifest_embedded_sha256": "0dd9403929b543da8887c150628e739cf31b0108a458f18a012b917ef11322a5",
+      "live_diagnostic_report_sha256": "65abc055fbd0947a1f0ff9626f0b378be52eef7fc92e5374bfdc3b0e7bf8e754",
+      "device_runtime_identity": "not_executed"
+    },
+    "evidence": {
+      "report_path_or_content_addressed_locator": "runtime/reports/apex_frontier/l0_artifact_lock_20260710T235819Z/e4b_l0_parent_manifest.json",
+      "report_sha256": "65abc055fbd0947a1f0ff9626f0b378be52eef7fc92e5374bfdc3b0e7bf8e754",
+      "predecessor_claim_ids": [],
+      "observed_at_utc": "2026-07-11T00:14:22Z",
+      "freshness": "immutable_event"
+    },
+    "blocker": {
+      "class": "instrument_fail_open",
+      "first_missing_green_field": "token_safe_bounded_transport_and_strict_L0_schema"
+    },
+    "effects": {
+      "closes_only": [
+        "commit_6c9d5da_L0_instrument_rejected",
+        "diagnostic_manifest_0dd940_not_governing_state"
+      ],
+      "eligible_successors": [
+        "hardened_L0_instrument_rebuild_and_adversarial_readmission"
+      ],
+      "promotion_allowed": false,
+      "execution_authorized": false
+    },
+    "nonclaims": [
+      "The official E4B artifact identities are not falsified.",
+      "No L0 parent manifest was admitted.",
+      "No model, graph, phone, QNN, learning, or quality experiment was executed."
+    ],
+    "custody": {
+      "raw_location_class": "none",
+      "egress_result": "public_model_metadata_only",
+      "credential_used_for_live_diagnostic": false
+    }
+  },
+  "adversarial_falsifiers": [
+    "empty reference stacks, converter lineage, and Edge-A protocol could pass",
+    "foreign repositories and full-SHA substitutions could pass",
+    "wrong model type, RoPE, activation, KV semantics, and LM-head tying could pass",
+    "a chat template not emitting the declared terminator could pass",
+    "provider-asserted LFS digests were treated as observed content digests",
+    "malformed SafeTensors offsets and payload size could pass",
+    "non-finite JSON values were serializable",
+    "bearer-safe redirect, bounded range, immutable write, independent receipt, and capsule-CAS contracts were absent"
+  ],
+  "disposition": "rebuild",
+  "capsule_advanced": false
+}

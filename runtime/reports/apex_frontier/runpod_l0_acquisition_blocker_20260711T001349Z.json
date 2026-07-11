@@ -1,0 +1,103 @@
+{
+  "schema_version": "l0_provider_acquisition_aggregate_receipt_v1",
+  "status": "blocked_fail_closed",
+  "first_missing_green_field": "provider_storage_large_file_and_quota_envelope",
+  "run_id": "20260711T001349Z_l0_acquisition",
+  "utc": "2026-07-11T00:25:41Z",
+  "provider_run_root": "/workspace/polymath_qnn_build_plane/20260711T001349Z_l0_acquisition",
+  "emergency_sanitized_receipt_root": "/tmp/20260711T001349Z_l0_acquisition_blocker_receipts",
+  "roles": [
+    null,
+    {
+      "schema_version": "l0_provider_artifact_acquisition_receipt_v1",
+      "status": "blocked_fail_closed",
+      "first_missing_green_field": "provider_storage_large_file_and_quota_envelope",
+      "role": "qat_transformers",
+      "utc": "2026-07-11T00:25:41Z",
+      "source": {
+        "provider": "huggingface",
+        "repo": "google/gemma-4-E4B-it-qat-mobile-transformers",
+        "revision": "9a78a5adac7bca7a9e421634e4b58f41ca7cbca3",
+        "public_resolve_locator": "https://huggingface.co/google/gemma-4-E4B-it-qat-mobile-transformers/resolve/9a78a5adac7bca7a9e421634e4b58f41ca7cbca3/model.safetensors",
+        "auth_used": false
+      },
+      "expected": {
+        "provider_lfs_bytes": 3525094516,
+        "provider_lfs_sha256": "391946da2e0bec22288e9fe50a4d31d2401c9570ba3baaf0ba43d644dadeb1d4"
+      },
+      "observed": {
+        "streaming_bytes": 2415919104,
+        "streaming_sha256": "59833965085227cc607187a0870bc03d8fc11a2097de54846e808d2419a2fff9",
+        "complete": false,
+        "final_file_present": false,
+        "retained_provider_path": "/workspace/polymath_qnn_build_plane/20260711T001349Z_l0_acquisition/partials/qat_transformers.model.safetensors.partial"
+      },
+      "method": {
+        "client": "curl 7.68.0",
+        "redirects": true,
+        "resume_continue_at": true,
+        "partial_then_atomic_rename": true,
+        "rename_performed": false,
+        "signed_url_logged": false
+      },
+      "metadata_receipt_sha256": "fe4d8a66521135164d1f18abdf717fbbf051b8faf5f535cd88d1816db732c444",
+      "raw_location_class": "provider_local_RunPod_network_FUSE_raw_logs",
+      "blocker": {
+        "class": "provider_storage_quota_and_single_file_envelope",
+        "workspace_filesizebits": 32,
+        "first_stream_stop_bytes": 2415919104,
+        "curl_attempts": 8,
+        "curl_exit_code": 23,
+        "diagnostic_end_write_bytes": 4294967296,
+        "diagnostic_result": "EDQUOT_Disk_quota_exceeded"
+      },
+      "custody": {
+        "phone_execution_count": 0,
+        "phone_private_state": false,
+        "raw_corpus": false,
+        "framework_install_count": 0
+      }
+    },
+    null
+  ],
+  "metadata": {
+    "status": "passed_scope",
+    "file_count": 21,
+    "total_bytes": 96923575
+  },
+  "preserved_partial": {
+    "role": "qat_transformers",
+    "bytes": 2415919104,
+    "sha256": "59833965085227cc607187a0870bc03d8fc11a2097de54846e808d2419a2fff9",
+    "created_utc": "-",
+    "last_write_utc": "2026-07-11 00:19:42.000000000 +0000",
+    "path": "/workspace/polymath_qnn_build_plane/20260711T001349Z_l0_acquisition/partials/qat_transformers.model.safetensors.partial"
+  },
+  "storage_evidence": {
+    "workspace_filesizebits": 32,
+    "first_stop_bytes": 2415919104,
+    "four_gib_end_write": "EDQUOT",
+    "root_overlay_total_bytes": 5368709120,
+    "dev_shm_total_bytes": 7812500000,
+    "finalized_weight_count": 0
+  },
+  "custody": {
+    "raw_location_class": "provider_local_RunPod_network_FUSE_raw_logs",
+    "raw_log_aggregate_sha256": "75c8dc985d2c8d2f39f9b893176a44ff0f819ba2017dac74acdd000b98f94a1b",
+    "signed_url_match_files": 0,
+    "token_used": false,
+    "phone_execution_count": 0,
+    "phone_private_state": false,
+    "raw_corpus": false,
+    "framework_install_count": 0
+  },
+  "exact_unblock": {
+    "required": "persistent provider-local filesystem with >=15992595884 single-file support and >=50000000000 free bytes",
+    "new_paid_capacity_provisioned": false
+  },
+  "nonclaims": [
+    "no model.safetensors finalized",
+    "no L0 acquisition pass",
+    "metadata pass cannot promote artifact custody"
+  ]
+}
