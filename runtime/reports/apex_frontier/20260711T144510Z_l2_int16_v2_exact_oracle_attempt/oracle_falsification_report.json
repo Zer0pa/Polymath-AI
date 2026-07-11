@@ -1,0 +1,152 @@
+{
+  "schema_version": "gemma4_e4b_l2_int16_v2_oracle_falsification_report_v1",
+  "observed_at_utc": "2026-07-11T14:45:00Z",
+  "recorded_at_utc": "2026-07-11T14:46:40Z",
+  "status": "falsified_scope",
+  "claim_class": "phone_native_full_width_exact_int32_dot_pre_provider_falsifier",
+  "candidate_id": "w2_s16_activation_bw2_weight_bf16_rne_scale_s16_output_2m10_v2",
+  "active_sovereign_gate": "F5_terminal_head_corrected_S16_oracle_then_provider_then_phone_projection_fidelity",
+  "governing_bindings": {
+    "parent_capsule_sha256": "66072e0dee357c9d7c178c3fa3628a6230fa5992659325b80e7eefa6e4dbdd2b",
+    "frontier_selector_sha256": "bb045f0761405b521705609d473fa1cb7b504634197256b2b684c061e1fc4d78",
+    "access_receipt_sha256": "7b2b6d506b3ab82a17008edc4c79dd51512f6f9598e3db37cd1bb6f5ee4331ca",
+    "source_revision": "a7b585dfa5704115296c0f05a742ef5e2b8dcc5e",
+    "preregistration_evidence_commit": "507e463ed6a23bdabd0e972d8303544c39a19587",
+    "preregistration_sha256": "4d598d29882946304e7e1307b62a45a8b8fc321cc6a7ad55ee87acfb22936720",
+    "preregistration_custody_receipt_sha256": "ea7bc77123a445206c65b3a435e521d036162791d72a73a999a7b225fda176e3",
+    "oracle_gate_sha256": "aa063f64473de95fdd3208995a51dd314f0e4947c78adc1826a2358ea65693b1",
+    "oracle_gate_bytes": 36375,
+    "numeric_and_ranking_threshold_subset_sha256": "30704ef1cb88042a1451f46b5c516b815cbb440a7227b9013893ee7b42cdd914"
+  },
+  "candidate_contract": {
+    "packed_weight_sha256": "4733d4ef634f781c7b4094e0df6c432b53e3390e161d546951ea6806de9e0d07",
+    "original_scale_sha256": "870e405117e2b9b91a86a4210dc66de2d46af52c9274ea46c3193dd69b437eb6",
+    "transformed_bf16_rne_exact_f32_scale_sha256": "489f4400faaf5f20984bc798d2e1ca581aaf7237e1f37cb6ce505df747e01633",
+    "input_scale": 0.001953125,
+    "output_scale": 0.0009765625,
+    "weight_bitwidth": 2,
+    "weight_axis": 0,
+    "transpose_in1": true,
+    "thresholds_changed": false
+  },
+  "execution": {
+    "execution_plane": "phone_native_termux",
+    "phone_runtime_root_sha256": "602be7e248470fe3d02092531179780908737c9ba38ab1c2227db87ba6a7bf3d",
+    "python_version": "3.13.13",
+    "numpy_version": "2.4.4",
+    "case_count": 3,
+    "full_width_dot_products_total": 2013265920,
+    "phone_native_exact_oracle_execution_count": 1,
+    "phone_independent_verification_count": 0,
+    "qnn_execution_count": 0,
+    "provider_build_count": 0,
+    "wall_time_seconds": 7.65945333003765,
+    "s16_saturation_count_total": 0
+  },
+  "thresholds": {
+    "max_abs": 0.1875,
+    "rms": 0.03,
+    "relative_l2": 0.0075,
+    "cosine_min": 0.99998,
+    "softmax_js_divergence_max": 0.000002,
+    "top_k_set_overlap_min": 0.9375,
+    "top_1_equal": true
+  },
+  "case_results": [
+    {
+      "case_id": "structured_dynamic",
+      "passed": false,
+      "failed_metrics": [
+        "softmax_js_divergence"
+      ],
+      "max_abs": 0.03125,
+      "rms": 0.005022221958107781,
+      "relative_l2": 0.0016608063568781279,
+      "cosine": 0.9999986208669742,
+      "softmax_js_divergence": 0.000030611271540321745,
+      "softmax_js_failure_multiple": 15.305635770160872,
+      "top_k_set_overlap": 0.96875,
+      "top_1_equal": true,
+      "s16_saturation_count": 0,
+      "candidate_output_bytes": 524288,
+      "candidate_output_sha256": "37219cdb33565efc6a8f900b05edc2b7126dffe2199fc4020d35a7e624cdc776"
+    },
+    {
+      "case_id": "balanced_splitmix64",
+      "passed": false,
+      "failed_metrics": [
+        "softmax_js_divergence"
+      ],
+      "max_abs": 0.0615234375,
+      "rms": 0.0069492791521252525,
+      "relative_l2": 0.0016641222959643434,
+      "cosine": 0.9999986153540692,
+      "softmax_js_divergence": 0.000057701056240172006,
+      "softmax_js_failure_multiple": 28.850528120086004,
+      "top_k_set_overlap": 1.0,
+      "top_1_equal": true,
+      "s16_saturation_count": 0,
+      "candidate_output_bytes": 524288,
+      "candidate_output_sha256": "9976eb92ad54c26bdb851ffa663e4c6a5db927f84834ff36b27717603a623579"
+    },
+    {
+      "case_id": "low_amplitude_splitmix64",
+      "passed": true,
+      "failed_metrics": [],
+      "max_abs": 0.00390625,
+      "rms": 0.0004947444959766819,
+      "relative_l2": 0.0019230149326731883,
+      "cosine": 0.999998151005349,
+      "softmax_js_divergence": 0.00000003276120855326995,
+      "softmax_js_limit_fraction": 0.016380604276634975,
+      "top_k_set_overlap": 0.96875,
+      "top_1_equal": true,
+      "s16_saturation_count": 0,
+      "candidate_output_bytes": 524288,
+      "candidate_output_sha256": "f6e24a666a9bb9e03fc24c1e09ad18e9132186348365e0354a849136ee682f73"
+    }
+  ],
+  "resource_envelope": {
+    "snapshot_count": 128,
+    "minimum_temperature_millidegrees_c": 67969,
+    "maximum_temperature_millidegrees_c": 68576,
+    "thermal_stop_millidegrees_c": 90000,
+    "minimum_available_memory_bytes": 17161883648,
+    "minimum_available_storage_bytes": 480160759808,
+    "resource_guard_passed": true
+  },
+  "adjudication": {
+    "every_case_passed": false,
+    "provider_build_allowed": false,
+    "exact_candidate_killed": true,
+    "standard_htp_s16_family_exhausted": true,
+    "threshold_relaxation_allowed": false,
+    "third_s16_variant_allowed": false,
+    "mechanism_falsified": true,
+    "failure_scope": "ideal_exact_dot_quantized_S16_authority_fidelity_before_provider",
+    "inference": "Corrected BF16 row-scale semantics and a four-times-finer S16 grid remove the low-amplitude floor but still fail authority softmax topology on structured and balanced cases; the next candidate must reproduce BF16 output semantics directly rather than refine S16 again."
+  },
+  "branch_transition": {
+    "subject": "F5_W2_V79_S16_v2_authority_semantics",
+    "from": "selected_frozen_unobserved",
+    "to": "killed_falsified_scope",
+    "mandatory_successor": "Adreno_OpenCL_direct_packed_INT2_BF16_product_FP32_accumulation_BF16_RNE_output"
+  },
+  "custody": {
+    "raw_authority_outputs": "phone_private",
+    "raw_candidate_outputs": "phone_private",
+    "raw_output_egress": false,
+    "phone_private_upload_to_runpod": false,
+    "model_weight_bytes_on_mac": 0,
+    "sanitized_gate_and_report_only": true,
+    "secrets_recorded": false
+  },
+  "promotion_allowed": false,
+  "nonclaims": [
+    "no_provider_build_or_context",
+    "no_QNN_phone_execution",
+    "no_OpenCL_candidate_output",
+    "no_full_L1_or_L2_pass",
+    "no_learning_or_authority_quality_pass"
+  ]
+}
