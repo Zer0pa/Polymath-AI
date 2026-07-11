@@ -33,6 +33,9 @@ EXPECTED_V5_SHA256 = (
 EXPECTED_V6_ADRENO_PASS_PARENT_SHA256 = (
     "838eeb8b847c9b00e6600a3c9b5621086281f8eadeee843044da1902bf2dec2a"
 )
+EXPECTED_V6_CUR0S_EXACT_PARENT_SHA256 = (
+    "37555d7938a32cd22053d2741cb972e399030a2b6e559a19df8677406155136a"
+)
 V4_SCHEMA = "apex_current_reality_gemma4_e4b_qnn_cell_v4"
 V5_SCHEMA = "apex_current_reality_gemma4_e4b_qnn_cell_v5"
 V6_SCHEMA = "apex_current_reality_gemma4_e4b_qnn_cell_v6"
@@ -46,6 +49,7 @@ V6_COMPLETION_SCHEMA = "apex_current_reality_capsule_transition_completion_v2"
 
 @dataclass(frozen=True)
 class _MigrationProfile:
+    transition_kind: str
     expected_parent_sha256: str
     parent_schema: str
     child_schema: str
@@ -57,6 +61,7 @@ class _MigrationProfile:
 
 
 _V4_TO_V5 = _MigrationProfile(
+    transition_kind="v4_to_v5",
     expected_parent_sha256=EXPECTED_V4_SHA256,
     parent_schema=V4_SCHEMA,
     child_schema=V5_SCHEMA,
@@ -67,6 +72,7 @@ _V4_TO_V5 = _MigrationProfile(
     require_v6_campaign_cross_bindings=False,
 )
 _V5_TO_V6 = _MigrationProfile(
+    transition_kind="v5_to_v6",
     expected_parent_sha256=EXPECTED_V5_SHA256,
     parent_schema=V5_SCHEMA,
     child_schema=V6_SCHEMA,
@@ -77,6 +83,7 @@ _V5_TO_V6 = _MigrationProfile(
     require_v6_campaign_cross_bindings=True,
 )
 _V6_ADRENO_PASS = _MigrationProfile(
+    transition_kind="v6_adreno_pass",
     expected_parent_sha256=EXPECTED_V6_ADRENO_PASS_PARENT_SHA256,
     parent_schema=V6_SCHEMA,
     child_schema=V6_SCHEMA,
@@ -86,6 +93,137 @@ _V6_ADRENO_PASS = _MigrationProfile(
     child_schema_error="child_schema_version_not_v6",
     require_v6_campaign_cross_bindings=True,
 )
+_V6_CUR0S_EXACT = _MigrationProfile(
+    transition_kind="v6_cur0s_exact",
+    expected_parent_sha256=EXPECTED_V6_CUR0S_EXACT_PARENT_SHA256,
+    parent_schema=V6_SCHEMA,
+    child_schema=V6_SCHEMA,
+    spec_schema=V6_SPEC_SCHEMA,
+    receipt_schema=V6_RECEIPT_SCHEMA,
+    completion_schema=V6_COMPLETION_SCHEMA,
+    child_schema_error="child_schema_version_not_v6",
+    require_v6_campaign_cross_bindings=True,
+)
+
+_V6_CUR0S_EXACT_OPERATION_PATHS = frozenset(
+    {
+        ("evidence_cutoff_utc",),
+        ("corpus_curriculum", "curriculum_gates", "CUR-0S"),
+        ("measured_claims", "CUR_0S_CURRENT"),
+        ("frontier_execution_policy", "active_candidate"),
+        ("frontier_execution_policy", "last_disposition"),
+        ("current_design_decision",),
+        ("next_action",),
+        ("last_verified_campaign_state",),
+    }
+)
+_CUR0S_EXACT_DISCRIMINATOR_SOURCE_COMMIT = (
+    "b10ecdd36acd877c62cefba394e44e093fb0abd5"
+)
+_CUR0S_EXACT_RECEIPT_SHA256 = (
+    "839b20dc4c2ec1d426005a0e54f1d28f675589053887b5a142aeeb053410cc15"
+)
+_CUR0S_EXACT_EVIDENCE_CUTOFF_UTC = "2026-07-11T21:17:47Z"
+_CUR0S_EXACT_DISPOSITION = (
+    "CUR0S_physical_and_exact_identity_passed_scope_"
+    "successor_commercial_source_root_selected"
+)
+_CUR0S_EXACT_FRONTIER_SHA256 = (
+    "d118000d8fd457962f2332f2597bb25f6c6e33ee61010f5cd1459ab9768235fc"
+)
+_CUR0S_EXACT_EVIDENCE_COMMIT = "87cc6a1a5e6092440009d43b00d14b8e398d5b35"
+_CUR0S_EXACT_PREREGISTRATION_ARTIFACTS = {
+    "cur0s_exact_attempt_1_preregistration": {
+        "sha256": "4bb0ab5e64c7c5dfc1c2aef5b3d3292d327ea1a770f235dedbd60c12f11509b0",
+        "bytes": 5382,
+        "local_path": (
+            "runtime/reports/apex_frontier/"
+            "20260711T210019Z_cur0s_static_identity_v1_preregistration.json"
+        ),
+    },
+    "cur0s_exact_attempt_2_preregistration": {
+        "sha256": "71718c40401b803b6e2e20f49aef249b3b2a149ee6f4ab6fb944ac640d1f58bb",
+        "bytes": 5417,
+        "local_path": (
+            "runtime/reports/apex_frontier/"
+            "20260711T210523Z_cur0s_static_identity_v1_preregistration.json"
+        ),
+    },
+    "cur0s_exact_attempt_3_preregistration": {
+        "sha256": "c8c0c411e023129a6c61294592410a665756e3cc941383fb707d0b7ad296150f",
+        "bytes": 5417,
+        "local_path": (
+            "runtime/reports/apex_frontier/"
+            "20260711T210854Z_cur0s_static_identity_v1_preregistration.json"
+        ),
+    },
+    "cur0s_exact_attempt_4_preregistration": {
+        "sha256": "4c9156e8db2147899a7a7d2cc9f0161e6d32fefa9da8de486a1c1a029ab98c1e",
+        "bytes": 5474,
+        "local_path": (
+            "runtime/reports/apex_frontier/"
+            "20260711T211344Z_cur0s_static_identity_v1_preregistration.json"
+        ),
+    },
+}
+_CUR0S_EXACT_SANITIZED_ARTIFACTS = {
+    "cur0s_exact_typed_stop_receipt": {
+        "sha256": "db20b86aadf7623fef5326b86b7bca851f27b8ef0dccec71c015fddb92480dbd",
+        "bytes": 6898,
+        "local_path": (
+            "runtime/reports/apex_frontier/"
+            "20260711T210854Z_cur0s_static_identity_v1_phone_receipt/receipt.json"
+        ),
+    },
+    "cur0s_exact_typed_stop_completion": {
+        "sha256": "9cde314ea2f5e610cbf378063622e1168c73bb40c75e29eaab71840ce4870a81",
+        "bytes": 518,
+        "local_path": (
+            "runtime/reports/apex_frontier/"
+            "20260711T210854Z_cur0s_static_identity_v1_phone_receipt/COMPLETE.json"
+        ),
+    },
+    "cur0s_exact_typed_stop_custody": {
+        "sha256": "e0806c78fe36b3c390b343d1015701e5355a134f70736ca4037cab65d0f3d01d",
+        "bytes": 1644,
+        "local_path": (
+            "runtime/reports/apex_frontier/"
+            "20260711T210854Z_cur0s_static_identity_v1_phone_receipt/custody.json"
+        ),
+    },
+    "cur0s_exact_success_receipt": {
+        "sha256": _CUR0S_EXACT_RECEIPT_SHA256,
+        "bytes": 12773,
+        "local_path": (
+            "runtime/reports/apex_frontier/"
+            "20260711T211344Z_cur0s_static_identity_v1_phone_receipt/receipt.json"
+        ),
+    },
+    "cur0s_exact_success_completion": {
+        "sha256": "65235bd90421c4b31cf5cf7d0d6d33336f00aa0c125e41b8ebcc825b8bd30031",
+        "bytes": 519,
+        "local_path": (
+            "runtime/reports/apex_frontier/"
+            "20260711T211344Z_cur0s_static_identity_v1_phone_receipt/COMPLETE.json"
+        ),
+    },
+    "cur0s_exact_success_custody": {
+        "sha256": "1759a001568225fc6de75daa014481d1136f9ad98cc6cd317a2002779ab7b350",
+        "bytes": 1976,
+        "local_path": (
+            "runtime/reports/apex_frontier/"
+            "20260711T211344Z_cur0s_static_identity_v1_phone_receipt/custody.json"
+        ),
+    },
+    "cur0s_exact_attempt_ledger": {
+        "sha256": "ea862816568935af740a233348e52305d59b3744b55fca3869dc910f92a16c5f",
+        "bytes": 3331,
+        "local_path": (
+            "runtime/reports/apex_frontier/"
+            "20260711T211344Z_cur0s_static_identity_attempt_ledger.json"
+        ),
+    },
+}
 
 MAX_CAPSULE_BYTES = 16 * 1024 * 1024
 MAX_SPEC_BYTES = 4 * 1024 * 1024
@@ -874,8 +1012,239 @@ def _validate_spec_for_profile(
     if profile.require_v6_campaign_cross_bindings:
         _validate_v6_operation_cross_bindings(value)
         _reject_v6_commit_placeholders(value)
+    if profile.transition_kind == "v6_cur0s_exact":
+        _validate_cur0s_exact_operation_surface(value)
+        _validate_cur0s_exact_bindings(value)
     _reject_secret_material(value)
     return copy.deepcopy(value)
+
+
+def _validate_cur0s_exact_operation_surface(spec: Mapping[str, Any]) -> None:
+    if spec["evidence_cutoff_utc"] != _CUR0S_EXACT_EVIDENCE_CUTOFF_UTC:
+        raise CapsuleTransitionError("cur0s_exact_evidence_cutoff_invalid")
+    operations = spec["mutation"]["operations"]
+    observed_paths = {
+        tuple(operation["path"])
+        for operation in operations
+    }
+    if observed_paths != _V6_CUR0S_EXACT_OPERATION_PATHS:
+        raise CapsuleTransitionError("cur0s_exact_operation_surface_invalid")
+    if any(operation["op"] != "replace" for operation in operations):
+        raise CapsuleTransitionError("cur0s_exact_operation_not_replace")
+
+
+def _exact_local_artifact(
+    role: str,
+    sha256: str,
+    byte_count: int,
+    local_path: str,
+) -> dict[str, Any]:
+    return {
+        "role": role,
+        "locator": local_path,
+        "sha256": sha256,
+        "bytes": byte_count,
+        "custody": "repository_local",
+        "local_path": local_path,
+    }
+
+
+def _validate_exact_local_artifact_collection(
+    observed: Sequence[Mapping[str, Any]],
+    expected_by_role: Mapping[str, Mapping[str, Any]],
+    context: str,
+) -> None:
+    observed_by_role = {artifact["role"]: artifact for artifact in observed}
+    if len(observed_by_role) != len(observed):
+        raise CapsuleTransitionError(f"cur0s_exact_{context}_role_duplicate")
+    if set(observed_by_role) != set(expected_by_role):
+        raise CapsuleTransitionError(f"cur0s_exact_{context}_roles_invalid")
+    for role, expected in expected_by_role.items():
+        expected_artifact = _exact_local_artifact(
+            role,
+            expected["sha256"],
+            expected["bytes"],
+            expected["local_path"],
+        )
+        if observed_by_role[role] != expected_artifact:
+            raise CapsuleTransitionError(
+                f"cur0s_exact_{context}_{role}_artifact_invalid"
+            )
+
+
+def _validate_cur0s_exact_bindings(spec: Mapping[str, Any]) -> None:
+    bindings = spec["bindings"]
+    frontier_path = "runtime/reports/apex_frontier/frontier_event_20260711T192408Z.json"
+    expected_frontier = _exact_local_artifact(
+        "frontier_root",
+        _CUR0S_EXACT_FRONTIER_SHA256,
+        10398,
+        frontier_path,
+    )
+    if bindings["frontier"] != expected_frontier:
+        raise CapsuleTransitionError("cur0s_exact_frontier_binding_invalid")
+    expected_selector = copy.deepcopy(expected_frontier)
+    expected_selector["role"] = "maximal_selector"
+    if bindings["maximal_selector"] != expected_selector:
+        raise CapsuleTransitionError("cur0s_exact_selector_binding_invalid")
+
+    _validate_exact_local_artifact_collection(
+        bindings["preregistrations"],
+        _CUR0S_EXACT_PREREGISTRATION_ARTIFACTS,
+        "preregistrations",
+    )
+    _validate_exact_local_artifact_collection(
+        bindings["sanitized_reports"],
+        _CUR0S_EXACT_SANITIZED_ARTIFACTS,
+        "sanitized_reports",
+    )
+
+    expected_inputs = {
+        "governing_prd": _exact_local_artifact(
+            "governing_prd",
+            "725d0ad6ac77fdcfc06a2635c7552cc414e0ed48f30fbd0f7f7ec38720493a3c",
+            209401,
+            "docs/PRD-GEMMA4-E4B-PHONE-NATIVE-QNN-LEARNING-CELL-2026-07-10.md",
+        ),
+        "corpus_readiness_audit": _exact_local_artifact(
+            "corpus_readiness_audit",
+            "c3a5d5eacf424f6e50ae0a170873d1c80e566581e22031a8f64bc899f8eec0fa",
+            43722,
+            "docs/APEX-C1-C4-CORPUS-READINESS-AND-INTEGRATION-AUDIT-2026-07-10.md",
+        ),
+        "living_engineering_concept": {
+            "role": "living_engineering_concept",
+            "locator": (
+                "external-frozen://Polymath-AI-Mobile-Native-Gemma4-E4B-"
+                "Heterogeneous-Learning"
+            ),
+            "sha256": (
+                "b2f617766b660237ddfd329c6b7fa2370f9a2641983e71915b4cd71c6d31bacc"
+            ),
+            "bytes": 186381,
+            "custody": "external_frozen",
+        },
+    }
+    observed_inputs = {artifact["role"]: artifact for artifact in bindings["inputs"]}
+    if len(observed_inputs) != len(bindings["inputs"]):
+        raise CapsuleTransitionError("cur0s_exact_inputs_role_duplicate")
+    if observed_inputs != expected_inputs:
+        raise CapsuleTransitionError("cur0s_exact_inputs_invalid")
+
+    expected_raw_reports = [
+        {
+            "role": "cur0s_exact_identity_overlay_private",
+            "locator": (
+                "phone:///data/data/com.termux/files/home/"
+                "polymath_gemma4_e4b_frontier/"
+                "20260711T211344Z_cur0s_static_identity_v1/candidate_runs/"
+                "candidate-001/exact_identity_overlay.private.jsonl"
+            ),
+            "sha256": (
+                "604931c652f74c8160c076edf8f80ef65570cab3c4ac7f849fb1ba84526309e9"
+            ),
+            "bytes": 58860037,
+            "custody": "phone_private",
+        }
+    ]
+    if bindings["raw_reports"] != expected_raw_reports:
+        raise CapsuleTransitionError("cur0s_exact_raw_reports_invalid")
+
+    expected_lease = {
+        "lease_id": "current_user_sovereign_frontier_campaign_20260711",
+        "expires_at_utc": "2026-07-12T01:13:53Z",
+        "artifact": _exact_local_artifact(
+            "access_resource_refresh",
+            "7b2b6d506b3ab82a17008edc4c79dd51512f6f9598e3db37cd1bb6f5ee4331ca",
+            3552,
+            "runtime/reports/apex_frontier/access_refresh_20260711T020533Z.json",
+        ),
+        "resource_slice": {
+            "additional_paid_capacity": False,
+            "comet_payload": "hash_bound_metadata_only",
+            "github_repository": "Zer0pa/Polymath-AI",
+            "huggingface_visibility": "private_revision_pinned_only",
+            "phone_adb_serial_sha256": (
+                "383e1fef6040334134430241a105f7d900f6d924e485fdc858441e734d3ae0f4"
+            ),
+            "phone_model": "NX789J",
+            "phone_private_raw_upload": False,
+            "public_release": False,
+            "runpod": "uh57jg7iguwqth_existing_only",
+        },
+    }
+    if bindings["lease"] != expected_lease:
+        raise CapsuleTransitionError("cur0s_exact_lease_invalid")
+
+    expected_transition = {
+        "subject_id": "CUR-0S-CURRENT-EXACT-IDENTITY",
+        "subject_kind": "candidate",
+        "from": "selected_frozen_unobserved",
+        "to": "passed_scope",
+        "evidence_sha256": _CUR0S_EXACT_RECEIPT_SHA256,
+        "reason": "physical_and_exact_identity_passed_without_CUR0S_promotion",
+    }
+    if bindings["transitions"] != [expected_transition]:
+        raise CapsuleTransitionError("cur0s_exact_transition_binding_invalid")
+
+    expected_source_scope = [
+        "exact_v6_CUR0S_identity_CAS_profile",
+        "dedicated_v6_CUR0S_identity_CLI",
+        "fail_closed_profile_and_race_tests",
+    ]
+    source_commit = bindings["source_commit"]
+    if source_commit["repository"] != "Zer0pa/Polymath-AI":
+        raise CapsuleTransitionError("cur0s_exact_source_repository_invalid")
+    if source_commit["scope"] != expected_source_scope:
+        raise CapsuleTransitionError("cur0s_exact_source_scope_invalid")
+    expected_evidence_commit = {
+        "repository": "Zer0pa/Polymath-AI",
+        "commit_sha": _CUR0S_EXACT_EVIDENCE_COMMIT,
+        "scope": ["CUR0S_exact_identity_phone_evidence"],
+    }
+    if bindings["evidence_commit"] != expected_evidence_commit:
+        raise CapsuleTransitionError("cur0s_exact_evidence_commit_invalid")
+    if bindings.get("scoped_push_receipt") is not None:
+        raise CapsuleTransitionError("cur0s_exact_scoped_push_receipt_invalid")
+
+    preserved_sha256 = [
+        EXPECTED_V6_CUR0S_EXACT_PARENT_SHA256,
+        _CUR0S_EXACT_FRONTIER_SHA256,
+        "7b2b6d506b3ab82a17008edc4c79dd51512f6f9598e3db37cd1bb6f5ee4331ca",
+        *(
+            artifact["sha256"]
+            for artifact in _CUR0S_EXACT_PREREGISTRATION_ARTIFACTS.values()
+        ),
+        *(
+            artifact["sha256"]
+            for artifact in _CUR0S_EXACT_SANITIZED_ARTIFACTS.values()
+        ),
+        "604931c652f74c8160c076edf8f80ef65570cab3c4ac7f849fb1ba84526309e9",
+        "9502f57f55e57fc5008ebbeec749bccaa0639ebefee8b8b212ee7ff53817ed05",
+        "725d0ad6ac77fdcfc06a2635c7552cc414e0ed48f30fbd0f7f7ec38720493a3c",
+        "c3a5d5eacf424f6e50ae0a170873d1c80e566581e22031a8f64bc899f8eec0fa",
+        "b2f617766b660237ddfd329c6b7fa2370f9a2641983e71915b4cd71c6d31bacc",
+    ]
+    expected_rollback = {
+        "rollback_base": {
+            "role": "parent_capsule_archive",
+            "locator": (
+                "archive://docs/current_reality/v6/"
+                f"{EXPECTED_V6_CUR0S_EXACT_PARENT_SHA256}"
+            ),
+            "sha256": EXPECTED_V6_CUR0S_EXACT_PARENT_SHA256,
+            "bytes": 61531,
+            "custody": "repository_archive",
+        },
+        "preserved_sha256": preserved_sha256,
+        "invalidated_sha256": [],
+        "disposition": (
+            "preserve_CUR0S_physical_and_exact_identity_passed_scope_"
+            "without_CUR0S_admission"
+        ),
+    }
+    if bindings["rollback"] != expected_rollback:
+        raise CapsuleTransitionError("cur0s_exact_rollback_invalid")
 
 
 def _validate_v6_operation_cross_bindings(spec: Mapping[str, Any]) -> None:
@@ -943,6 +1312,15 @@ def validate_v6_adreno_pass_spec(
     """Validate the exact reviewed v6 Adreno-pass transition specification."""
 
     return _validate_spec_for_profile(value, repository_root, _V6_ADRENO_PASS)
+
+
+def validate_v6_cur0s_exact_spec(
+    value: dict[str, Any],
+    repository_root: Path,
+) -> dict[str, Any]:
+    """Validate the exact reviewed v6 CUR-0S identity transition."""
+
+    return _validate_spec_for_profile(value, repository_root, _V6_CUR0S_EXACT)
 
 
 def _validate_operations(value: Any) -> list[dict[str, Any]]:
@@ -1055,6 +1433,8 @@ def _derive_child_capsule_for_profile(
     if spec["evidence_cutoff_utc"] <= parent_cutoff:
         raise CapsuleTransitionError("child_evidence_cutoff_not_advanced")
     _validate_capsule_invariants(parent, child)
+    if profile.transition_kind == "v6_cur0s_exact":
+        _validate_cur0s_exact_child(parent, child, spec)
     return child
 
 
@@ -1083,6 +1463,15 @@ def derive_v6_adreno_pass_child_capsule(
     """Derive the exact reviewed v6 child after the bounded Adreno pass."""
 
     return _derive_child_capsule_for_profile(parent, spec, _V6_ADRENO_PASS)
+
+
+def derive_v6_cur0s_exact_child_capsule(
+    parent: dict[str, Any],
+    spec: dict[str, Any],
+) -> dict[str, Any]:
+    """Derive the exact v6 child after scoped CUR-0S exact identity."""
+
+    return _derive_child_capsule_for_profile(parent, spec, _V6_CUR0S_EXACT)
 
 
 def _nested(value: Mapping[str, Any], *path: str) -> Any:
@@ -1117,6 +1506,205 @@ def _validate_capsule_invariants(
     for key in required_false:
         if not isinstance(semantics, dict) or semantics.get(key) is not False:
             raise CapsuleTransitionError(f"capsule_authority_invariant_failed:{key}")
+
+
+def _cur0s_exact_expected_gate(parent: dict[str, Any]) -> dict[str, Any]:
+    expected = copy.deepcopy(
+        _nested(parent, "corpus_curriculum", "curriculum_gates", "CUR-0S")
+    )
+    expected.update(
+        {
+            "exact_identity_state": "passed_scope",
+            "physical_verification_state": "passed_scope",
+            "cur0s_static_pass_claimed": False,
+            "cur0s_pass_claimed": False,
+            "target_data_learning_claimed": False,
+            "promotion_allowed": False,
+            "first_missing_green_field": "successor_commercial_source_root",
+            "implementation_substrate": (
+                "committed_cur0s_exact_discriminator_"
+                f"{_CUR0S_EXACT_DISCRIMINATOR_SOURCE_COMMIT}"
+            ),
+            "phone_execution_count": 3,
+            "source_changes_adopted": True,
+            "subordinate_receipt_sha256": _CUR0S_EXACT_RECEIPT_SHA256,
+            "subordinate_overlay_root_sha256": (
+                "9502f57f55e57fc5008ebbeec749bccaa0639ebefee8b8b212ee7ff53817ed05"
+            ),
+            "state": "blocked_fail_closed",
+        }
+    )
+    return expected
+
+
+def _cur0s_exact_expected_claim(parent: dict[str, Any]) -> dict[str, Any]:
+    expected = copy.deepcopy(_nested(parent, "measured_claims", "CUR_0S_CURRENT"))
+    expected.update(
+        {
+            "exact_identity_state": "passed_scope",
+            "physical_verification_state": "passed_scope",
+            "cur0s_static_pass_claimed": False,
+            "cur0s_pass_claimed": False,
+            "target_data_learning_claimed": False,
+            "promotion_allowed": False,
+            "first_missing_green_field": "successor_commercial_source_root",
+            "implementation_source_commit": (
+                _CUR0S_EXACT_DISCRIMINATOR_SOURCE_COMMIT
+            ),
+            "source_committed": True,
+            "preregistered_attempt_count": 4,
+            "phone_execution_count": 3,
+            "successful_action_count": 1,
+            "observed_at_utc": "2026-07-11T21:17:47Z",
+            "evidence": {
+                "receipt_sha256": _CUR0S_EXACT_RECEIPT_SHA256,
+                "receipt_root_sha256": (
+                    "33f6de080a98d921392a970d9751a21d31ca443e1d54c7179244c1cd504f7605"
+                ),
+                "completion_sha256": (
+                    "65235bd90421c4b31cf5cf7d0d6d33336f00aa0c125e41b8ebcc825b8bd30031"
+                ),
+                "overlay_file_sha256": (
+                    "604931c652f74c8160c076edf8f80ef65570cab3c4ac7f849fb1ba84526309e9"
+                ),
+                "overlay_root_sha256": (
+                    "9502f57f55e57fc5008ebbeec749bccaa0639ebefee8b8b212ee7ff53817ed05"
+                ),
+                "success_custody_root_sha256": (
+                    "9a37bd21689a2dc2347d210541585a605eb92d8499dfc2cdef3d736ed9430f2b"
+                ),
+                "attempt_ledger_root_sha256": (
+                    "9d1fd786b0ed930c5a7997b99b9d2942477a19bfc631eb3aff60fbeae0f52365"
+                ),
+            },
+            "scope": {
+                "master_row_count": 77023,
+                "overlay_row_count": 77023,
+                "exact_semantic_cluster_count": 77023,
+                "repeated_semantic_cluster_count": 0,
+                "source_instance_component_count": 64139,
+                "maximum_component_size": 22,
+                "maximum_source_instances_per_component": 1,
+                "giant_component_share": 0.0002856289679706062,
+                "answer_only_union_edge_count": 0,
+                "legacy_split_conflict_component_count": 1150,
+                "legacy_split_conflict_row_count": 2442,
+                "historically_exposed_component_count": 3727,
+                "historically_exposed_row_count": 5043,
+                "cross_stage_component_count": 11961,
+                "cross_stage_row_count": 24775,
+                "raw_overlay_phone_private": True,
+            },
+            "nonclaims": [
+                "CUR-0S_static_admission",
+                "CUR-0P",
+                "composite_CUR-0",
+                "target_data_learning",
+                "quality_authority",
+                "PRD_section_0_5",
+            ],
+            "state": "blocked_fail_closed",
+        }
+    )
+    return expected
+
+
+def _cur0s_exact_expected_design(parent: dict[str, Any]) -> dict[str, Any]:
+    expected = copy.deepcopy(_nested(parent, "current_design_decision"))
+    expected["last_verified_executed_prefix"] = [
+        *expected["last_verified_executed_prefix"],
+        "CUR-0S_physical_and_exact_identity_passed_scope_subordinate_only",
+    ]
+    return expected
+
+
+def _cur0s_exact_expected_next_action(parent: dict[str, Any]) -> dict[str, Any]:
+    expected = copy.deepcopy(_nested(parent, "next_action"))
+    expected.update(
+        {
+            "design_predecessor": (
+                f"cur0s_exact_identity_receipt_{_CUR0S_EXACT_RECEIPT_SHA256}"
+            ),
+            "executable_action": (
+                "build_and_freeze_successor_commercial_source_root_on_phone_"
+                "then_run_static_CUR-0S_admission"
+            ),
+        }
+    )
+    return expected
+
+
+def _cur0s_exact_expected_campaign(
+    parent: dict[str, Any],
+    spec: dict[str, Any],
+) -> dict[str, Any]:
+    expected = copy.deepcopy(_nested(parent, "last_verified_campaign_state"))
+    expected.update(
+        {
+            "active_sovereign_gate": (
+                "CUR-0_curriculum_readiness_via_successor_commercial_source_root"
+            ),
+            "evidence_commit": spec["bindings"]["evidence_commit"]["commit_sha"],
+            "first_missing_green_field": "successor_commercial_source_root",
+            "frontier_root_sha256": spec["bindings"]["frontier"]["sha256"],
+            "last_disposition": _CUR0S_EXACT_DISPOSITION,
+            "parent_capsule_sha256": EXPECTED_V6_CUR0S_EXACT_PARENT_SHA256,
+            "rollback_base": {
+                "archive_locator": (
+                    "docs/APEX-CURRENT-REALITY-CAPSULE-GEMMA4-E4B-QNN-CELL-"
+                    "2026-07-10.yaml.archive/"
+                    f"{EXPECTED_V6_CUR0S_EXACT_PARENT_SHA256}.yaml"
+                ),
+                "capsule_sha256": EXPECTED_V6_CUR0S_EXACT_PARENT_SHA256,
+            },
+            "source_commit": spec["bindings"]["source_commit"]["commit_sha"],
+            "terminal_status": "not_reached",
+            "cur0s_exact_identity_receipt_sha256": _CUR0S_EXACT_RECEIPT_SHA256,
+            "cur0s_static_pass_claimed": False,
+            "target_data_learning_claimed": False,
+        }
+    )
+    return expected
+
+
+def _validate_cur0s_exact_child(
+    parent: dict[str, Any],
+    child: dict[str, Any],
+    spec: dict[str, Any],
+) -> None:
+    expected_values = {
+        "gate": (
+            _nested(child, "corpus_curriculum", "curriculum_gates", "CUR-0S"),
+            _cur0s_exact_expected_gate(parent),
+        ),
+        "claim": (
+            _nested(child, "measured_claims", "CUR_0S_CURRENT"),
+            _cur0s_exact_expected_claim(parent),
+        ),
+        "design": (
+            _nested(child, "current_design_decision"),
+            _cur0s_exact_expected_design(parent),
+        ),
+        "next_action": (
+            _nested(child, "next_action"),
+            _cur0s_exact_expected_next_action(parent),
+        ),
+        "campaign": (
+            _nested(child, "last_verified_campaign_state"),
+            _cur0s_exact_expected_campaign(parent, spec),
+        ),
+    }
+    for context, (observed, expected) in expected_values.items():
+        if observed != expected:
+            raise CapsuleTransitionError(f"cur0s_exact_{context}_mismatch")
+
+    frontier = _nested(child, "frontier_execution_policy")
+    if frontier.get("active_candidate") != "cur0s_successor_commercial_source_root_v1":
+        raise CapsuleTransitionError("cur0s_exact_active_candidate_invalid")
+    if frontier.get("last_disposition") != _CUR0S_EXACT_DISPOSITION:
+        raise CapsuleTransitionError("cur0s_exact_last_disposition_invalid")
+    if _nested(child, "success_terminal", "section_0_5_satisfied") is not False:
+        raise CapsuleTransitionError("cur0s_exact_child_success_terminal_promoted")
 
 
 def _relative_locator(path: Path, base: Path) -> str:
@@ -1212,9 +1800,20 @@ def _completion_payload(
 def _atomic_replace_canonical(
     canonical_path: Path,
     temporary_path: Path,
+    expected_parent_bytes: bytes,
     child_bytes: bytes,
 ) -> None:
     write_exclusive_or_verify(temporary_path, child_bytes, "canonical_stage")
+    # The adjacent advisory lock is the writer-serialization authority.  This
+    # final identity check additionally catches a non-cooperating write during
+    # transaction materialization, immediately before the atomic rename.
+    pre_replace_bytes = read_regular_file(
+        canonical_path,
+        max_bytes=MAX_CAPSULE_BYTES,
+        context="canonical_pre_replace",
+    )
+    if pre_replace_bytes != expected_parent_bytes:
+        raise CapsuleTransitionError("canonical_changed_before_atomic_replace")
     try:
         os.replace(temporary_path, canonical_path)
     except OSError as error:
@@ -1348,7 +1947,12 @@ def _advance_capsule_for_profile(
         _fault(fault_injector, "after_receipt")
 
         if current_sha256 == profile.expected_parent_sha256:
-            _atomic_replace_canonical(canonical_path, temporary_path, child_bytes)
+            _atomic_replace_canonical(
+                canonical_path,
+                temporary_path,
+                parent_bytes,
+                child_bytes,
+            )
         else:
             if current_bytes != child_bytes:
                 raise CapsuleTransitionError("canonical_child_bytes_mismatch")
@@ -1445,11 +2049,30 @@ def advance_capsule_v6_adreno_pass(
     )
 
 
+def advance_capsule_v6_cur0s_exact(
+    *,
+    canonical_path: Path,
+    transition_spec_path: Path,
+    repository_root: Path,
+    fault_injector: Callable[[str], None] | None = None,
+) -> dict[str, Any]:
+    """Perform or recover the exact v6 CUR-0S identity capsule CAS."""
+
+    return _advance_capsule_for_profile(
+        profile=_V6_CUR0S_EXACT,
+        canonical_path=canonical_path,
+        transition_spec_path=transition_spec_path,
+        repository_root=repository_root,
+        fault_injector=fault_injector,
+    )
+
+
 __all__ = [
     "COMPLETION_SCHEMA",
     "EXPECTED_V4_SHA256",
     "EXPECTED_V5_SHA256",
     "EXPECTED_V6_ADRENO_PASS_PARENT_SHA256",
+    "EXPECTED_V6_CUR0S_EXACT_PARENT_SHA256",
     "RECEIPT_SCHEMA",
     "SPEC_SCHEMA",
     "V4_SCHEMA",
@@ -1462,9 +2085,11 @@ __all__ = [
     "advance_capsule",
     "advance_capsule_v5_to_v6",
     "advance_capsule_v6_adreno_pass",
+    "advance_capsule_v6_cur0s_exact",
     "canonical_json",
     "derive_child_capsule",
     "derive_v6_adreno_pass_child_capsule",
+    "derive_v6_cur0s_exact_child_capsule",
     "derive_v6_child_capsule",
     "deterministic_yaml",
     "sha256_bytes",
@@ -1472,6 +2097,7 @@ __all__ = [
     "strict_yaml_loads",
     "validate_spec",
     "validate_v6_adreno_pass_spec",
+    "validate_v6_cur0s_exact_spec",
     "validate_v6_spec",
     "value_sha256",
     "verify_regular_file_identity",
