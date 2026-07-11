@@ -1,0 +1,241 @@
+{
+  "schema_version": "gemma4_e4b_f5_direct_qnn_probe_evidence_v1",
+  "run_id": "20260711T011520Z_f5_hardened_full_link",
+  "recorded_at_utc": "2026-07-11T01:22:20Z",
+  "authority": {
+    "model_immutable": "Gemma 4 E4B",
+    "authority_quality_dominates_performance": true,
+    "claim_boundary": "exact-artifact source generation and host link only",
+    "f5_mechanism_pass": false,
+    "capsule_advance": false
+  },
+  "source_control": {
+    "branch": "frontier/gemma4-phone-native-20260710T235022Z",
+    "revision": "4a4854b1e1869c6909751a731433a460f63fc361",
+    "files": [
+      {
+        "path": "polymath_ai/frontier/e4b_f5_probe.py",
+        "sha256": "6dcf1f0d192f44778e2964963533fdd770ee8420576cb2fce24fcdb566e3d480"
+      },
+      {
+        "path": "polymath_ai/frontier/e4b_f5_qnn_exporter.py",
+        "sha256": "ed40d66ca908b341e7180803b0e44fa24a322fed0cc3237eafa092562677dd42"
+      },
+      {
+        "path": "scripts/host/build_gemma4_e4b_f5_qnn_probes.py",
+        "sha256": "3ceac5bfd025a2051e576f0e0cf7f9e682361535ad402d12cd969b53537528ea"
+      },
+      {
+        "path": "tests/test_e4b_f5_probe.py",
+        "sha256": "25a238806aaf8b33683e91b480f5a0949cf942a2cc30835c864ff4058b47a712"
+      },
+      {
+        "path": "tests/test_e4b_f5_qnn_exporter.py",
+        "sha256": "d25df4604315e635d7e5306c6d4442499a1298ab402fdf1606cbf096fa580713"
+      }
+    ]
+  },
+  "provider_artifact": {
+    "repository": "google/gemma-4-E4B-it-qat-mobile-transformers",
+    "revision": "9a78a5adac7bca7a9e421634e4b58f41ca7cbca3",
+    "runpod_path": "/tmp/polymath_l0_provider_root_overlay/20260711T003224Z_qat_transformers_root_overlay/model.safetensors",
+    "bytes": 3525094516,
+    "sha256": "391946da2e0bec22288e9fe50a4d31d2401c9570ba3baaf0ba43d644dadeb1d4",
+    "identity_verification": {
+      "regular_file_without_symlink_follow": true,
+      "package_generation_full_sha256_first_pass": true,
+      "same_open_file_descriptor_used_for_header_and_tensor_slices": true,
+      "package_generation_full_sha256_second_pass": true,
+      "inode_metadata_stable_across_generation": true,
+      "full_sha256_recomputed_after_final_link": true
+    }
+  },
+  "transformers_lineage": {
+    "version_tag": "v5.13.0",
+    "commit": "6af945f436d85f2b0c5dff9b14feccd27b1d470b",
+    "gemma_quant_source_sha256": "9bf6d109dfc3540a46953f5b183af766edcf6a044529c12d7751db47ee71cc17",
+    "packing_rule": "low lane first; W4 has two values per byte and W2 has four values per byte"
+  },
+  "exact_probes": [
+    {
+      "graph": "gemma4_e4b_f5_w4_q_proj",
+      "role": "model.language_model.layers.0.self_attn.q_proj",
+      "weight_bits": 4,
+      "packed_weight": {
+        "shape": [2048, 1280],
+        "logical_shape": [2048, 2560],
+        "bytes": 2621440,
+        "sha256": "bdf9b5c1de7ea89581981c7a9e6b284796bca27e3af818c41d7971abb018ac2d"
+      },
+      "weight_scale": {
+        "shape": [2048, 1],
+        "bytes": 8192,
+        "sha256": "59ec6c37c568d8317047bb534de354203c74b44153aea3371a95fdd01290d484"
+      },
+      "input_activation_scale": 0.5009142160415649,
+      "output_activation_scale": 0.9803149700164795,
+      "qnn_input": {
+        "dtype": "QNN_DATATYPE_SFIXED_POINT_8",
+        "shape": [1, 1, 2560]
+      },
+      "qnn_output": {
+        "dtype": "QNN_DATATYPE_SFIXED_POINT_8",
+        "shape": [1, 1, 2048]
+      }
+    },
+    {
+      "graph": "gemma4_e4b_f5_w2_lm_head",
+      "role": "untied lm_head",
+      "weight_bits": 2,
+      "packed_weight": {
+        "shape": [262144, 640],
+        "logical_shape": [262144, 2560],
+        "bytes": 167772160,
+        "sha256": "4733d4ef634f781c7b4094e0df6c432b53e3390e161d546951ea6806de9e0d07"
+      },
+      "weight_scale": {
+        "shape": [262144, 1],
+        "bytes": 1048576,
+        "sha256": "870e405117e2b9b91a86a4210dc66de2d46af52c9274ea46c3193dd69b437eb6"
+      },
+      "input_activation_scale": 0.0,
+      "output_activation_scale": 0.0,
+      "qnn_input": {
+        "dtype": "QNN_DATATYPE_FLOAT_16",
+        "shape": [1, 1, 2560]
+      },
+      "qnn_output": {
+        "dtype": "QNN_DATATYPE_FLOAT_16",
+        "shape": [1, 1, 262144],
+        "surface": "full_pre_softcap_logits"
+      }
+    }
+  ],
+  "qnn_lowering": {
+    "qairt_version": "2.44.0.260225143659",
+    "weight_dtype": "QNN_DATATYPE_SFIXED_POINT_8",
+    "quantization_encoding": "QNN_QUANTIZATION_ENCODING_BW_AXIS_SCALE_OFFSET",
+    "axis": 0,
+    "transpose_in1": true,
+    "unpack_rule": "lane=(byte >> (lane_index*num_bits)) & mask; signed=lane+signed_shift",
+    "q_proj_signed_shift": -8,
+    "lm_head_signed_shift": -2,
+    "literal_onnx_packed_path": {
+      "disposition": "killed",
+      "reason": "unfolded BitwiseAnd and BitShift are unsupported by the inspected QAIRT 2.44 translation surface; constant folding destroys packed authority and densifies the full LM head"
+    },
+    "raw_u2_u4_matmul_path": {
+      "disposition": "killed_before_build",
+      "reason": "HTP 2.44 MatMul documents SFixedPoint8 low-bit weights, not UFixedPoint2 or UFixedPoint4 MatMul inputs"
+    },
+    "document_hashes": {
+      "qnn_types": "c81b11d04ddd9cb995442add4d404eacd604d97325c7190e3cbd831d254f1889",
+      "htp_opdef_supplement": "f3f447b4f2f871236d1187db7d216828232f9b16a8561e878f3b40434fab4f37",
+      "htp_backend": "391b905c4f92d2309e5dc91e00e7497f06ff55a54b134b8f4afa9a8466362dff",
+      "outer_wrapper_source": "32f0be62acd57b8f0f4d6ce6ecc52da7cef3671dd076ef5aa94e754e1f7b6031"
+    }
+  },
+  "final_run": {
+    "runpod_root": "/dev/shm/20260711T011520Z_f5_hardened_full_link/package_final",
+    "package_manifest": {
+      "bytes": 10062,
+      "sha256": "00597af50924c11d39efcb957711e5929910539f2e7ab9c56f9ac114ff800482",
+      "sidecar_sha256": "d3421aa5575488ce08b19428906256708cfb9cb9ddfefd647ebee5addc288193",
+      "status": "proposed_executable_backend_unvalidated"
+    },
+    "generated_files": [
+      {
+        "path": "source/direct_qnn_probes.cpp",
+        "bytes": 13586,
+        "sha256": "98570727e2491cb5a115f912f64fd230380a7813a4c5fdd21a8950dee42922eb"
+      },
+      {
+        "path": "source/packed_tensors.S",
+        "bytes": 1909,
+        "sha256": "42f20a8cf1f3882325a8dab1a327bcb94d0aec9aa9dee15daa3aca4091794e72"
+      },
+      {
+        "path": "build_model_library.sh",
+        "bytes": 5796,
+        "sha256": "1c77dc41616459de13fe94f85647e35190d41e8811ce09076921f6b5837fdb98"
+      },
+      {
+        "path": "run_context_generation.sh",
+        "bytes": 8626,
+        "sha256": "5c02c94a596761cd0eb5824f5378a6d4c0048c8b46e38932f9c598435cc40c68"
+      },
+      {
+        "path": "config/backend.json",
+        "bytes": 297,
+        "sha256": "f2a9711a956635e287b7bbf82d768cbda36de01ec78b6c7b147b197a9ded7f4c"
+      },
+      {
+        "path": "config/extensions.json",
+        "bytes": 154,
+        "sha256": "fddd4b5ecc6d7f63fcc33b5cc3eee48130842f4d45ed55b443354f047590dd0c"
+      }
+    ],
+    "build_receipt": {
+      "bytes": 575,
+      "sha256": "7cc477f4591efe6952f1d369399089a432edad8fd7f57321ef35a8f23b5d3af3",
+      "status": "source_compile_passed_backend_unvalidated",
+      "package_manifest_binding_verified": true,
+      "library": {
+        "bytes": 171512584,
+        "sha256": "4d3f795b0bb547987a46eb23f416b496b16725235f89770524c8b5d4a4da80f2"
+      }
+    },
+    "execution_transport": "QAIRT_ROOT=/workspace/qairt-2.44/qairt/2.44.0.260225 CXX=g++ bash build_model_library.sh; bash was required because /dev/shm is noexec",
+    "post_link_rehash": {
+      "all_manifest_tensor_files": true,
+      "all_manifest_generated_files": true,
+      "full_provider_carrier": true,
+      "manifest_sidecar": true,
+      "current_library_matches_build_receipt": true,
+      "current_manifest_matches_build_receipt": true
+    }
+  },
+  "hardening": {
+    "carrier_single_fd_no_follow_and_shared_lock": true,
+    "carrier_exact_bytes_and_full_sha256_mandatory": true,
+    "partial_carrier_interface_absent": true,
+    "publication_uses_kernel_no_replace_primitive_without_fallback": true,
+    "duplicate_json_keys_rejected": true,
+    "nonfinite_json_values_rejected": true,
+    "receipts_created_exclusively_and_fsynced": true,
+    "backend_and_extension_configs_exactly_validated": true,
+    "context_runner_rehashes_current_library_and_manifest": true
+  },
+  "validation": {
+    "python": "3.11.14",
+    "pytest": {
+      "command": "python -m pytest -q tests/test_e4b_f5_probe.py tests/test_e4b_f5_qnn_exporter.py",
+      "passed": 27,
+      "failed": 0
+    },
+    "ruff": {
+      "status": "all_checks_passed"
+    },
+    "py_compile": {
+      "status": "passed"
+    },
+    "local_rendered_source_hashes_match_final_run": true,
+    "context_directory_absent": true,
+    "phone_execution_count": 0
+  },
+  "sovereign_blocker": {
+    "status": "context_generation_not_run_reference_gate_missing",
+    "w2_semantic_risk": "QAT LM-head edge is BF16 while documented HTP MatMul support with SFixedPoint8 weights admits FP16 activation, so BF16-to-FP16 drift must be measured against frozen-before-observation L2 thresholds",
+    "required_next_evidence": "hash-bound W4 and W2 reference inputs and outputs plus frozen L2 threshold-policy digest, followed by context generation and device execution",
+    "backend_acceptance_claimed": false,
+    "numerical_fidelity_claimed": false
+  },
+  "cleanup": {
+    "temporary_run_root": "/dev/shm/20260711T011520Z_f5_hardened_full_link",
+    "status": "completed_after_source_control_capture_and_live_hash_verification",
+    "completed_at_utc": "2026-07-11T01:24:39Z",
+    "temporary_run_root_absent": true,
+    "shm_free_bytes_after_cleanup": 7359119360,
+    "shared_full_provider_carrier_preserved": true
+  }
+}
