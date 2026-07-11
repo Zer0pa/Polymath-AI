@@ -1,0 +1,103 @@
+{
+  "schema_version": "gemma4_e4b_frontier_event_v1",
+  "event_id": "SFL-20260711T095730Z-S16-FAST-RPC-REPAIR",
+  "recorded_at_utc": "2026-07-11T09:57:30Z",
+  "parent_frontier_root_sha256": "416aba3b8faa320edee27bc58a946fe67079462a7f2d3554bc6957ac28e64cfd",
+  "parent_frontier_root_kind": "frontier_event",
+  "active_sovereign_gate": "F5_terminal_head_phone_device_creation_then_frozen_projection_fidelity",
+  "hypothesis_and_architecture_lane": "SM8750_V79_S16_activation_x_BW2_S8_weight_to_S16_terminal_head",
+  "state": "selected",
+  "governing_observation": {
+    "status": "blocked_fail_closed",
+    "evidence_sha256": "a6234bfefcde00d3f02f45376358e6e289cf7cd8c1226b80e2617c52b69a6770",
+    "qnn_net_run_return_code": 11,
+    "qnn_execution_count": 0,
+    "candidate_output_observed": false,
+    "scientific_result": "unmeasured",
+    "mechanism_falsified": false
+  },
+  "causal_discriminator": {
+    "observation": "The executed v4 runner placed only the Termux QAIRT directory on LD_LIBRARY_PATH.",
+    "dependency": "libQnnHtpV79Stub.so declares libcdsprpc.so as a direct dynamic dependency.",
+    "missing_resolution_root": "/vendor/lib64",
+    "phone_bound_dependencies": [
+      {
+        "absolute_path": "/vendor/lib64/libadsprpc.so",
+        "bytes": 530728,
+        "sha256": "5c888a5eea14d580ab66ff00ca205d74a1596c207822fd06e04b4c1f09a55c09"
+      },
+      {
+        "absolute_path": "/vendor/lib64/libcdsprpc.so",
+        "bytes": 530752,
+        "sha256": "501d2478fee5913171c00e63c67701fdfd6cedd4911641084b8f16b3030f6cbd"
+      }
+    ],
+    "corroborating_control": "The already-passing Q0C SM8750/V79 phone harness uses the Termux QAIRT root followed by /vendor/lib64 and /system/lib64.",
+    "interpretation": "A missing Android FastRPC linker root is the narrowest untested cause of the pre-context device-creation failure."
+  },
+  "first_missing_green_field": "candidate_QNN_device_and_context_creation_under_hash_bound_FastRPC_resolution_topology",
+  "selected_experiment_and_runner_up": {
+    "selected": "Rerun the exact frozen three-case S16 phone gate with only the proven Android FastRPC LD-library topology added and exact FastRPC library hashes bound.",
+    "runner_up": "If rc11 persists, run a direct QNN API loader that records QnnDevice_create and QnnContext_createFromBinary error codes, followed by graph-selective isolation.",
+    "selection_reason": "The selected repair addresses a demonstrated unresolved ELF dependency, preserves the context, inputs, references, S16 scales, case order, evaluator, and every authority threshold, and can immediately recover the sovereign numerical experiment."
+  },
+  "invariants": {
+    "context_sha256": "2d54c6c4e4028b88ce43a5255914e9941a827e32963b36e4198e2150a0f5d530",
+    "candidate_preregistration_sha256": "51f1e9977258d8d61c7eb1ff76964b293a15d38eb852da1b5692cb58aaeea284",
+    "threshold_policy_sha256": "36d4689f6c59f8ce8d9d99c6dc4085d7e63089a6448c20517fd0fcc74964ad05",
+    "numeric_ranking_threshold_subset_sha256": "30704ef1cb88042a1451f46b5c516b815cbb440a7227b9013893ee7b42cdd914",
+    "thresholds_changed": false,
+    "raw_candidate_output_egress_allowed": false,
+    "provider_generator_cleanup_anomaly_remains": true,
+    "promotion_allowed": false
+  },
+  "execution_code": {
+    "source_revision": "3eae3084f5896a8277d8fcd6454d874f6710ba67",
+    "runner_relative_path": "scripts/termux/run_e4b_l2_int16_phone_gate.py",
+    "runner_bytes": 21963,
+    "runner_sha256": "30ea7ba575c93602726e540559766d9b5e9af612890a5543100e43076a727816",
+    "focused_tests": "21_passed"
+  },
+  "branch_transitions": [
+    {
+      "branch": "F5_W2_V79_S16_terminal_head_v4",
+      "from": "selected_frozen_unobserved",
+      "to": "blocked_fail_closed_pre_execution_unmeasured"
+    },
+    {
+      "branch": "F5_W2_V79_S16_terminal_head_FastRPC_resolution_repair",
+      "from": "proposed",
+      "to": "selected_frozen_unobserved"
+    }
+  ],
+  "kill_pivot_scale_rule": {
+    "if_device_or_context_creation_remains_blocked": "Falsify only the FastRPC-resolution repair, not the S16 mechanism; pivot to direct QNN API error isolation and graph-selective context loading.",
+    "if_any_case_or_metric_fails": "Kill or rebuild the S16 candidate without threshold relaxation.",
+    "if_every_case_and_metric_passes": "Admit only the bounded S16 terminal-head projection diagnostic; provider cleanup anomaly still prevents promotion."
+  },
+  "evidence_refs": [
+    {
+      "locator": "runtime/reports/apex_frontier/frontier_event_20260711T020730Z.json",
+      "sha256": "416aba3b8faa320edee27bc58a946fe67079462a7f2d3554bc6957ac28e64cfd"
+    },
+    {
+      "locator": "runtime/reports/apex_frontier/20260711T095200Z_l2_int16_phone_attempt_v4/phone_attempt_report.json",
+      "sha256": "a6234bfefcde00d3f02f45376358e6e289cf7cd8c1226b80e2617c52b69a6770"
+    },
+    {
+      "locator": "runtime/reports/apex_frontier/20260711T092900Z_l2_int16_provider_context/provider_context_report.json",
+      "sha256": "9ab264ce6a26c476240f33e8ec4450b1c58ab0ca70fe7f5de150888124787afa"
+    }
+  ],
+  "rollback": {
+    "source_revision_before_repair": "6cf420e6f00f5172be7123a2d3f09152014d0c09",
+    "source_revision_with_repair": "3eae3084f5896a8277d8fcd6454d874f6710ba67",
+    "phone_execution_started": false,
+    "candidate_output_observed": false,
+    "rollback_action_required": false
+  },
+  "promotion_allowed": false,
+  "nonclaims": [
+    "No repaired phone execution, candidate output, S16 numerical fidelity, clean provider-generator exit, full L1, full L2, learning, or authority-quality pass is claimed."
+  ]
+}
