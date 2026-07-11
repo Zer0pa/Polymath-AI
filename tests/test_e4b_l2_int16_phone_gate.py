@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import importlib.util
+import hashlib
 from pathlib import Path
 import struct
 import sys
@@ -110,3 +111,53 @@ def test_execution_code_bundle_requires_every_hash(monkeypatch, tmp_path: Path):
         pass
     else:
         raise AssertionError("execution-code drift was accepted")
+
+
+def test_qnn_environment_includes_proven_android_fastrpc_resolution(monkeypatch, tmp_path: Path):
+    monkeypatch.setenv("LD_LIBRARY_PATH", "/existing/lib")
+    environment = phone_gate.qnn_environment(
+        tmp_path / "qairt",
+        phone_gate.SYSTEM_LD_LIBRARY_DIRS,
+    )
+    assert environment["LD_LIBRARY_PATH"].split(":") == [
+        str(tmp_path / "qairt/lib/aarch64-android"),
+        "/vendor/lib64",
+        "/system/lib64",
+        "/existing/lib",
+    ]
+
+
+def test_runtime_resolution_requires_exact_fastrpc_set(monkeypatch, tmp_path: Path):
+    vendor = tmp_path / "vendor/lib64"
+    system = tmp_path / "system/lib64"
+    vendor.mkdir(parents=True)
+    system.mkdir(parents=True)
+    libraries = []
+    required = set()
+    for name, payload in (("libadsprpc.so", b"adsp"), ("libcdsprpc.so", b"cdsp")):
+        path = vendor / name
+        path.write_bytes(payload)
+        required.add(path)
+        libraries.append(
+            {
+                "absolute_path": str(path),
+                "bytes": len(payload),
+                "sha256": hashlib.sha256(payload).hexdigest(),
+            }
+        )
+    monkeypatch.setattr(phone_gate, "SYSTEM_LD_LIBRARY_DIRS", (vendor, system))
+    monkeypatch.setattr(phone_gate, "REQUIRED_FASTRPC_LIBRARIES", required)
+    prereg = {
+        "runtime_resolution_topology": {
+            "system_ld_library_dirs": [str(vendor), str(system)],
+            "fastrpc_libraries": libraries,
+        }
+    }
+    assert phone_gate.validate_runtime_resolution(prereg) == (vendor, system)
+    prereg["runtime_resolution_topology"]["fastrpc_libraries"].pop()
+    try:
+        phone_gate.validate_runtime_resolution(prereg)
+    except phone_gate.PhoneGateError:
+        pass
+    else:
+        raise AssertionError("incomplete FastRPC dependency set was accepted")

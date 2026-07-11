@@ -50,6 +50,11 @@ vector_metrics = _projection_gate.vector_metrics
 PREREG_SCHEMA = "gemma4_e4b_l2_int16_phone_execution_preregistration_v1"
 RECEIPT_SCHEMA = "gemma4_e4b_l2_int16_phone_execution_receipt_v1"
 SHA256_LENGTH = 64
+SYSTEM_LD_LIBRARY_DIRS = (Path("/vendor/lib64"), Path("/system/lib64"))
+REQUIRED_FASTRPC_LIBRARIES = {
+    Path("/vendor/lib64/libadsprpc.so"),
+    Path("/vendor/lib64/libcdsprpc.so"),
+}
 
 
 class PhoneGateError(RuntimeError):
@@ -209,6 +214,37 @@ def validate_execution_code(prereg: dict[str, Any]) -> None:
         )
 
 
+def validate_runtime_resolution(prereg: dict[str, Any]) -> tuple[Path, ...]:
+    contract = prereg.get("runtime_resolution_topology")
+    if not isinstance(contract, dict):
+        raise PhoneGateError("runtime-resolution contract is absent")
+    raw_dirs = contract.get("system_ld_library_dirs")
+    if not isinstance(raw_dirs, list):
+        raise PhoneGateError("system LD-library directory contract is absent")
+    directories = tuple(Path(value) for value in raw_dirs if isinstance(value, str))
+    if directories != SYSTEM_LD_LIBRARY_DIRS:
+        raise PhoneGateError("system LD-library directory topology mismatch")
+    records = contract.get("fastrpc_libraries")
+    if not isinstance(records, list) or len(records) != len(REQUIRED_FASTRPC_LIBRARIES):
+        raise PhoneGateError("FastRPC library contract is absent")
+    observed_paths = set()
+    for record in records:
+        if not isinstance(record, dict):
+            raise PhoneGateError("invalid FastRPC library record")
+        path = Path(str(record.get("absolute_path", "")))
+        if path not in REQUIRED_FASTRPC_LIBRARIES:
+            raise PhoneGateError(f"unexpected FastRPC library: {path}")
+        validate_file(
+            path,
+            expected_bytes=int(record["bytes"]),
+            expected_sha256=str(record["sha256"]),
+        )
+        observed_paths.add(path)
+    if observed_paths != REQUIRED_FASTRPC_LIBRARIES:
+        raise PhoneGateError("FastRPC library set mismatch")
+    return directories
+
+
 def validate_cases(run_root: Path, prereg: dict[str, Any]) -> list[CaseContract]:
     records = prereg.get("cases")
     if not isinstance(records, list) or len(records) != 3:
@@ -264,10 +300,17 @@ def enforce_thermal_guard(snapshot: list[dict[str, Any]], guard: dict[str, Any])
         raise PhoneGateError(f"thermal guard stopped execution: {values[0]} >= {limit}")
 
 
-def qnn_environment(qairt_root: Path) -> dict[str, str]:
+def qnn_environment(
+    qairt_root: Path,
+    system_ld_library_dirs: tuple[Path, ...],
+) -> dict[str, str]:
     environment = dict(os.environ)
     native_lib = qairt_root / "lib/aarch64-android"
-    environment["LD_LIBRARY_PATH"] = f"{native_lib}:{environment.get('LD_LIBRARY_PATH', '')}"
+    ld_entries = [str(native_lib), *(str(path) for path in system_ld_library_dirs)]
+    existing_ld = environment.get("LD_LIBRARY_PATH", "")
+    if existing_ld:
+        ld_entries.append(existing_ld)
+    environment["LD_LIBRARY_PATH"] = ":".join(ld_entries)
     environment["ADSP_LIBRARY_PATH"] = ";".join(
         [
             str(qairt_root / "lib/hexagon-v79/unsigned"),
@@ -318,6 +361,7 @@ def run_case(
     qnn_net_run: Path,
     context_path: Path,
     timeout_seconds: int,
+    system_ld_library_dirs: tuple[Path, ...],
 ) -> dict[str, Any]:
     input_list_dir = run_root / "input_lists"
     output_dir = run_root / "outputs" / case.case_id
@@ -341,7 +385,7 @@ def run_case(
             command,
             check=False,
             capture_output=True,
-            env=qnn_environment(qairt_root),
+            env=qnn_environment(qairt_root, system_ld_library_dirs),
             timeout=timeout_seconds,
         )
         return_code = completed.returncode
@@ -425,6 +469,7 @@ def execute(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
     )
     qairt_root = args.qairt_root.resolve()
     qnn_net_run = validate_toolchain(qairt_root, prereg)
+    system_ld_library_dirs = validate_runtime_resolution(prereg)
     cases = validate_cases(run_root, prereg)
     thermal_before = thermal_snapshot()
     enforce_thermal_guard(thermal_before, prereg["thermal_guard"])
@@ -440,6 +485,7 @@ def execute(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
             qnn_net_run=qnn_net_run,
             context_path=context_path,
             timeout_seconds=int(prereg["command_contract"]["timeout_seconds_per_case"]),
+            system_ld_library_dirs=system_ld_library_dirs,
         )
         record["thermal_before"] = snapshot
         record["thermal_after"] = thermal_snapshot()
