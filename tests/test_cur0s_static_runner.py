@@ -145,7 +145,7 @@ def test_exclusive_publish_cannot_overwrite(runner, tmp_path) -> None:
     directory_fd = os.open(tmp_path, os.O_RDONLY | os.O_DIRECTORY)
     try:
         first = runner.write_exclusive_bytes_at(directory_fd, target.name, b"first\n")
-        assert first == ("sha256:" + sha(b"first\n"), 6)
+        assert (first.sha256, first.size) == ("sha256:" + sha(b"first\n"), 6)
         with pytest.raises(FileExistsError):
             runner.write_exclusive_bytes_at(directory_fd, target.name, b"second\n")
     finally:
@@ -367,6 +367,59 @@ def test_seal_failure_never_exposes_complete_marker(
         output.close()
 
 
+def test_same_uid_payload_replacement_is_rejected_before_complete(
+    runner, tmp_path, monkeypatch
+) -> None:
+    directory_fd = os.open(tmp_path, os.O_RDONLY | os.O_DIRECTORY)
+    output = runner.PrivateOutput(directory_fd, 8 * 1024 * 1024)
+    receipt = {"state": "blocked_fail_closed", "authority": "bound"}
+    receipt["receipt_root_sha256"] = runner.canonical_sha256(receipt)
+    original_seal = output.seal_payload_before_completion
+
+    def replace_then_seal() -> None:
+        replacement = tmp_path / "replacement"
+        replacement.write_bytes(b'{"state":"forged"}\n')
+        os.replace(replacement, tmp_path / "receipt.json")
+        original_seal()
+
+    monkeypatch.setattr(output, "seal_payload_before_completion", replace_then_seal)
+    try:
+        with pytest.raises(runner.Cur0sExactError, match="binding_mismatch"):
+            runner.finalize_output(output, RUN_ID, receipt)
+        assert not (tmp_path / "COMPLETE.json").exists()
+    finally:
+        output.close()
+
+
+def test_replacement_during_seal_is_rejected_before_complete(
+    runner, tmp_path, monkeypatch
+) -> None:
+    directory_fd = os.open(tmp_path, os.O_RDONLY | os.O_DIRECTORY)
+    output = runner.PrivateOutput(directory_fd, 8 * 1024 * 1024)
+    receipt = {"state": "blocked_fail_closed", "authority": "bound"}
+    receipt["receipt_root_sha256"] = runner.canonical_sha256(receipt)
+    real_fchmod = os.fchmod
+    replaced = False
+
+    def replace_inside_fchmod(fd: int, mode: int) -> None:
+        nonlocal replaced
+        if mode == 0o400 and not replaced and (tmp_path / "receipt.json").exists():
+            replacement = tmp_path / "replacement-during-seal"
+            replacement.write_bytes(b'{"state":"forged-during-seal"}\n')
+            os.replace(replacement, tmp_path / "receipt.json")
+            replaced = True
+        real_fchmod(fd, mode)
+
+    monkeypatch.setattr(runner.os, "fchmod", replace_inside_fchmod)
+    try:
+        with pytest.raises(runner.Cur0sExactError, match="output_entry_replaced"):
+            runner.finalize_output(output, RUN_ID, receipt)
+        assert replaced is True
+        assert not (tmp_path / "COMPLETE.json").exists()
+    finally:
+        output.close()
+
+
 def test_partial_overlay_is_accounted_and_can_receive_typed_stop_completion(
     runner, tmp_path
 ) -> None:
@@ -399,7 +452,7 @@ def test_partial_overlay_is_accounted_and_can_receive_typed_stop_completion(
         partial = output.partial_output_report()
         assert partial["actual_partial_private_output_bytes"] > 0
         assert partial["completion_marker_present"] is False
-        receipt = {"state": "stopped_fail_closed", "stop": failure.value.code}
+        receipt = {"state": "blocked_fail_closed", "stop": failure.value.code}
         receipt["receipt_root_sha256"] = runner.canonical_sha256(receipt)
         runner.finalize_output(output, RUN_ID, receipt)
         assert (tmp_path / "COMPLETE.json").is_file()
@@ -578,7 +631,7 @@ def test_typed_operational_stops_commit_complete_evidence(
             started_monotonic=0.0,
         )
         runner.finalize_output(output, RUN_ID, receipt)
-        assert receipt["state"] == "stopped_fail_closed"
+        assert receipt["state"] == "blocked_fail_closed"
         assert receipt["operational_stop"]["code"] == stop_code
         assert (candidate / "COMPLETE.json").is_file()
     finally:

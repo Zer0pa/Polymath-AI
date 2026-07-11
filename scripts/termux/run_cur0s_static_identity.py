@@ -493,6 +493,7 @@ class OperationalStop(RuntimeError):
         super().__init__(code)
         self.code = code
         self.checkpoint = checkpoint
+        self.partial_artifact: WrittenArtifact | None = None
 
 
 @dataclass(frozen=True)
@@ -973,7 +974,7 @@ def build_operational_stop_receipt(
         "schema_version": RECEIPT_SCHEMA,
         "candidate_id": prereg["candidate_id"],
         "run_id": prereg["run_id"],
-        "state": "stopped_fail_closed",
+        "state": "blocked_fail_closed",
         "candidate_output_observed": True,
         "operational_stop": {
             "code": stop.code,
@@ -1600,6 +1601,14 @@ class OpenArtifact:
     initial_stat: tuple[int, int, int, int, int, int, int, int, int]
 
 
+@dataclass(frozen=True)
+class WrittenArtifact:
+    name: str
+    sha256: str
+    size: int
+    stat_identity: tuple[int, int, int, int, int, int, int, int, int]
+
+
 class SourceSnapshot:
     """One open-file snapshot shared by hashing, parsing, and revalidation."""
 
@@ -1851,7 +1860,7 @@ class PrivateOutput:
         self._directory_fd = directory_fd
         self._max_bytes = max_bytes
         self._accounted_bytes = 0
-        self._files: list[str] = []
+        self._artifacts: list[WrittenArtifact] = []
         self._payload_sealed = False
         self._completed = False
         self._execution_claim_sha256 = execution_claim_sha256
@@ -1888,7 +1897,7 @@ class PrivateOutput:
                 "output_directory_name": path.name,
                 "phone_execution_ordinal": 1,
             }
-            claim_sha256, claim_bytes = write_exclusive_bytes_at(
+            claim_artifact = write_exclusive_bytes_at(
                 parent_fd,
                 ".cur0s_static_identity_execution_claim",
                 canonical_json_bytes(claim) + b"\n",
@@ -1905,8 +1914,8 @@ class PrivateOutput:
             return cls(
                 directory_fd,
                 max_bytes,
-                execution_claim_sha256=claim_sha256,
-                execution_claim_bytes=claim_bytes,
+                execution_claim_sha256=claim_artifact.sha256,
+                execution_claim_bytes=claim_artifact.size,
             )
         finally:
             os.close(parent_fd)
@@ -1923,40 +1932,85 @@ class PrivateOutput:
         self, name: str, rows, envelope: ResourceEnvelope
     ) -> tuple[str, int]:
         self._require_writable_name(name)
-        self._files.append(name)
-        return write_overlay_at(
-            self._directory_fd,
-            name,
-            rows,
-            envelope=envelope,
-            reserve_bytes=self._reserve_data_bytes,
-        )
+        try:
+            artifact = write_overlay_at(
+                self._directory_fd,
+                name,
+                rows,
+                envelope=envelope,
+                reserve_bytes=self._reserve_data_bytes,
+            )
+        except OperationalStop as stop:
+            if stop.partial_artifact is not None:
+                self._artifacts.append(stop.partial_artifact)
+            raise
+        self._artifacts.append(artifact)
+        return artifact.sha256, artifact.size
 
     def write_receipt(self, name: str, value: dict[str, Any]) -> tuple[str, int]:
         self._require_writable_name(name)
         payload = canonical_json_bytes(value) + b"\n"
         self._reserve_receipt_bytes(len(payload))
-        result = write_exclusive_bytes_at(
+        artifact = write_exclusive_bytes_at(
             self._directory_fd, name, payload, mode=0o600
         )
-        self._files.append(name)
-        return result
+        self._artifacts.append(artifact)
+        return artifact.sha256, artifact.size
 
     def seal_payload_before_completion(self) -> None:
         if self._payload_sealed or self._completed:
             raise Cur0sExactError("private_output_already_sealed")
-        for name in self._files:
+        sealed_artifacts: list[WrittenArtifact] = []
+        for artifact in self._artifacts:
             fd = os.open(
-                name,
+                artifact.name,
                 os.O_RDONLY | os.O_CLOEXEC | os.O_NOFOLLOW,
                 dir_fd=self._directory_fd,
             )
             try:
+                before = os.fstat(fd)
+                require_written_artifact_binding(
+                    self._directory_fd, artifact, before
+                )
+                if hash_open_fd(fd) != (artifact.sha256, artifact.size):
+                    raise Cur0sExactError("private_output_seal_hash_mismatch")
+                after_readback = os.fstat(fd)
+                if stat_identity(after_readback) != stat_identity(before):
+                    raise Cur0sExactError("private_output_changed_during_seal")
                 os.fchmod(fd, 0o400)
                 os.fsync(fd)
+                sealed_before = os.fstat(fd)
+                require_same_directory_entry(
+                    self._directory_fd,
+                    artifact.name,
+                    sealed_before,
+                    sealed_before,
+                )
+                if stat.S_IMODE(sealed_before.st_mode) != 0o400:
+                    raise Cur0sExactError("private_output_seal_mode_mismatch")
+                if hash_open_fd(fd) != (artifact.sha256, artifact.size):
+                    raise Cur0sExactError("private_output_post_seal_hash_mismatch")
+                sealed_after = os.fstat(fd)
+                if stat_identity(sealed_after) != stat_identity(sealed_before):
+                    raise Cur0sExactError("private_output_changed_after_seal")
+                require_same_directory_entry(
+                    self._directory_fd,
+                    artifact.name,
+                    sealed_before,
+                    sealed_after,
+                )
+                sealed_artifacts.append(
+                    written_artifact(
+                        artifact.name,
+                        artifact.sha256,
+                        artifact.size,
+                        sealed_after,
+                    )
+                )
             finally:
                 os.close(fd)
         os.fsync(self._directory_fd)
+        self._artifacts = sealed_artifacts
         self._payload_sealed = True
 
     def write_completion_last(
@@ -1966,23 +2020,53 @@ class PrivateOutput:
             raise Cur0sExactError("completion_order_invalid")
         if name != "COMPLETE.json":
             raise Cur0sExactError("completion_name_invalid")
+        self._revalidate_sealed_payloads()
         payload = canonical_json_bytes(value) + b"\n"
         self._reserve_completion_bytes(len(payload))
-        result = write_exclusive_bytes_at(
+        artifact = write_exclusive_bytes_at(
             self._directory_fd,
             name,
             payload,
             mode=0o400,
         )
         self._completed = True
-        return result
+        return artifact.sha256, artifact.size
+
+    def _revalidate_sealed_payloads(self) -> None:
+        for artifact in self._artifacts:
+            fd = os.open(
+                artifact.name,
+                os.O_RDONLY | os.O_CLOEXEC | os.O_NOFOLLOW,
+                dir_fd=self._directory_fd,
+            )
+            try:
+                before = os.fstat(fd)
+                require_written_artifact_binding(
+                    self._directory_fd, artifact, before
+                )
+                if stat.S_IMODE(before.st_mode) != 0o400:
+                    raise Cur0sExactError("private_output_final_mode_mismatch")
+                if hash_open_fd(fd) != (artifact.sha256, artifact.size):
+                    raise Cur0sExactError("private_output_final_hash_mismatch")
+                after = os.fstat(fd)
+                if stat_identity(after) != stat_identity(before):
+                    raise Cur0sExactError("private_output_changed_before_completion")
+                require_written_artifact_binding(
+                    self._directory_fd, artifact, after
+                )
+            finally:
+                os.close(fd)
 
     def partial_output_report(self) -> dict[str, Any]:
         actual_bytes = 0
         existing_files = 0
-        for name in self._files:
+        for artifact in self._artifacts:
             try:
-                info = os.stat(name, dir_fd=self._directory_fd, follow_symlinks=False)
+                info = os.stat(
+                    artifact.name,
+                    dir_fd=self._directory_fd,
+                    follow_symlinks=False,
+                )
             except FileNotFoundError:
                 continue
             if stat.S_ISREG(info.st_mode):
@@ -1992,8 +2076,10 @@ class PrivateOutput:
             "tracked_private_file_count": existing_files,
             "actual_partial_private_output_bytes": actual_bytes,
             "budget_accounted_private_output_bytes": self._accounted_bytes,
-            "partial_overlay_possible": "exact_identity_overlay.private.jsonl"
-            in self._files,
+            "partial_overlay_possible": any(
+                artifact.name == "exact_identity_overlay.private.jsonl"
+                for artifact in self._artifacts
+            ),
             "completion_marker_present": self._completed,
             "private_payload_egressed": False,
         }
@@ -2020,7 +2106,7 @@ class PrivateOutput:
             raise Cur0sExactError("private_output_is_sealed")
         if Path(name).parts != (name,) or name in {"", ".", ".."}:
             raise Cur0sExactError("private_output_name_invalid")
-        if name in self._files:
+        if any(artifact.name == name for artifact in self._artifacts):
             raise Cur0sExactError("private_output_name_reused")
 
     def _reserve_data_bytes(self, size: int) -> None:
@@ -2049,7 +2135,7 @@ def write_overlay_at(
     *,
     envelope: ResourceEnvelope,
     reserve_bytes,
-) -> tuple[str, int]:
+) -> WrittenArtifact:
     fd = os.open(
         name,
         os.O_RDWR | os.O_CREAT | os.O_EXCL | os.O_CLOEXEC | os.O_NOFOLLOW,
@@ -2072,20 +2158,28 @@ def write_overlay_at(
         expected_sha = "sha256:" + digest.hexdigest()
         if hash_open_fd(fd) != (expected_sha, size):
             raise Cur0sExactError("private_overlay_readback_mismatch")
-        require_same_directory_entry(directory_fd, name, initial, os.fstat(fd))
-    except OperationalStop:
+        final = os.fstat(fd)
+        require_same_directory_entry(directory_fd, name, initial, final)
+        artifact = written_artifact(name, expected_sha, size, final)
+    except OperationalStop as stop:
         os.fsync(fd)
+        partial_sha256, partial_size = hash_open_fd(fd)
+        partial_stat = os.fstat(fd)
+        require_same_directory_entry(directory_fd, name, initial, partial_stat)
+        stop.partial_artifact = written_artifact(
+            name, partial_sha256, partial_size, partial_stat
+        )
         os.fsync(directory_fd)
         raise
     finally:
         os.close(fd)
     os.fsync(directory_fd)
-    return expected_sha, size
+    return artifact
 
 
 def write_exclusive_bytes_at(
     directory_fd: int, name: str, payload: bytes, *, mode: int = 0o600
-) -> tuple[str, int]:
+) -> WrittenArtifact:
     fd = os.open(
         name,
         os.O_RDWR | os.O_CREAT | os.O_EXCL | os.O_CLOEXEC | os.O_NOFOLLOW,
@@ -2103,10 +2197,13 @@ def write_exclusive_bytes_at(
         require_same_directory_entry(directory_fd, name, initial, final)
         os.fchmod(fd, mode)
         os.fsync(fd)
+        bound_stat = os.fstat(fd)
+        require_same_directory_entry(directory_fd, name, initial, bound_stat)
+        artifact = written_artifact(name, expected[0], expected[1], bound_stat)
     finally:
         os.close(fd)
     os.fsync(directory_fd)
-    return expected
+    return artifact
 
 
 def write_all(fd: int, payload: bytes) -> None:
@@ -2144,6 +2241,40 @@ def require_same_directory_entry(
         raise Cur0sExactError("private_output_entry_replaced")
     if final.st_nlink != 1 or not stat.S_ISREG(final.st_mode):
         raise Cur0sExactError("private_output_inode_invalid")
+
+
+def written_artifact(
+    name: str,
+    sha256: str,
+    size: int,
+    info: os.stat_result,
+) -> WrittenArtifact:
+    if info.st_nlink != 1 or not stat.S_ISREG(info.st_mode):
+        raise Cur0sExactError("private_output_inode_invalid")
+    if info.st_size != size:
+        raise Cur0sExactError("private_output_size_binding_mismatch")
+    return WrittenArtifact(
+        name=name,
+        sha256=sha256,
+        size=size,
+        stat_identity=stat_identity(info),
+    )
+
+
+def require_written_artifact_binding(
+    directory_fd: int,
+    artifact: WrittenArtifact,
+    opened: os.stat_result,
+) -> None:
+    entry = os.stat(
+        artifact.name,
+        dir_fd=directory_fd,
+        follow_symlinks=False,
+    )
+    if stat_identity(opened) != artifact.stat_identity:
+        raise Cur0sExactError("private_output_opened_inode_binding_mismatch")
+    if stat_identity(entry) != artifact.stat_identity:
+        raise Cur0sExactError("private_output_entry_binding_mismatch")
 
 
 def file_sha256(path: Path) -> str:
