@@ -7210,7 +7210,13 @@ AGGREGATE_RECEIPT_KEYS = {
 
 def aggregate_transport_policy(
     runtime_identity: Mapping[str, Any],
+    receipted_import_count: int = 0,
 ) -> dict[str, Any]:
+    if (
+        type(receipted_import_count) is not int
+        or not 0 <= receipted_import_count <= EXPECTED_TOTAL_CHUNK_REQUESTS
+    ):
+        raise DiscoveryError("aggregate_transport_import_count_invalid")
     return {
         "CA_bundle_path": str(CA_BUNDLE_PATH),
         "CA_bundle_sha256": f"sha256:{CA_BUNDLE_EXPECTED_SHA256}",
@@ -7224,6 +7230,10 @@ def aggregate_transport_policy(
         "curl_subprocess_timeout_seconds": CURL_SUBPROCESS_TIMEOUT_SECONDS,
         "exact_one_request_per_attempt": True,
         "expected_total_chunk_requests": EXPECTED_TOTAL_CHUNK_REQUESTS,
+        "expected_new_direct_selection_count": (
+            EXPECTED_TOTAL_CHUNK_REQUESTS - receipted_import_count
+        ),
+        "full_roster_selection_count": EXPECTED_TOTAL_CHUNK_REQUESTS,
         "origin_wide_backoff_seconds": list(BACKOFF_SECONDS),
         "per_request_retry_count": 0,
         "private_transport_temp_directory_required": True,
@@ -7231,6 +7241,7 @@ def aggregate_transport_policy(
             REQUEST_AND_TERMINAL_RESERVE_SECONDS
         ),
         "receipted_predecessor_selection_import_requires_exact_admitted_epoch": True,
+        "receipted_predecessor_selection_import_count": receipted_import_count,
         "system_linker64_held_curl_FD_launch_required": True,
     }
 
@@ -7324,7 +7335,10 @@ def validate_aggregate_receipt(receipt: Mapping[str, Any]) -> None:
         != canonical_sha256(runtime_identity)
         or aggregate["source_roster_sha256"] != source_roster_root()
         or aggregate["transport_policy"]
-        != aggregate_transport_policy(runtime_identity)
+        != aggregate_transport_policy(
+            runtime_identity,
+            aggregate["receipted_predecessor_selection_import_count"],
+        )
         or aggregate["thermal_policy"] != THERMAL_POLICY
         or type(records) is not list
         or len(records) != len(SIYAVULA_SOURCES)
@@ -7512,7 +7526,10 @@ def finalize_epoch(
             "source_identity_observations": identities,
             "source_roster_sha256": source_roster_root(),
             "thermal_policy": THERMAL_POLICY,
-            "transport_policy": aggregate_transport_policy(projected_runtime),
+            "transport_policy": aggregate_transport_policy(
+                projected_runtime,
+                len(predecessor_imports),
+            ),
         }
         receipt = {
             **core,
