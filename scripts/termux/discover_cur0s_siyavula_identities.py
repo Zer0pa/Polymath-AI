@@ -2691,7 +2691,7 @@ def parse_single_response_headers(payload: bytes) -> tuple[int, dict[str, str]]:
         name, value = line.split(":", 1)
         normalized_name = name.casefold()
         if normalized_name in fields:
-            if normalized_name == "vary":
+            if normalized_name in {"cache-control", "vary"}:
                 fields[normalized_name] = f"{fields[normalized_name]}, {value.strip()}"
                 continue
             raise DiscoveryError(f"range_response_duplicate_header:{normalized_name}")

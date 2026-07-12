@@ -1444,6 +1444,12 @@ def test_response_header_parser_combines_vary_but_rejects_duplicate_authority_fi
     assert status == 200
     assert fields["vary"] == "Accept-Encoding, Origin"
 
+    _status, cache_fields = harness.parse_single_response_headers(
+        b"HTTP/1.1 206 Partial Content\r\nCache-Control: public\r\n"
+        b"Cache-Control: max-age=60\r\n\r\n"
+    )
+    assert cache_fields["cache-control"] == "public, max-age=60"
+
     with pytest.raises(
         harness.DiscoveryError, match="duplicate_header:content-length"
     ):
