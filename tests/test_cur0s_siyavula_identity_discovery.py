@@ -1094,6 +1094,7 @@ def test_per_card_CC_BY_3_anchor_is_accepted_without_global_scope_claim(harness)
 def test_catalogue_subject_parser_preserves_natural_sciences_and_technology(
     harness,
 ):
+    assert harness.DEFAULT_DISCOVERY_ROOT.name.endswith("identity_discovery_v3")
     assert harness.contextual_assertion_pairs(
         "Natural Sciences and Technology Grade 4"
     ) == {(4, "Natural Sciences and Technology")}
