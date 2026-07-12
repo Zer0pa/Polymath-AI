@@ -1341,6 +1341,23 @@ def test_real_discovery_lease_accepts_its_own_observation_write_and_rejects_mode
         lease.checkpoint(phase="after_mode_tamper")
 
 
+def test_response_header_parser_combines_vary_but_rejects_duplicate_authority_fields(
+    harness,
+):
+    status, fields = harness.parse_single_response_headers(
+        b"HTTP/1.1 200 OK\r\nVary: Accept-Encoding\r\nVary: Origin\r\n\r\n"
+    )
+    assert status == 200
+    assert fields["vary"] == "Accept-Encoding, Origin"
+
+    with pytest.raises(
+        harness.DiscoveryError, match="duplicate_header:content-length"
+    ):
+        harness.parse_single_response_headers(
+            b"HTTP/1.1 200 OK\r\nContent-Length: 1\r\nContent-Length: 1\r\n\r\n"
+        )
+
+
 def test_durable_request_intent_survives_abrupt_unwind_and_blocks_next_epoch(
     harness, tmp_path
 ):
