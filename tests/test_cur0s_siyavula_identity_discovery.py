@@ -1103,6 +1103,63 @@ def test_catalogue_subject_parser_preserves_natural_sciences_and_technology(
     }
 
 
+def test_catalogue_target_can_bind_nearest_cover_alt_but_not_intervening_alt(
+    harness,
+):
+    def catalogue(first_alt: str | None = None) -> bytes:
+        books = []
+        for index, source in enumerate(harness.SIYAVULA_SOURCES):
+            alt = (
+                first_alt
+                if index == 0 and first_alt is not None
+                else f"{source.catalogue_subject} Grade {source.catalogue_grade}"
+            )
+            books.append(
+                f"<img alt='{alt}' src='cover-{index}.png'>"
+                f"<li><a href='{source.url}'>ePUB (CC-BY)</a></li>"
+            )
+        return (
+            "<html><body><main>"
+            + "".join(books)
+            + "<p>All textbooks in this catalogue are licensed under "
+            "<a href='https://creativecommons.org/licenses/by/3.0/'>"
+            "CC BY 3.0</a></p></main></body></html>"
+        ).encode()
+
+    terms = _terms_html()
+    bindings = {
+        role: {
+            "attempt_sha256": "sha256:" + character * 64,
+            "resource_observation_sha256": "sha256:" + character * 64,
+            "runtime_identity_sha256": "sha256:" + character * 64,
+        }
+        for role, character in (("catalogue", "a"), ("terms", "b"))
+    }
+
+    def build(payload: bytes):
+        return harness.build_external_evidence_preimage(
+            payload,
+            harness.validate_page_outcome(
+                harness.CATALOGUE_URL, _page_outcome(harness, payload)
+            ),
+            terms,
+            harness.validate_page_outcome(
+                harness.TERMS_URL, _page_outcome(harness, terms)
+            ),
+            bindings,
+        )
+
+    preimage = build(catalogue())
+    assert {
+        record["target_context_evidence"]["association_mode"]
+        for record in preimage["catalogue"]["target_anchor_records"]
+    } == {"nearest_preceding_nonhidden_image_alt"}
+    harness.validate_external_preimage_closed(preimage)
+
+    with pytest.raises(harness.DiscoveryError, match="nearest_image_subject_grade"):
+        build(catalogue("Unrelated cover"))
+
+
 def test_closed_runtime_external_and_aggregate_schemas_reject_unknown_fields(
     harness, tmp_path, monkeypatch
 ):

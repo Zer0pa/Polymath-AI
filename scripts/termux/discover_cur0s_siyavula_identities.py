@@ -4590,6 +4590,7 @@ class EvidenceHTMLParser(HTMLParser):
         super().__init__(convert_charrefs=True)
         self.anchors: list[dict[str, Any]] = []
         self.cards: dict[int, dict[str, Any]] = {}
+        self.images: list[dict[str, Any]] = []
         self.text_parts: list[str] = []
         self._stack: list[dict[str, Any]] = []
         self._active_anchor: dict[str, Any] | None = None
@@ -4661,6 +4662,17 @@ class EvidenceHTMLParser(HTMLParser):
             "hidden": hidden,
             "tag": normalized_tag,
         }
+        if normalized_tag == "img" and not hidden:
+            alt = normalized_attrs.get("alt")
+            if alt:
+                if len(alt) > 4096:
+                    raise DiscoveryError("external_evidence_image_alt_limit")
+                self.images.append(
+                    {
+                        "alt": " ".join(alt.split()),
+                        "element_ordinal": self._element_count,
+                    }
+                )
         if normalized_tag == "a" and not hidden:
             if self._active_anchor is not None or len(self.anchors) >= MAX_ANCHORS:
                 raise DiscoveryError("external_evidence_anchor_limit_or_nesting")
@@ -4670,6 +4682,7 @@ class EvidenceHTMLParser(HTMLParser):
             self._active_anchor = {
                 "card_ids": list(active_cards),
                 "href": href,
+                "element_ordinal": self._element_count,
                 "ordinal": len(self.anchors),
                 "text_characters": 0,
                 "text_parts": [],
@@ -4768,6 +4781,7 @@ def canonical_anchor(anchor: Mapping[str, Any], *, page_url: str) -> dict[str, A
         raise DiscoveryError("external_evidence_anchor_invalid")
     return {
         "card_ids": list(anchor.get("card_ids", ())),
+        "element_ordinal": anchor.get("element_ordinal"),
         "href": href,
         "ordinal": anchor.get("ordinal"),
         "resolved_url": urljoin(page_url, href),
@@ -4811,21 +4825,50 @@ def catalogue_card_selection(
         and contextual_assertion_pairs(parser.cards[card_id]["visible_text"])
         == expected
     ]
-    if not candidates:
-        raise DiscoveryError(
-            f"catalogue_card_subject_grade_not_unique:{source.source_id}"
-        )
-    nearest_depth = max(card["depth"] for _card_id, card in candidates)
-    nearest = [
-        (card_id, card)
-        for card_id, card in candidates
-        if card["depth"] == nearest_depth
-    ]
-    if len(nearest) != 1:
-        raise DiscoveryError(f"catalogue_card_association_ambiguous:{source.source_id}")
-    card_id, card = nearest[0]
+    association_mode = "exact_subject_grade_in_target_ancestor_card"
+    image: Mapping[str, Any] | None = None
+    if candidates:
+        nearest_depth = max(card["depth"] for _card_id, card in candidates)
+        nearest = [
+            (card_id, card)
+            for card_id, card in candidates
+            if card["depth"] == nearest_depth
+        ]
+        if len(nearest) != 1:
+            raise DiscoveryError(
+                f"catalogue_card_association_ambiguous:{source.source_id}"
+            )
+        card_id, card = nearest[0]
+    else:
+        target_element_ordinal = anchor.get("element_ordinal")
+        if type(target_element_ordinal) is not int:
+            raise DiscoveryError("catalogue_target_element_ordinal_invalid")
+        preceding_images = [
+            record
+            for record in parser.images
+            if record["element_ordinal"] < target_element_ordinal
+        ]
+        if not preceding_images:
+            raise DiscoveryError(
+                f"catalogue_card_subject_grade_not_unique:{source.source_id}"
+            )
+        image = preceding_images[-1]
+        if contextual_assertion_pairs(image["alt"]) != expected:
+            raise DiscoveryError(
+                f"catalogue_nearest_image_subject_grade_mismatch:{source.source_id}"
+            )
+        active_cards = [
+            (card_id, parser.cards[card_id])
+            for card_id in anchor.get("card_ids", ())
+            if card_id in parser.cards
+        ]
+        if not active_cards:
+            raise DiscoveryError(f"catalogue_target_card_missing:{source.source_id}")
+        card_id, card = max(active_cards, key=lambda item: item[1]["depth"])
+        association_mode = "nearest_preceding_nonhidden_image_alt"
     context = card["visible_text"]
     return card_id, {
+        "association_mode": association_mode,
         "card_anchor_count": len(card["anchor_ordinals"]),
         "card_depth": card["depth"],
         "card_structural_attributes": card["structural_attributes"],
@@ -4838,6 +4881,16 @@ def catalogue_card_selection(
         ],
         "expected_catalogue_subject_and_grade_uniquely_asserted": True,
         "hidden_or_noncontent_subtrees_excluded": True,
+        "nearest_preceding_image_alt": image["alt"] if image is not None else None,
+        "nearest_preceding_image_alt_sha256": (
+            "sha256:" + sha256_bytes(image["alt"].encode("utf-8"))
+            if image is not None
+            else None
+        ),
+        "nearest_preceding_image_element_ordinal": (
+            image["element_ordinal"] if image is not None else None
+        ),
+        "target_anchor_element_ordinal": anchor["element_ordinal"],
     }
 
 
@@ -5809,6 +5862,7 @@ def validate_external_preimage_closed(value: Any) -> None:
         context = require_exact_keys(
             record["target_context_evidence"],
             {
+                "association_mode",
                 "card_anchor_count",
                 "card_depth",
                 "card_structural_attributes",
@@ -5818,6 +5872,10 @@ def validate_external_preimage_closed(value: Any) -> None:
                 "catalogue_assertion_pairs",
                 "expected_catalogue_subject_and_grade_uniquely_asserted",
                 "hidden_or_noncontent_subtrees_excluded",
+                "nearest_preceding_image_alt",
+                "nearest_preceding_image_alt_sha256",
+                "nearest_preceding_image_element_ordinal",
+                "target_anchor_element_ordinal",
             },
             role="catalogue_target_context",
         )
@@ -5830,6 +5888,42 @@ def validate_external_preimage_closed(value: Any) -> None:
             role="catalogue_card_visible_text",
             maximum=MAX_HTML_CARD_TEXT_CHARACTERS,
         )
+        association_mode = context["association_mode"]
+        target_element_ordinal = context["target_anchor_element_ordinal"]
+        if type(target_element_ordinal) is not int or target_element_ordinal <= 0:
+            raise DiscoveryError("catalogue_target_element_ordinal_invalid")
+        if association_mode == "exact_subject_grade_in_target_ancestor_card":
+            if any(
+                context[field] is not None
+                for field in (
+                    "nearest_preceding_image_alt",
+                    "nearest_preceding_image_alt_sha256",
+                    "nearest_preceding_image_element_ordinal",
+                )
+            ):
+                raise DiscoveryError("catalogue_card_association_evidence_invalid")
+            if contextual_assertion_pairs(visible_text) != {
+                (source.catalogue_grade, source.catalogue_subject)
+            }:
+                raise DiscoveryError("catalogue_card_assertion_invalid")
+        elif association_mode == "nearest_preceding_nonhidden_image_alt":
+            image_alt = require_bounded_string(
+                context["nearest_preceding_image_alt"],
+                role="catalogue_image_alt",
+                maximum=4096,
+            )
+            image_ordinal = context["nearest_preceding_image_element_ordinal"]
+            if (
+                type(image_ordinal) is not int
+                or not 0 < image_ordinal < target_element_ordinal
+                or context["nearest_preceding_image_alt_sha256"]
+                != "sha256:" + sha256_bytes(image_alt.encode("utf-8"))
+                or contextual_assertion_pairs(image_alt)
+                != {(source.catalogue_grade, source.catalogue_subject)}
+            ):
+                raise DiscoveryError("catalogue_image_association_evidence_invalid")
+        else:
+            raise DiscoveryError("catalogue_association_mode_invalid")
         if (
             record["source_id"] != source.source_id
             or record["catalogue_grade"] != source.catalogue_grade
