@@ -1100,14 +1100,50 @@ def _write_temp_file(directory: Path, payload: bytes, mode: int) -> Path:
 def publish_immutable_bytes(path: Path, payload: bytes, *, mode: int = 0o400) -> None:
     if path.exists() or path.is_symlink():
         raise DiscoveryError(f"immutable_artifact_already_exists:{path.name}")
-    temporary = _write_temp_file(path.parent, payload, mode)
+    ensure_private_directory(path.parent)
+    flags = os.O_RDWR | os.O_CREAT | os.O_EXCL | os.O_CLOEXEC | os.O_NOFOLLOW
+    fd = -1
     try:
-        os.link(temporary, path, follow_symlinks=False)
+        fd = os.open(path, flags, mode)
+        initial = os.fstat(fd)
+        if (
+            not stat.S_ISREG(initial.st_mode)
+            or initial.st_nlink != 1
+            or initial.st_uid != os.geteuid()
+            or initial.st_gid != os.getegid()
+        ):
+            raise DiscoveryError(f"immutable_artifact_created_inode_invalid:{path.name}")
+        view = memoryview(payload)
+        while view:
+            written = os.write(fd, view)
+            if written <= 0:
+                raise DiscoveryError("atomic_write_zero_length")
+            view = view[written:]
+        os.fsync(fd)
+        os.fchmod(fd, mode)
+        os.fsync(fd)
+        observed = bytearray()
+        offset = 0
+        while offset < len(payload):
+            chunk = os.pread(fd, min(HASH_READ_BYTES, len(payload) - offset), offset)
+            if not chunk:
+                raise DiscoveryError(f"immutable_artifact_short_read:{path.name}")
+            observed.extend(chunk)
+            offset += len(chunk)
+        final = os.fstat(fd)
+        entry = os.stat(path, follow_symlinks=False)
+        if (
+            bytes(observed) != payload
+            or stat_identity(initial)[:2] != stat_identity(final)[:2]
+            or stat_identity(final) != stat_identity(entry)
+        ):
+            raise DiscoveryError(f"immutable_artifact_readback_invalid:{path.name}")
         fsync_directory(path.parent)
     except FileExistsError:
         raise DiscoveryError(f"immutable_artifact_race:{path.name}") from None
     finally:
-        temporary.unlink(missing_ok=True)
+        if fd >= 0:
+            os.close(fd)
     value = path.lstat()
     if (
         not stat.S_ISREG(value.st_mode)
@@ -1261,14 +1297,12 @@ def create_mutable_lock(path: Path, payload: bytes) -> None:
         ):
             raise DiscoveryError("mutable_lock_identity_invalid")
         return
-    temporary = _write_temp_file(path.parent, payload, 0o600)
     try:
-        os.link(temporary, path, follow_symlinks=False)
-        fsync_directory(path.parent)
-    except FileExistsError:
-        raise DiscoveryError("mutable_lock_publication_race") from None
-    finally:
-        temporary.unlink(missing_ok=True)
+        publish_immutable_bytes(path, payload, mode=0o600)
+    except DiscoveryError as error:
+        if str(error).startswith("immutable_artifact_race:"):
+            raise DiscoveryError("mutable_lock_publication_race") from None
+        raise
 
 
 def regular_file_identity(path: Path) -> dict[str, Any]:
@@ -2719,23 +2753,14 @@ def publish_cas_blob(root: Path, payload: bytes) -> tuple[Path, str]:
         if observed_digest != digest or observed_bytes != len(payload):
             raise DiscoveryError("CAS_existing_blob_identity_mismatch")
         return destination, digest
-    temporary = _write_temp_file(cas_directory, payload, 0o600)
     try:
-        os.chmod(temporary, 0o400, follow_symlinks=False)
-        temporary_fd = os.open(temporary, os.O_RDONLY | os.O_CLOEXEC | os.O_NOFOLLOW)
-        try:
-            os.fsync(temporary_fd)
-        finally:
-            os.close(temporary_fd)
-        try:
-            os.link(temporary, destination, follow_symlinks=False)
-        except FileExistsError:
-            observed_digest, observed_bytes = hash_file(destination)
-            if observed_digest != digest or observed_bytes != len(payload):
-                raise DiscoveryError("CAS_publication_race_mismatch") from None
-        fsync_directory(cas_directory)
-    finally:
-        temporary.unlink(missing_ok=True)
+        publish_immutable_bytes(destination, payload)
+    except DiscoveryError as error:
+        if not str(error).startswith("immutable_artifact_race:"):
+            raise
+        observed_digest, observed_bytes = hash_file(destination)
+        if observed_digest != digest or observed_bytes != len(payload):
+            raise DiscoveryError("CAS_publication_race_mismatch") from None
     observed_digest, observed_bytes = hash_file(destination)
     require_sealed_regular_path(destination, role="CAS")
     if observed_digest != digest or observed_bytes != len(payload):
@@ -3299,15 +3324,67 @@ def assemble_source(root: Path, epoch: Path, source: SiyavulaSource) -> dict[str
         raise
     os.close(fd)
     destination = source_output / f"{pass_1}.epub"
-    try:
-        os.link(temporary, destination, follow_symlinks=False)
-    except FileExistsError:
+    if destination.exists():
         observed_hash, observed_bytes = hash_file(destination)
         if observed_hash != pass_1 or observed_bytes != source.expected_bytes:
             temporary.unlink(missing_ok=True)
             raise DiscoveryError("assembly_publication_collision") from None
+    else:
+        source_fd = os.open(temporary, os.O_RDONLY | os.O_CLOEXEC | os.O_NOFOLLOW)
+        destination_fd = -1
+        try:
+            source_info = os.fstat(source_fd)
+            if (
+                not stat.S_ISREG(source_info.st_mode)
+                or stat.S_IMODE(source_info.st_mode) != 0o400
+                or source_info.st_nlink != 1
+                or source_info.st_size != source.expected_bytes
+            ):
+                raise DiscoveryError("assembly_temporary_identity_invalid")
+            destination_fd = os.open(
+                destination,
+                os.O_RDWR
+                | os.O_CREAT
+                | os.O_EXCL
+                | os.O_CLOEXEC
+                | os.O_NOFOLLOW,
+                0o400,
+            )
+            copied = 0
+            copied_digest = hashlib.sha256()
+            while copied < source.expected_bytes:
+                payload = os.pread(
+                    source_fd,
+                    min(HASH_READ_BYTES, source.expected_bytes - copied),
+                    copied,
+                )
+                if not payload:
+                    raise DiscoveryError("assembly_publication_short_read")
+                view = memoryview(payload)
+                while view:
+                    written_now = os.write(destination_fd, view)
+                    if written_now <= 0:
+                        raise DiscoveryError("assembly_publication_short_write")
+                    view = view[written_now:]
+                copied += len(payload)
+                copied_digest.update(payload)
+            os.fsync(destination_fd)
+            os.fchmod(destination_fd, 0o400)
+            os.fsync(destination_fd)
+            destination_info = os.fstat(destination_fd)
+            destination_entry = os.stat(destination, follow_symlinks=False)
+            if (
+                copied != source.expected_bytes
+                or copied_digest.hexdigest() != pass_1
+                or stat_identity(destination_info) != stat_identity(destination_entry)
+            ):
+                raise DiscoveryError("assembly_publication_readback_invalid")
+            fsync_directory(source_output)
+        finally:
+            if destination_fd >= 0:
+                os.close(destination_fd)
+            os.close(source_fd)
     temporary.unlink(missing_ok=True)
-    fsync_directory(source_output)
     require_sealed_regular_path(destination, role="assembly")
     assembly = {
         "assembled_artifact": relative_inside(epoch, destination),
