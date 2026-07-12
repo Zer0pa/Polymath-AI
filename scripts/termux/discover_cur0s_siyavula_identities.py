@@ -128,9 +128,6 @@ EXPECTED_BUILD_FINGERPRINT = (
 EXPECTED_BUILD_FINGERPRINT_SHA256 = (
     "sha256:ae59a6c6e85fdd4b2148912dafa60cca579f6af27832a696e1dabbce58d67402"
 )
-EXPECTED_SOURCE_ONLY_STDLIB_ROOT_SHA256 = (
-    "sha256:303f8e4b3a9a521cd88d5a2ed2c2312c5bdad135365a60dfb8110d441c1fa700"
-)
 EXPECTED_INITIAL_SYS_PATH = (
     f"{EXPECTED_PYTHON_PREFIX}/lib/python313.zip",
     f"{EXPECTED_PYTHON_PREFIX}/lib/python3.13",
@@ -828,7 +825,7 @@ def validate_python_startup(value: Any) -> None:
             "python313_zip_absent",
             "safe_path",
             "sanitized_sys_path",
-            "source_only_stdlib_expected_root_sha256",
+            "source_only_stdlib_observed_root_sha256",
             "timestamp_or_sourceless_pyc_consumed",
             "xoptions",
         },
@@ -898,7 +895,6 @@ def validate_python_startup(value: Any) -> None:
         ):
             raise DiscoveryError("python_source_module_cache_invalid")
     expected_values = {
-        "loaded_module_origins_sha256": EXPECTED_SOURCE_ONLY_STDLIB_ROOT_SHA256,
         "absent_pycache_prefix": str(ABSENT_PYCACHE_PREFIX),
         "absent_pycache_prefix_exists": False,
         "argv0": HARNESS_EXECUTION_PATH,
@@ -918,11 +914,13 @@ def validate_python_startup(value: Any) -> None:
             "held_fd3_python_-IBS_-X_exact_verified_absent_pycache_prefix"
         ),
         "orig_argv_launch_prefix": EXPECTED_ORIG_ARGV_LAUNCH_PREFIX,
-        "source_only_stdlib_expected_root_sha256": (
-            EXPECTED_SOURCE_ONLY_STDLIB_ROOT_SHA256
-        ),
     }
-    if startup["loaded_module_origins_sha256"] != canonical_sha256(modules):
+    observed_module_root = canonical_sha256(modules)
+    if (
+        startup["loaded_module_origins_sha256"] != observed_module_root
+        or startup["source_only_stdlib_observed_root_sha256"]
+        != observed_module_root
+    ):
         raise DiscoveryError("python_startup_value_invalid:module_root_self_check")
     for field, expected in expected_values.items():
         if startup[field] != expected:
@@ -1447,9 +1445,7 @@ def observe_python_startup_state() -> dict[str, Any]:
         "orig_argv": list(getattr(sys, "orig_argv", ())),
         "pycache_prefix": sys.pycache_prefix,
         "safe_path": sys.flags.safe_path,
-        "source_only_stdlib_expected_root_sha256": (
-            EXPECTED_SOURCE_ONLY_STDLIB_ROOT_SHA256
-        ),
+        "source_only_stdlib_observed_root_sha256": canonical_sha256(module_origins),
         "sys_path": list(sys.path),
         "xoptions": dict(sys._xoptions),
     }

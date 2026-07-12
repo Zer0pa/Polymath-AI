@@ -142,7 +142,6 @@ def _runtime(harness) -> dict[str, Any]:
         }
     ]
     module_root = harness.canonical_sha256(modules)
-    harness.EXPECTED_SOURCE_ONLY_STDLIB_ROOT_SHA256 = module_root
     startup = {
         "absent_pycache_prefix": str(harness.ABSENT_PYCACHE_PREFIX),
         "absent_pycache_prefix_exists": False,
@@ -163,7 +162,7 @@ def _runtime(harness) -> dict[str, Any]:
         "python313_zip_absent": True,
         "safe_path": True,
         "sanitized_sys_path": list(harness.EXPECTED_INITIAL_SYS_PATH[1:]),
-        "source_only_stdlib_expected_root_sha256": module_root,
+        "source_only_stdlib_observed_root_sha256": module_root,
         "timestamp_or_sourceless_pyc_consumed": False,
         "xoptions": {"pycache_prefix": str(harness.ABSENT_PYCACHE_PREFIX)},
     }
@@ -357,10 +356,9 @@ def test_runtime_identity_allows_hash_bound_empty_stdlib_source(harness) -> None
         }
     ]
     module_root = harness.canonical_sha256(modules)
-    harness.EXPECTED_SOURCE_ONLY_STDLIB_ROOT_SHA256 = module_root
     runtime["python_startup"]["loaded_module_origins"] = modules
     runtime["python_startup"]["loaded_module_origins_sha256"] = module_root
-    runtime["python_startup"]["source_only_stdlib_expected_root_sha256"] = (
+    runtime["python_startup"]["source_only_stdlib_observed_root_sha256"] = (
         module_root
     )
     core = {
