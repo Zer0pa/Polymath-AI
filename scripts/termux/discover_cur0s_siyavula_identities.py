@@ -3907,7 +3907,7 @@ def inspect_package_structure(
             PurePosixPath(item["target"]).name
             == "copyright_acknowledgements_ccby.html"
             or PurePosixPath(item["target"]).name.casefold().endswith(
-                "frontmatter.xhtml"
+                ("frontmatter.xhtml", "frontmatter.html")
             )
         )
     ]

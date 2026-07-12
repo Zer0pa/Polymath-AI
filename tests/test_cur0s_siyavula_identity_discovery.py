@@ -768,10 +768,17 @@ def test_empty_OPF_tuples_are_observed_empty_not_unknown(harness, tmp_path):
     assert metadata["recognized_grade_observation_state"] == "observed_empty"
 
 
+@pytest.mark.parametrize(
+    "rights_path",
+    (
+        "xhtml/Grade-4/gr4-frontmatter.xhtml",
+        "xhtml/Grade-6/gr6-tbk-frontmatter.html",
+    ),
+)
 def test_lower_grade_frontmatter_is_admitted_only_as_structured_rights_member(
-    harness, tmp_path
+    harness, tmp_path, rights_path
 ):
-    payload = _epub_bytes(rights_path="xhtml/Grade-4/gr4-frontmatter.xhtml")
+    payload = _epub_bytes(rights_path=rights_path)
     source = _source_for_payload(harness, payload)
     path = tmp_path / "frontmatter.epub"
     path.write_bytes(payload)
@@ -780,9 +787,7 @@ def test_lower_grade_frontmatter_is_admitted_only_as_structured_rights_member(
         identity = harness.inspect_epub_fd(fd, source)
     finally:
         os.close(fd)
-    assert identity["internal_members"]["rights"]["path"] == (
-        "OPS/xhtml/Grade-4/gr4-frontmatter.xhtml"
-    )
+    assert identity["internal_members"]["rights"]["path"] == f"OPS/{rights_path}"
     assert identity["rights"]["structured_license_link_count"] == 1
 
 
