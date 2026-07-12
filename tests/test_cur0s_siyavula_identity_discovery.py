@@ -530,6 +530,7 @@ def _epub_bytes(
     grade_prefix: str = "schema: https://schema.org/",
     nav_fragment: str = "target",
     compression: int = zipfile.ZIP_DEFLATED,
+    rights_path: str = "copyright_acknowledgements_ccby.html",
 ) -> bytes:
     container = (
         '<?xml version="1.0" encoding="UTF-8"?>'
@@ -556,7 +557,7 @@ def _epub_bytes(
  </metadata>
  <manifest>
   <item id="nav" href="nav.xhtml" media-type="application/xhtml+xml" properties="nav"/>
-  <item id="rights" href="copyright_acknowledgements_ccby.html" media-type="application/xhtml+xml"/>
+  <item id="rights" href="{rights_path}" media-type="application/xhtml+xml"/>
   <item id="chapter" href="chapter.xhtml" media-type="application/xhtml+xml" properties="scripted"/>
   <item id="css" href="style.css" media-type="text/css"/>
   <item id="image" href="diagram.png" media-type="image/png"/>
@@ -586,7 +587,7 @@ def _epub_bytes(
             ("META-INF/container.xml", container),
             ("OPS/book.opf", opf),
             ("OPS/nav.xhtml", nav),
-            ("OPS/copyright_acknowledgements_ccby.html", rights),
+            (f"OPS/{rights_path}", rights),
             ("OPS/chapter.xhtml", chapter),
             ("OPS/style.css", css),
             ("OPS/diagram.png", b"synthetic-image"),
@@ -765,6 +766,24 @@ def test_empty_OPF_tuples_are_observed_empty_not_unknown(harness, tmp_path):
     metadata = identity["metadata"]
     assert metadata["recognized_grade_metadata"] == []
     assert metadata["recognized_grade_observation_state"] == "observed_empty"
+
+
+def test_lower_grade_frontmatter_is_admitted_only_as_structured_rights_member(
+    harness, tmp_path
+):
+    payload = _epub_bytes(rights_path="xhtml/Grade-4/gr4-frontmatter.xhtml")
+    source = _source_for_payload(harness, payload)
+    path = tmp_path / "frontmatter.epub"
+    path.write_bytes(payload)
+    fd = os.open(path, os.O_RDONLY)
+    try:
+        identity = harness.inspect_epub_fd(fd, source)
+    finally:
+        os.close(fd)
+    assert identity["internal_members"]["rights"]["path"] == (
+        "OPS/xhtml/Grade-4/gr4-frontmatter.xhtml"
+    )
+    assert identity["rights"]["structured_license_link_count"] == 1
 
 
 def test_unapproved_grade_like_prefix_and_missing_TOC_fragment_fail_closed(

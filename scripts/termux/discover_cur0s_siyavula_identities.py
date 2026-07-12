@@ -3903,8 +3903,13 @@ def inspect_package_structure(
     rights = [
         (item_id, item)
         for item_id, item in items.items()
-        if PurePosixPath(item["target"]).name
-        == "copyright_acknowledgements_ccby.html"
+        if (
+            PurePosixPath(item["target"]).name
+            == "copyright_acknowledgements_ccby.html"
+            or PurePosixPath(item["target"]).name.casefold().endswith(
+                "frontmatter.xhtml"
+            )
+        )
     ]
     if (
         len(rights) != 1
