@@ -3366,7 +3366,7 @@ static int build_native_maps_identity(
 ) {
     if (append_text(
             output,
-            "{\"capture_timing\":\"first_action_in_main_before_argument_parsing\"," 
+            "{\"capture_timing\":\"first_action_in_main_before_argument_parsing\","
             "\"executable_mapping_policy\":\"exact_nine_record_phone_native_"
             "runtime_closure_only\",\"production_policy_enforced\":"
         ) != 0
@@ -3389,7 +3389,7 @@ static int build_native_maps_identity(
     }
     if (append_text(
             output,
-            "],\"schema_version\":\"cur0s_native_earliest_main_maps_v1\"," 
+            "],\"schema_version\":\"cur0s_native_earliest_main_maps_v1\","
             "\"unexpected_executable_mappings_absent\":"
         ) != 0
         || append_text(
