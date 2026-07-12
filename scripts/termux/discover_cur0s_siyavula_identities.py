@@ -3065,25 +3065,44 @@ def _validate_direct_selected_chunk(
 
 def admitted_predecessor_epoch(root: Path) -> tuple[Path, dict[str, Any]]:
     predecessor = root / "epochs" / ADMITTED_PREDECESSOR_EPOCH_ID
-    _predecessor_root, validated, manifest = validate_epoch(predecessor)
+    predecessor_root, validated, manifest = validate_epoch(predecessor)
     harness = manifest["runtime_identity"].get("harness")
+    harness_path = (
+        PHONE_HOME
+        / "polymath_gemma4_e4b_identity_discovery_code"
+        / "b782be34350ff181de05a2fb8709d34e8b619404"
+        / "discover_cur0s_siyavula_identities.py"
+    )
     if (
-        validated != predecessor.resolve(strict=True)
+        predecessor_root != root
+        or validated != predecessor.resolve(strict=True)
         or file_payload_sha256(predecessor / "epoch.json")
         != ADMITTED_PREDECESSOR_EPOCH_MANIFEST_SHA256
         or manifest["runtime_identity_sha256"]
         != ADMITTED_PREDECESSOR_RUNTIME_SHA256
         or not isinstance(harness, dict)
         or harness.get("sha256") != ADMITTED_PREDECESSOR_HARNESS_SHA256
-        or harness.get("path")
-        != str(
-            PHONE_HOME
-            / "polymath_gemma4_e4b_identity_discovery_code"
-            / "b782be34350ff181de05a2fb8709d34e8b619404"
-            / "discover_cur0s_siyavula_identities.py"
-        )
+        or harness.get("path") != str(harness_path)
     ):
         raise DiscoveryError("receipted_predecessor_epoch_identity_invalid")
+    harness_stat = harness_path.stat(follow_symlinks=False)
+    harness_digest, harness_bytes = hash_file(harness_path)
+    if (
+        not stat.S_ISREG(harness_stat.st_mode)
+        or stat.S_IMODE(harness_stat.st_mode) != 0o400
+        or harness_stat.st_nlink != 1
+        or harness_stat.st_uid != os.geteuid()
+        or harness_stat.st_gid != os.getegid()
+        or harness_stat.st_dev != harness.get("device")
+        or harness_stat.st_ino != harness.get("inode")
+        or harness_stat.st_mtime_ns != harness.get("mtime_ns")
+        or harness_stat.st_ctime_ns != harness.get("ctime_ns")
+        or harness_digest != ADMITTED_PREDECESSOR_HARNESS_SHA256.removeprefix(
+            "sha256:"
+        )
+        or harness_bytes != harness.get("bytes")
+    ):
+        raise DiscoveryError("receipted_predecessor_harness_live_identity_invalid")
     return predecessor, manifest
 
 
@@ -7229,11 +7248,10 @@ def aggregate_transport_policy(
         "curl_low_speed_time_seconds": CURL_LOW_SPEED_TIME_SECONDS,
         "curl_subprocess_timeout_seconds": CURL_SUBPROCESS_TIMEOUT_SECONDS,
         "exact_one_request_per_attempt": True,
-        "expected_total_chunk_requests": EXPECTED_TOTAL_CHUNK_REQUESTS,
-        "expected_new_direct_selection_count": (
+        "expected_new_direct_chunk_selection_count": (
             EXPECTED_TOTAL_CHUNK_REQUESTS - receipted_import_count
         ),
-        "full_roster_selection_count": EXPECTED_TOTAL_CHUNK_REQUESTS,
+        "full_roster_chunk_selection_count": EXPECTED_TOTAL_CHUNK_REQUESTS,
         "origin_wide_backoff_seconds": list(BACKOFF_SECONDS),
         "per_request_retry_count": 0,
         "private_transport_temp_directory_required": True,
