@@ -7194,6 +7194,9 @@ AGGREGATE_RECEIPT_KEYS = {
     "immutable_origin_circuit_chain_tip",
     "old_unreceipted_prefixes_or_chunks_adopted",
     "raw_source_egress_occurred",
+    "receipted_predecessor_selection_import_count",
+    "receipted_predecessor_selection_import_root_sha256",
+    "receipted_predecessor_selection_imports",
     "receipt_observation_root_sha256",
     "runtime_identity",
     "runtime_identity_sha256",
@@ -7227,8 +7230,53 @@ def aggregate_transport_policy(
         "request_and_terminal_reserve_seconds": (
             REQUEST_AND_TERMINAL_RESERVE_SECONDS
         ),
+        "receipted_predecessor_selection_import_requires_exact_admitted_epoch": True,
         "system_linker64_held_curl_FD_launch_required": True,
     }
+
+
+def receipted_predecessor_import_projection(
+    root: Path, epoch: Path
+) -> list[dict[str, Any]]:
+    records: list[dict[str, Any]] = []
+    for source in SIYAVULA_SOURCES:
+        chunk_count = (source.expected_bytes + CHUNK_BYTES - 1) // CHUNK_BYTES
+        for chunk_index in range(chunk_count):
+            path = selection_path(epoch, source, chunk_index)
+            if not path.exists():
+                continue
+            selection = read_canonical_json(
+                path,
+                schema=frozenset(
+                    {CHUNK_SELECTION_SCHEMA, IMPORTED_CHUNK_SELECTION_SCHEMA}
+                ),
+            )
+            if selection["schema_version"] != IMPORTED_CHUNK_SELECTION_SCHEMA:
+                continue
+            validate_imported_selected_chunk(root, epoch, source, chunk_index)
+            records.append(
+                {
+                    "chunk_index": chunk_index,
+                    "imported_selection_sha256": file_payload_sha256(path),
+                    "predecessor_attempt_sha256": selection[
+                        "predecessor_attempt_sha256"
+                    ],
+                    "predecessor_epoch_id": selection["predecessor_epoch_id"],
+                    "predecessor_epoch_manifest_sha256": selection[
+                        "predecessor_epoch_manifest_sha256"
+                    ],
+                    "predecessor_runtime_identity_sha256": selection[
+                        "predecessor_runtime_identity_sha256"
+                    ],
+                    "predecessor_selection_sha256": selection[
+                        "predecessor_selection_sha256"
+                    ],
+                    "raw_source_request_replayed": False,
+                    "source_id": source.source_id,
+                    "unreceipted_bytes_adopted": False,
+                }
+            )
+    return records
 
 
 def validate_aggregate_receipt(receipt: Mapping[str, Any]) -> None:
@@ -7249,6 +7297,7 @@ def validate_aggregate_receipt(receipt: Mapping[str, Any]) -> None:
     external_preimage = aggregate["external_evidence_preimage"]
     validate_external_preimage_closed(external_preimage)
     records = aggregate["source_identity_observations"]
+    imports = aggregate["receipted_predecessor_selection_imports"]
     circuit_tip = require_exact_keys(
         aggregate["immutable_origin_circuit_chain_tip"],
         {"event_sequence", "last_event_sha256"},
@@ -7263,6 +7312,11 @@ def validate_aggregate_receipt(receipt: Mapping[str, Any]) -> None:
         or aggregate["discovery_complete"] is not True
         or aggregate["old_unreceipted_prefixes_or_chunks_adopted"] is not False
         or aggregate["raw_source_egress_occurred"] is not False
+        or type(imports) is not list
+        or aggregate["receipted_predecessor_selection_import_count"]
+        != len(imports)
+        or aggregate["receipted_predecessor_selection_import_root_sha256"]
+        != canonical_sha256(imports)
         or aggregate["external_evidence_observation_state"] != "observed_values"
         or aggregate["external_evidence_preimage_sha256"]
         != canonical_sha256(external_preimage)
@@ -7293,6 +7347,48 @@ def validate_aggregate_receipt(receipt: Mapping[str, Any]) -> None:
         )
     ):
         raise DiscoveryError("aggregate_receipt_invalid")
+    imported_pairs: set[tuple[str, int]] = set()
+    for imported in imports:
+        record = require_exact_keys(
+            imported,
+            {
+                "chunk_index",
+                "imported_selection_sha256",
+                "predecessor_attempt_sha256",
+                "predecessor_epoch_id",
+                "predecessor_epoch_manifest_sha256",
+                "predecessor_runtime_identity_sha256",
+                "predecessor_selection_sha256",
+                "raw_source_request_replayed",
+                "source_id",
+                "unreceipted_bytes_adopted",
+            },
+            role="aggregate_receipted_predecessor_import",
+        )
+        pair = (record["source_id"], record["chunk_index"])
+        if (
+            record["source_id"] not in {source.source_id for source in SIYAVULA_SOURCES}
+            or type(record["chunk_index"]) is not int
+            or record["chunk_index"] < 0
+            or pair in imported_pairs
+            or record["predecessor_epoch_id"] != ADMITTED_PREDECESSOR_EPOCH_ID
+            or record["predecessor_epoch_manifest_sha256"]
+            != ADMITTED_PREDECESSOR_EPOCH_MANIFEST_SHA256
+            or record["predecessor_runtime_identity_sha256"]
+            != ADMITTED_PREDECESSOR_RUNTIME_SHA256
+            or record["raw_source_request_replayed"] is not False
+            or record["unreceipted_bytes_adopted"] is not False
+        ):
+            raise DiscoveryError("aggregate_receipted_predecessor_import_invalid")
+        for field in (
+            "imported_selection_sha256",
+            "predecessor_attempt_sha256",
+            "predecessor_epoch_manifest_sha256",
+            "predecessor_runtime_identity_sha256",
+            "predecessor_selection_sha256",
+        ):
+            require_sha256(record[field], role=f"aggregate_import_{field}")
+        imported_pairs.add(pair)
     require_bounded_string(aggregate["epoch_id"], role="aggregate_epoch_id", maximum=256)
     parse_utc(
         require_bounded_string(
@@ -7362,6 +7458,7 @@ def finalize_epoch(
             "event_sequence": current_circuit["event_sequence"],
             "last_event_sha256": current_circuit["last_event_sha256"],
         }
+        predecessor_imports = receipted_predecessor_import_projection(root, epoch)
         if receipt_path.exists():
             existing = read_canonical_json(
                 receipt_path,
@@ -7381,6 +7478,8 @@ def finalize_epoch(
                 or existing["source_roster_sha256"] != source_roster_root()
                 or existing["immutable_origin_circuit_chain_tip"]
                 != current_circuit_tip
+                or existing["receipted_predecessor_selection_imports"]
+                != predecessor_imports
             ):
                 raise DiscoveryError(
                     "existing_aggregate_receipt_live_revalidation_invalid"
@@ -7401,6 +7500,13 @@ def finalize_epoch(
             "immutable_origin_circuit_chain_tip": current_circuit_tip,
             "old_unreceipted_prefixes_or_chunks_adopted": False,
             "raw_source_egress_occurred": False,
+            "receipted_predecessor_selection_import_count": len(
+                predecessor_imports
+            ),
+            "receipted_predecessor_selection_import_root_sha256": canonical_sha256(
+                predecessor_imports
+            ),
+            "receipted_predecessor_selection_imports": predecessor_imports,
             "runtime_identity": projected_runtime,
             "runtime_identity_sha256": manifest["runtime_identity_sha256"],
             "source_identity_observations": identities,
