@@ -1091,6 +1091,17 @@ def test_per_card_CC_BY_3_anchor_is_accepted_without_global_scope_claim(harness)
     harness.validate_external_preimage_closed(preimage)
 
 
+def test_catalogue_subject_parser_preserves_natural_sciences_and_technology(
+    harness,
+):
+    assert harness.contextual_assertion_pairs(
+        "Natural Sciences and Technology Grade 4"
+    ) == {(4, "Natural Sciences and Technology")}
+    assert harness.contextual_assertion_pairs("Natural Sciences Grade 7") == {
+        (7, "Natural Sciences")
+    }
+
+
 def test_closed_runtime_external_and_aggregate_schemas_reject_unknown_fields(
     harness, tmp_path, monkeypatch
 ):

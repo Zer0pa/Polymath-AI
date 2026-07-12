@@ -281,7 +281,7 @@ SIYAVULA_SOURCES: tuple[SiyavulaSource, ...] = (
         expected_bytes=40_926_007,
         expected_etag='"d8d7d076ea79476b84d5be0ffe1766bf-3"',
         expected_last_modified="Fri, 26 Jun 2026 16:57:41 GMT",
-        catalogue_subject="Natural Sciences",
+        catalogue_subject="Natural Sciences and Technology",
         catalogue_grade=4,
         filename_subject_token="NaturalSciences",
     ),
@@ -292,7 +292,7 @@ SIYAVULA_SOURCES: tuple[SiyavulaSource, ...] = (
         expected_bytes=46_100_488,
         expected_etag='"2a8c0146afc3c35effd6d26cff0dfa69-3"',
         expected_last_modified="Fri, 26 Jun 2026 16:57:43 GMT",
-        catalogue_subject="Natural Sciences",
+        catalogue_subject="Natural Sciences and Technology",
         catalogue_grade=5,
         filename_subject_token="NaturalSciences",
     ),
@@ -303,7 +303,7 @@ SIYAVULA_SOURCES: tuple[SiyavulaSource, ...] = (
         expected_bytes=31_912_860,
         expected_etag='"0c719d271daad6387bceca5f67b8a5f2-2"',
         expected_last_modified="Fri, 26 Jun 2026 16:57:42 GMT",
-        catalogue_subject="Natural Sciences",
+        catalogue_subject="Natural Sciences and Technology",
         catalogue_grade=6,
         filename_subject_token="NaturalSciences",
     ),
@@ -4563,15 +4563,22 @@ VOID_HTML_TAGS = frozenset(
 
 
 def contextual_assertion_pairs(text: str) -> set[tuple[int, str]]:
-    subjects = ("Natural Sciences", "Physical Sciences", "Mathematics")
+    subjects = (
+        (
+            "Natural Sciences and Technology",
+            r"Natural\s+Sciences\s+and\s+Technology",
+        ),
+        ("Natural Sciences", r"Natural\s+Sciences(?!\s+and\s+Technology)"),
+        ("Physical Sciences", r"Physical\s+Sciences"),
+        ("Mathematics", r"Mathematics"),
+    )
     pairs: set[tuple[int, str]] = set()
-    for subject in subjects:
-        escaped = re.escape(subject)
+    for subject, subject_pattern in subjects:
         for grade in range(1, 13):
             grade_pattern = rf"(?:grade|gr)\s*{grade}(?![0-9])"
             if re.search(
-                rf"(?is)(?:{escaped}.{{0,240}}{grade_pattern}|"
-                rf"{grade_pattern}.{{0,240}}{escaped})",
+                rf"(?is)(?:{subject_pattern}.{{0,240}}{grade_pattern}|"
+                rf"{grade_pattern}.{{0,240}}{subject_pattern})",
                 text,
             ):
                 pairs.add((grade, subject))
@@ -6475,7 +6482,12 @@ def validate_egress_identity(value: Any, source: SiyavulaSource) -> None:
             type(closed_claim["grade"]) is not int
             or not 1 <= closed_claim["grade"] <= 12
             or closed_claim["subject"]
-            not in {"Mathematics", "Natural Sciences", "Physical Sciences"}
+            not in {
+                "Mathematics",
+                "Natural Sciences",
+                "Natural Sciences and Technology",
+                "Physical Sciences",
+            }
         ):
             raise DiscoveryError("identity_rights_claim_invalid")
     expected_claim = {
