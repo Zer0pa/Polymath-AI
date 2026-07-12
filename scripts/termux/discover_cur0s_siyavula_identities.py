@@ -1196,7 +1196,7 @@ def read_canonical_json(
 
 def require_phone_runtime(curl_path: Path) -> None:
     if (
-        sys.platform != "linux"
+        sys.platform != "android"
         or os.uname().machine != EXPECTED_PHONE_MACHINE
         or not PHONE_HOME.is_dir()
         or not Path("/system/bin/getprop").is_file()

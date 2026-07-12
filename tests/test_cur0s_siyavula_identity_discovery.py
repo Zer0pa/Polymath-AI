@@ -313,6 +313,37 @@ class SyntheticLease:
         return {"phase": phase}
 
 
+def test_phone_runtime_requires_termux_android_sys_platform(
+    harness, monkeypatch, tmp_path
+) -> None:
+    home = tmp_path / "home"
+    home.mkdir()
+    curl = tmp_path / "curl"
+    curl.write_bytes(b"curl")
+    original_is_file = harness.Path.is_file
+    monkeypatch.setattr(harness, "PHONE_HOME", home)
+    monkeypatch.setattr(harness, "DEFAULT_CURL", curl)
+    monkeypatch.setattr(
+        harness.os,
+        "uname",
+        lambda: SimpleNamespace(machine=harness.EXPECTED_PHONE_MACHINE),
+    )
+    monkeypatch.setattr(
+        harness.Path,
+        "is_file",
+        lambda self: True
+        if str(self) == "/system/bin/getprop"
+        else original_is_file(self),
+    )
+    monkeypatch.setattr(harness.sys, "platform", "android")
+
+    harness.require_phone_runtime(curl)
+
+    monkeypatch.setattr(harness.sys, "platform", "linux")
+    with pytest.raises(harness.DiscoveryError, match="phone_only_runtime_required"):
+        harness.require_phone_runtime(curl)
+
+
 def _epoch(harness, tmp_path: Path) -> tuple[Path, dict[str, Any]]:
     runtime = _runtime(harness)
     epoch = harness.initialize_epoch(
