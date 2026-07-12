@@ -897,33 +897,36 @@ def validate_python_startup(value: Any) -> None:
             or cached.endswith((".pyo",))
         ):
             raise DiscoveryError("python_source_module_cache_invalid")
-    if (
-        startup["loaded_module_origins_sha256"] != canonical_sha256(modules)
-        or startup["loaded_module_origins_sha256"]
-        != EXPECTED_SOURCE_ONLY_STDLIB_ROOT_SHA256
-        or startup["absent_pycache_prefix"] != str(ABSENT_PYCACHE_PREFIX)
-        or startup["absent_pycache_prefix_exists"] is not False
-        or startup["argv0"] != HARNESS_EXECUTION_PATH
-        or startup["isolated"] != 1
-        or startup["no_site"] != 1
-        or startup["no_user_site"] != 1
-        or startup["dont_write_bytecode"] != 1
-        or startup["ignore_environment"] != 1
-        or startup["safe_path"] is not True
-        or startup["pycache_prefix"] != str(ABSENT_PYCACHE_PREFIX)
-        or startup["xoptions"] != {"pycache_prefix": str(ABSENT_PYCACHE_PREFIX)}
-        or startup["initial_sys_path"] != list(EXPECTED_INITIAL_SYS_PATH)
-        or startup["sanitized_sys_path"] != list(EXPECTED_INITIAL_SYS_PATH[1:])
-        or startup["python313_zip_absent"] is not True
-        or startup["timestamp_or_sourceless_pyc_consumed"] is not False
-        or startup["launch_mode"]
-        != "held_fd3_python_-IBS_-X_exact_verified_absent_pycache_prefix"
-        or startup["orig_argv_launch_prefix"]
-        != EXPECTED_ORIG_ARGV_LAUNCH_PREFIX
-        or startup["source_only_stdlib_expected_root_sha256"]
-        != EXPECTED_SOURCE_ONLY_STDLIB_ROOT_SHA256
-    ):
-        raise DiscoveryError("python_startup_value_invalid")
+    expected_values = {
+        "loaded_module_origins_sha256": EXPECTED_SOURCE_ONLY_STDLIB_ROOT_SHA256,
+        "absent_pycache_prefix": str(ABSENT_PYCACHE_PREFIX),
+        "absent_pycache_prefix_exists": False,
+        "argv0": HARNESS_EXECUTION_PATH,
+        "isolated": 1,
+        "no_site": 1,
+        "no_user_site": 1,
+        "dont_write_bytecode": 1,
+        "ignore_environment": 1,
+        "safe_path": True,
+        "pycache_prefix": str(ABSENT_PYCACHE_PREFIX),
+        "xoptions": {"pycache_prefix": str(ABSENT_PYCACHE_PREFIX)},
+        "initial_sys_path": list(EXPECTED_INITIAL_SYS_PATH),
+        "sanitized_sys_path": list(EXPECTED_INITIAL_SYS_PATH[1:]),
+        "python313_zip_absent": True,
+        "timestamp_or_sourceless_pyc_consumed": False,
+        "launch_mode": (
+            "held_fd3_python_-IBS_-X_exact_verified_absent_pycache_prefix"
+        ),
+        "orig_argv_launch_prefix": EXPECTED_ORIG_ARGV_LAUNCH_PREFIX,
+        "source_only_stdlib_expected_root_sha256": (
+            EXPECTED_SOURCE_ONLY_STDLIB_ROOT_SHA256
+        ),
+    }
+    if startup["loaded_module_origins_sha256"] != canonical_sha256(modules):
+        raise DiscoveryError("python_startup_value_invalid:module_root_self_check")
+    for field, expected in expected_values.items():
+        if startup[field] != expected:
+            raise DiscoveryError(f"python_startup_value_invalid:{field}")
 
 
 def utc_now() -> datetime:
