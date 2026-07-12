@@ -187,7 +187,7 @@ def _runtime(harness) -> dict[str, Any]:
             "linker64_invocation_path": "/system/bin/linker64",
             "symlink": {
                 "gid": 2000,
-                "mode": "0777",
+                "mode": "0755",
                 "path": "/system/bin/getprop",
                 "target": "toolbox",
                 "uid": 0,

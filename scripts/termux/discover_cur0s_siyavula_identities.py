@@ -713,7 +713,7 @@ def validate_phone_identity(value: Any) -> None:
         != "canonical_root_owned_system_getprop_symlink_to_toolbox_held_toolbox_and_linker_pre_post"
         or symlink["path"] != "/system/bin/getprop"
         or symlink["target"] != "toolbox"
-        or symlink["mode"] != "0777"
+        or symlink["mode"] != "0755"
         or symlink["uid"] != 0
         or symlink["gid"] != 2000
         or getprop["toolbox"]["path"] != "/system/bin/toolbox"
