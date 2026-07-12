@@ -1022,6 +1022,19 @@ def stat_identity(value: os.stat_result) -> tuple[int, ...]:
     )
 
 
+def mutable_directory_identity(value: os.stat_result) -> tuple[int, ...]:
+    """Bind a directory inode without rejecting its own child mutations."""
+    if not stat.S_ISDIR(value.st_mode):
+        raise DiscoveryError("mutable_directory_identity_not_directory")
+    return (
+        value.st_dev,
+        value.st_ino,
+        value.st_mode,
+        value.st_uid,
+        value.st_gid,
+    )
+
+
 def hash_file(path: Path) -> tuple[str, int]:
     flags = os.O_RDONLY | os.O_CLOEXEC
     if hasattr(os, "O_NOFOLLOW"):
@@ -1895,11 +1908,16 @@ class DiscoveryLease:
         _root, validated_epoch, manifest = validate_epoch(self.epoch)
         if validated_epoch != self.epoch or manifest["epoch_id"] != self.epoch.name:
             raise DiscoveryError("discovery_lease_epoch_mismatch")
-        self._epoch_stat_identity = stat_identity(self.epoch.stat())
+        self._epoch_stat_identity = mutable_directory_identity(
+            self.epoch.stat(follow_symlinks=False)
+        )
         self._started = self.monotonic()
 
     def checkpoint(self, *, phase: str) -> dict[str, Any]:
-        if stat_identity(self.epoch.stat()) != self._epoch_stat_identity:
+        if (
+            mutable_directory_identity(self.epoch.stat(follow_symlinks=False))
+            != self._epoch_stat_identity
+        ):
             raise DiscoveryError("discovery_lease_epoch_identity_changed")
         elapsed = self.monotonic() - self._started
         remaining = self.lease_seconds - elapsed

@@ -1313,6 +1313,34 @@ def test_CLI_binds_validated_private_transport_temp_into_both_curl_executors(
     ]
 
 
+def test_real_discovery_lease_accepts_its_own_observation_write_and_rejects_mode_tamper(
+    harness, tmp_path
+):
+    epoch, _runtime = _epoch(harness, tmp_path)
+    lease = harness.DiscoveryLease(
+        epoch=epoch,
+        lease_seconds=harness.REQUEST_AND_TERMINAL_RESERVE_SECONDS + 60,
+        monotonic=lambda: 1.0,
+        thermal_observer=lambda: {
+            "battery": {
+                "raw_value": 300,
+                "temperature_millidegrees_c": 30_000,
+            },
+            "compute_zones": [],
+            "policy": harness.THERMAL_POLICY,
+            "PMIC_maximum_not_used_as_gate": True,
+        },
+    )
+
+    artifact, digest = lease.observe(phase="first")
+    assert harness.file_payload_sha256(epoch / artifact) == digest
+    lease.checkpoint(phase="after_own_write")
+
+    epoch.chmod(0o750)
+    with pytest.raises(harness.DiscoveryError, match="epoch_identity_changed"):
+        lease.checkpoint(phase="after_mode_tamper")
+
+
 def test_durable_request_intent_survives_abrupt_unwind_and_blocks_next_epoch(
     harness, tmp_path
 ):
