@@ -4768,13 +4768,15 @@ def canonical_anchor(anchor: Mapping[str, Any], *, page_url: str) -> dict[str, A
     }
 
 
-def exact_CC_BY_3_anchor(value: Mapping[str, Any]) -> bool:
+def exact_CC_BY_anchor(value: Mapping[str, Any], version: str) -> bool:
+    if version not in {"3.0", "4.0"}:
+        raise DiscoveryError("CC_BY_anchor_version_invalid")
     parsed = urlsplit(str(value.get("resolved_url", "")))
     return bool(
         parsed.scheme in {"http", "https"}
         and parsed.hostname == "creativecommons.org"
         and parsed.netloc == "creativecommons.org"
-        and parsed.path == "/licenses/by/3.0/"
+        and parsed.path == f"/licenses/by/{version}/"
         and not parsed.query
         and not parsed.fragment
     )
@@ -4990,22 +4992,43 @@ def build_external_evidence_preimage(
         canonical_anchor(anchor, page_url=TERMS_URL) for anchor in terms.anchors
     ]
     catalogue_license_anchor_candidates = [
-        value for value in catalogue_anchors if exact_CC_BY_3_anchor(value)
+        value for value in catalogue_anchors if exact_CC_BY_anchor(value, "3.0")
     ]
     catalogue_license_anchors = [
         egress_anchor(value) for value in catalogue_license_anchor_candidates
     ]
     terms_license_anchors = [
-        egress_anchor(value) for value in terms_anchors if exact_CC_BY_3_anchor(value)
+        egress_anchor(value)
+        for value in terms_anchors
+        if exact_CC_BY_anchor(value, "4.0")
     ]
     if not catalogue_license_anchors or not terms_license_anchors:
-        raise DiscoveryError("exact_CC_BY_3_0_evidence_missing")
+        raise DiscoveryError("catalogue_CC_BY_3_or_terms_CC_BY_4_evidence_missing")
     license_preimage = {
         "catalogue_CC_BY_3_0_anchors": catalogue_license_anchors,
         "license_id": "CC-BY-3.0",
-        "terms_CC_BY_3_0_anchors": terms_license_anchors,
     }
     license_root = canonical_sha256(license_preimage)
+    terms_visible_text = " ".join(" ".join(terms.text_parts).split())
+    normalized_terms_text = terms_visible_text.casefold()
+    terms_marked_material_notice_present = all(
+        marker in normalized_terms_text
+        for marker in (
+            "only material that is clearly marked",
+            "creative commons license",
+            "re-used without permission",
+        )
+    )
+    if not terms_marked_material_notice_present:
+        raise DiscoveryError("terms_marked_material_CC_BY_notice_missing")
+    terms_license_preimage = {
+        "license_id_observed_from_anchor": "CC-BY-4.0",
+        "marked_material_only_scope_assertion_present": True,
+        "terms_CC_BY_4_0_anchors": terms_license_anchors,
+        "terms_visible_text_sha256": "sha256:"
+        + sha256_bytes(terms_visible_text.encode("utf-8")),
+    }
+    terms_license_root = canonical_sha256(terms_license_preimage)
     target_states: list[dict[str, Any]] = []
     for source in SIYAVULA_SOURCES:
         matches = [
@@ -5051,7 +5074,7 @@ def build_external_evidence_preimage(
                 "catalogue_subject": source.catalogue_subject,
                 "download_filename_grade_token": source.filename_grade_token,
                 "download_filename_subject_token": source.filename_subject_token,
-                "catalogue_terms_CC_BY_3_0_evidence_root_sha256": license_root,
+                "catalogue_CC_BY_3_0_evidence_root_sha256": license_root,
                 "license_id": "CC-BY-3.0",
                 "source_id": source.source_id,
                 "target_anchor": egress_anchor(state["anchor"]),
@@ -5085,9 +5108,15 @@ def build_external_evidence_preimage(
         "catalogue_and_terms_payloads_observed_phone_side": True,
         "exact_CC_BY_3_0_evidence_preimage": license_preimage,
         "exact_CC_BY_3_0_evidence_root_sha256": license_root,
+        "terms_marked_material_CC_BY_4_0_evidence_preimage": (
+            terms_license_preimage
+        ),
+        "terms_marked_material_CC_BY_4_0_evidence_root_sha256": (
+            terms_license_root
+        ),
         "external_evidence_observation_state": "observed_values",
         "terms": {
-            "exact_CC_BY_3_0_evidence_root_sha256": license_root,
+            "marked_material_CC_BY_4_0_evidence_root_sha256": terms_license_root,
             "license_anchor_records": terms_license_anchors,
             "page_transport_identity": dict(terms_transport),
             "successful_attempt_binding": dict(successful_attempt_bindings["terms"]),
@@ -5609,6 +5638,8 @@ def validate_external_preimage_closed(value: Any) -> None:
             "exact_CC_BY_3_0_evidence_root_sha256",
             "external_evidence_observation_state",
             "terms",
+            "terms_marked_material_CC_BY_4_0_evidence_preimage",
+            "terms_marked_material_CC_BY_4_0_evidence_root_sha256",
         },
         role="external_evidence_preimage",
     )
@@ -5622,7 +5653,6 @@ def validate_external_preimage_closed(value: Any) -> None:
         {
             "catalogue_CC_BY_3_0_anchors",
             "license_id",
-            "terms_CC_BY_3_0_anchors",
         },
         role="CC_BY_3_evidence_preimage",
     )
@@ -5632,25 +5662,53 @@ def validate_external_preimage_closed(value: Any) -> None:
         != canonical_sha256(license_preimage)
     ):
         raise DiscoveryError("CC_BY_3_evidence_root_invalid")
-    for field in ("catalogue_CC_BY_3_0_anchors", "terms_CC_BY_3_0_anchors"):
-        anchors = license_preimage[field]
-        if type(anchors) is not list or not 1 <= len(anchors) <= 64:
-            raise DiscoveryError("CC_BY_3_anchor_roster_invalid")
-        for anchor in anchors:
-            validate_egress_anchor(anchor, role="CC_BY_3_anchor")
-            parsed = urlsplit(anchor["resolved_url"])
-            if (
-                parsed.scheme not in {"http", "https"}
-                or parsed.hostname != "creativecommons.org"
-                or parsed.netloc != "creativecommons.org"
-                or parsed.path != "/licenses/by/3.0/"
-                or parsed.query
-                or parsed.fragment
-            ):
-                raise DiscoveryError("CC_BY_3_anchor_URL_invalid")
+    catalogue_license_anchors = license_preimage["catalogue_CC_BY_3_0_anchors"]
+    if (
+        type(catalogue_license_anchors) is not list
+        or not 1 <= len(catalogue_license_anchors) <= 64
+    ):
+        raise DiscoveryError("CC_BY_3_anchor_roster_invalid")
+    for anchor in catalogue_license_anchors:
+        validate_egress_anchor(anchor, role="CC_BY_3_anchor")
+        if not exact_CC_BY_anchor(anchor, "3.0"):
+            raise DiscoveryError("CC_BY_3_anchor_URL_invalid")
+    terms_license_preimage = require_exact_keys(
+        preimage["terms_marked_material_CC_BY_4_0_evidence_preimage"],
+        {
+            "license_id_observed_from_anchor",
+            "marked_material_only_scope_assertion_present",
+            "terms_CC_BY_4_0_anchors",
+            "terms_visible_text_sha256",
+        },
+        role="terms_marked_material_CC_BY_4_evidence_preimage",
+    )
+    if (
+        terms_license_preimage["license_id_observed_from_anchor"] != "CC-BY-4.0"
+        or terms_license_preimage["marked_material_only_scope_assertion_present"]
+        is not True
+        or preimage["terms_marked_material_CC_BY_4_0_evidence_root_sha256"]
+        != canonical_sha256(terms_license_preimage)
+    ):
+        raise DiscoveryError("terms_marked_material_CC_BY_4_evidence_root_invalid")
+    require_sha256(
+        terms_license_preimage["terms_visible_text_sha256"],
+        role="terms_visible_text",
+    )
+    terms_license_anchors = terms_license_preimage["terms_CC_BY_4_0_anchors"]
+    if type(terms_license_anchors) is not list or not 1 <= len(terms_license_anchors) <= 64:
+        raise DiscoveryError("CC_BY_4_anchor_roster_invalid")
+    for anchor in terms_license_anchors:
+        validate_egress_anchor(anchor, role="CC_BY_4_anchor")
+        if not exact_CC_BY_anchor(anchor, "4.0"):
+            raise DiscoveryError("CC_BY_4_anchor_URL_invalid")
     for role, expected_url in (("catalogue", CATALOGUE_URL), ("terms", TERMS_URL)):
+        evidence_root_field = (
+            "exact_CC_BY_3_0_evidence_root_sha256"
+            if role == "catalogue"
+            else "marked_material_CC_BY_4_0_evidence_root_sha256"
+        )
         expected_keys = {
-            "exact_CC_BY_3_0_evidence_root_sha256",
+            evidence_root_field,
             "license_anchor_records",
             "page_transport_identity",
             "successful_attempt_binding",
@@ -5667,10 +5725,20 @@ def validate_external_preimage_closed(value: Any) -> None:
             preimage[role], expected_keys, role=f"external_{role}"
         )
         if (
-            section["exact_CC_BY_3_0_evidence_root_sha256"]
-            != preimage["exact_CC_BY_3_0_evidence_root_sha256"]
+            section[evidence_root_field]
+            != (
+                preimage["exact_CC_BY_3_0_evidence_root_sha256"]
+                if role == "catalogue"
+                else preimage[
+                    "terms_marked_material_CC_BY_4_0_evidence_root_sha256"
+                ]
+            )
             or section["license_anchor_records"]
-            != license_preimage[f"{role}_CC_BY_3_0_anchors"]
+            != (
+                catalogue_license_anchors
+                if role == "catalogue"
+                else terms_license_anchors
+            )
         ):
             raise DiscoveryError(f"external_{role}_license_binding_invalid")
         validate_page_transport_closed(
@@ -5720,7 +5788,7 @@ def validate_external_preimage_closed(value: Any) -> None:
                 "catalogue_grade",
                 "catalogue_license_applicability_root_sha256",
                 "catalogue_subject",
-                "catalogue_terms_CC_BY_3_0_evidence_root_sha256",
+                "catalogue_CC_BY_3_0_evidence_root_sha256",
                 "download_filename_grade_token",
                 "download_filename_subject_token",
                 "license_id",
@@ -5764,7 +5832,7 @@ def validate_external_preimage_closed(value: Any) -> None:
             or record["download_filename_subject_token"]
             != source.filename_subject_token
             or record["license_id"] != "CC-BY-3.0"
-            or record["catalogue_terms_CC_BY_3_0_evidence_root_sha256"]
+            or record["catalogue_CC_BY_3_0_evidence_root_sha256"]
             != preimage["exact_CC_BY_3_0_evidence_root_sha256"]
             or record["catalogue_license_applicability_root_sha256"]
             != applicability_root
@@ -5973,8 +6041,8 @@ def publish_selection_ready_binding(
                 "catalogue_license_applicability_root_sha256"
             ],
             "catalogue_subject": target["catalogue_subject"],
-            "catalogue_terms_CC_BY_3_0_evidence_root_sha256": target[
-                "catalogue_terms_CC_BY_3_0_evidence_root_sha256"
+            "catalogue_CC_BY_3_0_evidence_root_sha256": target[
+                "catalogue_CC_BY_3_0_evidence_root_sha256"
             ],
             "source_id": target["source_id"],
             "target_context_observation_sha256": canonical_sha256(
@@ -5994,6 +6062,9 @@ def publish_selection_ready_binding(
         "external_evidence_preimage_sha256": evidence["egress_preimage_sha256"],
         "exact_CC_BY_3_0_evidence_root_sha256": preimage[
             "exact_CC_BY_3_0_evidence_root_sha256"
+        ],
+        "terms_marked_material_CC_BY_4_0_evidence_root_sha256": preimage[
+            "terms_marked_material_CC_BY_4_0_evidence_root_sha256"
         ],
         "runtime_identity_sha256": manifest["runtime_identity_sha256"],
         "schema_version": SELECTION_BINDING_SCHEMA,

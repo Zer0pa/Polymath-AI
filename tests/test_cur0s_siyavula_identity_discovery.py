@@ -441,8 +441,11 @@ def _catalogue_html(sources) -> bytes:
 def _terms_html() -> bytes:
     return (
         "<!doctype html><html><body><h1>Siyavula terms</h1>"
-        "<a href='https://creativecommons.org/licenses/by/3.0/'>"
-        "Creative Commons Attribution 3.0</a></body></html>"
+        "<p>Some material is licensed under a "
+        "<a href='https://creativecommons.org/licenses/by/4.0/'>"
+        "Creative Commons Attribution Only License</a>. Only material that is "
+        "clearly marked with a Creative Commons license can be re-used without "
+        "permission.</p></body></html>"
     ).encode("utf-8")
 
 
@@ -1030,9 +1033,20 @@ def test_catalogue_license_must_structurally_apply_and_hidden_or_CC4_text_cannot
     CC4_catalogue = _catalogue_html(harness.SIYAVULA_SOURCES).replace(
         b"/licenses/by/3.0/", b"/licenses/by/4.0/"
     )
-    CC4_terms = terms.replace(b"/licenses/by/3.0/", b"/licenses/by/4.0/")
-    with pytest.raises(harness.DiscoveryError, match="exact_CC_BY_3_0"):
-        build(CC4_catalogue, CC4_terms)
+    with pytest.raises(harness.DiscoveryError, match="catalogue_CC_BY_3"):
+        build(CC4_catalogue, terms)
+
+    CC3_terms = terms.replace(b"/licenses/by/4.0/", b"/licenses/by/3.0/")
+    with pytest.raises(harness.DiscoveryError, match="terms_CC_BY_4"):
+        build(_catalogue_html(harness.SIYAVULA_SOURCES), CC3_terms)
+
+    unscoped_terms = terms.replace(
+        b"Only material that is clearly marked with a Creative Commons license "
+        b"can be re-used without permission.",
+        b"This page contains a Creative Commons link.",
+    )
+    with pytest.raises(harness.DiscoveryError, match="marked_material_CC_BY_notice"):
+        build(_catalogue_html(harness.SIYAVULA_SOURCES), unscoped_terms)
 
 
 def test_per_card_CC_BY_3_anchor_is_accepted_without_global_scope_claim(harness):
