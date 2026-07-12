@@ -861,7 +861,7 @@ def validate_python_startup(value: Any) -> None:
                 )
         if module["origin_sha256"] is not None:
             require_sha256(module["origin_sha256"], role="python_module_origin")
-            if type(module["origin_bytes"]) is not int or module["origin_bytes"] <= 0:
+            if type(module["origin_bytes"]) is not int or module["origin_bytes"] < 0:
                 raise DiscoveryError("python_module_origin_bytes_invalid")
         elif module["origin_bytes"] is not None:
             raise DiscoveryError("python_module_origin_nullability_invalid")

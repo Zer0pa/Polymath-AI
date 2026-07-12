@@ -344,6 +344,35 @@ def test_phone_runtime_requires_termux_android_sys_platform(
         harness.require_phone_runtime(curl)
 
 
+def test_runtime_identity_allows_hash_bound_empty_stdlib_source(harness) -> None:
+    runtime = _runtime(harness)
+    modules = [
+        {
+            "cached": f"{harness.ABSENT_PYCACHE_PREFIX}/empty.cpython-313.pyc",
+            "loader_type": "SourceFileLoader",
+            "module": "empty_fixture",
+            "origin": f"{harness.EXPECTED_PYTHON_PREFIX}/lib/python3.13/empty.py",
+            "origin_bytes": 0,
+            "origin_sha256": "sha256:" + hashlib.sha256(b"").hexdigest(),
+        }
+    ]
+    module_root = harness.canonical_sha256(modules)
+    harness.EXPECTED_SOURCE_ONLY_STDLIB_ROOT_SHA256 = module_root
+    runtime["python_startup"]["loaded_module_origins"] = modules
+    runtime["python_startup"]["loaded_module_origins_sha256"] = module_root
+    runtime["python_startup"]["source_only_stdlib_expected_root_sha256"] = (
+        module_root
+    )
+    core = {
+        key: value
+        for key, value in runtime.items()
+        if key != "observation_root_sha256"
+    }
+    runtime["observation_root_sha256"] = harness.canonical_sha256(core)
+
+    harness.validate_runtime_identity(runtime)
+
+
 def _epoch(harness, tmp_path: Path) -> tuple[Path, dict[str, Any]]:
     runtime = _runtime(harness)
     epoch = harness.initialize_epoch(
