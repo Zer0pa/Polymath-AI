@@ -1750,6 +1750,84 @@ def test_restart_replay_reopens_identity_artifact_and_rejects_tamper(
         harness.finalize_epoch(epoch, runtime_identity=runtime, lease=lease)
 
 
+def test_imported_selection_reuses_only_exact_receipted_predecessor_binding(
+    harness, tmp_path, monkeypatch
+):
+    _payload, source, root, predecessor, runtime, _lease, direct = (
+        _complete_single_source(harness, tmp_path, monkeypatch)
+    )
+    target = harness.initialize_epoch(
+        root,
+        runtime_identity=runtime,
+        now=datetime(2026, 7, 12, 13, 0, tzinfo=timezone.utc),
+        require_phone_home=False,
+    )
+    predecessor_manifest = harness.read_canonical_json(
+        predecessor / "epoch.json", schema=harness.EPOCH_SCHEMA
+    )
+    predecessor_manifest_sha = harness.file_payload_sha256(
+        predecessor / "epoch.json"
+    )
+    monkeypatch.setattr(
+        harness,
+        "ADMITTED_PREDECESSOR_EPOCH_ID",
+        predecessor.name,
+    )
+    monkeypatch.setattr(
+        harness,
+        "ADMITTED_PREDECESSOR_EPOCH_MANIFEST_SHA256",
+        predecessor_manifest_sha,
+    )
+    monkeypatch.setattr(
+        harness,
+        "ADMITTED_PREDECESSOR_RUNTIME_SHA256",
+        predecessor_manifest["runtime_identity_sha256"],
+    )
+    monkeypatch.setattr(
+        harness,
+        "admitted_predecessor_epoch",
+        lambda observed_root: (predecessor, predecessor_manifest)
+        if observed_root == root
+        else pytest.fail("wrong predecessor root"),
+    )
+    predecessor_path = harness.selection_path(predecessor, source, 0)
+    imported_path = harness.selection_path(target, source, 0)
+    harness.ensure_private_directory(imported_path.parent)
+    imported = {
+        "body_sha256": direct["body_sha256"],
+        "cas_artifact": direct["cas_artifact"],
+        "chunk_end": direct["chunk_end"],
+        "chunk_index": 0,
+        "chunk_start": direct["chunk_start"],
+        "expected_chunk_bytes": direct["expected_chunk_bytes"],
+        "individually_receipted_selection_reused": True,
+        "predecessor_attempt_sha256": direct["attempt_sha256"],
+        "predecessor_epoch_id": predecessor.name,
+        "predecessor_epoch_manifest_sha256": predecessor_manifest_sha,
+        "predecessor_runtime_identity_sha256": predecessor_manifest[
+            "runtime_identity_sha256"
+        ],
+        "predecessor_selection_artifact": harness.relative_inside(
+            root, predecessor_path
+        ),
+        "predecessor_selection_sha256": direct["selection_sha256"],
+        "raw_source_request_replayed": False,
+        "schema_version": harness.IMPORTED_CHUNK_SELECTION_SCHEMA,
+        "source_id": source.source_id,
+        "unreceipted_bytes_adopted": False,
+    }
+    harness.publish_immutable_json(imported_path, imported)
+    validated = harness.validate_selected_chunk(root, target, source, 0)
+    assert validated["body_sha256"] == direct["body_sha256"]
+    assert validated["cas_path"] == direct["cas_path"]
+
+    tampered = deepcopy(imported)
+    tampered["raw_source_request_replayed"] = True
+    _replace_sealed_json(harness, imported_path, tampered)
+    with pytest.raises(harness.DiscoveryError, match="imported_selection_binding"):
+        harness.validate_selected_chunk(root, target, source, 0)
+
+
 def test_immutable_evidence_is_0400_single_link_and_locks_remain_mutable(
     harness, tmp_path, monkeypatch
 ):
