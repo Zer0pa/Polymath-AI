@@ -1469,7 +1469,7 @@ def test_streaming_XML_guards_and_checkpoint_interruptions_fail_closed(
 
 
 def test_exact_phone_values_and_held_fd3_harness_identity_are_non_substitutable(
-    harness, tmp_path
+    harness, monkeypatch, tmp_path
 ):
     runtime = _runtime(harness)
     for mutation in ("serial", "symlink", "linker_owner"):
@@ -1513,12 +1513,21 @@ def test_exact_phone_values_and_held_fd3_harness_identity_are_non_substitutable(
         moved = tmp_path / "held-original.py"
         original_path.rename(moved)
         original_path.write_bytes(b"substituted path payload")
+        original_readlink = os.readlink
+        monkeypatch.setattr(
+            harness.os,
+            "readlink",
+            lambda path: str(moved)
+            if path == harness.HARNESS_EXECUTION_PATH
+            else original_readlink(path),
+        )
         identity = harness.held_harness_identity()
         assert identity["sha256"] == "sha256:" + hashlib.sha256(
             original_payload
         ).hexdigest()
         assert identity["execution_fd"] == 3
         assert identity["execution_path"] == "/proc/self/fd/3"
+        assert identity["path"] == str(moved)
     finally:
         if saved_fd3 is None:
             os.close(harness.HARNESS_EXECUTION_FD)

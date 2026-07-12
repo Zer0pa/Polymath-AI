@@ -1297,10 +1297,16 @@ def held_harness_identity(fd: int = HARNESS_EXECUTION_FD) -> dict[str, Any]:
     try:
         descriptor_flags = fcntl.fcntl(fd, fcntl.F_GETFD)
         before = os.fstat(fd)
+        target_before = os.readlink(HARNESS_EXECUTION_PATH)
     except OSError as error:
         raise DiscoveryError("held_harness_FD_unavailable") from error
     require_sealed_regular_stat(before, role="held_harness")
-    if descriptor_flags & fcntl.FD_CLOEXEC or before.st_size <= 0:
+    if (
+        descriptor_flags & fcntl.FD_CLOEXEC
+        or before.st_size <= 0
+        or not target_before.startswith("/")
+        or target_before.endswith(" (deleted)")
+    ):
         raise DiscoveryError("held_harness_FD_contract_invalid")
     digest = hashlib.sha256()
     consumed = 0
@@ -1311,7 +1317,15 @@ def held_harness_identity(fd: int = HARNESS_EXECUTION_FD) -> dict[str, Any]:
         consumed += len(payload)
         digest.update(payload)
     after = os.fstat(fd)
-    if stat_identity(before) != stat_identity(after) or consumed != before.st_size:
+    try:
+        target_after = os.readlink(HARNESS_EXECUTION_PATH)
+    except OSError as error:
+        raise DiscoveryError("held_harness_FD_unavailable") from error
+    if (
+        stat_identity(before) != stat_identity(after)
+        or consumed != before.st_size
+        or target_after != target_before
+    ):
         raise DiscoveryError("held_harness_FD_changed")
     return {
         "bytes": consumed,
@@ -1324,6 +1338,7 @@ def held_harness_identity(fd: int = HARNESS_EXECUTION_FD) -> dict[str, Any]:
         "mode": f"{stat.S_IMODE(after.st_mode):04o}",
         "mtime_ns": after.st_mtime_ns,
         "nlink": after.st_nlink,
+        "path": target_after,
         "sha256": "sha256:" + digest.hexdigest(),
         "uid": after.st_uid,
     }
