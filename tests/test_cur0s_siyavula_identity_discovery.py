@@ -1119,11 +1119,14 @@ def test_catalogue_target_can_bind_nearest_cover_alt_but_not_intervening_alt(
                 f"<li><a href='{source.url}'>ePUB (CC-BY)</a></li>"
             )
         return (
-            "<html><body><main>"
+            "<html><body>"
             + "".join(books)
-            + "<p>All textbooks in this catalogue are licensed under "
+            + "<p>CC-BY (unbranded versions). These unbranded versions of the "
+            "same content are available for you to share, adapt, transform, "
+            "modify or build upon in any way, with the only requirement being "
+            "to give appropriate credit to Siyavula. For more information visit "
             "<a href='https://creativecommons.org/licenses/by/3.0/'>"
-            "CC BY 3.0</a></p></main></body></html>"
+            "Creative Commons Attribution 3.0</a></p></body></html>"
         ).encode()
 
     terms = _terms_html()
@@ -1154,6 +1157,14 @@ def test_catalogue_target_can_bind_nearest_cover_alt_but_not_intervening_alt(
         record["target_context_evidence"]["association_mode"]
         for record in preimage["catalogue"]["target_anchor_records"]
     } == {"nearest_preceding_nonhidden_image_alt"}
+    assert {
+        record["application_mode"]
+        for record in preimage["catalogue"]["license_applicability_preimage"][
+            "target_applicability_records"
+        ]
+    } == {
+        "explicit_target_CC_BY_label_plus_scoped_unbranded_adaptation_statement"
+    }
     harness.validate_external_preimage_closed(preimage)
 
     with pytest.raises(harness.DiscoveryError, match="nearest_image_subject_grade"):

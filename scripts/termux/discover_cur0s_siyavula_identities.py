@@ -4913,6 +4913,23 @@ def explicit_collection_license_statement(text: str) -> bool:
     return bool(license_marker and collection_marker and applicability_marker)
 
 
+def explicit_unbranded_adaptation_statement(text: str) -> bool:
+    normalized = " ".join(text.casefold().split())
+    return all(
+        marker in normalized
+        for marker in (
+            "unbranded versions",
+            "share, adapt, transform, modify or build upon",
+            "give appropriate credit to siyavula",
+            "creative commons attribution 3.0",
+        )
+    )
+
+
+def explicit_target_CC_BY_label(text: str) -> bool:
+    return re.fullmatch(r"(?i)epub\s*\(cc-by\)", " ".join(text.split())) is not None
+
+
 def structural_scope_evidence(
     card: Mapping[str, Any],
     *,
@@ -4963,6 +4980,47 @@ def catalogue_license_applicability_preimage(
         }
         per_target[state["source"].source_id] = record
 
+    if unresolved:
+        statement_candidates: list[tuple[int, Mapping[str, Any], Mapping[str, Any]]] = []
+        for license_anchor in catalogue_license_anchors:
+            for statement_id in license_anchor["card_ids"]:
+                statement = parser.cards[statement_id]
+                if explicit_unbranded_adaptation_statement(statement["visible_text"]):
+                    statement_candidates.append(
+                        (statement["depth"], statement, license_anchor)
+                    )
+        if statement_candidates and all(
+            explicit_target_CC_BY_label(state["anchor"]["text"])
+            for state in unresolved
+        ):
+            _depth, statement, license_anchor = max(
+                statement_candidates,
+                key=lambda candidate: (candidate[0], -candidate[2]["ordinal"]),
+            )
+            statement_scope = structural_scope_evidence(
+                statement,
+                target_anchor_ordinals=(),
+                license_anchor_ordinal=license_anchor["ordinal"],
+                contains_all_target_anchors=False,
+                include_visible_statement=True,
+            )
+            for state in unresolved:
+                label = state["anchor"]["text"]
+                per_target[state["source"].source_id] = {
+                    "applicable_license_anchors": [egress_anchor(license_anchor)],
+                    "application_mode": (
+                        "explicit_target_CC_BY_label_plus_scoped_unbranded_"
+                        "adaptation_statement"
+                    ),
+                    "license_statement_scope_evidence": statement_scope,
+                    "source_id": state["source"].source_id,
+                    "target_anchor_label_evidence": {
+                        "text": label,
+                        "text_sha256": "sha256:"
+                        + sha256_bytes(label.encode("utf-8")),
+                    },
+                }
+            unresolved = []
     if unresolved:
         common_scope_ids = set(target_states[0]["anchor"]["card_ids"])
         for state in target_states[1:]:
@@ -5593,7 +5651,10 @@ def validate_license_scope_evidence(
             maximum=MAX_HTML_CARD_TEXT_CHARACTERS,
         )
         if (
-            not explicit_collection_license_statement(visible)
+            not (
+                explicit_collection_license_statement(visible)
+                or explicit_unbranded_adaptation_statement(visible)
+            )
             or scope["scope_visible_text_sha256"]
             != "sha256:" + sha256_bytes(visible.encode("utf-8"))
         ):
@@ -5604,6 +5665,7 @@ def validate_catalogue_license_applicability(
     value: Any,
     *,
     catalogue_license_anchors: Sequence[Mapping[str, Any]],
+    target_anchors: Sequence[Mapping[str, Any]],
     target_contexts: Sequence[Mapping[str, Any]],
     target_anchor_ordinals: Sequence[int],
 ) -> None:
@@ -5621,8 +5683,9 @@ def validate_catalogue_license_applicability(
     if type(records) is not list or len(records) != len(SIYAVULA_SOURCES):
         raise DiscoveryError("catalogue_license_applicability_roster_invalid")
     allowed_anchors = [dict(anchor) for anchor in catalogue_license_anchors]
-    for source, context, record in zip(
+    for source, target_anchor, context, record in zip(
         SIYAVULA_SOURCES,
+        target_anchors,
         target_contexts,
         records,
         strict=True,
@@ -5637,6 +5700,16 @@ def validate_catalogue_license_applicability(
         }
         if mode == "exact_CC_BY_3_0_anchor_within_selected_target_card":
             keys.add("selected_target_card_context_sha256")
+        elif mode == (
+            "explicit_target_CC_BY_label_plus_scoped_unbranded_"
+            "adaptation_statement"
+        ):
+            keys.update(
+                {
+                    "license_statement_scope_evidence",
+                    "target_anchor_label_evidence",
+                }
+            )
         elif mode == "visible_collection_scope_statement":
             keys.update(
                 {
@@ -5663,6 +5736,37 @@ def validate_catalogue_license_applicability(
                 context
             ):
                 raise DiscoveryError("catalogue_per_card_license_scope_invalid")
+            continue
+        if mode == (
+            "explicit_target_CC_BY_label_plus_scoped_unbranded_"
+            "adaptation_statement"
+        ):
+            label = require_exact_keys(
+                closed["target_anchor_label_evidence"],
+                {"text", "text_sha256"},
+                role="catalogue_target_CC_BY_label",
+            )
+            label_text = require_bounded_string(
+                label["text"], role="catalogue_target_CC_BY_label", maximum=4096
+            )
+            if (
+                label_text != target_anchor["text"]
+                or not explicit_target_CC_BY_label(label_text)
+                or label["text_sha256"]
+                != "sha256:" + sha256_bytes(label_text.encode("utf-8"))
+            ):
+                raise DiscoveryError("catalogue_target_CC_BY_label_invalid")
+            validate_license_scope_evidence(
+                closed["license_statement_scope_evidence"],
+                role="catalogue_unbranded_license_statement_scope",
+                statement=True,
+            )
+            if not explicit_unbranded_adaptation_statement(
+                closed["license_statement_scope_evidence"][
+                    "visible_collection_license_statement"
+                ]
+            ):
+                raise DiscoveryError("catalogue_unbranded_statement_invalid")
             continue
         validate_license_scope_evidence(
             closed["collection_scope_evidence"],
@@ -5966,6 +6070,7 @@ def validate_external_preimage_closed(value: Any) -> None:
     validate_catalogue_license_applicability(
         applicability_preimage,
         catalogue_license_anchors=preimage["catalogue"]["license_anchor_records"],
+        target_anchors=[target["target_anchor"] for target in targets],
         target_contexts=contexts,
         target_anchor_ordinals=target_ordinals,
     )
