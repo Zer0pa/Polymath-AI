@@ -71,6 +71,12 @@ REQUEST_AND_TERMINAL_RESERVE_SECONDS = 16 * 60
 CURL_MAX_TIME_SECONDS = 900
 CURL_SUBPROCESS_TIMEOUT_SECONDS = 930
 CURL_LOW_SPEED_TIME_SECONDS = 600
+REQUEST_START_SCHEDULING_MARGIN_SECONDS = 60
+MIN_REMAINING_BEFORE_REQUEST_SECONDS = (
+    CURL_SUBPROCESS_TIMEOUT_SECONDS
+    + REQUEST_AND_TERMINAL_RESERVE_SECONDS
+    + REQUEST_START_SCHEDULING_MARGIN_SECONDS
+)
 MIN_FREE_BYTES = 4 * 1024**3
 THERMAL_SENTINELS_MILLIDEGREES_C = frozenset({-273_000})
 COMPUTE_THERMAL_TYPE_RE = re.compile(
@@ -1965,6 +1971,14 @@ class DiscoveryLease:
         artifact_sha256 = publish_immutable_json(path, record)
         return relative_inside(self.epoch, path), artifact_sha256
 
+    def require_request_budget(self, *, phase: str) -> None:
+        observation = self.checkpoint(phase=phase)
+        if (
+            observation["remaining_seconds_floor"]
+            <= MIN_REMAINING_BEFORE_REQUEST_SECONDS
+        ):
+            raise DiscoveryError("finite_discovery_request_budget_unavailable")
+
 
 @contextmanager
 def epoch_lock(epoch: Path) -> Iterator[None]:
@@ -3439,6 +3453,9 @@ def acquire_epoch(
             if pending is None:
                 break
             source, chunk_index = pending
+            lease.require_request_budget(
+                phase=f"request_budget:{source.source_id}:{chunk_index}"
+            )
             acquire_chunk(
                 root,
                 epoch,
@@ -5703,6 +5720,7 @@ def capture_external_evidence(
     observations: dict[str, dict[str, Any]] = {}
     with epoch_lock(epoch):
         for role, url in (("catalogue", CATALOGUE_URL), ("terms", TERMS_URL)):
+            lease.require_request_budget(phase=f"external_request_budget:{role}")
             with origin_lock(root):
                 observations[role] = capture_one_external_page_locked(
                     root,
@@ -7255,8 +7273,14 @@ def aggregate_transport_policy(
         "origin_wide_backoff_seconds": list(BACKOFF_SECONDS),
         "per_request_retry_count": 0,
         "private_transport_temp_directory_required": True,
+        "minimum_remaining_before_request_seconds": (
+            MIN_REMAINING_BEFORE_REQUEST_SECONDS
+        ),
         "request_and_terminal_reserve_seconds": (
             REQUEST_AND_TERMINAL_RESERVE_SECONDS
+        ),
+        "request_start_scheduling_margin_seconds": (
+            REQUEST_START_SCHEDULING_MARGIN_SECONDS
         ),
         "receipted_predecessor_selection_import_requires_exact_admitted_epoch": True,
         "receipted_predecessor_selection_import_count": receipted_import_count,

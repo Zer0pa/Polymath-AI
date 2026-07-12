@@ -311,6 +311,9 @@ class SyntheticLease:
     def checkpoint(self, *, phase: str) -> dict[str, Any]:
         return {"phase": phase}
 
+    def require_request_budget(self, *, phase: str) -> None:
+        self.checkpoint(phase=phase)
+
 
 def test_phone_runtime_requires_termux_android_sys_platform(
     harness, monkeypatch, tmp_path
@@ -1453,6 +1456,8 @@ def test_real_discovery_lease_accepts_its_own_observation_write_and_rejects_mode
     artifact, digest = lease.observe(phase="first")
     assert harness.file_payload_sha256(epoch / artifact) == digest
     lease.checkpoint(phase="after_own_write")
+    with pytest.raises(harness.DiscoveryError, match="request_budget_unavailable"):
+        lease.require_request_budget(phase="insufficient_request_budget")
 
     epoch.chmod(0o750)
     with pytest.raises(harness.DiscoveryError, match="epoch_identity_changed"):
