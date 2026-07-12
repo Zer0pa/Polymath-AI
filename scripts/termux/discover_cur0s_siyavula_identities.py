@@ -44,6 +44,7 @@ DISCOVERY_SCHEMA = "cur0s_siyavula_identity_discovery_v2"
 EPOCH_SCHEMA = "cur0s_siyavula_identity_discovery_epoch_v2"
 CHUNK_ATTEMPT_SCHEMA = "cur0s_siyavula_range_attempt_v2"
 CHUNK_SELECTION_SCHEMA = "cur0s_siyavula_chunk_selection_v2"
+IMPORTED_CHUNK_SELECTION_SCHEMA = "cur0s_siyavula_imported_chunk_selection_v3"
 ASSEMBLY_SCHEMA = "cur0s_siyavula_epub_assembly_v2"
 IDENTITY_SCHEMA = "cur0s_siyavula_epub_identity_observation_v2"
 AGGREGATE_RECEIPT_SCHEMA = "cur0s_siyavula_identity_discovery_receipt_v2"
@@ -67,8 +68,9 @@ ADMITTED_ZIP_COMPRESSION_METHODS = frozenset(
 BACKOFF_SECONDS = (15 * 60, 60 * 60, 4 * 60 * 60, 12 * 60 * 60)
 MAX_DISCOVERY_LEASE_SECONDS = 60 * 60
 REQUEST_AND_TERMINAL_RESERVE_SECONDS = 16 * 60
-CURL_MAX_TIME_SECONDS = 300
-CURL_SUBPROCESS_TIMEOUT_SECONDS = 330
+CURL_MAX_TIME_SECONDS = 900
+CURL_SUBPROCESS_TIMEOUT_SECONDS = 930
+CURL_LOW_SPEED_TIME_SECONDS = 600
 MIN_FREE_BYTES = 4 * 1024**3
 THERMAL_SENTINELS_MILLIDEGREES_C = frozenset({-273_000})
 COMPUTE_THERMAL_TYPE_RE = re.compile(
@@ -85,6 +87,18 @@ THERMAL_POLICY = {
     "required_observation": "battery_supply",
     "sentinel_values_millidegrees_c": sorted(THERMAL_SENTINELS_MILLIDEGREES_C),
 }
+ADMITTED_PREDECESSOR_EPOCH_ID = (
+    "20260712T201920Z_3e8f01d426bb_siyavula_identity_v2"
+)
+ADMITTED_PREDECESSOR_EPOCH_MANIFEST_SHA256 = (
+    "sha256:f5c61e51d24189e251bd7633dcad588b9e3785fe0971e8b164910b79fe2c9066"
+)
+ADMITTED_PREDECESSOR_RUNTIME_SHA256 = (
+    "sha256:6edadd6324c657fad1614e357f17f881c6ae11189b55b8e41367760c74f1ffe9"
+)
+ADMITTED_PREDECESSOR_HARNESS_SHA256 = (
+    "sha256:8f64012a609a7ae4103e9c164794edf0230b500c83a21447d44841a9edf015cb"
+)
 SAFE_COMPONENT_RE = re.compile(r"[A-Za-z0-9][A-Za-z0-9._-]{0,127}\Z")
 SHA256_RE = re.compile(r"[0-9a-f]{64}\Z")
 XML_FORBIDDEN_RE = re.compile(r"<!\s*(?:DOCTYPE|ENTITY)\b", re.IGNORECASE)
@@ -1185,7 +1199,7 @@ def replace_mutable_json(path: Path, value: Mapping[str, Any]) -> str:
 def read_canonical_json(
     path: Path,
     *,
-    schema: str,
+    schema: str | frozenset[str],
     max_bytes: int = 4 * 1024 * 1024,
     immutable: bool = True,
 ) -> dict[str, Any]:
@@ -1234,9 +1248,10 @@ def read_canonical_json(
         value = json.loads(payload_bytes)
     except (UnicodeDecodeError, json.JSONDecodeError):
         raise DiscoveryError(f"JSON_artifact_invalid:{path.name}") from None
+    admitted_schemas = schema if isinstance(schema, frozenset) else frozenset({schema})
     if (
         not isinstance(value, dict)
-        or value.get("schema_version") != schema
+        or value.get("schema_version") not in admitted_schemas
         or canonical_json_bytes(value) + b"\n" != payload_bytes
         or sha256_bytes(payload_bytes) != digest
     ):
@@ -2588,7 +2603,7 @@ def curl_range_executor(
                     "--speed-limit",
                     "1",
                     "--speed-time",
-                    "180",
+                    str(CURL_LOW_SPEED_TIME_SECONDS),
                     "--max-time",
                     str(CURL_MAX_TIME_SECONDS),
                     "--max-filesize",
@@ -2914,7 +2929,7 @@ def file_payload_sha256(path: Path) -> str:
     return "sha256:" + digest
 
 
-def validate_selected_chunk(
+def _validate_direct_selected_chunk(
     root: Path,
     epoch: Path,
     source: SiyavulaSource,
@@ -3041,7 +3056,197 @@ def validate_selected_chunk(
         or cas_path.name != cas_digest
     ):
         raise DiscoveryError(f"selected_chunk_evidence_invalid:{source.source_id}")
-    return {**selected, "cas_path": cas_path}
+    return {
+        **selected,
+        "cas_path": cas_path,
+        "selection_sha256": file_payload_sha256(selected_path),
+    }
+
+
+def admitted_predecessor_epoch(root: Path) -> tuple[Path, dict[str, Any]]:
+    predecessor = root / "epochs" / ADMITTED_PREDECESSOR_EPOCH_ID
+    _predecessor_root, validated, manifest = validate_epoch(predecessor)
+    harness = manifest["runtime_identity"].get("harness")
+    if (
+        validated != predecessor.resolve(strict=True)
+        or file_payload_sha256(predecessor / "epoch.json")
+        != ADMITTED_PREDECESSOR_EPOCH_MANIFEST_SHA256
+        or manifest["runtime_identity_sha256"]
+        != ADMITTED_PREDECESSOR_RUNTIME_SHA256
+        or not isinstance(harness, dict)
+        or harness.get("sha256") != ADMITTED_PREDECESSOR_HARNESS_SHA256
+        or harness.get("path")
+        != str(
+            PHONE_HOME
+            / "polymath_gemma4_e4b_identity_discovery_code"
+            / "b782be34350ff181de05a2fb8709d34e8b619404"
+            / "discover_cur0s_siyavula_identities.py"
+        )
+    ):
+        raise DiscoveryError("receipted_predecessor_epoch_identity_invalid")
+    return predecessor, manifest
+
+
+def validate_imported_selected_chunk(
+    root: Path,
+    epoch: Path,
+    source: SiyavulaSource,
+    chunk_index: int,
+) -> dict[str, Any]:
+    start, end = chunk_bounds(source, chunk_index)
+    path = selection_path(epoch, source, chunk_index)
+    imported = read_canonical_json(path, schema=IMPORTED_CHUNK_SELECTION_SCHEMA)
+    require_exact_keys(
+        imported,
+        {
+            "body_sha256",
+            "cas_artifact",
+            "chunk_end",
+            "chunk_index",
+            "chunk_start",
+            "expected_chunk_bytes",
+            "individually_receipted_selection_reused",
+            "predecessor_attempt_sha256",
+            "predecessor_epoch_id",
+            "predecessor_epoch_manifest_sha256",
+            "predecessor_runtime_identity_sha256",
+            "predecessor_selection_artifact",
+            "predecessor_selection_sha256",
+            "raw_source_request_replayed",
+            "schema_version",
+            "source_id",
+            "unreceipted_bytes_adopted",
+        },
+        role="imported_chunk_selection",
+    )
+    predecessor, _manifest = admitted_predecessor_epoch(root)
+    predecessor_selection = _validate_direct_selected_chunk(
+        root,
+        predecessor,
+        source,
+        chunk_index,
+    )
+    predecessor_path = selection_path(predecessor, source, chunk_index)
+    required = {
+        "body_sha256": predecessor_selection["body_sha256"],
+        "cas_artifact": predecessor_selection["cas_artifact"],
+        "chunk_end": end,
+        "chunk_index": chunk_index,
+        "chunk_start": start,
+        "expected_chunk_bytes": end - start + 1,
+        "source_id": source.source_id,
+    }
+    if (
+        any(imported.get(key) != value for key, value in required.items())
+        or imported["individually_receipted_selection_reused"] is not True
+        or imported["raw_source_request_replayed"] is not False
+        or imported["unreceipted_bytes_adopted"] is not False
+        or imported["predecessor_epoch_id"] != ADMITTED_PREDECESSOR_EPOCH_ID
+        or imported["predecessor_epoch_manifest_sha256"]
+        != ADMITTED_PREDECESSOR_EPOCH_MANIFEST_SHA256
+        or imported["predecessor_runtime_identity_sha256"]
+        != ADMITTED_PREDECESSOR_RUNTIME_SHA256
+        or imported["predecessor_selection_artifact"]
+        != relative_inside(root, predecessor_path)
+        or imported["predecessor_selection_sha256"]
+        != predecessor_selection["selection_sha256"]
+        or imported["predecessor_attempt_sha256"]
+        != predecessor_selection["attempt_sha256"]
+    ):
+        raise DiscoveryError(f"imported_selection_binding_invalid:{source.source_id}")
+    return {
+        "attempt_sha256": predecessor_selection["attempt_sha256"],
+        "body_sha256": imported["body_sha256"],
+        "cas_artifact": imported["cas_artifact"],
+        "cas_path": predecessor_selection["cas_path"],
+        "chunk_end": end,
+        "chunk_index": chunk_index,
+        "chunk_start": start,
+        "expected_chunk_bytes": end - start + 1,
+        "selection_sha256": file_payload_sha256(path),
+        "source_id": source.source_id,
+    }
+
+
+def validate_selected_chunk(
+    root: Path,
+    epoch: Path,
+    source: SiyavulaSource,
+    chunk_index: int,
+) -> dict[str, Any]:
+    path = selection_path(epoch, source, chunk_index)
+    selection = read_canonical_json(
+        path,
+        schema=frozenset(
+            {CHUNK_SELECTION_SCHEMA, IMPORTED_CHUNK_SELECTION_SCHEMA}
+        ),
+    )
+    if selection["schema_version"] == IMPORTED_CHUNK_SELECTION_SCHEMA:
+        return validate_imported_selected_chunk(root, epoch, source, chunk_index)
+    return _validate_direct_selected_chunk(root, epoch, source, chunk_index)
+
+
+def import_receipted_predecessor_selections(epoch: Path) -> dict[str, Any]:
+    root, epoch, manifest = validate_epoch(epoch)
+    predecessor, _predecessor_manifest = admitted_predecessor_epoch(root)
+    if epoch == predecessor:
+        raise DiscoveryError("predecessor_cannot_import_into_itself")
+    imported_count = 0
+    with epoch_lock(epoch):
+        for source in SIYAVULA_SOURCES:
+            chunk_count = (source.expected_bytes + CHUNK_BYTES - 1) // CHUNK_BYTES
+            for chunk_index in range(chunk_count):
+                predecessor_path = selection_path(predecessor, source, chunk_index)
+                if not predecessor_path.exists():
+                    continue
+                direct = _validate_direct_selected_chunk(
+                    root, predecessor, source, chunk_index
+                )
+                destination = selection_path(epoch, source, chunk_index)
+                value = {
+                    "body_sha256": direct["body_sha256"],
+                    "cas_artifact": direct["cas_artifact"],
+                    "chunk_end": direct["chunk_end"],
+                    "chunk_index": chunk_index,
+                    "chunk_start": direct["chunk_start"],
+                    "expected_chunk_bytes": direct["expected_chunk_bytes"],
+                    "individually_receipted_selection_reused": True,
+                    "predecessor_attempt_sha256": direct["attempt_sha256"],
+                    "predecessor_epoch_id": ADMITTED_PREDECESSOR_EPOCH_ID,
+                    "predecessor_epoch_manifest_sha256": (
+                        ADMITTED_PREDECESSOR_EPOCH_MANIFEST_SHA256
+                    ),
+                    "predecessor_runtime_identity_sha256": (
+                        ADMITTED_PREDECESSOR_RUNTIME_SHA256
+                    ),
+                    "predecessor_selection_artifact": relative_inside(
+                        root, predecessor_path
+                    ),
+                    "predecessor_selection_sha256": direct["selection_sha256"],
+                    "raw_source_request_replayed": False,
+                    "schema_version": IMPORTED_CHUNK_SELECTION_SCHEMA,
+                    "source_id": source.source_id,
+                    "unreceipted_bytes_adopted": False,
+                }
+                if destination.exists():
+                    existing = validate_imported_selected_chunk(
+                        root, epoch, source, chunk_index
+                    )
+                    if existing["selection_sha256"] != file_payload_sha256(
+                        destination
+                    ):
+                        raise DiscoveryError("imported_selection_revalidation_failed")
+                    continue
+                ensure_private_directory(destination.parent)
+                publish_immutable_json(destination, value)
+                validate_imported_selected_chunk(root, epoch, source, chunk_index)
+                imported_count += 1
+    return {
+        "imported_selection_count": imported_count,
+        "predecessor_epoch_id": predecessor.name,
+        "target_epoch_id": manifest["epoch_id"],
+        "unreceipted_bytes_adopted": False,
+    }
 
 
 def _acquire_chunk_locked(
@@ -3255,6 +3460,7 @@ def assemble_source(root: Path, epoch: Path, source: SiyavulaSource) -> dict[str
             "chunk_end": record["chunk_end"],
             "chunk_index": record["chunk_index"],
             "chunk_start": record["chunk_start"],
+            "selection_sha256": record["selection_sha256"],
         }
         for record in selected
     ]
@@ -4461,7 +4667,7 @@ def curl_page_executor(
                     "--speed-limit",
                     "1",
                     "--speed-time",
-                    "180",
+                    str(CURL_LOW_SPEED_TIME_SECONDS),
                     "--max-time",
                     str(CURL_MAX_TIME_SECONDS),
                     "--max-filesize",
@@ -7011,6 +7217,7 @@ def aggregate_transport_policy(
             runtime_identity
         ),
         "curl_max_time_seconds": CURL_MAX_TIME_SECONDS,
+        "curl_low_speed_time_seconds": CURL_LOW_SPEED_TIME_SECONDS,
         "curl_subprocess_timeout_seconds": CURL_SUBPROCESS_TIMEOUT_SECONDS,
         "exact_one_request_per_attempt": True,
         "expected_total_chunk_requests": EXPECTED_TOTAL_CHUNK_REQUESTS,
@@ -7380,7 +7587,7 @@ def build_argument_parser() -> argparse.ArgumentParser:
     subparsers = parser.add_subparsers(dest="command", required=True)
     initialize = subparsers.add_parser("init")
     initialize.add_argument("--root", type=Path, default=DEFAULT_DISCOVERY_ROOT)
-    for command in ("acquire", "evidence", "finalize"):
+    for command in ("acquire", "evidence", "finalize", "import-receipted"):
         child = subparsers.add_parser(command)
         child.add_argument("epoch", type=Path)
         child.add_argument("--lease-seconds", type=int, default=MAX_DISCOVERY_LEASE_SECONDS)
@@ -7403,7 +7610,15 @@ def main(argv: Sequence[str] | None = None) -> int:
         # This is a phone-local control locator, not evidence or a claim.
         print(str(epoch), file=sys.stderr)
         return 0
-    root, epoch, _manifest = validate_epoch(arguments.epoch)
+    root, epoch, manifest = validate_epoch(arguments.epoch)
+    require_epoch_runtime(manifest, runtime_identity)
+    if arguments.command == "import-receipted":
+        print(
+            canonical_json_bytes(
+                import_receipted_predecessor_selections(epoch)
+            ).decode("ascii")
+        )
+        return 0
     private_temp_dir = root / "transport_tmp"
     validate_transport_temp_directory(private_temp_dir)
     lease = DiscoveryLease(epoch=epoch, lease_seconds=arguments.lease_seconds)
