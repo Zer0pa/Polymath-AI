@@ -1906,15 +1906,10 @@ xmlns:skos="{parsers.SKOS_NS}" xmlns:evil="https://evil.invalid/">
         list(parsers.parse_usgs_skos_rdf(path, _file_context(path, "usgs")))
 
 
-def _epub_members() -> dict[str, bytes]:
-    return {
-        "mimetype": b"application/epub+zip",
-        "META-INF/container.xml": b"""<?xml version="1.0"?>
-<container xmlns="urn:oasis:names:tc:opendocument:xmlns:container">
-  <rootfiles><rootfile full-path="OPS/package.opf"
-    media-type="application/oebps-package+xml"/></rootfiles>
-</container>""",
-        "OPS/package.opf": b"""<?xml version="1.0"?>
+def _epub_members(
+    rights_path: str = "copyright_acknowledgements_ccby.html",
+) -> dict[str, bytes]:
+    package = b"""<?xml version="1.0"?>
 <package xmlns="http://www.idpf.org/2007/opf" version="3.0"
   unique-identifier="pub-id" xmlns:dc="http://purl.org/dc/elements/1.1/">
   <metadata><dc:identifier id="pub-id">fixture-book</dc:identifier></metadata>
@@ -1923,16 +1918,24 @@ def _epub_members() -> dict[str, bytes]:
     <item id="chapter-2" href="c2.xhtml" media-type="application/xhtml+xml"/>
     <item id="navigation" href="nav.xhtml" media-type="application/xhtml+xml"
       properties="nav"/>
-    <item id="rights" href="copyright_acknowledgements_ccby.html"
+    <item id="rights" href="RIGHTS_PATH"
       media-type="application/xhtml+xml"/>
   </manifest>
   <spine><itemref idref="chapter-1"/><itemref idref="chapter-2"/></spine>
-</package>""",
+</package>""".replace(b"RIGHTS_PATH", rights_path.encode("ascii"))
+    return {
+        "mimetype": b"application/epub+zip",
+        "META-INF/container.xml": b"""<?xml version="1.0"?>
+<container xmlns="urn:oasis:names:tc:opendocument:xmlns:container">
+  <rootfiles><rootfile full-path="OPS/package.opf"
+    media-type="application/oebps-package+xml"/></rootfiles>
+</container>""",
+        "OPS/package.opf": package,
         "OPS/nav.xhtml": b"""<html xmlns="http://www.w3.org/1999/xhtml"
 xmlns:epub="http://www.idpf.org/2007/ops"><body><nav epub:type="toc">
 <a href="c1.xhtml">Foundations</a><a href="c2.xhtml">Measurements</a>
 </nav></body></html>""",
-        "OPS/copyright_acknowledgements_ccby.html": b"""<!DOCTYPE html>
+        f"OPS/{rights_path}": b"""<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"><body>Siyavula
 <a href="http://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>
 </body></html>""",
@@ -1970,6 +1973,71 @@ def test_siyavula_epub_resolves_spine_and_context_flags(tmp_path: Path) -> None:
         uninterpreted_nontext_media=True,
         visual_context_quarantined=True,
     )
+
+
+@pytest.mark.parametrize(
+    "rights_path",
+    (
+        "xhtml/Grade-4/gr4-frontmatter.xhtml",
+        "xhtml/Grade-5/gr5-tbk-frontmatter.xhtml",
+        "xhtml/Grade-6/gr6-tbk-frontmatter.html",
+    ),
+)
+def test_siyavula_epub_accepts_observed_lower_grade_rights_members(
+    tmp_path: Path,
+    rights_path: str,
+) -> None:
+    path = tmp_path / "lower-grade.epub"
+    _write_zip(path, _epub_members(rights_path))
+
+    units = list(parsers.parse_siyavula_epub(path, _file_context(path, "siyavula")))
+
+    assert [unit.title for unit in units] == ["Foundations", "Measurements"]
+
+
+@pytest.mark.parametrize(
+    "rights_path",
+    (
+        "xhtml/Grade-4/notfrontmatter.xhtml",
+        "xhtml/Grade-4/frontmatter.xhtml",
+        "xhtml/Grade-4/gr4_frontmatter.xhtml",
+        "xhtml/Grade-4/gr4-frontmatter.xml",
+    ),
+)
+def test_siyavula_epub_rejects_unrecognized_frontmatter_decoys(
+    tmp_path: Path,
+    rights_path: str,
+) -> None:
+    path = tmp_path / "frontmatter-decoy.epub"
+    _write_zip(path, _epub_members(rights_path))
+
+    with pytest.raises(
+        parsers.SourceParseError,
+        match="epub_rights_manifest_binding_invalid",
+    ):
+        list(parsers.parse_siyavula_epub(path, _file_context(path, "siyavula")))
+
+
+def test_siyavula_epub_rejects_ambiguous_recognized_rights_members(
+    tmp_path: Path,
+) -> None:
+    members = _epub_members("xhtml/Grade-4/gr4-frontmatter.xhtml")
+    members["OPS/package.opf"] = members["OPS/package.opf"].replace(
+        b"  </manifest>",
+        b'    <item id="second-rights" href="copyright_acknowledgements_ccby.html" '
+        b'media-type="application/xhtml+xml"/>\n  </manifest>',
+    )
+    members["OPS/copyright_acknowledgements_ccby.html"] = members[
+        "OPS/xhtml/Grade-4/gr4-frontmatter.xhtml"
+    ]
+    path = tmp_path / "ambiguous-rights.epub"
+    _write_zip(path, members)
+
+    with pytest.raises(
+        parsers.SourceParseError,
+        match="epub_rights_manifest_binding_invalid",
+    ):
+        list(parsers.parse_siyavula_epub(path, _file_context(path, "siyavula")))
 
 
 def test_epub_rejects_ambiguous_package_and_unsafe_reference(tmp_path: Path) -> None:

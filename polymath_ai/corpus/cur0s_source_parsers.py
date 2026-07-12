@@ -3012,6 +3012,20 @@ def _epub_manifest_property_tokens(value: str) -> tuple[str, ...]:
     return tokens
 
 
+def _is_siyavula_rights_member(member: str) -> bool:
+    basename = PurePosixPath(member).name
+    if basename == "copyright_acknowledgements_ccby.html":
+        return True
+    return (
+        re.fullmatch(
+            r"[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*-frontmatter\.(?:xhtml|html)",
+            basename,
+            flags=re.IGNORECASE,
+        )
+        is not None
+    )
+
+
 def _epub_rights_xhtml_root(value: bytes, limits: ParserLimits) -> ET.Element:
     try:
         decoded = value.decode(_xml_encoding(value[:4]), errors="strict")
@@ -3221,7 +3235,7 @@ def _parse_siyavula_epub_handle(
         rights_items = [
             (item_id, *item)
             for item_id, item in manifest.items()
-            if PurePosixPath(item[0]).name == "copyright_acknowledgements_ccby.html"
+            if _is_siyavula_rights_member(item[0])
         ]
         if (
             len(rights_items) != 1
